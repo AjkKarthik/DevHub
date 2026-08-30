@@ -1,0 +1,26 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="JSON Web Tokens" topicRoute="/security/jwt"
+    subtopicLabel="Token Revocation, Both Ways" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">Token Revocation, Both Ways</h1>
+  <p class="page-subtitle">The QnA compares tokenVersion and JTI blacklisting in real detail — but neither ever appears in code. Here's both, wired into the same verify flow.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>The next two subtopics build out mechanisms the theory and quiz explain in detail but never show in code: the actual RS256→HS256 confusion exploit, and refresh token rotation with reuse detection.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="JSON Web Tokens" topicRoute="/security/jwt"
+    [next]="{ label: 'The RS256 → HS256 Confusion Attack, Demonstrated', route: '/security/jwt/the-rs256-to-hs256-confusion-attack-demonstrated' }" />
+</div>

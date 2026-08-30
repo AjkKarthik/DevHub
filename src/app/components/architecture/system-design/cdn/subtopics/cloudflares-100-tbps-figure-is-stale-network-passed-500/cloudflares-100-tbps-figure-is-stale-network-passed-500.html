@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Content Delivery Networks" topicRoute="/system-design/cdn" subtopicLabel="Cloudflare's 100+ Tbps Figure Was Stale — Now 500+" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">Cloudflare's 100+ Tbps Figure Was Stale — Now 500+</h1>
+  <p class="page-subtitle">The DDoS QnA cited an old bandwidth figure — verified against Cloudflare's own 2026 blog post that the network passed 500 Tbps of <em>provisioned external capacity</em>, a different thing from traffic actually carried.</p>
+  <app-page-meta [readingTime]="6" difficulty="beginner" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This corrects a stale headline number. Next: the anycast quiz's "automatic failover" claim is true but hides a real convergence window.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Content Delivery Networks" topicRoute="/system-design/cdn"
+    [next]="{ label: 'Anycast Failover Takes BGP Convergence Time, Not Instant', route: '/system-design/cdn/anycast-failover-takes-bgp-convergence-time-not-instant' }" />
+</div>

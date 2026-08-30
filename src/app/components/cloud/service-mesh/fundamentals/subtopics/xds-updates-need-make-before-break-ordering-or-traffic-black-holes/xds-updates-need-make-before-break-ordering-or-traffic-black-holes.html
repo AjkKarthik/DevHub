@@ -1,0 +1,27 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Service Mesh Fundamentals" topicRoute="/service-mesh/fundamentals" subtopicLabel="xDS Updates Need Make-Before-Break Ordering, or Traffic Black-Holes" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">xDS Updates Need Make-Before-Break Ordering, or Traffic Black-Holes</h1>
+  <p class="page-subtitle">The main page frames xDS propagation as clean and instantaneous — it's actually eventually consistent, and an out-of-order update can briefly black-hole real traffic.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Envoy / Istio (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This gives the main page's xDS QnA its missing failure mode and the ordering discipline that mitigates it. Next: why a VirtualService referencing a missing DestinationRule subset fails silently with a 503, not a validation error.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Service Mesh Fundamentals" topicRoute="/service-mesh/fundamentals"
+    [prev]="{ label: 'Ambient Mode: ztunnel Is L4-Only — L7 Routing Needs a Waypoint', route: '/service-mesh/fundamentals/ambient-mode-ztunnel-is-l4-only-l7-routing-needs-a-waypoint' }"
+    [next]="{ label: 'A VirtualService Subset Missing From DestinationRule Returns 503', route: '/service-mesh/fundamentals/a-virtualservice-subset-missing-from-destinationrule-returns-503' }" />
+</div>

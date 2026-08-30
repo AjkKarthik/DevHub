@@ -1,0 +1,26 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Resilience Patterns" topicRoute="/service-mesh/resilience" subtopicLabel="A Service With No DestinationRule Still Has a 1024-Connection Cap" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">A Service With No DestinationRule Still Has a 1024-Connection Cap</h1>
+  <p class="page-subtitle">Every circuit-breaker example on the main page shows an explicit DestinationRule — none address what happens with none at all. Envoy's own built-in defaults still apply.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Istio / Envoy (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>Together with the corrected minHealthPercent default and the splitExternalLocalOriginErrors requirement, this closes out the main page's resilience trio: a circuit breaker is always active, just not always usefully tuned.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Resilience Patterns" topicRoute="/service-mesh/resilience"
+    [prev]="{ label: 'minHealthPercent Defaults to 0% (Disabled), Not 50%', route: '/service-mesh/resilience/minhealthpercent-defaults-to-0-percent-disabled-not-50-percent' }" />
+</div>

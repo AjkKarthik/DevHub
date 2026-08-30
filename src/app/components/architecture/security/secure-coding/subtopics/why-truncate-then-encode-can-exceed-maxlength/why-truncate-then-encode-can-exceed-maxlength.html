@@ -1,0 +1,26 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Secure Coding" topicRoute="/security/secure-coding"
+    subtopicLabel="Why Truncate-Then-Encode Can Exceed maxLength" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">Why Truncate-Then-Encode Can Exceed maxLength</h1>
+  <p class="page-subtitle">The Challenge's own two test cases both pass without ever revealing this. Here's the exact input that does — and why it's not necessarily a bug.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>The next two subtopics build out attacks the quiz describes in detail but the main page never demonstrates in code: path traversal and TOCTOU race conditions — both grounded in the quiz's own prevention guidance.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Secure Coding" topicRoute="/security/secure-coding"
+    [next]="{ label: 'Path Traversal — Vulnerable Endpoint and Fix', route: '/security/secure-coding/path-traversal-vulnerable-endpoint-and-fix' }" />
+</div>

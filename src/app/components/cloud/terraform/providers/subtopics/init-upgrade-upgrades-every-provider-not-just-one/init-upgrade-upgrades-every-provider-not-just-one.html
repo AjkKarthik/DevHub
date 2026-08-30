@@ -1,0 +1,26 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Providers" topicRoute="/terraform/providers" subtopicLabel="init -upgrade Upgrades Every Provider, Not Just One" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">init -upgrade Upgrades Every Provider, Not Just One</h1>
+  <p class="page-subtitle">The main page's QnA warns that -upgrade "may include breaking changes" without ever clarifying its blast radius spans every provider (and every already-installed module) in the configuration.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Terraform (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This clarifies the scope of a command the main page's own QnA already flags as risky, giving a safer, targeted alternative for the common case of wanting just one provider bumped.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Providers" topicRoute="/terraform/providers"
+    [prev]="{ label: 'Module Provider Alias Needs configuration_aliases Declared', route: '/terraform/providers/module-provider-alias-needs-configuration-aliases-declared' }" />
+</div>

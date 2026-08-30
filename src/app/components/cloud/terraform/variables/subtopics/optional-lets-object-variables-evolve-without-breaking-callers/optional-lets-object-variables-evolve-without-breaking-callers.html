@@ -1,0 +1,27 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Variables & Locals" topicRoute="/terraform/variables" subtopicLabel="optional() Lets Object Variables Evolve Without Breaking Callers" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">optional() Lets Object Variables Evolve Without Breaking Callers</h1>
+  <p class="page-subtitle">The main page's own vpc_config example has no optional attributes at all — both fields are required. Here's what changes once optional() enters the picture.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Terraform 1.3+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This shows the object type constraint tool the main page's own QnA mentions in words but never demonstrates. Next: why passing a sensitive variable through to an output needs the output's own sensitive = true.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Variables & Locals" topicRoute="/terraform/variables"
+    [prev]="{ label: 'nullable = false Substitutes the Default for an Explicit null', route: '/terraform/variables/nullable-false-substitutes-default-even-for-explicit-null' }"
+    [next]="{ label: 'A Sensitive Output Needs Its Own sensitive = true', route: '/terraform/variables/sensitive-output-needs-its-own-sensitive-true-declaration' }" />
+</div>

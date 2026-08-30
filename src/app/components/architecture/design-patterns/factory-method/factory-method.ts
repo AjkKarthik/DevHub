@@ -91,6 +91,12 @@ public class SmsNotification : INotification
         Console.WriteLine($"SMS → {recipient}: {message}");
 }
 
+public class PushNotification : INotification
+{
+    public void Send(string recipient, string message) =>
+        Console.WriteLine($"Push → {recipient}: {message}");
+}
+
 // Creator — declares the factory method
 public abstract class NotificationService
 {
@@ -134,7 +140,7 @@ public class NotificationFactory : INotificationFactory
         "email" => new EmailNotification(),
         "sms"   => new SmsNotification(),
         "push"  => new PushNotification(),
-        _       => throw new ArgumentException(\`Unknown channel: {channel}\`)
+        _       => throw new ArgumentException($"Unknown channel: {channel}")
     };
 }
 

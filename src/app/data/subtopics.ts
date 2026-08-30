@@ -2587,4 +2587,889 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'registration-enabled Only Works for VMs', route: '/azure/virtual-network/private-dns-registration-enabled-only-works-for-vms' },
     { label: 'Security Admin Rules Bypass NSG Evaluation', route: '/azure/virtual-network/security-admin-rules-can-bypass-nsg-evaluation-entirely' },
   ],
+  'load-balancer': [
+    { label: 'Default Outbound Access Retired', route: '/azure/load-balancer/default-outbound-access-was-retired-march-2026-need-explicit-method' },
+    { label: 'Default SNAT Port Allocation Is Per-VM', route: '/azure/load-balancer/default-snat-port-allocation-is-per-vm-not-per-ip' },
+    { label: 'Front Door Health Probe SampleSize Explained', route: '/azure/load-balancer/front-door-health-probe-samplesize-and-successfulsamples-explained' },
+  ],
+  // NOTE: hub-prefixed — bare 'storage' already used by the Containers/K8s hub's own /containers/storage topic.
+  'azure-storage': [
+    { label: 'User Delegation SAS Caps at 7 Days', route: '/azure/storage/user-delegation-sas-max-validity-is-7-days-not-your-expiry-param' },
+    { label: 'Stored Access Policies Don’t Work With User Delegation SAS', route: '/azure/storage/stored-access-policies-dont-work-with-user-delegation-sas' },
+    { label: 'Lifecycle baseBlob Actions Don’t Cover Versions', route: '/azure/storage/lifecycle-baseblob-actions-dont-cover-versions-or-snapshots' },
+  ],
+  'entra-id': [
+    { label: 'Client Credentials Scope Must Be .default', route: '/azure/entra-id/client-credentials-scope-must-be-default-not-individual-permissions' },
+    { label: 'SPA Refresh Tokens Cap at 24 Hours', route: '/azure/entra-id/spa-refresh-tokens-cap-at-24-hours-not-90-days-and-never-reset' },
+    { label: 'PKCE Is Required for SPAs, Only Recommended for Native Apps', route: '/azure/entra-id/pkce-is-required-for-spas-but-only-recommended-for-native-apps' },
+  ],
+  // NOTE: hub-prefixed — bare 'rbac' already used by the Containers/K8s hub's own /containers/rbac topic.
+  'azure-rbac': [
+    { label: 'Propagation Isn’t One Number', route: '/azure/rbac/role-assignment-propagation-isnt-one-number-10-min-to-24-hours' },
+    { label: 'Classic Co-Administrators Auto-Converted to Owner', route: '/azure/rbac/classic-co-administrators-auto-converted-to-owner-december-2025' },
+    { label: 'IMDS Metadata:true and Unauthenticated Blast Radius', route: '/azure/rbac/imds-metadata-true-header-and-unauthenticated-blast-radius' },
+  ],
+  'sql-cosmos': [
+    { label: 'Logical Partition Caps at 20 GB', route: '/azure/sql-cosmos/cosmos-logical-partition-caps-at-20gb-not-50gb' },
+    { label: 'Change Feed Now Captures Deletes Natively', route: '/azure/sql-cosmos/change-feed-all-versions-and-deletes-mode-captures-deletes-natively' },
+    { label: 'Long-Term Retention Goes to 10 Years', route: '/azure/sql-cosmos/azure-sql-long-term-retention-goes-to-10-years-beyond-pitr' },
+  ],
+  'monitor': [
+    { label: 'Sampling Silently Skews count()', route: '/azure/monitor/sampling-silently-skews-count-use-sum-itemcount-instead' },
+    { label: 'Basic Logs Supports Full KQL', route: '/azure/monitor/basic-logs-supports-full-kql-tradeoff-is-per-query-pricing' },
+    { label: 'Daily Cap Stops All Ingestion', route: '/azure/monitor/daily-cap-stops-all-ingestion-not-just-the-excess' },
+  ],
+  'devops-pipelines': [
+    { label: 'New Orgs Get Zero Free Parallel Jobs', route: '/azure/devops-pipelines/new-orgs-get-zero-free-parallel-jobs-must-request-a-grant' },
+    { label: 'Unanswered Approvals Are Skipped, Not Rejected', route: '/azure/devops-pipelines/unanswered-approvals-are-skipped-not-rejected-at-timeout' },
+    { label: 'Fork PR Builds on Self-Hosted Agents', route: '/azure/devops-pipelines/fork-pr-builds-on-self-hosted-agents-run-untrusted-code-on-prem' },
+  ],
+  'cost-management': [
+    { label: 'Spot VM Eviction Is 30 Seconds, Not 2 Minutes', route: '/azure/cost-management/spot-vm-eviction-notice-is-30-seconds-not-2-minutes' },
+    { label: 'Reservations Apply Before Savings Plans', route: '/azure/cost-management/reservations-apply-before-savings-plans-in-a-best-fit-model' },
+    { label: 'Amortized Cost View Doesn’t Work for PAYG Reservations', route: '/azure/cost-management/amortized-cost-view-doesnt-work-for-payg-reservations' },
+  ],
+  'security-defender': [
+    { label: 'MMA Is Fully Retired, Defender Now Agentless', route: '/azure/security-defender/mma-agent-fully-retired-defender-servers-now-agentless' },
+    { label: 'Defender CSPM Is a Separate Paid Plan', route: '/azure/security-defender/defender-cspm-is-a-separate-paid-plan-beyond-foundational-cspm' },
+    { label: 'JIT Quick-Enable Only Protects One Port', route: '/azure/security-defender/jit-quick-enable-only-protects-one-port-not-the-full-set' },
+  ],
+  'key-vault': [
+    { label: 'Reference Refresh Is 24 Hours, Not Minutes', route: '/azure/key-vault/key-vault-reference-refresh-is-24-hours-not-minutes' },
+    { label: 'Soft-Deleted Vaults Reserve Their Name', route: '/azure/key-vault/soft-deleted-vault-reserves-its-name-and-loses-rbac-bindings' },
+    { label: 'New Vaults Now Default to RBAC', route: '/azure/key-vault/new-vaults-now-default-to-rbac-but-only-on-newer-api-versions' },
+  ],
+  'service-bus': [
+    { label: 'Duplicate Detection Is Off by Default', route: '/azure/service-bus/duplicate-detection-is-off-by-default-10-minute-window-when-on' },
+    { label: 'Auto-Forwarding Caps at 4 Hops', route: '/azure/service-bus/auto-forwarding-caps-at-4-hops-then-dead-letters' },
+    { label: 'High Prefetch Count Expires Locks Early', route: '/azure/service-bus/high-prefetch-count-expires-locks-before-processing-even-starts' },
+  ],
+  'container-apps': [
+    { label: 'Scale-to-Zero Has a Hidden 5-Minute Cooldown', route: '/azure/container-apps/scale-to-zero-has-a-hidden-5-minute-cooldown' },
+    { label: 'No Scale Rule Means an Implicit HTTP Rule Applies', route: '/azure/container-apps/no-scale-rule-means-an-implicit-http-rule-applies' },
+    { label: 'Secret Updates Don’t Auto-Restart Active Revisions', route: '/azure/container-apps/secret-updates-dont-auto-restart-active-revisions' },
+  ],
+  redis: [
+    { label: 'There’s No “Redis Contributor” Data Role', route: '/azure/redis/theres-no-redis-contributor-data-role' },
+    { label: 'The Real Default Eviction Policy Is volatile-lru', route: '/azure/redis/default-eviction-policy-is-volatile-lru-not-noeviction' },
+    { label: 'Enabling Entra ID Auth Reboots Every Node', route: '/azure/redis/enabling-entra-id-auth-reboots-every-node-up-to-30-minutes' },
+  ],
+  'api-management': [
+    { label: 'Cache Is Shared Per Region Only', route: '/azure/api-management/cache-is-shared-per-region-only-and-fails-silently' },
+    { label: 'rate-limit-by-key Counts Per Gateway', route: '/azure/api-management/rate-limit-by-key-counts-per-gateway-not-per-instance' },
+    { label: 'Self-Hosted Gateway Fails Static', route: '/azure/api-management/self-hosted-gateway-fails-static-but-needs-backup-to-restart' },
+  ],
+  bicep: [
+    { label: 'Forgetting existing Turns a Reference Into a Redeploy', route: '/azure/bicep/forgetting-existing-turns-a-reference-into-a-redeploy' },
+    { label: 'Modules Need Their Own scope Property', route: '/azure/bicep/modules-need-their-own-scope-property-for-a-different-target' },
+    { label: 'A Module’s Static name Can Cause a Silent Collision', route: '/azure/bicep/a-modules-static-name-can-cause-a-silent-output-collision' },
+  ],
+  // NOTE: hub-prefixed — bare 'fundamentals' is already claimed by the JavaScript hub
+  // (/javascript/fundamentals).
+  'linux-fundamentals': [
+    { label: 'systemd Targets Map to Runlevels, But Not One-to-One', route: '/linux/fundamentals/systemd-targets-map-to-runlevels-but-not-one-to-one' },
+    { label: 'journald Logs Are Lost on Reboot by Default', route: '/linux/fundamentals/journald-logs-are-lost-on-reboot-unless-var-log-journal-exists' },
+    { label: 'A sysctl Change Is Runtime-Only Until Persisted', route: '/linux/fundamentals/a-sysctl-change-is-runtime-only-until-persisted-to-a-file' },
+  ],
+  'file-system': [
+    { label: '/tmp Cleared on Reboot Is Only Half the Story', route: '/linux/file-system/tmp-cleared-on-reboot-is-only-half-the-story' },
+    { label: 'Skip nofail in fstab and Boot Hangs, Then Emergency Mode', route: '/linux/file-system/skip-nofail-in-fstab-and-boot-hangs-then-drops-to-emergency' },
+    { label: '/usr/local vs /opt: Shared Tree vs One Subdirectory Per App', route: '/linux/file-system/usr-local-vs-opt-shared-tree-vs-one-subdirectory-per-app' },
+  ],
+  'essential-commands': [
+    { label: 'xargs Without -print0 Breaks on Filenames With Spaces', route: '/linux/essential-commands/xargs-without-print0-breaks-on-filenames-with-spaces' },
+    { label: 'awk’s Default Field Split Collapses Repeated Delimiters', route: '/linux/essential-commands/awk-default-field-split-collapses-repeated-delimiters' },
+    { label: 'tar Already Strips Leading Slashes Unless -P Is Used', route: '/linux/essential-commands/tar-already-strips-leading-slashes-unless-p-is-used' },
+  ],
+  'file-permissions': [
+    { label: 'setuid Is Ignored on Shell Scripts, Not Just Risky', route: '/linux/file-permissions/setuid-is-ignored-on-shell-scripts-not-just-risky' },
+    { label: 'ACL Mask Caps Effective Permissions', route: '/linux/file-permissions/acl-mask-caps-effective-permissions-and-auto-recalculates' },
+    { label: 'chmod 755 on a Directory Does NOT Clear setgid', route: '/linux/file-permissions/chmod-755-on-a-directory-does-not-clear-setgid' },
+  ],
+  'users-groups': [
+    { label: 'userdel Without -r Leaves Orphaned Files for UID Reuse', route: '/linux/users-groups/userdel-without-r-leaves-orphaned-files-for-uid-reuse' },
+    { label: 'A NOPASSWD Grant Can Be a Full Root Escalation', route: '/linux/users-groups/nopasswd-grant-to-a-safe-command-can-be-a-full-root-escalation' },
+    { label: '/etc/skel Populates New Homes Once, Not Retroactively', route: '/linux/users-groups/etc-skel-populates-new-homes-once-not-retroactively' },
+  ],
+  'process-management': [
+    { label: 'Orphans Reparent to PID 1, Which May Not Reap in a Container', route: '/linux/process-management/orphans-reparent-to-pid-1-which-may-not-reap-in-a-container' },
+    { label: 'kill Signals One Process — Use a Negative PID for the Group', route: '/linux/process-management/kill-signals-one-process-use-negative-pid-for-the-group' },
+    { label: 'renice Is a One-Way Ratchet for Non-Root Users', route: '/linux/process-management/renice-is-a-one-way-ratchet-for-non-root-users' },
+  ],
+  'system-monitoring': [
+    { label: 'Load Average Has Blind Spots — PSI Is the Modern Replacement', route: '/linux/system-monitoring/load-average-has-blind-spots-psi-is-the-modern-replacement' },
+    { label: 'oom_score_adj = -1000 Can Hang the Whole System', route: '/linux/system-monitoring/oom-score-adj-negative-1000-can-hang-the-whole-system' },
+    { label: 'iostat’s %util Is Misleading on NVMe SSDs', route: '/linux/system-monitoring/iostats-percent-util-is-misleading-on-nvme-ssds' },
+  ],
+  'networking': [
+    { label: 'TIME_WAIT Is Normal, Not a Bug — and It Can’t Be Tuned', route: '/linux/networking/time-wait-is-normal-not-a-bug-and-cant-be-tuned' },
+    { label: 'Traceroute Defaults to UDP, Which Firewalls Often Block', route: '/linux/networking/traceroute-defaults-to-udp-which-firewalls-often-block' },
+    { label: 'Jumbo Frames + MTU Mismatch Creates a Silent PMTUD Blackhole', route: '/linux/networking/jumbo-frames-mtu-mismatch-creates-a-silent-pmtud-blackhole' },
+  ],
+  'firewall': [
+    { label: 'ufw limit Throttles One IP — Not Distributed Brute Force', route: '/linux/firewall/ufw-limit-throttles-one-ip-not-distributed-brute-force' },
+    { label: 'iptables -F Doesn’t Reset the Default Policy — a DROP Policy Can Lock You Out', route: '/linux/firewall/iptables-flush-does-not-reset-policy-can-lock-you-out' },
+    { label: 'ip_forward Alone Isn’t Enough for UFW Router Mode', route: '/linux/firewall/ip-forward-alone-is-not-enough-for-ufw-router-mode' },
+  ],
+  'ssh': [
+    { label: 'Agent Forwarding Exposes Signing, Not Your Key — ProxyJump Avoids It', route: '/linux/ssh/agent-forwarding-exposes-signing-proxyjump-avoids-it' },
+    { label: 'ssh -R Binds to Remote Loopback Only, Without GatewayPorts', route: '/linux/ssh/ssh-r-binds-to-remote-loopback-only-without-gatewayports' },
+    { label: 'ControlMaster Multiplexing Can Hit the Server’s MaxSessions Limit', route: '/linux/ssh/controlmaster-multiplexing-hits-the-maxsessions-limit' },
+  ],
+  'bash-scripting': [
+    { label: 'Exit Codes Wrap Around at 256 — return 256 Means Success', route: '/linux/bash-scripting/exit-codes-wrap-around-at-256-return-256-means-success' },
+    { label: 'local Assignment Masks set -e Command Failures', route: '/linux/bash-scripting/local-assignment-masks-set-e-command-failures' },
+    { label: 'trap EXIT Overwrites, It Doesn’t Chain Multiple Handlers', route: '/linux/bash-scripting/trap-exit-overwrites-not-chains-multiple-handlers' },
+  ],
+  'bash-advanced': [
+    { label: 'mapfile Without -t Keeps the Trailing Newline in Every Element', route: '/linux/bash-advanced/mapfile-without-t-keeps-the-trailing-newline-in-every-element' },
+    { label: 'exec + tee Process Substitution Can Race the Script’s Own Exit', route: '/linux/bash-advanced/exec-tee-redirect-races-script-exit-truncating-the-log' },
+    { label: 'check_host Always Exits 0, Regardless of Up or Down', route: '/linux/bash-advanced/check-host-always-exits-0-regardless-of-up-or-down' },
+  ],
+  'package-management': [
+    { label: 'apt-key Is Deprecated — signed-by Keyrings Is the Modern Replacement', route: '/linux/package-management/apt-key-is-deprecated-signed-by-keyrings-is-the-modern-replacement' },
+    { label: 'apt-mark auto/manual Is What Actually Drives autoremove', route: '/linux/package-management/apt-mark-auto-manual-is-what-actually-drives-autoremove' },
+    { label: 'dnf history undo Can Fail When the Old Version Left the Repo', route: '/linux/package-management/dnf-history-undo-can-fail-when-the-old-version-left-the-repo' },
+  ],
+  'systemd': [
+    { label: 'ExecReload=kill -HUP $MAINPID Can Kill, Not Reload, a Node.js Service', route: '/linux/systemd/execreload-kill-hup-mainpid-can-kill-not-reload-a-nodejs-service' },
+    { label: 'StartLimitBurst Locks a Service in Failed State Until reset-failed', route: '/linux/systemd/startlimitburst-locks-a-service-in-failed-state-until-reset-failed' },
+    { label: 'systemctl edit Drop-Ins Need an Empty ExecStart= to Override It', route: '/linux/systemd/systemctl-edit-drop-ins-need-an-empty-execstart-to-override-it' },
+  ],
+  'disk-storage': [
+    { label: 'Deleted-but-Open Files Hide Space — df and du Never Agree', route: '/linux/disk-storage/deleted-but-open-files-hide-space-df-and-du-never-agree' },
+    { label: 'XFS Has No Shrink Command — Backup, Recreate, Restore Is the Only Path', route: '/linux/disk-storage/xfs-has-no-shrink-command-backup-recreate-restore-is-the-only-path' },
+    { label: 'Growing a Cloud VM’s LVM Root Needs pvresize, Not Just growpart', route: '/linux/disk-storage/growing-a-cloud-vms-lvm-root-needs-pvresize-not-just-growpart' },
+  ],
+  'environment-variables': [
+    { label: 'env $(cat .env | xargs) Breaks on Values Containing Spaces', route: '/linux/environment-variables/env-cat-env-xargs-breaks-on-values-containing-spaces' },
+    { label: 'docker inspect Reveals Every -e Secret in Plaintext', route: '/linux/environment-variables/docker-inspect-reveals-every-e-secret-in-plaintext' },
+    { label: 'unset Removes a Variable — VAR= Only Empties It', route: '/linux/environment-variables/unset-removes-a-variable-var-only-empties-it' },
+  ],
+  'log-analysis': [
+    { label: 'The Slowest-Responses Sort Assumes request_time Is Already Logged', route: '/linux/log-analysis/sort-t-k3-rn-sorts-garbage-unless-request-time-is-in-the-log-format' },
+    { label: 'journalctl Only Shows the Current Boot by Default', route: '/linux/log-analysis/journalctl-only-shows-the-current-boot-by-default' },
+    { label: 'logrotate’s copytruncate Has a Real Data-Loss Race Window', route: '/linux/log-analysis/logrotates-copytruncate-has-a-real-data-loss-race-window' },
+  ],
+  'performance-tuning': [
+    { label: 'I/O Scheduler Writes to /sys/block Are Not Persistent — Use a udev Rule', route: '/linux/performance-tuning/io-scheduler-writes-to-sys-block-are-not-persistent-use-a-udev-rule' },
+    { label: 'discard in fstab Has a Real Penalty — fstrim.timer Is Preferred', route: '/linux/performance-tuning/discard-in-fstab-has-a-real-penalty-fstrim-timer-is-preferred' },
+    { label: 'numactl --membind Is a Hard Constraint — --preferred Is the Safer Default', route: '/linux/performance-tuning/numactl-membind-is-a-hard-constraint-preferred-is-the-safer-default' },
+  ],
+  'vim': [
+    { label: 'A Delete Silently Clobbers Your Yank — Paste From Register 0 Instead', route: '/linux/vim/a-delete-silently-clobbers-your-yank-use-0p-to-paste-it-back' },
+    { label: 'smartcase Does Nothing Unless ignorecase Is Also Set', route: '/linux/vim/smartcase-does-nothing-unless-ignorecase-is-also-set' },
+    { label: 'vim -d Diff Mode Has Its Own Commands the Main Page Never Shows', route: '/linux/vim/vim-d-diff-mode-has-its-own-commands-the-main-page-never-shows' },
+  ],
+  // NOTE: keyed 'tf-fundamentals', NOT bare 'fundamentals' — the JavaScript
+  // hub already claims the bare key with its own subtopics.
+  'tf-fundamentals': [
+    { label: 'for_each Requires a Map or Set — Not a Bare List', route: '/terraform/fundamentals/for-each-requires-a-map-or-set-not-a-bare-list' },
+    { label: 'depends_on Is for Dependencies Terraform Cannot See', route: '/terraform/fundamentals/depends-on-is-for-dependencies-terraform-cannot-see' },
+    { label: 'moved Blocks, Not Manual Edits, Fix a Renamed Resource', route: '/terraform/fundamentals/moved-blocks-not-manual-edits-fix-a-renamed-resource' },
+  ],
+  providers: [
+    { label: 'The ~> Constraint’s Upper Bound Depends on Segment Count', route: '/terraform/providers/pessimistic-constraint-upper-bound-depends-on-segment-count' },
+    { label: 'Module Provider Alias Needs configuration_aliases Declared', route: '/terraform/providers/module-provider-alias-needs-configuration-aliases-declared' },
+    { label: 'init -upgrade Upgrades Every Provider, Not Just One', route: '/terraform/providers/init-upgrade-upgrades-every-provider-not-just-one' },
+  ],
+  variables: [
+    { label: 'nullable = false Substitutes the Default for an Explicit null', route: '/terraform/variables/nullable-false-substitutes-default-even-for-explicit-null' },
+    { label: 'optional() Lets Object Variables Evolve Without Breaking Callers', route: '/terraform/variables/optional-lets-object-variables-evolve-without-breaking-callers' },
+    { label: 'A Sensitive Output Needs Its Own sensitive = true', route: '/terraform/variables/sensitive-output-needs-its-own-sensitive-true-declaration' },
+  ],
+  outputs: [
+    { label: 'precondition Blocks Catch a Bad Output Value Before Export', route: '/terraform/outputs/precondition-blocks-catch-a-bad-output-value-before-export' },
+    { label: 'terraform_remote_state Grants Access to the Whole State File', route: '/terraform/outputs/remote-state-grants-access-to-the-entire-state-not-just-outputs' },
+    { label: 'output -json Reveals Sensitive Values the Plain Command Redacts', route: '/terraform/outputs/output-json-reveals-sensitive-values-the-plain-command-redacts' },
+  ],
+  resources: [
+    { label: 'prevent_destroy Is Bypassed by Removing the Whole Resource Block', route: '/terraform/resources/prevent-destroy-is-bypassed-by-removing-the-whole-resource-block' },
+    { label: 'replace_triggered_by Forces Replacement From an Unrelated Resource', route: '/terraform/resources/replace-triggered-by-forces-replacement-from-an-unrelated-resource' },
+    { label: 'A Timeout Doesn’t Mean the Resource Wasn’t Created', route: '/terraform/resources/a-timeout-does-not-mean-the-resource-was-not-created' },
+  ],
+  'data-sources': [
+    { label: 'external Data Source: query and result Are Both String-Only Maps', route: '/terraform/data-sources/external-data-source-query-and-result-are-both-string-only-maps' },
+    { label: 'for_each, Not count, for Iterating a Data Source’s Own Results', route: '/terraform/data-sources/for-each-not-count-for-iterating-a-data-sources-own-results' },
+    { label: 'A Data Source Can Need depends_on Too', route: '/terraform/data-sources/a-data-source-can-need-depends-on-too-for-a-hidden-dependency' },
+  ],
+  expressions: [
+    { label: 'can() Is for Variable Validation — try() Is the Real Fallback Tool', route: '/terraform/expressions/can-is-for-variable-validation-try-is-the-real-fallback-tool' },
+    { label: 'Nested Dynamic Blocks Shadow the Outer Iterator by Default', route: '/terraform/expressions/nested-dynamic-blocks-shadow-the-outer-iterator-by-default' },
+    { label: 'A for Expression Map Errors on Duplicate Keys Unless Grouped', route: '/terraform/expressions/a-for-expression-map-errors-on-duplicate-keys-unless-grouped' },
+  ],
+  // NOTE: keyed 'tf-functions', NOT bare 'functions' — the JavaScript
+  // hub already claims the bare key with its own subtopics.
+  'tf-functions': [
+    { label: 'merge() null Overwrites, It Doesn’t Skip, an Earlier Value', route: '/terraform/functions/merge-null-overwrites-not-skips-an-earlier-non-null-value' },
+    { label: 'flatten() Only Unwraps Nested Lists', route: '/terraform/functions/flatten-only-unwraps-nested-lists-not-lists-inside-maps' },
+    { label: 'Mixing newbits in cidrsubnet() Can Overlap', route: '/terraform/functions/mixing-newbits-in-cidrsubnet-can-overlap-cidrsubnets-avoids-it' },
+  ],
+  state: [
+    { label: 'force-unlock: Verify the Lock Holder Is Actually Stale First', route: '/terraform/state/force-unlock-verify-the-lock-holder-is-actually-stale-first' },
+    { label: 'The State serial Number Detects a Stale state push', route: '/terraform/state/the-state-serial-number-is-what-detects-a-stale-state-push' },
+    { label: 'Workspaces Share the Same Backend — Prefer Directories for Prod', route: '/terraform/state/workspaces-share-the-same-backend-prefer-directories-for-prod' },
+  ],
+  'remote-backends': [
+    { label: 'S3 Backend No Longer Needs DynamoDB', route: '/terraform/remote-backends/s3-backend-no-longer-needs-dynamodb-use-lockfile-is-current' },
+    { label: 'cloud and backend Blocks Are Mutually Exclusive', route: '/terraform/remote-backends/cloud-block-and-backend-block-are-mutually-exclusive' },
+    { label: 'GCS Backend Supports a Customer-Managed KMS Key', route: '/terraform/remote-backends/gcs-backend-supports-a-customer-managed-kms-key' },
+  ],
+  workspaces: [
+    { label: 'workspace delete -force Orphans Resources', route: '/terraform/workspaces/workspace-delete-force-orphans-resources-it-does-not-destroy' },
+    { label: 'terraform.workspace Cannot Parameterize the backend Block', route: '/terraform/workspaces/terraform-workspace-cannot-parameterize-the-backend-block' },
+    { label: 'The default Workspace’s State Path Is Asymmetric', route: '/terraform/workspaces/the-default-workspace-key-path-is-asymmetric-workspace-key-prefix' },
+  ],
+  // NOTE: keyed 'tf-modules', NOT bare 'modules' — TypeScript's own
+  // /typescript/modules claimed the bare key first (Go uses 'go-modules').
+  'tf-modules': [
+    { label: 'version Is a Registry-Only Argument, Not a General Pin', route: '/terraform/modules/version-is-a-registry-only-argument-not-a-general-pin' },
+    { label: 'Remote Modules Are Cached — a Changed ref Needs init -upgrade', route: '/terraform/modules/remote-modules-are-cached-a-changed-ref-needs-init-upgrade' },
+    { label: 'The Double Slash Marks Where the Package Ends', route: '/terraform/modules/the-double-slash-marks-where-the-package-ends' },
+  ],
+  'module-patterns': [
+    { label: 'count on a Module Changes How Every Output Is Accessed', route: '/terraform/module-patterns/count-on-a-module-changes-how-every-output-is-accessed' },
+    { label: 'terraform test Defaults to apply, Not plan', route: '/terraform/module-patterns/terraform-test-defaults-to-apply-not-plan' },
+    { label: 'Module depends_on Makes the Whole Module Conservative', route: '/terraform/module-patterns/module-depends-on-makes-the-whole-module-conservative' },
+  ],
+  provisioners: [
+    { label: 'self Is Scoped to the Resource the Provisioner Is Attached To', route: '/terraform/provisioners/self-is-scoped-to-the-resource-the-provisioner-is-attached-to' },
+    { label: 'Create-Time Failure Taints — Destroy-Time Failure Can Stick', route: '/terraform/provisioners/create-time-failure-taints-destroy-time-failure-can-stick' },
+    { label: 'on_failure = continue Only Silences It', route: '/terraform/provisioners/on-failure-continue-only-silences-it-never-retries-or-fixes' },
+  ],
+  import: [
+    { label: 'for_each Import Blocks Handle Bulk Import', route: '/terraform/import/for-each-import-blocks-handle-bulk-import-not-one-at-a-time' },
+    { label: 'The Import ID Format Is Resource-Specific, Not Universal', route: '/terraform/import/the-import-id-format-is-resource-specific-not-universal' },
+    { label: 'Import Never Pulls in Dependents or Sensitive Values', route: '/terraform/import/import-never-pulls-in-dependents-or-sensitive-values' },
+  ],
+  // NOTE: 'cicd' confirmed collision-free (quoted and unquoted) across the whole file.
+  cicd: [
+    { label: 'A Saved Plan File Needs the Same Version and Can Go Stale', route: '/terraform/cicd/a-saved-plan-file-needs-the-same-version-and-can-go-stale' },
+    { label: 'The OIDC sub Claim Differs Between push and pull_request', route: '/terraform/cicd/the-oidc-sub-claim-differs-between-push-and-pull-request' },
+    { label: 'A Saved Plan File Is Plaintext and Must Be Treated as a Secret', route: '/terraform/cicd/a-saved-plan-file-is-plaintext-and-must-be-treated-as-a-secret' },
+  ],
+  // Angular keeps the bare 'testing' key (claimed it first, see the
+  // unquoted "testing:" entry above). Terraform's own /terraform/testing
+  // claims subtopics too — hub-prefixed to 'tf-testing' below.
+  'tf-testing': [
+    { label: 'run.NAME.output Lets Later Blocks Reference Earlier Run Blocks', route: '/terraform/testing/run-name-output-lets-later-blocks-reference-earlier-run-blocks' },
+    { label: 'mock_resource Values Apply to Every Instance, Not Per-Instance', route: '/terraform/testing/mock-resource-values-apply-to-every-instance-not-per-instance' },
+    { label: 'Destroy Runs in Reverse Order — a Referenced Run’s State Is Already Gone', route: '/terraform/testing/destroy-runs-in-reverse-order-a-referenced-runs-state-is-already-gone' },
+  ],
+  // SQL keeps the bare 'security' key (claimed it first, see the
+  // quoted 'security': entry above). Terraform's own /terraform/security
+  // claims subtopics too — hub-prefixed to 'tf-security' below.
+  'tf-security': [
+    { label: 'Soft-Mandatory Overrides Need a Specific TFC Permission, Not Just Plan Access', route: '/terraform/security/soft-mandatory-overrides-need-a-specific-tfc-permission-not-just-plan-access' },
+    { label: 'prevent_destroy Blocks terraform destroy Too — But Not a Removed Block', route: '/terraform/security/prevent-destroy-blocks-terraform-destroy-too-but-not-a-removed-block' },
+    { label: 'OPA/conftest Enforcement Is a CI-Pipeline Responsibility, Not Native', route: '/terraform/security/opa-conftest-enforcement-is-a-ci-pipeline-responsibility-not-native' },
+  ],
+  // NOTE: 'drift' confirmed collision-free (quoted and unquoted) across the whole file.
+  drift: [
+    { label: '-refresh=false and -refresh-only Do Near-Opposite Things', route: '/terraform/drift/refresh-false-and-refresh-only-do-near-opposite-things' },
+    { label: 'ignore_changes Does Not Refresh a Stale Value — It Just Stops Future Diffs', route: '/terraform/drift/ignore-changes-does-not-refresh-a-stale-value-it-just-stops-future-diffs' },
+    { label: 'TFC Health Assessments Are Read-Only — They Never Write to State', route: '/terraform/drift/tfc-health-assessments-are-read-only-they-never-write-to-state' },
+  ],
+  // NOTE: 'refactoring' confirmed collision-free (quoted and unquoted) across the whole file.
+  refactoring: [
+    { label: 'moved Blocks Require the Same Resource Type on Both Sides', route: '/terraform/refactoring/moved-blocks-require-the-same-resource-type-on-both-sides' },
+    { label: 'removed Defaults to Actually Destroying the Resource', route: '/terraform/refactoring/removed-defaults-to-actually-destroying-the-resource' },
+    { label: '-target Pulls In Dependencies Automatically, But Never Dependents', route: '/terraform/refactoring/target-pulls-in-dependencies-automatically-but-never-dependents' },
+  ],
+  // NOTE: 'opentofu' confirmed collision-free (quoted and unquoted) across the whole file.
+  opentofu: [
+    { label: 'Key Rotation Needs the fallback Method, Not Just a Swapped Key', route: '/terraform/opentofu/key-rotation-needs-the-fallback-method-not-just-a-swapped-key' },
+    { label: 'BSL Has a Four-Year Change Date That Converts to MPL Automatically', route: '/terraform/opentofu/bsl-has-a-four-year-change-date-that-converts-to-mpl-automatically' },
+    { label: 'remote_state Data Source Needs Its Own Encryption Config Too', route: '/terraform/opentofu/remote-state-data-source-needs-its-own-encryption-config-too' },
+  ],
+  // JavaScript keeps the bare 'fundamentals' key (claimed it first). Service
+  // Mesh's own /service-mesh/fundamentals claims subtopics too — hub-prefixed
+  // to 'mesh-fundamentals' below.
+  'mesh-fundamentals': [
+    { label: 'Ambient Mode: ztunnel Is L4-Only — L7 Routing Needs a Waypoint', route: '/service-mesh/fundamentals/ambient-mode-ztunnel-is-l4-only-l7-routing-needs-a-waypoint' },
+    { label: 'xDS Updates Need Make-Before-Break Ordering, or Traffic Black-Holes', route: '/service-mesh/fundamentals/xds-updates-need-make-before-break-ordering-or-traffic-black-holes' },
+    { label: 'A VirtualService Subset Missing From DestinationRule Returns 503', route: '/service-mesh/fundamentals/a-virtualservice-subset-missing-from-destinationrule-returns-503' },
+  ],
+  // NOTE: 'istio-architecture' confirmed collision-free (quoted and unquoted) across the whole file.
+  'istio-architecture': [
+    { label: 'Cert Rotation Overlaps Old and New Certs to Avoid Handshake Failures', route: '/service-mesh/istio-architecture/cert-rotation-overlaps-old-and-new-certs-to-avoid-handshake-failures' },
+    { label: 'Sidecar CRD Scoping Egress Does Not Block Unmatched Inbound Traffic', route: '/service-mesh/istio-architecture/sidecar-crd-scoping-egress-does-not-block-unmatched-inbound-traffic' },
+    { label: 'Live Traffic Surviving an Istiod Outage Has a Cert TTL Time Limit', route: '/service-mesh/istio-architecture/live-traffic-surviving-an-istiod-outage-has-a-cert-ttl-time-limit' },
+  ],
+  // NOTE: 'istio-install' confirmed collision-free (quoted and unquoted) across the whole file.
+  'istio-install': [
+    { label: 'Both Injection Labels Present: istio-injection Silently Wins', route: '/service-mesh/istio-install/both-injection-labels-present-istio-injection-silently-wins' },
+    { label: 'uninstall --purge Does Not Reliably Remove Every Webhook', route: '/service-mesh/istio-install/uninstall-purge-does-not-reliably-remove-every-webhook' },
+    { label: 'Revision Uninstall Checks Active Proxies, Not Namespace Labels', route: '/service-mesh/istio-install/revision-uninstall-checks-active-proxies-not-namespace-labels' },
+  ],
+  // NOTE: 'envoy' confirmed collision-free (quoted and unquoted) across the whole file.
+  envoy: [
+    { label: 'WasmPlugin phase Determines Order Relative to Built-in Filters', route: '/service-mesh/envoy/wasmplugin-phase-determines-order-relative-to-built-in-filters' },
+    { label: 'INSERT_AFTER Targeting router Means the Filter Never Runs', route: '/service-mesh/envoy/insert-after-targeting-router-means-the-filter-never-runs' },
+    { label: 'Delta xDS Isolates a NACK’d Resource — SotW Blocks the Whole Type', route: '/service-mesh/envoy/delta-xds-isolates-a-nackd-resource-sotw-blocks-the-whole-type' },
+  ],
+  // NOTE: 'linkerd' confirmed collision-free (quoted and unquoted) across the whole file.
+  linkerd: [
+    { label: 'TrafficSplit Cannot Be Self-Referential — apex Needs Its Own Name', route: '/service-mesh/linkerd/trafficsplit-cannot-be-self-referential-apex-needs-its-own-name' },
+    { label: 'Circuit Breaking Exists — It Needs an Explicit failure-accrual Annotation', route: '/service-mesh/linkerd/circuit-breaking-exists-but-needs-an-explicit-failure-accrual-annotation' },
+    { label: 'external-issuer Alone Leaves the Self-Generated Trust Anchor in Place', route: '/service-mesh/linkerd/external-issuer-alone-leaves-the-self-generated-trust-anchor-in-place' },
+  ],
+  // NOTE: 'traffic-management' confirmed collision-free (quoted and unquoted) across the whole file.
+  'traffic-management': [
+    { label: 'Fault Injection and Retries Cannot Coexist on the Same Route', route: '/service-mesh/traffic-management/fault-injection-and-retries-cannot-coexist-on-the-same-route' },
+    { label: 'retryOn: 5xx Can Amplify Load Into an Already-Overloaded Upstream', route: '/service-mesh/traffic-management/retryon-5xx-can-amplify-load-into-an-already-overloaded-upstream' },
+    { label: 'Mirroring Is Fire-and-Forget — the Primary Response Never Waits', route: '/service-mesh/traffic-management/mirroring-is-fire-and-forget-the-primary-response-never-waits' },
+  ],
+  'resilience': [
+    { label: 'consecutiveLocalOriginFailures Needs splitExternalLocalOriginErrors to Work', route: '/service-mesh/resilience/consecutivelocaloriginfailures-needs-splitexternallocaloriginerrors-to-work' },
+    { label: 'minHealthPercent Defaults to 0% (Disabled), Not 50%', route: '/service-mesh/resilience/minhealthpercent-defaults-to-0-percent-disabled-not-50-percent' },
+    { label: 'A Service With No DestinationRule Still Has a 1024-Connection Cap', route: '/service-mesh/resilience/a-service-with-no-destinationrule-still-has-a-1024-connection-cap' },
+  ],
+  // NOTE: 'load-balancing' bare key already taken by the AWS hub's own load-balancing topic
+  'mesh-load-balancing': [
+    { label: 'warmupDurationSecs Starts New Pods at 10% Traffic, Not 0%', route: '/service-mesh/load-balancing/warmupdurationsecs-starts-new-pods-at-10-percent-not-0-percent' },
+    { label: 'consistentHash Defaults to Ring Hash With a 1024-Node Ring', route: '/service-mesh/load-balancing/consistenthash-defaults-to-ring-hash-with-a-1024-node-ring' },
+    { label: 'Active Health Checks Have No Native DestinationRule Field', route: '/service-mesh/load-balancing/active-health-checks-have-no-native-destinationrule-field' },
+  ],
+  'mtls': [
+    { label: 'Probe Traffic Is Rewritten to Port 15020, Not Simply Exempted', route: '/service-mesh/mtls/probe-traffic-is-rewritten-to-port-15020-not-simply-exempted' },
+    { label: 'Mesh-Wide PeerAuthentication Must Be Named default in the Root Namespace', route: '/service-mesh/mtls/mesh-wide-peerauthentication-must-be-named-default-in-the-root-ns' },
+    { label: 'The CA Secret Is Named cacerts, Not istio-ca-secret', route: '/service-mesh/mtls/the-ca-secret-is-named-cacerts-not-istio-ca-secret' },
+  ],
+  'authorization': [
+    { label: 'Empty Rules Array vs. One Empty Rule Are Opposite Behaviors', route: '/service-mesh/authorization/empty-rules-array-vs-one-empty-rule-are-opposite-behaviors' },
+    { label: 'AuthorizationPolicy Has No Naming Requirement, Unlike PeerAuthentication', route: '/service-mesh/authorization/authorizationpolicy-has-no-naming-requirement-unlike-peerauthentication' },
+    { label: 'CUSTOM Is a Fourth Action, Evaluated Before DENY and ALLOW', route: '/service-mesh/authorization/custom-is-a-fourth-action-evaluated-before-deny-and-allow' },
+  ],
+  'metrics': [
+    { label: 'Grafana Dashboard IDs Were Mismatched With Their Actual Names', route: '/service-mesh/metrics/grafana-dashboard-ids-were-mismatched-with-their-actual-names' },
+    { label: 'Telemetry API Scope Override Is Full Field Replacement, Not a Merge', route: '/service-mesh/metrics/telemetry-api-scope-override-is-full-field-replacement-not-merge' },
+    { label: 'Histogram Bucket Boundaries Are Fixed and Cannot Be Customized', route: '/service-mesh/metrics/histogram-bucket-boundaries-are-fixed-and-cannot-be-customized' },
+  ],
+  'tracing': [
+    { label: 'Telemetry API Sampling Wins Over meshConfig When Both Are Set', route: '/service-mesh/tracing/telemetry-api-sampling-wins-over-meshconfig-when-both-are-set' },
+    { label: 'OpenTelemetry Provider Needs Istio 1.22+, Not 1.16+', route: '/service-mesh/tracing/opentelemetry-provider-needs-istio-1-22-not-1-16' },
+    { label: 'Exemplars Are Defined by OpenMetrics, Not an IETF RFC', route: '/service-mesh/tracing/exemplars-are-defined-by-openmetrics-not-an-ietf-rfc' },
+  ],
+  'kiali': [
+    { label: 'Envoy Config Viewer Queries Istiod, Not Prometheus', route: '/service-mesh/kiali/envoy-config-viewer-queries-istiod-not-prometheus' },
+    { label: 'KIA0201 Is Duplicate DestinationRules, Not a Missing Subset', route: '/service-mesh/kiali/kia0201-is-duplicate-destinationrules-not-missing-subset' },
+    { label: 'Animation Dot Speed Is Response Time, Density Is RPS', route: '/service-mesh/kiali/animation-dot-speed-is-response-time-density-is-rps' },
+  ],
+  'gateway-api': [
+    { label: 'Specificity Beats Timestamp in HTTPRoute Conflict Resolution', route: '/service-mesh/gateway-api/specificity-beats-timestamp-in-httproute-conflict-resolution' },
+    { label: 'ReferenceGrant Graduated to v1 — the Main Page Used the Older v1beta1', route: '/service-mesh/gateway-api/referencegrant-graduated-to-v1-main-page-uses-the-older-v1beta1' },
+    { label: 'Check the Gateway’s Own Programmed Condition, Not Just the Route', route: '/service-mesh/gateway-api/check-the-gateways-own-programmed-condition-not-just-the-route' },
+  ],
+  'ingress-gateway': [
+    { label: 'TLS Secret Must Match the Gateway’s Own Namespace, Not Always istio-system', route: '/service-mesh/ingress-gateway/tls-secret-must-match-the-gateways-own-namespace-not-always-istio-system' },
+    { label: 'SNI Filter Chain Matching Is What Actually Selects the Right Cert', route: '/service-mesh/ingress-gateway/sni-filter-chain-matching-is-what-actually-selects-the-right-cert' },
+    { label: 'REGISTRY_ONLY Blocks Traffic via a BlackHoleCluster 502, Not by Removing Routes', route: '/service-mesh/ingress-gateway/registry-only-blocks-traffic-via-a-blackholecluster-502-not-by-removing-routes' },
+  ],
+  // NOTE: 'performance' bare key already taken by the Node.js hub's own performance topic
+  'mesh-performance': [
+    { label: 'useRemoteAddress Is About Client IP Trust, Not HTTP/2 Performance', route: '/service-mesh/performance/useremoteaddress-is-about-client-ip-trust-not-http2-performance' },
+    { label: 'Envoy Has No JIT Warmup — Only Optional WASM Filters Do', route: '/service-mesh/performance/envoy-has-no-jit-warmup-only-optional-wasm-filters-do' },
+    { label: 'Memory Overhead Scales Per Service, Not Per 1000 Services', route: '/service-mesh/performance/memory-overhead-scales-per-service-not-per-1000-services' },
+  ],
+  'ambient-mesh': [
+    { label: 'Ambient Mesh Reached GA at Istio 1.24, Not 1.22', route: '/service-mesh/ambient-mesh/ambient-mesh-reached-ga-at-istio-1-24-not-1-22' },
+    { label: 'Default Redirection Is iptables+GENEVE, Not eBPF', route: '/service-mesh/ambient-mesh/default-redirection-is-iptables-geneve-not-ebpf' },
+    { label: 'HBONE Identity Comes From the mTLS Handshake, Not HTTP Headers', route: '/service-mesh/ambient-mesh/hbone-identity-comes-from-the-mtls-handshake-not-http-headers' },
+  ],
+  'multi-cluster': [
+    { label: 'Multi-Primary Discovery Is Independent API Watching, Not a Peer Protocol', route: '/service-mesh/multi-cluster/multi-primary-discovery-is-independent-api-watching-not-a-peer-protocol' },
+    { label: 'remotePilotAddress Belongs to Primary-Remote, Not Multi-Primary', route: '/service-mesh/multi-cluster/remotepilotaddress-belongs-to-primary-remote-not-multi-primary' },
+    { label: 'Kiali Multi-Cluster Support Predates 1.73 by Years', route: '/service-mesh/multi-cluster/kiali-multi-cluster-support-predates-1-73-by-years' },
+  ],
+  'consul': [
+    { label: 'Consul Certs Are Genuinely SPIFFE-Format, Not a Separate Identity Model', route: '/service-mesh/consul/consul-certs-are-genuinely-spiffe-format-not-a-separate-identity-model' },
+    { label: 'Leaf Cert Rotation Is a 60–90% Window, Not a Fixed 60%', route: '/service-mesh/consul/leaf-cert-rotation-is-a-60-90-percent-window-not-a-fixed-60-percent' },
+    { label: 'Peered Service DNS Names Include the Peer’s Own Name as a Segment', route: '/service-mesh/consul/peered-service-dns-names-include-the-peers-own-name-as-a-segment' },
+  ],
+  'framework': [
+    { label: 'SSD Random Read Is 150 Microseconds, Not 100', route: '/system-design/framework/ssd-random-read-is-150-microseconds-not-100' },
+    { label: 'Size for Peak QPS, Not Average QPS', route: '/system-design/framework/size-for-peak-qps-not-average-qps' },
+    { label: 'Little’s Law Turns QPS Into Concurrent Connections Needed', route: '/system-design/framework/littles-law-turns-qps-into-concurrent-connections-needed' },
+  ],
+  'capacity-estimation': [
+    { label: 'SSD Is ~65x Faster Than HDD Seek, Not 1,000x', route: '/system-design/capacity-estimation/ssd-is-65x-faster-than-hdd-seek-not-1000x' },
+    { label: 'Redis GET Latency Is Network RTT, Not an Extra 1ms', route: '/system-design/capacity-estimation/redis-get-latency-is-network-rtt-not-an-extra-1ms' },
+    { label: 'Decimal Vendor GB vs. Binary OS GiB Diverge by ~7%', route: '/system-design/capacity-estimation/decimal-vendor-gb-vs-binary-os-gib-diverge-by-7-percent' },
+  ],
+  'cap-theorem': [
+    { label: 'The Quorum Quiz Had a Second Technically-Correct Answer', route: '/system-design/cap-theorem/the-quorum-quiz-had-a-second-technically-correct-answer' },
+    { label: 'Sequential Consistency Orders ALL Operations, Not Just Writes', route: '/system-design/cap-theorem/sequential-consistency-orders-all-ops-not-just-writes' },
+    { label: 'Brewer Conjectured CAP in 2000 — Gilbert & Lynch Proved It in 2002', route: '/system-design/cap-theorem/brewer-conjectured-cap-in-2000-gilbert-lynch-proved-it-in-2002' },
+  ],
+  // NOTE: bare 'networking' key already taken by the Linux hub's own networking topic
+  'sysdesign-networking': [
+    { label: 'EDNS0 Raises the DNS UDP Limit Past the Legacy 512 Bytes', route: '/system-design/networking/ednso-raises-dns-udp-limit-past-the-legacy-512-bytes' },
+    { label: 'TCP Teardown: TIME_WAIT Can Exhaust Ephemeral Ports', route: '/system-design/networking/tcp-teardown-time-wait-can-exhaust-ephemeral-ports' },
+    { label: 'Stale-While-Revalidate Exists to Stop Cache Stampedes', route: '/system-design/networking/stale-while-revalidate-exists-to-stop-cache-stampedes' },
+  ],
+  'scaling': [
+    { label: 'The Largest AWS Instance Figure Was Stale — u7in-32tb Is Current', route: '/system-design/scaling/the-largest-aws-instance-figure-was-stale-u7in-32tb-is-current' },
+    { label: 'Gustafson’s Law Is Amdahl’s Optimistic Counterpart', route: '/system-design/scaling/gustafsons-law-is-amdahls-optimistic-counterpart' },
+    { label: 'Firecracker MicroVMs Boot in ~125ms, Not Minutes', route: '/system-design/scaling/firecracker-microvms-boot-in-125ms-not-minutes' },
+  ],
+  // NOTE: bare 'load-balancing' key already taken by the AWS hub's own load-balancing topic
+  'sysdesign-load-balancing': [
+    { label: 'ALB’s Default Deregistration Delay Is 300 Seconds, Not 60', route: '/system-design/load-balancing/albs-default-deregistration-delay-is-300-seconds-not-60' },
+    { label: 'VRRP Failover Takes About 3 Seconds by Default, Not Under 2', route: '/system-design/load-balancing/vrrp-failover-takes-about-3-seconds-by-default-not-under-2' },
+    { label: 'Why Power of Two Choices Beats Picking One Random Server', route: '/system-design/load-balancing/why-power-of-two-choices-beats-picking-one-random-server' },
+  ],
+  // NOTE: bare 'caching' key already taken by the Web Performance hub's own topic
+  'sysdesign-caching': [
+    { label: 'Redis Defaults to noeviction, Not LRU', route: '/system-design/caching/redis-defaults-to-noeviction-not-lru' },
+    { label: 'The Multi-Level Cache Example Never Invalidates L1', route: '/system-design/caching/the-multi-level-cache-example-never-invalidates-l1' },
+    { label: 'The PER Code Is Missing XFetch’s Recompute-Cost Signal', route: '/system-design/caching/the-per-code-is-missing-xfetchs-recompute-cost-signal' },
+  ],
+  'cdn': [
+    { label: 'Cloudflare’s 100+ Tbps Figure Was Stale, Now 500+', route: '/system-design/cdn/cloudflares-100-tbps-figure-is-stale-network-passed-500' },
+    { label: 'Anycast Failover Takes BGP Convergence Time, Not Instant', route: '/system-design/cdn/anycast-failover-takes-bgp-convergence-time-not-instant' },
+    { label: 'Raw Vary: Cookie Fragments the Cache — Normalize It Instead', route: '/system-design/cdn/raw-vary-cookie-fragments-the-cache-normalize-it-instead' },
+  ],
+  'sharding': [
+    { label: 'The 64 TB / 100k TPS Figures Are RDS Limits, Not PostgreSQL Itself', route: '/system-design/sharding/the-64tb-100k-tps-figures-are-rds-limits-not-postgresql-itself' },
+    { label: 'Naive Double-Write Resharding Is Risky — Vitess Uses CDC Instead', route: '/system-design/sharding/naive-double-write-resharding-is-risky-vitess-uses-cdc-instead' },
+    { label: 'Why Basic Consistent Hashing Still Needs Virtual Nodes', route: '/system-design/sharding/why-basic-consistent-hashing-still-needs-virtual-nodes' },
+  ],
+  'sql-vs-nosql': [
+    { label: 'Isolation as Taught Describes Serializable, Not the Default', route: '/system-design/sql-vs-nosql/isolation-as-taught-describes-serializable-not-the-default' },
+    { label: 'MongoDB Sharded-Cluster Transactions Arrived in 4.2, Not 4.0', route: '/system-design/sql-vs-nosql/mongodb-sharded-cluster-transactions-arrived-in-42-not-40' },
+    { label: 'DynamoDB Scales Automatically, But One Partition Still Has a Ceiling', route: '/system-design/sql-vs-nosql/dynamodb-scales-automatically-but-one-partition-still-has-a-ceiling' },
+  ],
+  'replication': [
+    { label: 'PostgreSQL’s synchronous_standby_names Needs a Quoted Name', route: '/system-design/replication/postgresqls-synchronous-standby-names-needs-a-quoted-name' },
+    { label: 'Quorum (W+R greater than N) Guarantees Overlap, Not True Linearizability', route: '/system-design/replication/quorum-w-plus-r-over-n-guarantees-overlap-not-linearizability' },
+    { label: 'DynamoDB Isn’t Tunable Like Cassandra — It’s a Binary Choice', route: '/system-design/replication/dynamodb-isnt-tunable-like-cassandra-its-a-binary-choice' },
+  ],
+  // NOTE: bare 'indexes' key already taken by the SQL hub's own indexes topic
+  'sysdesign-indexes': [
+    { label: 'MySQL InnoDB Auto-Creates the FK Index — It Doesn’t Just Warn', route: '/system-design/indexes/mysql-innodb-auto-creates-the-fk-index-it-doesnt-just-warn' },
+    { label: 'REINDEX CONCURRENTLY Avoids Write Locks, But Isn’t Fully Lock-Free', route: '/system-design/indexes/reindex-concurrently-avoids-write-locks-but-isnt-fully-lock-free' },
+    { label: 'The Full Rule Is Equality-Sort-Range, Not Just Equality-Then-Range', route: '/system-design/indexes/the-full-rule-is-equality-sort-range-not-just-equality-then-range' },
+  ],
+  'distributed-transactions': [
+    { label: 'The Idempotency Key Example Used Date.now(), Defeating Retries', route: '/system-design/distributed-transactions/the-idempotency-key-example-used-date-now-defeating-retries' },
+    { label: 'Kafka Offset-Committing Is Specific to Consume-Transform-Produce', route: '/system-design/distributed-transactions/kafka-offset-committing-is-specific-to-consume-transform-produce' },
+    { label: 'TCC’s Timeout Recovery Still Needs a Transaction Manager', route: '/system-design/distributed-transactions/tccs-timeout-recovery-still-needs-a-transaction-manager' },
+  ],
+  'high-availability': [
+    { label: 'RDS Multi-AZ DB Clusters Fail Over in Under 35 Seconds', route: '/system-design/high-availability/rds-multi-az-db-clusters-fail-over-in-under-35-seconds-not-just-60-120' },
+    { label: 'Request-Based and Time-Based Error Budgets Aren’t the Same Thing', route: '/system-design/high-availability/request-based-and-time-based-error-budgets-arent-the-same-thing' },
+    { label: 'Active-Active’s Instant Failover Still Waits on Health-Check Detection', route: '/system-design/high-availability/active-actives-instant-failover-still-waits-on-health-check-detection' },
+  ],
+  'fault-tolerance': [
+    { label: 'The Rate Limiter Was Configured for 600/min, Not 10/min', route: '/system-design/fault-tolerance/rate-limiter-unit-bug-per-second-not-per-minute' },
+    { label: 'The Fraud-Check Timeout Breaks the Page’s Own 2-3x Rule', route: '/system-design/fault-tolerance/fraud-timeout-breaks-the-pages-own-2-3x-rule' },
+    { label: 'PUT Is Idempotent by Definition — It Doesn’t Need a Key', route: '/system-design/fault-tolerance/put-is-idempotent-by-definition-no-key-needed' },
+  ],
+  'distributed-tracing': [
+    { label: 'The Tail-Based Sampling Example Was Actually Head-Based', route: '/system-design/distributed-tracing/tail-sampling-example-was-actually-head-based' },
+    { label: 'Jaeger No Longer Needs the OTel Collector for Basic Setups', route: '/system-design/distributed-tracing/jaeger-no-longer-needs-the-otel-collector' },
+    { label: 'Tempo’s No-Indexing Claim Needs a TraceQL Caveat', route: '/system-design/distributed-tracing/tempos-no-indexing-claim-needs-a-traceql-caveat' },
+  ],
+  'disaster-recovery': [
+    { label: 'RDS PITR’s 5-Minute Window Claim Confuses Granularity With Recency', route: '/system-design/disaster-recovery/pitr-5-min-window-confuses-granularity-with-recency-lag' },
+    { label: 'RDS Multi-AZ DB Clusters Apply Here Too', route: '/system-design/disaster-recovery/rds-multi-az-db-clusters-apply-here-too' },
+    { label: 'Why Aurora Global Beats a Plain Cross-Region Replica', route: '/system-design/disaster-recovery/why-aurora-global-beats-a-plain-cross-region-replica' },
+  ],
+  'url-shortener': [
+    { label: 'The Collision-Probability Formula Is Near-Certain, Not Negligible', route: '/system-design/url-shortener/collision-probability-is-near-certain-not-negligible' },
+    { label: 'The Quiz Answer Was the Mistakes Block’s Own Anti-Pattern', route: '/system-design/url-shortener/quiz-answer-was-the-mistakes-blocks-own-anti-pattern' },
+    { label: 'The Read-QPS Comment Didn’t Match Its Own Formula', route: '/system-design/url-shortener/read-qps-comment-didnt-match-its-own-formula' },
+  ],
+  'social-feed': [
+    { label: 'The Redis ZSET Memory Estimate Ignored Skiplist Overhead', route: '/system-design/social-feed/redis-zset-memory-estimate-ignored-skiplist-overhead' },
+    { label: 'Active-User Count Mismatch: 500M vs. 100M DAU', route: '/system-design/social-feed/active-user-count-mismatch-500m-vs-100m-dau' },
+    { label: 'Feed Read Code Still Joined What Denormalization Was For', route: '/system-design/social-feed/feed-read-code-still-joined-what-denorm-was-for' },
+  ],
+  'chat-application': [
+    { label: 'WebSocket Map Silently Drops First Device on Multi-Login', route: '/system-design/chat-application/websocket-map-silently-drops-first-device-on-multi-login' },
+    { label: '‘Exactly-Once Delivery’ Contradicts the Page’s Own At-Least-Once Theory', route: '/system-design/chat-application/exactly-once-contradicts-at-least-once-theory' },
+    { label: 'E2E Encryption Hint Skipped the Double Ratchet', route: '/system-design/chat-application/e2e-encryption-hint-skipped-the-double-ratchet' },
+  ],
+  'search-engine': [
+    { label: '30 Shards Doesn’t Divide to 33M Docs Per Shard', route: '/system-design/search-engine/shard-doc-count-mismatch' },
+    { label: 'Elasticsearch’s Default Shard Count Has Been 1, Not 5, Since 7.0', route: '/system-design/search-engine/es-default-shard-count-stale' },
+    { label: 'The Split API Resizes Shards Without a Full Reindex', route: '/system-design/search-engine/split-api-faster-than-reindex' },
+  ],
+  'payment-system': [
+    { label: 'Ledger Worked Example’s Fee Split Contradicted the Code Sample', route: '/system-design/payment-system/ledger-example-fee-mismatch' },
+    { label: 'Sorting IDs Doesn’t Guarantee Lock Order Without ORDER BY', route: '/system-design/payment-system/for-update-needs-order-by' },
+    { label: 'The Transfer Solution Used the Race Condition Its Own Quiz Warns About', route: '/system-design/payment-system/transfer-idempotency-check-then-act' },
+  ],
+  'video-streaming': [
+    { label: 'Stale CDN Capacity Figure, Already Corrected on a Sibling Page', route: '/system-design/video-streaming/stale-cdn-capacity-figure' },
+    { label: 'A “300 PB/Month” Figure That Was Actually Per Day', route: '/system-design/video-streaming/pb-per-month-was-actually-per-day' },
+    { label: 'Compute Formula Used 4 Resolutions, Ladder Lists 6', route: '/system-design/video-streaming/resolution-count-mismatch' },
+  ],
+  'ai-ml-system-design': [
+    { label: 'RAG Pipeline Used the OpenAI SDK With a Claude Model Name', route: '/system-design/ai-ml-system-design/openai-sdk-with-claude-model' },
+    { label: 'Challenge Hint Said “LLM 2-4s”, Solution’s Own P50 Was 1.5s', route: '/system-design/ai-ml-system-design/latency-hint-vs-actual-p50' },
+    { label: 'Naive Serving: “1 Request/Sec” vs “15 Tokens/Sec” Don’t Reconcile', route: '/system-design/ai-ml-system-design/naive-serving-units-mismatch' },
+  ],
+  'monolith-vs-modular': [
+    { label: 'Team-Size Thresholds Disagreed by 5-10 Engineers', route: '/arch-patterns/monolith-vs-modular/team-size-threshold-contradiction' },
+    { label: 'SharedKernel’s Own ProductId Type Was Never Actually Used', route: '/arch-patterns/monolith-vs-modular/sharedkernel-productid-never-used' },
+    { label: 'The Modular Monolith’s Unstated Tradeoff: One Process, One Failure Domain', route: '/arch-patterns/monolith-vs-modular/shared-process-shared-failure-domain' },
+  ],
+  'layered-architecture': [
+    { label: 'Three Sections Said DIP, One Section Said N-Tier', route: '/arch-patterns/layered-architecture/dip-vs-ntier-contradiction' },
+    { label: 'The Solution’s PlaceOrderHandler Never Declared Its Own repo Field', route: '/arch-patterns/layered-architecture/handler-repo-field-never-declared' },
+    { label: 'Why “Read-Only” Is the Safe Case for Skipping a Layer', route: '/arch-patterns/layered-architecture/why-reads-are-the-safe-skip-case' },
+  ],
+  // NOTE: hub-prefixed even though no CURRENT collision exists in this map --
+  // the Design Patterns hub has its own /design-patterns/clean-architecture
+  // topic using the identical bare slug 'clean-architecture'; DpNavComponent
+  // doesn't call subtopicsOf() yet (no Phase 10 rollout there), but a bare
+  // key here would leak these Architecture-Patterns subtopics into that
+  // hub's own clean-architecture page the moment it gets its own accordion.
+  'arch-clean-architecture': [
+    { label: 'The mustKnow Ring Order Was Labeled Backwards', route: '/arch-patterns/clean-architecture/mustknow-ring-order-mislabeled' },
+    { label: 'The Controller Skipped Its Own Presenter', route: '/arch-patterns/clean-architecture/controller-skipped-the-presenter' },
+    { label: 'The OutputPort Pattern: One Use Case, Multiple Presenters', route: '/arch-patterns/clean-architecture/one-usecase-multiple-presenters' },
+  ],
+  'hexagonal-architecture': [
+    { label: 'The Challenge Referenced Two Types It Never Defined', route: '/arch-patterns/hexagonal-architecture/challenge-referenced-undefined-types' },
+    { label: 'The Hexagon-Shape Explanation Was Half the Story', route: '/arch-patterns/hexagonal-architecture/hexagon-shape-explanation-incomplete' },
+    { label: 'The Solution Named a Real Adapter It Never Actually Used', route: '/arch-patterns/hexagonal-architecture/challenge-solution-missing-real-adapter' },
+  ],
+  'vertical-slice': [
+    { label: 'MediatR Went Commercial in July 2025', route: '/arch-patterns/vertical-slice/mediatr-went-commercial-2025' },
+    { label: 'Source-Generator Mediators: A Different Technical Tradeoff', route: '/arch-patterns/vertical-slice/source-generator-mediator-alternatives' },
+    { label: 'The Rule of Three for Cross-Slice Duplication', route: '/arch-patterns/vertical-slice/rule-of-three-for-slice-duplication' },
+  ],
+  // 'service-oriented' confirmed collision-free via app.routes.ts grep before adding
+  'service-oriented': [
+    { label: 'Smart Endpoints, Dumb Pipes Was Reversed', route: '/arch-patterns/service-oriented/smart-endpoints-dumb-pipes-was-reversed' },
+    { label: 'The SOA Done Right Quote Has No Real Source', route: '/arch-patterns/service-oriented/soa-done-right-quote-unattributable' },
+    { label: 'The Tolerant Reader Pattern', route: '/arch-patterns/service-oriented/tolerant-reader-pattern-for-contracts' },
+  ],
+  // 'microservices-principles' confirmed collision-free via app.routes.ts grep before adding
+  'microservices-principles': [
+    { label: 'The Decentralised-Data Example Referenced an Undefined Type', route: '/arch-patterns/microservices-principles/decentralised-data-example-undefined-type' },
+    { label: 'Why Chatty Nanoservices Actually Get Slow', route: '/arch-patterns/microservices-principles/why-chatty-nanoservices-actually-get-slow' },
+    { label: 'Consumer-Driven Contract Testing in Practice', route: '/arch-patterns/microservices-principles/consumer-driven-contract-testing-in-practice' },
+  ],
+  // 'service-communication' confirmed collision-free via app.routes.ts grep before adding
+  'service-communication': [
+    { label: 'The gRPC Size Claim Was Overprecise', route: '/arch-patterns/service-communication/grpc-size-claim-was-overprecise' },
+    { label: 'How the Outbox Pattern Actually Works', route: '/arch-patterns/service-communication/how-the-outbox-pattern-actually-works' },
+    { label: 'Why Browsers Cannot Call gRPC Directly', route: '/arch-patterns/service-communication/why-browsers-cannot-call-grpc-directly' },
+  ],
+  // 'api-gateway-pattern' confirmed collision-free via app.routes.ts grep before adding
+  'api-gateway-pattern': [
+    { label: 'Promise.all Hid an Accidental Fail-Fast Choice', route: '/arch-patterns/api-gateway-pattern/promise-all-hid-an-accidental-fail-fast-choice' },
+    { label: 'The Boundary Burst Problem in Fixed-Window Rate Limiting', route: '/arch-patterns/api-gateway-pattern/fixed-window-rate-limiting-boundary-burst' },
+    { label: 'How mTLS Makes the Forwarded-Identity Header Trustworthy', route: '/arch-patterns/api-gateway-pattern/mtls-makes-forwarded-identity-trustworthy' },
+  ],
+  // 'service-discovery' confirmed collision-free via app.routes.ts grep before adding
+  'service-discovery': [
+    { label: 'The Registry\'s register() Was Not Idempotent', route: '/arch-patterns/service-discovery/registry-register-was-not-idempotent' },
+    { label: 'The Cache Never Actually Refreshed in the Background', route: '/arch-patterns/service-discovery/cache-never-refreshed-in-background' },
+    { label: 'Why Long-Lived Connections Can Outlive a Dead Pod', route: '/arch-patterns/service-discovery/long-lived-connections-outlive-dead-pods' },
+  ],
+  // 'circuit-breaker' confirmed collision-free via app.routes.ts grep before adding
+  'circuit-breaker': [
+    { label: 'halfOpenMaxCalls Was Never Actually Used', route: '/arch-patterns/circuit-breaker/half-open-max-calls-was-never-used' },
+    { label: 'The Polly Example Had the Strategy Order Backwards', route: '/arch-patterns/circuit-breaker/polly-strategy-order-was-backwards' },
+    { label: 'Making the Bulkhead Pattern Concrete', route: '/arch-patterns/circuit-breaker/bulkhead-pattern-made-concrete' },
+  ],
+  // 'sidecar-service-mesh' confirmed collision-free via app.routes.ts grep before adding
+  'sidecar-service-mesh': [
+    { label: 'Three Different Latency Figures, Reconciled', route: '/arch-patterns/sidecar-service-mesh/three-different-latency-figures-reconciled' },
+    { label: 'Ambient Mesh\'s GA Version Was Off By One Release', route: '/arch-patterns/sidecar-service-mesh/ambient-mesh-ga-version-was-off-by-one-release' },
+    { label: 'The Retry Latency Math Undercounted By One Try', route: '/arch-patterns/sidecar-service-mesh/retry-latency-math-undercounted-by-one-try' },
+  ],
+  // 'event-driven' confirmed collision-free via app.routes.ts grep before adding
+  'event-driven': [
+    { label: 'The Broker Stub Was Secretly Blocking', route: '/arch-patterns/event-driven/broker-stub-was-secretly-blocking' },
+    { label: 'The DB Save Was Commented Out', route: '/arch-patterns/event-driven/db-save-was-commented-out' },
+    { label: 'The Fat-Events Staleness Risk, Made Concrete', route: '/arch-patterns/event-driven/fat-events-staleness-risk-made-concrete' },
+  ],
+  // 'cqrs-event-sourcing' confirmed collision-free via app.routes.ts grep before adding
+  'cqrs-event-sourcing': [
+    { label: 'Snapshots Referenced Six Undefined Methods', route: '/arch-patterns/cqrs-event-sourcing/snapshots-referenced-six-undefined-methods' },
+    { label: 'Optimistic UI Updates, Made Concrete', route: '/arch-patterns/cqrs-event-sourcing/optimistic-ui-updates-made-concrete' },
+    { label: 'What an Upcaster Actually Looks Like', route: '/arch-patterns/cqrs-event-sourcing/what-an-upcaster-actually-looks-like' },
+  ],
+  // 'saga-choreography' confirmed collision-free via app.routes.ts grep before adding
+  'saga-choreography': [
+    { label: 'Choreography Never Handled Stock Failure', route: '/arch-patterns/saga-choreography/choreography-never-handled-stock-failure' },
+    { label: 'The Durable Saga Dropped Its Own Compensation', route: '/arch-patterns/saga-choreography/durable-saga-dropped-compensation-logic' },
+    { label: 'The Semantic Lock Counter-Measure, Made Concrete', route: '/arch-patterns/saga-choreography/semantic-lock-countermeasure-made-concrete' },
+  ],
+  // 'inbox-outbox' confirmed collision-free via app.routes.ts grep before adding
+  'inbox-outbox': [
+    { label: 'The Relay Lock Was Released Before Publishing', route: '/arch-patterns/inbox-outbox/relay-lock-was-released-before-publishing' },
+    { label: 'The Inbox Upsert Was Invalid SQL', route: '/arch-patterns/inbox-outbox/inbox-upsert-was-invalid-sql' },
+    { label: 'The Inbox Table Needs Cleanup Too', route: '/arch-patterns/inbox-outbox/inbox-table-needs-cleanup-too' },
+  ],
+  // 'ddd-core' confirmed collision-free via app.routes.ts grep before adding
+  'ddd-core': [
+    { label: 'TransferFunds Never Handled Partial Save Failure', route: '/arch-patterns/ddd-core/transfer-funds-never-handled-partial-save-failure' },
+    { label: 'What a DDD Factory Actually Looks Like', route: '/arch-patterns/ddd-core/what-a-ddd-factory-actually-looks-like' },
+    { label: 'What a DDD Repository Actually Looks Like', route: '/arch-patterns/ddd-core/what-a-ddd-repository-actually-looks-like' },
+  ],
+  'bounded-contexts': [
+    { label: 'Order-Catalog Is ACL, Not Customer/Supplier', route: '/arch-patterns/bounded-contexts/order-catalog-is-acl-not-customer-supplier' },
+    { label: 'Event Publisher: Mechanism vs. Relationship', route: '/arch-patterns/bounded-contexts/event-publisher-mechanism-vs-relationship' },
+    { label: 'Published Language Prevents ACL Sprawl', route: '/arch-patterns/bounded-contexts/published-language-prevents-acl-sprawl' },
+  ],
+  'aggregates-domain-events': [
+    { label: 'PlaceOrderHandler Referenced an Undeclared catalogService', route: '/arch-patterns/aggregates-domain-events/place-order-handler-referenced-undeclared-catalog-service' },
+    { label: 'The Save-Then-Publish CodeTab Has a Dual-Write Bug', route: '/arch-patterns/aggregates-domain-events/save-then-publish-has-a-dual-write-bug' },
+    { label: 'Fixing It With the Outbox Pattern', route: '/arch-patterns/aggregates-domain-events/fixing-it-with-the-outbox-pattern' },
+  ],
+  'anti-corruption-layer': [
+    { label: 'LegacyErpAdapter Referenced an Undeclared erpClient', route: '/arch-patterns/anti-corruption-layer/legacy-erp-adapter-referenced-undeclared-erp-client' },
+    { label: 'The Missing IPaymentGateway Interface', route: '/arch-patterns/anti-corruption-layer/the-missing-ipaymentgateway-interface' },
+    { label: 'Splitting Call and Translate Lets Stripe Leak Back In', route: '/arch-patterns/anti-corruption-layer/splitting-call-and-translate-lets-stripe-leak-back-in' },
+  ],
+  'strangler-fig': [
+    { label: 'Feature-Flag Comment Named the Wrong Migrated Feature', route: '/arch-patterns/strangler-fig/feature-flag-comment-named-the-wrong-migrated-feature' },
+    { label: 'Parallel Run Skipped Its Own Discrepancy Check', route: '/arch-patterns/strangler-fig/parallel-run-skipped-its-own-discrepancy-check' },
+    { label: 'The Split-Brain Risk Made Concrete', route: '/arch-patterns/strangler-fig/the-split-brain-risk-made-concrete' },
+  ],
+  'backend-for-frontend': [
+    { label: 'GraphQL BFF’s N+1 Problem, Made Concrete', route: '/arch-patterns/backend-for-frontend/graphql-bff-n-plus-one-problem-made-concrete' },
+    { label: 'Is hasBreakingNews Business Logic in the BFF?', route: '/arch-patterns/backend-for-frontend/is-has-breaking-news-business-logic-in-the-bff' },
+    { label: 'What the v2 Migration Actually Looks Like', route: '/arch-patterns/backend-for-frontend/what-the-v2-migration-actually-looks-like' },
+  ],
+  'singleton': [
+    { label: 'Sealed Does Not Fix What the Mistake Said It Fixes', route: '/design-patterns/singleton/sealed-does-not-fix-what-the-mistake-said-it-fixes' },
+    { label: 'Double-Checked Locking, Actually Written Out', route: '/design-patterns/singleton/double-checked-locking-actually-written-out' },
+    { label: 'What Monostate Actually Looks Like in Code', route: '/design-patterns/singleton/what-monostate-actually-looks-like-in-code' },
+  ],
+  'factory-method': [
+    { label: 'DI Approach Referenced an Undefined PushNotification Class', route: '/design-patterns/factory-method/di-approach-referenced-an-undefined-push-notification-class' },
+    { label: 'Backticks Are Not C#', route: '/design-patterns/factory-method/backticks-are-not-c-sharp' },
+    { label: 'Does the channel Switch Really Decouple Which Factory?', route: '/design-patterns/factory-method/does-the-channel-switch-really-decouple-which-factory' },
+  ],
+  'abstract-factory': [
+    { label: 'What Versioning the Factory Interface Actually Looks Like', route: '/design-patterns/abstract-factory/what-versioning-the-factory-interface-actually-looks-like' },
+    { label: 'A Registry-Based Factory Selector, Made Concrete', route: '/design-patterns/abstract-factory/a-registry-based-factory-selector-made-concrete' },
+    { label: 'Using Abstract Factory for Test Doubles', route: '/design-patterns/abstract-factory/using-abstract-factory-for-test-doubles' },
+  ],
+  'builder': [
+    { label: 'The Director Used Backticks Instead of C# Interpolation', route: '/design-patterns/builder/the-director-used-backticks-instead-of-c-sharp-interpolation' },
+    { label: 'The Wrong Example Was a Compile Error, Not a Design Smell', route: '/design-patterns/builder/the-wrong-example-was-a-compile-error-not-a-design-smell' },
+    { label: 'What a Test Data Builder Actually Looks Like', route: '/design-patterns/builder/what-a-test-data-builder-actually-looks-like' },
+  ],
+  'prototype': [
+    { label: 'Polymorphic Cloning via IPrototype', route: '/design-patterns/prototype/polymorphic-cloning-via-iprototype' },
+    { label: 'Why Immutable Sub-Objects Make Shallow Copy Safe', route: '/design-patterns/prototype/why-immutable-sub-objects-make-shallow-copy-safe' },
+    { label: 'Is with Prototype, or an Alternative to It?', route: '/design-patterns/prototype/is-with-prototype-or-an-alternative-to-it' },
+  ],
+  'object-pool': [
+    { label: 'The Count-Check Race Condition', route: '/design-patterns/object-pool/count-check-race-condition' },
+    { label: 'Implementing Idle-Object Eviction', route: '/design-patterns/object-pool/idle-object-eviction' },
+    { label: 'ConcurrentBag vs. ConcurrentQueue for Pool Storage', route: '/design-patterns/object-pool/concurrentbag-vs-concurrentqueue' },
+  ],
+  'adapter': [
+    { label: 'The ProcessPayment One-Liner Doesn’t Compile', route: '/design-patterns/adapter/processpayment-void-compile-error' },
+    { label: 'The Missing LogLevel Mappings', route: '/design-patterns/adapter/missing-loglevel-mappings' },
+    { label: 'IObservable vs. IQueryable: Which One Really Needs an Adapter', route: '/design-patterns/adapter/iobservable-vs-iqueryable-real-adapter-need' },
+  ],
+  'bridge': [
+    { label: 'Does ILogger Really Fit the Bridge Shape?', route: '/design-patterns/bridge/does-ilogger-really-fit-the-bridge-shape' },
+    { label: 'Bridge vs. Strategy: Which Side Actually Grows?', route: '/design-patterns/bridge/bridge-vs-strategy-which-side-grows' },
+    { label: 'Bridge Wrapping an Adapter: A ConcreteImplementor for a Legacy System', route: '/design-patterns/bridge/bridge-wrapping-an-adapter' },
+  ],
+  'composite': [
+    { label: 'Does System.IO’s FileSystemInfo Really Give You Composite?', route: '/design-patterns/composite/does-filesysteminfo-really-give-you-composite' },
+    { label: 'What the Transparency Design Actually Looks Like', route: '/design-patterns/composite/the-transparency-design-made-concrete' },
+    { label: 'Composite Plus Visitor, Made Concrete', route: '/design-patterns/composite/composite-plus-visitor-made-concrete' },
+  ],
+  'decorator': [
+    { label: 'Castle DynamicProxy vs. PostSharp: Which One Is Actually Decorator?', route: '/design-patterns/decorator/castle-dynamicproxy-vs-postsharp' },
+    { label: 'When Decorator Breaks Object Identity', route: '/design-patterns/decorator/when-decorator-breaks-object-identity' },
+    { label: 'Removing One Decorator from the Middle of the Stack', route: '/design-patterns/decorator/removing-one-decorator-from-the-middle' },
+  ],
+  'facade': [
+    { label: 'The Missing Rollback on Partial Checkout Failure', route: '/design-patterns/facade/the-missing-rollback-on-partial-checkout-failure' },
+    { label: 'Facade vs. Mediator, Made Concrete', route: '/design-patterns/facade/facade-vs-mediator-made-concrete' },
+    { label: 'The API Gateway: A Network-Boundary Facade', route: '/design-patterns/facade/api-gateway-a-network-boundary-facade' },
+  ],
+  'flyweight': [
+    { label: 'Why .NET Has No Small-Integer Boxing Cache', route: '/design-patterns/flyweight/no-small-integer-boxing-cache-in-dotnet' },
+    { label: 'The Race in ParticleFactory.Get() Under Concurrent Access', route: '/design-patterns/flyweight/the-race-in-particlefactory-get' },
+    { label: 'When Flyweight Identity Silently Merges Logically Distinct Objects', route: '/design-patterns/flyweight/when-flyweight-identity-merges-distinct-objects' },
+  ],
+  // NOTE: hub-prefixed — bare 'proxy' is already claimed by the JavaScript hub's own /javascript/proxy topic
+  'dp-proxy': [
+    { label: 'LoggingOrderProxy Isn’t a Proxy — It’s a Decorator', route: '/design-patterns/proxy/loggingorderproxy-isnt-a-proxy-its-a-decorator' },
+    { label: 'GetOrCreateAsync Silently Caches null', route: '/design-patterns/proxy/getorcreateasync-silently-caches-null' },
+    { label: 'Smart Reference: GoF’s Actual Fourth Proxy Type', route: '/design-patterns/proxy/smart-reference-gofs-actual-fourth-type' },
+  ],
+  'chain-of-responsibility': [
+    { label: 'The Auth Middleware’s Operator-Precedence Bug', route: '/design-patterns/chain-of-responsibility/auth-middleware-operator-precedence-bug' },
+    { label: 'The Pass-Through-With-Side-Effect Handler, Made Concrete', route: '/design-patterns/chain-of-responsibility/pass-through-with-side-effect-handler' },
+    { label: 'Making “No Handler Accepted This” a Real Signal', route: '/design-patterns/chain-of-responsibility/making-unhandled-a-real-signal' },
+  ],
+  'command': [
+    { label: 'Redo() Silently Wipes the Rest of the Redo Stack', route: '/design-patterns/command/redo-silently-wipes-the-redo-stack' },
+    { label: 'A Real MacroCommand, Undone in Reverse Order', route: '/design-patterns/command/a-real-macrocommand-undone-in-reverse' },
+    { label: 'When a Lambda Command Stops Being Enough', route: '/design-patterns/command/when-a-lambda-command-stops-being-enough' },
+  ],
+  'iterator': [
+    { label: 'The Recursive-Yield Tree Traversal Is Secretly O(n²)', route: '/design-patterns/iterator/recursive-yield-tree-traversal-is-on-squared' },
+    { label: 'Merging Two External Iterators, Made Concrete', route: '/design-patterns/iterator/merging-two-external-iterators' },
+    { label: 'What Happens When Range’s step Is Negative', route: '/design-patterns/iterator/what-happens-when-range-step-is-negative' },
+  ],
+  'mediator': [
+    { label: 'MediatR’s 2025 Commercial License Change', route: '/design-patterns/mediator/mediatr-2025-license-change' },
+    { label: 'Publish() Stops on the First Handler Exception', route: '/design-patterns/mediator/publish-exception-halts-later-handlers' },
+    { label: 'Pipeline Behavior Execution Order', route: '/design-patterns/mediator/pipeline-behavior-order' },
+  ],
+  'memento': [
+    { label: 'AsReadOnly() Is a View, Not a Copy', route: '/design-patterns/memento/asreadonly-is-a-view-not-a-copy' },
+    { label: 'A Real Nested-Class Memento', route: '/design-patterns/memento/nested-class-memento-narrow-interface' },
+    { label: 'Delta Mementos: Storing Only What Changed', route: '/design-patterns/memento/delta-mementos-storing-only-what-changed' },
+  ],
+  'observer': [
+    { label: 'Field-Like Events Are Already Thread-Safe', route: '/design-patterns/observer/field-like-events-are-already-thread-safe' },
+    { label: 'A Real IObservable<T> Implementation', route: '/design-patterns/observer/a-real-iobservable-implementation' },
+    { label: 'What a WeakReference-Based Observer Looks Like', route: '/design-patterns/observer/weakreference-based-observer-implementation' },
+  ],
+  // NOTE: keyed 'dp-state', NOT bare 'state' — the Terraform hub
+  // already claims the bare key with its own subtopics.
+  'dp-state': [
+    { label: 'Singleton States: Making Them Actually Stateless', route: '/design-patterns/state/singleton-states-making-them-actually-stateless' },
+    { label: 'A Data-Driven State Transition Table', route: '/design-patterns/state/data-driven-state-transition-table' },
+    { label: 'Reconstructing State From Persisted Data', route: '/design-patterns/state/reconstructing-state-from-persisted-data' },
+  ],
+  'strategy': [
+    { label: 'The Identical-Branches Bug in SelectStrategy', route: '/design-patterns/strategy/identical-branches-bug-in-selectstrategy' },
+    { label: 'Keyed DI Strategy Selection', route: '/design-patterns/strategy/keyed-di-strategy-selection' },
+    { label: 'Why Strategies Must Be Reentrant', route: '/design-patterns/strategy/why-strategies-must-be-reentrant' },
+  ],
+  'template-method': [
+    { label: 'Why sealed Requires override in C#', route: '/design-patterns/template-method/why-sealed-requires-override-in-csharp' },
+    { label: 'ControllerBase vs Controller for Action Filter Hooks', route: '/design-patterns/template-method/controllerbase-vs-controller-for-action-filter-hooks' },
+    { label: 'Converting Template Method to Strategy, Concretely', route: '/design-patterns/template-method/converting-template-method-to-strategy-concretely' },
+  ],
+  'visitor': [
+    { label: 'The Non-Virtual Accept() Failure, Demonstrated', route: '/design-patterns/visitor/the-non-virtual-accept-failure-demonstrated' },
+    { label: 'Simulating Double Dispatch With dynamic', route: '/design-patterns/visitor/simulating-double-dispatch-with-dynamic' },
+    { label: 'Visitor + Composite: A Recursive Order Group', route: '/design-patterns/visitor/visitor-plus-composite-recursive-order-group' },
+  ],
+  'null-object': [
+    { label: 'The Undeclared _db Field in ProductRepository', route: '/design-patterns/null-object/the-undeclared-db-field-in-productrepository' },
+    { label: 'Nested Null Objects for Object-Returning Methods', route: '/design-patterns/null-object/nested-null-objects-for-object-returning-methods' },
+    { label: 'When a Null Object Violates Liskov Substitution', route: '/design-patterns/null-object/when-a-null-object-violates-liskov-substitution' },
+  ],
+  'repository': [
+    { label: 'Connecting EfSpecificationEvaluator to a Real Repository', route: '/design-patterns/repository/connecting-efspecificationevaluator-to-a-real-repository' },
+    { label: 'Generic RepositoryBase as an Internal Implementation Detail', route: '/design-patterns/repository/generic-repositorybase-as-an-internal-implementation-detail' },
+    { label: 'The N+1 Lazy-Loading Pitfall, Demonstrated', route: '/design-patterns/repository/the-n-plus-1-lazy-loading-pitfall-demonstrated' },
+  ],
+  'unit-of-work': [
+    { label: 'The Orphaned TransferFundsAsync Method', route: '/design-patterns/unit-of-work/the-orphaned-transferfundsasync-method' },
+    { label: 'Handling Optimistic Concurrency Conflicts', route: '/design-patterns/unit-of-work/handling-optimistic-concurrency-conflicts' },
+    { label: 'A Manual Unit of Work Without Entity Framework', route: '/design-patterns/unit-of-work/a-manual-unit-of-work-without-entity-framework' },
+  ],
+  'cqrs': [
+    { label: 'The Cancel Endpoint’s Invalid Arrow-Block', route: '/design-patterns/cqrs/the-cancel-endpoints-invalid-arrow-block' },
+    { label: 'Syncing a Read Model Projection From a Domain Event', route: '/design-patterns/cqrs/syncing-a-read-model-projection-from-a-domain-event' },
+    { label: 'Read-Your-Writes for the Issuing User', route: '/design-patterns/cqrs/read-your-writes-for-the-issuing-user' },
+  ],
+  'event-sourcing': [
+    { label: 'The OrderPlaced Handler Never Persists Its Insert', route: '/design-patterns/event-sourcing/the-orderplaced-handler-never-persists-its-insert' },
+    { label: 'Rehydrating From a Snapshot', route: '/design-patterns/event-sourcing/rehydrating-from-a-snapshot' },
+    { label: 'An Upcaster Chain for OrderPlaced v1 to v2', route: '/design-patterns/event-sourcing/an-upcaster-chain-for-orderplaced-v1-to-v2' },
+  ],
+  'saga': [
+    { label: 'The Missing Order Total in InventoryReservedEvent', route: '/design-patterns/saga/the-missing-order-total-in-inventoryreservedevent' },
+    { label: 'Ordering Steps Around the Pivot Transaction', route: '/design-patterns/saga/ordering-steps-around-the-pivot-transaction' },
+    { label: 'Building a Commutative Compensation', route: '/design-patterns/saga/building-a-commutative-compensation' },
+  ],
+  'outbox': [
+    { label: 'The Mismatched Consumer Type in AddConsumer', route: '/design-patterns/outbox/the-mismatched-consumer-type-in-addconsumer' },
+    { label: 'Building the Inbox Pattern’s Idempotency Table', route: '/design-patterns/outbox/building-the-inbox-patterns-idempotency-table' },
+    { label: 'Preserving Event Order With a Per-Aggregate Relay', route: '/design-patterns/outbox/preserving-event-order-with-a-per-aggregate-relay' },
+  ],
+  'specification': [
+    { label: 'The Expression.Invoke Composition Problem', route: '/design-patterns/specification/the-expression-invoke-composition-problem' },
+    { label: 'Specification as a Construction Rule', route: '/design-patterns/specification/specification-as-a-construction-rule' },
+    { label: 'A Hybrid Database-Then-In-Memory Pipeline', route: '/design-patterns/specification/a-hybrid-database-then-in-memory-pipeline' },
+  ],
+  // NOTE: bare 'clean-architecture' is safe here — the Architecture Patterns
+  // hub's own identically-slugged topic is hub-prefixed to 'arch-clean-architecture'
+  // (see the note above that entry) specifically to leave this key free.
+  'clean-architecture': [
+    { label: 'The Order Aggregate’s Missing Ship() and AddDomainEvent', route: '/design-patterns/clean-architecture/the-order-aggregates-missing-ship-and-adddomainevent' },
+    { label: 'Input and Output Ports, Made Concrete', route: '/design-patterns/clean-architecture/input-and-output-ports-made-concrete' },
+    { label: 'Returning a Result Type Instead of Throwing', route: '/design-patterns/clean-architecture/returning-a-result-type-instead-of-throwing' },
+  ],
+  'solid': [
+    { label: 'The Composition-Based LSP Fix', route: '/design-patterns/solid/the-composition-based-lsp-fix' },
+    { label: 'Tracing How One SRP Violation Cascades', route: '/design-patterns/solid/tracing-how-one-srp-violation-cascades' },
+    { label: 'How Much Segregation Is Too Much', route: '/design-patterns/solid/how-much-segregation-is-too-much' },
+  ],
+  'grasp': [
+    { label: 'The Low Coupling vs. High Cohesion Tension', route: '/design-patterns/grasp/the-low-coupling-vs-high-cohesion-tension' },
+    { label: 'A Second Protected Variations Example', route: '/design-patterns/grasp/a-second-protected-variations-example' },
+    { label: 'Avoiding a Law of Demeter Violation', route: '/design-patterns/grasp/avoiding-a-law-of-demeter-violation' },
+  ],
+  'dry-kiss-yagni': [
+    { label: 'DRY vs. DAMP in Tests, Made Concrete', route: '/design-patterns/dry-kiss-yagni/dry-vs-damp-in-tests-made-concrete' },
+    { label: 'Why Microservices Duplicate Domain Models', route: '/design-patterns/dry-kiss-yagni/why-microservices-duplicate-domain-models' },
+    { label: 'Applying the YAGNI → DRY → KISS Resolution Order', route: '/design-patterns/dry-kiss-yagni/applying-the-yagni-dry-kiss-resolution-order' },
+  ],
+  'dependency-inversion': [
+    { label: 'The Missing GetSummaryAsync Method', route: '/design-patterns/dependency-inversion/the-missing-getsummaryasync-method' },
+    { label: 'Who Should Own the Abstraction?', route: '/design-patterns/dependency-inversion/who-should-own-the-abstraction' },
+    { label: 'Property and Method Injection, Shown', route: '/design-patterns/dependency-inversion/property-and-method-injection-shown' },
+  ],
+  // NOTE: hub-prefixed — bare 'fundamentals' is already claimed by the
+  // JavaScript hub's own /javascript/fundamentals topic.
+  'sec-fundamentals': [
+    { label: 'Threat-Modeling a Password-Reset Endpoint', route: '/security/fundamentals/threat-modeling-a-password-reset-endpoint' },
+    { label: 'Fail-Secure vs. Fail-Safe, Made Concrete', route: '/security/fundamentals/fail-secure-vs-fail-safe-made-concrete' },
+    { label: 'What SAST Actually Catches', route: '/security/fundamentals/what-sast-actually-catches' },
+  ],
+  'owasp-top-10': [
+    { label: 'The Injection Pattern That Missed Its Own Test', route: '/security/owasp-top-10/the-injection-pattern-that-missed-its-own-test' },
+    { label: 'A08 Insecure Deserialization, Made Concrete', route: '/security/owasp-top-10/a08-insecure-deserialization-made-concrete' },
+    { label: 'Preventing SSRF With an IP Allowlist', route: '/security/owasp-top-10/preventing-ssrf-with-an-ip-allowlist' },
+  ],
+  'threat-modelling': [
+    { label: 'Mapping a STRIDE Threat to Real MITRE ATT&CK Techniques', route: '/security/threat-modelling/mapping-a-stride-threat-to-mitre-attck' },
+    { label: 'Building an Attack Tree in Code', route: '/security/threat-modelling/building-an-attack-tree-in-code' },
+    { label: 'A PASTA-Style Business-Risk Reprioritization', route: '/security/threat-modelling/a-pasta-style-business-risk-reprioritization' },
+  ],
+  'secure-coding': [
+    { label: 'Why Truncate-Then-Encode Can Exceed maxLength', route: '/security/secure-coding/why-truncate-then-encode-can-exceed-maxlength' },
+    { label: 'Path Traversal — Vulnerable Endpoint and Fix', route: '/security/secure-coding/path-traversal-vulnerable-endpoint-and-fix' },
+    { label: 'A TOCTOU Race Condition, Timelined', route: '/security/secure-coding/a-toctou-race-condition-timeline' },
+  ],
+  'password-security': [
+    { label: 'Score 3 vs 4 — the Real Boundary', route: '/security/password-security/score-3-vs-4-the-real-boundary' },
+    { label: 'A Simplified Passkey Registration and Login Flow', route: '/security/password-security/a-simplified-passkey-registration-and-login-flow' },
+    { label: 'Detecting Password Spraying Across Accounts', route: '/security/password-security/detecting-password-spraying-across-accounts' },
+  ],
+  'oauth-oidc': [
+    { label: 'PKCE in the Browser With the Web Crypto API', route: '/security/oauth-oidc/pkce-in-the-browser-with-the-web-crypto-api' },
+    { label: 'Token Introspection Alongside JWT Validation', route: '/security/oauth-oidc/token-introspection-alongside-jwt-validation' },
+    { label: 'The Device Authorization Grant, Implemented', route: '/security/oauth-oidc/the-device-authorization-grant-implemented' },
+  ],
+  'jwt': [
+    { label: 'Token Revocation, Both Ways', route: '/security/jwt/token-revocation-both-ways' },
+    { label: 'The RS256 → HS256 Confusion Attack, Demonstrated', route: '/security/jwt/the-rs256-to-hs256-confusion-attack-demonstrated' },
+    { label: 'Refresh Token Rotation With Reuse Detection', route: '/security/jwt/refresh-token-rotation-with-reuse-detection' },
+  ],
+  'mfa': [
+    { label: 'MFA Fatigue and Number Matching, Implemented', route: '/security/mfa/mfa-fatigue-and-number-matching-implemented' },
+    { label: 'Step-Up Authentication for High-Risk Operations', route: '/security/mfa/step-up-authentication-for-high-risk-operations' },
+    { label: 'HOTP Counter Resynchronization', route: '/security/mfa/hotp-counter-resynchronization' },
+  ],
+  'sso': [
+    { label: 'The SAML Signature Wrapping Attack, Demonstrated', route: '/security/sso/the-saml-signature-wrapping-attack-demonstrated' },
+    { label: 'Multi-Tenant SSO — Domain Resolution and Isolation', route: '/security/sso/multi-tenant-sso-domain-resolution-and-isolation' },
+    { label: 'SCIM Deprovisioning — the JIT Gap SCIM Closes', route: '/security/sso/scim-deprovisioning-the-jit-gap-scim-closes' },
+  ],
 };

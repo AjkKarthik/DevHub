@@ -1,0 +1,27 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Linux Fundamentals" topicRoute="/linux/fundamentals" subtopicLabel="journald Logs Are Lost on Reboot by Default" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">journald Logs Are Lost on Reboot Unless /var/log/journal Exists</h1>
+  <p class="page-subtitle">The main page treats journald as simply "the" central log store — its own man page confirms persistence depends entirely on whether one directory happens to exist.</p>
+  <app-page-meta [readingTime]="8" difficulty="beginner" since="Linux 2.6+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This closes a gap in the main page's own journald coverage, directly undercutting its journalctl -b boot-diagnosis advice — the next subtopic moves from log persistence to a similar runtime-vs-persistent gotcha in kernel tuning.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Linux Fundamentals" topicRoute="/linux/fundamentals"
+    [prev]="{ label: 'systemd Targets Map to Runlevels, But Not One-to-One', route: '/linux/fundamentals/systemd-targets-map-to-runlevels-but-not-one-to-one' }"
+    [next]="{ label: 'A sysctl Change Is Runtime-Only Until Persisted', route: '/linux/fundamentals/a-sysctl-change-is-runtime-only-until-persisted-to-a-file' }" />
+</div>

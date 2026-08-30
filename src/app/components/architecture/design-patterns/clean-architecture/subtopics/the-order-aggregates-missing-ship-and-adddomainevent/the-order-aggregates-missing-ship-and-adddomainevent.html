@@ -1,0 +1,26 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Clean Architecture Pattern" topicRoute="/design-patterns/clean-architecture"
+    subtopicLabel="The Order Aggregate's Missing Ship() and AddDomainEvent" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">The Order Aggregate's Missing Ship() and AddDomainEvent</h1>
+  <p class="page-subtitle">Two separate codeTabs each assume a capability the OTHER never actually gave the Order class.</p>
+  <app-page-meta [readingTime]="7" difficulty="beginner" since="C# 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>With the Order aggregate itself compiling correctly, the next two subtopics build out Application-layer concepts the quiz and QnA name at length but never show in code: explicit Input/Output Ports, and a Result type replacing exceptions for expected validation failures.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Clean Architecture Pattern" topicRoute="/design-patterns/clean-architecture"
+    [next]="{ label: 'Input and Output Ports, Made Concrete', route: '/design-patterns/clean-architecture/input-and-output-ports-made-concrete' }" />
+</div>

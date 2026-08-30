@@ -1,0 +1,27 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Performance Tuning" topicRoute="/linux/performance-tuning" subtopicLabel="discard in fstab Has a Real Penalty — fstrim.timer Is Preferred" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">discard in fstab Has a Real Penalty — fstrim.timer Is Preferred</h1>
+  <p class="page-subtitle">The main page frames discard as the standard way to enable TRIM and fstrim as a manual fallback — most distro guidance actually recommends the opposite, since continuous discard has a real fsync-latency cost.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Linux (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This reverses the main page's own implied recommendation on TRIM strategy. Next: why numactl --membind can OOM-kill a process even when other NUMA nodes have plenty of free memory.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Performance Tuning" topicRoute="/linux/performance-tuning"
+    [prev]="{ label: 'I/O Scheduler Writes to /sys/block Are Not Persistent — Use a udev Rule', route: '/linux/performance-tuning/io-scheduler-writes-to-sys-block-are-not-persistent-use-a-udev-rule' }"
+    [next]="{ label: 'numactl --membind Is a Hard Constraint — --preferred Is the Safer Default', route: '/linux/performance-tuning/numactl-membind-is-a-hard-constraint-preferred-is-the-safer-default' }" />
+</div>

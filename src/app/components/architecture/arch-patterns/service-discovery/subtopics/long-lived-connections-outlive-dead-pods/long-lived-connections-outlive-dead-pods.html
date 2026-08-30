@@ -1,0 +1,26 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Service Discovery" topicRoute="/arch-patterns/service-discovery" subtopicLabel="Why Long-Lived Connections Can Outlive a Dead Pod" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">Why Long-Lived Connections Can Outlive a Dead Pod</h1>
+  <p class="page-subtitle">The page frames Kubernetes Service discovery as fully transparent — but an already-open keep-alive connection stays pinned to its original pod via conntrack, even after that pod is removed from routing.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the batch with a real, specific edge case in the page's "server-side discovery is fully transparent" framing — worth knowing without undermining the general reliability of the pattern.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Service Discovery" topicRoute="/arch-patterns/service-discovery"
+    [prev]="{ label: 'The Cache Never Actually Refreshed in the Background', route: '/arch-patterns/service-discovery/cache-never-refreshed-in-background' }" />
+</div>

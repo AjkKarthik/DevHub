@@ -1,0 +1,26 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Variables & Locals" topicRoute="/terraform/variables" subtopicLabel="nullable = false Substitutes the Default for an Explicit null" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">nullable = false Substitutes the Default for an Explicit null</h1>
+  <p class="page-subtitle">The main page's own QnA states this precisely in words — but no code example on the page ever shows it running, so the difference between a plain default and nullable = false stays abstract.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Terraform 1.1+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This demonstrates a fact the main page's QnA already states correctly but never shows in code. Next: how optional() lets an object variable's shape evolve without breaking existing callers.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Variables & Locals" topicRoute="/terraform/variables"
+    [next]="{ label: 'optional() Lets Object Variables Evolve Without Breaking Callers', route: '/terraform/variables/optional-lets-object-variables-evolve-without-breaking-callers' }" />
+</div>

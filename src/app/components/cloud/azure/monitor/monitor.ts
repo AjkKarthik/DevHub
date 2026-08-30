@@ -365,7 +365,7 @@ export function summariseRequests(requests: RequestTelemetry[]): {
     },
     {
       q: 'What is the Log Analytics data retention cost model?',
-      a: 'Log Analytics charges two ways: <strong>ingestion cost</strong> (per GB of data ingested — Basic tier is cheaper, no query capability; Analytics tier is queryable) and <strong>retention cost</strong> (first 30 days free for Analytics tier; days 31–730 charged per GB per day). Configure retention per table in DCR: keep hot data (requests, exceptions) for 90 days queryable, then archive to cheaper storage. Use Commitment Tiers (reserve 100+ GB/day) for predictable discounts over pay-as-you-go. Monitor ingestion with usage query: <code>Usage | summarize sum(Quantity) by DataType</code>.'
+      a: 'Log Analytics charges two ways: <strong>ingestion cost</strong> (per GB of data ingested — Basic tier has reduced ingestion cost; Analytics tier has standard ingestion cost) and <strong>retention cost</strong> (first 30 days free for Analytics tier; days 31–730 charged per GB per day, extendable to years). Basic tier tables DO support full KQL querying — the real tradeoff is that query price is NOT included (billed per GB scanned per query) versus Analytics tier, where query price is included in the ingestion cost. Configure retention per table in DCR: keep hot data (requests, exceptions) for 90 days queryable, then archive to cheaper storage. Use Commitment Tiers (reserve 100+ GB/day) for predictable discounts over pay-as-you-go. Monitor ingestion with usage query: <code>Usage | summarize sum(Quantity) by DataType</code>.'
     },
     {
       q: 'What are Azure Monitor Workbooks and when should you use them?',

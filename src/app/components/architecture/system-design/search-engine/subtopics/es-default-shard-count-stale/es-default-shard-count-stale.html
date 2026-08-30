@@ -1,0 +1,27 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Design a Search Engine" topicRoute="/system-design/search-engine" subtopicLabel="Elasticsearch’s Default Shard Count Has Been 1, Not 5, Since 7.0" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">Elasticsearch’s Default Shard Count Has Been 1, Not 5, Since 7.0</h1>
+  <p class="page-subtitle">The page's Q&amp;A stated Elasticsearch indexes default to 5 primary shards — verified via WebSearch that this changed to 1 in Elasticsearch 7.0 (2019), and the old default has kept circulating in reference material ever since.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>With both the shard-sizing arithmetic and the stale default fixed, the last subtopic looks at a faster way to change primary shard count than the full reindex-and-alias-swap the page's own Q&amp;A describes.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Design a Search Engine" topicRoute="/system-design/search-engine"
+    [prev]="{ label: '30 Shards Doesn’t Divide to 33M Docs Per Shard', route: '/system-design/search-engine/shard-doc-count-mismatch' }"
+    [next]="{ label: 'The Split API Resizes Shards Without a Full Reindex', route: '/system-design/search-engine/split-api-faster-than-reindex' }" />
+</div>

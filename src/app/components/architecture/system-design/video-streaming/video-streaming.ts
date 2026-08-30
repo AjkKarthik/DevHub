@@ -214,7 +214,10 @@ app.get('/live/:stream/index.m3u8', (req, res) => {
 
 // Scale calculation — Netflix-like:
 // 100M concurrent viewers × 4 Mbps average = 400 Tbps
-// Cloudflare/Akamai: 200+ Tbps capacity across all PoPs
+// Cloudflare alone: 500+ Tbps of provisioned network capacity (2026)
+// -- this is the PROVISIONED ceiling across all PoPs combined, not
+// typical traffic served; still far more than any single origin
+// (S3) could sustain for this workload
 // Without CDN: 400 Tbps from S3 = impossible + prohibitively expensive
 // CDN cost: ~$0.01/GB vs S3 egress $0.09/GB → 9× cheaper at scale`,
   },
@@ -320,9 +323,12 @@ Key constraints:
     4. Prioritise: 360p chunk 1 done first → video is watchable in < 60s
     5. AWS Elemental MediaConvert or custom FFmpeg fleet
 
-    Compute: 500hrs/min × 4 resolutions × 30 min/hr = 60,000 vCPU-minutes/min
-    Spot fleet: ~5,000 c5.2xlarge instances (autoscaling)
-    Cost: spot at $0.10/hr × 5,000 = $500/hr but bursty — avg $200/hr
+    Compute: 500hrs/min × 6 resolutions × 30 min/hr = 90,000 vCPU-minutes/min
+    (6 resolutions per the ladder above -- 240p/360p/480p/720p/1080p/4K --
+    not 4; the 30 min/hr figure is 4K's own encode time, used here as a
+    conservative upper bound since lower resolutions encode faster)
+    Spot fleet: ~7,500 c5.2xlarge instances (autoscaling)
+    Cost: spot at $0.10/hr × 7,500 = $750/hr but bursty — avg $300/hr
   \`,
 
   cdnStrategy: \`
@@ -351,10 +357,12 @@ Key constraints:
   \`,
 
   estimatedCost: \`
-    Transcoding: ~$200/hr (spot fleet, elastic)
+    Transcoding: ~$300/hr (spot fleet, elastic -- see revised compute above)
     Storage: 500 hrs/min × 1.5 GB × 60 = 45 TB/hr ingested
-    CDN egress: 100M viewers × 2 hrs/day × 1.5 GB/hr = 300 PB/month
-    At $0.01/GB: $3M/month CDN — matches YouTube's actual reported costs
+    CDN egress: 100M viewers × 2 hrs/day × 1.5 GB/hr = 300 PB/DAY
+    (the raw multiplication above is a per-day total -- multiply by
+    ~30 days for a monthly figure: ~9,000 PB (9 EB) egressed/month)
+    At $0.01/GB: 300 PB/day = $3M/DAY, or ~$90M/month CDN egress cost
   \`,
 };`,
 };

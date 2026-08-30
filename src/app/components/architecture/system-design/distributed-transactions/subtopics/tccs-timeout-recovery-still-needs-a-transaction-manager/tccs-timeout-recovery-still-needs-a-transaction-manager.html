@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Distributed Transactions" topicRoute="/system-design/distributed-transactions" subtopicLabel="TCC's Timeout Recovery Still Needs a Transaction Manager" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">TCC's Timeout Recovery Still Needs a Transaction Manager</h1>
+  <p class="page-subtitle">The QnA said TCC participants "handle Cancel autonomously after a timeout" with no coordinator — verified against Seata's own docs that a Transaction Manager still drives it, and that TCC has its own "suspended" edge case.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This adds nuance to the TCC-vs-2PC coordinator-failure claim. Next topic: High Availability Design.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Distributed Transactions" topicRoute="/system-design/distributed-transactions"
+    [prev]="{ label: 'Kafka Offset-Committing Is Specific to Consume-Transform-Produce', route: '/system-design/distributed-transactions/kafka-offset-committing-is-specific-to-consume-transform-produce' }" />
+</div>

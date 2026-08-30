@@ -1,0 +1,27 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Terraform State" topicRoute="/terraform/state" subtopicLabel="The State serial Number Detects a Stale state push" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">The State serial Number Detects a Stale state push</h1>
+  <p class="page-subtitle">The main page's quick reference says "use with caution" for state push without ever explaining the actual mechanism — the serial and lineage checks that catch the most common stale-push mistake by default.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Terraform (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This names the actual safety mechanism behind the main page's own "use with caution" note. Next: why workspaces share the same backend and access boundary, making directory separation the preferred choice for prod vs dev.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Terraform State" topicRoute="/terraform/state"
+    [prev]="{ label: 'force-unlock: Verify the Lock Holder Is Actually Stale First', route: '/terraform/state/force-unlock-verify-the-lock-holder-is-actually-stale-first' }"
+    [next]="{ label: 'Workspaces Share the Same Backend — Prefer Directories for Prod', route: '/terraform/state/workspaces-share-the-same-backend-prefer-directories-for-prod' }" />
+</div>

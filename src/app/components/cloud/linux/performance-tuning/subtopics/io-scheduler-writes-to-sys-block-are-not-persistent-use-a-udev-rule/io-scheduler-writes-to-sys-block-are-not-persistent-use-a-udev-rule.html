@@ -1,0 +1,26 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Performance Tuning" topicRoute="/linux/performance-tuning" subtopicLabel="I/O Scheduler Writes to /sys/block Are Not Persistent — Use a udev Rule" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">I/O Scheduler Writes to /sys/block Are Not Persistent — Use a udev Rule</h1>
+  <p class="page-subtitle">The main page teaches sysctl -w's non-persistence lesson but never applies it to its own I/O scheduler example — the fix is a udev rule, not a config file.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="udev (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This applies the main page's own sysctl-persistence lesson to a setting it forgot to apply it to. Next: why the discard mount option is actually the LESS recommended way to enable TRIM.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Performance Tuning" topicRoute="/linux/performance-tuning"
+    [next]="{ label: 'discard in fstab Has a Real Penalty — fstrim.timer Is Preferred', route: '/linux/performance-tuning/discard-in-fstab-has-a-real-penalty-fstrim-timer-is-preferred' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Single Sign-On (SSO)" topicRoute="/security/sso"
+    subtopicLabel="SCIM Deprovisioning — the JIT Gap SCIM Closes" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">SCIM Deprovisioning — the JIT Gap SCIM Closes</h1>
+  <p class="page-subtitle">The main page's own findOrCreate calls already ARE JIT provisioning. Here's the SCIM endpoint that closes the one gap the QnA says JIT structurally cannot: deactivation.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>Together, these three subtopics extend the main page's own SAML mistake warning, multi-tenant QnA, and JIT-vs-SCIM distinction into working, verified code.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Single Sign-On (SSO)" topicRoute="/security/sso"
+    [prev]="{ label: 'Multi-Tenant SSO — Domain Resolution and Isolation', route: '/security/sso/multi-tenant-sso-domain-resolution-and-isolation' }" />
+</div>

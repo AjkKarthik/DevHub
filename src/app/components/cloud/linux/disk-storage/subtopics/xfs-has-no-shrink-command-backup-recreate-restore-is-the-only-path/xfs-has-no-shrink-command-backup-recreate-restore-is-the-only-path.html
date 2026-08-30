@@ -1,0 +1,27 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Disk &amp; Storage" topicRoute="/linux/disk-storage" subtopicLabel="XFS Has No Shrink Command — Backup, Recreate, Restore Is the Only Path" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">XFS Has No Shrink Command — Backup, Recreate, Restore Is the Only Path</h1>
+  <p class="page-subtitle">The main page mentions XFS "can only be grown" twice without explaining what that means in practice — there is no in-place shrink at all, unlike ext4's resize2fs.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="XFS (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This turns the main page's brief "can only be grown" mention into a real workflow. Next: why AWS EBS resize on an LVM root needs an extra pvresize step the main page's own QnA omits.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Disk &amp; Storage" topicRoute="/linux/disk-storage"
+    [prev]="{ label: 'Deleted-but-Open Files Hide Space — df and du Never Agree', route: '/linux/disk-storage/deleted-but-open-files-hide-space-df-and-du-never-agree' }"
+    [next]="{ label: 'Growing a Cloud VM’s LVM Root Needs pvresize, Not Just growpart', route: '/linux/disk-storage/growing-a-cloud-vms-lvm-root-needs-pvresize-not-just-growpart' }" />
+</div>

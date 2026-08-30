@@ -67,7 +67,7 @@ export class AzureRedis {
       heading: 'Security & Access',
       points: [
         'Connection string contains the hostname, port (6380 for TLS), and access key. Always use TLS (port 6380, not 6379) in production — non-TLS transmits data in plaintext over the network.',
-        'Entra ID authentication (preview → GA): use Managed Identity to authenticate to Redis instead of access keys. The MI must be assigned the Redis Contributor data access role. Applications use DefaultAzureCredential — no keys in config.',
+        'Entra ID authentication: use Managed Identity to authenticate to Redis instead of access keys. The MI must be assigned one of the three data access policies — Data Owner, Data Contributor, or Data Reader — via the cache\'s own Data Access Configuration blade, not a generic Azure RBAC role. Applications use DefaultAzureCredential (or the Microsoft.Azure.StackExchangeRedis extension) — no keys in config.',
         'Access keys: two keys (primary and secondary) for zero-downtime rotation — update app to secondary key, regenerate primary, update app back to primary. Keys grant full Redis access — treat like passwords.',
         'VNet injection (Premium): deploy Redis inside your VNet. All traffic stays on the private network. Combined with Private Endpoints for non-Premium tiers. Disable public access for security-sensitive workloads.',
         'Redis ACLs (Enterprise tier): fine-grained command and key pattern restrictions per user. Standard/Premium tiers only support the single auth password model. For multi-tenant scenarios requiring access isolation, deploy separate Redis instances.',

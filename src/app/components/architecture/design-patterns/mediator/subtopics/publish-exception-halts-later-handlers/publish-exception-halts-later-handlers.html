@@ -1,0 +1,31 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Mediator" topicRoute="/design-patterns/mediator"
+    subtopicLabel="Publish() Stops on the First Handler Exception" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Publish() Stops on the First Handler Exception</h1>
+  <p class="page-subtitle">The main page registers EmailNotificationHandler and AnalyticsHandler for the same
+    notification with no mention of failure behavior. By default, one throwing silently skips the other —
+    even though they're completely independent side effects.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="MediatR 3.0+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>This is the notification (Publish) side of MediatR's own execution-order story — the next subtopic
+      covers the equivalent question for the request/pipeline (Send) side: which registered
+      <code>IPipelineBehavior</code> runs first, and why that order matters just as much.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Mediator" topicRoute="/design-patterns/mediator"
+    [prev]="{ label: 'MediatR’s 2025 Commercial License Change', route: '/design-patterns/mediator/mediatr-2025-license-change' }"
+    [next]="{ label: 'Pipeline Behavior Execution Order', route: '/design-patterns/mediator/pipeline-behavior-order' }" />
+</div>

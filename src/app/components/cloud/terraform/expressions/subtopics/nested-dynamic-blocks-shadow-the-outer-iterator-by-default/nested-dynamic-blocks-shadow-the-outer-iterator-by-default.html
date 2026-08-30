@@ -1,0 +1,27 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Expressions & Dynamic Blocks" topicRoute="/terraform/expressions" subtopicLabel="Nested Dynamic Blocks Shadow the Outer Iterator by Default" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">Nested Dynamic Blocks Shadow the Outer Iterator by Default</h1>
+  <p class="page-subtitle">The main page's dynamic block example is a single, unnested block — nesting two with the same default iterator name silently shadows the outer one, with no error.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Terraform (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This covers the nested-block case the main page's own single-level example never demonstrates. Next: why a for expression producing a map errors on duplicate keys unless you opt into grouping mode.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Expressions & Dynamic Blocks" topicRoute="/terraform/expressions"
+    [prev]="{ label: 'can() Is for Variable Validation — try() Is the Real Fallback Tool', route: '/terraform/expressions/can-is-for-variable-validation-try-is-the-real-fallback-tool' }"
+    [next]="{ label: 'A for Expression Map Errors on Duplicate Keys Unless Grouped', route: '/terraform/expressions/a-for-expression-map-errors-on-duplicate-keys-unless-grouped' }" />
+</div>

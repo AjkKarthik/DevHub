@@ -1,0 +1,27 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Storage" topicRoute="/azure/storage" subtopicLabel="Stored Access Policies Don’t Work With User Delegation SAS" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">Stored Access Policies Don’t Work With User Delegation SAS</h1>
+  <p class="page-subtitle">The main page presents both as security best practices — but a Stored Access Policy can only revoke a Service SAS, not the User Delegation SAS it recommends as "preferred."</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Azure Storage" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic builds on the User Delegation SAS expiry subtopic, covering a second, related tradeoff the same SAS type carries. Next, the Lifecycle Policy subtopic moves from access control to a separate cost gap in the main page's own example.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Storage" topicRoute="/azure/storage"
+    [prev]="{ label: 'User Delegation SAS Caps at 7 Days', route: '/azure/storage/user-delegation-sas-max-validity-is-7-days-not-your-expiry-param' }"
+    [next]="{ label: 'Lifecycle baseBlob Actions Don’t Cover Versions', route: '/azure/storage/lifecycle-baseblob-actions-dont-cover-versions-or-snapshots' }" />
+</div>

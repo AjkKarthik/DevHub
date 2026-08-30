@@ -190,7 +190,7 @@ const challenge: Challenge = {
   return 'SAFE';
 }`,
   solution: `function analyseRequest(query: string, userId: string, resourceOwnerId: string): string {
-  const INJECTION_PATTERNS = ['--', ';', "'or", 'union', 'drop', 'delete', 'insert'];
+  const INJECTION_PATTERNS = ['--', ';', ' or ', 'union', 'drop', 'delete', 'insert'];
   const lowerQuery = query.toLowerCase();
 
   if (INJECTION_PATTERNS.some(p => lowerQuery.includes(p))) {

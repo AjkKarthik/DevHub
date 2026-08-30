@@ -1,0 +1,27 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Advanced Bash Scripting" topicRoute="/linux/bash-advanced" subtopicLabel="exec + tee Process Substitution Can Race the Script’s Own Exit" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">exec + tee Process Substitution Can Race the Script's Own Exit</h1>
+  <p class="page-subtitle">The main page shows exec &gt; &gt;(tee log) 2>&amp;1 as a complete pattern — tee runs asynchronously, and the script can exit before it finishes flushing, silently dropping the final log lines.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Bash (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This adds the missing caveat to the main page's own logging pattern. Next: why the main page's own check_host function always exits 0, regardless of host status.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Advanced Bash Scripting" topicRoute="/linux/bash-advanced"
+    [prev]="{ label: 'mapfile Without -t Keeps the Trailing Newline in Every Element', route: '/linux/bash-advanced/mapfile-without-t-keeps-the-trailing-newline-in-every-element' }"
+    [next]="{ label: 'check_host Always Exits 0, Regardless of Up or Down', route: '/linux/bash-advanced/check-host-always-exits-0-regardless-of-up-or-down' }" />
+</div>

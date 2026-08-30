@@ -271,18 +271,21 @@ spec:
       explanation: 'The moment any ALLOW AuthorizationPolicy exists for a workload, all traffic that does NOT match any ALLOW rule is denied. Adding the first policy without listing all current callers breaks existing traffic. Always audit who currently calls the service before adding the first ALLOW.',
     },
     {
-      title: 'Confusing DENY-all with an empty ALLOW policy',
-      wrong: `# Trying to deny all traffic with an empty ALLOW policy
-spec:
-  action: ALLOW
-  rules: []   # No rules = allows nothing? NO — this is invalid and behaves unexpectedly`,
-      right: `# To deny all traffic: create a DENY with a universal source match
+      title: 'Reaching for an empty DENY policy to block all traffic (it does the opposite of what you\'d expect)',
+      wrong: `# Trying to deny all traffic with an empty-rules DENY policy
 spec:
   action: DENY
-  rules:
-  - from:
-    - source: {}   # Empty source matches ALL sources → deny everything`,
-      explanation: 'An ALLOW policy with empty rules does not deny all traffic — it is effectively meaningless. To explicitly deny all traffic to a workload, use `action: DENY` with a rule that matches all sources. This is the "default deny" posture used as the starting point for zero-trust.',
+  rules: []   # Intuitively "DENY means block, empty = block everything"?
+               # NO — DENY with no rules matches NOTHING, so it blocks
+               # NOTHING. This policy has zero effect on traffic.`,
+      right: `# To deny ALL traffic to a workload: use ALLOW (or omit action,
+# which defaults to ALLOW) with EMPTY rules — genuinely counterintuitive,
+# but this is Istio's own documented deny-all idiom
+spec:
+  action: ALLOW    # (or omit "action" entirely — ALLOW is the default)
+  rules: []          # Empty rules under ALLOW = nothing ever matches
+                       # = deny-all, per Istio's own reference docs`,
+      explanation: 'Per Istio\'s own AuthorizationPolicy reference: empty/unset rules under action DENY match nothing, so the policy has NO effect (denies nothing) — the opposite of the intuitive reading. Empty/unset rules under action ALLOW ALSO match nothing, but since an ALLOW policy now exists for the workload, everything that doesn\'t match is denied by default — making empty-rules ALLOW the correct, documented deny-all idiom, not DENY.',
     },
     {
       title: 'Forgetting that AuthorizationPolicy requires mTLS for principal checks',

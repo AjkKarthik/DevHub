@@ -1,0 +1,26 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Sidecar & Service Mesh" topicRoute="/arch-patterns/sidecar-service-mesh" subtopicLabel="The Retry Latency Math Undercounted By One Try" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">The Retry Latency Math Undercounted By One Try</h1>
+  <p class="page-subtitle">The Challenge's solution comment said "2 × 2s = 4s" for attempts: 2 — but Istio's attempts field counts retries after the original request, so the real worst case is 3 tries, 6 seconds.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the batch with a verified numeric correction to the Challenge's own reference solution.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Sidecar & Service Mesh" topicRoute="/arch-patterns/sidecar-service-mesh"
+    [prev]="{ label: 'Ambient Mesh’s GA Version Was Off By One Release', route: '/arch-patterns/sidecar-service-mesh/ambient-mesh-ga-version-was-off-by-one-release' }" />
+</div>

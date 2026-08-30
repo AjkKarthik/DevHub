@@ -1,0 +1,27 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Ingress Gateway" topicRoute="/service-mesh/ingress-gateway" subtopicLabel="SNI Filter Chain Matching Is What Actually Selects the Right Cert" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">SNI Filter Chain Matching Is What Actually Selects the Right Cert</h1>
+  <p class="page-subtitle">The main page says SNI picks the right cert per hostname but never explains how — Envoy's filter-chain matching on the plaintext ClientHello, before any HTTP processing.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Istio / Envoy (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This grounds the main page's SNI claim in its actual mechanism. Next: how REGISTRY_ONLY egress mode actually blocks unapproved traffic — via a BlackHoleCluster returning 502, not by removing routes.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Ingress Gateway" topicRoute="/service-mesh/ingress-gateway"
+    [prev]="{ label: 'TLS Secret Must Match the Gateway’s Own Namespace, Not Always istio-system', route: '/service-mesh/ingress-gateway/tls-secret-must-match-the-gateways-own-namespace-not-always-istio-system' }"
+    [next]="{ label: 'REGISTRY_ONLY Blocks Traffic via a BlackHoleCluster 502, Not by Removing Routes', route: '/service-mesh/ingress-gateway/registry-only-blocks-traffic-via-a-blackholecluster-502-not-by-removing-routes' }" />
+</div>

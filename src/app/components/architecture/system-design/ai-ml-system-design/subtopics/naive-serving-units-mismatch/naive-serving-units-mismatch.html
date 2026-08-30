@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="AI/ML System Design" topicRoute="/system-design/ai-ml-system-design" subtopicLabel="Naive Serving: “1 Request/Sec” vs “15 Tokens/Sec” Don’t Reconcile" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">Naive Serving: "1 Request/Sec" vs "15 Tokens/Sec" Don't Reconcile</h1>
+  <p class="page-subtitle">The theory section describes naive LLM serving as "~1 request/sec" while the code sample says "~15 tokens/sec" for the same baseline — reconciled via the page's own ~400-token response figure, these disagree by roughly 27x.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>With the RAG code sample, the latency hint, and the naive-serving throughput figure all corrected, this page's numbers now hold together consistently across its theory, code samples, and Challenge. This completes the System Design hub's Phase 10 subtopic rollout — all 24 topics now have deep-dive subtopic pages.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="AI/ML System Design" topicRoute="/system-design/ai-ml-system-design"
+    [prev]="{ label: 'Challenge Hint Said “LLM 2-4s”, Solution’s Own P50 Was 1.5s', route: '/system-design/ai-ml-system-design/latency-hint-vs-actual-p50' }" />
+</div>

@@ -1,0 +1,27 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Secure Coding" topicRoute="/security/secure-coding"
+    subtopicLabel="Path Traversal — Vulnerable Endpoint and Fix" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">Path Traversal — Vulnerable Endpoint and Fix</h1>
+  <p class="page-subtitle">The quiz describes path traversal in real detail, including double-encoding bypasses. Here's the actual vulnerable endpoint — and a fix with a one-character trap of its own.</p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic builds the other vulnerability class the quiz explains in depth but never demonstrates — a TOCTOU race condition — completing the coverage of both attacks the quiz names by description alone.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Secure Coding" topicRoute="/security/secure-coding"
+    [prev]="{ label: 'Why Truncate-Then-Encode Can Exceed maxLength', route: '/security/secure-coding/why-truncate-then-encode-can-exceed-maxlength' }"
+    [next]="{ label: 'A TOCTOU Race Condition, Timelined', route: '/security/secure-coding/a-toctou-race-condition-timeline' }" />
+</div>

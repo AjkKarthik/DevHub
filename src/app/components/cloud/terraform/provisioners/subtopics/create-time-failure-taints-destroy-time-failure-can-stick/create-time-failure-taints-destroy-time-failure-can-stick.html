@@ -1,0 +1,27 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Provisioners" topicRoute="/terraform/provisioners" subtopicLabel="Create-Time Failure Taints — Destroy-Time Failure Can Stick" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">Create-Time Failure Taints — Destroy-Time Failure Can Stick</h1>
+  <p class="page-subtitle">The main page's single rule about provisioner failures treats create-time and destroy-time the same — the destroy-time case has a genuinely stuck-infrastructure failure mode it never mentions.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Terraform (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This splits the main page's own single failure rule into its two genuinely different outcomes. Next: what on_failure = continue actually does and does not do about a failure.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Provisioners" topicRoute="/terraform/provisioners"
+    [prev]="{ label: 'self Is Scoped to the Resource the Provisioner Is Attached To', route: '/terraform/provisioners/self-is-scoped-to-the-resource-the-provisioner-is-attached-to' }"
+    [next]="{ label: 'on_failure = continue Only Silences It, Never Retries or Fixes', route: '/terraform/provisioners/on-failure-continue-only-silences-it-never-retries-or-fixes' }" />
+</div>

@@ -1,0 +1,30 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Unit of Work" topicRoute="/design-patterns/unit-of-work"
+    subtopicLabel="A Manual Unit of Work Without Entity Framework" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">A Manual Unit of Work Without Entity Framework</h1>
+  <p class="page-subtitle">Every codeTab on the main page builds Unit of Work on EF Core's own DbContext. The
+    QnA sketches a Dapper/raw-SQL version in prose only — here's a working SqlUnitOfWork sharing one
+    connection and transaction across repositories by hand.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since=".NET 6.0+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>Together with the previous two subtopics, this closes out the main page's own three biggest gaps: a
+      structurally broken codeTab, a fully-described-but-unshown concurrency mechanism, and an EF-free
+      implementation style the page's own QnA names but never builds.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Unit of Work" topicRoute="/design-patterns/unit-of-work"
+    [prev]="{ label: 'Handling Optimistic Concurrency Conflicts', route: '/design-patterns/unit-of-work/handling-optimistic-concurrency-conflicts' }" />
+</div>

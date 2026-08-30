@@ -1,0 +1,27 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Resources & Meta-Arguments" topicRoute="/terraform/resources" subtopicLabel="replace_triggered_by Forces Replacement From an Unrelated Resource" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">replace_triggered_by Forces Replacement From an Unrelated Resource</h1>
+  <p class="page-subtitle">The main page mentions replace_triggered_by in exactly one bullet with zero example — here's the syntax and the ordering-vs-forced-replacement distinction it exists to solve.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Terraform 1.2+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This demonstrates a lifecycle meta-argument the main page only ever names. Next: why a timeout error during apply doesn't mean the resource wasn't actually created.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Resources & Meta-Arguments" topicRoute="/terraform/resources"
+    [prev]="{ label: 'prevent_destroy Is Bypassed by Removing the Whole Resource Block', route: '/terraform/resources/prevent-destroy-is-bypassed-by-removing-the-whole-resource-block' }"
+    [next]="{ label: 'A Timeout Doesn’t Mean the Resource Wasn’t Created', route: '/terraform/resources/a-timeout-does-not-mean-the-resource-was-not-created' }" />
+</div>

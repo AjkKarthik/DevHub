@@ -1,0 +1,26 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Storage" topicRoute="/azure/storage" subtopicLabel="Lifecycle baseBlob Actions Don’t Cover Versions" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">Lifecycle Rules Targeting baseBlob Don’t Touch Versions or Snapshots</h1>
+  <p class="page-subtitle">The main page's own lifecycle JSON only defines baseBlob actions — combine that with its own Versioning recommendation and old versions accumulate at full cost, forever, with no automatic cleanup.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Azure Storage" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic closes out the topic's three deep dives, moving from SAS access-control gaps to a separate, silent cost gap in the main page's own lifecycle policy example.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Storage" topicRoute="/azure/storage"
+    [prev]="{ label: 'Stored Access Policies Don’t Work With User Delegation SAS', route: '/azure/storage/stored-access-policies-dont-work-with-user-delegation-sas' }" />
+</div>

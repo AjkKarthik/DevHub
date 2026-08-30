@@ -1,0 +1,26 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Terraform Fundamentals" topicRoute="/terraform/fundamentals" subtopicLabel="moved Blocks, Not Manual Edits, Fix a Renamed Resource" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">moved Blocks, Not Manual Edits, Fix a Renamed Resource</h1>
+  <p class="page-subtitle">The main page says "never manually edit the state file" but never says what to do instead when a plain rename in the .tf file threatens to destroy and recreate a resource.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Terraform 1.1+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This gives the main page's "never manually edit it" state-file rule a concrete, correct alternative for the single most common situation that tempts a manual edit: a resource rename.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Terraform Fundamentals" topicRoute="/terraform/fundamentals"
+    [prev]="{ label: 'depends_on Is for Dependencies Terraform Cannot See', route: '/terraform/fundamentals/depends-on-is-for-dependencies-terraform-cannot-see' }" />
+</div>

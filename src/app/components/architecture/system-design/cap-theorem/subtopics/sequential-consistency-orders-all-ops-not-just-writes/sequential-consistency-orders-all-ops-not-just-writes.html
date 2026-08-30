@@ -1,0 +1,27 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CAP & PACELC Theorems" topicRoute="/system-design/cap-theorem" subtopicLabel="Sequential Consistency Orders ALL Operations, Not Just Writes" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">Sequential Consistency Orders ALL Operations, Not Just Writes</h1>
+  <p class="page-subtitle">The main page's one-line definition left out the property that actually separates sequential consistency from causal consistency: everyone must agree on the SAME order.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This tightens a definition on the consistency-models spectrum. Next: the main page credits "Brewer's theorem (2000)" without noting it was a conjecture — Gilbert and Lynch proved it formally two years later.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CAP & PACELC Theorems" topicRoute="/system-design/cap-theorem"
+    [prev]="{ label: 'The Quorum Quiz Had a Second Technically-Correct Answer', route: '/system-design/cap-theorem/the-quorum-quiz-had-a-second-technically-correct-answer' }"
+    [next]="{ label: 'Brewer Conjectured CAP in 2000 — Gilbert & Lynch Proved It in 2002', route: '/system-design/cap-theorem/brewer-conjectured-cap-in-2000-gilbert-lynch-proved-it-in-2002' }" />
+</div>

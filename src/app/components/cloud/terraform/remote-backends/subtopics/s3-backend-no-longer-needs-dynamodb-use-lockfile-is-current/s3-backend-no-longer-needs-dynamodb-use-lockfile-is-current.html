@@ -1,0 +1,26 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Remote Backends" topicRoute="/terraform/remote-backends" subtopicLabel="S3 Backend No Longer Needs DynamoDB — use_lockfile Is Current" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">S3 Backend No Longer Needs DynamoDB</h1>
+  <p class="page-subtitle">The main page treats DynamoDB as a hard requirement for S3-backend locking — Terraform 1.10+ supports native S3 locking via use_lockfile, with dynamodb_table now deprecated.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Terraform 1.10+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This updates a main-page assumption that was accurate for years but has since changed. Next: why the cloud block and backend block are mutually exclusive, and where execution mode actually gets configured.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Remote Backends" topicRoute="/terraform/remote-backends"
+    [next]="{ label: 'cloud and backend Blocks Are Mutually Exclusive', route: '/terraform/remote-backends/cloud-block-and-backend-block-are-mutually-exclusive' }" />
+</div>

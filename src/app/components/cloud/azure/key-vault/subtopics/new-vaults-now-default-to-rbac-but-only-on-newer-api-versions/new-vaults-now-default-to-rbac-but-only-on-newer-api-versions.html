@@ -1,0 +1,26 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Key Vault" topicRoute="/azure/key-vault" subtopicLabel="New Vaults Now Default to RBAC" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">New Key Vaults Now Default to RBAC — But Only on Newer API Versions</h1>
+  <p class="page-subtitle">The main page's own "mistake" treats access-policy-by-default as permanent — a recent platform change flips the default to RBAC, but only for requests using a sufficiently new API version.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Azure Key Vault" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic closes out the topic's three deep dives, updating a recently-changed default behind the main page's own "always use RBAC" mistake entry.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Key Vault" topicRoute="/azure/key-vault"
+    [prev]="{ label: 'Soft-Deleted Vaults Reserve Their Name', route: '/azure/key-vault/soft-deleted-vault-reserves-its-name-and-loses-rbac-bindings' }" />
+</div>

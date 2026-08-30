@@ -1,0 +1,26 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Linkerd" topicRoute="/service-mesh/linkerd" subtopicLabel="external-issuer Alone Leaves the Self-Generated Trust Anchor in Place" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">external-issuer Alone Leaves the Self-Generated Trust Anchor in Place</h1>
+  <p class="page-subtitle">The main page's cert-manager fix shows one flag — --identity-external-issuer only externalizes the issuer cert, leaving Linkerd's own long-lived root CA untouched unless a second flag is also used.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Linkerd (all recent versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the main page's certificate-management mistake with the second flag its own fix omits.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Linkerd" topicRoute="/service-mesh/linkerd"
+    [prev]="{ label: 'Circuit Breaking Exists — It Needs an Explicit failure-accrual Annotation', route: '/service-mesh/linkerd/circuit-breaking-exists-but-needs-an-explicit-failure-accrual-annotation' }" />
+</div>

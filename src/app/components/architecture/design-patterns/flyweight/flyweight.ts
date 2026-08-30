@@ -53,7 +53,7 @@ const theory: TheoryPoint[] = [
     points: [
       'string interning: string.Intern() stores one copy of each unique string; identical strings share it.',
       'Emoji/glyph rendering: one Glyph object per character shape, shared by all text using that character.',
-      'SmallInt boxing cache: boxed integers -128 to 127 are cached in Java/.NET-like runtimes.',
+      'Small-integer boxing caching (-128 to 127) is a JAVA-SPECIFIC optimization (Integer.valueOf()) — the CLR has no equivalent: every C# boxing operation allocates a new heap object even for the same small value, so this is NOT a .NET Flyweight example despite sometimes being described as one.',
       'Icon/image caches in UI frameworks: one Bitmap per icon type, shared across all toolbar buttons.',
     ],
   },

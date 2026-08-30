@@ -1,0 +1,26 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Package Management" topicRoute="/linux/package-management" subtopicLabel="apt-key Is Deprecated — signed-by Keyrings Is the Modern Replacement" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">apt-key Is Deprecated — signed-by Keyrings Is the Modern Replacement</h1>
+  <p class="page-subtitle">The main page's own theory and QnA sections taught two different methods for the same task — apt-key trusts a key system-wide, while signed-by scopes trust to just the one repository.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="APT 2.4+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This resolves the main page's own internal inconsistency between its theory and QnA sections. Next: the automatic/manual flag mechanism behind apt autoremove.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Package Management" topicRoute="/linux/package-management"
+    [next]="{ label: 'apt-mark auto/manual Is What Actually Drives autoremove', route: '/linux/package-management/apt-mark-auto-manual-is-what-actually-drives-autoremove' }" />
+</div>

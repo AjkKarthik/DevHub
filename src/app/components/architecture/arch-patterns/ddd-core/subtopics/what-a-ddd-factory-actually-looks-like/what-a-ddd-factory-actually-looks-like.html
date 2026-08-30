@@ -1,0 +1,27 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="DDD Core Concepts" topicRoute="/arch-patterns/ddd-core" subtopicLabel="What a DDD Factory Actually Looks Like" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">What a DDD Factory Actually Looks Like</h1>
+  <p class="page-subtitle">The quiz describes factories in prose but never shows one — this subtopic shows when a plain static create() method is enough and when a dedicated factory (handling async lookups a constructor can't do) takes over.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>The last subtopic makes a parallel gap concrete — what a DDD Repository actually looks like, since the page's own QnA describes it too but never shows one.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="DDD Core Concepts" topicRoute="/arch-patterns/ddd-core"
+    [prev]="{ label: 'TransferFunds Never Handled Partial Save Failure', route: '/arch-patterns/ddd-core/transfer-funds-never-handled-partial-save-failure' }"
+    [next]="{ label: 'What a DDD Repository Actually Looks Like', route: '/arch-patterns/ddd-core/what-a-ddd-repository-actually-looks-like' }" />
+</div>

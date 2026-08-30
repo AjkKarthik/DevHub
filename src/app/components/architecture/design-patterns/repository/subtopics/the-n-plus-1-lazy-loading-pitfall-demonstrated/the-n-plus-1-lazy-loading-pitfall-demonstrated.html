@@ -1,0 +1,30 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Repository" topicRoute="/design-patterns/repository"
+    subtopicLabel="The N+1 Lazy-Loading Pitfall, Demonstrated" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">The N+1 Lazy-Loading Pitfall, Demonstrated</h1>
+  <p class="page-subtitle">The main page's own QnA names the N+1 problem and its Include() fix in prose —
+    but never shows the query count side by side. Here's GetPendingOrdersAsync both ways, with the exact
+    query cost each one produces.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="EF Core 3.0+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>Together with the previous two subtopics, this closes out the main page's own three biggest gaps: a
+      specification evaluator defined but never called, a generic base class distinction described but never
+      shown, and a named performance pitfall never actually measured.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Repository" topicRoute="/design-patterns/repository"
+    [prev]="{ label: 'Generic RepositoryBase as an Internal Implementation Detail', route: '/design-patterns/repository/generic-repositorybase-as-an-internal-implementation-detail' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Disk &amp; Storage" topicRoute="/linux/disk-storage" subtopicLabel="Growing a Cloud VM’s LVM Root Needs pvresize, Not Just growpart" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">Growing a Cloud VM's LVM Root Needs pvresize, Not Just growpart</h1>
+  <p class="page-subtitle">The main page's own QnA gives a two-step cloud resize procedure that assumes no LVM layer — many cloud images default to LVM root, needing an extra pvresize step it omits.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="LVM2 (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the topic's three deep dives, filling in a missing step in the main page's own most practical, real-world QnA answer.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Disk &amp; Storage" topicRoute="/linux/disk-storage"
+    [prev]="{ label: 'XFS Has No Shrink Command — Backup, Recreate, Restore Is the Only Path', route: '/linux/disk-storage/xfs-has-no-shrink-command-backup-recreate-restore-is-the-only-path' }" />
+</div>

@@ -1,0 +1,27 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Monitor" topicRoute="/azure/monitor" subtopicLabel="Basic Logs Supports Full KQL" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">Basic Logs Supports Full KQL — the Tradeoff Is Per-Query Pricing</h1>
+  <p class="page-subtitle">The main page originally described Basic tier as having "no query capability" — Microsoft's own docs show it supports full KQL, just billed per query instead of included.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Azure Monitor" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic corrects a factual claim in the main page's own cost QnA (the main page itself was updated to match). Next, the Daily Cap subtopic covers a separate, unmentioned operational risk in Azure Monitor's cost controls.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Monitor" topicRoute="/azure/monitor"
+    [prev]="{ label: 'Sampling Silently Skews count()', route: '/azure/monitor/sampling-silently-skews-count-use-sum-itemcount-instead' }"
+    [next]="{ label: 'Daily Cap Stops All Ingestion', route: '/azure/monitor/daily-cap-stops-all-ingestion-not-just-the-excess' }" />
+</div>

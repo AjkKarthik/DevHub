@@ -1,0 +1,30 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Strategy" topicRoute="/design-patterns/strategy"
+    subtopicLabel="Why Strategies Must Be Reentrant" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Why Strategies Must Be Reentrant</h1>
+  <p class="page-subtitle">The main page's own QnA says strategies shouldn't hold mutable per-call state,
+    or they become non-reentrant — but never shows what that failure actually looks like. Here's the
+    concrete before/after.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="C# 7.0+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>Together with the previous two subtopics, this closes out the main page's own three biggest
+      named-but-unshown gaps: a self-contained pattern-match bug, DI-based runtime strategy selection, and
+      exactly why a shared strategy instance must avoid mutable per-call state.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Strategy" topicRoute="/design-patterns/strategy"
+    [prev]="{ label: 'Keyed DI Strategy Selection', route: '/design-patterns/strategy/keyed-di-strategy-selection' }" />
+</div>

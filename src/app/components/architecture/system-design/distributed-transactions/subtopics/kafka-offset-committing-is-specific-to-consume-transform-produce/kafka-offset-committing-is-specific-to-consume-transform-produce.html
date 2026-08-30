@@ -1,0 +1,27 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Distributed Transactions" topicRoute="/system-design/distributed-transactions" subtopicLabel="Kafka Offset-Committing Is Specific to Consume-Transform-Produce" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">Kafka Offset-Committing Is Specific to Consume-Transform-Produce</h1>
+  <p class="page-subtitle">The theory bullet described "Kafka transactions" as producer-writes-plus-offset-commit as if that's universal — verified that offset-committing is specific to the stream-processing use case via sendOffsetsToTransaction().</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This untangles two different Kafka transaction shapes. Next: TCC's "does not block if a coordinator fails" claim needs the transaction manager's real role added back in.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Distributed Transactions" topicRoute="/system-design/distributed-transactions"
+    [prev]="{ label: 'The Idempotency Key Example Used Date.now(), Defeating Retries', route: '/system-design/distributed-transactions/the-idempotency-key-example-used-date-now-defeating-retries' }"
+    [next]="{ label: 'TCC’s Timeout Recovery Still Needs a Transaction Manager', route: '/system-design/distributed-transactions/tccs-timeout-recovery-still-needs-a-transaction-manager' }" />
+</div>

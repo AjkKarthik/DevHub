@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Networking Fundamentals" topicRoute="/system-design/networking" subtopicLabel="EDNS0 Raises the DNS UDP Limit Past the Legacy 512 Bytes" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">EDNS0 Raises the DNS UDP Limit Past the Legacy 512 Bytes</h1>
+  <p class="page-subtitle">The main page's quiz cited a flat "512 bytes" TCP-fallback threshold — verified that modern DNS negotiates a much larger UDP buffer via EDNS0.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This corrects a stale DNS threshold. Next: the main page's TCP section covers connection setup in detail but never mentions teardown, or the real production risk of TIME_WAIT port exhaustion.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Networking Fundamentals" topicRoute="/system-design/networking"
+    [next]="{ label: 'TCP Teardown: TIME_WAIT Can Exhaust Ephemeral Ports', route: '/system-design/networking/tcp-teardown-time-wait-can-exhaust-ephemeral-ports' }" />
+</div>

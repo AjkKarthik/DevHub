@@ -1,0 +1,29 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Flyweight" topicRoute="/design-patterns/flyweight"
+    subtopicLabel="Why .NET Has No Small-Integer Boxing Cache" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Why .NET Has No Small-Integer Boxing Cache (Unlike Java)</h1>
+  <p class="page-subtitle">The main page's own ".NET Examples" cited boxed-integer caching (-128 to 127) as a
+    Flyweight example — that's true for Java, but the CLR has no equivalent at all. Here's the proof, and why
+    the two runtimes diverge.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic looks at a real correctness gap in the main page's own FlyweightFactory — the QnA
+      mentions thread-safety in one sentence, but the shown ParticleFactory never actually gets it.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Flyweight" topicRoute="/design-patterns/flyweight"
+    [next]="{ label: 'The Race in ParticleFactory.Get() Under Concurrent Access', route: '/design-patterns/flyweight/the-race-in-particlefactory-get' }" />
+</div>

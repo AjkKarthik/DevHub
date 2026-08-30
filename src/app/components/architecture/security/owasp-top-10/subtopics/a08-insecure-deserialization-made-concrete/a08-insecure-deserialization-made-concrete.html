@@ -1,0 +1,27 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="OWASP Top 10" topicRoute="/security/owasp-top-10"
+    subtopicLabel="A08 Insecure Deserialization, Made Concrete" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">A08 Insecure Deserialization, Made Concrete</h1>
+  <p class="page-subtitle">A quiz question explains this vulnerability class at length. Here's what it actually looks like — and the fix.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic covers a different OWASP category the quiz names at length but never demonstrates — A10 Server-Side Request Forgery — with a concrete vulnerable endpoint and its IP-allowlist fix.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="OWASP Top 10" topicRoute="/security/owasp-top-10"
+    [prev]="{ label: 'The Injection Pattern That Missed Its Own Test', route: '/security/owasp-top-10/the-injection-pattern-that-missed-its-own-test' }"
+    [next]="{ label: 'Preventing SSRF With an IP Allowlist', route: '/security/owasp-top-10/preventing-ssrf-with-an-ip-allowlist' }" />
+</div>

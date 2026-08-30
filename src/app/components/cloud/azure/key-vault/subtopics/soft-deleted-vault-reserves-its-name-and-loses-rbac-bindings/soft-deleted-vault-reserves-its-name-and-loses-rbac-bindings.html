@@ -1,0 +1,27 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Key Vault" topicRoute="/azure/key-vault" subtopicLabel="Soft-Deleted Vaults Reserve Their Name" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">A Soft-Deleted Vault Reserves Its Name — and Recovery Doesn't Restore RBAC</h1>
+  <p class="page-subtitle">The main page's soft-delete coverage focuses on individual secrets — deleting the whole vault reserves its name for the full retention window and silently drops RBAC role assignments recovery won't bring back.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Azure Key Vault" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic extends the main page's own soft-delete coverage from individual objects to the vault itself. Next, the RBAC-default subtopic covers a very current change to which permission model new vaults actually use.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Key Vault" topicRoute="/azure/key-vault"
+    [prev]="{ label: 'Reference Refresh Is 24 Hours, Not Minutes', route: '/azure/key-vault/key-vault-reference-refresh-is-24-hours-not-minutes' }"
+    [next]="{ label: 'New Vaults Now Default to RBAC', route: '/azure/key-vault/new-vaults-now-default-to-rbac-but-only-on-newer-api-versions' }" />
+</div>

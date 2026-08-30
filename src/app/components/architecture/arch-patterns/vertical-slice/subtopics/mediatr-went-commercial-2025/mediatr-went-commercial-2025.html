@@ -1,0 +1,26 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Vertical Slice Architecture" topicRoute="/arch-patterns/vertical-slice" subtopicLabel="MediatR Went Commercial in July 2025" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">MediatR Went Commercial in July 2025</h1>
+  <p class="page-subtitle">The QnA called MediatR "the de facto standard" with no qualification — verified via WebSearch that it went dual-licensed in July 2025, remaining free under $5M revenue but requiring a paid license above that.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>With the licensing change noted, the next issue is worth expanding on directly — what the free, source-generator-based alternatives that gained traction as a result actually look like.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Vertical Slice Architecture" topicRoute="/arch-patterns/vertical-slice"
+    [next]="{ label: 'Source-Generator Mediators: A Different Technical Tradeoff', route: '/arch-patterns/vertical-slice/source-generator-mediator-alternatives' }" />
+</div>

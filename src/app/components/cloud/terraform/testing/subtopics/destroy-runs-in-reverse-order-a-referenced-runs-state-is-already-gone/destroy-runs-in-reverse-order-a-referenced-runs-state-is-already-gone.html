@@ -1,0 +1,26 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Testing Terraform Code" topicRoute="/terraform/testing" subtopicLabel="Destroy Runs in Reverse Order — a Referenced Run’s State Is Already Gone" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">Destroy Runs in Reverse Order — a Referenced Run's State Is Already Gone</h1>
+  <p class="page-subtitle">The main page says terraform test auto-destroys resources after all run blocks complete — but not the order, or why an earlier run block's own destroy step can correctly show nothing happening.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Terraform 1.6+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the main page's cleanup claim with its actual order and the dependency-driven nuance that can otherwise look like a leak.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Testing Terraform Code" topicRoute="/terraform/testing"
+    [prev]="{ label: 'mock_resource Values Apply to Every Instance, Not Per-Instance', route: '/terraform/testing/mock-resource-values-apply-to-every-instance-not-per-instance' }" />
+</div>

@@ -1,0 +1,30 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Decorator" topicRoute="/design-patterns/decorator"
+    subtopicLabel="Removing One Decorator from the Middle of the Stack" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Removing One Decorator from the Middle of the Stack</h1>
+  <p class="page-subtitle">The main page's QnA names "reconstructing the stack" as a Decorator limitation in
+    one sentence. Here's exactly what that means against the main page's own DI registration, and a more
+    reconfigurable alternative — with its own honest cost.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>Between all three subtopics, the pattern is consistent: every one of the main page's own
+      QnA-listed Decorator limitations (mechanism confusion, identity, stack reconstruction) turns out to
+      have a concrete, demonstrable shape once you actually try to hit it.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Decorator" topicRoute="/design-patterns/decorator"
+    [prev]="{ label: 'When Decorator Breaks Object Identity', route: '/design-patterns/decorator/when-decorator-breaks-object-identity' }" />
+</div>

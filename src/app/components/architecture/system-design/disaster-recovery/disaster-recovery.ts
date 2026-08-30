@@ -46,7 +46,7 @@ const theory: TheoryPoint[] = [
     points: [
       'PITR (Point-in-Time Recovery): base snapshot + WAL log → restore to any moment between snapshots.',
       'Cross-region replica: async replication to second region; promote on disaster (RPO = replication lag).',
-      'Automated snapshots: RDS, Cloud SQL, and Aurora snapshot every 5 min. Restore to any 5-min window.',
+      'Automated backups + continuous transaction log archiving (RDS, Cloud SQL, Aurora) let you restore to any SECOND within the retention window, not just discrete 5-min snapshots — the "5 minutes" figure describes how far behind real-time the LATEST restorable point trails (AWS\'s LatestRestorableTime), a recency lag, not the restore granularity itself.',
       'Always test restore: take a backup, restore it, verify data integrity. Untested backups fail when needed.',
     ],
   },
@@ -317,7 +317,7 @@ const plan: DRPlan[] = [];`,
   {
     scenario: 'Accidental DELETE on payments table',
     detection: 'Monitoring alert: payments table row count drops > 50% in 60s → page on-call.',
-    recovery: 'PITR: restore DB to 30 seconds before the DELETE. RDS PITR supports any 5-min window. For payments: restore to separate instance, extract deleted rows, replay into production. Prevent: pre-prod IAM denies DELETE on payments without MFA + approval workflow.',
+    recovery: 'PITR: restore DB to the exact second before the DELETE — RDS PITR grants second-level granularity, not just 5-minute snapshots (the "5 minutes" figure is how far behind real-time the latest restorable point trails, not the restore precision). For payments: restore to separate instance, extract deleted rows, replay into production. Prevent: pre-prod IAM denies DELETE on payments without MFA + approval workflow.',
     rto: '30–60 minutes (PITR restore + data validation)',
     rpo: '< 30 seconds (PITR granularity)',
   },

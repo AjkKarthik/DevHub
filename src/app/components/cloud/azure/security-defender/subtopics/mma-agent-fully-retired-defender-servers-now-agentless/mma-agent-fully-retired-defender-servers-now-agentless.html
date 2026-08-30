@@ -1,0 +1,26 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Security & Defender" topicRoute="/azure/security-defender" subtopicLabel="MMA Is Fully Retired, Defender Now Agentless" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">The Log Analytics Agent Is Fully Retired — Defender for Servers Is Now Agentless</h1>
+  <p class="page-subtitle">The main page framed this as an ongoing transition — MMA is actually fully retired with a data-loss cutoff already active, and the fix isn't a simple agent swap.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Microsoft Defender for Cloud" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic corrects a staleness gap in the main page's own agent architecture coverage (the main page itself was updated to match). Next, the Defender CSPM subtopic covers a missing tier in the main page's own two-tier pricing model.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Security & Defender" topicRoute="/azure/security-defender"
+    [next]="{ label: 'Defender CSPM Is a Separate Paid Plan', route: '/azure/security-defender/defender-cspm-is-a-separate-paid-plan-beyond-foundational-cspm' }" />
+</div>

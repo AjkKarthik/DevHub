@@ -1,0 +1,27 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Content Delivery Networks" topicRoute="/system-design/cdn" subtopicLabel="Anycast Failover Takes BGP Convergence Time, Not Instant" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">Anycast Failover Takes BGP Convergence Time, Not Instant</h1>
+  <p class="page-subtitle">The quiz explanation says anycast gives "automatic failover" — true, but it never states how long that actually takes. Verified: seconds, bounded by BGP convergence, not instant.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This closes a gap in the anycast quiz's "automatic failover" claim. Next: a QnA claim about Vary headers glosses over a well-documented cache-fragmentation trap.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Content Delivery Networks" topicRoute="/system-design/cdn"
+    [prev]="{ label: 'Cloudflare’s 100+ Tbps Figure Was Stale, Now 500+', route: '/system-design/cdn/cloudflares-100-tbps-figure-is-stale-network-passed-500' }"
+    [next]="{ label: 'Raw Vary: Cookie Fragments the Cache — Normalize It Instead', route: '/system-design/cdn/raw-vary-cookie-fragments-the-cache-normalize-it-instead' }" />
+</div>

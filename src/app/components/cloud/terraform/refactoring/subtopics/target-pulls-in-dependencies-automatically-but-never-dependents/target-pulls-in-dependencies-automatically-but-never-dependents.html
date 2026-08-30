@@ -1,0 +1,26 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Refactoring & State Ops" topicRoute="/terraform/refactoring" subtopicLabel="-target Pulls In Dependencies Automatically, But Never Dependents" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">-target Pulls In Dependencies Automatically, But Never Dependents</h1>
+  <p class="page-subtitle">The main page frames -target as "apply just one resource" — its actual scope is wider upstream (auto-included dependencies) and narrower downstream (dependents are never touched).</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Terraform (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This gives the main page's "-target is break-glass only" warning its actual mechanism — the asymmetric scope that causes the state-out-of-sync problem.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Refactoring & State Ops" topicRoute="/terraform/refactoring"
+    [prev]="{ label: 'removed Defaults to Actually Destroying the Resource', route: '/terraform/refactoring/removed-defaults-to-actually-destroying-the-resource' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="System Monitoring" topicRoute="/linux/system-monitoring" subtopicLabel="Load Average Has Blind Spots — PSI Is the Modern Replacement" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">Load Average Has Blind Spots — PSI (/proc/pressure/) Is the Modern Replacement</h1>
+  <p class="page-subtitle">The main page treats load average as the primary pressure signal — it conflates CPU and I/O contention into one number, exactly the ambiguity the kernel's own PSI feature was built to resolve.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Linux 4.20+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This closes a gap in the main page's own load-average coverage, directly answering its own interview-focus question about identifying whether a server is CPU-, memory-, or I/O-bound — the next subtopic moves from diagnosing pressure to a real danger in how the OOM killer is tuned.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="System Monitoring" topicRoute="/linux/system-monitoring"
+    [next]="{ label: 'oom_score_adj = -1000 Can Hang the Whole System', route: '/linux/system-monitoring/oom-score-adj-negative-1000-can-hang-the-whole-system' }" />
+</div>

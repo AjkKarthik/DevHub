@@ -138,7 +138,7 @@ public class EmailDirector
         builder
             .To(recipient)
             .Subject("Reset your password")
-            .HtmlBody(\`<a href="https://devhub.io/reset?t={token}">Reset password</a>\`)
+            .HtmlBody($"<a href=\\"https://devhub.io/reset?t={token}\\">Reset password</a>")
             .Build();
 }
 
@@ -159,7 +159,7 @@ config.Timeout = 60; // mutable after construction`,
   },
   {
     title: 'Forgetting to return `this` in fluent methods',
-    wrong: `public HttpRequestBuilder WithTimeout(int s) { _timeout = s; } // void — breaks chaining`,
+    wrong: `public void WithTimeout(int s) { _timeout = s; } // void — breaks chaining`,
     right: `public HttpRequestBuilder WithTimeout(int s) { _timeout = s; return this; }`,
     explanation: 'Every builder setter must return `this` (or the Builder type) to enable method chaining. Returning void forces callers to write separate assignment lines.',
   },

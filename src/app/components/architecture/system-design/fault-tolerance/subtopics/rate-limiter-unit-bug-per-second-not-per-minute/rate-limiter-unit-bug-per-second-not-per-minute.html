@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Fault Tolerance Patterns" topicRoute="/system-design/fault-tolerance" subtopicLabel="The Rate Limiter Was Configured for 600/min, Not 10/min" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">The Rate Limiter Was Configured for 600/min, Not 10/min</h1>
+  <p class="page-subtitle">The Challenge solution's "10/min per user" comment didn't match the value passed — TokenBucketLimiter's second argument is ratePerSec, so 10 actually configured 600/min, 60x too permissive.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This fixes a self-contained unit bug in the Challenge solution. Next: the fraud-check timeout in the same solution doesn't follow the page's own timeout-sizing rule.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Fault Tolerance Patterns" topicRoute="/system-design/fault-tolerance"
+    [next]="{ label: 'The Fraud-Check Timeout Breaks the Page’s Own 2-3x Rule', route: '/system-design/fault-tolerance/fraud-timeout-breaks-the-pages-own-2-3x-rule' }" />
+</div>

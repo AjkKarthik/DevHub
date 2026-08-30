@@ -1,0 +1,27 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Security & Defender" topicRoute="/azure/security-defender" subtopicLabel="Defender CSPM Is a Separate Paid Plan" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">Defender CSPM Is a Separate Paid Plan, Beyond Foundational CSPM</h1>
+  <p class="page-subtitle">The main page's two-tier framing (free CSPM / paid per-workload Defender plans) misses a whole middle tier — a paid CSPM plan with its own attack path analysis and agentless scanning.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Microsoft Defender for Cloud" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic fills a gap in the main page's own Defender for Cloud pricing architecture. Next, the JIT subtopic covers a real limitation in the main page's own JIT VM Access workflow coverage.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Security & Defender" topicRoute="/azure/security-defender"
+    [prev]="{ label: 'MMA Is Fully Retired, Defender Now Agentless', route: '/azure/security-defender/mma-agent-fully-retired-defender-servers-now-agentless' }"
+    [next]="{ label: 'JIT Quick-Enable Only Protects One Port', route: '/azure/security-defender/jit-quick-enable-only-protects-one-port-not-the-full-set' }" />
+</div>

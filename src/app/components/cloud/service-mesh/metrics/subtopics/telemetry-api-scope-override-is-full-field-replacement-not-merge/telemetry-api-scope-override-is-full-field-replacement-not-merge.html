@@ -1,0 +1,27 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Metrics &amp; Telemetry" topicRoute="/service-mesh/metrics" subtopicLabel="Telemetry API Scope Override Is Full Field Replacement, Not a Merge" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">Telemetry API Scope Override Is Full Field Replacement, Not a Merge</h1>
+  <p class="page-subtitle">The main page's "additive and composable" phrasing invited the wrong mental model — verified against Istio's own docs: a narrower scope completely replaces a touched field, it never merges with the parent.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Istio 1.12+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This sharpens the main page's own scope-hierarchy claim into its precise, documented mechanics. Next: why histogram bucket boundaries for latency metrics are fixed and cannot be customized at all — a real limitation the main page's SLO queries never mention.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Metrics &amp; Telemetry" topicRoute="/service-mesh/metrics"
+    [prev]="{ label: 'Grafana Dashboard IDs Were Mismatched With Their Actual Names', route: '/service-mesh/metrics/grafana-dashboard-ids-were-mismatched-with-their-actual-names' }"
+    [next]="{ label: 'Histogram Bucket Boundaries Are Fixed and Cannot Be Customized', route: '/service-mesh/metrics/histogram-bucket-boundaries-are-fixed-and-cannot-be-customized' }" />
+</div>

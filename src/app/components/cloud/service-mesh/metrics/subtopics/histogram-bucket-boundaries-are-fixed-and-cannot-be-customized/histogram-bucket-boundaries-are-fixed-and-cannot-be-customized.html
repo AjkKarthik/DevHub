@@ -1,0 +1,26 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Metrics &amp; Telemetry" topicRoute="/service-mesh/metrics" subtopicLabel="Histogram Bucket Boundaries Are Fixed and Cannot Be Customized" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">Histogram Bucket Boundaries Are Fixed and Cannot Be Customized</h1>
+  <p class="page-subtitle">The main page's precise p99/burn-rate math never mentions that the underlying histogram's bucket boundaries are hardcoded — a real precision ceiling for tight SLOs.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Istio (in-proxy telemetry, all current versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>Together with the corrected Grafana dashboard IDs and the Telemetry API override semantics, this closes out the main page's metrics trio for this batch — a real precision constraint worth knowing before promising sub-bucket SLO accuracy.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Metrics &amp; Telemetry" topicRoute="/service-mesh/metrics"
+    [prev]="{ label: 'Telemetry API Scope Override Is Full Field Replacement, Not a Merge', route: '/service-mesh/metrics/telemetry-api-scope-override-is-full-field-replacement-not-merge' }" />
+</div>

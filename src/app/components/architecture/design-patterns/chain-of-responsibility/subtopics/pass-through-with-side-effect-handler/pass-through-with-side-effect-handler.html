@@ -1,0 +1,30 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Chain of Responsibility" topicRoute="/design-patterns/chain-of-responsibility"
+    subtopicLabel="The Pass-Through-With-Side-Effect Handler, Made Concrete" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">The Pass-Through-With-Side-Effect Handler, Made Concrete</h1>
+  <p class="page-subtitle">The main page's QnA describes a handler that always processes AND always forwards
+    — but the Approval Chain never shows it. Here's an AuditLogHandler doing exactly that, and why placing it
+    inside the chain beats wrapping the whole chain in a Decorator.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic looks at the opposite end of the chain — what actually happens, and what SHOULD
+      happen, when no handler is willing to process a request at all.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Chain of Responsibility" topicRoute="/design-patterns/chain-of-responsibility"
+    [prev]="{ label: 'The Auth Middleware’s Operator-Precedence Bug', route: '/design-patterns/chain-of-responsibility/auth-middleware-operator-precedence-bug' }"
+    [next]="{ label: 'Making “No Handler Accepted This” a Real Signal', route: '/design-patterns/chain-of-responsibility/making-unhandled-a-real-signal' }" />
+</div>

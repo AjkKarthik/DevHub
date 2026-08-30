@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="AI/ML System Design" topicRoute="/system-design/ai-ml-system-design" subtopicLabel="RAG Pipeline Used the OpenAI SDK With a Claude Model Name" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">RAG Pipeline Used the OpenAI SDK With a Claude Model Name</h1>
+  <p class="page-subtitle">The RAG pipeline's generation step called openai.chat.completions.create() with model: 'claude-sonnet-4-6' — an Anthropic model identifier passed to the OpenAI client, which would fail at runtime.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>With the RAG code sample's SDK/model pairing fixed, the next issue is in the Challenge's own hints — a latency figure that doesn't match the solution's actual numbers.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="AI/ML System Design" topicRoute="/system-design/ai-ml-system-design"
+    [next]="{ label: 'Challenge Hint Said “LLM 2-4s”, Solution’s Own P50 Was 1.5s', route: '/system-design/ai-ml-system-design/latency-hint-vs-actual-p50' }" />
+</div>

@@ -1,0 +1,30 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Flyweight" topicRoute="/design-patterns/flyweight"
+    subtopicLabel="When Flyweight Identity Silently Merges Logically Distinct Objects" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">When Flyweight Identity Silently Merges Logically Distinct Objects</h1>
+  <p class="page-subtitle">The main page's own "identity is not important" caveat describes the flyweight —
+    not the object that references it. Here's a real bug from confusing the two: selecting one particle
+    silently selects every particle sharing its type.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>All three subtopics trace back to the same discipline: Flyweight's sharing is powerful precisely
+      because it is easy to misuse in adjacent, subtle ways — a wrong claim about the runtime, a missing lock,
+      or a comparison against the wrong object.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Flyweight" topicRoute="/design-patterns/flyweight"
+    [prev]="{ label: 'The Race in ParticleFactory.Get() Under Concurrent Access', route: '/design-patterns/flyweight/the-race-in-particlefactory-get' }" />
+</div>

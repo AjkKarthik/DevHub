@@ -1,0 +1,27 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Threat Modelling" topicRoute="/security/threat-modelling"
+    subtopicLabel="Building an Attack Tree in Code" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">Building an Attack Tree in Code</h1>
+  <p class="page-subtitle">The QnA defines attack trees precisely — AND/OR nodes, a goal-oriented root, quantifiable leaves. Here's one actually built, computed, and rolled up.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic applies PASTA-style business-risk reasoning to the same three threats the main page's own DREAD scoring already ranked — showing how adding business context can reorder priorities that raw technical scoring alone would miss.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Threat Modelling" topicRoute="/security/threat-modelling"
+    [prev]="{ label: 'Mapping a STRIDE Threat to Real MITRE ATT&CK Techniques', route: '/security/threat-modelling/mapping-a-stride-threat-to-mitre-attck' }"
+    [next]="{ label: 'A PASTA-Style Business-Risk Reprioritization', route: '/security/threat-modelling/a-pasta-style-business-risk-reprioritization' }" />
+</div>

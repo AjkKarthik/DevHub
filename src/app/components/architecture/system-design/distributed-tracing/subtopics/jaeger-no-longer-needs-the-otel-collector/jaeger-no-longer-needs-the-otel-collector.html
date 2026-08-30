@@ -1,0 +1,27 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Distributed Tracing" topicRoute="/system-design/distributed-tracing" subtopicLabel="Jaeger No Longer Needs the OTel Collector for Basic Setups" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">Jaeger No Longer Needs the OTel Collector for Basic Setups</h1>
+  <p class="page-subtitle">The page's only Jaeger example routes through a Collector — verified that Jaeger has accepted OTLP directly since v1.35 (2022), making the Collector optional for single-backend setups.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This adds a simpler architecture option the page never mentions. Next: Tempo's "no indexing" claim needs a TraceQL caveat.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Distributed Tracing" topicRoute="/system-design/distributed-tracing"
+    [prev]="{ label: 'The Tail-Based Sampling Example Was Actually Head-Based', route: '/system-design/distributed-tracing/tail-sampling-example-was-actually-head-based' }"
+    [next]="{ label: 'Tempo’s No-Indexing Claim Needs a TraceQL Caveat', route: '/system-design/distributed-tracing/tempos-no-indexing-claim-needs-a-traceql-caveat' }" />
+</div>

@@ -1,0 +1,30 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Facade" topicRoute="/design-patterns/facade"
+    subtopicLabel="The API Gateway: A Network-Boundary Facade" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">The API Gateway: A Network-Boundary Facade</h1>
+  <p class="page-subtitle">The main page's QnA calls the API Gateway pattern an architectural Facade. Same
+    shape as CheckoutFacade — but each "subsystem call" is now a network call, with a failure mode an
+    in-process Facade never has to reason about.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>This closes the loop across all three subtopics: the same Facade shape, the same rollback discipline
+      the first subtopic introduced, now applied where a network boundary makes "did this step actually
+      happen?" a genuinely open question instead of a certainty.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Facade" topicRoute="/design-patterns/facade"
+    [prev]="{ label: 'Facade vs. Mediator, Made Concrete', route: '/design-patterns/facade/facade-vs-mediator-made-concrete' }" />
+</div>

@@ -1,0 +1,27 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Hexagonal Architecture" topicRoute="/arch-patterns/hexagonal-architecture" subtopicLabel="The Hexagon-Shape Explanation Was Half the Story" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">The Hexagon-Shape Explanation Was Half the Story</h1>
+  <p class="page-subtitle">The page said the hexagon avoids a "top/bottom" hierarchy — true, but Cockburn's own account gives a second reason too: it's simply the easiest non-rectangular polygon to draw with room for multiple ports per side.</p>
+  <app-page-meta [readingTime]="6" difficulty="beginner" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>With the shape explanation completed, one more issue is worth covering — even after fixing the Challenge's undefined types, the solution's own "at least two adapters" rule was still only partially satisfied.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Hexagonal Architecture" topicRoute="/arch-patterns/hexagonal-architecture"
+    [prev]="{ label: 'The Challenge Referenced Two Types It Never Defined', route: '/arch-patterns/hexagonal-architecture/challenge-referenced-undefined-types' }"
+    [next]="{ label: 'The Solution Named a Real Adapter It Never Actually Used', route: '/arch-patterns/hexagonal-architecture/challenge-solution-missing-real-adapter' }" />
+</div>

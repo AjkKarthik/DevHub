@@ -1,0 +1,30 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Composite" topicRoute="/design-patterns/composite"
+    subtopicLabel="What the Transparency Design Actually Looks Like" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">What the Transparency Design Actually Looks Like</h1>
+  <p class="page-subtitle">The main page's theory, quiz, and QnA all discuss putting Add/Remove on the shared
+    Component interface — but never show it in code. Here it is, contrasted directly with the downcast the
+    main page's own Safety design requires but never writes out.</p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic makes concrete another combination the main page's own QnA names but never shows:
+      Composite paired with Visitor over the same file system tree.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Composite" topicRoute="/design-patterns/composite"
+    [prev]="{ label: 'Does System.IO’s FileSystemInfo Really Give You Composite?', route: '/design-patterns/composite/does-filesysteminfo-really-give-you-composite' }"
+    [next]="{ label: 'Composite Plus Visitor, Made Concrete', route: '/design-patterns/composite/composite-plus-visitor-made-concrete' }" />
+</div>

@@ -151,13 +151,17 @@ public static MyService Instance => _lazy.Value;`,
     public static Database Instance { get; } = new();
     private Database() { }
 }
-// Subclass can bypass the singleton via base()`,
+// A PRIVATE constructor already blocks external subclassing today --
+// but if a later edit ever widens it to protected (e.g. to support a
+// test subclass), this unsealed class silently becomes inheritable`,
     right: `public sealed class Database
 {
     public static Database Instance { get; } = new();
     private Database() { }
-}`,
-    explanation: 'A non-sealed class allows subclasses to call the private base constructor through their own constructor, creating additional instances.',
+}
+// sealed guarantees the single-instance contract can never be broken
+// by a FUTURE constructor-visibility change, not just today's code`,
+    explanation: 'A private constructor alone already prevents external classes from subclassing Database -- the C# compiler rejects it, since a derived class has no accessible base constructor to call. sealed is not fixing a bypass that exists today; it is a guardrail against a FUTURE edit (private -> protected) accidentally reopening subclassing. It also blocks the one existing edge case a private constructor does not cover: a class NESTED inside Database itself, which -- unlike an external class -- does have access to its enclosing type\'s private members and could otherwise inherit from it.',
   },
   {
     title: 'Using static singleton instead of DI',
@@ -251,12 +255,12 @@ const quiz: QuizQuestion[] = [
     q: 'Why should a Singleton class be sealed in C#?',
     options: [
       'To improve performance by skipping virtual dispatch',
-      'To prevent subclasses from bypassing the private constructor',
+      'To guard the single-instance contract against future changes and nested-class subclassing',
       'To allow serialization',
       'To enable static method calls',
     ],
     answer: 1,
-    explanation: 'A subclass can call the base (private) constructor via its own public constructor, creating additional instances and violating the singleton contract.',
+    explanation: 'A private constructor already blocks ordinary external subclassing today -- the compiler rejects it, since a derived class outside the declaring class has no accessible base constructor to call. sealed instead guards against two narrower risks: a future edit that widens the constructor to protected (which would silently reopen subclassing on an unsealed class), and a class NESTED inside the Singleton itself, which does have access to its enclosing type\'s private members and could otherwise inherit from it.',
   },
   {
     q: 'What is the main testability problem with static Singleton.Instance usage?',

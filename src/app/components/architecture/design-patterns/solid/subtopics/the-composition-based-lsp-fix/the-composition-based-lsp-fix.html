@@ -1,0 +1,26 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="SOLID Principles" topicRoute="/design-patterns/solid"
+    subtopicLabel="The Composition-Based LSP Fix" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">The Composition-Based LSP Fix</h1>
+  <p class="page-subtitle">The theory names composition as an LSP fix. The codeTab's own Square/Rectangle fix uses neither inheritance nor composition — here's the composition version.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="C# 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The next two subtopics build out the QnA's own "principles work together" claim concretely, and the mistakes block's warning against over-fragmenting SRP/ISP — both discussed at length in prose on the main page but never demonstrated with a worked example.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="SOLID Principles" topicRoute="/design-patterns/solid"
+    [next]="{ label: 'Tracing How One SRP Violation Cascades', route: '/design-patterns/solid/tracing-how-one-srp-violation-cascades' }" />
+</div>

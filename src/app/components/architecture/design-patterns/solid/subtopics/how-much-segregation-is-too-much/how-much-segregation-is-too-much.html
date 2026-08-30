@@ -1,0 +1,26 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="SOLID Principles" topicRoute="/design-patterns/solid"
+    subtopicLabel="How Much Segregation Is Too Much" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">How Much Segregation Is Too Much</h1>
+  <p class="page-subtitle">The mistakes block and QnA warn against over-fragmentation three separate times. Here's a worked comparison across three levels of granularity.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="C# 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>This closes out three concerns the main page names but doesn't fully build: the composition-based fix the LSP theory promises (first subtopic), the mechanical link between SRP and its OCP/ISP side effects (second), and now the boundary where "one reason to change" stops justifying a further split. All three apply the same underlying discipline — checking a design choice against the main page's own precise definitions, not just its general spirit.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="SOLID Principles" topicRoute="/design-patterns/solid"
+    [prev]="{ label: 'Tracing How One SRP Violation Cascades', route: '/design-patterns/solid/tracing-how-one-srp-violation-cascades' }" />
+</div>

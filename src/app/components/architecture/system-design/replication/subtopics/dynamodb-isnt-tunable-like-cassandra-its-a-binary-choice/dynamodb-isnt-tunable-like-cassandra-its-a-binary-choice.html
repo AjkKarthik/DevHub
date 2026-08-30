@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Replication Strategies" topicRoute="/system-design/replication" subtopicLabel="DynamoDB Isn't Tunable Like Cassandra — It's a Binary Choice" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">DynamoDB Isn't Tunable Like Cassandra — It's a Binary Choice</h1>
+  <p class="page-subtitle">The page grouped DynamoDB with Cassandra's "tunable to quorum" model — verified DynamoDB actually offers only a binary eventually-vs-strongly-consistent read choice, not a numeric W/R knob.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This untangles two different consistency models the page had grouped together. Next topic: Indexes & Query Optimisation.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Replication Strategies" topicRoute="/system-design/replication"
+    [prev]="{ label: 'Quorum (W+R greater than N) Guarantees Overlap, Not True Linearizability', route: '/system-design/replication/quorum-w-plus-r-over-n-guarantees-overlap-not-linearizability' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Hexagonal Architecture" topicRoute="/arch-patterns/hexagonal-architecture" subtopicLabel="The Solution Named a Real Adapter It Never Actually Used" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">The Solution Named a Real Adapter It Never Actually Used</h1>
+  <p class="page-subtitle">The Challenge's own hints mention a production SmtpGateway, but the reference solution only ever built and used an InMemoryNotificationGateway — violating the page's own "at least two adapters per port" rule.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>With both missing types defined, the shape explanation completed, and the Challenge solution now demonstrating a genuine swappable pair of adapters, this page's own core lesson about ports and adapters holds together consistently in its own worked example. Next up: Microservices Principles, where the same dependency-inversion ideas get applied across process and network boundaries rather than within a single deployable unit.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Hexagonal Architecture" topicRoute="/arch-patterns/hexagonal-architecture"
+    [prev]="{ label: 'The Hexagon-Shape Explanation Was Half the Story', route: '/arch-patterns/hexagonal-architecture/hexagon-shape-explanation-incomplete' }" />
+</div>

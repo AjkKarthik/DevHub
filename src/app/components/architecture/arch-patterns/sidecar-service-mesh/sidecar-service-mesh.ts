@@ -58,7 +58,7 @@ export class ArchSidecarServiceMesh {
         'Traffic management: canary releases (send 5% of traffic to v2), weighted routing, fault injection for chaos testing.',
         'Security: mTLS between all services, RBAC policies (only checkout-service may call payment-service).',
         'Resilience: retries, timeouts, circuit breaking configured centrally — no per-service Polly setup required.',
-        'The trade-off: operational complexity of the mesh control plane and ~10ms latency overhead per hop.',
+        'The trade-off: operational complexity of the mesh control plane and real added latency per hop — commonly a few milliseconds on modern Istio versions (single-digit ms at p90), though tail latencies (p99+) run higher due to occasional proxy GC pauses and TLS renegotiation.',
       ],
     },
     {
@@ -197,9 +197,9 @@ spec:
     },
     {
       title: 'Enabling the mesh without understanding latency impact',
-      wrong: `// Installing Istio without measuring baseline latency — surprised by 10–30ms overhead`,
+      wrong: `// Installing Istio without measuring baseline latency — surprised by the added overhead`,
       right: `// Benchmark before/after; use ambient mesh (Istio ambient) for lower overhead in new deployments`,
-      explanation: 'Sidecar proxies add ~10–30ms per hop. This is acceptable for most services but must be measured and factored into SLO budgets.',
+      explanation: 'Sidecar proxies add real per-hop latency — commonly a few milliseconds at p50/p90 on modern Istio, with tail latencies (p99+) running higher. This is acceptable for most services but must be measured and factored into SLO budgets.',
     },
     {
       title: 'Relying solely on mesh mTLS without application-level auth',
@@ -279,7 +279,9 @@ const retryPolicy = {
   attempts: 2,
   perTryTimeout: '2s',
   retryOn: '5xx,reset,connect-failure',
-  // Total max latency: 2 × 2s = 4s
+  // Istio's 'attempts' counts RETRIES after the initial request, not total
+  // tries — attempts: 2 means up to 3 tries total (1 original + 2 retries).
+  // Total max latency: 3 × 2s = 6s
 };
 
 // 4. Canary Traffic Split (via VirtualService + DestinationRule)
@@ -332,7 +334,7 @@ const trafficSplit = {
   qna: QnaItem[] = [
     {
       q: 'What is "ambient mesh" and why does it matter?',
-      a: 'Istio Ambient Mesh removes the per-pod sidecar in favour of a per-node proxy (ztunnel) and optional per-service waypoint proxy. Pros: lower memory/CPU overhead (no sidecar per pod), easier adoption. Cons: less granular per-pod policy. GA in Istio 1.22+.',
+      a: 'Istio Ambient Mesh removes the per-pod sidecar in favour of a per-node proxy (ztunnel) and optional per-service waypoint proxy. Pros: lower memory/CPU overhead (no sidecar per pod), easier adoption. Cons: less granular per-pod policy. GA in Istio 1.24+ (November 2024) — 1.22 still carried it as Beta.',
     },
     {
       q: 'When is a service mesh overkill?',

@@ -1,0 +1,26 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Service Bus" topicRoute="/azure/service-bus" subtopicLabel="Duplicate Detection Is Off by Default" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">Duplicate Detection Is Off by Default — 10-Minute Window When Enabled</h1>
+  <p class="page-subtitle">The main page states the configurable window range but never says the feature defaults to off, or that leaving the window unset means 10 minutes, not the 7-day maximum.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Azure Service Bus" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic fills in a default-value gap in the main page's own idempotency QnA. Next, the auto-forwarding subtopic covers a real limit missing from the main page's own message-forwarding coverage.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Service Bus" topicRoute="/azure/service-bus"
+    [next]="{ label: 'Auto-Forwarding Caps at 4 Hops', route: '/azure/service-bus/auto-forwarding-caps-at-4-hops-then-dead-letters' }" />
+</div>

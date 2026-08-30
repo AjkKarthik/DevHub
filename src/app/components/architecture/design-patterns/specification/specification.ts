@@ -84,15 +84,26 @@ public abstract class Specification<T>
     public Specification<T> Not()                        => new NotSpec<T>(this);
 }
 
+// ExpressionVisitor "Parameter Replacer" — rewrites an expression's own
+// parameter to a SHARED one, so two independently-built expressions can
+// be combined into ONE tree with no Expression.Invoke() nodes at all.
+// (LINQ providers, including EF Core, have well-documented trouble
+// translating Invoke() over a stored expression variable — this is the
+// technique the QnA above already names as the correct fix.)
+internal class ParameterReplacer(ParameterExpression target) : ExpressionVisitor
+{
+    protected override Expression VisitParameter(ParameterExpression node) => target;
+}
+
 // Composite specifications
 internal class AndSpec<T>(Specification<T> left, Specification<T> right) : Specification<T>
 {
     public override Expression<Func<T, bool>> ToExpression()
     {
-        var l = left.ToExpression();
-        var r = right.ToExpression();
         var param = Expression.Parameter(typeof(T));
-        var body  = Expression.AndAlso(Expression.Invoke(l, param), Expression.Invoke(r, param));
+        var l = new ParameterReplacer(param).Visit(left.ToExpression().Body);
+        var r = new ParameterReplacer(param).Visit(right.ToExpression().Body);
+        var body = Expression.AndAlso(l, r);
         return Expression.Lambda<Func<T, bool>>(body, param);
     }
 }
@@ -101,10 +112,10 @@ internal class OrSpec<T>(Specification<T> left, Specification<T> right) : Specif
 {
     public override Expression<Func<T, bool>> ToExpression()
     {
-        var l = left.ToExpression();
-        var r = right.ToExpression();
         var param = Expression.Parameter(typeof(T));
-        var body  = Expression.OrElse(Expression.Invoke(l, param), Expression.Invoke(r, param));
+        var l = new ParameterReplacer(param).Visit(left.ToExpression().Body);
+        var r = new ParameterReplacer(param).Visit(right.ToExpression().Body);
+        var body = Expression.OrElse(l, r);
         return Expression.Lambda<Func<T, bool>>(body, param);
     }
 }
@@ -113,9 +124,9 @@ internal class NotSpec<T>(Specification<T> inner) : Specification<T>
 {
     public override Expression<Func<T, bool>> ToExpression()
     {
-        var expr  = inner.ToExpression();
         var param = Expression.Parameter(typeof(T));
-        var body  = Expression.Not(Expression.Invoke(expr, param));
+        var expr  = new ParameterReplacer(param).Visit(inner.ToExpression().Body);
+        var body  = Expression.Not(expr);
         return Expression.Lambda<Func<T, bool>>(body, param);
     }
 }

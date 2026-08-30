@@ -1,0 +1,26 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="OWASP Top 10" topicRoute="/security/owasp-top-10"
+    subtopicLabel="The Injection Pattern That Missed Its Own Test" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">The Injection Pattern That Missed Its Own Test</h1>
+  <p class="page-subtitle">The Challenge's own solution claims a test case returns INJECTION. Running it actually returns SAFE.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>With the Challenge's own detector fixed, the next two subtopics build out two OWASP categories the quiz and QnA describe at length but never demonstrate in code: A08 Insecure Deserialization and A10 Server-Side Request Forgery.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="OWASP Top 10" topicRoute="/security/owasp-top-10"
+    [next]="{ label: 'A08 Insecure Deserialization, Made Concrete', route: '/security/owasp-top-10/a08-insecure-deserialization-made-concrete' }" />
+</div>

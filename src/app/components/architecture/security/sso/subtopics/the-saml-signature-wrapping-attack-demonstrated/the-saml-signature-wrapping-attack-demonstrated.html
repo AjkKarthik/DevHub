@@ -1,0 +1,26 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Single Sign-On (SSO)" topicRoute="/security/sso"
+    subtopicLabel="The SAML Signature Wrapping Attack, Demonstrated" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">The SAML Signature Wrapping Attack, Demonstrated</h1>
+  <p class="page-subtitle">The quiz explains the mechanism precisely. Here's the actual vulnerable lookup and the forged document — verified end-to-end, including a reversed-order case the naive fix would still miss.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>The next two subtopics build out mechanisms the QnA describes in real detail but never demonstrates in code: multi-tenant IdP resolution with tenant isolation, and the SCIM deprovisioning gap JIT provisioning alone can't close.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Single Sign-On (SSO)" topicRoute="/security/sso"
+    [next]="{ label: 'Multi-Tenant SSO — Domain Resolution and Isolation', route: '/security/sso/multi-tenant-sso-domain-resolution-and-isolation' }" />
+</div>

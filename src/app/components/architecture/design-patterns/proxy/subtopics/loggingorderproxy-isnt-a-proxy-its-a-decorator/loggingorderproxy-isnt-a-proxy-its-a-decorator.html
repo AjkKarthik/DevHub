@@ -1,0 +1,29 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Proxy" topicRoute="/design-patterns/proxy"
+    subtopicLabel="LoggingOrderProxy Isn't a Proxy — It's a Decorator" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">LoggingOrderProxy Isn't a Proxy — It's a Decorator</h1>
+  <p class="page-subtitle">The main page's own DI QnA used LoggingOrderProxy as an example — directly
+    contradicting the theory a few scrolls above it, which names logging as a textbook Decorator concern.
+    Here's the page's own WHETHER/WHEN-to-forward test, applied consistently.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic looks at a real .NET behavior the main page's own Caching Proxy codeTab is exposed
+      to but never discusses — what actually happens when the wrapped call returns null.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Proxy" topicRoute="/design-patterns/proxy"
+    [next]="{ label: 'GetOrCreateAsync Silently Caches null', route: '/design-patterns/proxy/getorcreateasync-silently-caches-null' }" />
+</div>

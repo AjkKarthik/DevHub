@@ -1,0 +1,27 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Design a Chat Application" topicRoute="/system-design/chat-application" subtopicLabel="‘Exactly-Once Delivery’ Contradicts the Page’s Own At-Least-Once Theory" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">‘Exactly-Once Delivery’ Contradicts the Page’s Own At-Least-Once Theory</h1>
+  <p class="page-subtitle">The Challenge asked for "exactly-once delivery," while the page's own Theory section states the architecture actually uses at-least-once delivery with client-side deduplication — two different guarantees, described as the same thing.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>With connection tracking and the delivery-guarantee wording both corrected, one more issue remains in the Challenge's own end-to-end encryption hint — it oversimplifies exactly how the Signal Protocol actually works.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Design a Chat Application" topicRoute="/system-design/chat-application"
+    [prev]="{ label: 'WebSocket Map Silently Drops First Device on Multi-Login', route: '/system-design/chat-application/websocket-map-silently-drops-first-device-on-multi-login' }"
+    [next]="{ label: 'E2E Encryption Hint Skipped the Double Ratchet', route: '/system-design/chat-application/e2e-encryption-hint-skipped-the-double-ratchet' }" />
+</div>

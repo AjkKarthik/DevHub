@@ -1,0 +1,26 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Module Patterns" topicRoute="/terraform/module-patterns" subtopicLabel="count on a Module Changes How Every Output Is Accessed" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">count on a Module Changes How Every Output Is Accessed</h1>
+  <p class="page-subtitle">The main page recommends count for feature flags without mentioning that applying it to a module block reshapes every output reference — and that the disabled case fails outright, not gracefully.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Terraform 0.13+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This completes the main page's own feature-flag advice with its knock-on effect on module outputs. Next: what terraform test actually does by default when a run block omits its command.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Module Patterns" topicRoute="/terraform/module-patterns"
+    [next]="{ label: 'terraform test Defaults to apply, Not plan', route: '/terraform/module-patterns/terraform-test-defaults-to-apply-not-plan' }" />
+</div>

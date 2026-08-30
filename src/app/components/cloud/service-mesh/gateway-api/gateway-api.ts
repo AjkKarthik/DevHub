@@ -85,7 +85,7 @@ export class MeshGatewayApi {
         'This prevents namespace boundary violations — a Gateway in `production` can limit attachments to routes in the `production` namespace, stopping `staging` routes from accidentally routing through the production Gateway.',
         'ReferenceGrant enables cross-namespace Service references: an HTTPRoute in `app-ns` can reference a backend in `infra-ns` only if a ReferenceGrant in `infra-ns` permits it.',
         'Status conditions: Gateway API provides rich status on all resources. `GatewayStatus.conditions`, `RouteStatus.parents[].conditions` show whether the route is accepted, attached, and resolving correctly.',
-        'Conflict resolution: if two HTTPRoutes attach to the same Gateway and have overlapping matches, the one with the lower creation timestamp wins. This is deterministic but can be surprising — design routes to avoid overlaps.',
+        'Conflict resolution: match SPECIFICITY is checked FIRST — method match, then largest number of header matches, then largest number of query param matches, then path-match specificity. Creation timestamp (oldest wins) is only the tiebreaker when two rules are EQUALLY specific; alphabetical namespace/name order is the final tiebreaker after that.',
       ],
     },
     {
@@ -315,15 +315,19 @@ spec:
       explanation: 'Kubernetes Gateway API covers routing and traffic splitting. Istio-specific resilience features (outlierDetection, connectionPool, consistent hash) are still configured via DestinationRule. Gateway API and Istio CRDs are complementary, not mutually exclusive — use both.',
     },
     {
-      title: 'Conflicting HTTPRoutes on the same Gateway path',
+      title: 'Assuming creation timestamp is the PRIMARY conflict-resolution rule',
       wrong: `# Route A: PathPrefix /api (created at 10:00)
 # Route B: PathPrefix /api/v2 (created at 09:00)
-# Route B was created first → it wins for /api/v2 despite being less specific`,
-      right: `# Use specific path types to avoid ambiguity
-# Exact match > PathPrefix match
-# Earlier-created routes win ties — design routes to avoid overlaps
-# Better: one HTTPRoute with multiple rules in order of specificity`,
-      explanation: 'Gateway API resolves conflicts between HTTPRoutes by creation timestamp — older routes win. Unlike VirtualService where rules within a resource are evaluated in order, conflict between separate HTTPRoute resources is resolved by timestamp. Avoid overlapping matches by using one HTTPRoute with ordered rules.',
+# Assuming Route B wins for /api/v2 because it was created first
+# — but /api/v2 is the MORE SPECIFIC match, so it actually wins
+# regardless of which was created first`,
+      right: `# Gateway API checks specificity FIRST: method match, header
+# match count, query param match count, then path specificity
+# (exact > longest prefix). Creation timestamp only breaks ties
+# between EQUALLY specific rules.
+# Better: one HTTPRoute with multiple rules in order of specificity,
+# so precedence is explicit rather than relying on tie-breaking rules`,
+      explanation: 'Gateway API resolves conflicts by match specificity first (method, header count, query param count, path specificity) — creation timestamp is only a tiebreaker between rules that are equally specific, not the primary rule. A more specific match (like /api/v2) wins over a less specific one (/api) regardless of which was created first. Avoid overlapping matches by using one HTTPRoute with ordered rules so precedence is explicit.',
     },
     {
       title: 'Not checking HTTPRoute status after applying',
@@ -458,9 +462,9 @@ console.log(getShopConfig());`,
     },
     {
       q: 'How does Gateway API resolve conflicts between two HTTPRoutes with overlapping path matches?',
-      options: ['The more specific path match always wins', 'The HTTPRoute with higher weight wins', 'The HTTPRoute created first (lower creation timestamp) wins', 'Conflicts are rejected at apply time'],
-      answer: 2,
-      explanation: 'When two separate HTTPRoute resources have overlapping matches on the same Gateway listener, Gateway API uses creation timestamp to resolve the conflict — the older resource wins. This is different from VirtualService where rules within one resource are evaluated in order. Avoid overlapping matches by designing routes carefully.',
+      options: ['The more specific path match wins first; creation timestamp only breaks ties between equally-specific matches', 'The HTTPRoute with higher weight wins', 'The HTTPRoute created first (lower creation timestamp) always wins, regardless of specificity', 'Conflicts are rejected at apply time'],
+      answer: 0,
+      explanation: 'Gateway API checks match specificity FIRST (method match, then header match count, then query param match count, then path specificity) — creation timestamp is only the tiebreaker when two rules are equally specific, and alphabetical namespace/name order is the final tiebreaker after that. A more specific match always wins over a less specific one, even if the less specific route was created first.',
     },
     {
       q: 'How do you check if an HTTPRoute was successfully attached to a Gateway?',
@@ -508,7 +512,7 @@ console.log(getShopConfig());`,
       'HTTPRoute: routing rules with path/header match + backendRefs weights for splitting',
       'GAMMA: HTTPRoute attached to Service (parentRefs[0].kind: Service) for mesh traffic',
       'ReferenceGrant: required for cross-namespace references (HTTPRoute→Service, Gateway→Secret)',
-      'Conflict resolution: older HTTPRoute (lower timestamp) wins overlapping path matches',
+      'Conflict resolution: match specificity wins first (method, header count, query param count, path); timestamp only breaks ties between equally-specific rules',
       'DestinationRule still needed for connectionPool, outlierDetection, consistent hash',
     ],
     interviewFocus: [

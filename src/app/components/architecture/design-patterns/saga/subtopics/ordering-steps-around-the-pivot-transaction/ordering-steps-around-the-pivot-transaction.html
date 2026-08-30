@@ -1,0 +1,27 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Saga Pattern" topicRoute="/design-patterns/saga"
+    subtopicLabel="Ordering Steps Around the Pivot Transaction" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Ordering Steps Around the Pivot Transaction</h1>
+  <p class="page-subtitle">One sentence on the main page names "pivot transactions." Here's a concrete rule and a validator that enforces it.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="C# 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>Pivot ordering is about WHEN a step runs relative to the others. The next subtopic covers a different, complementary property a compensation itself can have — whether it stays correct no matter what ORDER it arrives in relative to other operations on the same resource.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Saga Pattern" topicRoute="/design-patterns/saga"
+    [prev]="{ label: 'The Missing Order Total in InventoryReservedEvent', route: '/design-patterns/saga/the-missing-order-total-in-inventoryreservedevent' }"
+    [next]="{ label: 'Building a Commutative Compensation', route: '/design-patterns/saga/building-a-commutative-compensation' }" />
+</div>

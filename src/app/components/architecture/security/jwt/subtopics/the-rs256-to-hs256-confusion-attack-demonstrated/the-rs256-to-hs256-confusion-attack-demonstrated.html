@@ -1,0 +1,27 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="JSON Web Tokens" topicRoute="/security/jwt"
+    subtopicLabel="The RS256 → HS256 Confusion Attack, Demonstrated" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">The RS256 → HS256 Confusion Attack, Demonstrated</h1>
+  <p class="page-subtitle">The theory explains the mechanism precisely. Here's the actual vulnerable verifier and forged token — verified end-to-end with real RSA keys.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic builds refresh token rotation with reuse detection — the "token families" mechanism the quiz names in detail but never shows implemented.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="JSON Web Tokens" topicRoute="/security/jwt"
+    [prev]="{ label: 'Token Revocation, Both Ways', route: '/security/jwt/token-revocation-both-ways' }"
+    [next]="{ label: 'Refresh Token Rotation With Reuse Detection', route: '/security/jwt/refresh-token-rotation-with-reuse-detection' }" />
+</div>

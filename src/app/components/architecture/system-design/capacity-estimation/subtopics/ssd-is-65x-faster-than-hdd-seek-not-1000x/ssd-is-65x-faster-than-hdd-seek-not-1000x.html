@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Capacity Estimation" topicRoute="/system-design/capacity-estimation" subtopicLabel="SSD Is ~65x Faster Than HDD Seek, Not 1,000x" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">SSD Is ~65x Faster Than HDD Seek, Not 1,000x</h1>
+  <p class="page-subtitle">The main page's own "rules of thumb" didn't even match the numbers in its own latency table three lines above — a self-catchable inconsistency, tightened further against the canonical source.</p>
+  <app-page-meta [readingTime]="6" difficulty="beginner" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This corrects a self-inconsistent rule of thumb on the main page. Next: the same latency table's Redis/Memcached figures overstate the cache server's own processing overhead.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Capacity Estimation" topicRoute="/system-design/capacity-estimation"
+    [next]="{ label: 'Redis GET Latency Is Network RTT, Not an Extra 1ms', route: '/system-design/capacity-estimation/redis-get-latency-is-network-rtt-not-an-extra-1ms' }" />
+</div>

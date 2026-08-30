@@ -1,0 +1,27 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Single Sign-On (SSO)" topicRoute="/security/sso"
+    subtopicLabel="Multi-Tenant SSO — Domain Resolution and Isolation" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">Multi-Tenant SSO — Domain Resolution and Isolation</h1>
+  <p class="page-subtitle">The QnA describes multi-tenant SSO architecture in real detail. Here's domain-based tenant resolution and the isolation check the QnA warns is easy to skip — both verified end-to-end.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic builds the SCIM deprovisioning gap the QnA names — the one thing JIT provisioning, already implicit in the main page's own findOrCreate calls, structurally cannot do.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Single Sign-On (SSO)" topicRoute="/security/sso"
+    [prev]="{ label: 'The SAML Signature Wrapping Attack, Demonstrated', route: '/security/sso/the-saml-signature-wrapping-attack-demonstrated' }"
+    [next]="{ label: 'SCIM Deprovisioning — the JIT Gap SCIM Closes', route: '/security/sso/scim-deprovisioning-the-jit-gap-scim-closes' }" />
+</div>

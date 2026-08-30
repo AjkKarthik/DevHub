@@ -1,0 +1,27 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Ambient Mesh" topicRoute="/service-mesh/ambient-mesh" subtopicLabel="Default Redirection Is iptables+GENEVE, Not eBPF" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">Default Redirection Is iptables+GENEVE, Not eBPF</h1>
+  <p class="page-subtitle">The main page framed eBPF as a co-equal default alongside iptables and cited an unconfirmed kernel version — verified against Istio's own ambient CNI docs.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Istio 1.24+ (GA)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This corrects a real mechanism claim on the main page. Next: the main page also described HBONE identity as conveyed via HTTP headers — verified the real mechanism is the underlying mTLS handshake itself.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Ambient Mesh" topicRoute="/service-mesh/ambient-mesh"
+    [prev]="{ label: 'Ambient Mesh Reached GA at Istio 1.24, Not 1.22', route: '/service-mesh/ambient-mesh/ambient-mesh-reached-ga-at-istio-1-24-not-1-22' }"
+    [next]="{ label: 'HBONE Identity Comes From the mTLS Handshake, Not HTTP Headers', route: '/service-mesh/ambient-mesh/hbone-identity-comes-from-the-mtls-handshake-not-http-headers' }" />
+</div>

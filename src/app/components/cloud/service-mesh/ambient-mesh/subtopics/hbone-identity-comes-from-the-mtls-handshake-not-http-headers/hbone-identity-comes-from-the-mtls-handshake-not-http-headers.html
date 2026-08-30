@@ -1,0 +1,26 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Ambient Mesh" topicRoute="/service-mesh/ambient-mesh" subtopicLabel="HBONE Identity Comes From the mTLS Handshake, Not HTTP Headers" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">HBONE Identity Comes From the mTLS Handshake, Not HTTP Headers</h1>
+  <p class="page-subtitle">The main page implied identity travels in an HTTP header — verified the mTLS handshake underneath the HTTP/2 CONNECT tunnel is what actually authenticates and conveys identity.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Istio 1.24+ (GA)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This is the third and final correction in this batch — together with the GA-date and default-redirection subtopics, these three corrections tighten the main page's own claims about Ambient Mesh's timeline, traffic capture, and identity mechanism.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Ambient Mesh" topicRoute="/service-mesh/ambient-mesh"
+    [prev]="{ label: 'Default Redirection Is iptables+GENEVE, Not eBPF', route: '/service-mesh/ambient-mesh/default-redirection-is-iptables-geneve-not-ebpf' }" />
+</div>

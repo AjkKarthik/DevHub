@@ -1,0 +1,26 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Security Fundamentals" topicRoute="/security/fundamentals"
+    subtopicLabel="What SAST Actually Catches" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">What SAST Actually Catches</h1>
+  <p class="page-subtitle">SAST, SCA, and DAST are named with real tool examples. Here's the exact pattern a SAST scanner is designed to flag — and one it might miss.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>This closes out three Security Fundamentals concerns the main page names but doesn't fully build: a complete STRIDE walkthrough on one feature (first subtopic), the fail-secure/fail-safe distinction in working middleware code (second), and now what an automated scanner actually looks for — and where its blind spots are.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Security Fundamentals" topicRoute="/security/fundamentals"
+    [prev]="{ label: 'Fail-Secure vs. Fail-Safe, Made Concrete', route: '/security/fundamentals/fail-secure-vs-fail-safe-made-concrete' }" />
+</div>

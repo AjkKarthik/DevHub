@@ -1,0 +1,32 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Object Pool" topicRoute="/design-patterns/object-pool"
+    subtopicLabel="Implementing Idle-Object Eviction" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Implementing Idle-Object Eviction</h1>
+  <p class="page-subtitle">The main page's theory promises the pool "may shrink idle objects after a timeout"
+    — but neither codeTab ever shows how. Here's the missing piece: a timestamped pool with a background
+    sweep, and why disposal has to be part of eviction.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>Notice this eviction-friendly pool reaches for a <code>ConcurrentQueue&lt;T&gt;</code> instead of the
+      main page's <code>ConcurrentBag&lt;T&gt;</code> — that's not arbitrary. The next subtopic contrasts the
+      two head-on: why the main page chose a bag, why the QnA's own thread-safe-pool answer reaches for a
+      queue instead, and what each tradeoff actually buys you.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Object Pool" topicRoute="/design-patterns/object-pool"
+    [prev]="{ label: 'The Count-Check Race Condition', route: '/design-patterns/object-pool/count-check-race-condition' }"
+    [next]="{ label: 'ConcurrentBag vs. ConcurrentQueue for Pool Storage', route: '/design-patterns/object-pool/concurrentbag-vs-concurrentqueue' }" />
+</div>

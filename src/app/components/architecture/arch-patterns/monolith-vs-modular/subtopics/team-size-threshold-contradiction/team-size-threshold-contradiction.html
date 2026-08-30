@@ -1,0 +1,26 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Monolith vs Modular Monolith" topicRoute="/arch-patterns/monolith-vs-modular" subtopicLabel="Team-Size Thresholds Disagreed by 5-10 Engineers" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">Team-Size Thresholds Disagreed by 5-10 Engineers</h1>
+  <p class="page-subtitle">The theory section said microservices pay off at "10-15 engineers" while the quiz explanation said choose modular monolith below "20 engineers" — for a team of 17, the page gave opposite advice.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>With the team-size guidance reconciled, the next issue is in the Challenge's own solution code — a SharedKernel value object that's declared but never actually used at the module boundary it's meant to protect.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Monolith vs Modular Monolith" topicRoute="/arch-patterns/monolith-vs-modular"
+    [next]="{ label: 'SharedKernel’s Own ProductId Type Was Never Actually Used', route: '/arch-patterns/monolith-vs-modular/sharedkernel-productid-never-used' }" />
+</div>

@@ -1,0 +1,27 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Package Management" topicRoute="/linux/package-management" subtopicLabel="apt-mark auto/manual Is What Actually Drives autoremove" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">apt-mark auto/manual Is What Actually Drives autoremove</h1>
+  <p class="page-subtitle">The main page mentions autoremove twice without explaining the mechanism — every package is flagged automatic or manual at install time, and that flag, not current usage, decides what gets removed.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="APT (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This explains the mechanism the main page's own autoremove mentions rely on. Next: why dnf history undo can fail on an update transaction that looked completely reversible.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Package Management" topicRoute="/linux/package-management"
+    [prev]="{ label: 'apt-key Is Deprecated — signed-by Keyrings Is the Modern Replacement', route: '/linux/package-management/apt-key-is-deprecated-signed-by-keyrings-is-the-modern-replacement' }"
+    [next]="{ label: 'dnf history undo Can Fail When the Old Version Left the Repo', route: '/linux/package-management/dnf-history-undo-can-fail-when-the-old-version-left-the-repo' }" />
+</div>

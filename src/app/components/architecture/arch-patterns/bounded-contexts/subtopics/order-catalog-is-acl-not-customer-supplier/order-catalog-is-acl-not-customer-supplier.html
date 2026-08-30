@@ -1,0 +1,26 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Bounded Contexts" topicRoute="/arch-patterns/bounded-contexts" subtopicLabel="Order-Catalog Is ACL, Not Customer/Supplier" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">Order-Catalog Is ACL, Not Customer/Supplier</h1>
+  <p class="page-subtitle">The page's own codeTabs labeled the same Order-to-Catalog dependency two different ways — an Anti-Corruption Layer in one tab, Customer/Supplier in another. This subtopic shows why only one of those labels is actually supported by the code shown.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic picks up the other half of this same distinction — Event Publisher as a delivery mechanism versus Customer/Supplier as a planning relationship, the same mechanism-vs-relationship split that motivates this fix.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Bounded Contexts" topicRoute="/arch-patterns/bounded-contexts"
+    [next]="{ label: 'Event Publisher: Mechanism vs. Relationship', route: '/arch-patterns/bounded-contexts/event-publisher-mechanism-vs-relationship' }" />
+</div>

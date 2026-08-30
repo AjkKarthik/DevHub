@@ -1,0 +1,27 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Dependency Inversion" topicRoute="/design-patterns/dependency-inversion"
+    subtopicLabel="Who Should Own the Abstraction?" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Who Should Own the Abstraction?</h1>
+  <p class="page-subtitle">A quiz question makes this precise claim in prose. Here's the wrong project layout and the right one, side by side.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="C# 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic covers a different unfinished thread — the theory names Property Injection and Method Injection as the other two DI styles besides constructor injection, but no codeTab on the page ever shows either one.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Dependency Inversion" topicRoute="/design-patterns/dependency-inversion"
+    [prev]="{ label: 'The Missing GetSummaryAsync Method', route: '/design-patterns/dependency-inversion/the-missing-getsummaryasync-method' }"
+    [next]="{ label: 'Property and Method Injection, Shown', route: '/design-patterns/dependency-inversion/property-and-method-injection-shown' }" />
+</div>

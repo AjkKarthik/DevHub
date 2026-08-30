@@ -1,0 +1,30 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="State" topicRoute="/design-patterns/state"
+    subtopicLabel="Reconstructing State From Persisted Data" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Reconstructing State From Persisted Data</h1>
+  <p class="page-subtitle">The main page's own persistence QnA sketches "switch-on-load" in one line. Here's
+    the full round trip for its own Order lifecycle, plus the design decision the sketch glosses over: what
+    happens on a corrupted or unrecognized stored value.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="C# 8.0+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>Together with the previous two subtopics, this closes out the main page's own three biggest
+      named-but-unbuilt QnA sketches: sharing stateless states as singletons, a data-driven transition table
+      alternative, and reconstructing state from storage.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="State" topicRoute="/design-patterns/state"
+    [prev]="{ label: 'A Data-Driven State Transition Table', route: '/design-patterns/state/data-driven-state-transition-table' }" />
+</div>

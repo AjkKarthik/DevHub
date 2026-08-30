@@ -1,0 +1,31 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Mediator" topicRoute="/design-patterns/mediator"
+    subtopicLabel="MediatR's 2025 Commercial License Change" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">MediatR's 2025 Commercial License Change</h1>
+  <p class="page-subtitle">The main page calls MediatR "the de facto .NET Mediator for CQRS" — still true in
+    adoption terms, but since v13 (July 2025) the library ships under a dual license, free only under a $5M
+    revenue threshold. Here's exactly what changed and what didn't.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="MediatR 13.0+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>Licensing doesn't change the Mediator pattern itself — the main page's own hand-rolled
+      <code>ChatRoom</code> example never depended on MediatR at all. But since MediatR carries most of the
+      page's ".NET Examples" and QnA content, knowing exactly where the free tier ends is part of correctly
+      applying that recommendation in a real project.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Mediator" topicRoute="/design-patterns/mediator"
+    [next]="{ label: 'Publish() Stops on the First Handler Exception', route: '/design-patterns/mediator/publish-exception-halts-later-handlers' }" />
+</div>

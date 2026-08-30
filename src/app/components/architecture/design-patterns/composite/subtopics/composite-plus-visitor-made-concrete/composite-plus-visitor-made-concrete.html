@@ -1,0 +1,31 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Composite" topicRoute="/design-patterns/composite"
+    subtopicLabel="Composite Plus Visitor, Made Concrete" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Composite Plus Visitor, Made Concrete</h1>
+  <p class="page-subtitle">The main page's QnA says Composite and Visitor are "a very common combination" in
+    one sentence and moves on. Here's the actual Accept() method and two independent visitors, built over the
+    main page's own FileItem/Folder tree.</p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>This same Accept()-based traversal is the foundation the Visitor topic will build on directly when it
+      arrives later in the Behavioral group — the double-dispatch mechanism shown here (VisitFile vs.
+      VisitFolder) is Visitor's own core trick, introduced early because Composite is where it is most
+      naturally motivated.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Composite" topicRoute="/design-patterns/composite"
+    [prev]="{ label: 'What the Transparency Design Actually Looks Like', route: '/design-patterns/composite/the-transparency-design-made-concrete' }" />
+</div>

@@ -151,9 +151,11 @@ async function getFeed(userId: string, cursor?: number, limit = 20): Promise<Fee
   const allIds = [...feedPostIds, ...celebPostIds.map(p => p.id)];
   const uniqueIds = [...new Set(allIds)].slice(0, limit);
 
-  // 5. Batch fetch post data + author info (denormalised)
+  // 5. Batch fetch post data — author name/avatar are DENORMALISED onto
+  // the posts row at write time (see quickRef + the N+1 mistake fix below),
+  // so this is a single-table lookup, no JOIN needed on the hot read path
   const posts = await db.query(
-    'SELECT p.*, u.username, u.avatar FROM posts p JOIN users u ON p.author_id = u.id WHERE p.id IN (?)',
+    'SELECT id, author_id, content, created_at, author_username, author_avatar FROM posts WHERE id IN (?)',
     [uniqueIds]
   );
 
@@ -171,7 +173,7 @@ async function getFeed(userId: string, cursor?: number, limit = 20): Promise<Fee
     language: 'bash',
     code: `# Social feed scale estimates (Twitter-like)
 
-# Users: 500M active; avg 200 follows; post rate: 500M tweets/day
+# Users: 500M registered, 100M daily active; avg 200 follows; post rate: 500M tweets/day
 
 # Write path:
 # 500M posts/day = ~5,800 posts/sec
@@ -183,10 +185,14 @@ async function getFeed(userId: string, cursor?: number, limit = 20): Promise<Fee
 # Without hybrid: top celeb post = 1M Redis writes = system spike
 # With hybrid: celeb posts queried at read time (10k users follow 100 celebs = 100 reads at merge)
 
-# Read path:
-# 500M users × 5 feed loads/day = 2.5B reads/day = ~29,000 reads/sec
+# Read path (100M DAILY ACTIVE users generate reads, not all 500M registered):
+# 100M users × 5 feed loads/day = 500M reads/day = ~5,800 reads/sec
 # Each read: Redis ZREVRANGEBYSCORE = O(log N + K) = sub-ms
-# Feed Redis memory: 500M users × 1000 posts × 8 bytes = 4 TB
+# Feed Redis memory: a ZSET entry costs ~130 bytes at this size (skiplist +
+# hashtable overhead, not just the ~8-byte post_id -- Redis ZSETs above the
+# listpack threshold, ~128 entries, use full skiplist encoding)
+# 500M users × 1000 posts × ~130 bytes ≈ 65 TB (not 4 TB) -- meaningfully
+# more Redis Cluster capacity needed than the naive per-ID estimate implies
 # → Use Redis Cluster + evict feeds of inactive users (TTL 30 days)
 
 # PostgreSQL for posts table:

@@ -1,0 +1,27 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Envoy Proxy Deep Dive" topicRoute="/service-mesh/envoy" subtopicLabel="INSERT_AFTER Targeting router Means the Filter Never Runs" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">INSERT_AFTER Targeting router Means the Filter Never Runs</h1>
+  <p class="page-subtitle">The main page flags this exact risk in one clause of a different QnA answer — this expands it into the full worked example of the mistake and its fix.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Istio (EnvoyFilter CRD)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This turns the main page's own one-sentence warning into a concrete broken-vs-fixed comparison. Next: why Delta xDS isolates a NACK'd resource's failure, unlike SotW's all-or-nothing rejection.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Envoy Proxy Deep Dive" topicRoute="/service-mesh/envoy"
+    [prev]="{ label: 'WasmPlugin phase Determines Order Relative to Built-in Filters', route: '/service-mesh/envoy/wasmplugin-phase-determines-order-relative-to-built-in-filters' }"
+    [next]="{ label: 'Delta xDS Isolates a NACKd Resource — SotW Blocks the Whole Type', route: '/service-mesh/envoy/delta-xds-isolates-a-nackd-resource-sotw-blocks-the-whole-type' }" />
+</div>

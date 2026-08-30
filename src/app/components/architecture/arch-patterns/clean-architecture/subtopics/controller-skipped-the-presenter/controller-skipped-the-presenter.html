@@ -1,0 +1,27 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Clean / Onion Architecture" topicRoute="/arch-patterns/clean-architecture" subtopicLabel="The Controller Skipped Its Own Presenter" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">The Controller Skipped Its Own Presenter</h1>
+  <p class="page-subtitle">The Infrastructure Adapter code sample's controller built the HTTP response inline, never using the OrderPresenter class the page's own file structure, theory, and mistakes block all say should be there.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>With the presenter now actually used, one more angle is worth expanding: the QnA briefly names an "OutputPort" as an alternative to a return value, without ever showing what that pattern looks like in code — and it's the mechanism that lets one Use Case serve multiple different presenters.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Clean / Onion Architecture" topicRoute="/arch-patterns/clean-architecture"
+    [prev]="{ label: 'The mustKnow Ring Order Was Labeled Backwards', route: '/arch-patterns/clean-architecture/mustknow-ring-order-mislabeled' }"
+    [next]="{ label: 'The OutputPort Pattern: One Use Case, Multiple Presenters', route: '/arch-patterns/clean-architecture/one-usecase-multiple-presenters' }" />
+</div>

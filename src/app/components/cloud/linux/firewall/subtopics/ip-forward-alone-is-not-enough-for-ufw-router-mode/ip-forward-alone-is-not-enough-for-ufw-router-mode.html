@@ -1,0 +1,26 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Firewall &amp; iptables" topicRoute="/linux/firewall" subtopicLabel="ip_forward Alone Isn’t Enough for UFW Router Mode" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">ip_forward Alone Isn't Enough for UFW Router Mode</h1>
+  <p class="page-subtitle">The main page's single-line sysctl command skips two real gaps — the setting isn't persistent, and UFW's own FORWARD chain defaults to DROP regardless of what the kernel allows.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="UFW (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the topic's three deep dives, turning the main page's one-line NAT/router mention into a full working checklist for a UFW-managed system.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Firewall &amp; iptables" topicRoute="/linux/firewall"
+    [prev]="{ label: 'iptables -F Doesn’t Reset the Default Policy — a DROP Policy Can Lock You Out', route: '/linux/firewall/iptables-flush-does-not-reset-policy-can-lock-you-out' }" />
+</div>

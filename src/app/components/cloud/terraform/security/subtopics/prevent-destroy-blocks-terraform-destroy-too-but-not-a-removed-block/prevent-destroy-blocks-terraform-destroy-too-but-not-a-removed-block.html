@@ -1,0 +1,27 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Security & Compliance" topicRoute="/terraform/security" subtopicLabel="prevent_destroy Blocks terraform destroy Too — But Not a Removed Block" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">prevent_destroy Blocks terraform destroy Too — But Not a Removed Block</h1>
+  <p class="page-subtitle">The main page calls prevent_destroy a guard against "accidental" destruction — it actually blocks an explicit terraform destroy too, and has exactly one deliberate bypass path.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Terraform (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This sharpens the main page's "accidental destruction" framing with the guard's real, broader scope. Next: why OPA/conftest enforcement depends entirely on CI pipeline wiring, unlike Sentinel's native TFC/TFE enforcement.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Security & Compliance" topicRoute="/terraform/security"
+    [prev]="{ label: 'Soft-Mandatory Overrides Need a Specific TFC Permission, Not Just Plan Access', route: '/terraform/security/soft-mandatory-overrides-need-a-specific-tfc-permission-not-just-plan-access' }"
+    [next]="{ label: 'OPA/conftest Enforcement Is a CI-Pipeline Responsibility, Not Native', route: '/terraform/security/opa-conftest-enforcement-is-a-ci-pipeline-responsibility-not-native' }" />
+</div>

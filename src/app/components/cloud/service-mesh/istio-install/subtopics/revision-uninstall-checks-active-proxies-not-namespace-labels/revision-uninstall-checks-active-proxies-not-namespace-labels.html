@@ -1,0 +1,26 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Istio Installation &amp; Configuration" topicRoute="/service-mesh/istio-install" subtopicLabel="Revision Uninstall Checks Active Proxies, Not Namespace Labels" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">Revision Uninstall Checks Active Proxies, Not Namespace Labels</h1>
+  <p class="page-subtitle">The main page's uninstall step reads as safe "after validating all namespaces" — but istioctl's own safety check only sees live proxies, missing a namespace with zero running pods at that exact moment.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Istio (revision-based installs)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the main page's canary-upgrade sequence with the verification step its own "after validating all namespaces" step assumes but never specifies.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Istio Installation &amp; Configuration" topicRoute="/service-mesh/istio-install"
+    [prev]="{ label: 'uninstall --purge Does Not Reliably Remove Every Webhook', route: '/service-mesh/istio-install/uninstall-purge-does-not-reliably-remove-every-webhook' }" />
+</div>

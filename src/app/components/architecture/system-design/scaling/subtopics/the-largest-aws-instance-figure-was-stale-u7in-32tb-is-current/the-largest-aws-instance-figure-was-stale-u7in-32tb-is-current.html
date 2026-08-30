@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Horizontal vs Vertical Scaling" topicRoute="/system-design/scaling" subtopicLabel="The Largest AWS Instance Figure Was Stale — u7in-32tb Is Current" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">The Largest AWS Instance Figure Was Stale — u7in-32tb Is Current</h1>
+  <p class="page-subtitle">The main page cited a deprecated AWS instance (448 vCPU, 24 TB) as the vertical-scaling ceiling — verified against AWS's own docs that the current largest is nearly double.</p>
+  <app-page-meta [readingTime]="6" difficulty="beginner" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This corrects a stale vendor-specific figure. Next: the main page's Amdahl's Law explanation only tells half the story — Gustafson's Law covers the other, often more realistic, half.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Horizontal vs Vertical Scaling" topicRoute="/system-design/scaling"
+    [next]="{ label: 'Gustafson’s Law Is Amdahl’s Optimistic Counterpart', route: '/system-design/scaling/gustafsons-law-is-amdahls-optimistic-counterpart' }" />
+</div>

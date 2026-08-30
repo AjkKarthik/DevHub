@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Caching Strategies" topicRoute="/system-design/caching" subtopicLabel="The PER Code Is Missing XFetch's Recompute-Cost Signal" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">The PER Code Is Missing XFetch's Recompute-Cost Signal</h1>
+  <p class="page-subtitle">The main page's "Probabilistic Early Expiration" code names the real XFetch algorithm but its formula leaves out delta — the recompute-cost term that makes XFetch actually work.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This is the third and final correction in this batch — together, these three subtopics fix a "default" claim, close a cross-example gap, and complete a named algorithm's actual formula.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Caching Strategies" topicRoute="/system-design/caching"
+    [prev]="{ label: 'The Multi-Level Cache Example Never Invalidates L1', route: '/system-design/caching/the-multi-level-cache-example-never-invalidates-l1' }" />
+</div>

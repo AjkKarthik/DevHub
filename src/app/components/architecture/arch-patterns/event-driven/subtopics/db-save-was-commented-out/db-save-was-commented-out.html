@@ -1,0 +1,27 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Event-Driven Architecture" topicRoute="/arch-patterns/event-driven" subtopicLabel="The DB Save Was Commented Out" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">The DB Save Was Commented Out, Contradicting Its Own Hint</h1>
+  <p class="page-subtitle">The Challenge's hints explicitly say "Publish AFTER DB save — not before," but the reference solution's DB save line was commented out entirely, so it never actually implemented that ordering.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>Both fixes so far were about the same Challenge solution. The last subtopic makes a different tradeoff on this page concrete — the fat-vs-thin events staleness risk the theory describes abstractly but never demonstrates.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Event-Driven Architecture" topicRoute="/arch-patterns/event-driven"
+    [prev]="{ label: 'The Broker Stub Was Secretly Blocking', route: '/arch-patterns/event-driven/broker-stub-was-secretly-blocking' }"
+    [next]="{ label: 'The Fat-Events Staleness Risk, Made Concrete', route: '/arch-patterns/event-driven/fat-events-staleness-risk-made-concrete' }" />
+</div>

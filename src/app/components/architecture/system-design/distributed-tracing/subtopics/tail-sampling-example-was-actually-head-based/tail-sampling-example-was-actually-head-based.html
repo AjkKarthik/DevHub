@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Distributed Tracing" topicRoute="/system-design/distributed-tracing" subtopicLabel="The 'Tail-Based Sampling' Example Was Actually Head-Based" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">The "Tail-Based Sampling" Example Was Actually Head-Based</h1>
+  <p class="page-subtitle">The mistake block's header comment said "tail-based sampling" while its own next line said "1% head sample" — verified against OpenTelemetry's own docs and fixed the mismatch.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This fixes a self-contradicting label in the page's own sampling example. Next: Jaeger doesn't actually need the OTel Collector anymore for basic setups.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Distributed Tracing" topicRoute="/system-design/distributed-tracing"
+    [next]="{ label: 'Jaeger No Longer Needs the OTel Collector for Basic Setups', route: '/system-design/distributed-tracing/jaeger-no-longer-needs-the-otel-collector' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Multi-Cluster Mesh" topicRoute="/service-mesh/multi-cluster" subtopicLabel="Kiali Multi-Cluster Support Predates 1.73 by Years" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">Kiali Multi-Cluster Support Predates 1.73 by Years</h1>
+  <p class="page-subtitle">The main page cited a "Kiali 1.73+" gate for multi-cluster graphs — verified against Kiali's own release history that experimental support goes back to v1.29/1.30.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Kiali (current)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This is the third and final correction in this batch — together, these three subtopics tighten the main page's own claims about multi-primary config exchange and multi-cluster observability tooling.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Multi-Cluster Mesh" topicRoute="/service-mesh/multi-cluster"
+    [prev]="{ label: 'remotePilotAddress Belongs to Primary-Remote, Not Multi-Primary', route: '/service-mesh/multi-cluster/remotepilotaddress-belongs-to-primary-remote-not-multi-primary' }" />
+</div>

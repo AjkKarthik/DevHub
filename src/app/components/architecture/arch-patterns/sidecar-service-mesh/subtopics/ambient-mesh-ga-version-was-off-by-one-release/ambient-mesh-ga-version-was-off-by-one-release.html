@@ -1,0 +1,27 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Sidecar & Service Mesh" topicRoute="/arch-patterns/sidecar-service-mesh" subtopicLabel="Ambient Mesh's GA Version Was Off By One Release" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">Ambient Mesh's GA Version Was Off By One Release</h1>
+  <p class="page-subtitle">The QnA said Ambient Mesh went GA "in Istio 1.22+" — the same claim was already researched and corrected on this project's own Service Mesh hub: the real GA release was 1.24, November 2024.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>The last subtopic in this batch fixes a different kind of issue on this same page — a math error in the Challenge's own retry-latency comment, caused by a real Istio API detail the page never explains.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Sidecar & Service Mesh" topicRoute="/arch-patterns/sidecar-service-mesh"
+    [prev]="{ label: 'Three Different Latency Figures, Reconciled', route: '/arch-patterns/sidecar-service-mesh/three-different-latency-figures-reconciled' }"
+    [next]="{ label: 'The Retry Latency Math Undercounted By One Try', route: '/arch-patterns/sidecar-service-mesh/retry-latency-math-undercounted-by-one-try' }" />
+</div>

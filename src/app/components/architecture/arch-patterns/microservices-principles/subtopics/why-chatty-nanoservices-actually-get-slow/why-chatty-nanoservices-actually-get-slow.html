@@ -1,0 +1,27 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Microservices Principles" topicRoute="/arch-patterns/microservices-principles" subtopicLabel="Why Chatty Nanoservices Actually Get Slow" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">Why Chatty Nanoservices Actually Get Slow: Latency Multiplication</h1>
+  <p class="page-subtitle">The mistakes block says over-splitting "creates chatty network calls" without showing why — this subtopic walks through the actual per-hop arithmetic and why it's really a boundary problem, not a service-count problem.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>Latency multiplication is a runtime cost of a bad boundary. The last subtopic looks at how you'd actually catch a boundary getting stretched over time — before it breaks a consumer in production.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Microservices Principles" topicRoute="/arch-patterns/microservices-principles"
+    [prev]="{ label: 'The Decentralised-Data Example Referenced an Undefined Type', route: '/arch-patterns/microservices-principles/decentralised-data-example-undefined-type' }"
+    [next]="{ label: 'What Consumer-Driven Contract Testing Actually Looks Like', route: '/arch-patterns/microservices-principles/consumer-driven-contract-testing-in-practice' }" />
+</div>

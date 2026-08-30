@@ -1,0 +1,26 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Abstract Factory" topicRoute="/design-patterns/abstract-factory" subtopicLabel="What Versioning the Factory Interface Actually Looks Like" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">What Versioning the Factory Interface Actually Looks Like</h1>
+  <p class="page-subtitle">Mistake #1 names two mitigations for the "adding a product type breaks every factory" trade-off — versioning the interface, or extension methods — and shows neither. This subtopic writes out the first one.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic makes concrete a different gap — the QnA describes a registry/configuration-driven way to add a whole new factory without touching client code, but never shows it either.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Abstract Factory" topicRoute="/design-patterns/abstract-factory"
+    [next]="{ label: 'A Registry-Based Factory Selector, Made Concrete', route: '/design-patterns/abstract-factory/a-registry-based-factory-selector-made-concrete' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CAP & PACELC Theorems" topicRoute="/system-design/cap-theorem" subtopicLabel="Brewer Conjectured CAP in 2000 — Gilbert & Lynch Proved It in 2002" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">Brewer Conjectured CAP in 2000 — Gilbert &amp; Lynch Proved It in 2002</h1>
+  <p class="page-subtitle">The main page credits "Brewer's theorem (2000)" without noting it was an informal conjecture — the formal proof, with specific conditions, came two years later.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This is the third and final addition in this batch — together, these three subtopics fix a quiz-design flaw, tighten a consistency-model definition, and add the formal history behind "the CAP theorem."</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CAP & PACELC Theorems" topicRoute="/system-design/cap-theorem"
+    [prev]="{ label: 'Sequential Consistency Orders ALL Operations, Not Just Writes', route: '/system-design/cap-theorem/sequential-consistency-orders-all-ops-not-just-writes' }" />
+</div>

@@ -1,0 +1,30 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Template Method" topicRoute="/design-patterns/template-method"
+    subtopicLabel="ControllerBase vs Controller for Action Filter Hooks" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">ControllerBase vs Controller for Action Filter Hooks</h1>
+  <p class="page-subtitle">The main page's own "Data Migration Hook" codeTab overrode OnActionExecuting on
+    ControllerBase — a class that doesn't declare it at all. Only Controller does, plus a second fix that
+    stays on the lighter API-only base class.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="ASP.NET Core 2.1+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic builds real code for a QnA the main page discusses in prose only — converting the
+      main page's own DataProcessor from Template Method to Strategy.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Template Method" topicRoute="/design-patterns/template-method"
+    [prev]="{ label: 'Why sealed Requires override in C#', route: '/design-patterns/template-method/why-sealed-requires-override-in-csharp' }"
+    [next]="{ label: 'Converting Template Method to Strategy, Concretely', route: '/design-patterns/template-method/converting-template-method-to-strategy-concretely' }" />
+</div>

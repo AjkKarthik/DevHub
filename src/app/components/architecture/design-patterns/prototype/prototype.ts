@@ -163,7 +163,7 @@ clone.Recipients.Add("new@user.com"); // original untouched`,
 var clone = original.Clone();`,
     right: `// Just use a constructor or record with-expression for simple objects
 var clone = original with { Name = "Updated" };`,
-    explanation: 'Prototype is most valuable when construction is expensive (loading from DB, complex initialization). For simple objects, a constructor or `with` expression is clearer.',
+    explanation: 'Prototype is most valuable when construction is expensive (loading from DB, complex initialization). For simple objects, a constructor or `with` expression is clearer — note that `with` is still Prototype (clone-then-modify, no constructor call), just the built-in, language-level form; the mistake is building a custom Clone() method and interface for something the language already gives you for free.',
   },
   {
     title: 'Forgetting to clone nested prototypes',

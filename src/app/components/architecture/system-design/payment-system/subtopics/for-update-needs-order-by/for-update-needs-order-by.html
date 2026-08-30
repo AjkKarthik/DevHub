@@ -1,0 +1,27 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Design a Payment System" topicRoute="/system-design/payment-system" subtopicLabel="Sorting IDs Doesn't Guarantee Lock Order Without ORDER BY" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">Sorting IDs Doesn't Guarantee Lock Order Without ORDER BY</h1>
+  <p class="page-subtitle">The Challenge solution sorted account IDs and claimed this locks them "in consistent order to prevent deadlock" — verified that a bare WHERE id IN() FOR UPDATE with no ORDER BY doesn't actually guarantee that lock order at the database level.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>With the lock-ordering fixed, the last issue is in how the same Challenge solution handles a concurrent retry of the exact same transfer — it uses the exact anti-pattern the page's own quiz warns against.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Design a Payment System" topicRoute="/system-design/payment-system"
+    [prev]="{ label: 'Ledger Worked Example’s Fee Split Contradicted the Code Sample', route: '/system-design/payment-system/ledger-example-fee-mismatch' }"
+    [next]="{ label: 'The Transfer Solution Used the Race Condition Its Own Quiz Warns About', route: '/system-design/payment-system/transfer-idempotency-check-then-act' }" />
+</div>

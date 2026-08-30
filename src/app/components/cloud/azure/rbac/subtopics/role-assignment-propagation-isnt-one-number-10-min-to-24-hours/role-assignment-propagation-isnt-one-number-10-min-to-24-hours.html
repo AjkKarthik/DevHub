@@ -1,0 +1,26 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure RBAC" topicRoute="/azure/rbac" subtopicLabel="Propagation Isn't One Number" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">Role Assignment Propagation Isn't One Number — 10 Minutes to 24 Hours</h1>
+  <p class="page-subtitle">The main page states a flat "up to 30 minutes" ceiling — but the real figure depends on how the role was assigned, ranging from ~10 minutes to nearly a full day.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Azure RBAC" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic corrects a timing claim behind the main page's own deployment-pipeline advice. Next, the classic administrators subtopic covers a distinct, dated audit gap in the same page's own access-review guidance.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure RBAC" topicRoute="/azure/rbac"
+    [next]="{ label: 'Classic Co-Administrators Auto-Converted to Owner', route: '/azure/rbac/classic-co-administrators-auto-converted-to-owner-december-2025' }" />
+</div>

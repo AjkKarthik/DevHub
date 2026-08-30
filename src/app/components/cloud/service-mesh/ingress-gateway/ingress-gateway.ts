@@ -47,7 +47,7 @@ export class MeshIngressGateway {
     {
       heading: 'TLS Configuration',
       points: [
-        'TLS mode SIMPLE: standard HTTPS. The Gateway presents a server certificate to clients. Store the cert/key in a Kubernetes Secret in `istio-system`; reference it with `credentialName`.',
+        'TLS mode SIMPLE: standard HTTPS. The Gateway presents a server certificate to clients. Store the cert/key in a Kubernetes Secret in the SAME NAMESPACE AS THE GATEWAY WORKLOAD (istio-system for the default ingress gateway — but a different namespace for a dedicated/custom gateway deployed elsewhere); reference it with `credentialName`.',
         'TLS mode PASSTHROUGH: the Gateway does not terminate TLS — it reads the SNI header from the ClientHello and routes the connection to the backend that handles TLS itself. Backend pods must be TLS-capable.',
         'TLS mode MUTUAL: client certificate authentication (mTLS at the edge). Clients must present a certificate signed by the `caCertificates` CA. Used for machine-to-machine auth at the ingress layer.',
         'TLS mode ISTIO_MUTUAL: only for gateway-to-sidecar internal connections. Not applicable for edge TLS.',
@@ -290,14 +290,19 @@ hosts:
       explanation: 'The `hosts` field in VirtualService must exactly match (or wildcard-match) the `Host` header in the client request. A mismatch results in a 404 from the gateway — the gateway cannot find a route for that host.',
     },
     {
-      title: 'TLS secret in wrong namespace (not istio-system)',
-      wrong: `# Secret created in production namespace
+      title: 'TLS secret in a different namespace than the Gateway workload',
+      wrong: `# Gateway resource deployed with the DEFAULT istio-ingressgateway
+# (which runs in istio-system), but the secret is created elsewhere:
 kubectl create secret tls myapp-tls --cert=tls.crt --key=tls.key -n production
 # Gateway credentialName: myapp-tls → 503 — secret not found`,
-      right: `# TLS secrets for Istio Gateway MUST be in istio-system
+      right: `# TLS secrets must live in the SAME namespace as the Gateway
+# WORKLOAD that will present them -- istio-system for the
+# default gateway:
 kubectl create secret tls myapp-tls --cert=tls.crt --key=tls.key -n istio-system
-# Gateway credentialName: myapp-tls → works`,
-      explanation: 'Istio\'s ingress gateway reads TLS certificates from Kubernetes Secrets in the `istio-system` namespace. Secrets in other namespaces are invisible to the gateway. Always create TLS secrets in `istio-system` for use with the Istio Gateway `credentialName` field.',
+# Gateway credentialName: myapp-tls → works
+# (A dedicated gateway running in its OWN namespace instead
+# needs the secret created in THAT namespace, not istio-system.)`,
+      explanation: 'Istio\'s ingress gateway reads TLS certificates from Kubernetes Secrets in the SAME namespace as the Gateway workload itself — istio-system by default, since that\'s where the default istio-ingressgateway runs. This is not a hardcoded "istio-system" requirement — a dedicated gateway deployed in a different namespace needs its TLS secrets created in that gateway\'s own namespace instead.',
     },
     {
       title: 'Missing gateways field in VirtualService — traffic enters mesh but bypasses routing',
@@ -455,9 +460,9 @@ console.log(getIngressConfig());`,
   quiz: QuizQuestion[] = [
     {
       q: 'Where must TLS Secrets be stored for use with the Istio Gateway credentialName field?',
-      options: ['In the same namespace as the VirtualService', 'In the istio-system namespace', 'In the namespace where the backend Service lives', 'In any namespace — credentialName can reference cross-namespace secrets'],
+      options: ['In the same namespace as the VirtualService', 'In the same namespace as the Gateway workload (istio-system for the default ingress gateway)', 'In the namespace where the backend Service lives', 'In any namespace — credentialName can reference cross-namespace secrets'],
       answer: 1,
-      explanation: 'Istio\'s ingress gateway reads TLS certificates from Kubernetes Secrets in the `istio-system` namespace only. The `credentialName` field in the Gateway CRD references a Secret by name in `istio-system`. Secrets in other namespaces are not visible to the gateway.',
+      explanation: 'Istio\'s ingress gateway reads TLS certificates from Kubernetes Secrets in the SAME namespace as the Gateway workload that presents them — istio-system for the default gateway, since that\'s where it runs. A dedicated gateway deployed in a different namespace needs its secrets in THAT namespace instead — the requirement tracks the gateway\'s own namespace, not a hardcoded "istio-system" rule.',
     },
     {
       q: 'What does TLS mode PASSTHROUGH do on the Istio ingress gateway?',
@@ -519,7 +524,7 @@ console.log(getIngressConfig());`,
     oneLiner: 'Istio ingress gateway is an Envoy pod (istio-ingressgateway) configured via Gateway CRD (ports/TLS) + VirtualService (routing). TLS secrets go in istio-system. Always run 2+ replicas. Use httpsRedirect for HTTP→HTTPS.',
     mustKnow: [
       'Gateway CRD: configures LISTENER (port, protocol, TLS, hosts). VirtualService: configures ROUTING (must have gateways: field)',
-      'TLS secrets must be in istio-system namespace — credentialName references them by name',
+      'TLS secrets must be in the SAME namespace as the Gateway workload — istio-system for the default gateway, not a hardcoded rule',
       'TLS modes: SIMPLE (one-way HTTPS), PASSTHROUGH (backend handles TLS), MUTUAL (client cert required)',
       'HTTP redirect: add port 80 server entry with tls.httpsRedirect: true',
       'Without gateways field in VirtualService: applies to mesh only, not ingress',

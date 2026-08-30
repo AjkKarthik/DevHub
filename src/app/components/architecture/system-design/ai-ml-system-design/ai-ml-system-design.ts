@@ -44,7 +44,7 @@ const theory: TheoryPoint[] = [
   {
     heading: 'LLM serving at scale',
     points: [
-      'Naïve serving: one GPU per request. Throughput: ~1 request/sec on a single A100.',
+      'Naïve serving: one GPU per request, no batching. Throughput: ~15 tokens/sec on a single A100 -- for a ~400-token response, that works out to roughly 25-30 seconds per full request, not requests-per-second.',
       'Continuous batching: multiple requests share GPU in parallel, even mid-generation. 10-20× throughput.',
       'vLLM PagedAttention: KV cache managed in non-contiguous pages — eliminates memory waste from fragmentation.',
       'KV cache prefill: shared system prompt KV cache is pre-computed once, reused across all requests.',
@@ -124,7 +124,7 @@ async function ragQuery(question: string, userId: string): Promise<string> {
 
   // 3. Generate answer with retrieved context
   const response = await openai.chat.completions.create({
-    model: 'claude-sonnet-4-6',
+    model: 'gpt-4o',
     messages: [
       { role: 'system', content: 'Answer based only on the provided context. If unsure, say so.' },
       { role: 'user',   content: \`Context:\n\${context}\n\nQuestion: \${question}\` },
@@ -296,7 +296,7 @@ Design:
     'Access control: store user_groups in vector metadata, filter on query',
     'Freshness: CDC from Confluence API → embedding job → upsert to vector DB',
     'Citations: return source URL + chunk text alongside generated answer',
-    'Latency budget: embedding 100ms + ANN 50ms + LLM 2-4s = under 5s',
+    'Latency budget: embedding 100ms + ANN 50ms + LLM 1.5-3.5s (P50-P99) = under 5s',
   ],
   starterCode: `interface RAGSystem {
   ingestionPipeline: string;

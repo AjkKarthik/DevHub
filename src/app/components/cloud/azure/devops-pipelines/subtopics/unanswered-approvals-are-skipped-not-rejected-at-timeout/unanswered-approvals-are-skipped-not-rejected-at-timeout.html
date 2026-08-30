@@ -1,0 +1,27 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure DevOps & Pipelines" topicRoute="/azure/devops-pipelines" subtopicLabel="Unanswered Approvals Are Skipped, Not Rejected" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">An Unanswered Approval Times Out to "Skipped," Not "Rejected"</h1>
+  <p class="page-subtitle">The main page frames approvals as approve-or-reject — but a timed-out approval is a third, distinct outcome that a failed() condition won't catch.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Azure Pipelines" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic fills in a "what actually happens" gap in the main page's own Environments and Approvals coverage. Next, the Fork PR Builds subtopic covers a separate, security-focused gap involving self-hosted agents.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure DevOps & Pipelines" topicRoute="/azure/devops-pipelines"
+    [prev]="{ label: 'New Orgs Get Zero Free Parallel Jobs', route: '/azure/devops-pipelines/new-orgs-get-zero-free-parallel-jobs-must-request-a-grant' }"
+    [next]="{ label: 'Fork PR Builds on Self-Hosted Agents', route: '/azure/devops-pipelines/fork-pr-builds-on-self-hosted-agents-run-untrusted-code-on-prem' }" />
+</div>

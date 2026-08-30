@@ -1,0 +1,26 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Singleton Pattern" topicRoute="/design-patterns/singleton" subtopicLabel="Sealed Does Not Fix What the Mistake Said It Fixes" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Sealed Does Not Fix What the Mistake Said It Fixes</h1>
+  <p class="page-subtitle">The page's own mistakes block claimed a subclass can bypass a private constructor via base(). It can't — that's a compile error in C#. Here's what sealed actually protects against.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic writes out a pattern the page discusses at length but never shows in a codeTab — double-checked locking, the full, correct, volatile-safe version.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Singleton Pattern" topicRoute="/design-patterns/singleton"
+    [next]="{ label: 'Double-Checked Locking, Actually Written Out', route: '/design-patterns/singleton/double-checked-locking-actually-written-out' }" />
+</div>

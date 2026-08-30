@@ -67,7 +67,7 @@ export class LinuxPackageManagement {
         'Unattended upgrades: apt-get install unattended-upgrades + dpkg-reconfigure -plow unattended-upgrades — auto-installs security updates.',
         'Version pinning: apt-mark hold nginx prevents a package from being upgraded.',
         'apt install nginx=1.18.0-0ubuntu1 installs a specific version. apt-cache policy nginx shows available versions.',
-        'GPG key verification: repositories sign packages; apt verifies them automatically. curl -fsSL URL | apt-key add - adds a key.',
+        'GPG key verification: repositories sign packages; apt verifies them automatically. apt-key is deprecated (removed after Debian 11 / Ubuntu 22.04) — the modern approach downloads the key into /etc/apt/keyrings/ and references it with signed-by= in the source entry instead.',
       ],
     },
     {

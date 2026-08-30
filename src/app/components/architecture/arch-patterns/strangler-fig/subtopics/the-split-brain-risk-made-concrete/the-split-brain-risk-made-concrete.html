@@ -1,0 +1,26 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Strangler Fig Pattern" topicRoute="/arch-patterns/strangler-fig" subtopicLabel="The Split-Brain Risk Made Concrete" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">The Split-Brain Risk Made Concrete</h1>
+  <p class="page-subtitle">The page's own mistakes block names "split-brain" in a single code comment and moves on. This subtopic traces one customer's order history through the facade to show exactly what that looks like when it happens.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the batch: together the three subtopics fix a mismatched migration comment, a real logic bug in the parallel-run discrepancy check, and make concrete the split-brain risk the page's own mistakes block only names in passing.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Strangler Fig Pattern" topicRoute="/arch-patterns/strangler-fig"
+    [prev]="{ label: 'Parallel Run Skipped Its Own Discrepancy Check', route: '/arch-patterns/strangler-fig/parallel-run-skipped-its-own-discrepancy-check' }" />
+</div>

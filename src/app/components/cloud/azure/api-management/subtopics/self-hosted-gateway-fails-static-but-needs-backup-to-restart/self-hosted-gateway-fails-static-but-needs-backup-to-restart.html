@@ -1,0 +1,26 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure API Management" topicRoute="/azure/api-management" subtopicLabel="Self-Hosted Gateway Fails Static" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">Self-Hosted Gateway "Fails Static" on Disconnect — But a Stopped Instance Needs Backup to Restart</h1>
+  <p class="page-subtitle">The main page names where the self-hosted gateway can run but never its dependency on the cloud control plane — Microsoft's own docs confirm a running gateway survives an outage, but a restarting one needs configuration backup enabled first.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Azure API Management" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the topic's three deep dives, extending the main page's self-hosted gateway coverage from where it runs to what happens when its connection to Azure is lost.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure API Management" topicRoute="/azure/api-management"
+    [prev]="{ label: 'rate-limit-by-key Counts Per Gateway', route: '/azure/api-management/rate-limit-by-key-counts-per-gateway-not-per-instance' }" />
+</div>

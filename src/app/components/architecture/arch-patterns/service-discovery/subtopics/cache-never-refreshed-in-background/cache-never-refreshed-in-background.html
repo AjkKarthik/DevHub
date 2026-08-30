@@ -1,0 +1,27 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Service Discovery" topicRoute="/arch-patterns/service-discovery" subtopicLabel="The Cache Never Actually Refreshed in the Background" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">The Cache Never Actually Refreshed in the Background</h1>
+  <p class="page-subtitle">The mistakes block promises "refresh in the background" — the codeTab actually implements cache-aside with TTL deletion, a different pattern where the next caller after expiry pays the full lookup latency.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>Both fixes so far were about the client-side, application-level codeTabs. The final subtopic turns to the server-side discovery codeTab and a real Kubernetes networking gotcha the page's "just call the stable DNS name" framing never mentions.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Service Discovery" topicRoute="/arch-patterns/service-discovery"
+    [prev]="{ label: 'The Registry’s register() Was Not Idempotent', route: '/arch-patterns/service-discovery/registry-register-was-not-idempotent' }"
+    [next]="{ label: 'Why Long-Lived Connections Can Outlive a Dead Pod', route: '/arch-patterns/service-discovery/long-lived-connections-outlive-dead-pods' }" />
+</div>

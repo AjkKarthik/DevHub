@@ -1,0 +1,26 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Provisioners" topicRoute="/terraform/provisioners" subtopicLabel="on_failure = continue Only Silences It" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">on_failure = continue Only Silences It</h1>
+  <p class="page-subtitle">The main page names on_failure = continue as "the override" without describing what it actually does — apply reports success while the provisioned side effect silently never happened.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Terraform (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This defines precisely what the main page's own "use on_failure = continue to override" actually changes — and when that silence is the right call versus the wrong one.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Provisioners" topicRoute="/terraform/provisioners"
+    [prev]="{ label: 'Create-Time Failure Taints — Destroy-Time Failure Can Stick', route: '/terraform/provisioners/create-time-failure-taints-destroy-time-failure-can-stick' }" />
+</div>

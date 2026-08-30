@@ -1,0 +1,26 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Expressions & Dynamic Blocks" topicRoute="/terraform/expressions" subtopicLabel="A for Expression Map Errors on Duplicate Keys Unless Grouped" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">A for Expression Map Errors on Duplicate Keys Unless Grouped</h1>
+  <p class="page-subtitle">The main page's own map-producing for expressions never hit a duplicate key — here's the "Duplicate object key" error that appears the moment they do, and the ellipsis that fixes it.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Terraform (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This closes a gap the main page's own duplicate-free examples never expose — what actually happens on a duplicate key, and the grouping mode that handles it intentionally.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Expressions & Dynamic Blocks" topicRoute="/terraform/expressions"
+    [prev]="{ label: 'Nested Dynamic Blocks Shadow the Outer Iterator by Default', route: '/terraform/expressions/nested-dynamic-blocks-shadow-the-outer-iterator-by-default' }" />
+</div>

@@ -1,0 +1,27 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Service Communication" topicRoute="/arch-patterns/service-communication" subtopicLabel="How the Outbox Pattern Actually Works" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">How the Outbox Pattern Actually Guarantees Delivery</h1>
+  <p class="page-subtitle">The mistakes block names the Outbox Pattern in one line without explaining the mechanism — this subtopic walks through why the write has to be atomic and how the relay process actually moves events to the broker.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>The Outbox Pattern gets its own full topic page elsewhere in this hub — see Inbox &amp; Outbox Pattern for the complete picture, including the Inbox half (deduplicating on the consumer side). The next subtopic shifts focus to a different gap: why the page recommends REST for browser clients without ever explaining what actually blocks a browser from calling gRPC directly.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Service Communication" topicRoute="/arch-patterns/service-communication"
+    [prev]="{ label: 'The gRPC Size Claim Was Overprecise', route: '/arch-patterns/service-communication/grpc-size-claim-was-overprecise' }"
+    [next]="{ label: 'Why Browsers Cannot Just Call gRPC Directly', route: '/arch-patterns/service-communication/why-browsers-cannot-call-grpc-directly' }" />
+</div>

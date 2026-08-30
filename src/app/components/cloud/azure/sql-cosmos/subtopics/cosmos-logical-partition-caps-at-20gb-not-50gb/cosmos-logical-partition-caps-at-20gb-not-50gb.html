@@ -1,0 +1,26 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure SQL & Cosmos DB" topicRoute="/azure/sql-cosmos" subtopicLabel="Logical Partition Caps at 20 GB" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">A Cosmos DB Logical Partition Caps at 20 GB, Not 50 GB</h1>
+  <p class="page-subtitle">The main page paired the wrong storage figure with a partition key's own data cap — 50 GB describes the internal physical partition, not the 20 GB logical partition your key choice actually controls.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Cosmos DB" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic corrects a figure behind the main page's own partition key guidance (and the main page itself was updated to match). Next, the Change Feed subtopic covers a newer native capability the main page's own QnA doesn't mention.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure SQL & Cosmos DB" topicRoute="/azure/sql-cosmos"
+    [next]="{ label: 'Change Feed Now Captures Deletes Natively', route: '/azure/sql-cosmos/change-feed-all-versions-and-deletes-mode-captures-deletes-natively' }" />
+</div>

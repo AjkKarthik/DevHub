@@ -1,0 +1,26 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="File System & Hierarchy" topicRoute="/linux/file-system" subtopicLabel="/tmp Cleared on Reboot Is Only Half the Story" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">"/tmp Is Cleared on Reboot" Is Only Half the Story</h1>
+  <p class="page-subtitle">The main page ties /tmp cleanup to reboot alone — systemd's own tmpfiles cleanup deletes files there after 10 days of inactivity, on a daily timer, whether the system reboots or not.</p>
+  <app-page-meta [readingTime]="8" difficulty="beginner" since="Linux 2.6+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This closes a gap in the main page's own /tmp coverage — the next subtopic moves from temporary files to what happens at boot when /etc/fstab references a device that isn't there.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="File System & Hierarchy" topicRoute="/linux/file-system"
+    [next]="{ label: 'Skip nofail in fstab and Boot Hangs, Then Drops to Emergency Mode', route: '/linux/file-system/skip-nofail-in-fstab-and-boot-hangs-then-drops-to-emergency' }" />
+</div>

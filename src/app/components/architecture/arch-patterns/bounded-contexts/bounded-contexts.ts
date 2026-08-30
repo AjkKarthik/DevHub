@@ -30,6 +30,7 @@ export class ArchBoundedContexts {
     { name: 'Conformist', type: 'keyword', desc: 'Downstream adopts upstream model without translation — used when upstream is too powerful to negotiate with' },
     { name: 'Anti-Corruption Layer', type: 'keyword', desc: 'Translation adapter protecting your model from an external model you do not control' },
     { name: 'Open Host Service', type: 'keyword', desc: 'A published, versioned API designed to serve multiple downstream contexts' },
+    { name: 'Event Publisher', type: 'keyword', desc: 'Upstream broadcasts domain events for any downstream to subscribe to — a mechanism, not a negotiated relationship' },
   ];
 
   theory: TheoryPoint[] = [
@@ -50,6 +51,7 @@ export class ArchBoundedContexts {
         'Conformist: downstream adopts the upstream model as-is — no translation. Use when the upstream is too dominant to negotiate with (e.g., a SaaS API).',
         'Anti-Corruption Layer (ACL): downstream translates the upstream model into its own language using an adapter. Protects domain integrity from external model pollution.',
         'Open Host Service: upstream publishes a formal, versioned API designed for many consumers. More stable than a bilateral Customer/Supplier relationship.',
+        'Event Publisher: upstream broadcasts domain events for any interested downstream to subscribe to, with no direct coupling to who is listening. This describes a distribution MECHANISM, not a negotiated relationship — it can pair with Customer/Supplier (if downstream has influence over what gets published) or stand alone (if it does not).',
       ],
     },
     {
@@ -177,10 +179,12 @@ const domainEvents = [
 ];
 
 // Context Map relationships:
-// Order → Catalog: Customer/Supplier (Catalog serves Order's price needs)
+// Order → Catalog: ACL (Orders translates Catalog's model — see "Context Map Integration" tab;
+//                       Catalog does NOT accommodate Orders' roadmap, so this is not Customer/Supplier)
 // Order → Payment: Open Host Service (Payment exposes stable versioned API)
-// Order → Shipping: Event-driven (Order publishes events; Shipping subscribes)
-// Order → Notification: Event-driven (Notification subscribes to all contexts' events)`
+// Order → Shipping: Event Publisher (Order publishes events; Shipping subscribes — an UPSTREAM pattern,
+//                                     distinct from the downstream patterns above)
+// Order → Notification: Event Publisher (Notification subscribes to all contexts' events)`
     },
   ];
 
@@ -235,7 +239,7 @@ const domainEvents = [
 ];
 
 const contextMapRelationships = [
-  // { from: '...', to: '...', pattern: 'Customer/Supplier|ACL|Event-Driven|Shared Kernel', reason: '...' }
+  // { from: '...', to: '...', pattern: 'Customer/Supplier|ACL|Event Publisher|Shared Kernel', reason: '...' }
 ];`,
     solution: `const contexts = [
   {
@@ -263,8 +267,8 @@ const contextMapRelationships = [
 const contextMapRelationships = [
   {
     from: 'Scheduling', to: 'Billing',
-    pattern: 'Customer/Supplier',
-    reason: 'Billing needs appointment completion events to generate invoices. Scheduling (upstream) publishes AppointmentCompleted events; Billing (downstream) subscribes.',
+    pattern: 'Customer/Supplier, delivered via Event Publisher',
+    reason: 'Billing needs appointment completion events to generate invoices, and Billing has enough organizational leverage that Scheduling accommodates its needs in planning (e.g. adding an insurancePreAuthId field to AppointmentCompleted when Billing requested it) — that negotiated influence is what makes this Customer/Supplier, not merely the fact that Scheduling (upstream) publishes AppointmentCompleted events for Billing (downstream) to subscribe to. Event Publisher is just the delivery mechanism; a purely one-way, non-negotiated event feed would still be Event Publisher but would NOT be Customer/Supplier.',
   },
   {
     from: 'Clinical', to: 'Pharmacy',
@@ -327,7 +331,7 @@ const contextMapRelationships = [
       a: 'A Context Map shows the relationships and integration patterns between bounded contexts (Shared Kernel, ACL, Customer/Supplier). A system architecture diagram shows deployment topology, infrastructure, and data flow. Both are valuable; the Context Map is the DDD-specific view of team and model relationships.',
     },
     { q: 'How do you identify bounded context boundaries in a large system?', a: 'Identify linguistic boundaries: where the same word means different things, you likely have a bounded context boundary. Interview domain experts from different parts of the business and map where terminology diverges. Identify organizational boundaries: teams that do not coordinate often own separate contexts. Find data autonomy: which group of data can change independently without needing to sync with other groups? Conway law applies: the architecture of a system reflects the communication structure of the team that built it. Use event storming workshops to discover domain events, commands, and aggregates, which naturally reveal context boundaries around groups of tightly related domain concepts.' },
-    { q: 'What integration patterns exist between bounded contexts?', a: 'Context integration patterns from the DDD context map: Partnership means two teams co-evolve their models together with close collaboration. Shared Kernel means two contexts share a small subset of the domain model owned jointly. Customer-Supplier means upstream publishes an API that downstream consumes; downstream can request changes but must adjust if upstream does not accommodate. Conformist means downstream simply copies the upstream model. Anti-Corruption Layer: downstream translates from upstream model to its own. Open Host Service: upstream provides a standardized API for multiple consumers. Published Language: contexts communicate via a shared, well-documented exchange format like an industry standard. Separate Ways: contexts integrate with no shared model at all, only via UI or manual process.' },
+    { q: 'What integration patterns exist between bounded contexts?', a: 'Context integration patterns from the DDD context map, grouped by which side defines them. Upstream patterns (the side being depended on): Open Host Service — upstream provides a standardized API for multiple consumers. Event Publisher — upstream broadcasts domain events for any interested downstream to subscribe to, with no direct coupling to who is listening. Midway patterns (co-evolved together): Partnership — two teams co-evolve their models together with close collaboration. Shared Kernel — two contexts share a small subset of the domain model owned jointly. Published Language — contexts communicate via a shared, well-documented exchange format like an industry standard. Separate Ways — contexts integrate with no shared model at all, only via UI or manual process. Downstream patterns (the dependent side): Customer-Supplier — upstream accommodates downstream\'s needs in its own planning and roadmap. Conformist — downstream simply copies the upstream model, no negotiation. Anti-Corruption Layer — downstream translates from upstream\'s model to its own, protecting itself regardless of the power dynamic. Note that Event Publisher (a distribution MECHANISM) and Customer-Supplier (a planning RELATIONSHIP) answer different questions — a Customer-Supplier relationship can itself be implemented over events, so do not treat "uses events" and "is Customer-Supplier" as the same fact.' },
     { q: 'What goes wrong when a team identifies microservice boundaries FIRST (e.g. by technical layer or arbitrary team split) instead of identifying bounded contexts first?', a: 'Splitting services along lines that don\'t correspond to genuine bounded-context boundaries (e.g. one service per technical layer, or splitting a single cohesive domain concept across services just to balance team headcount) produces "distributed monoliths" — services so tightly coupled by chatty synchronous calls and shared, leaking concepts that they must be deployed and changed together anyway, but now with all the operational overhead (network calls, serialization, partial-failure handling) of a real distributed system with none of the independent-deployability benefit that motivated going distributed in the first place. Identifying bounded contexts through domain analysis (Event Storming, context mapping) BEFORE drawing service boundaries is what prevents this — the domain\'s natural seams become the service seams, rather than services being carved along arbitrary or purely technical lines.' },
   ];
 

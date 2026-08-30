@@ -1,0 +1,26 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Linkerd" topicRoute="/service-mesh/linkerd" subtopicLabel="TrafficSplit Cannot Be Self-Referential — apex Needs Its Own Name" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">TrafficSplit Cannot Be Self-Referential — apex Needs Its Own Name</h1>
+  <p class="page-subtitle">The main page's own TrafficSplit example reused the apex service name as one of its own backends — the SMI spec explicitly prohibits this exact pattern. Corrected here and on the main page.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="SMI TrafficSplit (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This corrects a real inaccuracy found in the main page's own example during authoring. Next: why "circuit breaking is not built into Linkerd by default" undersells a real, dedicated feature that just needs an explicit annotation.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Linkerd" topicRoute="/service-mesh/linkerd"
+    [next]="{ label: 'Circuit Breaking Exists — It Needs an Explicit failure-accrual Annotation', route: '/service-mesh/linkerd/circuit-breaking-exists-but-needs-an-explicit-failure-accrual-annotation' }" />
+</div>

@@ -38,7 +38,7 @@ export class MeshKiali {
       points: [
         'Kiali is the official observability console for Istio — developed by Red Hat alongside the Istio project. It translates Prometheus metrics and Istio CRD state into visual service graphs and configuration insights.',
         'Three core capabilities: (1) Service graph with live traffic, health indicators, and security status. (2) Configuration management — view, edit, and validate Istio CRDs from the UI. (3) Validation — proactively detect misconfigurations in VirtualService/DestinationRule/Gateway before they cause production issues.',
-        'Kiali requires: Prometheus (for metrics), and optionally Jaeger/Tempo (for tracing integration) and Grafana (for metric dashboards). It does NOT directly query Envoy — it reads from Prometheus.',
+        'Kiali requires: Prometheus (for metrics), and optionally Jaeger/Tempo (for tracing integration) and Grafana (for metric dashboards). The service graph itself does NOT directly query Envoy — it reads from Prometheus (the Envoy Config Viewer is a separate feature with its own, different data path — see below).',
         'Service health is computed from Prometheus metrics: `istio_requests_total` success rates. Kiali shows red (degraded), orange (warning), or green (healthy) indicators on each service node in the graph.',
         'Kiali does NOT replace Prometheus Alertmanager or PagerDuty — it is a visual exploration tool, not an alerting system. Use it for diagnosis and exploration; build alerts in Prometheus separately.',
         'RBAC support: Kiali reads Kubernetes RBAC to limit which namespaces each user can see. Users with namespace-level access see only their namespaces in the graph — useful in multi-tenant clusters.',
@@ -50,7 +50,7 @@ export class MeshKiali {
         'The service graph is Kiali\'s signature feature — a real-time topology map where nodes represent services and edges represent traffic flows. Node colour indicates health; edge width indicates traffic volume.',
         'Graph types: Service graph (service-level), Workload graph (pod-level), Application graph (app label-level). Switch between them based on the level of granularity needed.',
         'Graph filters: filter by namespace, app label, protocol, or health status. In a large cluster with 100+ services, focus on specific namespaces or apps to keep the graph readable.',
-        'Traffic animation: animated dots move along edges at a speed proportional to RPS. Green dots = successful requests, red = errors. At a glance, you see which paths are high-traffic and where errors propagate.',
+        'Traffic animation: animated dots move along edges at a speed proportional to RESPONSE TIME (faster animation = faster responses), while dot DENSITY (how tightly packed they are) indicates RPS. Green circles = successful requests, red diamonds = errors. At a glance, you see which paths are high-traffic (dense dots), slow (slow-moving dots), and where errors propagate (red diamonds).',
         'Edge labels: click "Show Edge Labels" to overlay RPS, error rate, and response time on each traffic edge. Essential for identifying slow links and high-error paths without writing PromQL.',
         'Security badges: padlock icons on edges show mTLS status. Green lock = ISTIO_MUTUAL mTLS, open lock = plaintext. Click on the lock to jump to the PeerAuthentication config. Instantly see which connections are unencrypted.',
       ],
@@ -267,7 +267,7 @@ spec:
     {
       title: 'Ignoring Kiali validation warnings before deploying config',
       wrong: `kubectl apply -f virtual-service.yaml
-# Kiali shows: "KIA0201 - VirtualService has no route for host"
+# Kiali shows: "KIA1107 - Subset not found"
 # Warning ignored → 503 errors in production
 # Root cause: subset referenced doesn't exist in DestinationRule`,
       right: `kubectl apply -f virtual-service.yaml
@@ -394,9 +394,9 @@ console.log(JSON.stringify(getIncidentWorkflow(), null, 2));`,
     },
     {
       q: 'What Kiali validation error indicates a VirtualService is routing to a non-existent subset?',
-      options: ['KIA0101 - VirtualService host not found in cluster', 'KIA0201 - VirtualService references a subset that does not exist in the matching DestinationRule', 'KIA0301 - DestinationRule has no matching service', 'KIA0401 - Gateway has no matching VirtualService'],
+      options: ['KIA0101 - VirtualService host not found in cluster', 'KIA1107 - Subset not found: the subset referenced in a VirtualService route is not defined in any matching DestinationRule', 'KIA0201 - More than one DestinationRule for the same host/subset combination', 'KIA0401 - Gateway has no matching VirtualService'],
       answer: 1,
-      explanation: 'KIA0201 fires when a VirtualService\'s destination references a subset name that is not defined in any DestinationRule for that host. This is the most common Istio misconfiguration — it causes Envoy to return 503 for all traffic to that destination. Kiali catches it at config apply time before traffic is affected.',
+      explanation: 'KIA1107 fires when a VirtualService\'s destination references a subset name that is not defined in any DestinationRule for that host. This is the most common Istio misconfiguration — it causes Envoy to return 503 for all traffic to that destination. Kiali catches it at config apply time before traffic is affected. (KIA0201 is a different check entirely — it warns about multiple DestinationRules covering the same host/subset combination, not a missing subset.)',
     },
     {
       q: 'Why should Kiali UI changes be immediately committed to your GitOps repository?',

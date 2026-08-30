@@ -1,0 +1,30 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Adapter" topicRoute="/design-patterns/adapter"
+    subtopicLabel="The ProcessPayment One-Liner Doesn't Compile" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">The ProcessPayment One-Liner Doesn't Compile</h1>
+  <p class="page-subtitle">The main page's adaptee wrote <code>ProcessPayment</code> as a single clever
+    expression — but <code>Console.WriteLine(...) is null || true</code> is a real, reproducible compile
+    error. Here's exactly why, and the fix.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>This adaptee never even reaches Adapter behavior — it fails before that, at a language-level type
+      check. The next subtopic looks at a second, subtler gap on the same page: the Logging Adapter's own
+      LogLevel translation is incomplete, and what actually happens to log levels it doesn't handle.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Adapter" topicRoute="/design-patterns/adapter"
+    [next]="{ label: 'The Missing LogLevel Mappings', route: '/design-patterns/adapter/missing-loglevel-mappings' }" />
+</div>

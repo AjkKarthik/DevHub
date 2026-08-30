@@ -1,0 +1,26 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure DevOps & Pipelines" topicRoute="/azure/devops-pipelines" subtopicLabel="Fork PR Builds on Self-Hosted Agents" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">Fork PR Builds on Self-Hosted Agents Run Untrusted Code On-Prem</h1>
+  <p class="page-subtitle">The main page's self-hosted agent coverage is purely about tooling convenience — it never mentions that a fork pull request's code runs directly on that persistent, credential-holding machine.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Azure Pipelines" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic closes out the topic's three deep dives, covering a security angle distinct from the main page's own service-connection and secrets hardening advice.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure DevOps & Pipelines" topicRoute="/azure/devops-pipelines"
+    [prev]="{ label: 'Unanswered Approvals Are Skipped, Not Rejected', route: '/azure/devops-pipelines/unanswered-approvals-are-skipped-not-rejected-at-timeout' }" />
+</div>

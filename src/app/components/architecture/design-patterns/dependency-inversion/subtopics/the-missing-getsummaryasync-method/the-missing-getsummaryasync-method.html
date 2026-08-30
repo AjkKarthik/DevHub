@@ -1,0 +1,26 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Dependency Inversion" topicRoute="/design-patterns/dependency-inversion"
+    subtopicLabel="The Missing GetSummaryAsync Method" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">The Missing GetSummaryAsync Method</h1>
+  <p class="page-subtitle">One codeTab declares IOrderRepository. A separate codeTab calls a method on it that was never declared.</p>
+  <app-page-meta [readingTime]="6" difficulty="beginner" since="C# 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>With the interface itself compiling correctly, the next two subtopics build out two DIP concerns the main page names but doesn't fully demonstrate: precisely WHO should own an abstraction's definition, and the two DI styles besides constructor injection the theory names but never shows in code.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Dependency Inversion" topicRoute="/design-patterns/dependency-inversion"
+    [next]="{ label: 'Who Should Own the Abstraction?', route: '/design-patterns/dependency-inversion/who-should-own-the-abstraction' }" />
+</div>

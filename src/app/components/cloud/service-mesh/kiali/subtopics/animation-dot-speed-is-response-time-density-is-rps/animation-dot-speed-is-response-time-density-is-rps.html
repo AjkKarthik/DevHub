@@ -1,0 +1,26 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Kiali Service Graph" topicRoute="/service-mesh/kiali" subtopicLabel="Animation Dot Speed Is Response Time, Density Is RPS" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">Animation Dot Speed Is Response Time, Density Is RPS</h1>
+  <p class="page-subtitle">The main page said dot speed represents RPS — verified against Kiali's own documented graph semantics: speed is response time, density is RPS.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Kiali (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>Together with the corrected Envoy Config Viewer data path and the KIA0201/KIA1107 fix, this closes out the main page's Kiali trio for this batch — a corrected mental model for actually reading the graph during an incident.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Kiali Service Graph" topicRoute="/service-mesh/kiali"
+    [prev]="{ label: 'KIA0201 Is Duplicate DestinationRules, Not a Missing Subset', route: '/service-mesh/kiali/kia0201-is-duplicate-destinationrules-not-missing-subset' }" />
+</div>

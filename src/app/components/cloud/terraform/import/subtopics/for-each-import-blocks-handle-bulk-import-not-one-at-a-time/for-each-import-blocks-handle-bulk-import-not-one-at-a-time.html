@@ -1,0 +1,26 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Import & Generated Config" topicRoute="/terraform/import" subtopicLabel="for_each Import Blocks Handle Bulk Import" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">for_each Import Blocks Handle Bulk Import</h1>
+  <p class="page-subtitle">The main page's own import block example imports exactly one resource — Terraform 1.7+ lets a single block with for_each handle dozens at once.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Terraform 1.7+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This scales the main page's own single-resource import block pattern up to the bulk case its "import incrementally" advice implicitly assumes is hand-written. Next: why there's no universal import ID format across resource types.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Import & Generated Config" topicRoute="/terraform/import"
+    [next]="{ label: 'The Import ID Format Is Resource-Specific, Not Universal', route: '/terraform/import/the-import-id-format-is-resource-specific-not-universal' }" />
+</div>

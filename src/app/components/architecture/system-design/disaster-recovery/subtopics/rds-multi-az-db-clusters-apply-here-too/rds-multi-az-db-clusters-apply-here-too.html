@@ -1,0 +1,27 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Disaster Recovery" topicRoute="/system-design/disaster-recovery" subtopicLabel="RDS Multi-AZ DB Clusters Apply Here Too" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">RDS Multi-AZ DB Clusters Apply Here Too</h1>
+  <p class="page-subtitle">This hub's own High Availability topic verified RDS Multi-AZ DB Clusters fail over in under 35 seconds — the same fact tightens this page's own Challenge solution for a payments API's AZ-failure scenario.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This applies an already-verified sibling-topic fact to this page's own Challenge. Next: why Aurora Global Database achieves sub-second RPO while a plain cross-region replica doesn't.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Disaster Recovery" topicRoute="/system-design/disaster-recovery"
+    [prev]="{ label: 'RDS PITR’s 5-Minute Window Claim Confuses Granularity With Recency', route: '/system-design/disaster-recovery/pitr-5-min-window-confuses-granularity-with-recency-lag' }"
+    [next]="{ label: 'Why Aurora Global Beats a Plain Cross-Region Replica', route: '/system-design/disaster-recovery/why-aurora-global-beats-a-plain-cross-region-replica' }" />
+</div>

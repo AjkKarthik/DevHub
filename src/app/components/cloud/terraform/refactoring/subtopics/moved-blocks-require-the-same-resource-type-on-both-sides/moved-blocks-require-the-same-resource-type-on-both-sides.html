@@ -1,0 +1,26 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Refactoring & State Ops" topicRoute="/terraform/refactoring" subtopicLabel="moved Blocks Require the Same Resource Type on Both Sides" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">moved Blocks Require the Same Resource Type on Both Sides</h1>
+  <p class="page-subtitle">Every moved &#123;&#125; example on the main page keeps the same resource type on both sides — leaving an easy-to-miss hard requirement, not just a coincidence of the examples chosen.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Terraform 1.1+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This names the hard boundary of moved &#123;&#125; the main page's examples never had to state explicitly. Next: why removed &#123;&#125; defaults to actually destroying the resource, unlike terraform state rm.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Refactoring & State Ops" topicRoute="/terraform/refactoring"
+    [next]="{ label: 'removed Defaults to Actually Destroying the Resource', route: '/terraform/refactoring/removed-defaults-to-actually-destroying-the-resource' }" />
+</div>

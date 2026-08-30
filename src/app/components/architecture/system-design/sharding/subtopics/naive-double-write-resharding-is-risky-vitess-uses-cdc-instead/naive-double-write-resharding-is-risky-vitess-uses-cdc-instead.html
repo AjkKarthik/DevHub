@@ -1,0 +1,27 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Database Sharding" topicRoute="/system-design/sharding" subtopicLabel="Naive Double-Write Resharding Is Risky — Vitess Uses CDC Instead" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">Naive Double-Write Resharding Is Risky — Vitess Uses CDC Instead</h1>
+  <p class="page-subtitle">The page describes zero-downtime resharding as "double-write to old + new shard" — verified that this is a known-risky pattern, and that Vitess's own resharding tool actually uses binlog-based CDC, not application dual writes.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This adds a reliability nuance to the page's resharding advice. Next: why basic consistent hashing still needs virtual nodes, quantified.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Database Sharding" topicRoute="/system-design/sharding"
+    [prev]="{ label: 'The 64 TB / 100k TPS Figures Are RDS Limits, Not PostgreSQL Itself', route: '/system-design/sharding/the-64tb-100k-tps-figures-are-rds-limits-not-postgresql-itself' }"
+    [next]="{ label: 'Why Basic Consistent Hashing Still Needs Virtual Nodes', route: '/system-design/sharding/why-basic-consistent-hashing-still-needs-virtual-nodes' }" />
+</div>

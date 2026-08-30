@@ -1,0 +1,27 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Refactoring & State Ops" topicRoute="/terraform/refactoring" subtopicLabel="removed Defaults to Actually Destroying the Resource" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">removed Defaults to Actually Destroying the Resource</h1>
+  <p class="page-subtitle">The main page calls removed &#123;&#125; "the declarative counterpart to state rm" — but unlike state rm, its default behavior actually destroys the real resource.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Terraform 1.7+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This corrects a real, dangerous assumption the main page's own "declarative counterpart to state rm" phrasing invites. Next: why -target's actual scope is wider than "just this one resource" upstream, and narrower downstream.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Refactoring & State Ops" topicRoute="/terraform/refactoring"
+    [prev]="{ label: 'moved Blocks Require the Same Resource Type on Both Sides', route: '/terraform/refactoring/moved-blocks-require-the-same-resource-type-on-both-sides' }"
+    [next]="{ label: '-target Pulls In Dependencies Automatically, But Never Dependents', route: '/terraform/refactoring/target-pulls-in-dependencies-automatically-but-never-dependents' }" />
+</div>

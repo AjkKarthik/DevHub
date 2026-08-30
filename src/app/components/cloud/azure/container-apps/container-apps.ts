@@ -50,7 +50,7 @@ export class AzureContainerApps {
         'HTTP scaling: Container Apps automatically scales based on concurrent HTTP requests per replica. The default is 10 concurrent requests per instance, configurable via --scale-rule-http-concurrency.',
         'Scale to zero: with no traffic or events, replicas drop to 0. The first request after zero-scale triggers a cold start (new container must start). Use min-replicas: 1 for latency-sensitive apps.',
         'Scale rules can combine triggers — an app could scale on both HTTP requests and a queue depth simultaneously, taking the maximum of the two to determine replica count.',
-        'Scaling limits: set --min-replicas and --max-replicas. The Consumption plan scales to 300 replicas by default. Workload Profile environments can exceed this with dedicated VM profiles.',
+        'Scaling limits: set --min-replicas and --max-replicas. If you never set a scale rule at all, Container Apps silently applies a default HTTP rule capped at just 10 replicas — not 300. The true configurable ceiling for --max-replicas is 1,000 (same for Consumption and Workload Profile environments); 300 is only a historical Azure portal slider cap, not a plan-level default.',
       ]
     },
     {
@@ -70,7 +70,7 @@ export class AzureContainerApps {
         'Multiple revision mode: multiple revisions can be active simultaneously. Assign traffic weights (e.g. 90% to stable, 10% to canary). Promote canary to 100% when validated, deactivate the old revision.',
         'Container Apps Jobs are container runs that execute to completion. Types: Manual (triggered via CLI or API), Scheduled (cron), Event-triggered (KEDA-based — fire when a queue has messages).',
         'Jobs are ideal for: database migrations (run before app starts), data processing pipelines, report generation, and any batch workload that must run once and exit rather than serve continuous traffic.',
-        'Secret management in Container Apps: define secrets at the app level (referenced from Key Vault or plaintext) and inject them as environment variables or mounted volumes. Secrets are versioned — updating a secret does not auto-restart the app; you must create a new revision.',
+        'Secret management in Container Apps: define secrets at the app level (referenced from Key Vault or plaintext) and inject them as environment variables or mounted volumes. Updating or deleting a secret never automatically affects an already-running revision — you must either restart the existing revision or deploy a new one; an unversioned Key Vault reference is the one exception, since Container Apps re-fetches it and auto-restarts affected revisions within 30 minutes on its own.',
       ]
     },
     {

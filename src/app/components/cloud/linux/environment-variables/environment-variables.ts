@@ -155,7 +155,9 @@ set -a                         # auto-export all vars
 source .env                    # or: . .env
 set +a                         # stop auto-export
 
-# Or use env command
+# Or use env command (only safe for values with NO spaces --
+# xargs word-splits on whitespace and corrupts multi-word values;
+# prefer the source method above for anything else)
 env $(cat .env | grep -v ^# | xargs) node server.js
 
 # direnv (auto-load .envrc on cd)

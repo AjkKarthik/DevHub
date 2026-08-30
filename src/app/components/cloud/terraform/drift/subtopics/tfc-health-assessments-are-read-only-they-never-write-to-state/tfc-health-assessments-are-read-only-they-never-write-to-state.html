@@ -1,0 +1,26 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Drift Detection" topicRoute="/terraform/drift" subtopicLabel="TFC Health Assessments Are Read-Only — They Never Write to State" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">TFC Health Assessments Are Read-Only — They Never Write to State</h1>
+  <p class="page-subtitle">The main page mentions Terraform Cloud's scheduled drift detection in passing — it never resolves anything on its own, unlike a manual apply -refresh-only.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Terraform Cloud / Enterprise" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the main page's drift-detection tooling with the boundary between automated detection and manual remediation that "built-in drift detection" leaves unstated.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Drift Detection" topicRoute="/terraform/drift"
+    [prev]="{ label: 'ignore_changes Does Not Refresh a Stale Value — It Just Stops Future Diffs', route: '/terraform/drift/ignore-changes-does-not-refresh-a-stale-value-it-just-stops-future-diffs' }" />
+</div>

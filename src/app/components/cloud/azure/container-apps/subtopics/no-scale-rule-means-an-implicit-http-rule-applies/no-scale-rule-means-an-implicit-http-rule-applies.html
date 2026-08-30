@@ -1,0 +1,27 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Container Apps" topicRoute="/azure/container-apps" subtopicLabel="No Scale Rule Means an Implicit HTTP Rule Applies" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">No Scale Rule Defined? An Implicit HTTP Rule (Max 10, Not 300) Applies Silently</h1>
+  <p class="page-subtitle">The main page's own "300 replicas by default" claim was wrong — the real default is 10, and skipping a scale rule entirely can strand a non-HTTP worker at zero replicas forever.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Azure Container Apps" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic corrects a genuine main-page inaccuracy about default replica limits and closes the deeper gap of what actually happens with no scale rule at all — the next subtopic moves from replica scaling to how secret updates propagate to running revisions.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Container Apps" topicRoute="/azure/container-apps"
+    [prev]="{ label: 'Scale-to-Zero Has a Hidden 5-Minute Cooldown', route: '/azure/container-apps/scale-to-zero-has-a-hidden-5-minute-cooldown' }"
+    [next]="{ label: 'Secret Updates Don’t Auto-Restart Active Revisions', route: '/azure/container-apps/secret-updates-dont-auto-restart-active-revisions' }" />
+</div>

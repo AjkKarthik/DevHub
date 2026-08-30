@@ -1,0 +1,27 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Istio Architecture" topicRoute="/service-mesh/istio-architecture" subtopicLabel="Sidecar CRD Scoping Egress Does Not Block Unmatched Inbound Traffic" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">Sidecar CRD Scoping Egress Does Not Block Unmatched Inbound Traffic</h1>
+  <p class="page-subtitle">The main page's "restricts what a sidecar can see" framing can read as access control — Sidecar CRD is a proxy memory optimization, not a firewall; unmatched traffic still gets through.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Istio (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This corrects a real security-relevant misunderstanding the main page's own framing invites. Next: why "live traffic continues" during an Istiod outage has an unstated time limit tied to certificate TTL.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Istio Architecture" topicRoute="/service-mesh/istio-architecture"
+    [prev]="{ label: 'Cert Rotation Overlaps Old and New Certs to Avoid Handshake Failures', route: '/service-mesh/istio-architecture/cert-rotation-overlaps-old-and-new-certs-to-avoid-handshake-failures' }"
+    [next]="{ label: 'Live Traffic Surviving an Istiod Outage Has a Cert TTL Time Limit', route: '/service-mesh/istio-architecture/live-traffic-surviving-an-istiod-outage-has-a-cert-ttl-time-limit' }" />
+</div>

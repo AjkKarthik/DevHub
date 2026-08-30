@@ -1,0 +1,27 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Monolith vs Modular Monolith" topicRoute="/arch-patterns/monolith-vs-modular" subtopicLabel="SharedKernel's Own ProductId Type Was Never Actually Used" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">SharedKernel's Own ProductId Type Was Never Actually Used</h1>
+  <p class="page-subtitle">The Challenge solution's SharedKernel exports a ProductId value object, but the one cross-module method that needed a product identifier used a bare string instead — undercutting the type safety a typed SharedKernel is meant to provide.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>With the team-size guidance and the SharedKernel's own type usage both fixed, one real tradeoff the page never explicitly names is worth calling out directly: what a modular monolith deliberately gives up compared to true microservices.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Monolith vs Modular Monolith" topicRoute="/arch-patterns/monolith-vs-modular"
+    [prev]="{ label: 'Team-Size Thresholds Disagreed by 5-10 Engineers', route: '/arch-patterns/monolith-vs-modular/team-size-threshold-contradiction' }"
+    [next]="{ label: 'The Modular Monolith’s Unstated Tradeoff: One Process, One Failure Domain', route: '/arch-patterns/monolith-vs-modular/shared-process-shared-failure-domain' }" />
+</div>

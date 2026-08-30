@@ -1,0 +1,26 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Abstract Factory" topicRoute="/design-patterns/abstract-factory" subtopicLabel="Using Abstract Factory for Test Doubles" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Using Abstract Factory for Test Doubles</h1>
+  <p class="page-subtitle">The QnA's own list of real-world examples names this in one sentence and moves on. This subtopic adds a third, fake factory to the page's own Challenge and uses it to test DatabaseClient in complete isolation.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the batch: together the three subtopics write out two mitigations the mistakes block and QnA name but never show, then demonstrate a third real-world use case — testability — using the page's own Challenge as the subject.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Abstract Factory" topicRoute="/design-patterns/abstract-factory"
+    [prev]="{ label: 'A Registry-Based Factory Selector, Made Concrete', route: '/design-patterns/abstract-factory/a-registry-based-factory-selector-made-concrete' }" />
+</div>

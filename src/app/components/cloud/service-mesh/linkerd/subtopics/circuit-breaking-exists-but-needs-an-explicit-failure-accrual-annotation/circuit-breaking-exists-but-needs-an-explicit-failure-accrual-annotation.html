@@ -1,0 +1,27 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Linkerd" topicRoute="/service-mesh/linkerd" subtopicLabel="Circuit Breaking Exists — It Needs an Explicit failure-accrual Annotation" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">Circuit Breaking Exists — It Needs an Explicit failure-accrual Annotation</h1>
+  <p class="page-subtitle">The main page's "relies on EWMA instead" framing reads as "no dedicated mechanism exists" — Linkerd actually has real failure-accrual circuit breaking, just off by default.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Linkerd (all recent versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This sharpens the main page's traffic-management framing with the real feature it undersells. Next: why using --identity-external-issuer alone still leaves Linkerd's self-generated root CA in place.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Linkerd" topicRoute="/service-mesh/linkerd"
+    [prev]="{ label: 'TrafficSplit Cannot Be Self-Referential — apex Needs Its Own Name', route: '/service-mesh/linkerd/trafficsplit-cannot-be-self-referential-apex-needs-its-own-name' }"
+    [next]="{ label: 'external-issuer Alone Leaves the Self-Generated Trust Anchor in Place', route: '/service-mesh/linkerd/external-issuer-alone-leaves-the-self-generated-trust-anchor-in-place' }" />
+</div>

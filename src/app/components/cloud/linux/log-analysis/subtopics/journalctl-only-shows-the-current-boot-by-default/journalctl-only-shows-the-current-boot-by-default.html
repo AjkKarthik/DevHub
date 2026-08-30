@@ -1,0 +1,27 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Log Analysis" topicRoute="/linux/log-analysis" subtopicLabel="journalctl Only Shows the Current Boot by Default" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">journalctl Only Shows the Current Boot by Default</h1>
+  <p class="page-subtitle">The main page's own QnA says journalctl -u shows "all journal entries" — by default it only searches the current boot, silently missing prior boots even with --since applied.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="systemd (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This narrows the main page's own "shows all journal entries" claim to what it actually means. Next: why logrotate's copytruncate mode can silently lose log data the postrotate approach doesn't.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Log Analysis" topicRoute="/linux/log-analysis"
+    [prev]="{ label: 'The Slowest-Responses Sort Assumes request_time Is Already Logged', route: '/linux/log-analysis/sort-t-k3-rn-sorts-garbage-unless-request-time-is-in-the-log-format' }"
+    [next]="{ label: 'logrotate’s copytruncate Has a Real Data-Loss Race Window', route: '/linux/log-analysis/logrotates-copytruncate-has-a-real-data-loss-race-window' }" />
+</div>

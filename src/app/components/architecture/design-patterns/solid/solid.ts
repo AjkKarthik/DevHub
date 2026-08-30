@@ -45,7 +45,7 @@ const theory: TheoryPoint[] = [
       'Subclasses must be usable in place of their base class without breaking the program.',
       'Classic violation: Square inherits Rectangle — setting width/height independently breaks Square\'s invariant.',
       'LSP violation signals: overriding methods to throw NotSupportedException, postconditions weaker than base.',
-      'Fix: prefer composition over inheritance when the "is-a" relationship has special constraints.',
+      'Fix: when the "is-a" relationship has special constraints, either drop the inheritance entirely (two unrelated types, as shown below) or use composition (one type holds an instance of the other internally) — whichever avoids the broken substitutability, since the specific technique depends on whether any shared behaviour genuinely needs reusing.',
     ],
   },
   {

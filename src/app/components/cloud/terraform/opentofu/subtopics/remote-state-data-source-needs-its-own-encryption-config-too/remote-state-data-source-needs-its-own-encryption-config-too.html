@@ -1,0 +1,26 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="OpenTofu" topicRoute="/terraform/opentofu" subtopicLabel="remote_state Data Source Needs Its Own Encryption Config Too" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">remote_state Data Source Needs Its Own Encryption Config Too</h1>
+  <p class="page-subtitle">The main page's encryption example only covers a project reading its own state — a separate project reading it via terraform_remote_state needs its own explicit decryption setup, or the read fails.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="OpenTofu 1.7+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This closes a real cross-project gap in the main page's encryption coverage, connecting back to the Refactoring & State Ops page's own terraform_remote_state pattern.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="OpenTofu" topicRoute="/terraform/opentofu"
+    [prev]="{ label: 'BSL Has a Four-Year Change Date That Converts to MPL Automatically', route: '/terraform/opentofu/bsl-has-a-four-year-change-date-that-converts-to-mpl-automatically' }" />
+</div>

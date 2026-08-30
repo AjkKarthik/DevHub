@@ -1,0 +1,26 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Users & Groups" topicRoute="/linux/users-groups" subtopicLabel="userdel Without -r Leaves Orphaned Files for UID Reuse" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">userdel Without -r Leaves Orphaned Files — A Future User Can Silently Inherit Them via UID Reuse</h1>
+  <p class="page-subtitle">The main page states files become "orphaned" as if that's inert — the next ordinary useradd call can silently hand a brand-new, unrelated person ownership of them.</p>
+  <app-page-meta [readingTime]="8" difficulty="beginner" since="Linux 2.6+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This closes a gap in the main page's own userdel coverage — the next subtopic moves from account deletion to a real security risk hiding in the sudoers examples the main page itself demonstrates.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Users & Groups" topicRoute="/linux/users-groups"
+    [next]="{ label: 'A NOPASSWD Grant Can Be a Full Root Escalation', route: '/linux/users-groups/nopasswd-grant-to-a-safe-command-can-be-a-full-root-escalation' }" />
+</div>

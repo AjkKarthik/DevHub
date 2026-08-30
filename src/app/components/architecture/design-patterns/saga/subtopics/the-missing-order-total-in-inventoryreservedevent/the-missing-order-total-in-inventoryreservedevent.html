@@ -1,0 +1,26 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Saga Pattern" topicRoute="/design-patterns/saga"
+    subtopicLabel="The Missing Order Total in InventoryReservedEvent" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">The Missing Order Total in InventoryReservedEvent</h1>
+  <p class="page-subtitle">A field referenced by one consumer that the publisher two methods above never actually included.</p>
+  <app-page-meta [readingTime]="6" difficulty="beginner" since="C# 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>Getting the DATA a choreography saga's events carry right is only half the job — the next two subtopics build out ORDERING and COMPENSATION concerns the main page names in its theory and QnA but never shows working code for.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Saga Pattern" topicRoute="/design-patterns/saga"
+    [next]="{ label: 'Ordering Steps Around the Pivot Transaction', route: '/design-patterns/saga/ordering-steps-around-the-pivot-transaction' }" />
+</div>

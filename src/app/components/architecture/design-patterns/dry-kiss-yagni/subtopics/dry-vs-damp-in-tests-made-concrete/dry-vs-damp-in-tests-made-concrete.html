@@ -1,0 +1,26 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="DRY, KISS &amp; YAGNI" topicRoute="/design-patterns/dry-kiss-yagni"
+    subtopicLabel="DRY vs. DAMP in Tests, Made Concrete" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">DRY vs. DAMP in Tests, Made Concrete</h1>
+  <p class="page-subtitle">DAMP gets a quickRef entry, a theory bullet, and a QnA mention. Here's the same test suite written both ways, side by side.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="C# 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The next two subtopics build out other DRY-adjacent scenarios the main page names but doesn't fully demonstrate: intentional duplication across microservice boundaries, and the QnA's own DRY/KISS/YAGNI conflict-resolution order applied to one real feature.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="DRY, KISS &amp; YAGNI" topicRoute="/design-patterns/dry-kiss-yagni"
+    [next]="{ label: 'Why Microservices Duplicate Domain Models', route: '/design-patterns/dry-kiss-yagni/why-microservices-duplicate-domain-models' }" />
+</div>

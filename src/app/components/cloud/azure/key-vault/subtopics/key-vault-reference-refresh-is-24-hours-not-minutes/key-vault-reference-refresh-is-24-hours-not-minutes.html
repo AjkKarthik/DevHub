@@ -1,0 +1,26 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Key Vault" topicRoute="/azure/key-vault" subtopicLabel="Reference Refresh Is 24 Hours, Not Minutes" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">Key Vault Reference Refresh Is 24 Hours by Default, Not Minutes</h1>
+  <p class="page-subtitle">The main page originally said App Service picks up a rotated secret "within minutes" — Microsoft's own docs confirm the default cache window is 24 hours, with a real API to force it sooner.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Azure Key Vault" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic corrects a timing claim in the main page's own rotation QnA (the main page itself was updated to match). Next, the soft-deleted vault subtopic covers a separate, real recovery gap the main page's soft-delete coverage doesn't mention.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Key Vault" topicRoute="/azure/key-vault"
+    [next]="{ label: 'Soft-Deleted Vaults Reserve Their Name and Lose RBAC Bindings', route: '/azure/key-vault/soft-deleted-vault-reserves-its-name-and-loses-rbac-bindings' }" />
+</div>

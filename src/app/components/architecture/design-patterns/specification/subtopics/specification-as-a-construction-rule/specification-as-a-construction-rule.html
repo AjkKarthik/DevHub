@@ -1,0 +1,27 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Specification Pattern" topicRoute="/design-patterns/specification"
+    subtopicLabel="Specification as a Construction Rule" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Specification as a Construction Rule</h1>
+  <p class="page-subtitle">A quiz question names Selection, Validation, and Construction as the three classic uses. Only the first two ever get a codeTab.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="C# 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>Selection, validation, and construction all reuse the SAME specification object for a different purpose. The next subtopic covers a case where a specification can't be fully translated to SQL at all — combining a database-evaluated stage with an in-memory one, following the QnA's own suggested hybrid approach.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Specification Pattern" topicRoute="/design-patterns/specification"
+    [prev]="{ label: 'The Expression.Invoke Composition Problem', route: '/design-patterns/specification/the-expression-invoke-composition-problem' }"
+    [next]="{ label: 'A Hybrid Database-Then-In-Memory Pipeline', route: '/design-patterns/specification/a-hybrid-database-then-in-memory-pipeline' }" />
+</div>

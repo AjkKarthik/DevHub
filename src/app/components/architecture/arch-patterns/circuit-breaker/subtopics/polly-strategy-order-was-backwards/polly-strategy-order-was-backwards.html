@@ -1,0 +1,27 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Circuit Breaker" topicRoute="/arch-patterns/circuit-breaker" subtopicLabel="The Polly Example Had the Strategy Order Backwards" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">The Polly Example Had Retry and Circuit Breaker Backwards</h1>
+  <p class="page-subtitle">The theory says circuit breaker should be the outer strategy, wrapping retry — verified via research that Polly v8's add-order-equals-outer rule meant the page's own example did the opposite.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>Circuit breaker and retry are one resilience pairing this page covers well conceptually — the last subtopic makes a second pairing, Bulkhead, concrete with actual code, since the QnA only describes it in one line.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Circuit Breaker" topicRoute="/arch-patterns/circuit-breaker"
+    [prev]="{ label: 'halfOpenMaxCalls Was Never Actually Used', route: '/arch-patterns/circuit-breaker/half-open-max-calls-was-never-used' }"
+    [next]="{ label: 'Making the Bulkhead Pattern Concrete', route: '/arch-patterns/circuit-breaker/bulkhead-pattern-made-concrete' }" />
+</div>

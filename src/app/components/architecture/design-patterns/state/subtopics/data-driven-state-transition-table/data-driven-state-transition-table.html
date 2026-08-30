@@ -1,0 +1,29 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="State" topicRoute="/design-patterns/state"
+    subtopicLabel="A Data-Driven State Transition Table" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">A Data-Driven State Transition Table</h1>
+  <p class="page-subtitle">The main page's own QnA names transition tables as a real alternative to
+    class-per-state — and exactly when to prefer one over the other — but never shows what one looks like.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="C# 7.0+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic builds the OTHER piece of code this page's QnA describes but never shows —
+      reconstructing the right ConcreteState instance from a value pulled out of a database.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="State" topicRoute="/design-patterns/state"
+    [prev]="{ label: 'Singleton States: Making Them Actually Stateless', route: '/design-patterns/state/singleton-states-making-them-actually-stateless' }"
+    [next]="{ label: 'Reconstructing State From Persisted Data', route: '/design-patterns/state/reconstructing-state-from-persisted-data' }" />
+</div>

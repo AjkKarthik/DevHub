@@ -1,0 +1,26 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Cache for Redis" topicRoute="/azure/redis" subtopicLabel="There’s No “Redis Contributor” Data Role" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">There’s No “Redis Contributor” Data Role — It’s Data Owner, Contributor, or Reader</h1>
+  <p class="page-subtitle">The main page named a data access role that doesn't exist — and a similarly-named REAL Azure role grants zero access to Redis data at all.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Azure Cache for Redis" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This corrects a genuine main-page inaccuracy in the Entra ID authentication guidance — the next subtopic moves from access control to what actually happens to data under memory pressure.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Cache for Redis" topicRoute="/azure/redis"
+    [next]="{ label: 'The Real Default Eviction Policy Is volatile-lru', route: '/azure/redis/default-eviction-policy-is-volatile-lru-not-noeviction' }" />
+</div>

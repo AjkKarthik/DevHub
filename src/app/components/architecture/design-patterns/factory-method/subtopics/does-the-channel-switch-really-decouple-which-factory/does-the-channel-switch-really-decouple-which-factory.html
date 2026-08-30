@@ -1,0 +1,26 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Factory Method" topicRoute="/design-patterns/factory-method" subtopicLabel="Does the channel Switch Really Decouple Which Factory?" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Does the channel Switch Really Decouple Which Factory?</h1>
+  <p class="page-subtitle">The page's own mistake #1 calls out type-switching as an OCP violation. The "DI Approach" codeTab's own Create(channel) method does the exact same thing internally — a tension worth naming directly.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the batch: together the three subtopics fix two real compile-breaking bugs in the same codeTab, then examine a genuine, unstated tradeoff between the page's own recommended DI approach and the Open/Closed guarantee the classic pattern provides.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Factory Method" topicRoute="/design-patterns/factory-method"
+    [prev]="{ label: 'Backticks Are Not C#', route: '/design-patterns/factory-method/backticks-are-not-c-sharp' }" />
+</div>

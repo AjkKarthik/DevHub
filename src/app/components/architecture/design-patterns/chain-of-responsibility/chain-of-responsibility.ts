@@ -152,7 +152,7 @@ app.Use(async (context, next) =>
 // Auth middleware — short-circuits if unauthenticated
 app.Use(async (context, next) =>
 {
-    if (!context.User.Identity?.IsAuthenticated ?? false)
+    if (context.User.Identity?.IsAuthenticated != true)
     {
         context.Response.StatusCode = 401;
         await context.Response.WriteAsync("Unauthorized");

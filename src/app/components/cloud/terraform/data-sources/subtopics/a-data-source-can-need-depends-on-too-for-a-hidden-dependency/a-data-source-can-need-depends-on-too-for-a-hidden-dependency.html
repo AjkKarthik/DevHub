@@ -1,0 +1,26 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Data Sources" topicRoute="/terraform/data-sources" subtopicLabel="A Data Source Can Need depends_on Too" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">A Data Source Can Need depends_on Too</h1>
+  <p class="page-subtitle">The main page's own quiz covers the attribute-reference deferral case in depth — but never mentions that a data source can have a hidden dependency with no attribute to reference at all, needing its own explicit depends_on.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Terraform (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This extends the main page's own resource-vs-data-source dependency discussion to a hidden-dependency case the quiz never covers.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Data Sources" topicRoute="/terraform/data-sources"
+    [prev]="{ label: 'for_each, Not count, for Iterating a Data Source’s Own Results', route: '/terraform/data-sources/for-each-not-count-for-iterating-a-data-sources-own-results' }" />
+</div>

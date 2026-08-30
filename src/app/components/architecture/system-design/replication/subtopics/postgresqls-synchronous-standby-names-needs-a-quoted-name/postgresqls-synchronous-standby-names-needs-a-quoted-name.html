@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Replication Strategies" topicRoute="/system-design/replication" subtopicLabel="PostgreSQL's synchronous_standby_names Needs a Quoted Name" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">PostgreSQL's synchronous_standby_names Needs a Quoted Name</h1>
+  <p class="page-subtitle">The theory section's "synchronous_standby_names = 1" contradicted the page's own later, correct example — verified the real syntax against PostgreSQL's own docs and fixed the mismatch.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This closes a self-contradiction the page's own two sections had. Next: the quorum formula's "strongly consistent" claim has real, well-documented caveats.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Replication Strategies" topicRoute="/system-design/replication"
+    [next]="{ label: 'Quorum (W+R greater than N) Guarantees Overlap, Not True Linearizability', route: '/system-design/replication/quorum-w-plus-r-over-n-guarantees-overlap-not-linearizability' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="High Availability Design" topicRoute="/system-design/high-availability" subtopicLabel="Active-Active's Instant Failover Still Waits on Health-Check Detection" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">Active-Active's "Instant" Failover Still Waits on Detection</h1>
+  <p class="page-subtitle">The page called active-active failover "instant" — tightened to show the real, configurable detection window (interval × unhealthy-threshold, commonly 10-150s) that still has to elapse before the load balancer stops routing to a dead node.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This closes the gap between "instant" and what actually happens during a node failure. Next topic: Fault Tolerance Patterns.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="High Availability Design" topicRoute="/system-design/high-availability"
+    [prev]="{ label: 'Request-Based and Time-Based Error Budgets Aren’t the Same Thing', route: '/system-design/high-availability/request-based-and-time-based-error-budgets-arent-the-same-thing' }" />
+</div>

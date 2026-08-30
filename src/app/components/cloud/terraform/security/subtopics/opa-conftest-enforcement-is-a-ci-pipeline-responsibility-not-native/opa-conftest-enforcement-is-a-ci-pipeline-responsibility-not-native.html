@@ -1,0 +1,26 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Security & Compliance" topicRoute="/terraform/security" subtopicLabel="OPA/conftest Enforcement Is a CI-Pipeline Responsibility, Not Native" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">OPA/conftest Enforcement Is a CI-Pipeline Responsibility, Not Native</h1>
+  <p class="page-subtitle">The main page lists OPA/conftest alongside Sentinel's enforcement levels — but only Sentinel is wired into HCP Terraform's own run pipeline; OPA/conftest enforces only as much as CI configuration makes it.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Terraform (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the main page's policy-as-code section with the real enforcement gap between Sentinel and OPA/conftest that "enforces policies" glosses over.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Security & Compliance" topicRoute="/terraform/security"
+    [prev]="{ label: 'prevent_destroy Blocks terraform destroy Too — But Not a Removed Block', route: '/terraform/security/prevent-destroy-blocks-terraform-destroy-too-but-not-a-removed-block' }" />
+</div>

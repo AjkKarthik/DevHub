@@ -1,0 +1,26 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Service Mesh Fundamentals" topicRoute="/service-mesh/fundamentals" subtopicLabel="Ambient Mode: ztunnel Is L4-Only — L7 Routing Needs a Waypoint" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">Ambient Mode: ztunnel Is L4-Only — L7 Routing Needs a Waypoint</h1>
+  <p class="page-subtitle">The main page calls waypoint proxies "optional" in ambient mode — for any workload already using VirtualService routing, retries, or header rules, they're not.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Istio 1.18+ (ambient mode)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This sharpens the main page's "optional" framing of waypoint proxies with the real capability boundary. Next: why Envoy's xDS updates need make-before-break ordering to avoid black-holing traffic mid-update.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Service Mesh Fundamentals" topicRoute="/service-mesh/fundamentals"
+    [next]="{ label: 'xDS Updates Need Make-Before-Break Ordering, or Traffic Black-Holes', route: '/service-mesh/fundamentals/xds-updates-need-make-before-break-ordering-or-traffic-black-holes' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Distributed Tracing" topicRoute="/service-mesh/tracing" subtopicLabel="Exemplars Are Defined by OpenMetrics, Not an IETF RFC" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">Exemplars Are Defined by OpenMetrics, Not an IETF RFC</h1>
+  <p class="page-subtitle">The main page cited "RFC 4652" for Prometheus Exemplars — a real RFC, but about something else entirely. The actual source is the OpenMetrics specification.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="OpenMetrics spec (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>Together with the sampling-precedence gap and the corrected OpenTelemetry version, this closes out the main page's tracing trio for this batch — a reminder that citations need their own verification pass, separate from the behavior they describe.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Distributed Tracing" topicRoute="/service-mesh/tracing"
+    [prev]="{ label: 'OpenTelemetry Provider Needs Istio 1.22+, Not 1.16+', route: '/service-mesh/tracing/opentelemetry-provider-needs-istio-1-22-not-1-16' }" />
+</div>

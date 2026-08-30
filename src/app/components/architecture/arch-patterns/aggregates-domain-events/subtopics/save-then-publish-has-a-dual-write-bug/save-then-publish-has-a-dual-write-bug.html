@@ -1,0 +1,27 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Aggregates & Domain Events" topicRoute="/arch-patterns/aggregates-domain-events" subtopicLabel="The Save-Then-Publish CodeTab Has a Dual-Write Bug" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">The Save-Then-Publish CodeTab Has a Dual-Write Bug</h1>
+  <p class="page-subtitle">The page's own theory warns about the dual-write problem in plain words — the "Saving & Publishing Events" codeTab commits it anyway, labeling the pattern "RIGHT" without acknowledging the durability gap that remains.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic shows the actual fix — the Outbox Pattern already covered in this hub's own Inbox & Outbox topic, applied specifically to this handler.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Aggregates & Domain Events" topicRoute="/arch-patterns/aggregates-domain-events"
+    [prev]="{ label: 'PlaceOrderHandler Referenced an Undeclared catalogService', route: '/arch-patterns/aggregates-domain-events/place-order-handler-referenced-undeclared-catalog-service' }"
+    [next]="{ label: 'Fixing It With the Outbox Pattern', route: '/arch-patterns/aggregates-domain-events/fixing-it-with-the-outbox-pattern' }" />
+</div>

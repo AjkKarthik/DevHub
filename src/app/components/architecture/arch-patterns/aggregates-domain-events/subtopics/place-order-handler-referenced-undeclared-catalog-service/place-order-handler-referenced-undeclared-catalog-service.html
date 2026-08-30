@@ -1,0 +1,26 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Aggregates & Domain Events" topicRoute="/arch-patterns/aggregates-domain-events" subtopicLabel="PlaceOrderHandler Referenced an Undeclared catalogService" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">PlaceOrderHandler Referenced an Undeclared catalogService</h1>
+  <p class="page-subtitle">The "Saving & Publishing Events" codeTab's constructor only declared two dependencies, but its own method body used a third one that was never added — a real TypeScript compile error, not just a style nit.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic looks at a deeper issue in the same codeTab — even with the constructor fixed, saving the order and publishing its events are still two separate operations, which is its own real bug.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Aggregates & Domain Events" topicRoute="/arch-patterns/aggregates-domain-events"
+    [next]="{ label: 'The Save-Then-Publish CodeTab Has a Dual-Write Bug', route: '/arch-patterns/aggregates-domain-events/save-then-publish-has-a-dual-write-bug' }" />
+</div>

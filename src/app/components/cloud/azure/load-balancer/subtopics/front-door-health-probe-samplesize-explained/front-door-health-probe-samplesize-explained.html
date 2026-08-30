@@ -1,0 +1,26 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Load Balancer & Front Door" topicRoute="/azure/load-balancer" subtopicLabel="Front Door SampleSize Explained" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">Front Door Health Probe SampleSize and SuccessfulSamplesRequired Explained</h1>
+  <p class="page-subtitle">The main page's own code sets --sample-size 4 --successful-samples-required 3 with no explanation — here's the rolling-window health calculation, and what happens if every origin fails at once.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Azure Front Door" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic explains a code sample the main page uses without comment, closing out this topic's three deep dives.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Load Balancer & Front Door" topicRoute="/azure/load-balancer"
+    [prev]="{ label: 'Default SNAT Port Allocation Is Per-VM', route: '/azure/load-balancer/default-snat-port-allocation-is-per-vm-not-per-ip' }" />
+</div>

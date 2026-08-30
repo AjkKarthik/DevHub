@@ -1,0 +1,26 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CQRS Pattern" topicRoute="/design-patterns/cqrs"
+    subtopicLabel="Read-Your-Writes for the Issuing User" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Read-Your-Writes for the Issuing User</h1>
+  <p class="page-subtitle">The QnA names this eventual-consistency mitigation in prose — here's a version-aware query handler that actually implements it.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="C# 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>This closes the loop the previous subtopic opened: once a read model is synced from domain events on a delay, SOME strategy is needed for the user who just triggered the change and would otherwise briefly see their own write disappear. The next topic in this hub, Event Sourcing, builds on the exact same "write side emits events, read side projects them" shape — just with the events themselves as the permanent source of truth, not merely a sync signal.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CQRS Pattern" topicRoute="/design-patterns/cqrs"
+    [prev]="{ label: 'Syncing a Read Model Projection From a Domain Event', route: '/design-patterns/cqrs/syncing-a-read-model-projection-from-a-domain-event' }" />
+</div>

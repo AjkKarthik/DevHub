@@ -1,0 +1,27 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Module Patterns" topicRoute="/terraform/module-patterns" subtopicLabel="terraform test Defaults to apply, Not plan" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">terraform test Defaults to apply, Not plan</h1>
+  <p class="page-subtitle">The main page lists terraform test right after "fast, no cloud calls" validate — but a run block with no command attribute provisions real infrastructure.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Terraform 1.6+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This adds the cost and safety dimension missing from the main page's one-bullet terraform test mention. Next: why depends_on on a module block makes the whole module's plan more conservative.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Module Patterns" topicRoute="/terraform/module-patterns"
+    [prev]="{ label: 'count on a Module Changes How Every Output Is Accessed', route: '/terraform/module-patterns/count-on-a-module-changes-how-every-output-is-accessed' }"
+    [next]="{ label: 'Module depends_on Makes the Whole Module Conservative', route: '/terraform/module-patterns/module-depends-on-makes-the-whole-module-conservative' }" />
+</div>

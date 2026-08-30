@@ -1,0 +1,26 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="mTLS &amp; Certificate Management" topicRoute="/service-mesh/mtls" subtopicLabel="Probe Traffic Is Rewritten to Port 15020, Not Simply Exempted" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">Probe Traffic Is Rewritten to Port 15020, Not Simply Exempted</h1>
+  <p class="page-subtitle">The main page's original phrasing made probe exemption sound automatic — the real mechanism is a pod-spec rewrite that reroutes probes to istio-agent's own status port.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Istio / Envoy (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This gives the main page's "automatically exempts probe paths" claim its precise mechanism. Next: why a mesh-wide PeerAuthentication policy must be named exactly "default" to actually take effect.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="mTLS &amp; Certificate Management" topicRoute="/service-mesh/mtls"
+    [next]="{ label: 'Mesh-Wide PeerAuthentication Must Be Named default in the Root Namespace', route: '/service-mesh/mtls/mesh-wide-peerauthentication-must-be-named-default-in-the-root-ns' }" />
+</div>

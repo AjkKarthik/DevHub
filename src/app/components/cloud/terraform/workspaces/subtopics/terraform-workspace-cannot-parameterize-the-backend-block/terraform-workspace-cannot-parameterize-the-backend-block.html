@@ -1,0 +1,27 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Workspaces" topicRoute="/terraform/workspaces" subtopicLabel="terraform.workspace Cannot Parameterize the backend Block" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">terraform.workspace Cannot Parameterize the backend Block</h1>
+  <p class="page-subtitle">Every terraform.workspace example on the main page works because it sits in a resource argument or local — the backend block is resolved before any expression evaluation exists at all.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Terraform (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This names the one place terraform.workspace categorically does not work, and what to use instead. Next: why the default workspace's state path is asymmetric with every other workspace's.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Workspaces" topicRoute="/terraform/workspaces"
+    [prev]="{ label: 'workspace delete -force Orphans Resources', route: '/terraform/workspaces/workspace-delete-force-orphans-resources-it-does-not-destroy' }"
+    [next]="{ label: 'The default Workspace’s State Path Is Asymmetric', route: '/terraform/workspaces/the-default-workspace-key-path-is-asymmetric-workspace-key-prefix' }" />
+</div>

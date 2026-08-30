@@ -229,11 +229,13 @@ context.with(parentCtx, () => processMessage(msg));`,
     wrong: `// Always-on sampling at 100,000 req/s
 // 100k spans/s × 1KB each = 100 MB/s to tracing backend
 // Cost: ~$8,000/month in storage alone`,
-    right: `// Tail-based sampling: keep 1% of normal + 100% of errors/slow
+    right: `// Combined strategy: head sampling in the SDK for baseline,
+// tail sampling in the Collector for errors/slow traces
 const sampler = new ParentBasedSampler({
-  root: new TraceIdRatioBased(0.01),  // 1% head sample
+  root: new TraceIdRatioBased(0.01),  // 1% head sample -- decided here, in the SDK
 });
-// In OTel Collector: tail_sampling processor keeps all error traces`,
+// In OTel Collector: tail_sampling processor separately keeps 100% of
+// error/slow traces -- this is the actual tail-based half of the strategy`,
     explanation: '100% sampling at high traffic is prohibitively expensive. Use head-based sampling (1-5%) for baseline with tail-based sampling to capture all errors and p99+ slow traces.',
   },
   {

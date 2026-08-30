@@ -81,7 +81,7 @@ export class MeshLoadBalancing {
       heading: 'Load Balancing and Health Checking',
       points: [
         'Istio supports two types of health checks: PASSIVE (outlier detection — monitors real traffic) and ACTIVE (Envoy periodic health checks — sends probe requests to each endpoint).',
-        'Active health checks in Istio: configured via DestinationRule\'s `trafficPolicy.healthCheck` (or via an EnvoyFilter for advanced config). Envoy sends HTTP GET or TCP probes to each endpoint at a configurable interval.',
+        'Active health checks in Istio have NO native DestinationRule field — `trafficPolicy` has no `healthCheck` option. The only way to configure Envoy\'s periodic HTTP GET / TCP probe checks is via an EnvoyFilter that patches the generated cluster\'s `health_checks` field directly.',
         'Without active health checks, Istio relies on Kubernetes readiness probes to determine endpoint health. A pod removed from Endpoints (due to failing readiness) stops receiving traffic from Envoy immediately.',
         'Active health checks complement readiness probes: they can detect backend health at the Envoy layer independently of Kubernetes, catching cases where a pod passes readiness but is actually unhealthy for some specific traffic.',
         'Slow start mode (`warmupDurationSecs`): when a new pod joins the pool, Istio gradually increases the traffic it receives over the warmup period instead of immediately sending it full load. Prevents new pods from being overwhelmed before they\'re warm.',
@@ -351,7 +351,7 @@ console.log(getDestinationRule());`,
       q: 'What is `warmupDurationSecs` in DestinationRule used for?',
       options: ['Delays traffic to a service until it passes N health checks', 'Gradually ramps up traffic to new endpoints instead of sending full load immediately', 'Warms the Envoy connection pool by pre-establishing connections on startup', 'Delays circuit breaker activation for new pod deployments'],
       answer: 1,
-      explanation: 'warmupDurationSecs implements "slow start" — new pods joining the load balancer pool receive a linearly increasing fraction of traffic over the warmup period (from ~0% to their fair share). This prevents new pods (e.g., ML models that need JVM warm-up or caches to fill) from being overwhelmed immediately.',
+      explanation: 'warmupDurationSecs implements "slow start" — new pods joining the load balancer pool receive a linearly increasing fraction of traffic over the warmup period, starting from Envoy\'s default 10% minimum weight floor (not 0%) and ramping to their fair share. This prevents new pods (e.g., ML models that need JVM warm-up or caches to fill) from being overwhelmed immediately, while still routing some traffic to them from the very start.',
     },
     {
       q: 'Why does `useSourceIp` consistent hashing fail behind a NAT gateway?',
@@ -378,7 +378,7 @@ console.log(getDestinationRule());`,
     },
     {
       q: 'What is the difference between active and passive health checking in Istio?',
-      a: '<strong>Passive health checking (outlierDetection)</strong>: monitors real production traffic. Envoy tracks response codes from each endpoint and ejects pods that return too many errors. No overhead on healthy pods — it just watches existing traffic. <br><br><strong>Active health checking</strong>: Envoy periodically sends probe requests to each endpoint (HTTP GET or TCP connect). Detects unhealthy endpoints even if they receive no real traffic. Configured via DestinationRule\'s <code>trafficPolicy.healthCheck</code> or EnvoyFilter for advanced config. <br><br>Use both together for comprehensive health detection: active probes catch silent failures; passive probes catch quality degradation under real load.',
+      a: '<strong>Passive health checking (outlierDetection)</strong>: monitors real production traffic. Envoy tracks response codes from each endpoint and ejects pods that return too many errors. No overhead on healthy pods — it just watches existing traffic. <br><br><strong>Active health checking</strong>: Envoy periodically sends probe requests to each endpoint (HTTP GET or TCP connect). Detects unhealthy endpoints even if they receive no real traffic. Unlike outlierDetection, this has NO native DestinationRule field — it can only be configured via an EnvoyFilter that patches the generated cluster\'s <code>health_checks</code> field directly. <br><br>Use both together for comprehensive health detection: active probes catch silent failures; passive probes catch quality degradation under real load.',
     },
     {
       q: 'How does locality-aware load balancing handle multi-AZ cloud deployments?',

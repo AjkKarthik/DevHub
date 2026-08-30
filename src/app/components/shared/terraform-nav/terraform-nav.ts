@@ -1,7 +1,9 @@
-import { Component, inject } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Component, inject, signal } from '@angular/core';
+import { RouterLink, RouterLinkActive, Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs';
 import { ProgressService } from '../../../services/progress.service';
 import { SEARCH_INDEX } from '../../../services/search.service';
+import { SUBTOPICS } from '../../../data/subtopics';
 
 const DIFF: Record<string, string> = Object.fromEntries(
   SEARCH_INDEX.map(e => [e.route, e.difficulty])
@@ -18,43 +20,442 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Foundations</p>
-      <a routerLink="/terraform/fundamentals" routerLinkActive="active"><span class="nl-text">Terraform Fundamentals</span>@if(p.isDone('tf-fundamentals')){<span class="nl-done">✓</span>}@if(d('tf-fundamentals');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
-      <a routerLink="/terraform/providers" routerLinkActive="active"><span class="nl-text">Providers</span>@if(p.isDone('tf-providers')){<span class="nl-done">✓</span>}@if(d('tf-providers');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
-      <a routerLink="/terraform/variables" routerLinkActive="active"><span class="nl-text">Variables &amp; Locals</span>@if(p.isDone('tf-variables')){<span class="nl-done">✓</span>}@if(d('tf-variables');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
-      <a routerLink="/terraform/outputs" routerLinkActive="active"><span class="nl-text">Outputs</span>@if(p.isDone('tf-outputs')){<span class="nl-done">✓</span>}@if(d('tf-outputs');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/terraform/fundamentals" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Terraform Fundamentals</span>
+        @if(p.isDone('tf-fundamentals')){<span class="nl-done">✓</span>}
+        @if(d('tf-fundamentals');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('tf-fundamentals')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('tf-fundamentals')"
+                  (click)="toggleSubtopics('tf-fundamentals', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('tf-fundamentals'); as fundSubs) {
+        @if (isSubtopicsExpanded('tf-fundamentals')) {
+          <div class="nav-subtopics">
+            @for (s of fundSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/terraform/providers" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Providers</span>
+        @if(p.isDone('tf-providers')){<span class="nl-done">✓</span>}
+        @if(d('tf-providers');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('providers')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('providers')"
+                  (click)="toggleSubtopics('providers', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('providers'); as provSubs) {
+        @if (isSubtopicsExpanded('providers')) {
+          <div class="nav-subtopics">
+            @for (s of provSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/terraform/variables" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Variables &amp; Locals</span>
+        @if(p.isDone('tf-variables')){<span class="nl-done">✓</span>}
+        @if(d('tf-variables');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('variables')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('variables')"
+                  (click)="toggleSubtopics('variables', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('variables'); as varSubs) {
+        @if (isSubtopicsExpanded('variables')) {
+          <div class="nav-subtopics">
+            @for (s of varSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/terraform/outputs" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Outputs</span>
+        @if(p.isDone('tf-outputs')){<span class="nl-done">✓</span>}
+        @if(d('tf-outputs');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('outputs')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('outputs')"
+                  (click)="toggleSubtopics('outputs', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('outputs'); as outSubs) {
+        @if (isSubtopicsExpanded('outputs')) {
+          <div class="nav-subtopics">
+            @for (s of outSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Resources</p>
-      <a routerLink="/terraform/resources" routerLinkActive="active"><span class="nl-text">Resources &amp; Meta-Arguments</span>@if(p.isDone('tf-resources')){<span class="nl-done">✓</span>}@if(d('tf-resources');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
-      <a routerLink="/terraform/data-sources" routerLinkActive="active"><span class="nl-text">Data Sources</span>@if(p.isDone('tf-data-sources')){<span class="nl-done">✓</span>}@if(d('tf-data-sources');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
-      <a routerLink="/terraform/expressions" routerLinkActive="active"><span class="nl-text">Expressions &amp; Dynamic Blocks</span>@if(p.isDone('tf-expressions')){<span class="nl-done">✓</span>}@if(d('tf-expressions');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
-      <a routerLink="/terraform/functions" routerLinkActive="active"><span class="nl-text">Built-in Functions</span>@if(p.isDone('tf-functions')){<span class="nl-done">✓</span>}@if(d('tf-functions');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/terraform/resources" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Resources &amp; Meta-Arguments</span>
+        @if(p.isDone('tf-resources')){<span class="nl-done">✓</span>}
+        @if(d('tf-resources');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('resources')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('resources')"
+                  (click)="toggleSubtopics('resources', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('resources'); as resSubs) {
+        @if (isSubtopicsExpanded('resources')) {
+          <div class="nav-subtopics">
+            @for (s of resSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/terraform/data-sources" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Data Sources</span>
+        @if(p.isDone('tf-data-sources')){<span class="nl-done">✓</span>}
+        @if(d('tf-data-sources');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('data-sources')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('data-sources')"
+                  (click)="toggleSubtopics('data-sources', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('data-sources'); as dsSubs) {
+        @if (isSubtopicsExpanded('data-sources')) {
+          <div class="nav-subtopics">
+            @for (s of dsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/terraform/expressions" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Expressions &amp; Dynamic Blocks</span>
+        @if(p.isDone('tf-expressions')){<span class="nl-done">✓</span>}
+        @if(d('tf-expressions');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('expressions')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('expressions')"
+                  (click)="toggleSubtopics('expressions', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('expressions'); as exprSubs) {
+        @if (isSubtopicsExpanded('expressions')) {
+          <div class="nav-subtopics">
+            @for (s of exprSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/terraform/functions" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Built-in Functions</span>
+        @if(p.isDone('tf-functions')){<span class="nl-done">✓</span>}
+        @if(d('tf-functions');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('tf-functions')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('tf-functions')"
+                  (click)="toggleSubtopics('tf-functions', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('tf-functions'); as fnSubs) {
+        @if (isSubtopicsExpanded('tf-functions')) {
+          <div class="nav-subtopics">
+            @for (s of fnSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">State</p>
-      <a routerLink="/terraform/state" routerLinkActive="active"><span class="nl-text">Terraform State</span>@if(p.isDone('tf-state')){<span class="nl-done">✓</span>}@if(d('tf-state');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
-      <a routerLink="/terraform/remote-backends" routerLinkActive="active"><span class="nl-text">Remote Backends</span>@if(p.isDone('tf-remote-backends')){<span class="nl-done">✓</span>}@if(d('tf-remote-backends');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
-      <a routerLink="/terraform/workspaces" routerLinkActive="active"><span class="nl-text">Workspaces</span>@if(p.isDone('tf-workspaces')){<span class="nl-done">✓</span>}@if(d('tf-workspaces');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/terraform/state" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Terraform State</span>
+        @if(p.isDone('tf-state')){<span class="nl-done">✓</span>}
+        @if(d('tf-state');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('state')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('state')"
+                  (click)="toggleSubtopics('state', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('state'); as stateSubs) {
+        @if (isSubtopicsExpanded('state')) {
+          <div class="nav-subtopics">
+            @for (s of stateSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/terraform/remote-backends" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Remote Backends</span>
+        @if(p.isDone('tf-remote-backends')){<span class="nl-done">✓</span>}
+        @if(d('tf-remote-backends');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('remote-backends')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('remote-backends')"
+                  (click)="toggleSubtopics('remote-backends', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('remote-backends'); as rbSubs) {
+        @if (isSubtopicsExpanded('remote-backends')) {
+          <div class="nav-subtopics">
+            @for (s of rbSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/terraform/workspaces" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Workspaces</span>
+        @if(p.isDone('tf-workspaces')){<span class="nl-done">✓</span>}
+        @if(d('tf-workspaces');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('workspaces')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('workspaces')"
+                  (click)="toggleSubtopics('workspaces', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('workspaces'); as wsSubs) {
+        @if (isSubtopicsExpanded('workspaces')) {
+          <div class="nav-subtopics">
+            @for (s of wsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Modules</p>
-      <a routerLink="/terraform/modules" routerLinkActive="active"><span class="nl-text">Modules</span>@if(p.isDone('tf-modules')){<span class="nl-done">✓</span>}@if(d('tf-modules');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
-      <a routerLink="/terraform/module-patterns" routerLinkActive="active"><span class="nl-text">Module Patterns</span>@if(p.isDone('tf-module-patterns')){<span class="nl-done">✓</span>}@if(d('tf-module-patterns');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/terraform/modules" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Modules</span>
+        @if(p.isDone('tf-modules')){<span class="nl-done">✓</span>}
+        @if(d('tf-modules');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('tf-modules')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('tf-modules')"
+                  (click)="toggleSubtopics('tf-modules', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('tf-modules'); as modSubs) {
+        @if (isSubtopicsExpanded('tf-modules')) {
+          <div class="nav-subtopics">
+            @for (s of modSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/terraform/module-patterns" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Module Patterns</span>
+        @if(p.isDone('tf-module-patterns')){<span class="nl-done">✓</span>}
+        @if(d('tf-module-patterns');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('module-patterns')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('module-patterns')"
+                  (click)="toggleSubtopics('module-patterns', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('module-patterns'); as mpSubs) {
+        @if (isSubtopicsExpanded('module-patterns')) {
+          <div class="nav-subtopics">
+            @for (s of mpSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Advanced</p>
-      <a routerLink="/terraform/provisioners" routerLinkActive="active"><span class="nl-text">Provisioners</span>@if(p.isDone('tf-provisioners')){<span class="nl-done">✓</span>}@if(d('tf-provisioners');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
-      <a routerLink="/terraform/import" routerLinkActive="active"><span class="nl-text">Import &amp; Generated Config</span>@if(p.isDone('tf-import')){<span class="nl-done">✓</span>}@if(d('tf-import');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
-      <a routerLink="/terraform/cicd" routerLinkActive="active"><span class="nl-text">CI/CD with Terraform</span>@if(p.isDone('tf-cicd')){<span class="nl-done">✓</span>}@if(d('tf-cicd');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
-      <a routerLink="/terraform/testing" routerLinkActive="active"><span class="nl-text">Testing Terraform Code</span>@if(p.isDone('tf-testing')){<span class="nl-done">✓</span>}@if(d('tf-testing');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
-      <a routerLink="/terraform/security" routerLinkActive="active"><span class="nl-text">Security &amp; Compliance</span>@if(p.isDone('tf-security')){<span class="nl-done">✓</span>}@if(d('tf-security');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
-      <a routerLink="/terraform/drift" routerLinkActive="active"><span class="nl-text">Drift Detection</span>@if(p.isDone('tf-drift')){<span class="nl-done">✓</span>}@if(d('tf-drift');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
-      <a routerLink="/terraform/refactoring" routerLinkActive="active"><span class="nl-text">Refactoring &amp; State Ops</span>@if(p.isDone('tf-refactoring')){<span class="nl-done">✓</span>}@if(d('tf-refactoring');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
-      <a routerLink="/terraform/opentofu" routerLinkActive="active"><span class="nl-text">OpenTofu</span>@if(p.isDone('tf-opentofu')){<span class="nl-done">✓</span>}@if(d('tf-opentofu');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/terraform/provisioners" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Provisioners</span>
+        @if(p.isDone('tf-provisioners')){<span class="nl-done">✓</span>}
+        @if(d('tf-provisioners');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('provisioners')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('provisioners')"
+                  (click)="toggleSubtopics('provisioners', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('provisioners'); as provSubs) {
+        @if (isSubtopicsExpanded('provisioners')) {
+          <div class="nav-subtopics">
+            @for (s of provSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/terraform/import" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Import &amp; Generated Config</span>
+        @if(p.isDone('tf-import')){<span class="nl-done">✓</span>}
+        @if(d('tf-import');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('import')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('import')"
+                  (click)="toggleSubtopics('import', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('import'); as impSubs) {
+        @if (isSubtopicsExpanded('import')) {
+          <div class="nav-subtopics">
+            @for (s of impSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/terraform/cicd" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">CI/CD with Terraform</span>
+        @if(p.isDone('tf-cicd')){<span class="nl-done">✓</span>}
+        @if(d('tf-cicd');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('cicd')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('cicd')"
+                  (click)="toggleSubtopics('cicd', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('cicd'); as cicdSubs) {
+        @if (isSubtopicsExpanded('cicd')) {
+          <div class="nav-subtopics">
+            @for (s of cicdSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/terraform/testing" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Testing Terraform Code</span>
+        @if(p.isDone('tf-testing')){<span class="nl-done">✓</span>}
+        @if(d('tf-testing');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('tf-testing')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('tf-testing')"
+                  (click)="toggleSubtopics('tf-testing', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('tf-testing'); as testingSubs) {
+        @if (isSubtopicsExpanded('tf-testing')) {
+          <div class="nav-subtopics">
+            @for (s of testingSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/terraform/security" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Security &amp; Compliance</span>
+        @if(p.isDone('tf-security')){<span class="nl-done">✓</span>}
+        @if(d('tf-security');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('tf-security')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('tf-security')"
+                  (click)="toggleSubtopics('tf-security', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('tf-security'); as securitySubs) {
+        @if (isSubtopicsExpanded('tf-security')) {
+          <div class="nav-subtopics">
+            @for (s of securitySubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/terraform/drift" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Drift Detection</span>
+        @if(p.isDone('tf-drift')){<span class="nl-done">✓</span>}
+        @if(d('tf-drift');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('drift')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('drift')"
+                  (click)="toggleSubtopics('drift', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('drift'); as driftSubs) {
+        @if (isSubtopicsExpanded('drift')) {
+          <div class="nav-subtopics">
+            @for (s of driftSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/terraform/refactoring" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Refactoring &amp; State Ops</span>
+        @if(p.isDone('tf-refactoring')){<span class="nl-done">✓</span>}
+        @if(d('tf-refactoring');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('refactoring')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('refactoring')"
+                  (click)="toggleSubtopics('refactoring', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('refactoring'); as refactoringSubs) {
+        @if (isSubtopicsExpanded('refactoring')) {
+          <div class="nav-subtopics">
+            @for (s of refactoringSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/terraform/opentofu" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">OpenTofu</span>
+        @if(p.isDone('tf-opentofu')){<span class="nl-done">✓</span>}
+        @if(d('tf-opentofu');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('opentofu')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('opentofu')"
+                  (click)="toggleSubtopics('opentofu', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('opentofu'); as opentofuSubs) {
+        @if (isSubtopicsExpanded('opentofu')) {
+          <div class="nav-subtopics">
+            @for (s of opentofuSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
@@ -67,5 +468,40 @@ const DIFF: Record<string, string> = Object.fromEntries(
 })
 export class TerraformNavComponent {
   p = inject(ProgressService);
+  private router = inject(Router);
   d(route: string): string | null { return DIFF[route] ?? null; }
+
+  subtopicsOf(routeSlug: string) {
+    return SUBTOPICS[routeSlug] ?? null;
+  }
+
+  private expandedTopics = signal<Set<string>>(new Set());
+
+  isSubtopicsExpanded(routeSlug: string): boolean {
+    return this.expandedTopics().has(routeSlug);
+  }
+
+  toggleSubtopics(routeSlug: string, event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+    const next = new Set(this.expandedTopics());
+    next.has(routeSlug) ? next.delete(routeSlug) : next.add(routeSlug);
+    this.expandedTopics.set(next);
+  }
+
+  constructor() {
+    this.router.events.pipe(filter(e => e instanceof NavigationEnd))
+      .subscribe(() => this.autoExpandForCurrentUrl());
+    this.autoExpandForCurrentUrl();
+  }
+
+  private autoExpandForCurrentUrl(): void {
+    const url = this.router.url.split('?')[0];
+    for (const [topicSlug, subs] of Object.entries(SUBTOPICS)) {
+      if (subs.some(s => s.route === url)) {
+        this.expandedTopics.update(set => new Set(set).add(topicSlug));
+        break;
+      }
+    }
+  }
 }

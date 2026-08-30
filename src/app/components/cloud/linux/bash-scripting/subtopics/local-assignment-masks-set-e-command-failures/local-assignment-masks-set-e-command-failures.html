@@ -1,0 +1,27 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Bash Scripting Basics" topicRoute="/linux/bash-scripting" subtopicLabel="local Assignment Masks set -e Command Failures" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">local Assignment Masks set -e Command Failures</h1>
+  <p class="page-subtitle">The main page presents set -e as unconditional — local var=$(cmd) written on one line reports the local builtin's own success, silently hiding a genuinely failed command inside it.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Bash (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This exposes a real gap behind the main page's own unconditional set -e claim. Next: why calling trap EXIT more than once silently drops earlier cleanup logic.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Bash Scripting Basics" topicRoute="/linux/bash-scripting"
+    [prev]="{ label: 'Exit Codes Wrap Around at 256 — return 256 Means Success', route: '/linux/bash-scripting/exit-codes-wrap-around-at-256-return-256-means-success' }"
+    [next]="{ label: 'trap EXIT Overwrites, It Doesn’t Chain Multiple Handlers', route: '/linux/bash-scripting/trap-exit-overwrites-not-chains-multiple-handlers' }" />
+</div>

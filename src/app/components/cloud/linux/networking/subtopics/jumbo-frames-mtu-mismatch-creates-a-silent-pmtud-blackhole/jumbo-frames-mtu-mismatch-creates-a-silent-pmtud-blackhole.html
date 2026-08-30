@@ -1,0 +1,26 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Networking" topicRoute="/linux/networking" subtopicLabel="Jumbo Frames + MTU Mismatch Creates a Silent PMTUD Blackhole" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">Jumbo Frames + MTU Mismatch Creates a Silent PMTUD Blackhole</h1>
+  <p class="page-subtitle">The main page's own "sets jumbo frames" line hides a real risk — raising MTU on one interface without matching the rest of the path can silently drop large packets while small traffic keeps working fine.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Linux 2.6+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the topic's three deep dives, expanding a one-line MTU mention on the main page into a full diagnosis workflow for the silent hangs it can cause.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Networking" topicRoute="/linux/networking"
+    [prev]="{ label: 'Traceroute Defaults to UDP, Which Firewalls Often Block', route: '/linux/networking/traceroute-defaults-to-udp-which-firewalls-often-block' }" />
+</div>

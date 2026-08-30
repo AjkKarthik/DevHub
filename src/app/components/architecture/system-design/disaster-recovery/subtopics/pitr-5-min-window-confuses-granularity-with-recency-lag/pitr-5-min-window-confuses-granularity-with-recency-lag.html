@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Disaster Recovery" topicRoute="/system-design/disaster-recovery" subtopicLabel="RDS PITR's '5-Minute Window' Claim Confuses Granularity With Recency Lag" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">RDS PITR's "5-Minute Window" Claim Confuses Granularity With Recency</h1>
+  <p class="page-subtitle">The theory said "restore to any 5-min window" — but the page's own Challenge solution restores to 30 seconds before a DELETE. Verified against AWS's docs and fixed both to reflect real second-level PITR precision.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This fixes a self-contradicting claim between the page's theory and its own Challenge solution. Next: the same faster RDS Multi-AZ option from the High Availability topic applies to this page's own AZ-failure scenario too.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Disaster Recovery" topicRoute="/system-design/disaster-recovery"
+    [next]="{ label: 'RDS Multi-AZ DB Clusters Apply Here Too', route: '/system-design/disaster-recovery/rds-multi-az-db-clusters-apply-here-too' }" />
+</div>

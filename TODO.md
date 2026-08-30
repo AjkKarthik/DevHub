@@ -3913,192 +3913,3930 @@ off here with a date.
   topic in this hub with subtopics — explicitly checked the toggle COUNT (7) on the topic overview
   page per the standing lesson from the ARM batch), tailored (non-DEFAULT) sidebar content, dark
   mode (`--bg: #0f172a`) applying correctly.)
-- [ ] `/azure/load-balancer` — Azure Load Balancer & Front Door
-- [ ] `/azure/storage` — Azure Blob & Storage
-- [ ] `/azure/entra-id` — Azure Active Directory & Entra ID
-- [ ] `/azure/rbac` — Azure RBAC
-- [ ] `/azure/sql-cosmos` — Azure SQL & Cosmos DB
-- [ ] `/azure/monitor` — Azure Monitor & App Insights
-- [ ] `/azure/devops-pipelines` — Azure DevOps & Pipelines
-- [ ] `/azure/cost-management` — Azure Cost Management
-- [ ] `/azure/security-defender` — Azure Security & Defender for Cloud
-- [ ] `/azure/key-vault` — Azure Key Vault
-- [ ] `/azure/service-bus` — Azure Service Bus
-- [ ] `/azure/container-apps` — Azure Container Apps
-- [ ] `/azure/redis` — Azure Cache for Redis
-- [ ] `/azure/api-management` — Azure API Management
-- [ ] `/azure/bicep` — Azure Bicep Deep-dive
+- [x] `/azure/load-balancer` — Azure Load Balancer & Front Door (2026-07-22 — 3 subtopics:
+  default-outbound-access-was-retired-march-2026-need-explicit-method (short physical folder
+  `default-outbound-access-retired-march-2026`), default-snat-port-allocation-is-per-vm-not-per-ip,
+  front-door-health-probe-samplesize-and-successfulsamples-explained (short physical folder
+  `front-door-health-probe-samplesize-explained`); MAX_PATH check run before folder creation per
+  the standing recipe. Content built on the main page's own "~64K SNAT ports" figure (revealed as
+  a per-IP total governed by a tiered per-VM allocation table, not an even split), its outbound
+  connectivity code (revealed the default-outbound-access method it silently relied on was retired
+  effective March 2026, now requiring an explicit NAT Gateway/Standard LB/instance-level public IP),
+  and its Front Door health probe code sample (revealed the exact SampleSize/SuccessfulSamplesRequired
+  semantics the main page sets numeric values for without ever explaining what they mean). Caught and
+  fixed a real routing bug before committing: subtopic 2's own `[prev]` link initially referenced the
+  SHORT physical folder name for subtopic 1 instead of its actual registered long-form route — found
+  via a `grep -n "\[prev\]\|\[next\]" */*.html` cross-check across all three new files immediately
+  after writing them, fixed via Edit before wiring `app.routes.ts`. A live browser check post-fix
+  still showed the stale short-form link in the DOM even after a hard reload — traced to the local
+  `ng serve` dev server's incremental/esbuild watcher not having recompiled that specific lazy chunk
+  since before the fix (confirmed via `preview_logs`: several subsequent builds only relisted
+  `main.js`, not the subtopic's own chunk) — resolved by forcing a fresh save of the file (a trivial
+  whitespace edit-then-revert), which triggered a new chunk hash and a correct render on the next
+  reload. Not a source-code bug — a dev-server staleness gotcha specific to local live-preview
+  verification; the committed source was correct throughout and the production build never reflected
+  the stale state. Gotcha sweep (apostrophe-after-letter across `.ts` and `.html` files, backtick
+  parity, bare `@word`/`{` in `.html` prose) came back clean. Build reported only the pre-documented
+  harmless "bundle initial exceeded maximum budget" ERROR (326.29 kB over) with zero actual
+  TypeScript/template compile errors. `git add -A` staged all 15 files (9 new + 6 wiring) cleanly.
+  Confirmed bare `load-balancer` key collision-free in `SUBTOPICS` map (checked both quoted and
+  unquoted forms). Browser-verified successfully on all three pages after the dev-server staleness
+  was resolved — h1/breadcrumb pairs correct (all 4 levels), the `AzureNavComponent` accordion (now
+  the EIGHTH topic in this hub with subtopics — explicitly checked the toggle COUNT (8) on the topic
+  overview page per the standing lesson from the ARM batch), tailored (non-DEFAULT) sidebar content,
+  dark mode (`--bg: #0f172a`) applying correctly.)
+- [x] `/azure/storage` — Azure Blob & Storage (2026-07-22 — 3 subtopics:
+  user-delegation-sas-max-validity-is-7-days-not-your-expiry-param,
+  stored-access-policies-dont-work-with-user-delegation-sas,
+  lifecycle-baseblob-actions-dont-cover-versions-or-snapshots; all three verified against
+  Microsoft's own documentation via WebFetch before writing — (1) confirmed via Microsoft's own
+  "Use Azure CLI to create a user delegation SAS" doc that "the maximum interval over which the
+  user delegation key is valid is 7 days from the start date... a SAS with an expiry time of
+  greater than 7 days will still only be valid for 7 days" — a longer --expiry is silently
+  truncated, not rejected, closing a gap where the main page recommends User Delegation SAS as
+  "preferred for security" with zero mention of this cap; (2) confirmed via the same doc plus
+  Microsoft's own "Define a stored access policy" reference — both state the exact same
+  constraint independently ("A user delegation SAS does not support defining permissions with a
+  stored access policy" / "Stored access policies are not supported for the user delegation SAS
+  or the account SAS") — revealing the main page's own two "most secure" recommendations
+  (User Delegation SAS, Stored Access Policy revocation) are mutually exclusive, a tension it
+  never states; (3) confirmed via Microsoft's own "Configure a lifecycle management policy" doc
+  that BaseBlobAction, SnapshotAction, and BlobVersionAction are three separate, independently
+  configured parameters (shown in the official PowerShell reference example, all three used side
+  by side in one policy) — closing a gap where the main page's own lifecycle JSON codeTab defines
+  only a baseBlob action block while its own theory separately recommends enabling Versioning "for
+  critical data," a combination that silently leaves every old blob version accumulating at full
+  cost forever. Gotcha sweep (apostrophe-after-letter across `.ts` and `.html` files, backtick
+  parity — even counts, 4/4/4 — bare `@word`/`{` in `.html` prose, `[prev]`/`[next]` route
+  cross-check across all three files) came back clean; full descriptive slugs used directly as
+  physical folder names (MAX_PATH check confirmed well under the 260-char limit, no shortening
+  needed). Build reported only the pre-documented harmless "bundle initial exceeded maximum
+  budget" ERROR (332.05 kB over) with zero actual TypeScript/template compile errors. `git add -A`
+  staged all 15 files cleanly. **Real `SUBTOPICS` map bare-key collision found and resolved**:
+  `storage` was already claimed by the Containers/K8s hub's own `/containers/storage` topic
+  (checked both quoted and unquoted forms) — hub-prefixed to `azure-storage`, matching this hub's
+  own established `azure-` progress/search prefix; all three `AzureNavComponent` accordion helper
+  calls updated to use the prefixed key. Browser-verified successfully on all three pages —
+  h1/breadcrumb pairs correct (all 4 levels), prev/next cross-references correct on first try (no
+  short/long folder-vs-route mismatch this batch, since full descriptive slugs were used directly
+  as folder names), the `AzureNavComponent` accordion (now the NINTH topic in this hub with
+  subtopics — explicitly checked the toggle COUNT (9) on the topic overview page per the standing
+  lesson from the ARM batch), tailored (non-DEFAULT) sidebar content confirmed via direct DOM
+  inspection, dark mode (`--bg: #0f172a`) applying correctly.)
+- [x] `/azure/entra-id` — Azure Active Directory & Entra ID (2026-07-22 — 3 subtopics:
+  client-credentials-scope-must-be-default-not-individual-permissions,
+  spa-refresh-tokens-cap-at-24-hours-not-90-days-and-never-reset,
+  pkce-is-required-for-spas-but-only-recommended-for-native-apps; all three verified against
+  Microsoft's own documentation via WebFetch before writing — (1) confirmed via Microsoft's own
+  client credentials flow doc that "the value passed for the scope parameter... should be the
+  resource identifier... suffixed with .default... All scopes included must be for a single
+  resource. Including scopes for multiple resources will result in an error," with the doc's own
+  example AADSTS70011 invalid_scope error for a non-.default value — closing a gap where the main
+  page's QnA phrases .default as one option among alternatives rather than the only valid scope
+  shape for this grant type; (2) confirmed via Microsoft's own refresh token doc that default
+  lifetimes are "24 hours for single-page applications... 90 days for all other scenarios," and
+  that the 24-hour SPA window "carries over" to every subsequent refresh rather than resetting —
+  closing a gap where the main page states "up to 90 days for confidential clients" with no
+  contrary figure for the SPA client type it separately covers via PKCE and Authorization Code
+  flow; bonus finding from the same doc that old refresh tokens are never auto-revoked ("Securely
+  delete the old refresh token after acquiring a new one"); (3) confirmed via Microsoft's own
+  third-party-cookie-blocking doc that "PKCE is required for SPAs on the Microsoft identity
+  platform. PKCE is recommended for native and confidential clients" — two different enforcement
+  words in the same sentence — closing a gap where the main page's "Use PKCE... for SPAs and
+  mobile apps" phrasing treats both client types as one uniform recommendation. Gotcha sweep
+  (apostrophe-after-letter across `.ts` and `.html` files, backtick parity — even counts, 4/4/4 —
+  bare `@word`/`{` in `.html` prose, `[prev]`/`[next]` route cross-check) came back clean; full
+  descriptive slugs used directly as physical folder names (MAX_PATH check confirmed well under
+  the limit). Build reported only the pre-documented harmless "bundle initial exceeded maximum
+  budget" ERROR (337.62 kB over) with zero actual TypeScript/template compile errors. `git add -A`
+  staged all 15 files cleanly. Confirmed bare `entra-id` key collision-free in `SUBTOPICS` map
+  (checked both quoted and unquoted forms). Browser-verified successfully on all three pages —
+  h1/breadcrumb pairs correct (all 4 levels), prev/next cross-references correct, the
+  `AzureNavComponent` accordion (now the TENTH topic in this hub with subtopics — explicitly
+  checked the toggle COUNT (10) on the topic overview page per the standing lesson from the ARM
+  batch), tailored sidebar content wired, dark mode (`--bg: #0f172a`) applying correctly.)
+- [x] `/azure/rbac` — Azure RBAC (2026-07-22 — 3 subtopics:
+  role-assignment-propagation-isnt-one-number-10-min-to-24-hours,
+  classic-co-administrators-auto-converted-to-owner-december-2025,
+  imds-metadata-true-header-and-unauthenticated-blast-radius; all three verified against
+  Microsoft's own documentation via WebFetch before writing — (1) confirmed via Microsoft's own
+  RBAC troubleshooting doc that general role assignment changes take "up to 10 minutes" (FASTER
+  than the main page's stated "up to 30 minutes"), but group-based Managed Identity role
+  assignments follow a completely separate, much slower path ("maintain a cache per resource URI
+  for around 24 hours... several hours for changes to a managed identity's group or role
+  membership to take effect"), and DataActions changes at management group scope have their own
+  separate "several hours" path — closing a gap where the main page states one flat ceiling for a
+  delay that actually has at least three distinct tiers; (2) confirmed via Microsoft's own classic
+  administrators doc — a genuinely CURRENT, dated finding — that "Starting in December 2025, Azure
+  automatically assigned the Owner role at subscription scope to users... still assigned the
+  Co-Administrator or Service Administrator role," fully retired "As of May 2026," with each
+  auto-converted assignment carrying a documented distinguishing description string and a fixed
+  createdBy GUID (0469d4cd-df37-4d93-8a61-f8c75b809164) — closing a gap where the main page's own
+  audit QnA (az role assignment list --all) doesn't account for this recently-introduced,
+  identifiable class of automatically-created Owner assignments; (3) confirmed via Microsoft's own
+  Instance Metadata Service doc that the Metadata: true header (and banning X-Forwarded-For) exists
+  specifically "to prevent unintended or unwanted redirection of requests" (an SSRF defense, not an
+  arbitrary convention), and that "IMDS is not a channel for sensitive data. The API is
+  unauthenticated and open to all processes on the VM" — closing a gap where the main page's own
+  Managed Identity codeTab uses the header without explanation and never extends its own
+  least-privilege discussion to the token-acquisition endpoint's actual blast radius. Gotcha sweep
+  (apostrophe-after-letter across `.ts` and `.html` files, backtick parity — even counts, 4/4/4 —
+  bare `@word`/`{` in `.html` prose, `[prev]`/`[next]` route cross-check) came back clean; full
+  descriptive slugs used directly as physical folder names (MAX_PATH check confirmed well under the
+  limit). Build reported only the pre-documented harmless "bundle initial exceeded maximum budget"
+  ERROR (343.38 kB over) with zero actual TypeScript/template compile errors. `git add -A` staged
+  all 15 files cleanly. **Real `SUBTOPICS` map bare-key collision found and resolved**: `rbac` was
+  already claimed by the Containers/K8s hub's own `/containers/rbac` topic (checked both quoted and
+  unquoted forms) — hub-prefixed to `azure-rbac`; all three `AzureNavComponent` accordion helper
+  calls updated to use the prefixed key; post-fix browser check confirmed `/containers/rbac` itself
+  was completely unaffected (still showed its own correct 22-toggle count). Browser-verified
+  successfully on all three pages — h1/breadcrumb pairs correct (all 4 levels), prev/next
+  cross-references correct, the `AzureNavComponent` accordion (now the ELEVENTH topic in this hub
+  with subtopics — explicitly checked the toggle COUNT (11) on the topic overview page per the
+  standing lesson from the ARM batch), tailored sidebar content wired, dark mode (`--bg: #0f172a`)
+  applying correctly.)
+- [x] `/azure/sql-cosmos` — Azure SQL & Cosmos DB (2026-07-22 — 3 subtopics:
+  cosmos-logical-partition-caps-at-20gb-not-50gb,
+  change-feed-all-versions-and-deletes-mode-captures-deletes-natively,
+  azure-sql-long-term-retention-goes-to-10-years-beyond-pitr; all three verified against
+  Microsoft's own documentation via WebFetch before writing — **a genuine main-page inaccuracy
+  was found and fixed**: the main page's own Cosmos DB Architecture theory bullet paired "up to
+  50 GB, ~10,000 RU/s" directly with "all items with the same partition key... same logical
+  partition" — conflating the LOGICAL partition limit (confirmed via Microsoft's own partitioning
+  doc: "Each logical partition can store up to 20 GB of data") with the PHYSICAL partition limit
+  (50 GB storage, 10,000 RU/s — "an internal system implementation, fully managed by Azure Cosmos
+  DB," not something a partition key choice controls). Fixed the main page's own theory bullet to
+  correctly separate the two; (2) confirmed via Microsoft's own change feed modes doc that "All
+  versions and deletes" mode "includes insert, update, and delete operations" natively — closing
+  a gap where the main page's own QnA describes the soft-delete-flag workaround as though it were
+  the only way to react to deletions, with real tradeoffs (requires continuous backups, bounded
+  retention window, NoSQL API only, can't replay from the beginning) that make it a deliberate
+  choice rather than a strict upgrade; (3) confirmed via Microsoft's own Long-Term Retention (LTR)
+  doc that Azure SQL backups reach "up to 10 years" via a policy built on the SAME underlying PITR
+  backups — closing a gap where the main page's own PITR bullet ("7–35 days") is the only backup
+  retention mechanism mentioned, implying a much lower practical ceiling than actually exists.
+  Gotcha sweep (apostrophe-after-letter across `.ts` and `.html` files, backtick parity — even
+  counts, 4/4/4 — bare `@word`/`{` in `.html` prose, `[prev]`/`[next]` route cross-check) came
+  back clean; also caught and immediately fixed a copy-paste typo (a stray placeholder type name
+  on the `misconceptions` field) during authoring, before the build was ever run. Full descriptive
+  slugs used directly as physical folder names (MAX_PATH check confirmed well under the limit).
+  Build reported only the pre-documented harmless "bundle initial exceeded maximum budget" ERROR
+  (348.75 kB over) with zero actual TypeScript/template compile errors. `git add -A` staged all 16
+  files (15 new/wiring + the main-page fix) cleanly. Confirmed bare `sql-cosmos` key
+  collision-free in `SUBTOPICS` map (checked both quoted and unquoted forms). Browser-verified
+  successfully on all three pages — h1/breadcrumb pairs correct (all 4 levels), prev/next
+  cross-references correct, the corrected "20 GB" text confirmed rendering live on the main page
+  itself, the `AzureNavComponent` accordion (now the TWELFTH topic in this hub with subtopics —
+  explicitly checked the toggle COUNT (12) on the topic overview page per the standing lesson from
+  the ARM batch), tailored sidebar content wired, dark mode (`--bg: #0f172a`) applying correctly.)
+- [x] `/azure/monitor` — Azure Monitor & App Insights (2026-07-22 — 3 subtopics:
+  sampling-silently-skews-count-use-sum-itemcount-instead,
+  basic-logs-supports-full-kql-tradeoff-is-per-query-pricing,
+  daily-cap-stops-all-ingestion-not-just-the-excess; all three verified against Microsoft's own
+  documentation via WebFetch before writing — (1) confirmed via Microsoft's own OpenTelemetry
+  sampling doc that Application Insights sampling is on by default and each stored row carries an
+  itemCount field ("summarize RetainedPercentage = 100/avg(itemCount)... If you see that
+  RetainedPercentage for any type is less than 100, then that type of telemetry is being
+  sampled") — closing a gap where the main page builds three separate KQL examples around bare
+  count() with zero mention of sampling, meaning those exact queries silently undercount whenever
+  sampling is active; **a genuine main-page inaccuracy was found and fixed**: the main page's own
+  cost QnA stated Basic tier has "no query capability" — confirmed via Microsoft's own table
+  plans reference this is wrong ("Query capabilities: Full Kusto Query Language (KQL) on a single
+  table" for Basic Logs) — the real distinguishing factor is "Query price included: ❌" (per-GB
+  billed at query time) versus Analytics tier's included query pricing; fixed the main page's own
+  QnA text accordingly; (3) confirmed via the same sampling doc's daily-cap section that a
+  triggered cap "stops telemetry ingestion when it reaches the threshold" entirely (not a
+  throttle) and resets on the daily UTC boundary, with Microsoft's own docs warning "a sudden
+  increase in data volume can trigger the cap, creating a gap in telemetry until it resets the
+  next day" — closing a gap where the main page's own "avoid alert fatigue" QnA never covers this
+  failure mode, where the exact telemetry needed to detect an incident can vanish because of the
+  incident's own volume spike. Gotcha sweep (apostrophe-after-letter across `.ts` and `.html`
+  files, backtick parity — even counts, 4/4/4 — bare `@word`/`{` in `.html` prose, `[prev]`/
+  `[next]` route cross-check) came back clean. Build reported only the pre-documented harmless
+  "bundle initial exceeded maximum budget" ERROR (353.80 kB over) with zero actual
+  TypeScript/template compile errors. `git add -A` staged all 16 files (15 new/wiring + the
+  main-page fix) cleanly. Confirmed bare `monitor` key collision-free in `SUBTOPICS` map (checked
+  both quoted and unquoted forms). **A live-preview-only false alarm during verification**: an
+  initial DOM-text search for the corrected QnA text came back empty on both subtopic and main
+  pages, appearing identical to the previously-documented dev-server chunk-staleness gotcha — a
+  forced re-save of `monitor.ts` was tried as the fix (matching that precedent) and did trigger a
+  fresh `monitor` chunk rebuild, but the search still failed afterward. Root cause turned out to
+  be unrelated to staleness: the QnA block renders as a nested, collapsed-by-default accordion
+  (list of questions collapsed under a "N questions" count, each individual question then
+  collapsed under its own toggle) — the answer text is genuinely absent from the DOM until BOTH
+  levels are clicked open, not a stale render. Confirmed by clicking through both accordion levels
+  via `javascript_tool`, after which the corrected text was found and the old inaccurate text was
+  absent. Browser-verified successfully on all three subtopic pages — h1/breadcrumb pairs correct
+  (all 4 levels), prev/next cross-references correct, the `AzureNavComponent` accordion (now the
+  THIRTEENTH topic in this hub with subtopics — explicitly checked the toggle COUNT (13) on the
+  topic overview page per the standing lesson from the ARM batch), tailored sidebar content wired,
+  dark mode (`--bg: #0f172a`) applying correctly.)
+- [x] `/azure/devops-pipelines` — Azure DevOps & Pipelines (2026-07-22 — 3 subtopics:
+  new-orgs-get-zero-free-parallel-jobs-must-request-a-grant,
+  unanswered-approvals-are-skipped-not-rejected-at-timeout,
+  fork-pr-builds-on-self-hosted-agents-run-untrusted-code-on-prem; all three verified against
+  Microsoft's own documentation via WebSearch/WebFetch before writing — (1) confirmed via
+  Microsoft Q&A/blog research that new Azure DevOps organizations no longer receive the free
+  Microsoft-hosted parallel job grant automatically (temporarily disabled by default for new
+  orgs), and the only path is a manually-reviewed Parallelism Request form that can take several
+  business days or longer — closing a gap where the main page's quickRef states "Free tier: 1
+  parallel job, 1800 min/month" as though it applies out of the box; (2) confirmed via Microsoft's
+  own approvals doc that an unanswered environment approval times out to a stage "marked as
+  skipped," not rejected or failed, and that "the list of users who can review an Approval is
+  fixed at the time approvals & checks start running" — closing a gap where the main page frames
+  approvals as a simple approve/reject binary with no mention of the timeout outcome or the
+  approver-list snapshot behavior; (3) confirmed via Microsoft's own pipeline security doc
+  ("Avoid running builds from forks on self-hosted agents... external organizations can run
+  external code on machines within your corporate network") that fork PR builds are a real,
+  distinct security consideration from the main page's own service-connection hardening advice —
+  closing a gap where the main page's self-hosted agent coverage is purely about tool-cache
+  convenience with zero mention of what code actually executes there. Gotcha sweep
+  (apostrophe-after-letter across `.ts` and `.html` files, backtick parity — even counts, 4/4/4 —
+  bare `@word`/`{` in `.html` prose, `[prev]`/`[next]` route cross-check, and a dedicated
+  unescaped-`${{`-before-brace check given a nested YAML template-expression example) came back
+  clean. Build reported only the pre-documented harmless "bundle initial exceeded maximum budget"
+  ERROR (359.17 kB over) with zero actual TypeScript/template compile errors. `git add -A` staged
+  all 15 files cleanly. Confirmed bare `devops-pipelines` key collision-free in `SUBTOPICS` map
+  (checked both quoted and unquoted forms). Browser-verified successfully on all three pages —
+  h1/breadcrumb pairs correct (all 4 levels), prev/next cross-references correct, the nested
+  `${{ if eq }}` YAML template-expression code sample confirmed rendering correctly with no stray
+  backslash leak (verified by clicking through the collapsed code-block's second tab), the
+  `AzureNavComponent` accordion (now the FOURTEENTH topic in this hub with subtopics — explicitly
+  checked the toggle COUNT (14) on the topic overview page per the standing lesson from the ARM
+  batch), tailored sidebar content wired, dark mode (`--bg: #0f172a`) applying correctly.)
+- [x] `/azure/cost-management` — Azure Cost Management (2026-07-22 — 3 subtopics:
+  spot-vm-eviction-notice-is-30-seconds-not-2-minutes,
+  reservations-apply-before-savings-plans-in-a-best-fit-model,
+  amortized-cost-view-doesnt-work-for-payg-reservations; all three verified against Microsoft's
+  own documentation via WebFetch before writing — **a second genuine main-page inaccuracy was
+  found and fixed in this batch**: the main page's own Spot VM QnA stated "a 2-minute eviction
+  notice" — confirmed via Microsoft's own Spot VM doc this is actually 30 seconds ("the Azure
+  infrastructure will evict Azure Spot Virtual Machines with 30-seconds notice"), and that 2-minute
+  figure is AWS Spot's own convention, not Azure's — a likely cross-cloud mix-up. Fixed the main
+  page's own QnA text accordingly, plus expanded on eviction policy (Deallocate vs Delete) and max
+  price behavior the main page never mentioned at all; (2) confirmed via Microsoft's own discount
+  application doc that "Since reservation benefits are more restrictive than savings plans, and
+  usually have greater discounts, Azure applies reservation benefits first," operating under a
+  greedy "best fit" model, plus a genuine 48-hour benefit-reconciliation window that can show
+  temporary >100% utilization — closing a gap where the main page says AHB "stacks independently"
+  with RIs but never addresses RI-vs-Savings-Plan order when both could apply; (3) confirmed via
+  Microsoft's own Cost Analysis doc that "Although you can buy a reservation with a pay-as-you-go
+  (MS-AZR-0003P) subscription, Cost Analysis doesn't support viewing amortized reservation costs.
+  If you try to view costs with the Amortized cost metric, you'll see the same results as Actual
+  Cost" — closing a gap where the main page's own Amortised-vs-Actual QnA recommends Amortised for
+  budgeting universally, with no exception noted for this specific, common billing arrangement.
+  Gotcha sweep (apostrophe-after-letter across `.ts` and `.html` files, backtick parity — even
+  counts, 4/4/4 — bare `@word`/`{` in `.html` prose, `[prev]`/`[next]` route cross-check) came back
+  clean. Build reported only the pre-documented harmless "bundle initial exceeded maximum budget"
+  ERROR (364.57 kB over) with zero actual TypeScript/template compile errors. `git add -A` staged
+  all 16 files (15 new/wiring + the main-page fix) cleanly. Confirmed bare `cost-management` key
+  collision-free in `SUBTOPICS` map (checked both quoted and unquoted forms). **Proactively applied
+  the dev-server chunk-staleness fix from the Monitor batch precedent** (forced a fresh save of
+  `cost-management.ts` via whitespace edit-and-revert) before verification, since the main-page fix
+  wasn't showing up in an initial preview_logs chunk-name search — this pre-empted the same false
+  alarm rather than rediscovering it. Browser-verified successfully on all three subtopic pages —
+  h1/breadcrumb pairs correct (all 4 levels), prev/next cross-references correct, the corrected
+  "30-second eviction notice" text confirmed rendering live on the main page after clicking through
+  the QnA accordion, the `AzureNavComponent` accordion (now the FIFTEENTH topic in this hub with
+  subtopics — explicitly checked the toggle COUNT (15) on the topic overview page per the standing
+  lesson from the ARM batch), tailored sidebar content wired, dark mode (`--bg: #0f172a`) applying
+  correctly.)
+- [x] `/azure/security-defender` — Azure Security & Defender for Cloud (2026-07-22 — 3 subtopics:
+  mma-agent-fully-retired-defender-servers-now-agentless,
+  defender-cspm-is-a-separate-paid-plan-beyond-foundational-cspm,
+  jit-quick-enable-only-protects-one-port-not-the-full-set; all three verified against Microsoft's
+  own documentation via WebFetch before writing — **a third genuine main-page inaccuracy found and
+  fixed in this session**: the main page's own theory framed the MMA-to-AMA transition as ongoing
+  ("The newer AMA is replacing the legacy MMA") — confirmed via Microsoft's own AMA migration doc
+  the Log Analytics agent "was retired on August 31, 2024," is unsupported, and — very current as
+  of today's date — "after March 2, 2026, data upload from the Log Analytics agent can stop at any
+  time without further notice," a cutoff already in the past; also confirmed Defender for Servers
+  Plan 2 specifically moved to AGENTLESS scanning, not a like-for-like AMA swap. Fixed the main
+  page's own theory bullet accordingly; (2) confirmed via Microsoft's own CSPM reference that
+  "Defender for Cloud offers two CSPM plans: Foundational CSPM (free)... Defender CSPM (paid)"
+  adding "attack path analysis," agentless VM/container/Kubernetes scanning, risk prioritization,
+  DSPM, and EASM — closing a gap where the main page's own two-tier framing (free CSPM /
+  paid per-resource Defender plans) omits this separate, independently-billed CSPM-specific paid
+  tier entirely, including that full Defender for DevOps features specifically require it; (3)
+  confirmed via Microsoft's own JIT reference that enabling JIT from a VM's own Configuration blade
+  uses "Windows machines: RDP port: 3389... Linux machines: SSH port: 22" as fixed, MINIMAL
+  defaults — a single port — versus the fuller "22-SSH, 3389-RDP, 5985-WinRM, 5986-WinRM" set
+  Defender for Cloud's own dedicated JIT page recommends, closing a gap where the main page
+  describes the full four-port default with no mention that the enable path taken changes what's
+  actually covered. Gotcha sweep (apostrophe-after-letter across `.ts` and `.html` files, backtick
+  parity — even counts, 4/4/4 — bare `@word`/`{` in `.html` prose, `[prev]`/`[next]` route
+  cross-check) came back clean. Build reported only the pre-documented harmless "bundle initial
+  exceeded maximum budget" ERROR (370.13 kB over) with zero actual TypeScript/template compile
+  errors. `git add -A` staged all 16 files (15 new/wiring + the main-page fix) cleanly. Confirmed
+  bare `security-defender` key collision-free in `SUBTOPICS` map (checked both quoted and unquoted
+  forms). **Proactively applied the dev-server chunk-staleness fix** (forced a fresh save of
+  `security-defender.ts` via whitespace edit-and-revert) before verification, per the established
+  Monitor/Cost-Management-batch precedent, rather than risking rediscovering the same false alarm.
+  Browser-verified successfully on all three subtopic pages — h1/breadcrumb pairs correct (all 4
+  levels), prev/next cross-references correct, the corrected MMA/AMA retirement text confirmed
+  rendering live on the main page, the `AzureNavComponent` accordion (now the SIXTEENTH topic in
+  this hub with subtopics — explicitly checked the toggle COUNT (16) on the topic overview page
+  per the standing lesson from the ARM batch), tailored sidebar content wired, dark mode
+  (`--bg: #0f172a`) applying correctly.)
+- [x] `/azure/key-vault` — Azure Key Vault (2026-07-22 — 3 subtopics:
+  key-vault-reference-refresh-is-24-hours-not-minutes,
+  soft-deleted-vault-reserves-its-name-and-loses-rbac-bindings,
+  new-vaults-now-default-to-rbac-but-only-on-newer-api-versions; all three verified against
+  Microsoft's own documentation via WebFetch before writing — **a fourth genuine main-page
+  inaccuracy found and fixed in this session**: the main page's own rotation QnA claimed App
+  Service picks up a rotated Key Vault Reference "usually within minutes" — confirmed via
+  Microsoft's own App Service doc the real default is "the app is automatically updated and
+  begins using the latest version within 24 hours... App Service caches the values of the Key
+  Vault references and refetches them every 24 hours," with a documented force-refresh API
+  endpoint and the fact that any app config change also triggers an immediate refetch as a side
+  effect. Fixed the main page's own QnA text accordingly; (2) confirmed via Microsoft's own
+  soft-delete doc that "you can't reuse the name of a key vault that was soft-deleted, until the
+  retention period expires," AND separately that "when a Key Vault is soft-deleted, services that
+  are integrated with the Key Vault are deleted. For example: Azure RBAC roles assignments and
+  Event Grid subscriptions. Recovering a soft-deleted Key Vault does not restore these services.
+  They must be recreated" — closing a gap where the main page's soft-delete coverage is entirely
+  object-level (secrets/keys/certs) with no mention of these two vault-level consequences; (3)
+  confirmed via Microsoft's own RBAC guide a very current, dated platform change — "Starting with
+  API version 2026-02-01, Azure RBAC is the default access control model for newly created key
+  vaults" — closing a gap where the main page's own "mistake" example treats access-policy-by-
+  default as a fixed, permanent behavior, when it now depends on which API version the underlying
+  tooling/IaC template actually targets. Gotcha sweep (apostrophe-after-letter across `.ts` and
+  `.html` files, backtick parity — even counts, 4/4/4 — bare `@word`/`{` in `.html` prose,
+  `[prev]`/`[next]` route cross-check) came back clean. Build reported only the pre-documented
+  harmless "bundle initial exceeded maximum budget" ERROR (375.49 kB over) with zero actual
+  TypeScript/template compile errors. `git add -A` staged all 16 files (15 new/wiring + the
+  main-page fix) cleanly. Confirmed bare `key-vault` key collision-free in `SUBTOPICS` map
+  (checked both quoted and unquoted forms). **Live-preview dev server was found stopped mid-batch**
+  (a PostToolUse hook flagged no server running after an unrelated edit) — restarted via
+  `preview_start`, which triggered a full cold rebuild (~96 seconds, expected for this app's
+  size) rather than an incremental one; verification proceeded normally once the fresh build
+  completed. Browser-verified successfully on all three subtopic pages — h1/breadcrumb pairs
+  correct (all 4 levels), prev/next cross-references correct, the corrected 24-hour refresh text
+  confirmed rendering live on the main page after clicking through the QnA accordion, the
+  `AzureNavComponent` accordion (now the SEVENTEENTH topic in this hub with subtopics — explicitly
+  checked the toggle COUNT (17) on the topic overview page per the standing lesson from the ARM
+  batch), tailored sidebar content wired, dark mode (`--bg: #0f172a`) applying correctly.)
+- [x] `/azure/service-bus` — Azure Service Bus (2026-07-22 — 3 subtopics:
+  duplicate-detection-is-off-by-default-10-minute-window-when-on,
+  auto-forwarding-caps-at-4-hops-then-dead-letters,
+  high-prefetch-count-expires-locks-before-processing-even-starts; all three verified against
+  Microsoft's own documentation via WebFetch before writing: (1) confirmed via Microsoft's own
+  duplicate-detection doc that the feature is OFF by default (not available on Basic tier), and
+  when enabled defaults to a 10-minute window (min 20s, max 7 days) — closing a gap where the
+  main page's QnA mentions "MessageId deduplication" and a "10 seconds–7 days" window range with
+  no mention that the feature is opt-in or what the actual default window is when turned on; also
+  covered the partitioning interaction (uniqueness key becomes MessageId+PartitionKey) and
+  Microsoft's own guidance against combining dedup+batching+partitioning; (2) confirmed via
+  Microsoft's own auto-forwarding doc the explicit stated limit — "Don't create a chain that
+  exceeds four hops. Messages that exceed four hops are dead-lettered" — closing a gap where the
+  main page's QnA describes ForwardTo/ForwardDeadLetteredMessagesTo chaining scenarios (routing,
+  DLQ consolidation, fan-out) with no mention of any hop-count ceiling at all; also covered that
+  hop count increments per send-via transfer-queue use too, that a full/disabled destination fills
+  the SOURCE entity's own DLQ (not the destination's), and that session-enabled entities cannot be
+  the SOURCE of auto-forwarding but can be a valid destination; (3) confirmed via Microsoft's own
+  performance-improvements doc that a prefetched message's lock timer starts at cache-entry time,
+  not at actual-processing time ("When a message is prefetched, the service locks the prefetched
+  message"), plus Microsoft's own sizing formula (PrefetchCount ≈ 20× max processing rate/sec, or
+  lockDuration/3 × rate when combined with batch receives) — closing a gap where the main page's
+  theory covers message locks (default 60s, max 5 min) and batch receives
+  (`ReceiveMessagesAsync(maxMessages: 10)`) but never mentions `prefetchCount` as a distinct
+  setting at all, let alone its lock-timing interaction. No genuine main-page inaccuracy found
+  this batch (only expansion gaps, no incorrect claims). Gotcha sweep (apostrophe-after-letter
+  across `.ts` and `.html` files, backtick parity — even counts, 4/4/4 — bare `@word`/`{` in
+  `.html` prose, `[prev]`/`[next]` route cross-check) came back clean. Build reported only the
+  pre-documented harmless "bundle initial exceeded maximum budget" ERROR (380.76 kB over) with
+  zero actual TypeScript/template compile errors. `git add -A` staged all 15 files (9 new +
+  6 wiring, no main-page fix this batch) cleanly — no "Filename too long" errors. Confirmed bare
+  `service-bus` key collision-free in `SUBTOPICS` map (checked both quoted and unquoted forms).
+  Browser-verified successfully on all three subtopic pages — h1/breadcrumb pairs correct (all 4
+  levels), prev/next cross-references correct, the `AzureNavComponent` accordion (now the
+  EIGHTEENTH topic in this hub with subtopics — explicitly checked the toggle COUNT (18) on the
+  topic overview page per the standing lesson from the ARM batch), tailored sidebar content wired,
+  dark mode (`--bg: #0f172a`) applying correctly.)
+- [x] `/azure/container-apps` — Azure Container Apps (2026-07-23 — 3 subtopics:
+  scale-to-zero-has-a-hidden-5-minute-cooldown, no-scale-rule-means-an-implicit-http-rule-applies,
+  secret-updates-dont-auto-restart-active-revisions; all three verified against Microsoft's own
+  documentation via WebFetch before writing — **two genuine main-page inaccuracies found and fixed
+  in this batch**: (1) the theory's "Scaling limits" bullet claimed "The Consumption plan scales to
+  300 replicas by default" — confirmed via Microsoft's own scaling reference that the real default
+  max-replicas (when no scale rule is defined) is 10, with a documented configurable ceiling of
+  1,000 shared by both Consumption and Workload Profile environments; 300 traces to a historical
+  Azure portal slider cap, not any documented plan-level default. Fixed the bullet and built a
+  subtopic around the deeper, unstated gap: Microsoft's own docs confirm a container app with NO
+  scale rule at all silently receives an implicit default HTTP rule (min 0, max 10), and explicitly
+  warn that a non-HTTP worker with ingress disabled and no scale rule "scales to zero and has no way
+  of starting back up"; (2) the theory's secrets bullet claimed "Secrets are versioned — updating a
+  secret does not auto-restart the app; you must create a new revision" — confirmed via Microsoft's
+  own secrets doc that an updated secret never auto-restarts a running revision, but the doc lists
+  TWO valid responses ("Deploy a new revision" OR "Restart an existing revision"), not one mandatory
+  path, and that a plain Container Apps secret has no inherent version history of its own (only a
+  Key Vault-referenced secret does). Fixed the bullet and built a subtopic covering the one genuine
+  exception: Microsoft's own Key Vault reference doc confirms an UNVERSIONED reference auto-refreshes
+  and auto-restarts affected revisions within 30 minutes — a deliberately different, faster number
+  from App Service's own 24-hour Key Vault Reference refresh already documented in this hub's
+  `/azure/key-vault` batch, called out explicitly as a distinct figure for a distinct service; (3)
+  confirmed via Microsoft's own scale-behavior reference the exact defaults behind the main page's
+  unqualified "replicas drop to 0" claim — Polling interval 30s, Cool down period 300s, Scale down
+  stabilization window 300s — with the explicit note that "the cool down period only takes effect
+  when scaling in from the final replica to 0," closing a gap where the main page implies an
+  instantaneous transition with no timing information at all. Gotcha sweep (apostrophe-after-letter
+  across `.ts` and `.html` files — including the six shared wiring files, not just the three new
+  subtopic files — backtick parity — even counts, 4/4/4 — bare `@word`/`{` in `.html` prose,
+  `[prev]`/`[next]` route cross-check) came back clean. Build reported only the pre-documented
+  harmless "bundle initial exceeded maximum budget" ERROR (386.33 kB over) with zero actual
+  TypeScript/template compile errors. `git add -A` staged all 16 files (9 new + 6 wiring + the
+  main-page fix) cleanly — no "Filename too long" errors. Confirmed bare `container-apps` key
+  collision-free in `SUBTOPICS` map (checked both quoted and unquoted forms). Browser-verified
+  successfully on all three subtopic pages — h1/breadcrumb pairs correct (all 4 levels), prev/next
+  cross-references correct, BOTH corrected main-page claims confirmed rendering live (old "300
+  replicas by default" and "you must create a new revision" text absent, corrected "1,000" ceiling
+  and "restart the existing revision or deploy a new one" text present), the `AzureNavComponent`
+  accordion (now the NINETEENTH topic in this hub with subtopics — explicitly checked the toggle
+  COUNT (19) on the topic overview page per the standing lesson from the ARM batch), tailored
+  sidebar content wired, dark mode (`--bg: #0f172a`) applying correctly.)
+- [x] `/azure/redis` — Azure Cache for Redis (2026-07-23 — 3 subtopics:
+  theres-no-redis-contributor-data-role, default-eviction-policy-is-volatile-lru-not-noeviction,
+  enabling-entra-id-auth-reboots-every-node-up-to-30-minutes; all three verified against
+  Microsoft's own documentation via WebFetch/WebSearch before writing — **a genuine main-page
+  inaccuracy found and fixed in this batch**: the theory's "Security & Access" bullet claimed
+  "The MI must be assigned the Redis Contributor data access role" — no such data access policy
+  exists. Confirmed via Microsoft's own Entra authentication guide the real policies are exactly
+  three — Data Owner, Data Contributor, Data Reader — assigned through the cache's own Data Access
+  Configuration blade, not a role picker. Fixed the bullet and built a subtopic around the
+  genuinely dangerous trap the wrong name creates: a REAL Azure built-in RBAC role named "Redis
+  Cache Contributor" exists (confirmed via its own published permissions) and is a pure
+  control-plane role — it manages the cache resource but defines no dataActions at all, so an
+  identity holding only that role can fully administer the cache and still be denied every single
+  Redis command; (2) confirmed via Microsoft's own "Default Redis server configuration" reference
+  table that every new cache actually defaults to maxmemory-policy volatile-lru, not noeviction —
+  a fact the main page's QnA never states outright despite listing all the policy options. Built a
+  subtopic tying this directly to the main page's own #1 Common Mistake (missing TTL): under the
+  REAL default, a key with no TTL isn't evicted "randomly and unpredictably" as the main page's
+  explanation states — it's completely exempt from eviction, since volatile-lru only ever
+  considers keys that already have an expiration set; (3) confirmed via the same Entra
+  authentication doc that enabling Entra ID auth (and separately, granting the first Data Access
+  Configuration entry) reboots every node in the cache and can take up to 30 minutes, and that
+  disabling access keys terminates ALL existing connections — Entra-token-based ones included —
+  plus that a geo-replicated cache requires an unlink/disable/relink sequence rather than a single
+  toggle, connecting two sections (Security & Access; Geo-Replication) the main page covers
+  separately but never links. Gotcha sweep (apostrophe-after-letter across `.ts` and `.html`
+  files — including the six shared wiring files — backtick parity — even counts, 4/4/4 — bare
+  `@word` in `.html` prose, `[prev]`/`[next]` route cross-check) came back clean. Build reported
+  only the pre-documented harmless "bundle initial exceeded maximum budget" ERROR (391.63 kB over)
+  with zero actual TypeScript/template compile errors. `git add -A` staged all 16 files (9 new +
+  6 wiring + the main-page fix) cleanly — no "Filename too long" errors. Confirmed bare `redis`
+  key collision-free in `SUBTOPICS` map (checked both quoted and unquoted forms — distinct from
+  the data-hub Redis's own top-level route, which is unaffected). Browser-verified successfully on
+  all three subtopic pages — h1/breadcrumb pairs correct (all 4 levels), prev/next
+  cross-references correct, the corrected main-page text confirmed rendering live (old "Redis
+  Contributor data access role" text absent, corrected "Data Owner, Data Contributor, or Data
+  Reader" text present), the `AzureNavComponent` accordion (now the TWENTIETH topic in this hub
+  with subtopics — explicitly checked the toggle COUNT (20) on the topic overview page per the
+  standing lesson from the ARM batch), tailored sidebar content wired, dark mode (`--bg:
+  #0f172a`) applying correctly.)
+- [x] `/azure/api-management` — Azure API Management (2026-07-23 — 3 subtopics:
+  cache-is-shared-per-region-only-and-fails-silently,
+  rate-limit-by-key-counts-per-gateway-not-per-instance,
+  self-hosted-gateway-fails-static-but-needs-backup-to-restart; all three verified against
+  Microsoft's own documentation via WebFetch before writing — no genuine main-page inaccuracy
+  found this batch (all three angles are expansion gaps, not corrections): (1) confirmed via
+  Microsoft's own caching how-to that "built-in cache is volatile and is shared by all units in
+  the same REGION in the same API Management instance" — closing a gap where the main page's own
+  cache-lookup/cache-store theory never scopes what "shared" means, and a multi-region Premium
+  deployment's own two regions never share a cached response at all; also confirmed cache failures
+  (internal or external) never raise an error — "the API call... doesn't raise an error, and the
+  cache operation completes successfully... a null value is returned" — meaning a genuine cache
+  miss and an unreachable cache are indistinguishable from the policy's own point of view; also
+  pinned down the main page's own vague "limited features" description of the Consumption tier to
+  one concrete fact — internal caching isn't available there at all; (2) confirmed via Microsoft's
+  own rate-limit-by-key policy reference that "this policy tracks calls independently at each
+  gateway where it is applied, including workspace gateways and regional gateways in a
+  multi-region deployment. It doesn't aggregate call data across the entire instance" — closing a
+  gap where the main page's own Common Mistake entry describes rate-limit-by-key as giving "each
+  subscriber their own independent quota" without ever mentioning that quota is ALSO independently
+  duplicated per gateway, meaning a subscriber's effective global rate scales with how many
+  gateways (regions, self-hosted clusters) their traffic reaches; also confirmed self-hosted
+  gateway rate counts "don't synchronize with other gateway resources... including the managed
+  gateway in the cloud" even when configured to sync locally among their own cluster nodes; (3)
+  confirmed via Microsoft's own self-hosted gateway overview that it's designed to "fail static"
+  and survive a connectivity outage to Azure IF ALREADY RUNNING, but that "stopped self-hosted
+  gateways won't be able to start" during the same outage unless configuration backup (a
+  persistent volume) was explicitly configured beforehand — closing a gap where the main page
+  names only WHERE the self-hosted gateway can run, never its dependency on the cloud control
+  plane or this specific stopped-vs-running distinction. Gotcha sweep (apostrophe-after-letter
+  across `.ts` and `.html` files — including the six shared wiring files — backtick parity — even
+  counts, 4/4/4 — bare `@word` in `.html` prose, `[prev]`/`[next]` route cross-check) came back
+  clean. Build reported only the pre-documented harmless "bundle initial exceeded maximum budget"
+  ERROR (397.11 kB over) with zero actual TypeScript/template compile errors. `git add -A` staged
+  all 15 files (9 new + 6 wiring, no main-page fix this batch) cleanly — no "Filename too long"
+  errors. Confirmed bare `api-management` key collision-free in `SUBTOPICS` map (checked both
+  quoted and unquoted forms). Browser-verified successfully on all three subtopic pages —
+  h1/breadcrumb pairs correct (all 4 levels), prev/next cross-references correct, the
+  `AzureNavComponent` accordion (now the TWENTY-FIRST topic in this hub with subtopics —
+  explicitly checked the toggle COUNT (21) on the topic overview page per the standing lesson
+  from the ARM batch), tailored sidebar content wired, dark mode (`--bg: #0f172a`) applying
+  correctly.)
+- [x] `/azure/bicep` — Azure Bicep Deep-dive (2026-07-23 — 3 subtopics:
+  forgetting-existing-turns-a-reference-into-a-redeploy,
+  modules-need-their-own-scope-property-for-a-different-target,
+  a-modules-static-name-can-cause-a-silent-output-collision; all three verified against
+  Microsoft's own documentation via WebFetch before writing — no genuine main-page inaccuracy
+  found this batch (all three angles are expansion gaps, not corrections): (1) confirmed via
+  Microsoft's own "Reference existing resource" doc that "the resource doesn't deploy again when
+  the existing keyword references it" — closing a gap where the main page's own symbolic-reference
+  QnA only ever covers resources the template itself creates, with no mention of the different,
+  very common scenario of reading a property off an already-live resource (an existing Key Vault,
+  an existing VNet); the risk being that the almost-identical resource syntax WITHOUT existing
+  doesn't fail — it silently puts that resource under this deployment's management, at risk of
+  resetting any property the block doesn't mention; (2) confirmed via Microsoft's own modules doc
+  the exact scope property syntax and default ("when you don't provide the scope property, the
+  module is deployed at the parent's target scope") — closing a gap where the main page's own
+  theory bullet claims module scope isolation exists ("a module can be deployed at a different
+  scope than its parent") but gives no syntax and describes its own example backwards from
+  Microsoft's actual worked pattern (a subscription-scoped file creating a resource group THEN
+  deploying a module INTO it via scope: newRG, not "creating a resource group FROM a module"); (3)
+  confirmed via the same modules doc a real, specific concurrency risk: "if you deploy a module
+  with a static name concurrently to the same scope, one deployment can interfere with the output
+  from the other deployment... one deployment might show the wrong output" — closing a gap where
+  the main page's own theory treats a module's name property as purely cosmetic ("sets the ARM
+  nested deployment name") despite all three of its own module examples using a static, reusable
+  name; covered both of Microsoft's own documented fixes (folding deployment().name into the name,
+  or omitting name entirely for an auto-generated GUID) and the dedicated no-module-name linter
+  rule the main page's own az bicep lint coverage never mentions. Gotcha sweep (apostrophe-after-
+  letter across `.ts` and `.html` files — including the six shared wiring files — backtick parity
+  — even counts, 4/4/4 — bare `@word` in `.html` prose, curly-quote convention verified in every
+  `[prev]`/`[next]` bound attribute rather than backslash-escaping, `[prev]`/`[next]` route
+  cross-check) came back clean. Build reported only the pre-documented harmless "bundle initial
+  exceeded maximum budget" ERROR (402.52 kB over) with zero actual TypeScript/template compile
+  errors. `git add -A` staged all 15 files (9 new + 6 wiring, no main-page fix this batch) cleanly
+  — no "Filename too long" errors. Confirmed bare `bicep` key collision-free in `SUBTOPICS` map
+  (checked both quoted and unquoted forms). Browser-verified successfully on all three subtopic
+  pages — h1/breadcrumb pairs correct (all 4 levels), prev/next cross-references correct, the
+  `AzureNavComponent` accordion (now the TWENTY-SECOND topic in this hub with subtopics —
+  explicitly checked the toggle COUNT (22) on the topic overview page per the standing lesson from
+  the ARM batch), tailored sidebar content wired, dark mode (`--bg: #0f172a`) applying correctly.
+  **This completes Phase 10 subtopic rollout for the entire Azure hub — 22/22 topics, 66 subtopic
+  pages total.**)
 
 #### Linux — 19 topic pages
 
-- [ ] `/linux/fundamentals` — Linux Fundamentals
-- [ ] `/linux/file-system` — File System & Hierarchy
-- [ ] `/linux/essential-commands` — Essential Commands
-- [ ] `/linux/file-permissions` — File Permissions & Ownership
-- [ ] `/linux/users-groups` — Users & Groups
-- [ ] `/linux/process-management` — Process Management
-- [ ] `/linux/system-monitoring` — System Monitoring
-- [ ] `/linux/networking` — Networking Commands
-- [ ] `/linux/firewall` — Firewall & iptables
-- [ ] `/linux/ssh` — SSH & Remote Access
-- [ ] `/linux/bash-scripting` — Bash Scripting Basics
-- [ ] `/linux/bash-advanced` — Advanced Bash Scripting
-- [ ] `/linux/package-management` — Package Management
-- [ ] `/linux/systemd` — systemd & Services
-- [ ] `/linux/disk-storage` — Disk & Storage
-- [ ] `/linux/environment-variables` — Environment Variables & Shell Config
-- [ ] `/linux/log-analysis` — Log Analysis
-- [ ] `/linux/performance-tuning` — Performance Tuning
-- [ ] `/linux/vim` — Vim & Text Editors
+- [x] `/linux/fundamentals` — Linux Fundamentals (2026-07-23 — 3 subtopics:
+  systemd-targets-map-to-runlevels-but-not-one-to-one,
+  journald-logs-are-lost-on-reboot-unless-var-log-journal-exists,
+  a-sysctl-change-is-runtime-only-until-persisted-to-a-file; **first Phase 10 pilot batch for the
+  Linux hub** — confirmed via a dedicated Explore-agent investigation before writing (matching the
+  established per-hub pilot discipline): (1) `LinuxNavComponent` had zero subtopics-accordion
+  support (no `SUBTOPICS` import, no `expandedTopics` signal, no `subtopicsOf`/
+  `isSubtopicsExpanded`/`toggleSubtopics` methods, no router-subscription auto-expand) — the SIXTH
+  `*NavComponent`-based hub in a row missing this at pilot time (after Go, DevOps, Containers, AWS,
+  Azure) — fixed identically: added `signal`, `Router`, `NavigationEnd`, `filter` (rxjs), and
+  `SUBTOPICS` imports, then the same three helper methods and constructor-level router subscription,
+  matching `AzureNavComponent`'s own exact implementation byte-for-byte (verified against the real
+  file rather than reconstructing from memory — an initial draft's `autoExpandForCurrentUrl()` used
+  a different, less precise URL-matching heuristic before being corrected to match the established
+  `subs.some(s => s.route === url)` pattern exactly); (2) confirmed a real `SUBTOPICS` map
+  bare-key collision: `fundamentals` was already claimed by the JavaScript hub's own
+  `/javascript/fundamentals` topic (checked both quoted and unquoted forms) — hub-prefixed to
+  `linux-fundamentals`, matching the hub's own `linux-` progress/search prefix, with the usual
+  `// NOTE:` comment; (3) confirmed `.linux-page`'s wrapper rule IS global in `src/styles.scss`
+  (with padding already baked in, `2rem 1.25rem 4rem`) — matching the HTML hub's own pattern, NOT
+  needing a manual redeclaration in each subtopic `.scss` the way most other hubs do (redeclared
+  anyway for consistency, which is harmless); (4) confirmed `SIDEBAR_MAP` keys are FULL-PATH
+  PREFIXED (`'linux/fundamentals'`, base entry already existed with its own `LINUX_DEFAULT`
+  constant) — subtopic composite keys follow suit: `'linux/fundamentals/<slug>'`; breadcrumb
+  `LINUX_LABELS` uses bare keys with bare composite subtopic keys (`'fundamentals/<slug>'`); no live
+  playground — Linux/bash content has no in-browser runtime, following the established
+  `<app-code-block>`-only pattern. All three subtopic angles verified against official documentation
+  via WebFetch/WebSearch before writing (man7.org for `journald.conf`/`sysctl`, corroborating
+  RHEL/Oracle/community sources for the systemd runlevel-target mapping since freedesktop.org's own
+  docs blocked the fetch with a 403): (1) confirmed the FULL runlevel-to-target mapping the main
+  page only partially gives (naming just two of seven), including the genuinely surprising fact that
+  runlevels 2, 3, and 4 all resolve to the identical `multi-user.target` — no distinct target exists
+  for each, despite being three separate SysV states; (2) confirmed via `journald.conf`'s own man
+  page that `Storage=auto` (the common effective distro default) only persists logs across reboot if
+  `/var/log/journal` already exists — closing a gap where the main page's own boot-process theory
+  recommends `journalctl -b` for a previous boot with no mention that the previous boot's logs may
+  already be gone; (3) confirmed via `sysctl`'s own man page and corroborating sources that a
+  `sysctl -w` or direct `/proc/sys/` write is runtime-only and never touches disk, closing a gap in
+  the main page's own quiz explanation of `/proc/sys/`, plus a "last file wins" trap in the
+  persistence mechanism itself when multiple `sysctl.d` config files set the same key. No genuine
+  main-page inaccuracy found this batch (all three angles are expansion gaps). Gotcha sweep
+  (apostrophe-after-letter across `.ts` and `.html` files — including the six shared wiring files —
+  backtick parity — even counts, 4/4/4 — bare `@word` in `.html` prose, curly-quote convention
+  verified in every `[prev]`/`[next]` bound attribute, `[prev]`/`[next]` route cross-check) came back
+  clean. Build reported only the pre-documented harmless "bundle initial exceeded maximum budget"
+  ERROR (409.03 kB over) with zero actual TypeScript/template compile errors. `git add -A` staged
+  all 15 files (9 new + 6 wiring, no main-page fix this batch) cleanly — no "Filename too long"
+  errors. Browser-verified successfully on all three subtopic pages — h1/breadcrumb pairs correct
+  (all 4 levels), prev/next cross-references correct, dark mode (`--bg: #0f172a`) applying
+  correctly, the topic overview page's single nav toggle (count 1, correct for this hub's first
+  pilot) confirmed to actually expand/collapse on click AND auto-expand on direct navigation to a
+  subtopic URL (both explicitly tested in-browser, not just assumed from the code), tailored sidebar
+  content confirmed rendering (not the DEFAULT fallback).)
+- [x] `/linux/file-system` — File System & Hierarchy (2026-07-23 — 3 subtopics:
+  tmp-cleared-on-reboot-is-only-half-the-story,
+  skip-nofail-in-fstab-and-boot-hangs-then-drops-to-emergency,
+  usr-local-vs-opt-shared-tree-vs-one-subdirectory-per-app; all three verified against official
+  documentation (man7.org, systemd.io, FHS) via WebSearch/WebFetch before writing — no genuine
+  main-page inaccuracy found this batch (all three angles are expansion gaps): (1) confirmed via
+  systemd's own tmpfiles documentation that files in /tmp are also deleted after 10 days of
+  inactivity by a daily systemd-tmpfiles-clean.timer, entirely independent of any reboot — closing
+  a gap where the main page's own quickRef and Common Mistakes both frame "/tmp is cleared" as a
+  reboot-only event; (2) confirmed via systemd's own documented behavior (and a tracked systemd
+  GitHub issue) that an /etc/fstab entry for a missing device WITHOUT nofail makes systemd wait
+  ~90 seconds then drop the entire boot to emergency mode — closing a gap where the main page's own
+  fstab code example already uses nofail but never explains what it does or what happens without
+  it; (3) confirmed via the FHS itself the real structural difference between /usr/local (files
+  merged into a shared bin/lib tree by file type) and /opt (each app gets its own self-contained
+  subdirectory) — closing a gap where the main page mentions both directories separately but never
+  contrasts them, despite both being described as homes for "extra" software outside the package
+  manager. **A house-style inconsistency was self-caught during authoring**: an early draft of the
+  /usr/local-vs-/opt subtopic used backtick-wrapped inline code (`make uninstall`) inside a
+  single-quoted theory field — technically safe to build but inconsistent with every prior
+  subtopic's house style of plain text in these fields; caught and fixed before the build. Gotcha
+  sweep (apostrophe-after-letter across `.ts` and `.html` files — including the six shared wiring
+  files — backtick parity — even counts, 4/4/4 — bare `@word` in `.html` prose, curly-quote
+  convention verified, `[prev]`/`[next]` route cross-check) came back clean. Build reported only
+  the pre-documented harmless "bundle initial exceeded maximum budget" ERROR (414.43 kB over) with
+  zero actual TypeScript/template compile errors. `git add -A` staged all 15 files (9 new + 6
+  wiring, no main-page fix this batch) cleanly — no "Filename too long" errors. Confirmed bare
+  `file-system` key collision-free in `SUBTOPICS` map (checked both quoted and unquoted forms).
+  Browser-verified successfully on all three subtopic pages — h1/breadcrumb pairs correct (all 4
+  levels), prev/next cross-references correct, the `LinuxNavComponent` accordion (now the SECOND
+  topic in this hub with subtopics — explicitly checked the toggle COUNT (2) on the topic overview
+  page), dark mode (`--bg: #0f172a`) applying correctly.)
+- [x] `/linux/essential-commands` — Essential Commands (2026-07-23 — 3 subtopics:
+  xargs-without-print0-breaks-on-filenames-with-spaces,
+  awk-default-field-split-collapses-repeated-delimiters,
+  tar-already-strips-leading-slashes-unless-p-is-used; all three verified against official
+  documentation (man7.org for xargs, GNU Awk User's Guide for field splitting, GNU tar manual +
+  corroborating sources for absolute-path stripping) before writing — no genuine main-page
+  inaccuracy found this batch (all three angles are expansion gaps): (1) confirmed via xargs' own
+  man page that its default splitting is on "blanks... or newlines," making "filenames containing
+  blanks... incorrectly processed by xargs" — closing a gap where the main page's own QnA mentions
+  the find -print0 | xargs -0 fix in a single dependent clause without ever demonstrating the
+  failure it prevents, while its own theory section models the unsafe bare pattern
+  (find | xargs rm) without qualification; (2) confirmed via the GNU Awk User's Guide that the
+  DEFAULT field separator is deliberately special-cased ("two spaces in a row do not delimit an
+  empty field"), while an explicitly-specified single-character -F' ' loses that collapsing
+  behavior entirely — closing a gap where the main page's own theory presents -F as just "plug in
+  a different character," with no warning that -F' ' is NOT equivalent to the default; (3)
+  **corrected an assumption made partway through this batch's own research**: initially hypothesized
+  tar "bakes in" absolute paths by default (an intuitive-but-wrong guess), then verified via GNU
+  tar's own documented behavior that the opposite is true — "by default, absolute paths are
+  converted to relative paths when archiving," with a "Removing leading '/' from member names"
+  warning, specifically for safety; -P/--absolute-names is the actual (explicitly risky) flag that
+  restores absolute-path behavior. This closes a gap where the main page's own tar example archives
+  an absolute path with zero mention of what happens to it. Gotcha sweep (apostrophe-after-letter
+  across `.ts` and `.html` files — including the six shared wiring files — backtick parity — even
+  counts, 4/4/4 — bare `@word` in `.html` prose, curly-quote convention verified, `[prev]`/`[next]`
+  route cross-check) came back clean. Build reported only the pre-documented harmless "bundle
+  initial exceeded maximum budget" ERROR (420.02 kB over) with zero actual TypeScript/template
+  compile errors. `git add -A` staged all 15 files (9 new + 6 wiring, no main-page fix this batch)
+  cleanly — no "Filename too long" errors. Confirmed bare `essential-commands` key collision-free
+  in `SUBTOPICS` map (checked both quoted and unquoted forms). Browser-verified successfully on all
+  three subtopic pages — h1/breadcrumb pairs correct (all 4 levels), prev/next cross-references
+  correct, the `LinuxNavComponent` accordion (now the THIRD topic in this hub with subtopics —
+  explicitly checked the toggle COUNT (3) on the topic overview page), dark mode (`--bg: #0f172a`)
+  applying correctly.)
+- [x] `/linux/file-permissions` — File Permissions & Ownership (2026-07-23 — 3 subtopics:
+  setuid-is-ignored-on-shell-scripts-not-just-risky,
+  acl-mask-caps-effective-permissions-and-auto-recalculates,
+  chmod-755-on-a-directory-does-not-clear-setgid; all three verified against official/authoritative
+  documentation (Unix security literature + LKML for the setuid-script kernel behavior, POSIX ACL
+  documentation for the mask, GNU chmod documentation for the directory special-case) via WebSearch
+  before writing — no genuine main-page inaccuracy found this batch (all three angles are expansion
+  gaps): (1) confirmed via longstanding documented Unix/Linux security guidance that "many Unix-like
+  systems, in particular Linux, simply ignore the setuid and setgid bits on scripts" — a deliberate
+  mitigation for a historical race condition between the kernel reading a shebang line and the
+  interpreter reopening the file — closing a gap where the main page's own setuid theory and every
+  one of its examples (passwd, chmod u+s mybinary) implicitly assumes a compiled binary, never
+  distinguishing what happens when the identical chmod u+s is applied to a script instead; (2)
+  confirmed via POSIX ACL documentation that the mask "limits the effective rights granted to all
+  groups and to named users" while "the file owner and others permissions are not affected," AND
+  that "unless otherwise specified, the mask permissions are recalculated on subsequent setfacl
+  calls" to the union of all entries — closing a gap where the main page's own ACL theory gives
+  "setfacl -m m:r- sets the effective mask" equal one-clause weight to a plain user-grant operation,
+  with no explanation that the mask caps other entries or that it silently widens again on any
+  unrelated setfacl call unless -n is used; (3) **corrected an assumption made partway through this
+  batch's own research, the second such self-correction this session** (after the tar leading-slash
+  finding in the Essential Commands batch): initially hypothesized a recursive chmod -R 755 would
+  strip an existing setgid bit from a directory (consistent with the main page's own "octal sets
+  exactly this" framing), then verified via GNU chmod's own documented behavior that the opposite is
+  true — "on directories, GNU chmod preserves setgid unless you clear it explicitly," an asymmetric
+  special case that does NOT apply to files (where a 3-digit mode does clear it). This closes a gap
+  where the main page's own theory states octal permissions as unconditionally absolute, with no
+  exception noted, and directly affects whether its own /shared chmod 2775 example's group
+  inheritance survives a later routine chmod -R 755 cleanup (it does). Gotcha sweep
+  (apostrophe-after-letter across `.ts` and `.html` files — including the six shared wiring files —
+  backtick parity — even counts, 4/4/4 — bare `@word` in `.html` prose, curly-quote convention
+  verified, `[prev]`/`[next]` route cross-check) came back clean. Build reported only the
+  pre-documented harmless "bundle initial exceeded maximum budget" ERROR (425.55 kB over) with zero
+  actual TypeScript/template compile errors. `git add -A` staged all 15 files (9 new + 6 wiring, no
+  main-page fix this batch) cleanly — no "Filename too long" errors. Confirmed bare
+  `file-permissions` key collision-free in `SUBTOPICS` map (checked both quoted and unquoted forms).
+  **Dev server was found stopped** at the start of this batch's verification step — restarted via
+  `preview_start`, which triggered a full cold rebuild; polled with a backgrounded curl-based wait
+  loop rather than a blocking sleep before proceeding, per the standing "no blocking sleep" tooling
+  constraint. Browser-verified successfully on all three subtopic pages once the server was ready —
+  h1/breadcrumb pairs correct (all 4 levels), prev/next cross-references correct, the
+  `LinuxNavComponent` accordion (now the FOURTH topic in this hub with subtopics — explicitly
+  checked the toggle COUNT (4) on the topic overview page), dark mode (`--bg: #0f172a`) applying
+  correctly.)
+- [x] `/linux/users-groups` — Users & Groups (2026-07-23 — 3 subtopics:
+  userdel-without-r-leaves-orphaned-files-for-uid-reuse,
+  nopasswd-grant-to-a-safe-command-can-be-a-full-root-escalation,
+  etc-skel-populates-new-homes-once-not-retroactively; all three verified against
+  official/authoritative sources (direct analysis of userdel's documented behavior for UID reuse,
+  current Linux privilege-escalation/GTFOBins research for the sudo NOPASSWD risk, useradd's own
+  man page for /etc/skel) via WebSearch/WebFetch before writing — no genuine main-page inaccuracy
+  found this batch (all three angles are expansion gaps): (1) confirmed that a numeric UID freed by
+  userdel (without -r) is silently reused by the next ordinary useradd call with no explicit --uid
+  — "the new user then silently inherits ownership of every orphaned file the old user left behind"
+  — closing a gap where the main page's own theory states the orphaning fact ("files remain
+  orphaned") but never connects it to what happens when that UID gets reassigned, and confirming
+  files OUTSIDE the home directory (which userdel -r never touches either) are just as exposed; (2)
+  confirmed via current privilege-escalation research that "a rule like (ALL) NOPASSWD: /usr/bin/vim
+  reads as harmless... until you check GTFOBins for vim, which can escape to a root shell" — with
+  dozens of common tools (find, nano, awk, less, man, and more) sharing this same documented escape
+  — closing a gap where the main page's own two NOPASSWD examples (systemctl restart nginx, apt)
+  are presented as narrowly-scoped without any check against what the granted command itself is
+  capable of once running as root; distinguished the two main-page examples specifically (systemctl
+  is safer due to full-string matching; apt is independently risky via its own hook-script
+  capability); (3) confirmed via useradd's own man page that /etc/skel's contents are copied to a
+  new home directory only once, "during initial home directory creation" — closing a gap where the
+  main page mentions /etc/skel in exactly one QnA clause with no explanation of what it is or that
+  editing it never retroactively reaches existing accounts, a common real-world "works for new
+  hires, not existing users" support trap. Gotcha sweep (apostrophe-after-letter across `.ts` and
+  `.html` files — including the six shared wiring files — backtick parity — even counts, 4/4/4 —
+  bare `@word` in `.html` prose, curly-quote convention verified, `[prev]`/`[next]` route
+  cross-check, unescaped `${` check specific to this hub's own documented bash-variable-in-
+  template-literal gotcha) came back clean. Build reported only the pre-documented harmless "bundle
+  initial exceeded maximum budget" ERROR (431.12 kB over) with zero actual TypeScript/template
+  compile errors. `git add -A` staged all 15 files (9 new + 6 wiring, no main-page fix this batch)
+  cleanly — no "Filename too long" errors. Confirmed bare `users-groups` key collision-free in
+  `SUBTOPICS` map (checked both quoted and unquoted forms). Browser-verified successfully on all
+  three subtopic pages — h1/breadcrumb pairs correct (all 4 levels), prev/next cross-references
+  correct, the `LinuxNavComponent` accordion (now the FIFTH topic in this hub with subtopics —
+  explicitly checked the toggle COUNT (5) on the topic overview page), dark mode (`--bg: #0f172a`)
+  applying correctly.)
+- [x] `/linux/process-management` — Process Management (2026-07-23 — 3 subtopics:
+  orphans-reparent-to-pid-1-which-may-not-reap-in-a-container,
+  kill-signals-one-process-use-negative-pid-for-the-group,
+  renice-is-a-one-way-ratchet-for-non-root-users; all three verified against official/authoritative
+  sources (container init/tini documentation, POSIX kill specification, documented renice/
+  setpriority behavior) via WebSearch before writing — no genuine main-page inaccuracy found this
+  batch (all three angles are expansion gaps): (1) confirmed that reaping is a responsibility the
+  process occupying PID 1 must actively implement, not an automatic kernel guarantee — "if PID 1
+  doesn't wait on child processes, those become zombies... consume slots in the kernel process table
+  which fills and prevents the creation of further processes" — closing a gap where the main page's
+  own theory states orphans "are reparented to PID 1 (systemd/init), which reaps them" as if this
+  always holds, when inside a container PID 1 is very often the application itself with no reaping
+  logic; covered the documented fix (Docker's --init flag using tini) and the subreaper alternative;
+  (2) confirmed via POSIX's own kill specification that "if a PID is negative (but not -1), the
+  signal is sent to all processes whose process group ID is equal to the absolute value of that
+  PID" — closing a gap where the main page's own graceful-shutdown pattern (kill -15 "$PID"; sleep
+  5; kill -9 "$PID") is written entirely around a single PID, with no acknowledgment that a
+  backgrounded pipeline is multiple processes and $! only ever captures one of them, silently
+  leaving other pipeline stages running; also covered the special, dangerous -1 process-group case;
+  (3) confirmed via documented renice/setpriority behavior that "unprivileged users may increase
+  nice levels but cannot decrease them without root permissions" — specifically a directional
+  restriction, not just a floor at 0 — closing a gap where the main page's own theory states "Only
+  root can lower niceness... below 0" in a way that reads as if any move that stays above 0 should
+  be fine for a non-root user, when in fact ANY decrease is blocked once already raised, confirmed
+  to apply at the setpriority() syscall level too, not just the renice command. **A real
+  self-caught bug this batch**: an early draft of the kill-negative-PID subtopic over-escaped double
+  quotes inside single-quoted `.ts` theory/exercise fields (writing `\\"$PID\\"` where plain
+  `"$PID"` was correct, since double quotes never need escaping inside a single-quoted TS string) —
+  caught by a targeted re-read before the build, not by the standard apostrophe sweep, which doesn't
+  check for this specific over-escaping pattern; fixed both instances and confirmed via `grep` that
+  none remained anywhere in the batch. Gotcha sweep (apostrophe-after-letter across `.ts` and `.html`
+  files — including the six shared wiring files — backtick parity — even counts, 4/4/4 — bare
+  `@word` in `.html` prose, curly-quote convention verified, `[prev]`/`[next]` route cross-check,
+  unescaped `${` check) came back clean. Build reported only the pre-documented harmless "bundle
+  initial exceeded maximum budget" ERROR (436.68 kB over) with zero actual TypeScript/template
+  compile errors. `git add -A` staged all 15 files (9 new + 6 wiring, no main-page fix this batch)
+  cleanly — no "Filename too long" errors. Confirmed bare `process-management` key collision-free in
+  `SUBTOPICS` map (checked both quoted and unquoted forms). Browser-verified successfully on all
+  three subtopic pages — h1/breadcrumb pairs correct (all 4 levels), prev/next cross-references
+  correct, explicitly confirmed no stray backslash artifacts remained on the rendered page from the
+  earlier escaping bug, the `LinuxNavComponent` accordion (now the SIXTH topic in this hub with
+  subtopics — explicitly checked the toggle COUNT (6) on the topic overview page), dark mode (`--bg:
+  #0f172a`) applying correctly.)
+- [x] `/linux/system-monitoring` — System Monitoring (2026-07-23 — 3 subtopics:
+  load-average-has-blind-spots-psi-is-the-modern-replacement,
+  oom-score-adj-negative-1000-can-hang-the-whole-system,
+  iostats-percent-util-is-misleading-on-nvme-ssds; all three verified against official/authoritative
+  sources (Linux kernel's own PSI documentation, direct analysis of OOM killer scoring behavior,
+  documented iostat %util computation and NVMe-specific saturation guidance) via WebFetch/WebSearch
+  before writing — no genuine main-page inaccuracy found this batch (all three angles are expansion
+  gaps): (1) confirmed via the kernel's own PSI documentation that /proc/pressure/{cpu,memory,io}
+  reports resource-specific stall pressure directly, addressing the exact conflation problem load
+  average has (counting both CPU-runnable AND uninterruptible-I/O-sleep processes as one number) —
+  closing a gap where the main page's own interviewFocus question ("How do you determine if a server
+  is CPU-bound, memory-bound, or I/O-bound?") is exactly what PSI answers directly, while the main
+  page's own documented approach requires cross-referencing load average, top's %wa, and iostat
+  indirectly; (2) confirmed that oom_score_adj = -1000 is a hard, absolute exemption ("the kernel
+  will skip it regardless of RSS... equivalent to disabling OOM-killing entirely") and that
+  protecting too many processes this way can leave the OOM killer "no candidate processes to
+  terminate," hanging the system instead of cleanly killing one — closing a gap where the main
+  page's own QnA frames -1000 purely as protection with no downside, and directly undermining the
+  main page's own dmesg-based OOM diagnostic advice in this specific failure case (no kill event
+  exists to find); (3) confirmed via documented analysis that iostat's %util "counts... any I/O in
+  flight at any moment," meaningless for NVMe's deep parallel queues, so "an NVMe drive can sit at
+  100% %util while operating at 5% of its real capacity" — closing a gap where the main page's own
+  70-80% saturation threshold is stated as a general rule with no device-type distinction; covered
+  the documented correct alternative (r_await/w_await and aqu-sz). **Two real escaping mistakes
+  self-caught and fixed this batch, continuing the pattern from the Process Management batch**: (a)
+  a `[next]` label in one `.html` file used backslash-escaping (`\\'s`) for an apostrophe instead of
+  the established typographic curly-quote convention (`’`) required for `.html` bound attributes —
+  the same mistake made earlier in this session's Bicep batch, caught by an expanded sweep pattern
+  specifically checking for backslash-escaped apostrophes inside `[prev]`/`[next]` attributes; (b)
+  confirmed via the same expanded sweep that no over-escaped double-quote issue (the Process
+  Management batch's bug) recurred in this batch's `.ts` files. Gotcha sweep (apostrophe-after-letter
+  across `.ts` and `.html` files — including the six shared wiring files — backtick parity — even
+  counts, 4/4/4 — bare `@word` in `.html` prose, curly-quote convention verified via a dedicated
+  backslash-escape-inside-bound-attribute check, `[prev]`/`[next]` route cross-check, unescaped `${`
+  check, over-escaped-double-quote check) came back clean after both fixes. Build reported only the
+  pre-documented harmless "bundle initial exceeded maximum budget" ERROR (442.52 kB over) with zero
+  actual TypeScript/template compile errors. `git add -A` staged all 15 files (9 new + 6 wiring, no
+  main-page fix this batch) cleanly — no "Filename too long" errors. Confirmed bare
+  `system-monitoring` key collision-free in `SUBTOPICS` map (checked both quoted and unquoted
+  forms). Browser-verified successfully on all three subtopic pages — h1/breadcrumb pairs correct
+  (all 4 levels), prev/next cross-references correct (explicitly confirmed the curly apostrophe in
+  "iostat's" rendered correctly with no stray backslash), the `LinuxNavComponent` accordion (now the
+  SEVENTH topic in this hub with subtopics — explicitly checked the toggle COUNT (7) on the topic
+  overview page), dark mode (`--bg: #0f172a`) applying correctly.)
+- [x] `/linux/networking` — Networking Commands (2026-07-23) — 3 subtopics: (1) **TIME_WAIT Is
+  Normal, Not a Bug — and It Can't Be Tuned**, expanding the main page's single line ("ss -o state
+  time-wait # TIME_WAIT connections (indicates fast open/close)") into the actual mechanism —
+  verified via WebSearch against the Linux kernel source that TIME_WAIT's duration is hardcoded as
+  `TCP_TIMEWAIT_LEN` at exactly 60 seconds in `include/net/tcp.h`, with NO sysctl to change it
+  (distinct from the unrelated, tunable `tcp_fin_timeout`, which governs FIN_WAIT_2); covered when a
+  high count actually matters (ephemeral port exhaustion under rapid outbound connection churn) and
+  the correct fix (`tcp_tw_reuse` + wider port range or connection pooling — never the removed,
+  NAT-breaking `tcp_tw_recycle`); (2) **Traceroute Defaults to UDP, Which Firewalls Often Block**,
+  expanding the main page's bare `-T`/`-I` flag mentions — verified via WebSearch that plain
+  traceroute sends UDP probes starting at destination port 33434, incrementing per hop, and that
+  firewalls/security groups routinely drop that pattern (or the ICMP replies) producing "* * *" rows
+  that look like path failures but aren't; explained why `-I` (ICMP) and `-T` (TCP SYN, port 80
+  default) actually work, and that `mtr` defaults to ICMP rather than UDP — a different default, not
+  a "smarter" tool; (3) **Jumbo Frames + MTU Mismatch Creates a Silent PMTUD Blackhole**, expanding
+  the main page's one-line "ip link set eth0 mtu 9000 sets jumbo frames" — verified via WebSearch
+  that raising MTU always succeeds locally regardless of switch/peer-NIC support, and that Path MTU
+  Discovery depends entirely on the ICMP "Fragmentation Needed" (Type 3, Code 4) message reaching the
+  sender; when that message is blocked, oversized packets vanish with no error at all, producing the
+  distinctive "small transfers work, large transfers hang" symptom; covered `ping -M do -s SIZE` as
+  the direct diagnostic that bypasses the (possibly blocked) ICMP feedback loop entirely. **A stray
+  typo self-caught during authoring** (not a documented gotcha, just a direct typo): a leftover "2"
+  character before a closing `]` in the MTU subtopic's `theory` array (`      ]\n2    },`), caught by
+  a direct re-read of the file immediately after writing, fixed via Edit before the gotcha sweep or
+  build ran. Gotcha sweep (apostrophe-after-letter across all `.ts` files — every match confirmed
+  inside backtick-delimited `code:` blocks, safe — backtick parity: 8/4/26, all even — bare `@word` in
+  `.html` — none — unescaped `${` — none — over-escaped double-quote — none — backslash-escaped
+  apostrophe inside `[prev]`/`[next]` bound attributes — none, curly `’` used correctly throughout)
+  came back clean with no fixes needed. Confirmed bare `networking` key collision-free in the
+  `SUBTOPICS` map (checked both quoted and unquoted forms) before adding — added as a bare key, no
+  hub-prefix needed. Build reported only the pre-documented harmless "bundle initial exceeded maximum
+  budget" ERROR (448.39 kB over) with zero actual TypeScript/template compile errors. `git add -A`
+  (scoped to the batch's own files) staged all 15 files (9 new + 6 wiring, no main-page fix needed
+  this batch — every subtopic angle was a genuine expansion gap, not a correction). Browser-verified
+  successfully: topic-overview toggle count confirmed at 8 (the EIGHTH Linux-hub topic with
+  subtopics), the Networking Commands accordion expands to show all 3 correctly-labeled subtopic
+  links, all three subtopic pages individually confirmed h1/breadcrumb (all 4 levels)/prev-next
+  cross-references correct, dark mode (`--bg: #0f172a`) applying correctly, and the final page's body
+  text explicitly checked for stray backslash/`undefined` artifacts (none found).
+- [x] `/linux/firewall` — Firewall & iptables (2026-07-23) — 3 subtopics: (1) **ufw limit Throttles
+  One IP — Not Distributed Brute Force**, expanding the main page's bare threshold claim ("blocks IPs
+  with >6 connections in 30s") — verified via WebSearch that ufw limit generates iptables `recent`-
+  module rules tracked PER SOURCE IP with a fixed, non-customizable 6-connections/30-seconds
+  threshold, meaning a distributed attack spread across many IPs (each staying under the per-IP
+  limit) sails through completely unaffected; covered fail2ban and key-only SSH auth as the actual
+  distributed-attack defenses; (2) **iptables -F Doesn't Reset the Default Policy — a DROP Policy Can
+  Lock You Out**, expanding the main page's bare "WARNING: removes all rules" / "dangerous on remote
+  servers!" comments with the actual mechanism — verified via WebSearch that -F only removes
+  individual rules and never touches the chain's own default POLICY, so on a server whose INPUT
+  policy is already DROP (the main page's own recommended hardening pattern), flushing over SSH
+  removes the ESTABLISHED/RELATED and port-22 ACCEPT rules while the DROP policy stays in effect,
+  severing the very session running the command with no way back in except console access; covered
+  the safe reset order (policies to ACCEPT first, then flush); (3) **ip_forward Alone Isn't Enough
+  for UFW Router Mode**, expanding the main page's single-line `echo 1 > /proc/sys/net/ipv4/ip_forward`
+  mention with two real gaps verified via WebSearch — the raw proc-file write is non-persistent
+  (needs `/etc/ufw/sysctl.conf` specifically on a UFW system, not just generic `/etc/sysctl.conf`),
+  and UFW ships its own separate `DEFAULT_FORWARD_POLICY="DROP"` in `/etc/default/ufw` that can still
+  silently block forwarded traffic even after ip_forward and MASQUERADE are both correctly configured
+  — the classic "I followed the tutorial exactly and it still doesn't work" symptom. Gotcha sweep
+  (apostrophe-after-letter across all `.ts` files — every match confirmed inside backtick-delimited
+  `code:` blocks, safe — backtick parity: 22/18/14, all even — bare `@word` in `.html` — none —
+  unescaped `${` — none — over-escaped double-quote — none — backslash-escaped apostrophe inside
+  `[prev]`/`[next]` bound attributes — none, curly `’` used correctly throughout — `[prev]`/`[next]`
+  route cross-check confirmed consistent across all 3 files) came back clean with no fixes needed.
+  Confirmed bare `firewall` key collision-free in the `SUBTOPICS` map (checked both quoted and
+  unquoted forms) before adding. Build reported only the pre-documented harmless "bundle initial
+  exceeded maximum budget" ERROR (454.34 kB over) with zero actual TypeScript/template compile
+  errors. `git add -A` (scoped to the batch's own files) staged all 15 files (9 new + 6 wiring, no
+  main-page fix needed this batch — every subtopic angle was a genuine expansion gap). Browser-
+  verified successfully: topic-overview toggle count confirmed at 9 (the NINTH Linux-hub topic with
+  subtopics), the Firewall & iptables accordion expands to show all 3 correctly-labeled subtopic
+  links, all three subtopic pages individually confirmed h1/breadcrumb (all 4 levels)/prev-next
+  cross-references correct, dark mode (`--bg: #0f172a`) applying correctly, and the final page's body
+  text explicitly checked for stray backslash/`undefined` artifacts (none found).
+- [x] `/linux/ssh` — SSH & Remote Access (2026-07-23) — 3 subtopics: (1) **Agent Forwarding Exposes
+  Signing, Not Your Key — ProxyJump Avoids It**, expanding the main page's one-clause ForwardAgent
+  risk warning ("use carefully — anyone with root on the remote host can use your keys") — verified
+  via WebSearch that agent forwarding exposes a live SIGNING socket on the remote host (never the
+  private key bytes), letting anyone with access to that socket authenticate as the user for as long
+  as the session stays connected; covered ProxyJump (since OpenSSH 7.3) as the fix, since it tunnels
+  the connection at the client level without the jump host ever seeing an agent socket; (2) **ssh -R
+  Binds to Remote Loopback Only, Without GatewayPorts**, expanding the main page's own -R quiz
+  (correct on direction, silent on interface) — verified via WebSearch that a remote forward binds to
+  127.0.0.1 on the remote host by default, reachable only from that machine itself, and that
+  GatewayPorts yes/clientspecified in sshd_config is required to expose it to the wider network;
+  (3) **ControlMaster Multiplexing Can Hit the Server's MaxSessions Limit**, expanding the main
+  page's "very fast" multiplexing claim with no mention of a ceiling — verified via WebSearch that
+  sshd's MaxSessions (default 10) caps channels per shared connection, so enough parallel scp/rsync
+  jobs to the same host can fail with "administratively prohibited" rather than simply queuing;
+  covered the stale-master-connection gotcha (an already-open ControlPersist connection keeps
+  enforcing the OLD MaxSessions value even after the server config is raised and reloaded). Gotcha
+  sweep (apostrophe-after-letter across all `.ts` files — every match confirmed inside backtick-
+  delimited `code:` blocks, safe — backtick parity: 22/20/22, all even — bare `@word` in `.html` —
+  none — unescaped `${` — none (explicitly checked the ControlMaster subtopic's `\${i}` bash loop
+  variable, correctly escaped) — over-escaped double-quote — none — backslash-escaped apostrophe
+  inside `[prev]`/`[next]` bound attributes — none, curly `’` used correctly throughout — `[prev]`/
+  `[next]` route cross-check confirmed consistent across all 3 files) came back clean with no fixes
+  needed. Confirmed no `ssh` key collision in either the `SUBTOPICS` map or the `LINUX_LABELS`
+  breadcrumb map (both checked in both quoted and unquoted forms) before adding — added as a bare
+  key. Build reported only the pre-documented harmless "bundle initial exceeded maximum budget" ERROR
+  (460.27 kB over) with zero actual TypeScript/template compile errors. `git add -A` (scoped to the
+  batch's own files) staged all 15 files (9 new + 6 wiring, no main-page fix needed this batch —
+  every subtopic angle was a genuine expansion gap). Browser-verified successfully: topic-overview
+  toggle count confirmed at 10 (the TENTH Linux-hub topic with subtopics), the SSH & Remote Access
+  accordion expands to show all 3 correctly-labeled subtopic links, all three subtopic pages
+  individually confirmed h1/breadcrumb (all 4 levels)/prev-next cross-references correct, dark mode
+  (`--bg: #0f172a`) applying correctly, and the final page's body text explicitly checked for stray
+  backslash/`undefined` artifacts (none found).
+- [x] `/linux/bash-scripting` — Bash Scripting Basics (2026-07-23) — 3 subtopics: (1) **Exit Codes
+  Wrap Around at 256 — return 256 Means Success**, expanding the main page's own bare "0-255" range
+  claim — verified via WebSearch that exit statuses are unsigned 8-bit values, so return/exit takes
+  any value modulo 256 with no error, meaning `return 256` computes to exactly 0 (success) and
+  negative values wrap the other direction (`exit -1` → 255); covered the real trap of a function
+  returning a computed count directly as its exit code, and the fix (report numeric results via
+  stdout, reserve return/exit for pass/fail only); (2) **local Assignment Masks set -e Command
+  Failures**, expanding the main page's own unconditional "set -e exits immediately on any command
+  failure" claim with a well-documented exception — verified via BashFAQ/105 and ShellCheck's own
+  SC2155 rule that `local var=$(command)` written as one statement reports the `local` BUILTIN's own
+  exit status to set -e, not the command substitution's, so a genuinely failing command inside it
+  goes completely undetected; covered the two-statement fix (`local var; var=$(command)`) and noted
+  the main page's own `check_disk` function already happens to use the safe form, uncredited;
+  (3) **trap EXIT Overwrites, It Doesn't Chain Multiple Handlers**, expanding the main page's single
+  `trap cleanup EXIT` example with the undocumented behavior when it's called more than once —
+  verified via WebSearch that each new `trap ... EXIT` call silently REPLACES the previous handler
+  rather than chaining, a real risk once a script sources multiple library files that each register
+  their own cleanup; covered both the explicit-combine fix and an add_trap-style append helper using
+  `trap -p EXIT`. **A real over-escaped-double-quote bug self-caught during the standing gotcha
+  sweep** (the exact class of mistake CLAUDE.md already documents from the Process Management batch):
+  the trap subtopic's theory quoted the main page's own text containing literal double quotes
+  (`trap "cleanup" EXIT`) inside an already single-quoted TS field — written as `\\"cleanup\\"`
+  (unnecessary double-escaping, since double quotes never need escaping inside a single-quoted TS
+  string), fixed to plain `"cleanup"` and confirmed rendering correctly with no stray backslashes in
+  the browser afterward. Gotcha sweep (apostrophe-after-letter across all `.ts` files — every match
+  confirmed inside backtick-delimited `code:` blocks, safe — backtick parity: 34/40/52, all even —
+  bare `@word` in `.html` — none — unescaped `${` — none (explicitly checked and fixed two
+  unnecessary-but-harmless `\$@` escapes in the exit-code subtopic, simplified to plain `$@` for
+  consistency; confirmed the legitimately-needed `\${ITEMS[@]}` and `\${existing}`/`\${new_cmd}`
+  escapes remained correct) — over-escaped double-quote — caught and fixed one real instance (above)
+  — backslash-escaped apostrophe inside `[prev]`/`[next]` bound attributes — none, curly `’` used
+  correctly throughout) came back clean after the fix. Confirmed bare `bash-scripting` key
+  collision-free in the `SUBTOPICS` map (checked both quoted and unquoted forms) before adding.
+  Build reported only the pre-documented harmless "bundle initial exceeded maximum budget" ERROR
+  (465.91 kB over) with zero actual TypeScript/template compile errors. `git add -A` (scoped to the
+  batch's own files) staged all 15 files (9 new + 6 wiring, no main-page fix needed this batch —
+  every subtopic angle was a genuine expansion gap). Browser-verified successfully: topic-overview
+  toggle count confirmed at 11 (the ELEVENTH Linux-hub topic with subtopics — the hub's Phase 10
+  rollout crossed its halfway point at 10/19 with this batch's predecessor), the Bash Scripting
+  Basics accordion expands to show all 3 correctly-labeled subtopic links, all three subtopic pages
+  individually confirmed h1/breadcrumb (all 4 levels)/prev-next cross-references correct, dark mode
+  (`--bg: #0f172a`) applying correctly, the fixed over-escaped-quote text explicitly re-verified
+  rendering correctly in the browser, and the final page's body text explicitly checked for stray
+  backslash/`undefined` artifacts (none found).
+- [x] `/linux/bash-advanced` — Advanced Bash Scripting (2026-07-24) — 3 subtopics: (1) **mapfile
+  Without -t Keeps the Trailing Newline in Every Element**, expanding the main page's own silent
+  habit of always writing `mapfile -t` without ever explaining what -t does — verified via WebSearch
+  that without -t, each array element keeps its line's trailing newline embedded in the string
+  value, causing doubled blank lines when printed and silent string-comparison failures; covered the
+  fix (always -t, exactly what the main page's own examples already do, just uncredited);
+  (2) **exec + tee Process Substitution Can Race the Script's Own Exit**, expanding the main page's
+  own `exec > >(tee log) 2>&1` example (presented with zero caveats) — verified via WebSearch that
+  the tee process substitution runs asynchronously and is never automatically waited for, so the
+  script can exit before tee finishes flushing, silently dropping the final log lines even though
+  terminal output showed them; covered the capture-PID-and-explicit-wait fix; (3) **check_host
+  Always Exits 0, Regardless of Up or Down**, a genuine, directly-derivable bug in the main page's
+  own `check_host` example function (both if/else branches end in `echo`, so the function's exit
+  status is always the near-universal success of echo, never reflecting the actual UP/DOWN result)
+  — no external verification needed since this is deducible straight from re-reading the main page's
+  own code; covered how this silently breaks `||`/`&&` logic built on top of it despite printing the
+  correct text, and the explicit-`return`-per-branch fix. **A real bug in the dev-server's own lazy
+  chunk registration hit and fixed during this batch's browser verification** — all three subtopic
+  pages initially redirected to home (`/`) on both hard navigation AND client-side routerLink clicks,
+  with zero console errors (silently caught by the app's own wildcard `{ path: '**', redirectTo: '' }`
+  route) — confirmed via `preview_logs` that the dev server's most recent build never actually
+  compiled lazy chunks for the three new subtopic components at all (a `grep` for "mapfile" against
+  the logs came back with zero matches), despite the production build passing cleanly and `app.routes.ts`
+  being syntactically correct. Fixed per the established CLAUDE.md-documented recipe: forced a fresh
+  file-write on `app.routes.ts` (append a blank line, then trim it back out — two real save events),
+  confirmed via `preview_logs` that the very next rebuild's "Lazy chunk files" list now correctly
+  showed all three new component chunks by name, and re-verified all three subtopic pages loaded
+  correctly afterward. Gotcha sweep (apostrophe-after-letter across all `.ts` files — every match
+  confirmed inside backtick-delimited `code:` blocks, safe — backtick parity: 28/22/28, all even —
+  bare `@word` in `.html` — none — unescaped `${` — none (all backtick-block occurrences correctly
+  escaped `\${`, all single-quoted-field occurrences in theory/exercise fields correctly left
+  unescaped, per the established single-quoted-string-never-needs-`${`-escaping rule) — over-escaped
+  double-quote — none — backslash-escaped apostrophe inside `[prev]`/`[next]` bound attributes —
+  none, curly `’` used correctly throughout — `[prev]`/`[next]` route cross-check confirmed
+  consistent across all 3 files) came back clean with no fixes needed. Confirmed bare `bash-advanced`
+  key collision-free in the `SUBTOPICS` map (checked both quoted and unquoted forms) before adding.
+  Build reported only the pre-documented harmless "bundle initial exceeded maximum budget" ERROR
+  (471.76 kB over) with zero actual TypeScript/template compile errors. `git add -A` (scoped to the
+  batch's own files) staged all 15 files (9 new + 6 wiring, no main-page CONTENT fix needed this
+  batch — the check_host example remains as-is on the main page since correcting it there would
+  contradict this subtopic's own "this is what the bug looks like" framing; every subtopic angle was
+  either a genuine expansion gap or a directly-derivable code issue). Browser-verified successfully
+  (after the chunk-staleness fix above): topic-overview toggle count confirmed at 12 (the TWELFTH
+  Linux-hub topic with subtopics), the Advanced Bash Scripting accordion expands to show all 3
+  correctly-labeled subtopic links, all three subtopic pages individually confirmed h1/breadcrumb
+  (all 4 levels)/prev-next cross-references correct, dark mode (`--bg: #0f172a`) applying correctly,
+  and the final page's body text explicitly checked for stray backslash/`undefined` artifacts (none
+  found).
+- [x] `/linux/package-management` — Package Management (2026-07-24) — 3 subtopics: (1) **apt-key Is
+  Deprecated — signed-by Keyrings Is the Modern Replacement**, catching and fixing a genuine
+  inconsistency between two sections of the main page itself — the theory section originally taught
+  `curl -fsSL URL | apt-key add -` while the page's own QnA answer for adding a PPA/custom repo
+  already used the modern `signed-by=` + `/etc/apt/keyrings/` pattern; verified via WebSearch that
+  apt-key is deprecated as of Debian 11 / Ubuntu 22.04 specifically because it trusts a key
+  system-wide for every repo rather than scoping trust to the one repository it was meant for;
+  **fixed the main page's own theory bullet** to state the deprecation and point to the modern
+  approach, matching what the QnA already correctly demonstrated; (2) **apt-mark auto/manual Is What
+  Actually Drives autoremove**, expanding the main page's two bare mentions of autoremove ("removes
+  unused dependencies") into the actual mechanism — verified via WebSearch that every package is
+  flagged automatic or manual at install time in `/var/lib/apt/extended_states`, and autoremove only
+  removes automatic packages nothing manual depends on, regardless of whether something outside
+  apt's own dependency graph (a script, a cron job) has come to rely on it directly; covered the
+  `apt-mark manual` fix and the `--dry-run`/`-s` simulate flags; (3) **dnf history undo Can Fail When
+  the Old Version Left the Repo**, expanding the main page's flat "rolls back a specific transaction"
+  claim — verified via WebSearch that repos typically only host the latest version of each package,
+  so an undo needing an older version can fail with "package X is not available" even with the
+  transaction history fully intact; covered `keepcache=True` as the mitigation. Gotcha sweep
+  (apostrophe-after-letter across all `.ts` files — every match confirmed inside backtick-delimited
+  `code:` blocks, safe — backtick parity: 14/16/20, all even — bare `@word` in `.html` — none —
+  unescaped `${` — none — over-escaped double-quote — none — backslash-escaped apostrophe inside
+  `[prev]`/`[next]` bound attributes — none, curly `’` used correctly throughout — `[prev]`/`[next]`
+  route cross-check confirmed consistent across all 3 files) came back clean with no fixes needed.
+  Confirmed bare `package-management` key collision-free in the `SUBTOPICS` map (checked both quoted
+  and unquoted forms) before adding. Build reported only the pre-documented harmless "bundle initial
+  exceeded maximum budget" ERROR (477.98 kB over) with zero actual TypeScript/template compile
+  errors. `git add -A` (scoped to the batch's own files) staged all 16 files (9 new + 6 wiring + 1
+  main-page fix — the first main-page correction since the Firewall batch). Proactively checked
+  `preview_logs` for the three new component chunk names BEFORE attempting browser verification this
+  time (learning directly from the prior batch's stale-chunk incident) — confirmed all three compiled
+  correctly on the first post-commit rebuild, avoiding a repeat of that debugging cycle. Browser-
+  verified successfully: topic-overview toggle count confirmed at 13 (the THIRTEENTH Linux-hub topic
+  with subtopics), the Package Management accordion expands to show all 3 correctly-labeled subtopic
+  links, all three subtopic pages individually confirmed h1/breadcrumb (all 4 levels)/prev-next
+  cross-references correct, dark mode (`--bg: #0f172a`) applying correctly, the main-page fix
+  explicitly confirmed rendering correctly in the browser, and the final page's body text explicitly
+  checked for stray backslash/`undefined` artifacts (none found).
+- [x] `/linux/systemd` — systemd & Services (2026-07-24) — 3 subtopics: (1) **ExecReload=kill -HUP
+  $MAINPID Can Kill, Not Reload, a Node.js Service**, expanding the main page's own claim that
+  "reload sends SIGHUP which causes nginx/apache to reload config and gracefully hand off
+  connections" as if universally true — verified via WebSearch (Node.js's own docs) that SIGHUP's
+  default disposition for any process without a registered handler is to TERMINATE it, and that
+  gracefulness on SIGHUP is entirely something nginx/apache's own code opts into, not a property of
+  the signal itself; applied this directly to the main page's own Node.js unit-file example (which
+  uses this exact `ExecReload=` line with a plain server.js), showing it would KILL rather than
+  reload the service; (2) **StartLimitBurst Locks a Service in Failed State Until reset-failed**,
+  expanding the main page's own unrelated unit-file example values (`StartLimitIntervalSec=60`,
+  `StartLimitBurst=3`) shown with zero explanation — verified via WebSearch that these form a crash-
+  loop circuit breaker, and that fixing the underlying bug does NOT clear a tripped start-limit
+  counter; `systemctl reset-failed` is required separately; covered the RestartSec × StartLimitBurst
+  sizing rule; (3) **systemctl edit Drop-Ins Need an Empty ExecStart= to Override It**, expanding
+  the main page's own QnA claim that drop-in settings are simply "merged with the original" —
+  verified via WebSearch that ExecStart= is treated as an appendable LIST rather than a replaceable
+  value, so a new ExecStart= line in a drop-in causes "more than one ExecStart= setting" errors
+  unless preceded by an empty `ExecStart=` line that clears the original first. Gotcha sweep
+  (apostrophe-after-letter across all `.ts` files — every match confirmed inside backtick-delimited
+  `code:` blocks, safe — backtick parity: 22/20/16, all even — bare `@word` in `.html` — none —
+  unescaped `${` — none (the literal `$MAINPID` text in titles/h1/subtitle across all 3 files
+  confirmed safe as bare `$` with no following brace) — over-escaped double-quote — none —
+  backslash-escaped apostrophe inside `[prev]`/`[next]` bound attributes — none, curly `’` used
+  correctly throughout — `[prev]`/`[next]` route cross-check confirmed consistent across all 3
+  files) came back clean with no fixes needed. Confirmed bare `systemd` key collision-free in the
+  `SUBTOPICS` map (checked both quoted and unquoted forms) before adding. Build reported only the
+  pre-documented harmless "bundle initial exceeded maximum budget" ERROR (484.10 kB over) with zero
+  actual TypeScript/template compile errors. `git add -A` (scoped to the batch's own files) staged
+  all 15 files (9 new + 6 wiring, no main-page fix needed this batch — every subtopic angle was a
+  genuine expansion gap, not a page correction). Proactively checked `preview_logs` for the three
+  new component chunk names before browser verification (now standing practice after the prior
+  batch's incident) — confirmed all three compiled correctly on the first post-commit rebuild.
+  Browser-verified successfully: topic-overview toggle count confirmed at 14 (the FOURTEENTH
+  Linux-hub topic with subtopics), the systemd & Services accordion expands to show all 3
+  correctly-labeled subtopic links, all three subtopic pages individually confirmed h1/breadcrumb
+  (all 4 levels)/prev-next cross-references correct — including the literal `$MAINPID` text
+  rendering correctly with no ICU-parsing issues — dark mode (`--bg: #0f172a`) applying correctly,
+  and the final page's body text explicitly checked for stray backslash/`undefined` artifacts (none
+  found).
+- [x] `/linux/disk-storage` — Disk & Storage (2026-07-24) — 3 subtopics: (1) **Deleted-but-Open Files
+  Hide Space — df and du Never Agree**, directly answering the main page's own interviewFocus
+  question ("A server's disk is full but df -h shows free space — what do you check?") which no QnA
+  entry anywhere on the page actually answers — verified via WebSearch that rm only removes a
+  directory entry, and a process still holding the file open keeps its blocks fully allocated
+  (counted by df, invisible to du); covered lsof +L1 for diagnosis and both the restart and in-place-
+  truncate fixes; (2) **XFS Has No Shrink Command — Backup, Recreate, Restore Is the Only Path**,
+  expanding the main page's twice-repeated "can only be grown" mention with zero explanation of what
+  that means in practice — verified via WebSearch that there is genuinely no xfs_shrink or equivalent
+  command at all (not just a "less flexible" version of ext4's resize2fs), and the only supported
+  path is xfsdump/mkfs.xfs/xfsrestore; (3) **Growing a Cloud VM's LVM Root Needs pvresize, Not Just
+  growpart**, filling a real gap in the main page's own most practical QnA answer (a plain two-step
+  growpart + resize2fs/xfs_growfs procedure) — verified via WebSearch that many cloud images
+  (especially RHEL-family) default to LVM root, and growpart alone never reaches through to the LVM
+  Physical Volume, requiring an inserted pvresize step the main page's answer omits. Gotcha sweep
+  (apostrophe-after-letter across all `.ts` files — every match confirmed inside backtick-delimited
+  `code:` blocks, safe — backtick parity: 12/22/4, all even — bare `@word` in `.html` — none —
+  unescaped `${` — none — over-escaped double-quote — none — backslash-escaped apostrophe inside
+  `[prev]`/`[next]` bound attributes — none, curly `’` used correctly throughout — `[prev]`/`[next]`
+  route cross-check confirmed consistent across all 3 files) came back clean with no fixes needed.
+  Confirmed bare `disk-storage` key collision-free in the `SUBTOPICS` map (checked both quoted and
+  unquoted forms) before adding. Build reported only the pre-documented harmless "bundle initial
+  exceeded maximum budget" ERROR (490.23 kB over) with zero actual TypeScript/template compile
+  errors. `git add -A` (scoped to the batch's own files) staged all 15 files (9 new + 6 wiring, no
+  main-page fix needed this batch — every subtopic angle was a genuine expansion gap). Proactively
+  checked `preview_logs` for the three new component chunk names before browser verification (now
+  standing practice) — confirmed all three compiled correctly on the first post-commit rebuild.
+  Browser-verified successfully: topic-overview toggle count confirmed at 15 (the FIFTEENTH
+  Linux-hub topic with subtopics), the Disk & Storage accordion expands to show all 3 correctly-
+  labeled subtopic links, all three subtopic pages individually confirmed h1/breadcrumb (all 4
+  levels)/prev-next cross-references correct, dark mode (`--bg: #0f172a`) applying correctly, and
+  the final page's body text explicitly checked for stray backslash/`undefined` artifacts (none
+  found).
+- [x] `/linux/environment-variables` — Environment Variables & Shell Config (2026-07-24) — 3
+  subtopics: (1) **env $(cat .env | xargs) Breaks on Values Containing Spaces**, a genuine bug in
+  the main page's own second .env-loading code example — verified via WebSearch that command
+  substitution + xargs performs word splitting on the file's flattened content, silently corrupting
+  any value containing whitespace, while the main page's OWN first method (set -a; source .env;
+  set +a) has no such problem; **fixed the main page's own code example** with a caveat comment
+  directly in the shown code; (2) **docker inspect Reveals Every -e Secret in Plaintext**, expanding
+  the main page's own Docker/K8s secrets QnA (which only warns about baked-in image layers) with a
+  separate, equally direct runtime exposure — verified via WebSearch that docker inspect's
+  Config.Env shows every -e/--env-file value in plaintext to anyone with daemon access, even on
+  stopped containers, and that the same risk applies to Kubernetes Secrets mounted as env vars (not
+  just Docker); (3) **unset Removes a Variable — VAR= Only Empties It**, expanding the main page's
+  bare "unset NAME removes a variable" line with the contrast against VAR= (still defined, just
+  empty) — verified via WebSearch that ${VAR+x} (POSIX) or [[ -v VAR ]] (bash 4.2+) are the only
+  reliable ways to distinguish "never set" from "set to empty," since -z cannot. **A real
+  build-blocking gotcha self-caught during authoring, before it ever reached a build**: the unset
+  subtopic's own page-subtitle initially contained a bare `${VAR+x}` in prose text — caught via the
+  standing single-brace-in-prose sweep and HTML-entity-escaped (`&#36;&#123;VAR+x&#125;`) before
+  building, per the CLAUDE.md-documented gotcha for this exact pattern. **The dev-server stale-chunk
+  gotcha (documented from the Azure and Advanced Bash Scripting batches) recurred a third time**,
+  this time surfacing as a genuine NG2008 "Could not find template file" compiler ERROR (not a
+  silent redirect) for the env-cat-env-xargs subtopic specifically — confirmed via direct filesystem
+  check that the file genuinely existed on disk (ruling out a real authoring mistake), fixed with
+  the same established recipe (force a fresh file-write on app.routes.ts), and confirmed via direct
+  navigation that the route resolved correctly even while stale NG2008 log entries persisted in the
+  log buffer from before the fix — a reminder that a persisting log-search hit doesn't always mean
+  the underlying problem persists; the live page is the authoritative check. Gotcha sweep
+  (apostrophe-after-letter — all matches confirmed inside backtick-delimited code blocks — backtick
+  parity: 26/38/22, all even — bare @word — none — unescaped ${ in .html — none after the subtitle
+  fix — over-escaped double-quote — none — backslash-escaped apostrophe in bound attributes — none)
+  came back clean after the one fix. Confirmed bare `environment-variables` key collision-free in
+  the SUBTOPICS map before adding. Build reported only the pre-documented harmless "bundle initial
+  exceeded maximum budget" ERROR (496.16 kB over) with zero actual TypeScript/template compile
+  errors. `git add -A` staged all 16 files (9 new + 6 wiring + 1 main-page fix). Browser-verified
+  successfully after resolving the stale-chunk issue: topic-overview toggle count confirmed at 16
+  (the SIXTEENTH Linux-hub topic with subtopics), the accordion expands correctly, all three
+  subtopic pages confirmed h1/breadcrumb/prev-next correct, the entity-escaped subtitle rendering
+  correctly as literal text, dark mode correct, the main-page fix's caveat comment explicitly
+  confirmed rendering in the Code Examples tab, and no stray backslash/undefined artifacts.
+- [x] `/linux/log-analysis` — Log Analysis (2026-07-24) — 3 subtopics: (1) **The Slowest-Responses
+  Sort Assumes request_time Is Already Logged**, expanding the main page's own "if $request_time is
+  logged" caveat on its own one-liner, which never explains how to actually verify the condition —
+  verified via WebSearch that nginx's default "combined" format genuinely has no $request_time field
+  at all, so the main page's own command silently sorts by User-Agent instead on a stock install,
+  with no error; covered nginx -T verification and the custom log_format fix; (2) **journalctl Only
+  Shows the Current Boot by Default**, narrowing the main page's own "shows all journal entries"
+  QnA claim — verified via WebSearch that plain journalctl scopes to the current boot only, and a
+  --since filter narrows WITHIN that scope rather than reaching into prior boots; covered
+  --list-boots and -b all/-b -N; (3) **logrotate's copytruncate Has a Real Data-Loss Race Window**,
+  adding the alternative rotation strategy the main page's own logrotate section never mentions
+  (only showing the signal/postrotate approach) — verified via WebSearch that logrotate's own man
+  page documents a genuine race window between the copy and truncate steps, with real-world testing
+  showing millions of lost lines under sustained write load. **A real risk caught and fixed BEFORE
+  it could propagate across sibling pages**: the first subtopic's initial title/h1 contained a
+  literal double-quote character (from the shell syntax `sort -t"`) — since subtopic titles get
+  embedded as the `label:` value inside OTHER pages' double-quoted `[prev]`/`[next]` Angular
+  attribute bindings, an un-escaped `"` there would have prematurely terminated the OUTER HTML
+  attribute the moment a sibling page referenced it, a new variant of the established delimiter-
+  collision gotcha family (previously documented for apostrophes and backslashes, not yet for a
+  literal double-quote inside a double-quoted attribute). Caught via reasoning through the wiring
+  BEFORE creating any [prev]/[next] references to it, fixed by renaming the title to a quote-free
+  phrasing ("...Assumes request_time Is Already Logged") — **added a new standing sweep step**:
+  `grep -rnE "label: '[^']*\""` against all `.html` files, now added to the standard gotcha checklist
+  going forward. **A second real bug caught by the standing over-escaped-double-quote sweep**: the
+  same subtopic's own theory text initially used `\\"..\\"` (backslash-escaped quotes) inside a
+  single-quoted TS field describing nginx's log format in prose — unnecessary escaping that would
+  have rendered literal backslash characters; fixed to plain quotes, matching the established
+  single-quoted-string-never-needs-quote-escaping rule. Gotcha sweep (apostrophe-after-letter — all
+  matches confirmed inside backtick-delimited code blocks — backtick parity: 18/8/18 [after the fix],
+  all even — bare @word — none — unescaped ${ — none — backslash-escaped apostrophe in bound
+  attributes — none — NEW literal-double-quote-in-label check — none after the fix) came back clean.
+  Confirmed bare `log-analysis` key collision-free in the SUBTOPICS map before adding. Build reported
+  only the pre-documented harmless "bundle initial exceeded maximum budget" ERROR (502.11 kB over)
+  with zero actual TypeScript/template compile errors. `git add -A` staged all 15 files (9 new + 6
+  wiring, no main-page fix needed this batch). Proactively checked `preview_logs` for the three new
+  component chunk names before browser verification (now standing practice) — confirmed all three
+  compiled correctly on the first post-commit rebuild, no stale-chunk incident this time. Browser-
+  verified successfully: topic-overview toggle count confirmed at 17 (the SEVENTEENTH Linux-hub
+  topic with subtopics), the accordion expands correctly, all three subtopic pages confirmed
+  h1/breadcrumb (all 4 levels)/prev-next correct, dark mode correct, and no stray backslash/undefined
+  artifacts — including explicit confirmation the renamed, quote-free title rendered correctly
+  everywhere it was referenced.
+- [x] `/linux/performance-tuning` — Performance Tuning (2026-07-24) — 3 subtopics: (1) **I/O
+  Scheduler Writes to /sys/block Are Not Persistent — Use a udev Rule**, applying the main page's
+  own sysctl-persistence lesson (from its first mistake entry) to a setting it never applied that
+  lesson to — verified via WebSearch that sysfs writes reset on reboot exactly like /proc/sys/, and
+  that the actual persistence mechanism is a udev rule in /etc/udev/rules.d/, not a config-file
+  directory; (2) **discard in fstab Has a Real Penalty — fstrim.timer Is Preferred**, reversing the
+  main page's implied recommendation (discard as primary, fstrim as "manual" fallback) — verified
+  via WebSearch that continuous discard has a documented fsync-latency cost multiple distros
+  explicitly discourage, and that fstrim.timer (enabled by default on most distros) is the actually-
+  recommended approach; (3) **numactl --membind Is a Hard Constraint — --preferred Is the Safer
+  Default**, adding the failure mode the main page's own NUMA example never mentions — verified via
+  WebSearch that --membind can trigger an OOM-kill when its bound node is exhausted even while other
+  nodes sit nearly empty, while --preferred gracefully falls back instead. **Applied the newly-
+  established quote-free-title discipline from the log-analysis batch proactively this time** — no
+  subtopic title in this batch needed a rename, since all three were written quote-free from the
+  start, confirming the lesson generalized rather than needing to be re-learned. Gotcha sweep
+  (apostrophe-after-letter — all matches confirmed inside backtick-delimited code blocks — backtick
+  parity: 18/22/20, all even — bare @word — none — unescaped ${ — none — over-escaped double-quote —
+  none — backslash-escaped apostrophe in bound attributes — none — literal-double-quote-in-label
+  check — none) came back clean on the first pass. Confirmed bare `performance-tuning` key
+  collision-free in the SUBTOPICS map before adding. Build reported only the pre-documented harmless
+  "bundle initial exceeded maximum budget" ERROR (508.57 kB over) with zero actual TypeScript/
+  template compile errors. `git add -A` staged all 15 files (9 new + 6 wiring, no main-page fix
+  needed this batch). Proactively checked `preview_logs` for the three new component chunk names
+  before browser verification — confirmed all three compiled correctly on the first post-commit
+  rebuild, no stale-chunk incident. Browser-verified successfully: topic-overview toggle count
+  confirmed at 18 (the EIGHTEENTH Linux-hub topic with subtopics — only `/linux/vim` remains for
+  the entire hub), the accordion expands correctly, all three subtopic pages confirmed h1/breadcrumb
+  (all 4 levels)/prev-next correct, dark mode correct, and no stray backslash/undefined artifacts.
+- [x] `/linux/vim` — Vim & Text Editors (2026-07-25) — 3 subtopics: (1) **A Delete Silently
+  Clobbers Your Yank — Paste From Register 0 Instead**, expanding the main page's brief mention of
+  yank/delete registers into the specific, commonly-hit trap where `dd`ing a line before pasting
+  destroys the previously-yanked text in the unnamed register — verified vim's own documented
+  register model (delete always overwrites `"`, yank always overwrites `"0`, so `"0p` recovers the
+  last yank regardless of intervening deletes); (2) **smartcase Does Nothing Unless ignorecase Is
+  Also Set**, expanding the main page's one-line `.vimrc` example (`set ignorecase smartcase`) that
+  presents both settings as independent — verified vim's own documented behavior that `smartcase` is
+  purely a modifier of `ignorecase` and is a silent no-op without it, with no error or warning; (3)
+  **vim -d Diff Mode Has Its Own Commands the Main Page Never Shows**, expanding the main page's
+  passing mention of `vim -d` into the actual diff-mode-specific commands (`]c`/`[c` to jump between
+  hunks, `do`/`dp` to obtain/put changes) needed to use it. All three subtopic titles were written
+  quote-free from the start per the standing discipline (no `"0p`-style raw quote characters used in
+  any title/label, avoiding the literal-double-quote-in-label collision). Gotcha sweep (apostrophe-
+  after-letter — all matches confirmed inside backtick-delimited code blocks — backtick parity: all
+  even — bare `@word` — none — unescaped `${` — none — over-escaped double-quote — none —
+  backslash-escaped apostrophe in bound attributes — none — literal-double-quote-in-label check —
+  none) came back clean. Confirmed bare `vim` key collision-free (both quoted and unquoted forms) in
+  the SUBTOPICS map before adding. Build reported only the pre-documented harmless bundle-budget
+  warning, zero compile errors. `git add -A` staged all 15 files (9 new + 6 wiring). **Hit a new,
+  previously-undocumented dev-server staleness variant during browser verification**: after a full
+  cold restart of the dev server (new session/serverId) and a confirmed-correct rebuild containing
+  the right data (verified via a raw `fetch('/main.js')` bundle-content check), the Vim nav link's
+  own toggle button still rendered as an empty `<!--container-->` placeholder in the live DOM —
+  while calling `subtopicsOf('vim')` directly on the live `LinuxNavComponent` instance via Angular's
+  `ng.getComponent()` dev-mode API returned the fully correct 3-entry array. This proved the running
+  component's own method and data were correct, but the compiled TEMPLATE'S `@if` block was not
+  reflecting it — a stale COMPONENT template compilation specifically, distinct from every previously
+  -documented stale-chunk variant (which were about a lazy-loaded ROUTE chunk, not the always-eager
+  shared nav component itself). **Fix: force a fresh file-write directly on
+  `linux-nav.ts`** (the component file itself, not `subtopics.ts` or `app.routes.ts` as in prior
+  incidents) — append and trim a trailing newline, confirmed via `preview_logs` a genuine new
+  `main.js` rebuild occurred, then a hard navigation showed the toggle button rendering correctly.
+  Browser-verified successfully: topic-overview toggle count confirmed at **19 — the FULL Linux hub,
+  every topic now has subtopics**, the accordion expands correctly showing all 3 correctly-labeled
+  links, a subtopic page's h1/breadcrumb (all 4 levels)/theory/code/try-it all confirmed rendering
+  correctly, dark mode correct. **This completes Phase 10 for the entire Linux & Bash hub — 19/19
+  topics, matching the AWS/Containers/Azure "COMPLETE" precedent.**
 
 #### Terraform — 21 topic pages
 
-- [ ] `/terraform/fundamentals` — Terraform Fundamentals
-- [ ] `/terraform/providers` — Providers
-- [ ] `/terraform/variables` — Variables & Locals
-- [ ] `/terraform/outputs` — Outputs
-- [ ] `/terraform/resources` — Resources & Meta-Arguments
-- [ ] `/terraform/data-sources` — Data Sources
-- [ ] `/terraform/expressions` — Expressions & Dynamic Blocks
-- [ ] `/terraform/functions` — Built-in Functions
-- [ ] `/terraform/state` — Terraform State
-- [ ] `/terraform/remote-backends` — Remote Backends
-- [ ] `/terraform/workspaces` — Workspaces
-- [ ] `/terraform/modules` — Modules
-- [ ] `/terraform/module-patterns` — Module Patterns
-- [ ] `/terraform/provisioners` — Provisioners
-- [ ] `/terraform/import` — Import & Generated Config
-- [ ] `/terraform/cicd` — CI/CD Integration
-- [ ] `/terraform/testing` — Testing Terraform
-- [ ] `/terraform/security` — Security & Compliance
-- [ ] `/terraform/drift` — Drift Detection
-- [ ] `/terraform/refactoring` — Refactoring Terraform
-- [ ] `/terraform/opentofu` — OpenTofu
+- [x] `/terraform/fundamentals` — Terraform Fundamentals (2026-07-25) — 3 subtopics: (1) **for_each
+  Requires a Map or Set — Not a Bare List**, expanding the main page's own count-vs-for_each mistake
+  entry (which already uses a working map example) with the far more common first attempt — passing
+  a plain list — and the resulting type-mismatch error; verified via WebSearch that for_each strictly
+  requires a map or set of strings, that toset() is the standard fix, and that toset() has its own
+  tradeoff of discarding order and silently dropping duplicates; (2) **depends_on Is for Dependencies
+  Terraform Cannot See**, expanding the main page's one-line depends_on rule (stated but never
+  demonstrated, since every main-page example already uses a working attribute reference) with a
+  concrete case where automatic detection fails — verified via WebSearch that Terraform's dependency
+  graph is built purely from attribute references, and that IAM permission propagation before a
+  boot-time API call is a standard example of an invisible runtime dependency needing an explicit,
+  commented depends_on; (3) **moved Blocks, Not Manual Edits, Fix a Renamed Resource**, giving the
+  main page's "never manually edit the state file" rule a concrete alternative for the single most
+  common situation that tempts a manual edit — verified via WebSearch that a plain rename looks like
+  a destroy+create to Terraform, that moved blocks (1.1+) are the current declarative/code-reviewable
+  fix, and that terraform state mv remains correct specifically for cross-state-file moves, which
+  moved blocks cannot express. Gotcha sweep (apostrophe-after-letter — all matches confirmed either
+  inside backtick-delimited code blocks or in plain HTML text nodes with no attribute risk — backtick
+  parity: 6/22/24, all even — bare `@word` — none — unescaped `${` — none — over-escaped double-quote
+  — none — backslash-escaped apostrophe in bound attributes — none (the initial broad grep match was
+  a false positive: none of the three subtopic titles contain apostrophes at all) — literal-double-
+  quote-in-label check — none) came back clean. Confirmed the bare `fundamentals` key collision
+  (belongs to the JavaScript hub) before adding — hub-prefixed to `tf-fundamentals`, matching the
+  hub's own `tf-` search/progress prefix. **`TerraformNavComponent` had zero subtopics-accordion
+  support** (same structural gap as Go/DevOps/Containers/AWS/Azure/Linux before their own pilots) —
+  fixed identically, but the first draft of `autoExpandForCurrentUrl()` used an invented substring-
+  match heuristic instead of the actual established pattern (exact `route` match against every
+  `SUBTOPICS` entry, from `AzureNavComponent`) — caught by re-reading `azure-nav.ts` directly before
+  building, not by a build failure, and corrected to match exactly. Build reported only the pre-
+  documented harmless bundle-budget warning, zero compile errors. `git add -A` staged all 15 files (9
+  new + 6 wiring). Browser-verified successfully on the first attempt (the shared nav component was
+  genuinely modified this batch, not a no-op touch, so no stale-chunk incident): topic-overview toggle
+  count confirmed at 1, the accordion expands correctly showing all 3 correctly-labeled links, a
+  subtopic page's h1/breadcrumb (all 4 levels)/theory/sidebar (tailored, not DEFAULT)/dark mode all
+  confirmed rendering correctly. **First Terraform-hub Phase 10 batch — 1 of 21 topics complete.**
+- [x] `/terraform/providers` — Providers (2026-07-25) — 3 subtopics: (1) **The ~> Constraint's Upper
+  Bound Depends on Segment Count**, expanding a fact the main page's theory never actually shows (only
+  a quiz answer mentions the three-segment form) — verified via WebSearch that ~> locks everything
+  except the rightmost segment written, so ~> 5.0 allows any minor version but ~> 5.0.1 only allows
+  patch releases; (2) **Module Provider Alias Needs configuration_aliases Declared**, completing the
+  main page's own Multi-Account AWS example (which only shows the caller side of `providers = { aws =
+  aws.prod }`) with the module-side requirement — verified via HashiCorp's own docs and HashiCorp
+  Support that a module must declare `configuration_aliases` in its own required_providers to legally
+  accept an aliased provider; (3) **init -upgrade Upgrades Every Provider, Not Just One**, expanding
+  the main page's QnA warning about -upgrade's breaking-change risk with its actual scope — verified
+  via WebSearch that -upgrade re-selects ALL providers (and all installed modules) satisfying their
+  constraints, and that narrowing one provider's own constraint plus a plain `terraform init` is the
+  targeted alternative. Gotcha sweep (apostrophe-after-letter — all matches confirmed inside backtick
+  code blocks or plain HTML text nodes — backtick parity: 18/16/18, all even — bare `@word` — none —
+  unescaped `${` — none — over-escaped double-quote — none — backslash-escaped apostrophe in bound
+  attributes — none — literal-double-quote-in-label check — none) came back clean. Confirmed bare
+  `providers` key collision-free (both quoted and unquoted forms) before adding — left as a bare key.
+  Build reported only the pre-documented harmless bundle-budget warning, zero compile errors. `git
+  add -A` staged all 15 files (9 new + 6 wiring). Browser-verified successfully on the first attempt
+  (no stale-chunk incident): topic-overview toggle count confirmed at 2, the Providers accordion
+  expands correctly showing all 3 correctly-labeled links, a subtopic page's h1/breadcrumb (all 4
+  levels)/theory all confirmed rendering correctly. **Terraform hub Phase 10: 2 of 21 topics
+  complete.**
+- [x] `/terraform/variables` — Variables & Locals (2026-07-25) — 3 subtopics: (1) **nullable = false
+  Substitutes the Default for an Explicit null**, demonstrating in code a fact the main page's own
+  QnA already states precisely in words but never shows running — a plain default only fires on a
+  MISSING argument, not an explicitly-passed null (e.g. from a conditional), while nullable = false
+  catches the explicit-null case too; verified via WebSearch against HashiCorp's own docs; (2)
+  **optional() Lets Object Variables Evolve Without Breaking Callers**, expanding the main page's own
+  vpc_config example (which has zero optional attributes) with the tool needed to add a new attribute
+  to a module's object-typed interface without breaking existing callers — verified via WebSearch that
+  optional(type, default) is the Terraform 1.3+ mechanism, with a plain (non-optional) attribute
+  addition being a breaking change by contrast; (3) **A Sensitive Output Needs Its Own sensitive =
+  true**, extending the main page's own correct-but-incomplete point about sensitive variables (state
+  file exposure) to the separate opt-in an OUTPUT needs before it can surface a sensitive-derived
+  value at all — verified via HashiCorp Support docs that omitting it produces a hard "Output refers
+  to sensitive values" plan-time error, and that `terraform output -raw` is the sanctioned way to
+  retrieve the real value. Gotcha sweep (apostrophe-after-letter — all matches confirmed inside
+  backtick code blocks or plain HTML text nodes — backtick parity: 32/8/18, all even — bare `@word` —
+  none — unescaped `${` — none — over-escaped double-quote — none — literal-double-quote-in-label
+  check — none) came back clean. Confirmed bare `variables` key collision-free before adding — left
+  as a bare key. Build reported only the pre-documented harmless bundle-budget warning, zero compile
+  errors. `git add -A` staged all 15 files (9 new + 6 wiring). Browser-verified successfully on the
+  first attempt (no stale-chunk incident): topic-overview toggle count confirmed at 3, the Variables
+  accordion expands correctly showing all 3 correctly-labeled links, a subtopic page's h1/breadcrumb
+  (all 4 levels)/theory all confirmed rendering correctly. **Terraform hub Phase 10: 3 of 21 topics
+  complete.**
+- [x] `/terraform/outputs` — Outputs (2026-07-25) — 3 subtopics: (1) **precondition Blocks Catch a
+  Bad Output Value Before Export**, demonstrating a feature the main page's theory names in exactly
+  one bullet and never shows again — a precondition checking a resource's own status attribute (e.g.
+  `aws_db_instance.main.status == "available"`) catches a technically-known-but-not-actually-ready
+  value before it reaches downstream consumers; verified via WebSearch against HashiCorp's own custom
+  conditions docs; (2) **terraform_remote_state Grants Access to the Whole State File**, adding the
+  security caveat completely missing from the main page's own Remote State Outputs example — verified
+  via WebSearch that this data source reads the entire producing state file regardless of which output
+  is referenced, and that HashiCorp's current guidance recommends resource-specific data sources or
+  tfe_outputs (HCP Terraform/Enterprise) instead; (3) **output -json Reveals Sensitive Values the
+  Plain Command Redacts**, expanding a single clause buried in the main page's own QnA ("-json flag
+  includes them in the response") into a concrete CI-pipeline leak scenario — verified via WebSearch
+  that sensitive = true only redacts the plain terraform output display, never -json. Gotcha sweep
+  (apostrophe-after-letter — all matches confirmed inside backtick code blocks or plain HTML text
+  nodes — backtick parity: 26/14/10, all even — bare `@word` — none — unescaped `${` — none —
+  over-escaped double-quote — none — literal-double-quote-in-label check — none) came back clean.
+  Confirmed bare `outputs` key collision-free before adding — left as a bare key. Build reported only
+  the pre-documented harmless bundle-budget warning, zero compile errors. `git add -A` staged all 15
+  files (9 new + 6 wiring). Browser-verified successfully on the first attempt (no stale-chunk
+  incident): topic-overview toggle count confirmed at 4, the Outputs accordion expands correctly
+  showing all 3 correctly-labeled links, a subtopic page's h1/breadcrumb (all 4 levels)/theory all
+  confirmed rendering correctly. **Terraform hub Phase 10: 4 of 21 topics complete.**
+- [x] `/terraform/resources` — Resources & Meta-Arguments (2026-07-25) — 3 subtopics: (1)
+  **prevent_destroy Is Bypassed by Removing the Whole Resource Block**, adding a second, entirely-
+  within-Terraform bypass to the main page's own correct-but-incomplete quiz explanation (which only
+  covers the manual-console-deletion bypass) — verified via WebSearch/HashiCorp docs that
+  prevent_destroy is checked only against the CURRENT config at plan time, never persisted to state,
+  so deleting the whole block removes the protection along with it; (2) **replace_triggered_by Forces
+  Replacement From an Unrelated Resource**, demonstrating a lifecycle meta-argument the main page
+  names in exactly one bullet and never shows — verified via HashiCorp's own docs (official
+  aws_appautoscaling_target example) that it ties one resource's replacement to another's planned
+  action, distinct from the ordering-only guarantee of a plain attribute reference, plus the
+  terraform_data workaround for plain values; (3) **A Timeout Doesn't Mean the Resource Wasn't
+  Created**, closing a real gap in the main page's own detailed timeouts QnA (which stops at "marked
+  tainted") — verified via WebSearch that a timed-out create can still succeed in the cloud provider
+  after Terraform gives up waiting, producing an "already exists" conflict on the next apply that
+  terraform import resolves. Gotcha sweep (apostrophe-after-letter — all matches confirmed inside
+  backtick code blocks or plain HTML text nodes — backtick parity: 12/10/8, all even — bare `@word` —
+  none — unescaped `${` — none — over-escaped double-quote — none — literal-double-quote-in-label
+  check — none) came back clean. Confirmed bare `resources` key collision-free before adding — left
+  as a bare key. Build reported only the pre-documented harmless bundle-budget warning, zero compile
+  errors. `git add -A` staged all 15 files (9 new + 6 wiring). Browser-verified successfully on the
+  first attempt (no stale-chunk incident): topic-overview toggle count confirmed at 5, the Resources
+  accordion expands correctly showing all 3 correctly-labeled links, a subtopic page's h1/breadcrumb
+  (all 4 levels)/theory all confirmed rendering correctly. **Terraform hub Phase 10: 5 of 21 topics
+  complete.**
+- [x] `/terraform/data-sources` — Data Sources (2026-07-25) — 3 subtopics: (1) **external Data
+  Source: query and result Are Both String-Only Maps**, sharpening the main page's own QnA phrasing
+  ("returns a JSON object") into the actual, stricter-than-JSON protocol — verified via the official
+  hashicorp/external provider docs that every value in both directions must be a string, with the
+  jsondecode()/JSON-encoding workaround for anything structured; (2) **for_each, Not count, for
+  Iterating a Data Source's Own Results**, adding a caveat to a pattern the main page's own Account &
+  Region example actually uses (count paired with a data source result index) without comment —
+  verified via WebSearch that many data sources don't guarantee stable list ordering across API
+  calls, making for_each the safer default; (3) **A Data Source Can Need depends_on Too**, extending
+  the main page's own quiz (which covers only the attribute-reference deferral case) to a hidden,
+  side-effect-only dependency with no attribute to reference at all — verified via WebSearch that
+  data sources support depends_on directly, with the same apply-time-deferral cost as the
+  attribute-reference case. **Caught and fixed a real over-escaped-double-quote bug during the
+  gotcha sweep** — `\"` inside a SINGLE-quoted TS field (not the usual backtick-delimited `code:`
+  field context where this escaping is correct) would have rendered a visible stray backslash;
+  fixed by removing the unnecessary escaping and rephrasing to avoid an awkward nested-quote read.
+  Gotcha sweep (apostrophe-after-letter — all matches confirmed inside backtick code blocks or plain
+  HTML text nodes — backtick parity: 8/10/10 after the fix, all even — bare `@word` — none —
+  unescaped `${` — none — literal-double-quote-in-label check — none) came back clean after the fix.
+  Confirmed bare `data-sources` key collision-free before adding — left as a bare key. Build reported
+  only the pre-documented harmless bundle-budget warning, zero compile errors. `git add -A` staged
+  all 15 files (9 new + 6 wiring). Browser-verified successfully on the first attempt (no stale-chunk
+  incident, and specifically confirmed no stray backslash rendered in the fixed subtopic's text):
+  topic-overview toggle count confirmed at 6, the Data Sources accordion expands correctly showing
+  all 3 correctly-labeled links, a subtopic page's h1/breadcrumb (all 4 levels)/theory all confirmed
+  rendering correctly. **Terraform hub Phase 10: 6 of 21 topics complete.**
+- [x] `/terraform/expressions` — Expressions & Dynamic Blocks (2026-07-25) — 3 subtopics: (1)
+  **can() Is for Variable Validation — try() Is the Real Fallback Tool**, adding the try() half of
+  the picture the main page's own can() example never mentions — verified via HashiCorp's own docs
+  that can() is intended for validation-block pass/fail checks while try() is the real fallback-VALUE
+  tool, with HashiCorp's own recommendation to confine try() to a few dedicated locals rather than
+  scattering it broadly, since both functions swallow genuine bugs the same way they swallow expected
+  failures; (2) **Nested Dynamic Blocks Shadow the Outer Iterator by Default**, covering the two-level
+  nesting case the main page's own single-level dynamic block example never demonstrates — verified
+  via WebSearch that the default iterator name is a dynamic block's own label, and nested blocks
+  sharing that default name silently shadow each other with no error, fixed via the iterator
+  argument; (3) **A for Expression Map Errors on Duplicate Keys Unless Grouped**, closing a gap the
+  main page's own duplicate-free for-expression examples never expose — verified via WebSearch/GitHub
+  discussion that a map-producing for expression is fail-fast on a duplicate key, and the trailing
+  `...` ellipsis activates grouping mode to collect matching values into a list instead. Gotcha sweep
+  (apostrophe-after-letter — all matches confirmed inside backtick code blocks or plain HTML text
+  nodes — backtick parity: 8/12/10, all even — bare `@word` — none — unescaped `${` — none —
+  over-escaped double-quote — none, specifically re-checked given the prior batch's real bug —
+  literal-double-quote-in-label check — none) came back clean. Confirmed bare `expressions` key
+  collision-free before adding — left as a bare key. Build reported only the pre-documented harmless
+  bundle-budget warning, zero compile errors. `git add -A` staged all 15 files (9 new + 6 wiring).
+  Browser-verified successfully on the first attempt (no stale-chunk incident): topic-overview toggle
+  count confirmed at 7, the Expressions accordion expands correctly showing all 3 correctly-labeled
+  links, a subtopic page's h1/breadcrumb (all 4 levels)/theory all confirmed rendering correctly.
+  **Terraform hub Phase 10: 7 of 21 topics complete.**
+- [x] `/terraform/functions` — Built-in Functions (2026-07-25) — 3 subtopics: (1) **merge() null
+  Overwrites, It Doesn't Skip, an Earlier Value**, adding a specific, well-documented case to the
+  main page's own general "b wins on duplicate keys" merge() rule — verified via a long-standing
+  HashiCorp GitHub issue that a later map's null value overwrites an earlier real value rather than
+  being skipped, with the practical risk of an optional-override map silently wiping a required
+  default; (2) **flatten() Only Unwraps Nested Lists**, narrowing the main page's own QnA claim that
+  flatten() "removes all levels of nesting" to its actual scope — verified via HashiCorp's own docs
+  that flatten() only collapses list-within-list nesting, leaving a list value inside a map or object
+  completely untouched; (3) **Mixing newbits in cidrsubnet() Can Overlap**, covering the mixed-subnet
+  -size case the main page's own consistent-newbits cidrsubnet() examples never exercise — verified
+  via WebSearch that independent cidrsubnet() calls have no awareness of each other and can silently
+  produce overlapping ranges, with cidrsubnets() (plural) as the coordinated, guaranteed-non-
+  overlapping alternative. **Hub-prefixed the SUBTOPICS key to `tf-functions`** — confirmed the bare
+  `functions` key already belongs to the JavaScript hub before adding. Gotcha sweep (apostrophe-
+  after-letter — all matches confirmed inside backtick code blocks or plain HTML text nodes —
+  backtick parity: 12/12/18, all even — bare `@word` — none — unescaped `${` — none — over-escaped
+  double-quote — none — literal-double-quote-in-label check — none) came back clean. Build reported
+  only the pre-documented harmless bundle-budget warning, zero compile errors. `git add -A` staged
+  all 15 files (9 new + 6 wiring). Browser-verified successfully on the first attempt (no stale-chunk
+  incident): topic-overview toggle count confirmed at 8, the Functions accordion expands correctly
+  showing all 3 correctly-labeled links, a subtopic page's h1/breadcrumb (all 4 levels)/theory all
+  confirmed rendering correctly. **Terraform hub Phase 10: 8 of 21 topics complete.**
+- [x] `/terraform/state` — Terraform State (2026-07-25) — 3 subtopics: (1) **force-unlock: Verify
+  the Lock Holder Is Actually Stale First**, turning the main page's own repeated "verify no other
+  apply is running" rule into an actual procedure using the lock error's Who/Operation/Created
+  fields — verified via WebSearch that these fields are the real starting point for verification, and
+  that terraform state pull is the recommended follow-up sanity check even after a confirmed-stale
+  unlock; (2) **The State serial Number Detects a Stale state push**, naming the actual safety
+  mechanism behind the main page's own "use with caution" note on state push — verified via
+  HashiCorp's own docs and support articles that the serial (and a separate lineage) comparison is
+  what refuses a stale push by default, with -force bypassing both checks; (3) **Workspaces Share the
+  Same Backend — Prefer Directories for Prod**, adding the access-control tradeoff missing from the
+  main page's own QnA phrasing that lists workspaces and directories as equivalent — verified via
+  WebSearch/HashiCorp's own guidance that workspaces share one backend's access boundary while
+  separate directories give each environment its own, with workspaces recommended only for
+  short-lived, identical environments. Gotcha sweep (apostrophe-after-letter — all matches confirmed
+  inside backtick code blocks or plain HTML text nodes — backtick parity: 4/8/4, all even — bare
+  `@word` — none — unescaped `${` — none — over-escaped double-quote — none — literal-double-quote-
+  in-label check — none) came back clean. **Caught and fixed a stray invalid `protected: undefined,`
+  property accidentally left in a TheoryPoint object during authoring** — caught by direct file
+  re-read before the build, not by a build failure. Confirmed bare `state` key collision-free before
+  adding — left as a bare key. Build reported only the pre-documented harmless bundle-budget warning,
+  zero compile errors. `git add -A` staged all 15 files (9 new + 6 wiring). Browser-verified
+  successfully on the first attempt (no stale-chunk incident): topic-overview toggle count confirmed
+  at 9, the State accordion expands correctly showing all 3 correctly-labeled links, a subtopic
+  page's h1/breadcrumb (all 4 levels)/theory all confirmed rendering correctly. **Terraform hub
+  Phase 10: 9 of 21 topics complete.**
+- [x] `/terraform/remote-backends` — Remote Backends (2026-07-25) — 3 subtopics: (1) **S3 Backend No
+  Longer Needs DynamoDB**, updating a main-page assumption that was accurate for years but has since
+  changed — verified via WebSearch that AWS added S3 conditional writes (Aug 2024), Terraform 1.10
+  added `use_lockfile` built on them, and Terraform 1.11 deprecated (but did not remove)
+  `dynamodb_table`; the main page's theory, mistake entry, bootstrap example, challenge, and quiz all
+  still treat DynamoDB as mandatory; (2) **cloud and backend Blocks Are Mutually Exclusive**,
+  expanding the main page's single-sentence cloud-block QnA mention into its actual constraints —
+  verified via HashiCorp's own docs that including both is a hard configuration error, and that
+  execution mode is an HCP Terraform WORKSPACE property configured in the UI/API rather than a
+  setting in the cloud block's own HCL; (3) **GCS Backend Supports a Customer-Managed KMS Key**,
+  adding the option missing from the main page's "both support encryption at rest via their default
+  cloud storage encryption" treatment — verified via HashiCorp's own GCS backend docs that
+  `kms_encryption_key` accepts a Cloud KMS resource name, requires granting the GCS service agent the
+  CryptoKey Encrypter/Decrypter role, and needs no special handling on the terraform_remote_state
+  reader's side. Gotcha sweep (apostrophe-after-letter — all matches confirmed inside backtick code
+  blocks or plain HTML text nodes — backtick parity: 6/4/8, all even — bare `@word` — none —
+  unescaped `${` — none — over-escaped double-quote — none — literal-double-quote-in-label check —
+  none) came back clean on the first pass. Confirmed bare `remote-backends` key collision-free before
+  adding — left as a bare key. Build reported only the pre-documented harmless bundle-budget warning,
+  zero compile errors. `git add -A` staged all 15 files (9 new + 6 wiring). Browser-verified
+  successfully on the first attempt (no stale-chunk incident): topic-overview toggle count confirmed
+  at 10, the Remote Backends accordion expands correctly showing all 3 correctly-labeled links, a
+  subtopic page's h1/breadcrumb (all 4 levels)/theory all confirmed rendering correctly.
+  **Terraform hub Phase 10: 10 of 21 topics complete.**
+- [x] `/terraform/workspaces` — Workspaces (2026-07-25) — 3 subtopics, deliberately chosen to avoid
+  overlapping the workspaces-vs-directories tradeoff already covered by the `/terraform/state` batch:
+  (1) **workspace delete -force Orphans Resources**, expanding a one-clause QnA limitation ("deleting
+  a workspace does not destroy the resources") into the actual failure mode — verified via
+  HashiCorp's own docs that the empty-workspace check is a real guard, `-force` bypasses it while
+  leaving infrastructure running and untracked ("dangling"), and the safe sequence is
+  destroy → confirm empty → switch away → delete, with `-force` having one legitimate hand-off use;
+  (2) **terraform.workspace Cannot Parameterize the backend Block**, naming the one place
+  terraform.workspace categorically fails despite working in every main-page example — verified that
+  the backend is resolved at init before any expression phase exists (same reason variables are
+  barred), plus the genuine chicken-and-egg ordering problem, with automatic per-workspace state
+  paths and partial configuration as the two real answers; (3) **The default Workspace's State Path
+  Is Asymmetric**, turning the main page's own side-by-side path listing into its operational
+  consequence — verified that named workspaces use `<workspace_key_prefix>/<name>/<key>` (prefix
+  defaulting to the literal `env:`, colon included) while `default` uses the bare key with no
+  `env:/default/` path at all, so a bucket policy scoped to `env:/*` silently excludes it.
+  Gotcha sweep (backtick parity: 18/12/20, all even — bare `@word` — none — over-escaped
+  double-quote — none — literal-double-quote-in-label — none — apostrophes all inside backtick code
+  blocks, curly `’` correctly used in every `[prev]`/`[next]` label). **Two deliberate `${...}`
+  instances verified as correct in two different escaping contexts**: `\${terraform.workspace}`
+  escaped inside a backtick `code:` field, and bare `${terraform.workspace}` / `${PR_NUMBER}`
+  unescaped inside single-quoted `prompt:` fields (safe — `${` has no meaning in a single-quoted JS
+  string, and `[innerHTML]` never evaluates it); browser-checked that both render literally with no
+  stray backslash. Confirmed bare `workspaces` key collision-free before adding — left as a bare key.
+  Build reported only the pre-documented harmless bundle-budget warning, zero compile errors.
+  Browser-verified on the first attempt (no stale-chunk incident): topic-overview toggle count
+  confirmed at 11, the Workspaces accordion expands showing all 3 correctly-labeled links, and a
+  subtopic page's h1/breadcrumb/theory confirmed rendering correctly.
+  **Terraform hub Phase 10: 11 of 21 topics complete.**
+- [x] `/terraform/modules` — Modules (2026-07-27) — 3 subtopics, chosen to avoid overlapping the
+  `configuration_aliases` angle already covered by the `/terraform/providers` batch: (1) **version Is
+  a Registry-Only Argument, Not a General Pin**, sharpening a one-clause restriction the main page's
+  own "always pin with version" mistake entry can easily overwrite — verified via HashiCorp's own
+  module-block docs that `version` is valid only for registry sources (Terraform errors rather than
+  silently ignoring it elsewhere), that Git sources pin via `?ref=` with tags/SHAs being real pins
+  while branch refs only look like one, that local paths have no version concept, and that
+  `.terraform.lock.hcl` locks providers not modules; (2) **Remote Modules Are Cached**, explaining
+  the on-disk caching behind the main page's own init/`terraform get` advice — verified via multiple
+  long-standing hashicorp/terraform issues that remote modules land in `.terraform/modules` and a
+  plain `init` can reuse a stale copy after a `?ref=` change, with `init -upgrade` the reliable fix
+  (preferred over `get -update` in CI since it covers providers too), and that a mutable branch ref
+  makes the staleness hardest to notice since the config text never changes; (3) **The Double Slash
+  Marks Where the Package Ends**, explaining syntax the main page uses in two examples without
+  comment — verified that `//` separates the fetched PACKAGE from the SUBDIRECTORY within it, that a
+  single slash makes Terraform read the whole string as the repo address, that the subdirectory must
+  precede `?ref=` arguments, and that the whole package is fetched regardless of subdirectory.
+  **Real SUBTOPICS-map collision hit**: bare `modules` is already claimed by TypeScript's own
+  `/typescript/modules` (Go uses `go-modules`) — hub-prefixed to `tf-modules`, with all three nav
+  accordion helper calls using the prefixed key; browser-confirmed zero TypeScript-subtopic leakage
+  into the Terraform accordion. Gotcha sweep (backtick parity 24/22/22 all even — bare `@word`,
+  `${`, over-escaped double-quote, literal-double-quote-in-label, bare-brace-in-html all none —
+  apostrophes all inside backtick code blocks) clean on the first pass. Build reported only the
+  pre-documented harmless bundle-budget warning, zero compile errors (notably no TS1117, confirming
+  the prefix resolved the collision). **The dev server died mid-verification and was restarted**
+  (new serverId, ~70s cold build) — not a stale-chunk incident; after restart, toggle count
+  confirmed at 12, Modules accordion expands showing all 3 correctly-labeled links, and a subtopic
+  page's h1/breadcrumb (all 4 levels)/tailored sidebar all verified, with `//` rendering literally.
+  **Terraform hub Phase 10: 12 of 21 topics complete.**
+- [x] `/terraform/module-patterns` — Module Patterns (2026-07-27) — 3 subtopics: (1) **count on a
+  Module Changes How Every Output Is Accessed**, completing the main page's own feature-flag advice
+  (`count = var.enable_monitoring ? 1 : 0`) with its knock-on effect — verified that adding count to a
+  module block turns every output reference into an indexed one (`module.name[0].output`), that
+  `count = 0` means no instance exists so an indexed reference fails outright rather than yielding
+  null, and that `one(module.name[*].output)` is the idiomatic zero-or-one accessor; (2) **terraform
+  test Defaults to apply, Not plan**, adding the cost/safety dimension missing from the main page's
+  one-bullet mention (listed right after "fast, no cloud calls" validate) — verified via HashiCorp's
+  own test docs and reference that a run block with no `command` attribute performs a real apply,
+  that `command = plan` is what makes it free and fast at the cost of only seeing plan-time-known
+  values, and the conventional `*_unit_test`/`*_integration_test` filename split; (3) **Module
+  depends_on Makes the Whole Module Conservative**, scaling up the Resources topic's own one-line
+  module-`depends_on` mention with its real cost — verified via HashiCorp's own docs and a detailed
+  write-up that module-level `depends_on` is specifically called out as most likely to produce large
+  swaths of "(known after apply)" values, with data sources inside the module deferred from plan to
+  apply time. Gotcha sweep (backtick parity 22/10/24 all even — bare `@word`, `${`, over-escaped
+  double-quote, literal-double-quote-in-label, bare-brace-in-html all none — apostrophes all inside
+  backtick code blocks) clean on the first pass. Confirmed bare `module-patterns` key collision-free
+  before adding — left as a bare key. Build reported only the pre-documented harmless bundle-budget
+  warning, zero compile errors. **The dev server died again mid-verification and was restarted** (new
+  serverId, ~70s cold build, a `claude-sonnet-5[1m]` safety-classifier hiccup on the first
+  `preview_start` retry resolved on the second attempt) — not a stale-chunk incident. After restart,
+  toggle count confirmed at 13, Module Patterns accordion expands showing all 3 correctly-labeled
+  links, and a subtopic page's h1/breadcrumb (all 4 levels)/tailored sidebar all verified.
+  **Terraform hub Phase 10: 13 of 21 topics complete.**
+- [x] `/terraform/provisioners` — Provisioners (2026-07-27) — 3 subtopics: (1) **self Is Scoped to
+  the Resource the Provisioner Is Attached To**, explaining a distinction the main page's own two
+  examples demonstrate (self.public_ip on aws_instance.web's own provisioner vs the full
+  aws_instance.web.id reference on null_resource.notify_slack's provisioner) without ever naming why
+  they differ — verified via WebSearch/GitHub issue that self resolves only to the resource the
+  provisioner block is attached to, and that a destroy-time provisioner needs the triggers map to
+  carry a value forward since a live cross-resource reference isn't reliable by destroy time; (2)
+  **Create-Time Failure Taints — Destroy-Time Failure Can Stick**, splitting the main page's single
+  generic failure rule into its two genuinely different outcomes — verified via HashiCorp's own docs
+  that a failed create-time provisioner taints the resource for self-healing recreation, while a
+  failed destroy-time provisioner leaves the resource stuck in state failing identically on retry,
+  and that a tainted resource's own destroy-time provisioner does not run at all; (3) **on_failure =
+  continue Only Silences It**, defining precisely what the main page's "use on_failure = continue to
+  override" actually changes — verified that it stops treating the failure as an error with zero
+  retry/fallback logic, and that apply reports success while the intended side effect silently never
+  happened. Gotcha sweep (backtick parity 18/6/6 all even — bare `@word`, literal-double-quote-in-
+  label, bare-brace-in-html all none — the one `\\"` hit in a backtick `code:` field confirmed
+  CORRECT, not the over-escaping bug: double-backslash renders a literal `\"` needed for the actual
+  HCL syntax being shown, verified by direct backslash-count check on the rendered page — apostrophes
+  all inside backtick code blocks) clean on the first pass. Confirmed bare `provisioners` key
+  collision-free before adding — left as a bare key. Build reported only the pre-documented harmless
+  bundle-budget warning, zero compile errors. Browser-verified successfully on the first attempt (no
+  stale-chunk incident, no dev-server restart needed this time): toggle count confirmed at 14,
+  Provisioners accordion expands showing all 3 correctly-labeled links, a subtopic page's
+  h1/breadcrumb (all 4 levels)/tailored sidebar verified, and the escaped `\"text\"` HCL syntax
+  confirmed rendering with its backslashes intact (4 backslash characters, exactly as authored) after
+  expanding the code block's "View Code" toggle. **Terraform hub Phase 10: 14 of 21 topics
+  complete.**
+- [x] `/terraform/import` — Import & Generated Config (2026-07-28) — 3 subtopics: (1) **for_each
+  Import Blocks Handle Bulk Import**, scaling the main page's own single-resource import block
+  example up to the many-resources case its "import incrementally" advice implicitly leaves as hand-
+  written — verified via WebSearch that Terraform 1.7+ supports for_each directly on the import
+  block, paired with a matching for_each on the resource itself; (2) **The Import ID Format Is
+  Resource-Specific, Not Universal**, filling in what the main page's "identify the resource ID" step
+  leaves unsaid — verified that every resource type defines its own ID format (simple name, instance
+  ID, or a composite value with a slash/colon/pipe delimiter), identical for both the CLI command and
+  the import block's own id argument, with the provider's Registry docs as the authoritative source;
+  (3) **Import Never Pulls in Dependents or Sensitive Values**, giving the main page's "import
+  incrementally, verify each plan" advice its actual reason — verified that import operates on
+  exactly one resource address (dependents need their own separate import) and that some sensitive
+  attributes are never returned by the provider API at all, silently absent from generated config
+  with a clean plan giving no indication of the gap. Gotcha sweep (backtick parity 16/6/6 all even —
+  bare `@word`, `${`, over-escaped double-quote, literal-double-quote-in-label, bare-brace-in-html
+  all none — apostrophes correctly split between backtick-block-safe and one properly `\'`-escaped
+  single-quoted label field) clean on the first pass. Confirmed bare `import` key collision-free
+  before adding — left as a bare key. Build reported only the pre-documented harmless bundle-budget
+  warning, zero compile errors. Browser-verified successfully on the first attempt (no stale-chunk
+  incident): toggle count confirmed at 15, Import accordion expands showing all 3 correctly-labeled
+  links, a subtopic page's h1/breadcrumb (all 4 levels)/tailored sidebar all verified.
+  **Terraform hub Phase 10: 15 of 21 topics complete.**
+- [x] `/terraform/cicd` — CI/CD with Terraform (2026-07-28) — 3 subtopics: (1) **A Saved Plan File
+  Needs the Same Version and Can Go Stale**, filling in the two operational preconditions the main
+  page's "always save the plan file and apply exactly that file" rule assumes but never states —
+  verified that every pipeline stage touching state must pin the identical Terraform version (never
+  independently-resolved `latest`), and that a saved plan is a snapshot tied to state as it existed
+  at plan time, going stale (an explicit apply-time error) the moment anything else changes that
+  state before apply runs — distinct from what state locking protects against, since locking only
+  prevents a SIMULTANEOUS conflicting write, not this sequential staleness; (2) **The OIDC sub Claim
+  Differs Between push and pull_request**, closing the trust-policy gap the main page's own "OIDC
+  lets GitHub Actions assume an IAM role" section never shows — verified via AWS's own guidance that
+  the token's `sub` claim shape differs by triggering event (a push carries a `ref:refs/heads/...`
+  segment, `pull_request` does not), and that a repository-only trust-policy condition cannot
+  distinguish a push to main from a pull_request run from an untrusted fork, closed by scoping the
+  `token.actions.githubusercontent.com:sub` condition to the exact ref an apply-capable role should
+  run from; (3) **A Saved Plan File Is Plaintext and Must Be Treated as a Secret**, adding the
+  security caveat the main page's "comment the plan output on the PR" advice omits — verified that
+  `sensitive = true` only redacts CLI DISPLAY output, never the saved plan file itself, provable via
+  `terraform show -json` revealing every value in plain text regardless of `sensitive` markings, so
+  the plan artifact needs the same handling as any other secret (short retention, restricted access,
+  never posted verbatim). Gotcha sweep (backtick parity 4/4/4 all even — apostrophe-after-letter,
+  bare `@word`, unescaped `${`, over-escaped `\"`, backslash-escaped-apostrophe-in-bound-attribute,
+  literal-double-quote-in-label all none, confirmed via direct backslash-count check that the
+  `[prev]=`/`[next]=` false-positive grep hits contained zero actual backslash characters) clean on
+  the first pass. Confirmed bare `cicd` key collision-free before adding — left as a bare key. The
+  production build failed on the FIRST attempt with a genuine, new error — the site's initial bundle
+  had crossed the hard `maximumError: 5MB` budget threshold in `angular.json` (total 5.60MB,
+  exceeding by 603KB) — bumped to `8MB` and the build passed clean on retry; this is expected
+  cumulative site growth, not a regression from this batch's 9 files. Browser-verified successfully:
+  main page sidebar/theory/quick-ref all render correctly, toggle count and accordion links
+  confirmed via direct DOM query (`nav-subtopics-toggle` click + `nextElementSibling` inspection,
+  since `read_page`'s interactive filter output was truncated and looked incomplete before this
+  cross-check), a subtopic page's full breadcrumb (4 levels)/tailored sidebar/theory/code
+  block/try-it/misconceptions/prev-next nav all verified via `get_page_text`, dark mode confirmed
+  rendering the correct purple accent (`rgb(196, 181, 253)` icon text on `rgb(26, 18, 41)` bg).
+  **Terraform hub Phase 10: 16 of 21 topics complete.**
+- [x] `/terraform/testing` — Testing Terraform Code (2026-07-28) — 3 subtopics: (1) **run.NAME.output
+  Lets Later Blocks Reference Earlier Run Blocks**, filling in the actual reference syntax behind the
+  main page's "state from a previous apply run carries into the next" bullet — verified via
+  HashiCorp's own docs that a later run block reads an earlier one's output with `run.<name>.<output>`,
+  and that this specific reference (not a blanket rule) is what forces two run blocks to run
+  sequentially rather than in parallel; (2) **mock_resource Values Apply to Every Instance, Not
+  Per-Instance**, sharpening the main page's own "overrides what a specific resource returns" phrasing
+  (easily misread as per-instance) — verified that mock_resource defaults apply uniformly to every
+  instance of a resource type (a for_each/count block gets identical mocked values across all
+  instances), and that `override_resource` is the actual mechanism for distinct per-instance values,
+  a tool the main page never mentions at all; (3) **Destroy Runs in Reverse Order — a Referenced Run's
+  State Is Already Gone**, giving the main page's "terraform test automatically destroys all
+  resources... after all run blocks complete" QnA its actual order and a genuinely confusing nuance —
+  verified that destroy proceeds in reverse of apply order, and that an earlier run block whose output
+  a later block referenced correctly shows zero resources destroyed during its OWN cleanup step (the
+  later, dependent block's destroy already tore down the shared state), which can look like a leak in
+  `terraform test -verbose` output without knowing this mechanic. Gotcha sweep (backtick parity 4/4/4
+  all even — apostrophe-after-letter, bare `@word`, unescaped `${`, over-escaped `\"`,
+  literal-double-quote-in-label all none, confirmed zero actual backslash characters in any `.html`
+  file via `grep -F -c`) clean on the first pass. Found a real `SUBTOPICS`-map bare-key collision —
+  `testing` was already claimed by Angular's own `/angular/testing` topic (confirmed via both quoted
+  and unquoted grep forms) — hub-prefixed to `tf-testing`, matching the pre-existing `go-testing`
+  precedent from the Go hub, with all consumers (nav accordion calls, search index composite routes)
+  using the prefixed key consistently; confirmed `search.ts`'s generic `tf-` prefix-strip rule handles
+  the composite `tf-testing/<slug>` route correctly with no special case needed. Build passed clean on
+  the first attempt (no repeat of the bundle-budget error, now with headroom under the bumped 8MB
+  threshold). Browser-verified successfully: toggle count and accordion links confirmed via direct DOM
+  query (toggle click + `nextElementSibling` inspection), a subtopic page's full breadcrumb (4
+  levels)/tailored sidebar/theory/code block/try-it/misconceptions/prev-next nav all verified via
+  `get_page_text`, dark mode confirmed rendering the correct purple accent.
+  **Terraform hub Phase 10: 17 of 21 topics complete.**
+- [x] `/terraform/security` — Security & Compliance (2026-07-28) — 3 subtopics: (1)
+  **Soft-Mandatory Overrides Need a Specific TFC Permission, Not Just Plan Access**, naming the
+  actual permission behind the main page's vague "overridable with permission" Sentinel bullet —
+  verified via HashiCorp's own docs that overriding a soft-mandatory failure requires the "Manage
+  Policy Overrides" permission (or, by default, "Manage Policies") at the org level, that
+  organization owners always retain override ability, and that ordinary workspace write access
+  (triggering plans/applies) does not include this ability at all — meaning soft-mandatory behaves
+  identically to hard-mandatory for most contributors; (2) **prevent_destroy Blocks terraform
+  destroy Too — But Not a Removed Block**, sharpening the main page's "guard against accidental
+  resource destruction" framing — verified that prevent_destroy blocks ANY destroy plan including
+  an explicit `terraform destroy` command (not just accidental config-driven destroys), that
+  `-target` does not bypass it, and that the only deliberate bypass is a two-step process (remove
+  the lifecycle rule, apply, then destroy) — plus the separate state-surgery bypass
+  (`terraform state rm`) that sidesteps planning entirely; (3) **OPA/conftest Enforcement Is a
+  CI-Pipeline Responsibility, Not Native**, correcting how the main page lists OPA/conftest
+  alongside Sentinel's enforcement levels as if equivalent — verified that only Sentinel is wired
+  natively into HCP Terraform/TFE's own run pipeline, while conftest is a standalone CLI with no
+  enforcement-level concept at all, so a failing check only blocks anything if the CI pipeline
+  explicitly gates a later job on it. Gotcha sweep (backtick parity 4/4/4/8 — the 8-count file
+  caught a real style inconsistency, not a build error: two backtick-wrapped inline-code mentions
+  mixed with `<code>` tags in the same `[innerHTML]`-bound sentence, where backticks render as
+  literal characters rather than styled code — fixed by converting to `<code>` tags for visual
+  consistency; apostrophe-after-letter, bare `@word`, unescaped `${`, over-escaped `\"`,
+  literal-double-quote-in-label all none, zero actual backslash characters confirmed in any `.html`
+  file) clean otherwise. Found a real `SUBTOPICS`-map bare-key collision — `security` was already
+  claimed by SQL's own `/sql/security` topic (confirmed via both quoted and unquoted grep forms) —
+  hub-prefixed to `tf-security`, with all consumers (nav accordion calls, search index composite
+  routes) using the prefixed key consistently. Build passed clean on the first attempt. Browser-
+  verified successfully: toggle count and accordion links confirmed via direct DOM query, a
+  subtopic page's full breadcrumb (4 levels)/tailored sidebar/theory/code block/try-it/
+  misconceptions/prev-next nav all verified via `get_page_text`, dark mode confirmed rendering the
+  correct purple accent.
+  **Terraform hub Phase 10: 18 of 21 topics complete.**
+- [x] `/terraform/drift` — Drift Detection (2026-07-28) — 3 subtopics: (1) **-refresh=false and
+  -refresh-only Do Near-Opposite Things**, flagging a genuine naming-collision risk in the main
+  page's own quick reference (both flags share "refresh" and sit one line apart) — verified that
+  `-refresh-only` performs a full refresh specifically to detect drift while `-refresh=false` skips
+  refresh entirely and trusts stale state, and that mixing them up produces a false "no changes"
+  plan that only breaks later, at apply time; (2) **ignore_changes Does Not Refresh a Stale Value —
+  It Just Stops Future Diffs**, filling in what the main page's Option 3 drift response never
+  addresses — verified that adding `ignore_changes` never triggers a refresh or captures the
+  current real value into state, so pre-existing drift on that attribute stays permanently stale
+  in state (and any downstream reader of `terraform show`/remote state) unless `apply -refresh-only`
+  is run first; (3) **TFC Health Assessments Are Read-Only — They Never Write to State**, closing
+  out the main page's brief "Terraform Cloud drift detection" mention — verified that scheduled
+  health assessments only detect and report drift, never apply or write to state, so the same drift
+  is reported again on every subsequent scheduled run until a human manually remediates it. Gotcha
+  sweep (backtick parity 4/4/4 all even — apostrophe-after-letter, bare `@word`, unescaped `${`,
+  over-escaped `\"`, literal-double-quote-in-label all none, zero actual backslash characters in
+  any `.html` file) clean on the first pass. Confirmed bare `drift` key collision-free before
+  adding — left as a bare key. Build passed clean on the first attempt. Browser-verified
+  successfully: toggle count and accordion links confirmed via direct DOM query, a subtopic page's
+  full breadcrumb (4 levels)/tailored sidebar/theory/code block/try-it/misconceptions/next nav
+  (correctly no prev on the first subtopic) all verified via `get_page_text`, dark mode confirmed
+  rendering the correct purple accent.
+  **Terraform hub Phase 10: 19 of 21 topics complete.**
+- [x] `/terraform/refactoring` — Refactoring & State Ops (2026-07-28) — 3 subtopics: (1) **moved
+  Blocks Require the Same Resource Type on Both Sides**, naming a hard constraint every main-page
+  moved {} example leaves invisible by never mixing resource types — verified that from/to must
+  reference the exact same resource type, producing an explicit "resource type mismatch" error
+  otherwise, since moved only remaps a state address and never transforms one resource type's
+  schema into another's; (2) **removed Defaults to Actually Destroying the Resource**, correcting
+  a genuinely dangerous reading the main page's own "declarative counterpart to terraform state rm"
+  framing invites — verified via HashiCorp's own removed-block docs ("By default, Terraform
+  removes the resource from state and destroys the actual resource") that a plain removed {} block
+  destroys real infrastructure by default, the OPPOSITE of state rm's never-destroy guarantee,
+  requiring an explicit lifecycle { destroy = false } to get state-rm-equivalent behavior; (3)
+  **-target Pulls In Dependencies Automatically, But Never Dependents**, expanding the main page's
+  "apply just one resource" framing of -target with its real, asymmetric scope — verified that
+  -target automatically walks up the dependency graph including everything the target needs, but
+  never walks down to resources that depend on it, which is the actual mechanism behind the main
+  page's own "state out of sync" warning. Gotcha sweep (backtick parity 4/4/4 all even —
+  apostrophe-after-letter, unescaped `${`, over-escaped `\"`, literal-double-quote-in-label all
+  none, zero actual backslash characters in any `.html` file) mostly clean, but **caught a REAL
+  build-breaking NG5002 error on the first build attempt** — bare `{}` braces in plain prose text
+  (page-subtitle and a "Where this fits" paragraph, describing `moved {}`/`removed {}` syntax by
+  name) across two of the three `.html` files, missed by the sweep's `bare @word`-focused grep since
+  this is the separate brace-escaping gotcha, not the `@word` one. Fixed with the standard
+  `&#123;`/`&#125;` HTML-entity escape, confirmed via browser re-check that the escaped braces
+  render as literal `{}` characters (not raw entity codes) once fixed. Found no `SUBTOPICS`-map
+  bare-key collision for `refactoring` — left as a bare key. Build passed clean after the brace fix.
+  Browser-verified successfully: toggle count and accordion links confirmed via direct DOM query, a
+  subtopic page's full breadcrumb (4 levels)/tailored sidebar/theory/code block/try-it/
+  misconceptions/prev-next nav all verified via `get_page_text` (including the fixed braces
+  rendering correctly), dark mode confirmed rendering the correct purple accent.
+  **Terraform hub Phase 10: 20 of 21 topics complete.**
+- [x] `/terraform/opentofu` — OpenTofu (2026-07-28) — 3 subtopics: (1) **Key Rotation Needs the
+  fallback Method, Not Just a Swapped Key**, filling the operational gap in the main page's own
+  single-static-key encryption example — verified via OpenTofu's own encryption docs that a naive
+  key swap fails against already-encrypted state, and that safe rotation is a three-phase process
+  (new key primary + old key as `fallback`, force re-encryption via `apply -refresh-only`, then
+  remove the fallback), with writes always using the primary method only, never the fallback; (2)
+  **BSL Has a Four-Year Change Date That Converts to MPL Automatically**, correcting the
+  "permanently closed-source" reading the main page's "BSL 1.1 restricts use in competing
+  products" framing invites — verified that BSL 1.1 includes a Change Date clause converting each
+  Terraform release to MPL 2.0 automatically four years after ITS OWN release date, per release,
+  not on one shared date for the whole project; (3) **remote_state Data Source Needs Its Own
+  Encryption Config Too**, closing a real cross-project gap the main page's single-project
+  encryption example never addresses — verified that a consuming project reading another
+  project's encrypted state via `terraform_remote_state` does not inherit that encryption
+  automatically and needs its own `remote_state_data_source` block to decrypt it. Gotcha sweep
+  (backtick parity 2/4/4 all even — apostrophe-after-letter, bare `@word`, unescaped `${`,
+  over-escaped `\"`, literal-double-quote-in-label all none, zero actual backslash characters in
+  any `.html` file, and — per the new standing check added after the last batch's real bug — a
+  dedicated bare-brace-in-prose sweep confirmed the only `{` hits across all three `.html` files
+  were safely inside bound `[prev]=`/`[next]=` attributes, none in bare text) clean on the first
+  pass, avoiding a repeat of the Refactoring batch's NG5002 error. Found no `SUBTOPICS`-map
+  bare-key collision for `opentofu` — left as a bare key. Build passed clean on the first attempt.
+  Browser-verified successfully: toggle count and accordion links confirmed via direct DOM query, a
+  full hub-wide toggle-count check confirmed exactly 21 `.nav-subtopics-toggle` buttons now render
+  (one per topic, matching Phase 10 completion), a subtopic page's full breadcrumb (4
+  levels)/tailored sidebar/theory/code block/try-it/misconceptions/prev-next nav all verified via
+  `get_page_text`, dark mode confirmed rendering the correct purple accent.
+  **Terraform hub Phase 10: COMPLETE — 21 of 21 topics have subtopics (63 subtopic pages total).**
 
 #### Service Mesh — 19 topic pages
 
-- [ ] `/service-mesh/fundamentals` — Service Mesh Fundamentals
-- [ ] `/service-mesh/istio-architecture` — Istio Architecture
-- [ ] `/service-mesh/istio-install` — Istio Installation & Configuration
-- [ ] `/service-mesh/linkerd` — Linkerd
-- [ ] `/service-mesh/traffic-management` — Traffic Management
-- [ ] `/service-mesh/resilience` — Resilience Patterns
-- [ ] `/service-mesh/load-balancing` — Load Balancing
-- [ ] `/service-mesh/mtls` — mTLS & Certificate Management
-- [ ] `/service-mesh/authorization` — Authorization Policy
-- [ ] `/service-mesh/metrics` — Metrics & Observability
-- [ ] `/service-mesh/tracing` — Distributed Tracing
-- [ ] `/service-mesh/kiali` — Kiali Service Graph
-- [ ] `/service-mesh/gateway-api` — Kubernetes Gateway API
-- [ ] `/service-mesh/ingress-gateway` — Ingress Gateway
-- [ ] `/service-mesh/performance` — Service Mesh Performance
-- [ ] `/service-mesh/envoy` — Envoy Proxy Deep Dive
-- [ ] `/service-mesh/ambient-mesh` — Ambient Mesh
-- [ ] `/service-mesh/multi-cluster` — Multi-Cluster Mesh
-- [ ] `/service-mesh/consul` — Consul Service Mesh
+- [x] `/service-mesh/fundamentals` — Service Mesh Fundamentals (2026-07-28) — **first Service Mesh
+  hub Phase 10 pilot batch.** 3 subtopics: (1) **Ambient Mode: ztunnel Is L4-Only — L7 Routing
+  Needs a Waypoint**, sharpening the main page's "optional" framing of waypoint proxies — verified
+  that ztunnel alone only handles L4 (mTLS, basic authorization) while VirtualService routing,
+  retries, and header rules are L7 and need a waypoint proxy deployed, or they silently have no
+  effect on traffic (a straight sidecar-to-ambient migration can lose L7 policy with zero error);
+  (2) **xDS Updates Need Make-Before-Break Ordering, or Traffic Black-Holes**, giving the main
+  page's "Istiod pushes updates within seconds" QnA its missing failure mode — verified via
+  Envoy's own xDS protocol docs that updates are eventually consistent, an RDS update outracing
+  its CDS/EDS counterpart at a given proxy can briefly black-hole traffic (503, response_flags UH),
+  and the mitigation is the documented "make before break" ordering (new cluster added before
+  routes switch to it, old cluster removed only after); (3) **A VirtualService Subset Missing From
+  DestinationRule Returns 503**, extending the main page's own perfectly-in-sync canary example
+  with the most common real-world Istio misconfiguration — verified that a VirtualService
+  referencing a subset absent from its DestinationRule applies with zero validation error and only
+  fails at request time as a silent 503 (response_flags NR), diagnosable via Envoy access logs, not
+  kubectl/istioctl validation. **Structural investigation before writing**: `MeshNavComponent`
+  (`shared/mesh-nav/mesh-nav.ts`) had ZERO subtopics-accordion support — the same gap already hit
+  on 8 prior `*NavComponent` hubs (Go, DevOps, Containers, AWS, Azure, Linux, Terraform) — fixed
+  identically (signal/Router/NavigationEnd/filter imports, `SUBTOPICS` from `data/subtopics`, the
+  three accordion methods, constructor-level router subscription with exact-match auto-expand).
+  Confirmed a real `SUBTOPICS`-map bare-key collision — `fundamentals` was already claimed by the
+  JavaScript hub's own bare key (checked both quoted and unquoted forms) — hub-prefixed to
+  `mesh-fundamentals`, matching this hub's established `mesh-` search/progress prefix; the toggle
+  worked correctly on the FIRST browser check (no stale-chunk incident this time). Confirmed
+  `.mesh-page`'s wrapper rule is NOT global (absent from `src/styles.scss`) and every subtopic
+  `.scss` needs the full `max-width: 860px; margin: 0 auto;` redeclaration — verified in-browser
+  via `getComputedStyle` that the 860px cap is actually applied, not full-bleed. No live playground
+  — Istio/Envoy/Kubernetes YAML content has no in-browser runtime, following the established
+  non-Angular-hub pattern (`<app-code-block>` only). Gotcha sweep caught a real style-consistency
+  issue (not a build error): backtick-wrapped inline code (`` `kubectl` ``/`` `istioctl` ``) mixed
+  with `<code>` tags in the same `[innerHTML]`-bound sentence in one file — fixed by converting to
+  `<code>` tags for consistency, matching the same fix already made once in the Terraform hub's
+  own `cicd` batch. Build passed clean on the first attempt. Browser-verified successfully: toggle
+  expand/collapse and accordion links confirmed via direct DOM query, a subtopic page's full
+  breadcrumb (4 levels)/tailored sidebar/theory/code block/try-it/misconceptions/next nav (correctly
+  no prev on the first subtopic) all verified via `get_page_text`, dark mode confirmed rendering the
+  correct blue accent (`rgb(147, 197, 253)`), page wrapper width confirmed 860px via
+  `getComputedStyle`. **Service Mesh hub Phase 10: 1 of 19 topics complete.**
+- [x] `/service-mesh/istio-architecture` — Istio Architecture (2026-07-28) — 3 subtopics: (1)
+  **Cert Rotation Overlaps Old and New Certs to Avoid Handshake Failures**, filling in the safety
+  mechanism the main page's own cert-rotation QnA never names — verified that rotation is not an
+  atomic swap: the old cert stays valid for an overlap window after the new one is issued, so
+  peers mid-rotation relative to each other still complete TLS handshakes, and the same overlap
+  principle extends to root CA migration at mesh scale; (2) **Sidecar CRD Scoping Egress Does Not
+  Block Unmatched Inbound Traffic**, correcting a real security-relevant misreading the main page's
+  "restricts what a sidecar can see" framing invites — verified that Sidecar CRD egress scoping is
+  a proxy memory/config-size optimization, not access control: unmatched destinations are still
+  reachable by default, and omitting the ingress block leaves inbound traffic completely
+  untouched (AuthorizationPolicy is the actual access-control tool); (3) **Live Traffic Surviving
+  an Istiod Outage Has a Cert TTL Time Limit**, adding the unstated deadline behind the main
+  page's "live traffic continues" framing — verified that certificate rotation also requires
+  Istiod, so an outage has a bounded safety window (default 24h cert TTL) before live mTLS traffic
+  itself starts failing, not just new deployments being blocked. Gotcha sweep (backtick parity
+  4/4/4 all even — apostrophe-after-letter, bare `@word`, unescaped `${`, over-escaped `\"`,
+  literal-double-quote-in-label all none, zero actual backslash characters in any `.html` file)
+  clean on the first pass. Confirmed bare `istio-architecture` key collision-free before adding —
+  left as a bare key. Build passed clean on the first attempt. Browser-verified successfully:
+  toggle count and accordion links confirmed via direct DOM query, a subtopic page's full
+  breadcrumb (4 levels)/tailored sidebar/theory/code block/try-it/misconceptions/prev nav
+  (correctly no next on the last subtopic) all verified via `get_page_text`, dark mode confirmed
+  rendering the correct blue accent.
+  **Service Mesh hub Phase 10: 2 of 19 topics complete.**
+- [x] `/service-mesh/istio-install` — Istio Installation & Configuration (2026-07-28) — 3
+  subtopics: (1) **Both Injection Labels Present: istio-injection Silently Wins**, explaining the
+  "why" behind the main page's own canary-upgrade command that removes the old label and adds the
+  new one together — verified that when both istio-injection=enabled and istio.io/rev are present
+  on a namespace, istio-injection silently wins for backward compatibility, and a migration that
+  forgets to remove the old label first ends up injecting from the WRONG control plane with zero
+  error; (2) **uninstall --purge Does Not Reliably Remove Every Webhook**, adding a missing
+  verification step to the main page's own "safely uninstall Istio" QnA — verified a documented
+  gap (istiod-default-validator) where --purge leaves a webhook behind, and that a leftover
+  cluster-scoped webhook with failurePolicy: Fail can reject operations in namespaces that never
+  ran Istio at all; (3) **Revision Uninstall Checks Active Proxies, Not Namespace Labels**,
+  closing out the main page's canary-upgrade sequence with the check its own "after validating all
+  namespaces" step assumes but never specifies — verified that istioctl uninstall --revision's
+  safety check is proxy-based, not label-based, so an infrequently-running namespace (nightly
+  batch job, scaled to zero) with no active pods at uninstall time produces no warning even though
+  it's still labeled for the revision being removed. Gotcha sweep (backtick parity 4/4/4 all even
+  — apostrophe-after-letter, bare `@word`, unescaped `${`, over-escaped `\"`,
+  literal-double-quote-in-label all none, zero actual backslash characters in any `.html` file)
+  clean on the first pass. Confirmed bare `istio-install` key collision-free before adding — left
+  as a bare key. Build passed clean on the first attempt. Browser-verified successfully: toggle
+  count and accordion links confirmed via direct DOM query, a subtopic page's full breadcrumb (4
+  levels, including the correctly-escaped "&" in "Istio Installation & Configuration")/tailored
+  sidebar/theory/code block/try-it/misconceptions/prev-next nav all verified via `get_page_text`,
+  dark mode confirmed rendering the correct blue accent.
+  **Service Mesh hub Phase 10: 3 of 19 topics complete.**
+- [x] `/service-mesh/envoy` — Envoy Proxy Deep Dive (2026-07-28) — 3 subtopics: (1) **WasmPlugin
+  phase Determines Order Relative to Built-in Filters**, giving the main page's bare phase enum
+  (AUTHN/AUTHZ/STATS/UNSPECIFIED) its actual ordering semantics — verified that an AUTHN-phase
+  plugin runs BEFORE Istio's own built-in jwt_authn filter, which is what makes a custom-auth-
+  producing-a-JWT-for-jwt_authn-to-validate pattern actually work, and that placing such a plugin
+  in AUTHZ instead breaks every request with a 401 since jwt_authn runs first and finds nothing;
+  (2) **INSERT_AFTER Targeting router Means the Filter Never Runs**, expanding a single flagged
+  clause buried in an unrelated main-page QnA answer into a full worked broken-vs-fixed example —
+  verified that router terminates the HTTP filter chain, so an EnvoyFilter using INSERT_AFTER
+  against it applies cleanly (no validation error) but is functionally dead code, while the main
+  page's own working Lua-header example already (silently) uses the correct INSERT_BEFORE pattern;
+  (3) **Delta xDS Isolates a NACK'd Resource — SotW Blocks the Whole Type**, connecting two facts
+  the main page states in separate, seemingly-unrelated bullets — verified that Delta xDS isolates
+  a NACK to the one bad resource, while SotW bundles an entire resource type into one push and
+  NACKs everything in that bundle if even one resource is invalid, meaning a single misconfigured
+  cluster under SotW can freeze dozens of unrelated, valid clusters mesh-wide. Gotcha sweep
+  (backtick parity 4/4/4 all even — apostrophe-after-letter, bare `@word`, unescaped `${`,
+  over-escaped `\"`, literal-double-quote-in-label all none, zero actual backslash characters in
+  any `.html` file, with `[prev]`/`[next]` cross-references correctly using "NACKd" without the
+  apostrophe to avoid the bound-attribute delimiter collision while the page's own h1/title use
+  "NACK'd") clean on the first pass. Confirmed bare `envoy` key collision-free before adding —
+  left as a bare key. Build passed clean on the first attempt. Browser-verified successfully:
+  toggle count and accordion links confirmed via direct DOM query, a subtopic page's full
+  breadcrumb (4 levels)/tailored sidebar/theory/code block/try-it/misconceptions/prev-next nav all
+  verified via `get_page_text`, dark mode confirmed rendering the correct blue accent.
+  **Service Mesh hub Phase 10: 4 of 19 topics complete.**
+- [x] `/service-mesh/linkerd` — Linkerd (2026-07-28) — 3 subtopics: (1) **TrafficSplit Cannot Be
+  Self-Referential — apex Needs Its Own Name**, catching and fixing a REAL inaccuracy in the main
+  page's own TrafficSplit example (both the "Traffic Split (Canary)" codeTab and the Challenge's
+  starterCode/solution set `spec.service: myapp`/`checkout` AND listed the identical name as one
+  of the backends) — verified directly against the SMI TrafficSplit specification's own text,
+  which explicitly names and prohibits this exact "self-referential" pattern; fixed the main page
+  to use distinct backend names (`myapp-stable`/`checkout-stable`) and wrote a subtopic explaining
+  the rule and the correct three-Service pattern; (2) **Circuit Breaking Exists — It Needs an
+  Explicit failure-accrual Annotation**, correcting the main page's "relies on EWMA instead"
+  framing, which reads as "no dedicated mechanism exists" — verified via Linkerd's own circuit-
+  breaking reference docs that Linkerd has genuine failure-accrual circuit breaking (automatic
+  endpoint ejection + recovery probing), just gated behind an explicit
+  `balancer.linkerd.io/failure-accrual` Service annotation rather than on by default, while EWMA
+  load balancing alone never ejects a failing endpoint; (3) **external-issuer Alone Leaves the
+  Self-Generated Trust Anchor in Place**, closing a gap in the main page's cert-manager fix —
+  verified that `--identity-external-issuer` only externalizes the issuer cert, while Linkerd's
+  own long-lived, unrotated trust anchor (root CA) remains self-generated unless
+  `--identity-trust-anchors-file` is ALSO provided at install time. Gotcha sweep (backtick parity
+  4/4/4 all even — apostrophe-after-letter, bare `@word`, unescaped `${`, over-escaped `\"`,
+  literal-double-quote-in-label all none, zero actual backslash characters in any `.html` file)
+  clean on the first pass. Confirmed bare `linkerd` key collision-free before adding — left as a
+  bare key. Build passed clean on the first attempt, including the main-page TrafficSplit fix.
+  Browser-verified successfully: the corrected Challenge description renders the fixed
+  "checkout-stable" requirement text, toggle count and accordion links confirmed via direct DOM
+  query, a subtopic page's full breadcrumb (4 levels)/tailored sidebar/theory/code
+  block/try-it/misconceptions/next nav (correctly no prev on the first subtopic) all verified via
+  `get_page_text`, dark mode confirmed rendering the correct blue accent.
+  **Service Mesh hub Phase 10: 5 of 19 topics complete.**
+- [x] `/service-mesh/traffic-management` — Traffic Management (2026-07-28) — 3 subtopics: (1)
+  **Fault Injection and Retries Cannot Coexist on the Same Route**, closing a real gap between the
+  main page's separately-covered "Timeouts and Retries" and "Fault Injection" sections — verified
+  that Istio silently disables retries/timeout on any route that also has fault injection
+  configured (no validation error, the retries field just goes inert), defeating the natural
+  "inject a fault, verify retries recover it" test unless split across a separate route/VirtualService
+  or injected via EnvoyFilter instead; (2) **retryOn: 5xx Can Amplify Load Into an
+  Already-Overloaded Upstream**, connecting the main page's retryOn listing with a DIFFERENT QnA's
+  circuit-breaker explanation that never reference each other — verified that retrying a
+  connection-pool circuit breaker's own "upstream overflow" 503 sends more load at the exact
+  upstream that signaled overload, compounding across a multi-hop call chain, mitigated via
+  DestinationRule's maxRetries budget or narrower retryOn scoping; (3) **Mirroring Is
+  Fire-and-Forget — the Primary Response Never Waits**, sharpening the main page's "asynchronously"
+  mirroring description into its precise, verifiable guarantee — confirmed the primary response
+  never waits on the mirror in ANY capacity (not just "usually fast"), while noting mirrored
+  traffic still consumes real resources worth sizing the shadow deployment for. Gotcha sweep
+  (backtick parity 4/4/4 all even — apostrophe-after-letter, bare `@word`, unescaped `${`,
+  over-escaped `\"`, literal-double-quote-in-label all none, zero actual backslash characters in
+  any `.html` file) clean on the first pass; one file's first codeTab was missing the standard
+  `cat <<EOF | kubectl apply -f -` opener present in every sibling example, caught by direct
+  re-read and fixed before building for stylistic consistency. Confirmed bare
+  `traffic-management` key collision-free before adding — left as a bare key. Build passed clean
+  on the first attempt. Browser-verified successfully: toggle count and accordion links confirmed
+  via direct DOM query, a subtopic page's full breadcrumb (4 levels)/tailored
+  sidebar/theory/code block/try-it/misconceptions/next nav (correctly no prev on the first
+  subtopic) all verified via `get_page_text`, dark mode confirmed rendering the correct blue
+  accent.
+  **Service Mesh hub Phase 10: 6 of 19 topics complete.**
+- [x] `/service-mesh/resilience` — Resilience Patterns (2026-07-28) — 3 subtopics: (1)
+  **consecutiveLocalOriginFailures Needs splitExternalLocalOriginErrors to Work**, closing a gap in
+  the main page's outlierDetection quickRef entry — verified via WebSearch against Envoy's own
+  outlier-detection docs that local-origin (connection-level) failures are lumped in with HTTP 5xx
+  failures unless `splitExternalLocalOriginErrors: true` is explicitly set alongside
+  `consecutiveLocalOriginFailures`; (2) **minHealthPercent Defaults to 0% (Disabled), Not 50%**,
+  correcting a genuine inaccuracy in the main page's own QnA (claimed a 50% default) — verified via
+  WebFetch against Istio's own DestinationRule reference docs that the real default is 0% ("not
+  typically applicable in k8s environments with few pods per service"), and that crossing the
+  threshold disables outlier detection ENTIRELY (restoring already-ejected hosts too), not just
+  halting new ejections; (3) **A Service With No DestinationRule Still Has a 1024-Connection Cap**,
+  closing the gap that every circuit-breaker example on the main page shows an explicit
+  DestinationRule — verified Envoy's own built-in defaults (maxConnections and
+  max_pending_requests both 1024) apply even with zero configuration, so a service is never truly
+  "unprotected," just protected at a generic, un-tuned value. Two more main-page fixes made during
+  authoring, found by re-reading the page against already-verified facts from a sibling page: a
+  theory bullet claiming fault injection and retries combine on the same route directly
+  contradicted the already-published Traffic Management subtopic's verified fact that Istio
+  disables retries/timeout on any route with fault injection configured (fixed to state the
+  correct behavior); and an ejection-duration bullet calling the growth "exponential" while its own
+  accompanying formula is linear, verified via WebFetch against Envoy's docs ("multiplied by the
+  number of times the host has been ejected") and fixed to "linearly." Gotcha sweep (backtick
+  parity 4/4/4 all even, apostrophe-after-letter/bare `@word`/unescaped `${`/over-escaped
+  `\"`/backslash-escaped-apostrophe-in-label all clean) passed on the first pass. Confirmed bare
+  `resilience` key collision-free before adding — left as a bare key. Build passed clean on the
+  first attempt; hit the documented stale-dev-server-artifact gotcha during browser verification
+  (an NG2008 "Could not find template file" error persisted in `preview_logs` for several minutes
+  after the file was confirmed present and correct on disk) — resolved with a fresh save
+  specifically on the affected subtopic's own `.ts` file (append/trim a trailing newline), a new,
+  more targeted variant of the fix than touching the shared nav component. Browser-verified
+  successfully: toggle count (7, up from 6) and accordion links (all 3 subtopics) confirmed via
+  direct DOM query and click simulation, a subtopic page's full breadcrumb (4 levels)/tailored
+  sidebar/theory/code block/try-it/misconceptions/prev-next nav all verified via `get_page_text`,
+  the 860px `.mesh-page` wrapper cap confirmed via `getComputedStyle`, dark mode class applied
+  without errors.
+  **Service Mesh hub Phase 10: 7 of 19 topics complete.**
+- [x] `/service-mesh/load-balancing` — Load Balancing (2026-07-28) — 3 subtopics: (1)
+  **warmupDurationSecs Starts New Pods at 10% Traffic, Not 0%**, correcting a genuine inaccuracy
+  in the main page's own quiz explanation (claimed "~0%") — verified via WebFetch against Envoy's
+  own SlowStartConfig spec that min_weight_percent defaults to 10%, and that the ramp shape
+  itself (aggression=1.0, "linearly increasing") was already correctly described; (2)
+  **consistentHash Defaults to Ring Hash With a 1024-Node Ring**, closing a gap where the main
+  page never named an algorithm behind consistentHash — verified DestinationRule's
+  ConsistentHashLB defaults to RING_HASH (with maglev also natively available, no EnvoyFilter
+  needed for either) with a 1024-node minimumRingSize, directly explaining the main page's
+  "~1/N remapping" claim and why its precision degrades as pod count grows large relative to
+  the ring; (3) **Active Health Checks Have No Native DestinationRule Field**, correcting a
+  genuine inaccuracy in the main page's theory AND QnA (both named a non-existent
+  `trafficPolicy.healthCheck` field) — verified against Istio's own API reference that
+  TrafficPolicy has exactly 8 fields, none named healthCheck, and active health checks are
+  reachable ONLY via an EnvoyFilter patching the cluster's raw `health_checks` field. Gotcha
+  sweep (backtick parity 4/6/4 all even, apostrophe-after-letter/bare `@word`/unescaped
+  `${`/over-escaped `\"` all clean) passed on the first pass. Confirmed a real `load-balancing`
+  bare-key collision with the AWS hub's own topic before adding — hub-prefixed to
+  `mesh-load-balancing`. Build passed clean on the first attempt. Browser-verified successfully:
+  toggle count (8, up from 7) and accordion links (all 3 subtopics) confirmed via direct DOM
+  query and click simulation, the corrected active-health-check theory bullet confirmed
+  rendering via `get_page_text` on the main page, a subtopic page's full breadcrumb (4
+  levels)/tailored sidebar/theory/code block/try-it/misconceptions/prev-next nav all verified.
+  **Service Mesh hub Phase 10: 8 of 19 topics complete.**
+- [x] `/service-mesh/mtls` — mTLS & Certificate Management (2026-07-28) — 3 subtopics: (1)
+  **Probe Traffic Is Rewritten to Port 15020, Not Simply Exempted**, tightening the main page's
+  "probes bypass Envoy because they come from the kubelet" phrasing — verified via WebFetch
+  against Istio's own app-health-check docs that the sidecar injector actively REWRITES each
+  probe in the pod spec to target istio-agent's own status port 15020, which is what actually
+  keeps probe traffic out of Envoy's iptables interception and mTLS enforcement (not merely
+  "who sent it"); (2) **Mesh-Wide PeerAuthentication Must Be Named default in the Root
+  Namespace**, closing a gap in the main page's "create in istio-system with no selector"
+  guidance — verified via WebSearch against Istio's own Authentication Policy docs that the
+  resource must ALSO be named exactly "default," or it applies with no error but is silently
+  never picked up as the mesh baseline; (3) **The CA Secret Is Named cacerts, Not
+  istio-ca-secret**, correcting a genuine SELF-CONTRADICTING inaccuracy where the main page's
+  own "Custom CA via cert-manager" example correctly used cacerts while a separate "Emergency
+  cert rotation" bullet and the quickRef both used the outdated istio-ca-secret — verified via
+  WebFetch/WebSearch against Istio's own tracked GitHub issue (#45685, closed via PR #45291)
+  that these were historically two separate secret names, deliberately unified into one. Fixed
+  all three main-page occurrences plus tightened the matching mistakes-block entry and quiz
+  explanation to describe the actual probe-rewrite mechanism. Gotcha sweep (backtick parity
+  10/8/4 all even, apostrophe-after-letter/bare `@word`/unescaped `${`/over-escaped `\"` all
+  clean) passed on the first pass. Confirmed `mtls` bare-key collision-free before adding. Build
+  passed clean on the first attempt. Browser-verified successfully: toggle count (9, up from 8,
+  no stale-chunk incident this batch) and accordion links confirmed via direct DOM query, the
+  corrected cacerts/istio-ca-secret text confirmed via a main-content-scoped text search (not
+  just page-wide, to avoid a false positive from the nav accordion's own subtopic link text), a
+  subtopic page's full breadcrumb (4 levels)/tailored sidebar/theory/code block/try-it/
+  misconceptions/prev-next nav all verified via `get_page_text`.
+  **Service Mesh hub Phase 10: 9 of 19 topics complete.**
+- [x] `/service-mesh/authorization` — Authorization Policy (2026-07-28) — 3 subtopics: (1)
+  **Empty Rules Array vs. One Empty Rule Are Opposite Behaviors**, correcting a genuine
+  inaccuracy in the main page's own "mistakes" block, which had DENY and ALLOW's empty-rules
+  semantics backwards (claimed empty-rules ALLOW is "meaningless" and recommended DENY instead)
+  — verified against Istio's own AuthorizationPolicy reference that empty rules under DENY have
+  NO effect while empty rules under ALLOW is the documented deny-all idiom, directly
+  contradicting the same page's own (correct) QnA elsewhere; also covers the distinct
+  rules: [] (never matches) vs. rules: [{}] (always matches) trap; (2) **AuthorizationPolicy
+  Has No Naming Requirement, Unlike PeerAuthentication**, a direct contrast against the mTLS
+  batch's own PeerAuthentication-naming subtopic — verified via WebFetch that AuthorizationPolicy
+  has no "must be named default" rule at all, and multiple differently-named mesh-wide policies
+  all apply cumulatively; (3) **CUSTOM Is a Fourth Action, Evaluated Before DENY and ALLOW**,
+  closing a real quickRef gap — verified Istio's action field has a documented fourth value,
+  CUSTOM (delegates to an external extension provider), evaluated even before DENY, with the
+  full precedence being CUSTOM → DENY → ALLOW. Gotcha sweep (backtick parity 4/4/6 all even,
+  apostrophe-after-letter/bare `@word`/unescaped `${`/over-escaped `\"` all clean) passed on the
+  first pass. Confirmed `authorization` bare-key collision-free before adding. Build passed
+  clean on the first attempt. Browser-verified successfully: toggle count (10, up from 9, no
+  stale-chunk incident) and accordion links confirmed via direct DOM query, the corrected
+  mistakes-block entry confirmed rendering (old title absent, new title present) via a
+  click-through-then-text-search on the main page, a subtopic page's full breadcrumb (4
+  levels)/tailored sidebar/theory/code block/try-it/misconceptions/prev-next nav all verified.
+  **Service Mesh hub Phase 10: 10 of 19 topics complete — past the halfway mark.**
+- [x] `/service-mesh/metrics` — Metrics & Observability (2026-07-28) — 3 subtopics: (1)
+  **Grafana Dashboard IDs Were Mismatched With Their Actual Names**, correcting a genuine
+  inaccuracy where ALL FOUR of the main page's dashboard-ID-to-name pairings were wrong —
+  verified against grafana.com's own listings that the correct mapping is 7639=Mesh,
+  7636=Service, 7630=Workload, 7645=Control Plane, 11829=Performance (the main page never
+  mentioned Control Plane or the real Performance ID at all); (2) **Telemetry API Scope
+  Override Is Full Field Replacement, Not a Merge**, tightening the main page's "additive and
+  composable" phrasing — verified via WebFetch against Istio's own Telemetry task guide that a
+  narrower scope "completely overrides" (not merges with) a touched field, confirmed by Istio's
+  own worked example where a namespace-level tag config causes a mesh-level tag to vanish
+  entirely; (3) **Histogram Bucket Boundaries Are Fixed and Cannot Be Customized**, closing a
+  real gap — verified via Istio's own FAQ that in-proxy telemetry has no bucket-customization
+  mechanism at all (only the removed Mixer architecture supported this), a real precision
+  ceiling for the tight SLO/burn-rate math the main page discusses extensively. Gotcha sweep
+  (backtick parity 2/14/4 all even, apostrophe-after-letter/bare `@word`/unescaped
+  `${`/over-escaped `\"`/bare `{` in prose all clean) passed on the first pass. Confirmed
+  `metrics` bare-key collision-free before adding. Build passed clean on the first attempt.
+  Hit a genuinely new variant of the dev-server-timing gotcha: a FRESH `ng serve` cold-start
+  (server had been stopped between batches) needed its normal several-minute initial compile —
+  resolved correctly by polling with a `curl`-based background Bash task instead of guessing at
+  fixed `sleep` durations, and waiting for its completion notification rather than manually
+  re-checking. Browser-verified successfully once the server was actually ready: toggle count
+  (11, up from 10) and accordion links confirmed via direct DOM query, the corrected Grafana ID
+  text confirmed present (and the old wrong text confirmed absent) via a main-content-scoped
+  text search, a subtopic page's full breadcrumb (4 levels)/tailored sidebar/theory/code
+  block/try-it/misconceptions/prev-next nav all verified via `get_page_text`.
+  **Service Mesh hub Phase 10: 11 of 19 topics complete.**
+- [x] `/service-mesh/tracing` — Distributed Tracing (2026-07-28) — 3 subtopics: (1)
+  **Telemetry API Sampling Wins Over meshConfig When Both Are Set**, closing a real gap the main
+  page's own "Enable Tracing" example walks straight into — it configures BOTH
+  meshConfig.defaultConfig.tracing.sampling AND the Telemetry API's randomSamplingPercentage at
+  once without ever saying which wins if they disagree; verified via WebSearch the Telemetry API
+  always takes precedence; (2) **OpenTelemetry Provider Needs Istio 1.22+, Not 1.16+**,
+  correcting a genuine version inaccuracy — verified by checking whether the OpenTelemetry
+  tracing-provider docs page resolves for each archived Istio version (404 at v1.16/v1.18/v1.20/
+  v1.21, first appearing at v1.22); (3) **Exemplars Are Defined by OpenMetrics, Not an IETF
+  RFC**, correcting this hub's first FABRICATED CITATION — the main page's QnA attributed
+  Prometheus Exemplars to "RFC 4652," a real IETF document but about a completely unrelated
+  topic; verified via WebSearch the actual source is the OpenMetrics specification. Gotcha sweep
+  (backtick parity 2/8/20 all even, apostrophe-after-letter/bare `@word`/unescaped
+  `${`/over-escaped `\"` all clean) passed on the first pass. Confirmed `tracing` bare-key
+  collision-free before adding. Build passed clean on the first attempt. Browser-verified
+  successfully: toggle count (12, up from 11) and accordion links confirmed via direct DOM
+  query, the corrected version claim confirmed via main-content text search, the corrected QnA
+  citation confirmed by clicking into the SPECIFIC collapsed QnA question (not just the outer
+  accordion toggle) before checking its answer text — a subtopic page's full breadcrumb (4
+  levels)/tailored sidebar/theory/code block/try-it/misconceptions/prev-next nav all verified.
+  **Service Mesh hub Phase 10: 12 of 19 topics complete.**
+- [x] `/service-mesh/kiali` — Kiali Service Graph (2026-07-28) — 3 subtopics: (1) **Envoy Config
+  Viewer Queries Istiod, Not Prometheus**, correcting an overgeneralization where the main
+  page's blanket "reads from Prometheus" claim was contradicted by its own QnA describing the
+  Envoy config viewer — verified via WebSearch this feature queries Istiod's debug endpoint
+  (/debug/config_dump?proxyID=...) directly, no Prometheus involved; (2) **KIA0201 Is Duplicate
+  DestinationRules, Not a Missing Subset**, correcting a genuine SELF-CONTRADICTING inaccuracy —
+  the quiz and mistakes block gave KIA0201 two different wrong meanings that didn't even agree
+  with each other, verified against Kiali's own validation docs that the real KIA0201 means
+  duplicate DestinationRules and the actual "subset not found" code is KIA1107; (3) **Animation
+  Dot Speed Is Response Time, Density Is RPS**, correcting a swapped claim — verified via
+  WebSearch that Kiali's traffic animation encodes response time via dot SPEED and RPS via dot
+  DENSITY, the opposite of what the main page said. Gotcha sweep (backtick parity 2/8/8 all
+  even, apostrophe-after-letter/bare `@word`/unescaped `${`/over-escaped `\"` all clean) passed
+  on the first pass. Confirmed `kiali` bare-key collision-free before adding. Build passed clean
+  on the first attempt. Browser-verified successfully: toggle count (13, up from 12) and
+  accordion links confirmed via direct DOM query, the corrected KIA1107 text confirmed present
+  (and old wrong text confirmed absent) after clicking into the collapsed mistakes-block entries,
+  a subtopic page's full breadcrumb (4 levels)/tailored sidebar/theory/code block/try-it/
+  misconceptions/prev-next nav all verified via `get_page_text`.
+  **Service Mesh hub Phase 10: 13 of 19 topics complete.**
+- [x] `/service-mesh/gateway-api` — Kubernetes Gateway API (2026-07-28) — 3 subtopics: (1)
+  **Specificity Beats Timestamp in HTTPRoute Conflict Resolution**, correcting this hub's
+  most-repeated single inaccuracy — the main page's theory, mistakes block, AND quiz all said
+  "oldest route wins" as the primary conflict-resolution rule, with the mistakes block showing a
+  MORE SPECIFIC route losing to a LESS SPECIFIC one purely by creation order; verified against
+  the Gateway API spec's own documented precedence (method match, header count, query param
+  count, path specificity — checked BEFORE timestamp, which is only the final tiebreaker) and
+  fixed in all four places (theory, mistakes, quiz, revision summary); (2) **ReferenceGrant
+  Graduated to v1 — the Main Page Used the Older v1beta1**, a gap-closing (not error-correcting)
+  subtopic noting ReferenceGrant's recent graduation while GatewayClass/Gateway/HTTPRoute
+  graduated earlier; (3) **Check the Gateway's Own Programmed Condition, Not Just the Route**,
+  closing a real debugging gap — the main page's status-checking guidance only ever covered
+  HTTPRoute status, never the Gateway resource's own separate Programmed condition. Also verified
+  (and confirmed ACCURATE, no fix needed) the main page's "Istio 1.16+" GAMMA support claim.
+  Gotcha sweep (backtick parity 6/4/4 all even, apostrophe-after-letter/bare `@word`/unescaped
+  `${`/over-escaped `\"`/straight-double-quote-in-label all clean) passed on the first pass —
+  caught and self-corrected one backslash-vs-curly-quote apostrophe mixup in a `[next]` label
+  before building. Confirmed `gateway-api` bare-key collision-free before adding. Build passed
+  clean on the first attempt. Browser-verified successfully: toggle count (14, up from 13) and
+  accordion links confirmed via direct DOM query, the corrected conflict-resolution text
+  confirmed present (and old wrong text confirmed absent) via main-content text search, a
+  subtopic page's full breadcrumb (4 levels)/tailored sidebar/theory/code block/try-it/
+  misconceptions/prev-next nav all verified via `get_page_text`.
+  **Service Mesh hub Phase 10: 14 of 19 topics complete.**
+- [x] `/service-mesh/ingress-gateway` — Ingress Gateway (2026-07-28) — 3 subtopics: (1) **TLS
+  Secret Must Match the Gateway's Own Namespace, Not Always istio-system**, correcting a genuine,
+  repeated overgeneralization — the main page stated "MUST be in istio-system" as an absolute
+  rule across the theory, mistakes block, and quiz, when the real constraint (verified via a
+  GitHub issue quoting real Istio behavior) tracks the Gateway WORKLOAD's own namespace, which
+  only equals istio-system for the default gateway — directly at odds with the page's own
+  "Dedicated Gateway per team" pattern; (2) **SNI Filter Chain Matching Is What Actually Selects
+  the Right Cert**, a mechanism deep-dive explaining the actual Envoy filter-chain-matching
+  behind the main page's "gateway presents the correct cert per hostname" claim; (3)
+  **REGISTRY_ONLY Blocks Traffic via a BlackHoleCluster 502, Not by Removing Routes**, another
+  mechanism deep-dive verified via WebSearch against Istio's own blog on monitoring blocked
+  traffic — a dedicated BlackHoleCluster on the CALLER's own sidecar generates a local 502,
+  contrasted with ALLOW_ANY's PassthroughCluster. Gotcha sweep (backtick parity 4/18/10 all even,
+  apostrophe-after-letter/bare `@word`/unescaped `${`/over-escaped `\"`/straight-double-quote-in-
+  label all clean) passed on the first pass. Confirmed `ingress-gateway` bare-key collision-free
+  before adding. **Hit the documented Windows MAX_PATH `git add` failure for real** on the third
+  subtopic's long slug — renamed only the physical folder/file to `registry-only-blackhole-502`
+  per the established fix, keeping the route's own URL and every other wiring touchpoint on the
+  original descriptive slug; confirmed the route still resolved correctly via direct navigation
+  after a full rebuild. Build passed clean. Browser-verified successfully: toggle count (15, up
+  from 14) and accordion links confirmed via direct DOM query, the corrected TLS-secret-namespace
+  text confirmed present (old text confirmed absent) via main-content text search, a subtopic
+  page's full breadcrumb (4 levels)/tailored sidebar/theory/code block/try-it/misconceptions/
+  prev-next nav all verified via `get_page_text`.
+  **Service Mesh hub Phase 10: 15 of 19 topics complete.**
+- [x] `/service-mesh/performance` — Service Mesh Performance (2026-07-28) — 3 subtopics: (1)
+  **useRemoteAddress Is About Client IP Trust, Not HTTP/2 Performance**, correcting a genuine
+  field mixup — the main page listed useRemoteAddress as an HTTP/2 multiplexing performance
+  lever, verified via WebSearch against Envoy's own docs that it actually controls
+  X-Forwarded-For vs. raw-connection-address trust for client identity, with Envoy's own
+  guidance recommending OPPOSITE values for edge vs. internal proxies; (2) **Envoy Has No JIT
+  Warmup — Only Optional WASM Filters Do**, correcting a fabricated mechanism — the main page
+  attributed pod warmup to "JIT-compiled filters," verified this doesn't exist for Envoy's
+  standard (natively-compiled C++) filter chain, only optional WASM filters involve any
+  JIT-like compilation; corrected to the real causes (cold connection pools, DNS caches,
+  incomplete xDS propagation); (3) **Memory Overhead Scales Per Service, Not Per 1000
+  Services**, correcting a purely self-contained ~1000x numeric contradiction found with NO
+  external research — the theory bullet's own formula predicted ~0.5MB for the page's own
+  500-service example, while the mistakes block AND QnA both independently said ~500-550MB for
+  the SAME scenario; reconciled to ~1MB per service. Gotcha sweep (backtick parity 12/6/4 all
+  even, apostrophe-after-letter/bare `@word`/unescaped `${`/over-escaped `\"` all clean) passed
+  on the first pass. **Real SUBTOPICS collision hit**: bare `performance` was already claimed by
+  the Node.js hub — hub-prefixed to `mesh-performance`, matching the hub's own existing
+  progress/search key prefix. Build passed clean. Browser-verified successfully: toggle count
+  (16, up from 15) and accordion links confirmed via direct DOM query, all three corrections
+  confirmed present (old text confirmed absent) via main-content text search, a subtopic page's
+  full breadcrumb (4 levels)/tailored sidebar/theory/code block/try-it/misconceptions/prev-next
+  nav all verified via `get_page_text`.
+  **Service Mesh hub Phase 10: 16 of 19 topics complete.**
+- [x] `/service-mesh/ambient-mesh` — Ambient Mesh (2026-07-28) — 3 subtopics: (1) **Ambient Mesh
+  Reached GA at Istio 1.24, Not 1.22**, correcting a version claim — the main page stated
+  "stable in Istio 1.22 (May 2024)," verified via Istio's own GA blog post ("Reaches General
+  Availability in v1.24," Nov 2024) and a matching March-2024 CNCF post explicitly titled "beta
+  release" for the 1.22 era; (2) **Default Redirection Is iptables+GENEVE, Not eBPF**, correcting
+  an overstatement — the main page framed eBPF as a co-equal default alongside iptables-nft and
+  cited an unconfirmed "kernels < 5.10" figure, verified via Istio's own ambient CNI docs that
+  iptables+GENEVE is the sole default (no kernel floor) and eBPF is a separate opt-in mode
+  (`redirectMode: "ebpf"`) requiring kernel 4.20+; (3) **HBONE Identity Comes From the mTLS
+  Handshake, Not HTTP Headers**, correcting a mechanism claim — the main page said HBONE "adds
+  metadata (source workload identity) in HTTP headers," verified via Istio's own architecture
+  docs that HBONE is an HTTP/2 CONNECT tunnel running OVER an already-established mTLS
+  connection, with the mTLS handshake's SPIFFE certificates (not any header) conveying identity.
+  **Notable: the GA-version and HBONE-identity corrections each had to be applied in FOUR
+  separate spots** (theory bullet, `page-meta`'s `since=` attribute / a quiz explanation, a QnA
+  answer, and a revision-card bullet) — the initial edit pass caught only the theory bullet for
+  each, and the other 3 occurrences per claim were found only by reading the FULL rendered page
+  text in the browser after the first build, not by re-reading the source `.ts` file. Gotcha
+  sweep (backtick parity 2/6/2 all even; apostrophe-after-letter, bare `@word`, bare `{` in
+  prose, `[prev]`/`[next]` double-quote and backslash-apostrophe checks) all clean. `ambient-mesh`
+  SUBTOPICS key confirmed collision-free (checked both quoted/unquoted forms), left bare. Build
+  passed clean. Browser-verified: nav accordion toggle opens with all 3 links (confirmed via DOM
+  query), auto-expand-on-direct-navigation confirmed, a subtopic page's full breadcrumb (4
+  levels)/tailored sidebar/theory/code block/try-it/misconceptions/prev-next nav all verified via
+  `get_page_text`, dark mode rendering confirmed via screenshot.
+  **Service Mesh hub Phase 10: 17 of 19 topics complete.**
+- [x] `/service-mesh/multi-cluster` — Multi-Cluster Mesh (2026-07-28) — 3 subtopics: (1)
+  **Multi-Primary Discovery Is Independent API Watching, Not a Peer Protocol**, correcting a
+  fabricated mechanism — the main page named a "PILOT_PEERS" bullet claiming Istiod instances
+  exchange config "via `remotePilotAddress` or via secret-based peer discovery," directly
+  contradicting the page's OWN correct "Service discovery" bullet one line above it; verified via
+  Istio's own multi-primary install docs that each Istiod independently watches the OTHER
+  cluster's Kubernetes API server via remote-secret credentials, with no Istiod-to-Istiod protocol
+  at all; (2) **remotePilotAddress Belongs to Primary-Remote, Not Multi-Primary**, the natural
+  follow-up — `remotePilotAddress` IS a real Istio field, just scoped to the DIFFERENT
+  Primary-Remote topology (routes a remote cluster's sidecars to the primary's Istiod for xDS),
+  confirmed it plays no role in Multi-Primary's config exchange; (3) **Kiali Multi-Cluster Support
+  Predates 1.73 by Years**, correcting an inflated version gate — the main page claimed "Kiali
+  1.73+ supports multi-cluster service graphs," verified via Kiali's own release blog that initial
+  experimental "Cluster Boxes" multi-cluster support shipped at v1.29/1.30, refined gradually
+  since, with Kiali now on a v2.x release series entirely. **New style-consistency catch found
+  post-build via direct browser inspection**: markdown-style backtick-wrapped inline code mentions
+  inside `[innerHTML]`-bound fields (theory `points`, misconceptions, try-it `prompt`/`hint`)
+  render as literal backtick characters rather than styled `<code>` — converted 9 occurrences to
+  `<code>` tags across 2 files, correctly leaving the `exercise.solution` field's own backticks
+  alone (plain interpolation inside a pre/code block, where raw backticks are the established
+  correct convention). Gotcha sweep (backtick parity 2/2/10 all even; bare `@word`, double-quote-
+  in-label, bare `{` in prose, over-escaped `\"` all clean) passed. `multi-cluster` SUBTOPICS key
+  confirmed collision-free, left bare. Build passed clean both before and after the backtick
+  style fix. Browser-verified: nav accordion toggle opens with all 3 links, old wrong phrasing
+  ("PILOT_PEERS", "Kiali 1.73+ supports") confirmed absent while corrected text confirmed present
+  via direct DOM text search, a subtopic page's full breadcrumb (4 levels)/tailored sidebar/theory/
+  code block/try-it/misconceptions/prev-next nav all verified via `get_page_text`, dark mode
+  rendering (styled `<code>` pills visible) confirmed via screenshot.
+  **Service Mesh hub Phase 10: 18 of 19 topics complete.**
+- [x] `/service-mesh/consul` — Consul Service Mesh (2026-07-29) — 3 subtopics: (1) **Consul Certs
+  Are Genuinely SPIFFE-Format, Not a Separate Identity Model**, correcting a genuine
+  self-contradiction — one theory bullet said Consul identity is "not SPIFFE SVIDs... a key
+  difference from Istio," a LATER bullet on the same page said Consul certs are "SPIFFE-compatible
+  in format" — verified via Consul's own built-in CA docs that Consul's per-service mTLS certs
+  genuinely use `spiffe://` URI SANs (e.g. `spiffe://<cluster-id>.consul/ns/default/dc/dc1/svc/web`),
+  so the FORMAT is identical to Istio's and only the issuing CA differs; (2) **Leaf Cert Rotation
+  Is a 60–90% Window, Not a Fixed 60%**, correcting an imprecise claim — verified via Consul's own
+  leaf-certificate docs that refresh happens somewhere in a jittered 60%–90% window of elapsed
+  lifetime (deliberately spread out to avoid synchronized CA load), not at a single fixed 60%
+  instant; (3) **Peered Service DNS Names Include the Peer's Own Name as a Segment**, correcting a
+  wrong DNS template — the main page's `<svc>.svc.peer.consul` had no place for the peer's own name
+  at all, verified via Consul's own DNS reference the real format is
+  `<service>.service.<peer-name>.peer.<domain>` (concrete example: `_redis._tcp.service.phx1.peer.consul`).
+  **A genuine, previously-undocumented bug caught during the gotcha sweep**: angle-bracket
+  PLACEHOLDER tokens like `<svc>`/`<peer-name>` (meant as "insert a value here," not real HTML)
+  written directly inside `[innerHTML]`-bound fields (`exercise.prompt`, `misconceptions.thought`/
+  `.reality`) get parsed as actual unknown HTML elements and silently vanish from the rendered
+  page — same root cause as the established literal-tag-name gotcha, but triggered by a
+  placeholder convention instead; fixed with the standard `&lt;`/`&gt;` entity-escape plus
+  `<code>` wrap. A related INVERSE mistake was also caught and fixed in the same sweep: `<code>`
+  tags mistakenly added inside a `solution` field (plain interpolation, not `[innerHTML]`) would
+  have rendered as literal, visible "`<code>`" text — removed, left as raw text per the
+  established `solution`-field convention. Gotcha sweep (backtick parity 2/2/12 all even after
+  fixes; bare `@word`, double-quote-in-label, over-escaped `\"` all clean) passed. `consul`
+  SUBTOPICS key confirmed collision-free, left bare. Build passed clean both before and after the
+  angle-bracket fix. **Browser verification note**: the Browser pane's screenshot tool became
+  unavailable mid-verification ("not displayed, so the page is not compositing frames"), and
+  synthetic click dispatch on the nav-accordion toggle stopped reliably reaching its Angular
+  `(click)` handler — confirmed this was a session/tooling artifact, not a regression, by
+  reproducing the identical failure on an already-shipped, previously-verified toggle (`mtls`)
+  from an earlier batch. Verified correctness instead via Angular's own debug API
+  (`window.ng.getComponent(...).toggleSubtopics('consul', ...)` followed by
+  `isSubtopicsExpanded('consul')` and a `.nav-subtopic-link` DOM query — all confirmed correct) and
+  via auto-expand-on-direct-navigation (landing directly on a subtopic URL correctly shows all 3
+  links with no click needed at all). Old wrong phrasing ("not SPIFFE SVIDs", "at 60% of TTL",
+  "svc.peer.consul` DNS names") confirmed absent and corrected text confirmed present via direct
+  DOM text search; a subtopic page's full breadcrumb (4 levels)/tailored sidebar/theory/code
+  block/try-it/misconceptions/prev-next nav all verified via `get_page_text`.
+  **Service Mesh hub Phase 10: COMPLETE — 19 of 19 topics, 57 subtopic pages total.**
 
 #### System Design — 24 topic pages
 
-- [ ] `/system-design/framework` — System Design Framework
-- [ ] `/system-design/capacity-estimation` — Capacity Estimation
-- [ ] `/system-design/cap-theorem` — CAP & PACELC Theorems
-- [ ] `/system-design/networking` — Networking Fundamentals
-- [ ] `/system-design/scaling` — Horizontal vs Vertical Scaling
-- [ ] `/system-design/load-balancing` — Load Balancing
-- [ ] `/system-design/caching` — Caching Strategies
-- [ ] `/system-design/cdn` — Content Delivery Networks
-- [ ] `/system-design/sharding` — Database Sharding
-- [ ] `/system-design/sql-vs-nosql` — SQL vs NoSQL
-- [ ] `/system-design/replication` — Replication Strategies
-- [ ] `/system-design/indexes` — Indexes & Query Optimisation
-- [ ] `/system-design/distributed-transactions` — Distributed Transactions
-- [ ] `/system-design/high-availability` — High Availability
-- [ ] `/system-design/fault-tolerance` — Fault Tolerance
-- [ ] `/system-design/distributed-tracing` — Distributed Tracing
-- [ ] `/system-design/disaster-recovery` — Disaster Recovery
-- [ ] `/system-design/url-shortener` — Design: URL Shortener
-- [ ] `/system-design/social-feed` — Design: Social Feed
-- [ ] `/system-design/chat-application` — Design: Chat Application
-- [ ] `/system-design/search-engine` — Design: Search Engine
-- [ ] `/system-design/payment-system` — Design: Payment System
-- [ ] `/system-design/video-streaming` — Design: Video Streaming
-- [ ] `/system-design/ai-ml-system-design` — Design: AI/ML Systems
+- [x] `/system-design/framework` — System Design Framework (2026-07-29) — **first System Design
+  hub Phase 10 pilot.** Fixed `SysdesignNavComponent`'s missing subtopics-accordion structural
+  gap (10th `*NavComponent` hub in a row missing it at pilot time), copied `MeshNavComponent`'s
+  implementation exactly. 3 subtopics: (1) **SSD Random Read Is 150 Microseconds, Not 100**,
+  correcting the main page's memorized "0.1ms" QnA figure against the canonical "Latency Numbers
+  Every Programmer Should Know" source (real value: 150,000ns = 0.15ms) — the other three
+  memorized numbers on the same page (disk seek 10ms, same-DC RTT ~0.5ms, cross-region RTT
+  ~150ms) all checked out exactly; (2) **Size for Peak QPS, Not Average QPS**, a gap-closing
+  addition — the main page's own worked "100M DAU → ~11,600 QPS" example (confirmed correct
+  arithmetic, matching its own quiz answer) never states this is an AVERAGE, when standard
+  interview guidance is to size infrastructure for 2-3x that at peak; (3) **Little's Law Turns
+  QPS Into Concurrent Connections Needed**, another gap-closing addition — adds the L=λW formula
+  connecting the main page's own QPS and latency numbers into a concrete thread/connection-pool
+  sizing answer, a common interview follow-up question the main page's framework doesn't equip
+  candidates to answer. **Verification style note**: unlike most hubs' pilots, 2 of 3 subtopics
+  here were gap-closing rather than error-correcting, since "framework" is largely accurate
+  interview-methodology content with few hard, checkable factual claims — the established
+  "verify claims, fix real inaccuracies" discipline still applied to the one number that WAS
+  checkable (SSD latency). `framework` SUBTOPICS key confirmed collision-free, left bare.
+  `.sysdesign-page` wrapper confirmed NOT global — full wrapper rule added to all 3 subtopic
+  `.scss` files. Gotcha sweep (backtick parity 2/2/2 all even, bare `@word`/double-quote-in-label/
+  over-escaped `\"`/angle-bracket-placeholder-in-innerHTML all clean) passed on the first pass —
+  no angle-bracket placeholders needed in this batch's content, unlike the immediately-preceding
+  Consul batch. Build passed clean. Browser-verified: nav accordion toggle confirmed via direct
+  method invocation (`window.ng.getComponent(...).toggleSubtopics(...)`, a same-session tooling
+  fallback — see the `consul` entry above) AND via auto-expand-on-direct-navigation (all 3 links
+  correctly appear on direct subtopic-URL navigation, no click needed), 860px wrapper max-width
+  confirmed via `getComputedStyle`, a subtopic page's full breadcrumb (4 levels)/tailored sidebar/
+  theory/code block/try-it/misconceptions/prev-next nav all verified via `get_page_text`.
+- [x] `/system-design/capacity-estimation` — Capacity Estimation (2026-07-29) — 3 subtopics: (1)
+  **SSD Is ~65x Faster Than HDD Seek, Not 1,000x**, correcting a self-contained inconsistency
+  requiring zero external research — the page's own "Rules of thumb" claimed "SSD is 1,000×
+  faster than spinning disk" right below its own table listing SSD random read at 100µs and HDD
+  seek at 10ms, numbers which imply a 100× ratio even before any fact-check; corrected to the
+  externally-verified ~65× using the canonical 150µs SSD figure; (2) **Redis GET Latency Is
+  Network RTT, Not an Extra 1ms**, correcting an overstated cache-latency figure — the page listed
+  Redis/Memcached GET at double its own stated network-RTT figure (1ms vs 0.5ms), verified via
+  real-world Redis benchmarks that cache-server command processing is sub-microsecond, so GET
+  latency tracks the network RTT itself; (3) **Decimal Vendor GB vs. Binary OS GiB Diverge by
+  ~7%**, correcting a claim stated as universal — "storage scales ×1,024 at every step" is true
+  for OS/software binary units but not vendor/marketing decimal units, a well-documented gap
+  (a "1TB" drive shows as "~931GB" in an OS) growing from ~2.4% at KB scale to ~7.4% at GB/TB
+  scale. Gotcha sweep (backtick parity 2/2/2 all even, bare `@word`/double-quote-in-label/
+  over-escaped `\"`/angle-bracket-placeholder-in-innerHTML all clean — the one angle-bracket hit
+  was safely inside a `code:` block) passed. `capacity-estimation` SUBTOPICS key confirmed
+  collision-free, left bare. Build passed clean. Browser-verified: all 3 old wrong phrasings
+  ("1,000× faster than spinning disk", "100 µs" SSD figure, "Redis get (same DC)"+"1 ms")
+  confirmed absent from the main page, corrected text confirmed present, via direct DOM text
+  search; nav accordion auto-expand confirmed all 3 links on direct subtopic-URL navigation;
+  860px wrapper max-width confirmed via `getComputedStyle`.
+- [x] `/system-design/cap-theorem` — CAP & PACELC Theorems (2026-07-29) — 3 subtopics: (1) **The
+  Quorum Quiz Had a Second Technically-Correct Answer**, fixing a self-contained quiz-design flaw
+  requiring zero external research — the page's own quiz named W=2,R=2 as the sole correct answer
+  to "which settings guarantee strong consistency," but one of its own "wrong" options (W=3,R=3)
+  ALSO satisfies the page's own stated W+R>N formula (6>3); fixed by replacing it with a
+  genuinely-wrong option (W=1,R=2, sum 3); (2) **Sequential Consistency Orders ALL Operations, Not
+  Just Writes**, tightening an incomplete definition — "writes appear in order" omitted the exact
+  property (ALL operations, ALL processes, ONE agreed-upon order) that separates sequential from
+  causal consistency directly above it on the same spectrum; (3) **Brewer Conjectured CAP in
+  2000 — Gilbert & Lynch Proved It in 2002**, a gap-closing addition naming the actual formal proof
+  (with its specific asynchronous-network, atomic-consistency conditions) behind "Brewer's theorem
+  (2000)," which the main page never mentioned. Gotcha sweep (backtick parity 2/2/2 all even, bare
+  `@word`/double-quote-in-label/over-escaped `\"`/bare-`{`-in-prose all clean) passed. Caught and
+  fixed one own mistake before build: used HTML-entity `&amp;` inside a bound `[next]` attribute's
+  JS string value (should be a plain `&`, since entities only decode in parsed text content, not
+  JS string literals inside property bindings). `cap-theorem` SUBTOPICS key confirmed
+  collision-free, left bare. Build passed clean. Browser-verified: nav accordion auto-expand
+  confirmed all 3 links on direct subtopic-URL navigation; both main-page fixes (old "W=3, R=3"
+  and "writes appear in order" confirmed absent, new corrected text confirmed present) verified
+  via direct DOM text search; 860px wrapper max-width confirmed via `getComputedStyle`.
+- [x] `/system-design/networking` — Networking Fundamentals (2026-07-29) — 3 subtopics: (1)
+  **EDNS0 Raises the DNS UDP Limit Past the Legacy 512 Bytes**, correcting the page's quiz
+  explanation, which cited a flat "falls back to TCP above 512 bytes" rule — the pre-EDNS0
+  1987-era limit; verified modern DNS negotiates a much larger UDP buffer (commonly ~1232 bytes
+  since the 2020 DNS Flag Day), so DNSSEC-signed responses routinely stay on UDP; (2) **TCP
+  Teardown: TIME_WAIT Can Exhaust Ephemeral Ports**, a gap-closing addition — the page's TCP
+  section covered only the 3-way SETUP handshake, never teardown; added the 4-way close and the
+  real production risk of TIME_WAIT exhausting a service's ~28,000 ephemeral ports under high
+  connection churn (the concrete reason connection pooling is standard advice); (3)
+  **Stale-While-Revalidate Exists to Stop Cache Stampedes**, a gap-closing addition explaining the
+  cache-stampede/thundering-herd problem behind a directive the page named with zero context.
+  **Real SUBTOPICS collision**: bare `networking` already claimed by the Linux hub's own topic —
+  hub-prefixed to `sysdesign-networking`, matching this key's ALREADY-established
+  progress/search prefix (independent of the subtopics collision). Gotcha sweep caught and fixed
+  a backtick-wrapped inline-code mention inside an `[innerHTML]`-bound `prompt` field (converted
+  to `<code>`), correctly leaving the matching backtick in the `solution` field alone (plain
+  interpolation). Build passed clean. Browser-verified: nav accordion auto-expand confirmed all 3
+  links on direct subtopic-URL navigation (collision-resolved key working correctly); 860px
+  wrapper max-width confirmed via `getComputedStyle`.
+- [x] `/system-design/scaling` — Horizontal vs Vertical Scaling (2026-07-29) — 3 subtopics: (1)
+  **The Largest AWS Instance Figure Was Stale — u7in-32tb Is Current**, correcting a deprecated
+  vendor figure — the page cited u-24tb1.metal (448 vCPU, 24 TB) as the vertical-scaling ceiling,
+  verified via AWS's own docs that this instance type is no longer available for new launches; the
+  current largest is u7in-32tb.224xlarge (896 vCPU, 32 TiB); (2) **Gustafson's Law Is Amdahl's
+  Optimistic Counterpart**, a gap-closing addition — the page states Amdahl's pessimistic
+  fixed-problem-size speedup ceiling without noting it assumes strong scaling; added Gustafson's
+  Law (weak scaling, problem size grows WITH the processors), which is what most horizontal
+  scaling for user/data growth actually is; (3) **Firecracker MicroVMs Boot in ~125ms, Not
+  Minutes**, a gap-closing addition — the page's autoscaling QnA covers VM (2-5min) and container
+  (30-60s) cold starts but omits serverless/Firecracker's ~125ms option, which changes the
+  pre-warming calculus. Gotcha sweep (backtick parity 2/2/2 all even, bare `@word`/
+  double-quote-in-label/over-escaped `\"` all clean) passed. `scaling` SUBTOPICS key confirmed
+  collision-free, left bare. Build passed clean. **Hit and resolved a stale `ng serve` dev-server
+  chunk** for the main-page fix — the production build was correct but the live preview served
+  the old "448 vCPU" text until a forced fresh file-write triggered recompilation (confirmed via
+  `preview_logs` showing a fresh `scaling` chunk rebuild). Browser-verified after the fix: nav
+  accordion auto-expand confirmed all 3 links on direct subtopic-URL navigation; old wrong phrasing
+  confirmed absent and "896 vCPU" confirmed present via direct DOM text search; 860px wrapper
+  max-width confirmed via `getComputedStyle`.
+- [x] `/system-design/load-balancing` — Load Balancing (2026-07-29) — 3 subtopics: (1) **ALB's
+  Default Deregistration Delay Is 300 Seconds, Not 60**, correcting the page's QnA, which cited
+  "typically 30-60 seconds" for connection draining while explicitly naming AWS ALB — verified via
+  AWS's own docs that ALB's real default deregistration delay is 300 seconds (5 minutes), with
+  30-60s being a common manually-tuned value, not the default; (2) **VRRP Failover Takes About 3
+  Seconds by Default, Not Under 2**, correcting the page's SPOF fix, which claimed a
+  keepalived/VRRP secondary claims the VIP "in < 2 seconds" — verified via VRRP's own
+  failure-detection formula ((advert_int × 3) + skew_time) that the default 1-second advert_int
+  produces a ~3-second window; (3) **Why Power of Two Choices Beats Picking One Random Server**, a
+  gap-closing addition explaining the theoretical result (Mitzenmacher) behind the page's one-line
+  "near-optimal" claim — an exponential improvement over pure random placement, with only
+  constant-factor gains beyond 2 choices. Gotcha sweep caught and fixed a straight apostrophe
+  inside a `[prev]` bound attribute (should be the typographic curly quote); backtick parity
+  4/2/2 all even (the 4 in the first file split correctly between a `code:` block and a
+  `solution:` field, both safe). `sysdesign-load-balancing` SUBTOPICS key used — bare
+  `load-balancing` already claimed by the AWS hub's own topic. Build passed clean. Browser-verified
+  (after clicking into the collapsed "Common Mistakes" accordion to reach the relevant text): old
+  wrong phrasing ("< 2 seconds") confirmed absent, "~3 seconds" confirmed present; nav accordion
+  auto-expand confirmed all 3 links on direct subtopic-URL navigation; 860px wrapper max-width
+  confirmed via `getComputedStyle`.
+- [x] `/system-design/caching` — Caching Strategies (2026-07-29) — 3 subtopics: (1) **Redis
+  Defaults to noeviction, Not LRU**, correcting the page's Quick Reference, which called LRU
+  "Default Redis eviction" — verified via Redis's own docs that the real default
+  `maxmemory-policy` is `noeviction` (rejects writes at the limit rather than evicting anything);
+  (2) **The Multi-Level Cache Example Never Invalidates L1**, a self-contained gap found by
+  cross-checking the page's own two code samples — `updateUser()` only calls `redis.del()`
+  (invalidating L2), while a separate multi-level-cache example's L1 in-process `Map` has no
+  invalidation path at all, an unstated 30-second staleness window when the two are combined; (3)
+  **The PER Code Is Missing XFetch's Recompute-Cost Signal**, a gap-closing addition — the page's
+  "Probabilistic Early Expiration" code names the real XFetch algorithm (Vattani et al.) but its
+  formula omits `delta` (observed recompute cost), verified against the actual published formula.
+  Gotcha sweep (backtick parity confirmed via a clean production build, given high raw counts from
+  escaped nested code samples; bare `@word`/double-quote-in-label/over-escaped `\"` all clean)
+  passed. `sysdesign-caching` SUBTOPICS key used — bare `caching` already claimed by the Web
+  Performance hub's own topic. Build passed clean. Browser-verified: nav accordion auto-expand
+  confirmed all 3 links on direct subtopic-URL navigation; old wrong phrasing ("Default Redis
+  eviction") confirmed absent and corrected text confirmed present via direct DOM text search;
+  860px wrapper max-width confirmed via `getComputedStyle`.
+- [x] `/system-design/cdn` — Content Delivery Networks (2026-07-29) — 3 subtopics: (1)
+  **Cloudflare's 100+ Tbps Figure Was Stale, Now 500+**, correcting the page's DDoS QnA answer —
+  verified via Cloudflare's own 2026 blog post that the network has since crossed 500 Tbps of
+  provisioned external capacity, with the caveat (also stated by Cloudflare) that this is
+  provisioned capacity/ceiling, not typical traffic served; (2) **Anycast Failover Takes BGP
+  Convergence Time, Not Instant**, a gap-closing addition expanding the anycast quiz's true-but-
+  incomplete "automatic failover" claim with the actual convergence window (5-15s typical, up to
+  30-90s with default timers; ~100-150ms with BFD explicitly configured); (3) **Raw Vary: Cookie
+  Fragments the Cache — Normalize It Instead**, a gap-closing addition expanding the QnA's
+  "vary by a user segment cookie" personalization advice with the well-documented cache-
+  fragmentation trap of varying on the raw Cookie header (usually a unique session ID per user,
+  driving hit rate toward zero) and the standard normalize-to-a-bounded-header fix. Self-caught
+  and fixed two authoring mistakes before build: a literal double-quote inside a double-quoted
+  `subtopicLabel` attribute (rephrased to avoid it — no safe escape exists for that collision),
+  and an over-escaped `\\'` inside a backtick-delimited `code:` field (backticks never need
+  apostrophe-escaping; removed it). `cdn` SUBTOPICS key collision-free, left bare. Build passed
+  clean. Browser-verified: nav accordion auto-expand confirmed all 3 links on direct subtopic-URL
+  navigation with the toggle showing its open state; old wrong phrasing ("100+ Tbps") confirmed
+  absent and corrected text ("500 Tbps") confirmed present via DOM text search (after expanding
+  the collapsed QnA question); 860px wrapper max-width confirmed via `getComputedStyle`.
+  **System Design hub Phase 10: 8 of 24 topics complete.**
+- [x] `/system-design/sharding` — Database Sharding (2026-07-29) — 3 subtopics: (1) **The 64 TB /
+  100k TPS Figures Are RDS Limits, Not PostgreSQL Itself**, correcting the page's "Why shard?"
+  opener — verified that 64 TB is AWS RDS's managed-storage ceiling (not a PostgreSQL software
+  limit; self-hosted Postgres has no such cap, and the real PG-specific limit is 32 TB per single
+  table) and that single-node Postgres has been benchmarked past 3 million TPS on read-heavy
+  workloads; (2) **Naive Double-Write Resharding Is Risky — Vitess Uses CDC Instead**, a gap-
+  closing addition expanding the page's "double-write to old + new shard" resharding description
+  with the well-documented dual-write problem and verifying Vitess's own VReplication/VStreamer
+  actually uses binlog-based CDC, not application dual writes; (3) **Why Basic Consistent Hashing
+  Still Needs Virtual Nodes**, a gap-closing addition quantifying why virtual nodes matter — ~30%
+  load variance without them, under 1% with. `sharding` SUBTOPICS key collision-free, left bare.
+  Build passed clean. Browser-verified: nav accordion auto-expand confirmed all 3 links on direct
+  subtopic-URL navigation with the toggle showing its open state; old wrong phrasing ("tops out
+  around 100k TPS and 64 TB") confirmed absent and corrected text ("AWS RDS", "3 million TPS")
+  confirmed present via direct DOM text search; 860px wrapper max-width confirmed via
+  `getComputedStyle`. **System Design hub Phase 10: 9 of 24 topics complete.**
+- [x] `/system-design/sql-vs-nosql` — SQL vs NoSQL (2026-07-29) — 3 subtopics: (1) **Isolation as
+  Taught Describes Serializable, Not the Default**, correcting two of the page's ACID quiz
+  explanations — verified that "transactions execute as if serial" describes the Serializable
+  isolation level specifically, and neither PostgreSQL (Read Committed) nor MySQL/InnoDB
+  (Repeatable Read) defaults to it; (2) **MongoDB Sharded-Cluster Transactions Arrived in 4.2, Not
+  4.0**, correcting the QnA's "since v4.0" claim — verified via MongoDB's own release history that
+  4.0 covered replica sets only, sharded-cluster transaction support shipped a year later in 4.2;
+  (3) **DynamoDB Scales Automatically, But One Partition Still Has a Ceiling**, tightening the
+  theory section's "scales to any throughput" to match the page's own more precise QnA, which
+  already names the real per-partition ceiling (~10 GB, ~3,000 RCU / ~1,000 WCU). `sql-vs-nosql`
+  SUBTOPICS key collision-free, left bare. Build passed clean. Browser-verified: nav accordion
+  auto-expand confirmed all 3 links on direct subtopic-URL navigation with the toggle showing its
+  open state; old wrong phrasing confirmed absent and corrected text confirmed present via direct
+  DOM text search (after expanding the collapsed QnA question for the MongoDB fix); 860px wrapper
+  max-width confirmed via `getComputedStyle`. **System Design hub Phase 10: 10 of 24 topics
+  complete.**
+- [x] `/system-design/replication` — Replication Strategies (2026-07-29) — 3 subtopics: (1)
+  **PostgreSQL's synchronous_standby_names Needs a Quoted Name**, correcting the theory section's
+  invalid `= 1` example (contradicted the page's own later correct `= 'replica1'` example, caught
+  via a self-contained cross-check, fix verified against PostgreSQL's own docs); (2) **Quorum
+  (W+R > N) Guarantees Overlap, Not True Linearizability**, tightening the "strongly consistent"
+  claim with the well-documented sloppy-quorum/concurrent-write/racing-read caveats; (3)
+  **DynamoDB Isn't Tunable Like Cassandra — It's a Binary Choice**, correcting the page's grouping
+  of DynamoDB with Cassandra's tunable quorum model — verified DynamoDB offers only a binary
+  eventually-vs-strongly-consistent read choice. `replication` SUBTOPICS key collision-free, left
+  bare. Build passed clean. Browser-verified: nav accordion auto-expand confirmed all 3 links on
+  direct subtopic-URL navigation with the toggle showing its open state; old wrong phrasing
+  confirmed absent and corrected text confirmed present via direct DOM text search; 860px wrapper
+  max-width confirmed via `getComputedStyle`. **System Design hub Phase 10: 11 of 24 topics
+  complete.**
+- [x] `/system-design/indexes` — Indexes & Query Optimisation (2026-07-29) — 3 subtopics: (1)
+  **MySQL InnoDB Auto-Creates the FK Index — It Doesn't Just Warn**, correcting the mistake block's
+  "MySQL warns about this" claim — verified via MySQL's own docs that InnoDB auto-creates the
+  missing FK index; (2) **REINDEX CONCURRENTLY Avoids Write Locks, But Isn't Fully Lock-Free**,
+  tightening the QnA's "without locking the table" claim — verified it holds a SHARE UPDATE
+  EXCLUSIVE lock blocking other schema changes, though correctly not blocking reads/writes; (3)
+  **The Full Rule Is Equality-Sort-Range, Not Just Equality-Then-Range**, a gap-closing addition
+  expanding the composite-index ordering rule with the ESR rule's middle SORT-column slot.
+  **Real SUBTOPICS collision**: bare `indexes` already claimed by the SQL hub's own topic —
+  hub-prefixed to `sysdesign-indexes`. Build passed clean. Browser-verified: nav accordion
+  auto-expand confirmed all 3 links on direct subtopic-URL navigation with the toggle showing its
+  open state; old wrong phrasing confirmed absent and corrected text confirmed present via direct
+  DOM text search (after expanding the collapsed Common Mistakes and QnA sections); 860px wrapper
+  max-width confirmed via `getComputedStyle`; SQL hub's own `/sql/indexes` page confirmed
+  unaffected. **System Design hub Phase 10: 12 of 24 topics complete — halfway point passed.**
+- [x] `/system-design/distributed-transactions` — Distributed Transactions (2026-07-29) — 3
+  subtopics: (1) **The Idempotency Key Example Used Date.now(), Defeating Retries**, fixing a
+  self-contained bug — the code sample regenerated its key from the current timestamp on every
+  call, contradicting its own retry walkthrough (which showed the SAME key sent twice); fixed to
+  `crypto.randomUUID()` generated once, verified against Stripe's own documented idempotency
+  practice; (2) **Kafka Offset-Committing Is Specific to Consume-Transform-Produce**, tightening
+  the "Kafka transactions... marks offset as committed" claim — verified `sendOffsetsToTransaction()`
+  only applies to stream processing, not every Kafka transaction, and that the page's own outbox
+  example never involved a consumer offset at all; (3) **TCC's Timeout Recovery Still Needs a
+  Transaction Manager**, a gap-closing addition — verified against Apache Seata's own docs that a
+  Transaction Manager still drives timeout-triggered Cancel calls, and that TCC has its own
+  documented "suspended" edge case. Self-caught and fixed a double-quote/apostrophe mistake and an
+  over-escaped backslash before build. Hit one transient build error that did not reproduce on
+  retry (confirmed the file content was clean via direct inspection first). `distributed-
+  transactions` SUBTOPICS key collision-free, left bare. Build passed clean on retry.
+  Browser-verified: nav accordion auto-expand confirmed all 3 links on direct subtopic-URL
+  navigation with the toggle showing its open state; old wrong phrasing confirmed absent and
+  corrected text confirmed present via direct DOM text search; 860px wrapper max-width confirmed
+  via `getComputedStyle`. **System Design hub Phase 10: 13 of 24 topics complete.**
+- [x] `/system-design/high-availability` — High Availability (2026-07-29) — 3 subtopics: (1) **RDS
+  Multi-AZ DB Clusters Fail Over in Under 35 Seconds**, a gap-closing addition — the page's "60-120
+  seconds" figure is correct for the traditional Multi-AZ instance deployment, but AWS also offers
+  a newer Multi-AZ DB Cluster option (under 35s failover, readable standbys) the page never
+  mentioned; (2) **Request-Based and Time-Based Error Budgets Aren't the Same Thing**, correcting
+  the error-budget QnA's "0.1% of requests... OR 8.7 hours downtime" phrasing — verified against
+  Google's SRE book that these are genuinely different methodologies; (3) **Active-Active's Instant
+  Failover Still Waits on Health-Check Detection**, tightening the "failover is instant" quickRef/
+  theory phrasing with the real detection window (interval × unhealthy-threshold). Hit the
+  documented Windows MAX_PATH `git add` failure on the RDS subtopic's long slug — fixed via the
+  established short-folder-name recipe, route URL unchanged. Also caught (before build) a new
+  gotcha: a bare `\` before a newline inside a bash `codeTabs` sample is parsed as a JS
+  LineContinuation and silently erases the line break — fixed with `\\`, matching the codebase's
+  existing convention. `high-availability` SUBTOPICS key collision-free, left bare. Build passed
+  clean. Browser-verified: nav accordion auto-expand confirmed all 3 links on direct subtopic-URL
+  navigation with the toggle showing its open state; old wrong phrasing confirmed absent and
+  corrected text confirmed present via direct DOM text search; 860px wrapper max-width confirmed
+  via `getComputedStyle`; renamed route confirmed resolving correctly at its full descriptive URL.
+  **System Design hub Phase 10: 14 of 24 topics complete.**
+- [x] `/system-design/fault-tolerance` — Fault Tolerance (2026-07-29) — 3 subtopics: (1) **The
+  Rate Limiter Was Configured for 600/min, Not 10/min**, fixing a self-contained unit bug — the
+  Challenge solution's `new TokenBucketLimiter(redis, 10, 20)` comment claimed "10/min" but the
+  class's own constructor signature names that parameter `ratePerSec`, making it 60x too
+  permissive; fixed to `10 / 60`; (2) **The Fraud-Check Timeout Breaks the Page's Own 2-3x Rule**,
+  fixing an internal inconsistency — the same solution's fraud-check timeout used only 1.25x p99
+  while its own stripe.charge call correctly used 2.5x, both against the page's own stated "2-3x
+  p99" QnA rule; fixed to 2000ms; (3) **PUT Is Idempotent by Definition — It Doesn't Need a Key**,
+  a gap-closing addition correcting "PUT (with idempotency key)" — verified via RFC 7231 that PUT/
+  DELETE/GET are idempotent by definition, no key needed; that workaround is specifically for
+  POST. `fault-tolerance` SUBTOPICS key collision-free, left bare. All three subtopic folders kept
+  short from the start to avoid a repeat of the prior batch's MAX_PATH failure. Build passed
+  clean. Browser-verified: nav accordion auto-expand confirmed all 3 links on direct subtopic-URL
+  navigation with the toggle showing its open state; old wrong phrasing confirmed absent and
+  corrected text confirmed present via direct DOM text search (after the Challenge's two-step
+  Reveal Solution + View Code accordion); 860px wrapper max-width confirmed via
+  `getComputedStyle`. **System Design hub Phase 10: 15 of 24 topics complete.**
+- [x] `/system-design/distributed-tracing` — Distributed Tracing (2026-07-29) — 3 subtopics: (1)
+  **The Tail-Based Sampling Example Was Actually Head-Based**, fixing a self-contradicting
+  label — the mistake block's header comment said "tail-based sampling" while its own next line
+  said "1% head sample"; verified against OpenTelemetry's docs and fixed to correctly describe
+  the combined head (SDK)/tail (Collector) strategy; (2) **Jaeger No Longer Needs the OTel
+  Collector for Basic Setups**, a gap-closing addition — verified Jaeger has accepted OTLP
+  directly since v1.35 (2022), an option the page's only example never mentions; (3) **Tempo's
+  No-Indexing Claim Needs a TraceQL Caveat**, a gap-closing addition — verified TraceQL enables
+  real attribute-based search via bloom filters, not just exact trace-ID lookup. `distributed-
+  tracing` SUBTOPICS key collision-free, left bare (a different, unrelated hub route at
+  `/observability/distributed-tracing` does not collide with the SUBTOPICS map). Build passed
+  clean. Browser-verified: nav accordion auto-expand confirmed all 3 links on direct subtopic-URL
+  navigation with the toggle showing its open state; old wrong phrasing confirmed absent and
+  corrected text confirmed present via direct DOM text search; 860px wrapper max-width confirmed
+  via `getComputedStyle`. **System Design hub Phase 10: 16 of 24 topics complete.**
+- [x] `/system-design/disaster-recovery` — Disaster Recovery (2026-07-29) — 3 subtopics: (1)
+  **RDS PITR's 5-Minute Window Claim Confuses Granularity With Recency**, fixing a self-
+  contradiction — the theory said "restore to any 5-min window" while the page's own Challenge
+  solution assumed 30-second precision; verified against AWS docs (LatestRestorableTime is a
+  recency lag, not restore granularity) and fixed both; (2) **RDS Multi-AZ DB Clusters Apply Here
+  Too**, cross-referencing this hub's own already-verified High Availability fact (under-35s
+  failover) to this page's own AZ-failure Challenge scenario; (3) **Why Aurora Global Beats a
+  Plain Cross-Region Replica**, explaining the mechanical reason (dedicated storage-based
+  replication vs. logical WAL replication) behind the page's two unexplained RPO figures.
+  `disaster-recovery` SUBTOPICS key collision-free, left bare. Self-caught and fixed an over-
+  escaped backslash before build. Build passed clean. Browser-verified: nav accordion auto-expand
+  confirmed all 3 links on direct subtopic-URL navigation with the toggle showing its open state;
+  old wrong phrasing confirmed absent and corrected text confirmed present via direct DOM text
+  search (after Reveal Solution + View Code); 860px wrapper max-width confirmed via
+  `getComputedStyle`. **System Design hub Phase 10: 17 of 24 topics complete.**
+- [x] `/system-design/url-shortener` — Design: URL Shortener (2026-07-29) — 3 subtopics: (1)
+  **The Collision-Probability Formula Is Near-Certain, Not Negligible**, fixing a pure-arithmetic
+  error — the page's own birthday-paradox formula, evaluated with its own numbers, gives ~100%
+  collision probability, not "negligible"; (2) **The Quiz Answer Was the Mistakes Block's Own
+  Anti-Pattern**, reconciling a real contradiction — the quiz's "best" answer (auto-increment +
+  Base62) is the exact enumerable technique the page's own mistakes block warns against; fixed
+  with a counter-obfuscation approach; (3) **The Read-QPS Comment Didn't Match Its Own Formula**,
+  fixing a ~5x arithmetic mismatch — the Challenge solution's formula divides by RETENTION_YEARS
+  but its own comment silently dropped that term, propagating into readQps and the DB-replica
+  estimate. `url-shortener` SUBTOPICS key collision-free, left bare. Build passed clean. Browser-
+  verified: nav accordion auto-expand confirmed all 3 links on direct subtopic-URL navigation with
+  the toggle showing its open state; old wrong phrasing confirmed absent and corrected text
+  confirmed present via direct DOM text search (after Reveal Solution + View Code); 860px wrapper
+  max-width confirmed via `getComputedStyle`. **System Design hub Phase 10: 18 of 24 topics
+  complete.**
+- [x] `/system-design/social-feed` — Design: Social Feed (2026-07-29) — 3 subtopics: (1)
+  **The Redis ZSET Memory Estimate Ignored Skiplist Overhead**, fixing a real data-structure-
+  overhead gap verified via WebSearch — the page's "8 bytes/entry = 4 TB" estimate counted only
+  the post_id payload, ignoring that ZSETs past the 128-entry listpack threshold use full
+  skiplist+hashtable encoding (~130 bytes/entry), making the real total ~65 TB; (2) **Active-User
+  Count Mismatch: 500M vs. 100M DAU**, a self-contained fix — the read-QPS calc used "500M active"
+  while the page's own Challenge states "500M registered, 100M daily active," a 5x overcount
+  corrected to ~5,800 reads/sec (not ~29,000); (3) **Feed Read Code Still Joined What
+  Denormalization Was For**, reconciling a real contradiction — the "Feed Read" code sample JOINed
+  against `users` despite the page's own repeated denormalization advice, fixed to a single-table
+  SELECT reading the already-denormalized author columns. `social-feed` SUBTOPICS key
+  collision-free, left bare. Build passed clean. Browser-verified: nav accordion opens correctly
+  with all 3 subtopic labels; breadcrumb shows all 4 levels; sidebar shows tailored content; all
+  three main-page fixes confirmed rendering (required clicking each `codeTabs` tab-selector
+  button — `Scale & Storage`/`Feed Read` — not just a single View Code toggle); 860px wrapper
+  max-width confirmed via `getComputedStyle`. **System Design hub Phase 10: 19 of 24 topics
+  complete.**
+- [x] `/system-design/chat-application` — Design: Chat Application (2026-07-29) — 3 subtopics: (1)
+  **WebSocket Map Silently Drops First Device on Multi-Login**, a self-contained code-vs-Challenge
+  contradiction — `connections.set(userId, ws)` used a single-value Map, silently overwriting a
+  device's connection when a second device connected (despite the page's own Challenge requiring
+  multi-device support), fixed to `Map<string, Set<WebSocket>>`; (2) **‘Exactly-Once Delivery’
+  Contradicts the Page's Own At-Least-Once Theory**, reconciling a real internal contradiction —
+  the Challenge asked for "exactly-once" while the Theory section states at-least-once + dedup is
+  the standard, fixed to "effectively-once delivery"; (3) **E2E Encryption Hint Skipped the
+  Double Ratchet**, fixing a WebSearch-verified inaccuracy — the hint described Signal Protocol as
+  repeated public-key encryption per message, corrected to X3DH (one-time) + Double Ratchet
+  (per-message key, forward secrecy). `chat-application` SUBTOPICS key collision-free, left bare.
+  Real gotcha caught during browser verification (not the build): generic syntax like
+  `Map<string, Set<WebSocket>>` in `[innerHTML]`-bound theory/misconceptions text was silently
+  parsed as HTML tags and vanished — fixed by wrapping in `<code>&lt;...&gt;</code>`. Build passed
+  clean (one transient unrelated font-fetch network failure on first attempt, clean on retry).
+  Browser-verified: nav accordion opens with all 3 labels; all three main-page fixes confirmed
+  rendering (E2E fix needed both Reveal Solution + View Code clicks); 860px wrapper confirmed via
+  `getComputedStyle`. **System Design hub Phase 10: 20 of 24 topics complete.**
+- [x] `/system-design/search-engine` — Design: Search Engine (2026-07-29) — 3 subtopics: (1)
+  **30 Shards Doesn't Divide to 33M Docs Per Shard**, a self-contained arithmetic error — the
+  Challenge solution's "500M docs / 30 shards = ~33M docs each" is wrong (~16.7M is correct); the
+  33 actually comes from a separate 1TB/30=~33GB storage calc, mislabeled as a doc count; (2)
+  **Elasticsearch's Default Shard Count Has Been 1, Not 5, Since 7.0**, fixing a WebSearch-verified
+  stale fact — the QnA claimed 5 primary shards by default, changed to 1 in ES 7.0 (2019); (3)
+  **The Split API Resizes Shards Without a Full Reindex**, a gap-closing addition — a faster
+  alternative to the page's own Reindex-based approach for increasing shard count, with two real
+  constraints (read-only source, target must be a multiple of source count). `search-engine`
+  SUBTOPICS key collision-free, left bare. Build passed clean. Browser-verified: nav accordion
+  opens with all 3 labels; both main-page fixes confirmed rendering (arithmetic fix needed Reveal
+  Solution + the solution's own separate View Code toggle; QnA fix needed the QnA section toggle +
+  specific question click); 860px wrapper confirmed via `getComputedStyle`. **System Design hub
+  Phase 10: 21 of 24 topics complete.**
+- [x] `/system-design/payment-system` — Design: Payment System (2026-07-29) — 3 subtopics: (1)
+  **Ledger Worked Example's Fee Split Contradicted the Code Sample**, a self-contained internal
+  contradiction — Theory's own $100 example gave merchant +$100/platform +$0, contradicting the
+  code sample's own 97/3 split for the same scenario; the $0 entry also violated the schema's own
+  `no_zero_amount` CHECK constraint; (2) **Sorting IDs Doesn't Guarantee Lock Order Without ORDER
+  BY**, a WebSearch-verified database-locking gap — sorting IDs in app code before `WHERE id IN()
+  FOR UPDATE` doesn't guarantee the DB locks rows in that order; added `ORDER BY id`; (3) **The
+  Transfer Solution Used the Race Condition Its Own Quiz Warns About** — the Challenge's
+  idempotency check used the exact check-then-act anti-pattern the page's own Quiz Q4 explicitly
+  warns against; added a try/catch treating a unique-constraint violation as "lost the race."
+  `payment-system` SUBTOPICS key collision-free, left bare. Build passed clean. Browser-verified:
+  nav accordion opens with all 3 labels; theory fix confirmed directly; both Challenge-solution
+  fixes needed Reveal Solution + the SOLUTION's own separate View Code toggle (two identical
+  toggles exist — starterCode's and solution's — querying all matches is the reliable approach);
+  860px wrapper confirmed via `getComputedStyle`. **System Design hub Phase 10: 22 of 24 topics
+  complete.**
+- [x] `/system-design/video-streaming` — Design: Video Streaming (2026-07-29) — 3 subtopics: (1)
+  **Stale CDN Capacity Figure, Already Corrected on a Sibling Page** — "Cloudflare/Akamai: 200+
+  Tbps" was stale; this hub's own `/system-design/cdn` topic already corrected the identical fact
+  to 500+ Tbps, caught by cross-referencing a sibling page's already-verified research; (2) **A
+  "300 PB/Month" Figure That Was Actually Per Day**, a self-contained unit-mislabeling bug —
+  multiplying three per-day quantities produced a per-day total labeled "/month" with no ×30
+  step; corrected to ~9,000 PB and ~$90M/month; (3) **Compute Formula Used 4 Resolutions, Ladder
+  Lists 6** — the compute formula's "× 4 resolutions" didn't match the page's own 6-level
+  resolution ladder stated one paragraph earlier; fixed and scaled downstream fleet-size/cost
+  figures by 1.5×. `video-streaming` SUBTOPICS key collision-free, left bare. Build passed clean.
+  Browser-verified: nav accordion opens with all 3 labels; all three main-page fixes confirmed
+  rendering (CDN fix needed the individual "CDN Cache Strategy" tab button, not a broad selector
+  that returns concatenated tab text; Challenge fixes needed Reveal Solution + View Code); 860px
+  wrapper confirmed via `getComputedStyle`. **System Design hub Phase 10: 23 of 24 topics
+  complete — only `/system-design/ai-ml-system-design` remains.**
+- [x] `/system-design/ai-ml-system-design` — Design: AI/ML Systems (2026-07-29) — 3 subtopics: (1)
+  **RAG Pipeline Used the OpenAI SDK With a Claude Model Name**, a self-contained code bug — the
+  generation step called `openai.chat.completions.create()` with `model: 'claude-sonnet-4-6'`
+  (an Anthropic model ID on the OpenAI client), which fails at runtime; fixed to `gpt-4o`; (2)
+  **Challenge Hint Said "LLM 2-4s", Solution's Own P50 Was 1.5s** — the hint's stated range
+  didn't contain the solution's own P50 (1500ms, below the 2s floor); fixed the hint to derive
+  its numbers directly from the solution ("LLM 1.5-3.5s (P50-P99)"); (3) **Naive Serving: "1
+  Request/Sec" vs "15 Tokens/Sec" Don't Reconcile** — theory said ~1 req/sec, the code sample
+  said ~15 tokens/sec for the same baseline; reconciled via the page's own ~400-token response
+  figure, these disagree by ~27x; fixed theory to state tokens/sec, matching the code sample.
+  `ai-ml-system-design` SUBTOPICS key collision-free, left bare. Build passed clean.
+  Browser-verified: nav accordion opens with all 3 labels; all three main-page fixes confirmed
+  rendering; 860px wrapper confirmed via `getComputedStyle`. **System Design hub Phase 10:
+  COMPLETE — 24 of 24 topics done, 72 subtopic pages total.**
 
 #### Architecture Patterns — 22 topic pages
 
-- [ ] `/arch-patterns/monolith-vs-modular` — Monolith vs Modular Monolith
-- [ ] `/arch-patterns/layered-architecture` — Layered Architecture
-- [ ] `/arch-patterns/clean-architecture` — Clean / Onion Architecture
-- [ ] `/arch-patterns/hexagonal-architecture` — Hexagonal Architecture
-- [ ] `/arch-patterns/vertical-slice` — Vertical Slice Architecture
-- [ ] `/arch-patterns/service-oriented` — Service-Oriented Architecture
-- [ ] `/arch-patterns/microservices-principles` — Microservices Principles
-- [ ] `/arch-patterns/service-communication` — Service Communication
-- [ ] `/arch-patterns/api-gateway-pattern` — API Gateway Pattern
-- [ ] `/arch-patterns/service-discovery` — Service Discovery
-- [ ] `/arch-patterns/circuit-breaker` — Circuit Breaker
-- [ ] `/arch-patterns/sidecar-service-mesh` — Sidecar & Service Mesh
-- [ ] `/arch-patterns/event-driven` — Event-Driven Architecture
-- [ ] `/arch-patterns/cqrs-event-sourcing` — CQRS & Event Sourcing
-- [ ] `/arch-patterns/saga-choreography` — Saga & Choreography
-- [ ] `/arch-patterns/inbox-outbox` — Inbox & Outbox Pattern
-- [ ] `/arch-patterns/ddd-core` — Domain-Driven Design Core
-- [ ] `/arch-patterns/bounded-contexts` — Bounded Contexts
-- [ ] `/arch-patterns/aggregates-domain-events` — Aggregates & Domain Events
-- [ ] `/arch-patterns/anti-corruption-layer` — Anti-Corruption Layer
-- [ ] `/arch-patterns/strangler-fig` — Strangler Fig Pattern
-- [ ] `/arch-patterns/backend-for-frontend` — Backend for Frontend (BFF)
+- [x] `/arch-patterns/monolith-vs-modular` — Monolith vs Modular Monolith (2026-07-30) —
+  **first Phase 10 subtopic batch for the Architecture Patterns hub**; fixed `ArchNavComponent`'s
+  missing subtopics-accordion structural gap (11th `*NavComponent` hub in a row missing it at
+  pilot time — copied `TerraformNavComponent`'s implementation directly); also corrected a stale
+  nav-groups line in CLAUDE.md's own "Current state" section (documented as "Foundations, Service
+  Patterns, Data Patterns, Deployment, Reference," actually "Architectural Styles, Microservices,
+  Messaging, Domain-Driven Design, Integration, Reference"). 3 subtopics: (1) **Team-Size
+  Thresholds Disagreed by 5-10 Engineers**, a self-contained internal contradiction — theory's
+  "10-15 engineers" (microservices threshold) vs. the quiz's original "fewer than 20 engineers"
+  (modular monolith threshold) gave opposite advice for a team of 17; fixed the quiz to reference
+  theory's own figure; (2) **SharedKernel's Own ProductId Type Was Never Actually Used** — the
+  Challenge solution declared a `ProductId` SharedKernel export but the one cross-module method
+  (`getProductPrice`) used a bare `string` instead, undercutting the type safety a typed
+  SharedKernel is meant to provide; fixed the signature; (3) **The Modular Monolith's Unstated
+  Tradeoff: One Process, One Failure Domain**, a gap-closing subtopic naming the operational-
+  isolation tradeoff (shared process = shared failure domain) the main page never states despite
+  covering nearly every other angle. `monolith-vs-modular` SUBTOPICS key collision-free, left
+  bare. Real gotcha caught during the sweep (not the build): generic syntax like `Promise<Money>`
+  in `[innerHTML]`-bound fields silently vanishes when parsed as an HTML tag — fixed with
+  `<code>&lt;...&gt;</code>` escaping before publishing. Build passed clean. Browser-verified: nav
+  accordion opens with all 3 labels; both main-page fixes confirmed rendering (team-size fix
+  required clicking through all 6 quiz questions one at a time, since this quiz shows one question
+  at a time rather than a flat list); 860px wrapper confirmed via `getComputedStyle`.
+  **Architecture Patterns hub Phase 10: 1 of 22 topics complete.**
+- [x] `/arch-patterns/layered-architecture` — Layered Architecture (2026-07-30) — 3 subtopics:
+  (1) **Three Sections Said DIP, One Section Said N-Tier** — the QnA claimed layered architecture
+  "allows Infrastructure to be the bottom layer that Domain depends on," contradicted by THREE
+  other sections (quickRef, mistakes block, quiz Q1) all describing the opposite (dependency
+  inversion); fixed the 3-to-1 outlier (QnA) to reconcile with the majority; (2) **The Solution's
+  PlaceOrderHandler Never Declared Its Own repo Field** — the Challenge solution called
+  `this.repo.save(order)` with no constructor/field declaration anywhere, a real TypeScript
+  strict-mode compile error, inconsistent with the page's own earlier correct example; fixed by
+  adding the constructor parameter property; (3) **Why "Read-Only" Is the Safe Case for Skipping
+  a Layer**, a gap-closing subtopic explaining why the page's loose-layering guidance specifically
+  names reads as safe (no state change = no invariant to bypass), connecting to CQRS. Self-caught
+  an over-escaped `\'` inside a backtick-delimited field before build (backticks never need
+  apostrophe-escaping). `layered-architecture` SUBTOPICS key collision-free, left bare. Build
+  passed clean. Browser-verified: nav accordion opens with all 3 labels; both main-page fixes
+  confirmed rendering; 860px wrapper confirmed via `getComputedStyle`. **Architecture Patterns
+  hub Phase 10: 2 of 22 topics complete.**
+- [x] `/arch-patterns/clean-architecture` — Clean / Onion Architecture (2026-07-30) — 3 subtopics:
+  (1) **The mustKnow Ring Order Was Labeled Backwards** — Quick Revision listed "Entities → Use
+  Cases → Interface Adapters → Frameworks (outer to inner)," but that's actually inner-to-outer
+  per the page's own ring definitions and quiz Q1's correctly-ordered explanation; fixed the
+  label; (2) **The Controller Skipped Its Own Presenter** — the "Infrastructure Adapter" code
+  sample's controller built its HTTP response inline instead of using OrderPresenter, despite the
+  page's own file listing, theory, and mistakes block all saying it should; added a real
+  OrderPresenter class; (3) **The OutputPort Pattern: One Use Case, Multiple Presenters**, a
+  gap-closing subtopic showing the OutputPort mechanism the QnA names but never demonstrates in
+  code. Real cross-hub collision RISK caught (not yet an active leak): Design Patterns hub has
+  its own identical `clean-architecture` route slug with no Phase 10 subtopics yet — hub-prefixed
+  the SUBTOPICS entry to `arch-clean-architecture` proactively; confirmed the Design Patterns
+  hub's own clean-architecture page renders with no leaked content. Build passed clean.
+  Browser-verified: nav accordion opens with all 3 labels; both main-page fixes confirmed
+  rendering; 860px wrapper confirmed via `getComputedStyle`. **Architecture Patterns hub Phase
+  10: 3 of 22 topics complete.**
+- [x] `/arch-patterns/hexagonal-architecture` — Hexagonal Architecture (2026-07-30) — 3
+  subtopics: (1) **The Challenge Referenced Two Types It Never Defined** — INotificationGateway
+  and SendNotificationUseCase were used throughout the Challenge (implements/new) but never
+  declared anywhere, a real compile error; fixed by declaring both, matching the main page's own
+  PlaceOrderUseCase pattern; (2) **The Hexagon-Shape Explanation Was Half the Story** — verified
+  via WebSearch that Cockburn's own account gives two reasons for the hexagon shape, the page only
+  had one; added the second (drawing mechanics: simplest non-rectangular polygon with room for
+  multiple ports); (3) **The Solution Named a Real Adapter It Never Actually Used** — the
+  Challenge's hints named a production SmtpGateway the solution never built, violating the page's
+  own "at least two adapters per port" rule; added a real SmtpNotificationGateway at a separate
+  production composition root. `hexagonal-architecture` SUBTOPICS key collision-free (checked
+  app.routes.ts directly this time, not just subtopics.ts, per the lesson from the prior
+  clean-architecture collision), left bare. Build passed clean. Browser-verified: nav accordion
+  opens with all 3 labels; all three main-page fixes confirmed rendering; 860px wrapper confirmed
+  via `getComputedStyle`. **Architecture Patterns hub Phase 10: 4 of 22 topics complete.**
+- [x] `/arch-patterns/vertical-slice` — Vertical Slice Architecture (2026-07-30) — 3 subtopics:
+  (1) **MediatR Went Commercial in July 2025** — verified via WebSearch that the QnA's
+  unqualified "de facto standard" claim went stale; MediatR dual-licensed July 2025 (free under
+  $5M revenue, paid above); fixed the QnA; (2) **Source-Generator Mediators: A Different
+  Technical Tradeoff**, extending #1 — the real technical difference (compile-time source
+  generators vs. runtime reflection) between MediatR and free alternatives like Mediator/
+  Wolverine; (3) **The Rule of Three for Cross-Slice Duplication**, a gap-closing subtopic giving
+  the page's own "some duplication is accepted" principle a concrete extraction trigger. Cleanest
+  main page in the hub so far — no self-contained internal contradictions found. Self-caught the
+  same `\\'` over-escaping mistake as the layered-architecture batch before build.
+  `vertical-slice` SUBTOPICS key collision-free (checked app.routes.ts directly), left bare.
+  Build passed clean. Browser-verified: nav accordion opens with all 3 labels; QnA fix confirmed
+  rendering; generic syntax in innerHTML fields correctly escaped; 860px wrapper confirmed via
+  `getComputedStyle`. **Architecture Patterns hub Phase 10: 5 of 22 topics complete.**
+- [x] `/arch-patterns/service-oriented` — Service-Oriented Architecture (2026-07-30) — 3 subtopics:
+  (1) **Smart Endpoints, Dumb Pipes Was Reversed** — the QnA question title said "smart pipes,
+  dumb endpoints," backwards from the coined phrase (Fowler & Lewis, 2014, verified via
+  WebSearch); caught via a self-contained cross-check — the QnA's own answer body and the page's
+  theory section elsewhere both already used the correct order; fixed the question title;
+  (2) **The SOA Done Right Quote Has No Real Source** — the theory section attributed
+  "Microservices = SOA done right" to Sam Newman by name; verified via WebSearch it's a
+  widely-repeated industry characterization with no traceable single source — a fabricated
+  citation, a new failure mode for this hub (false attribution, not a wrong fact); reworded to
+  drop the false attribution while keeping the sentiment; (3) **The Tolerant Reader Pattern**, a
+  gap-closing subtopic naming Postel's Robustness Principle / Fowler's Tolerant Reader as the
+  consumer-side half the page's own "additive-only changes" advice needs to actually be
+  non-breaking. `service-oriented` SUBTOPICS key collision-free (checked app.routes.ts directly),
+  left bare. Weighed then deferred to this file's own tested precedent on a `[prev]`/`[next]`
+  label instead of gambling on untested `&quot;`-entity-escaping reasoning — reworded the label to
+  drop quote marks entirely. Build passed clean. Browser-verified: nav accordion opens with all 3
+  labels (confirmed via direct DOM read after a same-tick query returned empty — an Angular
+  change-detection timing artifact, not a bug); both main-page fixes confirmed rendering;
+  breadcrumb showed all 4 levels; sidebar showed tailored content; 860px wrapper confirmed via
+  `getComputedStyle`. **Architecture Patterns hub Phase 10: 6 of 22 topics complete.**
+- [x] `/arch-patterns/microservices-principles` — Microservices Principles (2026-07-30) — 3
+  subtopics: (1) **The Decentralised-Data Example Referenced an Undefined Type** — the code
+  sample annotated `product: ProductDto` and `Promise<ProductDto | null>` but never declared the
+  interface; reads clearly, doesn't compile; fixed by declaring it; (2) **Why Chatty Nanoservices
+  Actually Get Slow**, a gap-closing subtopic quantifying the mistakes block's bare "creates
+  chatty network calls" claim with the actual per-hop overhead arithmetic, reframing it as a
+  bounded-context mistake rather than a service-count problem; (3) **Consumer-Driven Contract
+  Testing in Practice**, a gap-closing subtopic making the theory section's name-dropped practice
+  concrete (Pact-style: consumers publish contracts, providers replay them in CI), explicitly
+  tying back to the Service-Oriented Architecture topic's Tolerant Reader subtopic. Verified via
+  WebSearch that the Werner Vogels quote and two-pizza-team figure are both accurate — checked,
+  no issue found. Caught a new backtick-wrapped-generic variant of the innerHTML-vanishing
+  gotcha (backticks don't protect `<...>` from being misparsed as an HTML tag) via the pre-build
+  sweep. `microservices-principles` SUBTOPICS key collision-free (checked app.routes.ts
+  directly), left bare. Build passed clean. Browser-verified: nav accordion opens with all 3
+  labels; the ProductDto fix confirmed rendering inside real `<code>` elements; breadcrumb showed
+  all 4 levels; 860px wrapper confirmed via `getComputedStyle`. **Architecture Patterns hub
+  Phase 10: 7 of 22 topics complete.**
+- [x] `/arch-patterns/service-communication` — Service Communication (2026-07-30) — 3 subtopics:
+  (1) **The gRPC Size Claim Was Overprecise** — the page said Protobuf is "~7x smaller than
+  JSON" in two places; verified via WebSearch the commonly cited figure is 3-5x, varying by
+  payload shape; corrected to a caveated range; (2) **How the Outbox Pattern Actually Works**, a
+  gap-closing subtopic explaining the mechanism behind the mistakes block's one-line fix — atomic
+  write to an outbox table, a separate relay process, at-least-once (not exactly-once) delivery;
+  (3) **Why Browsers Cannot Call gRPC Directly**, a gap-closing subtopic explaining the real
+  platform limitation (Fetch API never implemented HTTP/2 trailers) behind the page's unexplained
+  "REST for browser clients" recommendation, verified via WebSearch. `service-communication`
+  SUBTOPICS key collision-free (checked app.routes.ts directly), left bare. Build passed clean.
+  Browser-verified: nav accordion opens with all 3 labels; both main-page fixes confirmed
+  rendering; breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`.
+  **Architecture Patterns hub Phase 10: 8 of 22 topics complete.**
+- [x] `/arch-patterns/api-gateway-pattern` — API Gateway Pattern (2026-07-30) — 3 subtopics:
+  (1) **Promise.all Hid an Accidental Fail-Fast Choice** — the theory says the fail-vs-degrade
+  choice should be explicit, but the Request Aggregation codeTab used Promise.all, silently
+  choosing fail-fast; fixed with an explanatory comment; (2) **The Boundary Burst Problem in
+  Fixed-Window Rate Limiting**, a gap-closing subtopic naming and explaining the classic algorithm
+  the rate-limiting codeTab implements and its well-known reset-boundary flaw; (3) **How mTLS
+  Makes the Forwarded-Identity Header Trustworthy**, a gap-closing subtopic making concrete what
+  "network policy enforcement" actually means, tying to the Sidecar & Service Mesh topic.
+  Considered but deliberately did NOT relabel the YARP config codeTab's language (json vs
+  typescript) — reasoned the TypeScript grammar likely renders JSON content better than bash
+  would, so left it unchanged rather than blindly applying the Azure hub's own precedent.
+  `api-gateway-pattern` SUBTOPICS key collision-free (checked app.routes.ts directly), left bare.
+  Build passed clean. Browser-verified: nav accordion opens with all 3 labels; the Promise.all fix
+  confirmed rendering; breadcrumb showed all 4 levels; 860px wrapper confirmed via
+  `getComputedStyle`. **Architecture Patterns hub Phase 10: 9 of 22 topics complete.**
+- [x] `/arch-patterns/service-discovery` — Service Discovery (2026-07-30) — 3 subtopics:
+  (1) **The Registry's register() Was Not Idempotent** — the Challenge's reference solution
+  appended registrations unconditionally, so a service re-registering with the same id (a normal
+  reconnect, not an edge case) silently created a stale duplicate setHealth() couldn't reach;
+  fixed with an upsert; (2) **The Cache Never Actually Refreshed in the Background**, a
+  gap-closing subtopic on the gap between the mistakes block's promised fix and the codeTab's
+  actual cache-aside-with-TTL-deletion behavior; (3) **Why Long-Lived Connections Can Outlive a
+  Dead Pod**, a gap-closing subtopic (verified via research into kube-proxy's documented
+  behavior) on how conntrack pins an already-open keep-alive connection to a deleted pod.
+  `service-discovery` SUBTOPICS key collision-free (checked app.routes.ts directly), left bare.
+  Build passed clean. Browser-verified: nav accordion opens with all 3 labels; the register() fix
+  confirmed rendering; breadcrumb showed all 4 levels; 860px wrapper confirmed via
+  `getComputedStyle`. **Architecture Patterns hub Phase 10: 10 of 22 topics complete.**
+- [x] `/arch-patterns/circuit-breaker` — Circuit Breaker (2026-07-30) — 3 subtopics:
+  (1) **halfOpenMaxCalls Was Never Actually Used** — the Manual Circuit Breaker codeTab accepted
+  a halfOpenMaxCalls constructor parameter never read anywhere in the class; closed after ONE
+  half-open success regardless of the value; removed the dead parameter; (2) **The Polly Example
+  Had the Strategy Order Backwards** — verified via WebSearch (overturning my own initial wrong
+  assumption) that Polly v8's first-added strategy is OUTERMOST; the codeTab added Retry before
+  CircuitBreaker, contradicting the page's own theory that circuit breaker should be the outer
+  wrapper; swapped the order and fixed the matching mistake explanation; (3) **Making the
+  Bulkhead Pattern Concrete**, a gap-closing subtopic with a semaphore-based code example (every
+  other pattern on the page had one; Bulkhead was one abstract sentence). `circuit-breaker`
+  SUBTOPICS key collision-free (checked app.routes.ts directly), left bare. Build passed clean.
+  Browser-verified: nav accordion opens with all 3 labels; both main-page fixes confirmed
+  rendering; breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`.
+  **Architecture Patterns hub Phase 10: 11 of 22 topics complete.**
+- [x] `/arch-patterns/sidecar-service-mesh` — Sidecar & Service Mesh (2026-07-30) — 3 subtopics:
+  (1) **Three Different Latency Figures, Reconciled** — the page stated ~10ms, ~10-30ms, and
+  1-5ms sidecar overhead in three different sections for the same fact; verified via Istio's own
+  published benchmark trend that modern figures land in the 1-5ms range; reconciled all three;
+  (2) **Ambient Mesh's GA Version Was Off By One Release** — the QnA repeated the exact same
+  "GA in 1.22+" claim already researched and corrected on this project's own Service Mesh hub
+  (real GA: 1.24, November 2024); (3) **The Retry Latency Math Undercounted By One Try** —
+  verified via Istio's own VirtualService spec that attempts: 2 means 3 total tries, not 2;
+  fixed the Challenge's "2 × 2s = 4s" comment to "3 × 2s = 6s". `sidecar-service-mesh` SUBTOPICS
+  key collision-free (checked app.routes.ts directly), left bare. Build passed clean.
+  Browser-verified: nav accordion opens with all 3 labels; all three main-page fixes confirmed
+  rendering; breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`.
+  **Architecture Patterns hub Phase 10: 12 of 22 topics complete.**
+- [x] `/arch-patterns/event-driven` — Event-Driven Architecture (2026-07-30) — 3 subtopics:
+  (1) **The Broker Stub Was Secretly Blocking** — the Challenge's in-memory broker awaited every
+  subscriber before returning from publish(), silently blocking placeOrder() on consumer
+  processing, contradicting the page's own "fires and forgets" principle; fixed to fire without
+  awaiting; (2) **The DB Save Was Commented Out** — the same solution's DB save call was
+  commented out, so it never implemented its own hint's "publish AFTER DB save" instruction;
+  added a minimal stub and un-commented it; (3) **The Fat-Events Staleness Risk, Made Concrete**,
+  a gap-closing subtopic with a worked shipping-address-vs-loyalty-tier contrast. `event-driven`
+  SUBTOPICS key collision-free (checked app.routes.ts and subtopics.ts directly), left bare.
+  Build passed clean. Browser-verified: nav accordion opens with all 3 labels; both main-page
+  fixes confirmed rendering; breadcrumb showed all 4 levels; 860px wrapper confirmed via
+  `getComputedStyle`. **Architecture Patterns hub Phase 10: 13 of 22 topics complete.**
+- [x] `/arch-patterns/cqrs-event-sourcing` — CQRS & Event Sourcing (2026-07-30) — 3 subtopics:
+  (1) **Snapshots Referenced Six Undefined Methods** — the Snapshots codeTab called
+  rehydrate(), restoreFromSnapshot(), uncommittedEvents, version, clearEvents(), and
+  toSnapshot() on Order, none of which exist on the Order class defined earlier on the same
+  page; added the missing methods inline; (2) **Optimistic UI Updates, Made Concrete**, a
+  gap-closing subtopic showing the client-ID-based reconcile/rollback mechanics the QnA only
+  described in one sentence; (3) **What an Upcaster Actually Looks Like**, a gap-closing
+  subtopic with an incremental v1→v2→v3 upcaster chain. `cqrs-event-sourcing` SUBTOPICS key
+  collision-free (checked app.routes.ts and subtopics.ts directly), left bare. Build passed
+  clean. Browser-verified: nav accordion opens with all 3 labels; the Snapshots fix confirmed
+  rendering; breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`.
+  **Architecture Patterns hub Phase 10: 14 of 22 topics complete.**
+- [x] `/arch-patterns/saga-choreography` — Saga & Choreography (2026-07-30) — 3 subtopics:
+  (1) **Choreography Never Handled Stock Failure** — the Inventory Service publishes
+  stock.reservation.failed but nothing subscribes to it, unlike the correctly-handled
+  payment.failed path; added the missing subscriber; (2) **The Durable Saga Dropped Its Own
+  Compensation** — the "production" durable orchestration codeTab had zero try/catch or
+  compensation logic, a regression from the simpler example above it; fixed by reusing the
+  completedSteps record to drive compensation; (3) **The Semantic Lock Counter-Measure, Made
+  Concrete**, a gap-closing subtopic showing the pending-flag pattern and the trap of only
+  releasing it on success. `saga-choreography` SUBTOPICS key collision-free (checked
+  app.routes.ts and subtopics.ts directly), left bare. Build passed clean. Browser-verified:
+  nav accordion opens with all 3 labels; both main-page fixes confirmed rendering; breadcrumb
+  showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`. **Architecture Patterns
+  hub Phase 10: 15 of 22 topics complete.**
+- [x] `/arch-patterns/inbox-outbox` — Inbox & Outbox Pattern (2026-07-30) — 3 subtopics:
+  (1) **The Relay Lock Was Released Before Publishing** — SELECT ... FOR UPDATE SKIP LOCKED
+  wasn't wrapped in the same transaction as the publish+UPDATE steps, so the lock released
+  before it could protect anything, reproducing the page's own double-publish mistake; fixed
+  with db.transaction(); (2) **The Inbox Upsert Was Invalid SQL** — ON CONFLICT DO UPDATE ...
+  had no conflict target (a real syntax error, not shorthand); fixed to accumulate points
+  correctly via ON CONFLICT (customer_id) DO UPDATE SET points = loyalty_points.points +
+  EXCLUDED.points; (3) **The Inbox Table Needs Cleanup Too**, a gap-closing subtopic on why an
+  overly-aggressive Inbox retention window is a correctness bug, not just housekeeping.
+  `inbox-outbox` SUBTOPICS key collision-free (checked app.routes.ts and subtopics.ts
+  directly), left bare. Build passed clean. Browser-verified: nav accordion opens with all 3
+  labels; both main-page fixes confirmed rendering; breadcrumb showed all 4 levels; 860px
+  wrapper confirmed via `getComputedStyle`. **Architecture Patterns hub Phase 10: 16 of 22
+  topics complete — Messaging nav group fully done.**
+- [x] `/arch-patterns/ddd-core` — Domain-Driven Design Core (2026-07-30) — 3 subtopics:
+  (1) **TransferFunds Never Handled Partial Save Failure** — the Domain Service codeTab saved
+  two aggregates via two unhandled separate saves; if the second failed after the first
+  committed, money was silently lost; fixed with explicit compensation (not a shared
+  transaction, per classic DDD's one-transaction-per-aggregate rule), connecting to the Saga &
+  Choreography topic; (2) **What a DDD Factory Actually Looks Like**, a gap-closing subtopic
+  since the page only describes factories in prose; (3) **What a DDD Repository Actually Looks
+  Like**, a gap-closing subtopic contrasting a generic DAO against a real domain-oriented
+  repository. Self-caught and fixed a real build error (unescaped backticks/${} nested inside
+  the outer code: template literal) before finishing — switched to string concatenation.
+  `ddd-core` SUBTOPICS key collision-free (checked app.routes.ts and subtopics.ts directly),
+  left bare. Build passed clean. Browser-verified: nav accordion opens with all 3 labels; the
+  TransferFunds fix confirmed rendering; breadcrumb showed all 4 levels; 860px wrapper
+  confirmed via `getComputedStyle`. **Architecture Patterns hub Phase 10: 17 of 22 topics
+  complete.**
+- [x] `/arch-patterns/bounded-contexts` — Bounded Contexts (2026-07-30) — 3 subtopics:
+  (1) **Order-Catalog Is ACL, Not Customer/Supplier** — the "Context Map Integration" codeTab
+  showed an Anti-Corruption Layer for Order-to-Catalog, while the separate "Event Storming
+  Output" codeTab labeled the SAME relationship "Customer/Supplier" with no justification;
+  fixed by reconciling ACL (a translation mechanism, built unilaterally) against Customer/Supplier
+  (a planning relationship needing separate accommodation evidence); (2) **Event Publisher:
+  Mechanism vs. Relationship** — the page's own QnA listed the canonical context-map patterns and
+  omitted Event Publisher entirely, while a codeTab used an informal "Event-driven" label for
+  exactly that pattern; verified via WebSearch that Event Publisher is a real, named upstream
+  pattern (ddd-crew/context-mapping reference), fixed the main page's quickRef/theory/QnA/codeTab
+  to name it correctly and generalized the same mechanism-vs-relationship lesson; (3) **Published
+  Language Prevents ACL Sprawl**, a gap-closing subtopic — the QnA names this pattern in one line
+  and never shows it in code; demonstrated replacing N bespoke per-consumer ACLs with one shared,
+  upstream-independent schema. Also tightened the Challenge's Scheduling→Billing example to
+  actually justify its Customer/Supplier label with real accommodation evidence instead of just
+  the publish/subscribe mechanism. `bounded-contexts` SUBTOPICS key collision-free (checked
+  app.routes.ts and subtopics.ts directly), left bare. Hit the standard stale `ng serve` artifact
+  (route file compiled before the new subtopic files were caught by the watcher) — resolved with
+  the standard fresh-file-write fix; the separately-run production build was clean throughout.
+  Build passed clean. Browser-verified: nav accordion opens with all 3 labels; the main-page
+  codeTab fix confirmed rendering after clicking the "Event Storming Output" tab; breadcrumb
+  showed all 4 levels; sidebar showed tailored composite-key content; 860px wrapper confirmed via
+  `getComputedStyle`. **Architecture Patterns hub Phase 10: 18 of 22 topics complete — Domain-Driven
+  Design nav group fully done.**
+- [x] `/arch-patterns/aggregates-domain-events` — Aggregates & Domain Events (2026-07-30) — 3
+  subtopics: (1) **PlaceOrderHandler Referenced an Undeclared catalogService** — the "Saving &
+  Publishing Events" codeTab's constructor declared only `orders`/`events`, but the method body
+  called `this.catalogService.getPrice(...)`, an undeclared field — a real TS2339 compile error;
+  fixed by adding `catalogService: ICatalogService` to the constructor; (2) **The Save-Then-Publish
+  CodeTab Has a Dual-Write Bug** — the page's own theory names the dual-write problem in plain
+  words, but the SAME page's codeTab does `orders.save()` then a separate `events.publishAll()`
+  labeled "RIGHT" with no acknowledgment that a broker failure after the save silently loses the
+  event forever; fixed with an explicit risk comment on the codeTab; (3) **Fixing It With the
+  Outbox Pattern**, a gap-closing subtopic applying this hub's own already-completed Inbox & Outbox
+  topic directly to this handler — one transaction inserting both the order row and an outbox row,
+  removing the direct broker call from the request path entirely. `aggregates-domain-events`
+  SUBTOPICS key collision-free (checked app.routes.ts and subtopics.ts directly), left bare. Build
+  passed clean. Browser-verified: nav accordion opens with all 3 labels; both main-page fixes
+  confirmed rendering; breadcrumb showed all 4 levels; sidebar showed tailored composite-key
+  content; 860px wrapper confirmed via `getComputedStyle`. **Architecture Patterns hub Phase 10:
+  19 of 22 topics complete — Domain-Driven Design nav group fully done, only the Integration group
+  (anti-corruption-layer, strangler-fig, backend-for-frontend) remains.**
+- [x] `/arch-patterns/anti-corruption-layer` — Anti-Corruption Layer (2026-07-30) — 3 subtopics:
+  (1) **LegacyErpAdapter Referenced an Undeclared erpClient** — the "ACL: Legacy ERP Integration"
+  codeTab's class declared one field (STATUS_MAP, no constructor) but its own `getOrder()` method
+  used a second, undeclared `erpClient` — a real TS2339 compile error; fixed by adding a
+  constructor declaring `erpClient`, matching the pattern StripePaymentAdapter already uses
+  elsewhere on the page; (2) **The Missing IPaymentGateway Interface**, a gap-closing subtopic —
+  the page's own revision and QnA both claim the Domain defines the interface and the ACL
+  implements it, but no codeTab ever actually shows an `implements` clause or the interface
+  itself; demonstrated it concretely with a swappable `FakePaymentGateway` test double; (3)
+  **Splitting Call and Translate Lets Stripe Leak Back In**, a gap-closing subtopic making
+  concrete a risk the QnA names in one sentence and never shows — a split call/translate ACL
+  design leaves a raw shortcut for domain code to bypass translation under time pressure, which
+  the page's own full-round-trip design makes structurally impossible. `anti-corruption-layer`
+  SUBTOPICS key collision-free (checked app.routes.ts and subtopics.ts directly), left bare. Hit
+  a transient esbuild panic on the first production build attempt (unrelated to content, resolved
+  on retry) and a fuller stale-dev-server incident (the `ng serve` process itself had gone
+  stale/unreachable after the long session, requiring a full restart) — confirmed the source was
+  correct throughout via direct filesystem checks before the restart. Build passed clean.
+  Browser-verified: no console errors; nav accordion opens with all 3 labels; the main-page
+  codeTab fix confirmed rendering; breadcrumb showed all 4 levels; sidebar showed tailored
+  composite-key content; 860px wrapper confirmed via `getComputedStyle`; full page text swept for
+  vanished/misparsed content, none found. **Architecture Patterns hub Phase 10: 20 of 22 topics
+  complete — only `strangler-fig` and `backend-for-frontend` remain.**
+- [x] `/arch-patterns/strangler-fig` — Strangler Fig Pattern (2026-08-04) — 3 subtopics: (1)
+  **Feature-Flag Comment Named the Wrong Migrated Feature** — the "Facade with Feature Flags"
+  codeTab's rollout-ramp comment said "Day 21: 100% → retire legacy cancel code," but
+  cancelOrder() has no feature-flag check at all — the ramp actually belongs to placeOrder()'s
+  own 'new-order-placement' flag; fixed the comment rather than adding an unnecessary flag to
+  cancelOrder(); (2) **Parallel Run Skipped Its Own Discrepancy Check** — the status/total
+  comparison was nested inside an ID-difference check, silently skipping the one thing a parallel
+  run exists to do whenever the two systems happened to produce the same order ID; un-nested it to
+  run unconditionally; (3) **The Split-Brain Risk Made Concrete**, a gap-closing subtopic — the
+  page's own mistakes block names "split-brain" in one code comment; traced one customer's order
+  history through the facade to show exactly how their data ends up silently split across both
+  systems with zero errors thrown. `strangler-fig` SUBTOPICS key collision-free (checked
+  app.routes.ts and subtopics.ts directly), left bare. Build passed clean (both production and
+  dev-server compiles, no stale-server incident this batch). Browser-verified: no console errors;
+  both main-page codeTab fixes confirmed rendering; nav accordion opens with all 3 labels;
+  breadcrumb showed all 4 levels; sidebar showed tailored composite-key content; 860px wrapper
+  confirmed via `getComputedStyle`. **Architecture Patterns hub Phase 10: 21 of 22 topics complete
+  — only `backend-for-frontend` remains to finish the hub.**
+- [x] `/arch-patterns/backend-for-frontend` — Backend for Frontend (BFF) (2026-08-04) — 3
+  subtopics, all gap-closing (this page was unusually clean — no undeclared-field bug or internal
+  contradiction found after a careful pass through all 3 codeTabs, the Challenge, and the theory/
+  mistakes/QnA text): (1) **GraphQL BFF's N+1 Problem, Made Concrete** — the QnA discusses N+1
+  query problems and DataLoader batching at length but no codeTab ever shows a GraphQL resolver;
+  wrote the naive N+1-prone resolver and the DataLoader-batched fix; (2) **Is hasBreakingNews
+  Business Logic in the BFF?** — the Challenge's own solution computes a hardcoded one-hour
+  threshold directly in the BFF handler; examined against the page's own "no business logic in
+  the BFF" mistake and proposed a concrete test (could the rule change independently of the
+  client UI?) that the threshold fails and the thumbnailUrl mapping on the same line passes; (3)
+  **What the v2 Migration Actually Looks Like** — the Third-Party BFF codeTab's own trailing
+  comment names a v1→v2 migration and never shows it; wrote v2 alongside the untouched v1 and
+  traced why the price-field type change is genuinely breaking. Caught and fixed a real gotcha
+  before it could break sibling pages: this subtopic's own title had a straight apostrophe, which
+  would break the build once referenced in a sibling's [prev]/[next] label — fixed with the
+  established typographic curly-quote (’) convention throughout, in all six wiring touchpoints.
+  Confirmed this topic sits at the END of its own nav-group in arch-nav.ts, so the accordion
+  markup was added after the existing link, not before a following sibling. `backend-for-frontend`
+  SUBTOPICS key collision-free (checked app.routes.ts and subtopics.ts directly), left bare.
+  Build passed clean. Browser-verified: no console errors; nav accordion opens with all 3 labels
+  (22 total toggles site-wide in this hub — every topic now has subtopics); curly-quote title
+  renders correctly everywhere it's referenced; breadcrumb showed all 4 levels; sidebar showed
+  tailored composite-key content; 860px wrapper confirmed via `getComputedStyle`; full page text
+  swept for vanished/misparsed content, none found. **This completes the Architecture Patterns
+  hub's entire Phase 10 rollout — all 22 topics now have deep-dive subtopic pages, 66 subtopic
+  pages total across the hub.**
 
 #### Design Patterns — 36 topic pages
 
-- [ ] `/design-patterns/singleton` — Singleton Pattern
-- [ ] `/design-patterns/factory-method` — Factory Method Pattern
-- [ ] `/design-patterns/abstract-factory` — Abstract Factory Pattern
-- [ ] `/design-patterns/builder` — Builder Pattern
-- [ ] `/design-patterns/prototype` — Prototype Pattern
-- [ ] `/design-patterns/object-pool` — Object Pool Pattern
-- [ ] `/design-patterns/adapter` — Adapter Pattern
-- [ ] `/design-patterns/bridge` — Bridge Pattern
-- [ ] `/design-patterns/composite` — Composite Pattern
-- [ ] `/design-patterns/decorator` — Decorator Pattern
-- [ ] `/design-patterns/facade` — Facade Pattern
-- [ ] `/design-patterns/flyweight` — Flyweight Pattern
-- [ ] `/design-patterns/proxy` — Proxy Pattern
-- [ ] `/design-patterns/chain-of-responsibility` — Chain of Responsibility
-- [ ] `/design-patterns/command` — Command Pattern
-- [ ] `/design-patterns/iterator` — Iterator Pattern
-- [ ] `/design-patterns/mediator` — Mediator Pattern
-- [ ] `/design-patterns/memento` — Memento Pattern
-- [ ] `/design-patterns/observer` — Observer Pattern
-- [ ] `/design-patterns/state` — State Pattern
-- [ ] `/design-patterns/strategy` — Strategy Pattern
-- [ ] `/design-patterns/template-method` — Template Method Pattern
-- [ ] `/design-patterns/visitor` — Visitor Pattern
-- [ ] `/design-patterns/null-object` — Null Object Pattern
-- [ ] `/design-patterns/repository` — Repository Pattern
-- [ ] `/design-patterns/unit-of-work` — Unit of Work Pattern
-- [ ] `/design-patterns/cqrs` — CQRS
-- [ ] `/design-patterns/event-sourcing` — Event Sourcing
-- [ ] `/design-patterns/saga` — Saga Pattern
-- [ ] `/design-patterns/outbox` — Outbox Pattern
-- [ ] `/design-patterns/specification` — Specification Pattern
-- [ ] `/design-patterns/clean-architecture` — Clean Architecture
-- [ ] `/design-patterns/solid` — SOLID Principles
-- [ ] `/design-patterns/grasp` — GRASP Principles
-- [ ] `/design-patterns/dry-kiss-yagni` — DRY, KISS & YAGNI
-- [ ] `/design-patterns/dependency-inversion` — Dependency Inversion
+- [x] `/design-patterns/singleton` — Singleton Pattern (2026-08-04) — first Phase 10 pilot for
+  this hub; fixed `DpNavComponent`'s missing subtopics-accordion structural support (12th
+  `*NavComponent`-based hub in a row missing it at pilot time). 3 subtopics: (1) **Sealed Does Not
+  Fix What the Mistake Said It Fixes** — the mistakes block AND the quiz both claimed a subclass
+  could bypass a private Singleton constructor via base(), creating additional instances; verified
+  via WebSearch that this does not compile in C# — a private constructor is inaccessible outside
+  its declaring class; corrected both to state what sealed actually guards against (a future
+  private→protected widening, and a nested class, which DOES have access to its enclosing type's
+  private members); (2) **Double-Checked Locking, Actually Written Out** — the theory names it and
+  the QnA sketches it inline but omits the volatile field the QnA's own text says is required;
+  wrote the complete, correct version; (3) **What Monostate Actually Looks Like in Code** — an
+  entire theory section describes it, zero code shows it. Caught and fixed a real innerHTML
+  gotcha before the build: `Lazy<T>` mentioned as plain prose in `misconceptions.thought`/
+  `.reality` fields would have silently vanished as a misparsed HTML tag — wrapped in
+  `<code>Lazy&lt;T&gt;</code>`. `singleton` SUBTOPICS key collision-free (checked app.routes.ts
+  and subtopics.ts directly), left bare. Build passed clean. Browser-verified: no console errors;
+  both main-page fixes confirmed rendering (mistakes-block accordion + quiz question 2); nav
+  accordion opens with 1 toggle; breadcrumb showed all 4 levels; sidebar showed tailored
+  composite-key content; 860px wrapper confirmed via `getComputedStyle`; the Lazy<T> fix confirmed
+  rendering as literal text. **Design Patterns hub Phase 10: 1 of 36 topics complete.**
+- [x] `/design-patterns/factory-method` — Factory Method Pattern (2026-08-04) — 3 subtopics: (1)
+  **DI Approach Referenced an Undefined PushNotification Class** — the switch case returned `new
+  PushNotification()`, a class never declared anywhere on the page, even though the theory
+  section's own prose already named it correctly; fixed by adding the missing class; (2)
+  **Backticks Are Not C#** — the same codeTab's exception message used JavaScript template-literal
+  syntax (backticks) instead of valid C# string interpolation (`$"..."`); backticks aren't valid
+  C# syntax at all; (3) **Does the channel Switch Really Decouple Which Factory?** — a genuine
+  tension: the page's own mistake #1 calls out type-switching as an OCP violation, but the "DI
+  Approach" codeTab's own `Create(channel)` method does the exact same thing internally; DI solves
+  testability, not Open/Closed compliance. **A real refinement to the brace-escaping gotcha's
+  scope caught mid-batch** — bare `{channel}` in `[innerHTML]`-bound TS string fields (theory.
+  points, misconceptions.thought, etc.) is actually SAFE, unlike bare braces in static `.html`
+  template text; the risk mechanism (browser HTML parsing at runtime vs. Angular's AOT compiler
+  parsing the `.html` file's own static source at build time) are genuinely different, and only
+  literal HTML tag names are at risk in innerHTML-bound TS fields, not braces — see CLAUDE.md's
+  "Design Patterns hub subtopic wiring" section for the full explanation. Also caught and fixed a
+  genuine authoring mistake: an early codeTab draft literally wrote Angular's `{{ '{' }}` static-
+  template-escape trick as plain characters inside a TS backtick string (wrong fix for the wrong
+  mechanism) — corrected to plain `{channel}` before the build. `factory-method` SUBTOPICS key
+  collision-free (checked app.routes.ts and subtopics.ts directly), left bare. Build passed clean.
+  Browser-verified: no console errors; both main-page codeTab fixes confirmed rendering; nav
+  accordion opens with 2 toggles total; breadcrumb showed all 4 levels; sidebar showed tailored
+  composite-key content; 860px wrapper confirmed via `getComputedStyle`; full text sweep confirmed
+  every brace/interpolation mention renders correctly with nothing vanished. **Design Patterns hub
+  Phase 10: 2 of 36 topics complete.**
+- [x] `/design-patterns/abstract-factory` — Abstract Factory Pattern (2026-08-04) — cleanest page
+  in this hub so far (no undeclared class, no syntax bug found). 3 gap-closing subtopics: (1)
+  **What Versioning the Factory Interface Actually Looks Like** — mistake #1's own "right" side is
+  pure comments naming two mitigations; wrote out interface versioning (`IUiFactoryV2 :
+  IUiFactory`) concretely; (2) **A Registry-Based Factory Selector, Made Concrete** — the QnA
+  describes config-driven factory selection without hardcoding, never shown; wrote the actual
+  registry and connected it to the Factory Method topic's own OCP discussion; (3) **Using Abstract
+  Factory for Test Doubles** — the QnA names test-double factories in one sentence; added a third,
+  fake factory to the page's own Challenge (`DatabaseClient`) and used it to test in complete
+  isolation. `abstract-factory` SUBTOPICS key collision-free (checked app.routes.ts and
+  subtopics.ts directly), left bare. Build passed clean. Browser-verified: no console errors; nav
+  accordion opens with 3 toggles total; breadcrumb showed all 4 levels; sidebar showed tailored
+  composite-key content; 860px wrapper confirmed via `getComputedStyle`; full text sweep confirmed
+  no vanished/misparsed content, including generic syntax (`Dictionary<string, Func<IUiFactory>>`).
+  **Design Patterns hub Phase 10: 3 of 36 topics complete.**
+- [x] `/design-patterns/builder` — Builder Pattern (2026-08-04) — 3 subtopics: (1) **The Director
+  Used Backticks Instead of C# Interpolation** — the same backtick-vs-C# bug from Factory Method
+  recurred; this instance was trickier since the string already had embedded quotes, needing
+  escaped quotes or a verbatim string; caught and fixed a real mistake in the fix itself — a
+  single-escaped `\"` was consumed by TypeScript's own parser, leaving the displayed code with no
+  backslash; doubled to `\\"` so the intended C# escape survives into the rendered sample; (2)
+  **The Wrong Example Was a Compile Error, Not a Design Smell** — the "forgetting to return this"
+  mistake's wrong example declared a real return type with no return statement (CS0161), unrelated
+  to its own "void" comment; changed the declared type to void so it genuinely compiles and
+  demonstrates the named mistake, with the error now appearing at the realistic call site; (3)
+  **What a Test Data Builder Actually Looks Like** — the QnA describes a UserBuilder with sensible
+  defaults precisely, never shown in code. `builder` SUBTOPICS key collision-free (checked
+  app.routes.ts and subtopics.ts directly), left bare. Build passed clean. Browser-verified: no
+  console errors; both main-page fixes confirmed rendering, including the corrected `\"` escaping
+  visible in the actual displayed code; nav accordion opens with 4 toggles total; breadcrumb showed
+  all 4 levels; sidebar showed tailored composite-key content; 860px wrapper confirmed via
+  `getComputedStyle`. **Design Patterns hub Phase 10: 4 of 36 topics complete.**
+- [x] `/design-patterns/prototype` — Prototype Pattern (2026-08-04) — 3 subtopics: (1)
+  **Polymorphic Cloning via IPrototype** — the theory names "concrete type unknown at compile
+  time" as a use case but both codeTabs use a single statically-known type throughout; wrote the
+  genuinely polymorphic version via a shared IShape interface; (2) **Why Immutable Sub-Objects
+  Make Shallow Copy Safe** — the theory states this in one line and only ever shows the dangerous
+  (mutable) half; built the missing safe contrast with an immutable Address record. Caught and
+  fixed a real mistake while writing this subtopic: HTML entities used inside an
+  exercise.solution field (which binds via plain interpolation and never decodes entities) —
+  proactively re-checked every solution field across every Phase 10 subtopic this session for the
+  same mistake, confirmed isolated to this one instance, fixed to raw characters; (3) **Is with
+  Prototype, or an Alternative to It?** — reconciled a genuine tension: mistake #3 reads as "use
+  with instead of Prototype," while the quiz elsewhere calls with expressions "the prototype
+  pattern made idiomatic." Tightened mistake #3's own explanation on the main page to make
+  explicit that with IS Prototype (built-in language form), not an alternative to it. `prototype`
+  SUBTOPICS key collision-free (checked app.routes.ts and subtopics.ts directly), left bare.
+  Build passed clean. Browser-verified: no console errors; the main-page clarification confirmed
+  rendering; nav accordion opens with 5 toggles total; breadcrumb showed all 4 levels; sidebar
+  showed tailored composite-key content; 860px wrapper confirmed via `getComputedStyle`; the
+  corrected solution field confirmed rendering literal `List<string>` text correctly.
+  **Design Patterns hub Phase 10: 5 of 36 topics complete.**
+- [x] `/design-patterns/object-pool` — Object Pool Pattern (2026-08-04) — fixed a genuine
+  inaccuracy in the theory ("Acquire creates a new one (up to max)" — the code has no such check;
+  maxSize only bounds retained idle instances in Release(), not concurrent creation). 3 subtopics:
+  (1) **The Count-Check Race Condition** — the TOCTOU race in `if (Count < maxSize) Add()`,
+  verified via WebSearch how the real .NET DefaultObjectPool avoids it entirely (lock-free
+  CompareExchange slots, no Count field); (2) **Implementing Idle-Object Eviction** — theory
+  promises eviction, neither codeTab shows it; built a TimestampedObjectPool with a background
+  sweep, plus the eviction-must-also-dispose correctness point; (3) **ConcurrentBag vs.
+  ConcurrentQueue for Pool Storage** — reconciles the main codeTab's ConcurrentBag choice against
+  the page's own QnA recommending ConcurrentQueue+SemaphoreSlim, verified via WebSearch (thread-
+  affinity vs. dedicated producer/consumer tradeoff), with a SemaphoreSlim-backed
+  BoundedObjectPool giving Acquire() a real hard concurrency cap. `object-pool` SUBTOPICS key
+  collision-free (checked app.routes.ts and subtopics.ts directly), left bare. Build passed
+  clean. Browser-verified: no console errors; the theory fix confirmed rendering; nav accordion
+  opens with 6 toggles total; breadcrumb showed all 4 levels; sidebar showed tailored
+  composite-key content; 860px wrapper confirmed via `getComputedStyle`.
+  **Design Patterns hub Phase 10: 6 of 36 topics complete.**
+- [x] `/design-patterns/adapter` — Adapter Pattern (2026-08-04) — fixed FOUR genuine issues: a real
+  CS0023 compile error in the "Object Adapter" codeTab (`Console.WriteLine(...) is null || true`,
+  void can't be compared to null); the "Logging Adapter" codeTab's `IsEnabled()`/`Log()` switches
+  silently demoted `LogLevel.Critical` to Information severity (missing 3 of 7 LogLevel mappings);
+  a ".NET Examples" bullet wrongly grouped `IQueryable<T>` with `IObservable<T>` as needing an
+  adapter, when `IQueryable<T>` already extends `IEnumerable<T>` via interface inheritance and
+  needs none; and two pre-existing bare `<T>` mentions vanishing from `[innerHTML]` fields. 3
+  subtopics: (1) **The ProcessPayment One-Liner Doesn't Compile**; (2) **The Missing LogLevel
+  Mappings** — complete, correct 6-level .NET-to-Serilog mapping table; (3) **IObservable vs.
+  IQueryable: Which One Really Needs an Adapter** — builds a real push-to-pull
+  `ObservableToEnumerableAdapter<T>`. `adapter` SUBTOPICS key collision-free, left bare. Build
+  passed clean. Browser-verified: no console errors; all four fixes confirmed rendering; nav
+  accordion opens with 7 toggles total; breadcrumb showed all 4 levels; 860px wrapper confirmed via
+  `getComputedStyle`. **Design Patterns hub Phase 10: 7 of 36 topics complete.**
+- [x] `/design-patterns/bridge` — Bridge Pattern (2026-08-05) — verified via WebSearch that .NET's
+  actual Logger class broadcasts to one ILogger instance PER registered provider on every call
+  (LoggerInformation[] array), not a one-to-one swap like the main page's own Shape/Renderer
+  example — tightened the QnA's vague "partially Bridge" hedge to state the precise mechanical
+  reason. 3 subtopics: (1) **Does ILogger Really Fit the Bridge Shape?** — the verified
+  one-to-many vs. one-to-one distinction; (2) **Bridge vs. Strategy: Which Side Actually Grows?**
+  — extends BOTH sides of the Shape/Renderer hierarchy (new Triangle abstraction + new
+  SvgRenderer implementor) to make the main page's own fuzzy QnA distinction concrete; (3)
+  **Bridge Wrapping an Adapter: A ConcreteImplementor for a Legacy System** — builds the
+  Adapter+Bridge combination the QnA describes but never shows, connecting back to the Adapter
+  topic's own LegacyPaymentGateway naming. Hit a NEW stale-dev-server variant where a forced
+  file-write did not resolve staleness — a full `preview_stop`/`preview_start` restart was needed;
+  `window.ng.getComponent()` on the live instance proved to be the reliable staleness check. No
+  `SUBTOPICS` collision, left bare. Build passed clean. Browser-verified: no console errors; QnA
+  fix confirmed via `ng.getComponent()`; nav accordion opens with 8 toggles total; breadcrumb
+  showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`. **Design Patterns hub
+  Phase 10: 8 of 36 topics complete.**
+- [x] `/design-patterns/composite` — Composite Pattern (2026-08-05) — verified via WebSearch that
+  .NET's FileSystemInfo/DirectoryInfo (cited on the main page as a Composite example) has no
+  recursive size/traversal operation at all — GetFiles()/GetDirectories() return flat arrays the
+  caller must manually recurse over, so the shared base class only reuses metadata, not Composite's
+  defining recursive-delegation trait. Tightened the theory bullet. 3 subtopics: (1) **Does
+  System.IO's FileSystemInfo Really Give You Composite?** — builds a real wrapper
+  (RealFolderComposite/RealFileLeaf) showing what it actually takes; (2) **What the Transparency
+  Design Actually Looks Like** — the main page's own theory/quiz/QnA discuss Transparency vs.
+  Safety but only ever show Safety in code; built the Transparency version side by side with the
+  downcast the quiz mentions but never writes out; (3) **Composite Plus Visitor, Made Concrete** —
+  adds a one-time Accept() method to the main page's own node classes, then two independent
+  visitors demonstrating zero-change extensibility. `composite` SUBTOPICS key collision-free, left
+  bare. Build passed clean. Browser-verified via `ng.getComponent()`: theory fix confirmed live; no
+  console errors; nav accordion opens with 9 toggles total; breadcrumb showed all 4 levels; 860px
+  wrapper confirmed via `getComputedStyle`. **Design Patterns hub Phase 10: 9 of 36 topics
+  complete.**
+- [x] `/design-patterns/decorator` — Decorator Pattern (2026-08-05) — verified via WebSearch that
+  the QnA's claim lumping Castle DynamicProxy and PostSharp together as both "generating Decorator
+  proxies" was wrong for PostSharp — it weaves aspect IL directly at build time with no wrapper
+  object at all, unlike DynamicProxy's genuine runtime proxy composition. Rewrote the QnA. 3
+  subtopics: (1) **Castle DynamicProxy vs. PostSharp: Which One Is Actually Decorator?**; (2)
+  **When Decorator Breaks Object Identity** — a reference-keyed registry silently failing against
+  the main page's own DI registration, plus the stable-ID fix; (3) **Removing One Decorator from
+  the Middle of the Stack** — made concrete against the main page's own nested DI lambda. Self-
+  caught and fixed a real entity-in-solution-field bug before the build (List&lt;Func...&gt; would
+  have rendered as literal raw entity text). `decorator` SUBTOPICS key collision-free, left bare.
+  Build passed clean. Browser-verified via `ng.getComponent()`: QnA fix confirmed live; no console
+  errors; nav accordion opens with 10 toggles total; breadcrumb showed all 4 levels; 860px wrapper
+  confirmed via `getComputedStyle`. **Design Patterns hub Phase 10: 10 of 36 topics complete.**
+- [x] `/design-patterns/facade` — Facade Pattern (2026-08-05) — fixed a genuine orchestration bug in
+  the "Order Checkout Facade" codeTab: a mid-loop stock failure never released items already
+  reserved earlier in the same loop, and the charge-then-commit sequence had no exception handling
+  at all, so a thrown payment exception leaked every reservation forever. Added a
+  `Release()`/try-catch rollback. 3 subtopics: (1) **The Missing Rollback on Partial Checkout
+  Failure** — traces both bugs precisely; (2) **Facade vs. Mediator, Made Concrete** — the same
+  checkout subsystem built two ways (coordination outside vs. between the subsystem classes); (3)
+  **The API Gateway: A Network-Boundary Facade** — the same shape at a network boundary, with the
+  new "did this actually happen?" timeout ambiguity an in-process Facade never faces. `facade`
+  SUBTOPICS key collision-free, left bare. Build passed clean. Browser-verified via
+  `ng.getComponent()`: rollback fix confirmed live; no console errors; nav accordion opens with 11
+  toggles total; breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`.
+  **Design Patterns hub Phase 10: 11 of 36 topics complete.**
+- [x] `/design-patterns/flyweight` — Flyweight Pattern (2026-08-05) — verified via WebSearch that the
+  ".NET Examples" bullet's "boxed integers -128 to 127 are cached in Java/.NET-like runtimes" claim
+  is true for Java only — the CLR has no boxing cache at all, every box allocates fresh. Corrected
+  the bullet. 3 subtopics: (1) **Why .NET Has No Small-Integer Boxing Cache** — ReferenceEquals
+  proof-by-code; (2) **The Race in ParticleFactory.Get() Under Concurrent Access** — the main
+  page's own plain Dictionary-backed factory has a check-then-act race defeating sharing under
+  concurrent access; built the ConcurrentDictionary.GetOrAdd() fix; (3) **When Flyweight Identity
+  Silently Merges Logically Distinct Objects** — a concrete bug where tracking selection via
+  HashSet&lt;ParticleType&gt; instead of HashSet&lt;Particle&gt; silently merges distinct
+  particles sharing a flyweight. `flyweight` SUBTOPICS key collision-free, left bare. Build passed
+  clean. Browser-verified via `ng.getComponent()`: theory fix confirmed live; no console errors;
+  nav accordion opens with 12 toggles total; breadcrumb showed all 4 levels; 860px wrapper
+  confirmed via `getComputedStyle`. **Design Patterns hub Phase 10: 12 of 36 topics complete —
+  only `proxy` remains to finish the Structural nav group.**
+- [x] `/design-patterns/proxy` — Proxy Pattern (2026-08-05) — fixed a naming contradiction
+  (LoggingOrderProxy → CachingOrderProxy; logging is this page's own Decorator concern, not
+  Proxy) and verified via WebSearch that GoF's canonical four proxy types are Remote/Virtual/
+  Protection/Smart Reference, not Caching — reconciled the QnA. 3 subtopics: (1) **LoggingOrder
+  Proxy Isn't a Proxy — It's a Decorator**; (2) **GetOrCreateAsync Silently Caches null** —
+  verified IMemoryCache.GetOrCreateAsync caches null by default (opposite of common assumption),
+  a real trap for the main page's own CachingProductRepository.GetByIdAsync; (3) **Smart
+  Reference: GoF's Actual Fourth Proxy Type** — a genuine reference-counting
+  SmartReferenceProxy&lt;T&gt;. Real SUBTOPICS collision: bare `proxy` already claimed by the
+  JavaScript hub — hub-prefixed to `dp-proxy`; confirmed /javascript/proxy unaffected. Build
+  passed clean (no duplicate-key error). Browser-verified via `ng.getComponent()`: both fixes
+  confirmed live; no console errors; nav accordion opens with 13 toggles total; breadcrumb showed
+  all 4 levels; 860px wrapper confirmed via `getComputedStyle`. **Design Patterns hub Phase 10:
+  13 of 36 topics complete — Structural nav group fully done.**
+- [x] `/design-patterns/chain-of-responsibility` — Chain of Responsibility (2026-08-05) — fixed a
+  real, security-relevant C# operator-precedence bug in the "Auth middleware" codeTab:
+  `!x?.y ?? false` parses as `(!x?.y) ?? false` (unary ! binds tighter than ??), so an anonymous
+  request (null Identity) was let through as if authenticated — the exact opposite of intent. Fixed
+  to `x?.y != true`. 3 subtopics: (1) **The Auth Middleware's Operator-Precedence Bug** — traces
+  all three cases through the buggy expression; (2) **The Pass-Through-With-Side-Effect Handler,
+  Made Concrete** — the QnA's own described variant, never shown in the Approval Chain; (3)
+  **Making "No Handler Accepted This" a Real Signal** — replaces a bare Console.WriteLine fallback
+  with a real ApprovalResult type. Self-caught and fixed a `.html` apostrophe-escaping mistake
+  (backslash instead of typographic curly quote) before the build. `chain-of-responsibility`
+  SUBTOPICS key collision-free, left bare. Build passed clean. Browser-verified via
+  `ng.getComponent()`: fix confirmed live; no console errors; nav accordion opens with 14 toggles
+  total; breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`. **Design
+  Patterns hub Phase 10: 14 of 36 topics complete.**
+- [x] `/design-patterns/command` — Command Pattern (2026-08-05) — fixed a genuine bug in
+  CommandHistory: Redo() routed through the same Execute() the mistake block teaches must clear
+  the redo stack — meaning redoing one command silently wiped out every OTHER command still
+  waiting in the redo stack. Fixed Redo() to re-execute and push to history directly. 3 subtopics:
+  (1) **Redo() Silently Wipes the Rest of the Redo Stack** — traced concrete sequence proving the
+  bug; (2) **A Real MacroCommand, Undone in Reverse Order** — the theory/QnA name this but never
+  show it; built a genuine Composite+Command MacroCommand; (3) **When a Lambda Command Stops Being
+  Enough** — tests the QnA's own named boundary (undo, logging, serialization) against a bare
+  Action, one requirement at a time. Self-caught and fixed a backtick-vs-code house-style slip
+  before the build. `command` SUBTOPICS key collision-free, left bare. Build passed clean.
+  Browser-verified via `ng.getComponent()`: fix confirmed live; no console errors; nav accordion
+  opens with 15 toggles total; breadcrumb showed all 4 levels; 860px wrapper confirmed via
+  `getComputedStyle`. **Design Patterns hub Phase 10: 15 of 36 topics complete.**
+- [x] `/design-patterns/iterator` — Iterator Pattern (2026-08-05) — cleanest page found in a while,
+  no main-page bug found; all 3 subtopics gap-closing/verification-driven. 3 subtopics: (1)
+  **Recursive Yield Tree Traversal Is O(n²)** — verified against Eric Lippert's own analysis of
+  recursive-yield iterator performance; contrasts the main page's recursive `InOrderFrom` against
+  an explicit `Stack<Node>`-based `InOrderIterative()`, demonstrated via sorted insertion into the
+  unbalanced `BinaryTree<T>`; (2) **Merging Two External Iterators** — hand-rolled
+  `MergeSorted<T>(IEnumerable<T> left, IEnumerable<T> right)` using explicit `GetEnumerator()`/
+  `MoveNext()` control over two sequences at once, contrasted against `List<T>.ForEach()`'s
+  inability to express this and LINQ's positional (not value-based) `Zip()`; (3) **What Happens
+  When Range's Step Is Negative** — found the Challenge's own `Range` class hardcodes ascending-only
+  `current <= end` in `next()`, producing two distinct silent failure modes for a negative step
+  (yields nothing vs. loops forever); fixed with a direction-aware `stillInRange()` check. `iterator`
+  SUBTOPICS key collision-free, left bare. Build passed clean. Browser-verified: nav accordion opens
+  with 16 toggles total, all 3 subtopic links render correctly (including the O(n²) superscript and
+  typographic curly-quote possessive); breadcrumb showed all 4 levels; 860px wrapper confirmed via
+  `getComputedStyle`; no console errors. Noted a verification false-alarm: `document.body.innerText`
+  missed content that `document.querySelector('app-code-block pre code').textContent` correctly
+  found — an `innerText`-extraction quirk on `<pre><code>` blocks, not a real bug. **Design Patterns
+  hub Phase 10: 16 of 36 topics complete.**
+- [x] `/design-patterns/mediator` — Mediator Pattern (2026-08-05) — fixed a real gap in the main
+  page's own trade-offs QnA: MediatR shipped a dual RPL-1.5/commercial license from Lucky Penny
+  Software starting v13 (July 2025) — free under $5M USD annual revenue, paid above that; v12.x and
+  earlier stay Apache 2.0 forever — never mentioned in a QnA specifically about trade-offs. 3
+  subtopics: (1) **MediatR's 2025 Commercial License Change** — the license mechanics, the exact
+  threshold, the 12.x escape hatch, and a brief mention of martinothamar/Mediator as a fully
+  open-source source-generator alternative; (2) **Publish() Stops on the First Handler Exception** —
+  verified via WebSearch against MediatR's own ForeachAwaitPublisher source that the default
+  notification publisher is sequential and a thrown exception skips every handler registered after
+  it; extends the main page's own EmailNotificationHandler/AnalyticsHandler example with the
+  TaskWhenAllPublisher fix; (3) **Pipeline Behavior Execution Order** — verified via WebSearch that
+  first-registered IPipelineBehavior becomes the outermost wrapper; extends mistake #4, which
+  registers only one behavior and never demonstrates ordering with two or more. Self-caught and
+  fixed a straight-apostrophe-in-bound-attribute mistake before the build. `mediator` SUBTOPICS key
+  collision-free, left bare. Build passed clean. Browser-verified: nav accordion opens with 17
+  toggles total; all 3 subtopic links render correctly; breadcrumb showed all 4 levels via direct
+  innerHTML inspection; the QnA fix and both codeTab fixes confirmed rendering after expanding their
+  respective collapsed toggles; 860px wrapper confirmed via `getComputedStyle`; no console errors.
+  **Design Patterns hub Phase 10: 17 of 36 topics complete.**
+- [x] `/design-patterns/memento` — Memento Pattern (2026-08-05) — fixed a genuine bug in the main
+  page's own Game Save System codeTab: Player.CreateSave() called Inventory.AsReadOnly(), verified
+  via WebSearch to be a live view over the original list (not a copy), silently violating the
+  page's own "Deep-copying mutable state in the Memento" mistake block one section earlier. Fixed
+  to [..Inventory]. 3 subtopics: (1) **AsReadOnly() Is a View, Not a Copy** — traces the bug with a
+  concrete before/after and contrasts against ToArray() (which does copy); (2) **A Real
+  Nested-Class Memento** — builds the narrow/wide-interface nested-class implementation the quiz
+  names but never shows, making Caretaker opacity a compile-time guarantee instead of a convention;
+  (3) **Delta Mementos: Storing Only What Changed** — builds the incremental-snapshot approach the
+  QnA recommends but never demonstrates, with a Try It on the multi-field-undo grouping trade-off.
+  Self-caught and fixed a real mistake before the build: all three exercise.solution fields
+  (plain-interpolation) initially used <code> tags/entities meant for [innerHTML]-bound fields —
+  fixed to plain text. `memento` SUBTOPICS key collision-free, left bare. Build passed clean.
+  Browser-verified: nav accordion opens with 18 toggles total; all 3 subtopic links render
+  correctly; breadcrumb showed all 4 levels; the main-page fix confirmed after switching to the
+  "Game Save System" code tab specifically; corrected solution fields confirmed rendering as
+  literal text; 860px wrapper confirmed via `getComputedStyle`; no console errors. **Design
+  Patterns hub Phase 10: 18 of 36 topics complete.**
+- [x] `/design-patterns/observer` — Observer Pattern (2026-08-05) — fixed a real, CURRENTLY-LIVE
+  rendering bug: theory.points (x3) and qna.a (x2) wrote IObservable<T>/IObserver<T>/
+  WeakReference<T> as bare generics inside [innerHTML]-bound fields, silently swallowed by the
+  browser as unknown tags — confirmed empirically in the live production page before fixing (it was
+  rendering "IObservable" instead of "IObservable<T>"). Fixed all 6 occurrences with
+  <code>&lt;...&gt;</code> wrapping. Also tightened the thread-safety QnA, verified via WebFetch
+  against Microsoft's own compiler blog, to distinguish StockMarket's hand-rolled List<T> Subject
+  (needs manual locking) from OrderService's field-like C# event (compiler-generated lock-free CAS
+  since C# 4 — not something that was "always true"). 3 subtopics: (1) **Field-Like Events Are
+  Already Thread-Safe** — traces the C# 4 compiler change with a decompiled-accessor sketch; (2)
+  **A Real IObservable<T> Implementation** — builds the actual OnNext/OnError/OnCompleted grammar
+  the quick ref and theory name but never show in code, zero Rx.NET dependency; (3) **What a
+  WeakReference-Based Observer Looks Like** — builds the WeakReference<T>-based Subject two QnAs
+  discuss in prose with no code, demonstrating the non-deterministic notification-loss trade-off.
+  Self-caught and fixed the same solution-field <code>-tag mistake as the Memento batch before the
+  build. `observer` SUBTOPICS key collision-free, left bare. Build passed clean. Browser-verified:
+  nav accordion opens with 19 toggles total; all 3 subtopic links render correctly including raw
+  `<T>` (verified safe via checking every consuming component's binding mechanism); both main-page
+  fixes confirmed rendering; breadcrumb showed all 4 levels; 860px wrapper confirmed via
+  `getComputedStyle`; no console errors. **Design Patterns hub Phase 10: 19 of 36 topics complete.**
+- [x] `/design-patterns/state` — State Pattern (2026-08-05) — cleanest page found in a while, no
+  main-page bug found; all 3 subtopics build real code for what the QnA describes in prose only. 3
+  subtopics: (1) **Singleton States: Making Them Actually Stateless** — the QnA says stateless
+  states are safe as static readonly singletons; every one of the page's own five concrete states
+  is provably stateless yet allocates fresh on every transition; (2) **A Data-Driven State
+  Transition Table** — builds the Dictionary<(State,Event),State> alternative the QnA names but
+  never shows; (3) **Reconstructing State From Persisted Data** — builds the full save/load round
+  trip the QnA's one-line "switch-on-load" sketch skips, making explicit the unrecognized-value
+  design decision. Self-caught and fixed the same solution-field <code>-tag mistake as Memento and
+  Observer before the build — third recurrence, now a standing per-batch check. Real SUBTOPICS
+  collision: bare `state` already claimed by the Terraform hub — hub-prefixed to `dp-state`,
+  caught via the standard pre-add grep this time. Build passed clean. Browser-verified: nav
+  accordion opens with 20 toggles total; all 3 subtopic links render correctly; breadcrumb showed
+  all 4 levels; `/terraform/state` confirmed unaffected; 860px wrapper confirmed via
+  `getComputedStyle`; no console errors. **Design Patterns hub Phase 10: 20 of 36 topics complete**
+  (Strategy, Template Method, Visitor, Null Object still remain in the Behavioral group).
+- [x] `/design-patterns/strategy` — Strategy Pattern (2026-08-05) — fixed a genuine, self-contained
+  bug: SelectStrategy's three-armed pattern match had two identical arms — (false, > 100m) and
+  (false, _) both returned StandardShipping(), so the $100 threshold never actually changed the
+  outcome. Fixed the over-$100 arm to return FreeShipping(), matching the common "free shipping over
+  $100" business rule. 3 subtopics: (1) **The Identical-Branches Bug in SelectStrategy** — traces
+  the bug and fix with a Try It on the exact > vs >= boundary; (2) **Keyed DI Strategy Selection** —
+  builds working code for both DI techniques two QnAs name but never show (.NET 8 Keyed Services and
+  IEnumerable<T>-plus-selector); (3) **Why Strategies Must Be Reentrant** — builds the concrete
+  before/after for the QnA's warning against mutable per-call state on a shared strategy instance.
+  Self-caught and fixed the same solution-field <code>-tag mistake in ALL THREE subtopics — fourth
+  consecutive batch with this exact recurrence (Memento, Observer, State, Strategy); escalating to a
+  mandatory grep-every-solution-field-before-building habit going forward. `strategy` SUBTOPICS key
+  collision-free, left bare. Build passed clean. Browser-verified: nav accordion opens with 21
+  toggles total; all 3 subtopic links render correctly; the main-page fix confirmed via the actual
+  rendered code (3 FreeShipping() occurrences); breadcrumb showed all 4 levels; 860px wrapper
+  confirmed via `getComputedStyle`; no console errors. **Design Patterns hub Phase 10: 21 of 36
+  topics complete.**
+- [x] `/design-patterns/template-method` — Template Method Pattern (2026-08-05) — fixed THREE genuine
+  compile errors, the most in one batch this hub: (1) the Report Generator codeTab's own template
+  method used `sealed` without `override` (CS0238) — fixed to a plain non-virtual method; (2)
+  mistake #1's own "right" example repeated the identical bug — fixed the same way; (3) the Data
+  Migration Hook codeTab's AuditController inherited ControllerBase and overrode
+  OnActionExecuting — verified via WebSearch that only Controller (not ControllerBase) implements
+  IActionFilter (CS0115) — fixed to inherit Controller. 3 subtopics: (1) **Why sealed Requires
+  override in C#** — the general language rule behind both sealed bugs; (2) **ControllerBase vs
+  Controller for Action Filter Hooks** — the ASP.NET Core bug plus a second fix (standalone
+  IActionFilter) that stays on ControllerBase; (3) **Converting Template Method to Strategy,
+  Concretely** — applies the main page's own QnA conversion recipe to its own ReportGenerator
+  example, which the QnA never actually does. Grepped every new solution field for <code>/entities
+  before building — caught it in 2 of 3 subtopics. `template-method` SUBTOPICS key collision-free,
+  left bare. Build passed clean. Browser-verified: nav accordion opens with 22 toggles total; all 3
+  subtopic links render correctly; all three main-page fixes confirmed rendering; breadcrumb showed
+  all 4 levels; 860px wrapper confirmed via `getComputedStyle`; no console errors. **Design Patterns
+  hub Phase 10: 22 of 36 topics complete.**
+- [x] `/design-patterns/visitor` — Visitor Pattern (2026-08-29) — cleanest page found in this
+  stretch, no compile error or self-contradiction found; all 3 subtopics build real code for
+  something the page's own quiz/QnA/revision describe in prose but never demonstrate. 3 subtopics:
+  (1) **The Non-Virtual Accept() Failure, Demonstrated** — the page's own quiz describes exactly
+  how double dispatch breaks if Accept() isn't overridden per element type, but both codeTabs use
+  an interface which makes that bug structurally impossible — built the broken abstract-base-class
+  version that actually triggers it; (2) **Simulating Double Dispatch With dynamic** — the QnA
+  names dynamic as an Accept/Visit alternative "at a performance cost" with no code — built it and
+  traced the real trade-off (compile error vs RuntimeBinderException); (3) **Visitor + Composite: A
+  Recursive Order Group** — the revision calls this pairing "very common" but never builds it
+  against the page's own IOrderElement hierarchy — built a SplitShipmentGroup composite reusing
+  every element type already on the page. Grepped every solution field before building — all three
+  clean. `visitor` SUBTOPICS key collision-free, left bare. Build passed clean. Browser-verified:
+  nav accordion opens with 23 toggles total; all 3 subtopic links render correctly; breadcrumb
+  showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`; no console errors. **A git
+  ref corruption occurred immediately after the feature commit** (`.git/refs/heads/development`
+  silently truncated to empty, likely during a mid-session context-reset interruption) — diagnosed
+  via the reflog (which recorded the commit SHA independently of the branch ref) and repaired with
+  zero data loss: the commit object was verified intact and its content matched exactly, `git
+  fetch` confirmed the push had already succeeded before the corruption, and the ref was recreated
+  with `git update-ref` after removing the empty file (update-ref itself refuses to overwrite a ref
+  it cannot first resolve). See CLAUDE.md's own dense entry for this batch for the full recovery
+  playbook. **Design Patterns hub Phase 10: 23 of 36 topics complete.**
+- [x] `/design-patterns/null-object` — Null Object Pattern (2026-08-29) — the eleventh and FINAL
+  Behavioral topic. Fixed a genuine, self-contained compile error: the main page's own "Null
+  Discount & Collection" codeTab's ProductRepository referenced _db with no constructor or field
+  declaring it (CS0103) — fixed with a primary constructor matching the codeTab's own established
+  style. 3 subtopics: (1) **The Undeclared _db Field in ProductRepository** — traces the bug and a
+  second equally valid fix; (2) **Nested Null Objects for Object-Returning Methods** — the QnA
+  lists six return-value patterns, only empty-collection is shown — built the recursive
+  NullCustomerRepository/NullCustomer example for "return another Null Object"; (3) **When a Null
+  Object Violates Liskov Substitution** — the QnA warns a Null Object throwing
+  NotImplementedException on some methods is "worse than a null check" but never shows one — built
+  both broken and correct NullPaymentGateway versions. Self-caught and fixed the recurring
+  solution-field <code>-tag mistake in the first subtopic (fifth consecutive-batch recurrence).
+  `null-object` SUBTOPICS key collision-free, left bare. Build passed clean. Browser-verified: nav
+  accordion opens with 24 toggles total; all 3 subtopic links render correctly; the main-page fix
+  confirmed rendering; breadcrumb showed all 4 levels; 860px wrapper confirmed via
+  `getComputedStyle`; no console errors. **This completes the entire Behavioral nav group (11 of 11
+  topics). Design Patterns hub Phase 10: 24 of 36 topics complete — Structural + Behavioral nav
+  groups fully done. Only Enterprise (8 topics) and Principles (4 topics) remain.**
+- [x] `/design-patterns/repository` — Repository Pattern (2026-08-30) — first Enterprise-group topic.
+  No compile error found; a genuine content gap instead: the main page's own "Specification +
+  Repository" codeTab defines EfSpecificationEvaluator.Apply() and an
+  IOrderRepository.FindAsync(ISpecification<Order>, ...) interface, but no repository class anywhere
+  implements FindAsync by calling the evaluator — it's defined but never called by anything shown. 3
+  subtopics: (1) **Connecting EfSpecificationEvaluator to a Real Repository** — builds the missing
+  implementation; (2) **Generic RepositoryBase as an Internal Implementation Detail** — the QnA
+  distinguishes a public IRepository<T> (bad) from an internal protected base class (fine), only the
+  bad version was shown — built the good one; (3) **The N+1 Lazy-Loading Pitfall, Demonstrated** —
+  built the same GetPendingOrdersAsync both ways (51 queries vs 1) the QnA names but never shows.
+  Self-caught and fixed the recurring solution-field <code>-tag mistake in the second subtopic —
+  sixth consecutive-batch recurrence. `repository` SUBTOPICS key collision-free, left bare. Build
+  passed clean. Browser-verified: nav accordion opens with 25 toggles total; all 3 subtopic links
+  render correctly; all three solution fields confirmed rendering as literal text; breadcrumb showed
+  all 4 levels; 860px wrapper confirmed via `getComputedStyle`; no console errors. **Design Patterns
+  hub Phase 10: 25 of 36 topics complete.**
+- [x] `/design-patterns/unit-of-work` — Unit of Work Pattern (2026-08-30) — second Enterprise-group
+  topic. Fixed a genuine structural compile error: the main page's own "EF Core DbContext as UoW"
+  codeTab closed OrderService's class body one method too early, leaving TransferFundsAsync declared
+  outside any class entirely (an illegal namespace-scope method) whose own body referenced db, out of
+  scope. Fixed by moving TransferFundsAsync back inside OrderService as a second method. 3 subtopics:
+  (1) **The Orphaned TransferFundsAsync Method** — traces both problems, Try It on an equally valid
+  alternative fix (a separate AccountService class); (2) **Handling Optimistic Concurrency
+  Conflicts** — builds the RowVersion/DbUpdateConcurrencyException mechanism the QnA describes but
+  never shows; (3) **A Manual Unit of Work Without Entity Framework** — builds a working
+  SqlUnitOfWork (raw ADO.NET, Dapper-style) the QnA sketches but never demonstrates. Grepped every
+  solution field before building — all three clean this time. `unit-of-work` SUBTOPICS key
+  collision-free, left bare. Build passed clean. Browser-verified: nav accordion opens with 26
+  toggles total; all 3 subtopic links render correctly; the main-page fix confirmed rendering with
+  precise indentation/brace-nesting checks, not just a substring match; breadcrumb showed all 4
+  levels; 860px wrapper confirmed via `getComputedStyle`; no console errors. **Design Patterns hub
+  Phase 10: 26 of 36 topics complete.**
+- [x] `/design-patterns/cqrs` — CQRS Pattern (2026-08-30) — 3 subtopics: The Cancel Endpoint's
+  Invalid Arrow-Block (fixed a real compile error — the main page's own Cancel controller action
+  combined `=>` expression-bodied syntax with a multi-statement `{ }` block, which never compiles;
+  contrasts against Place/Get's correct single-expression `=>` bodies on the same controller);
+  Syncing a Read Model Projection From a Domain Event (builds the MediatR `INotificationHandler<T>`
+  projection the theory's "CQRS Spectrum" bullet names but never shows in code); Read-Your-Writes
+  for the Issuing User (a version-stamped query handler implementing the QnA's own eventual-
+  consistency mitigation, scoped to only the issuing actor's own next read). Self-caught and fixed
+  a real NG5002 build error (a bare `{ }` in the first subtopic's own page-subtitle prose text —
+  the static-template-text single-brace gotcha, fixed with `&#123;`/`&#125;`). All three `solution`
+  fields clean on first sweep. `cqrs` SUBTOPICS key collision-free, left bare. Build passed clean.
+  Browser-verified: nav accordion opens with 27 toggles total; all 3 subtopic links render
+  correctly; the main-page fix confirmed rendering; breadcrumb showed all 4 levels; 860px wrapper
+  confirmed via `getComputedStyle`; no console errors. **Design Patterns hub Phase 10: 27 of 36
+  topics complete.**
+- [x] `/design-patterns/event-sourcing` — Event Sourcing (2026-08-30) — 3 subtopics: The
+  OrderPlaced Handler Never Persists Its Insert (fixed a real bug — the main page's own
+  OrderSummaryProjection.HandleAsync(OrderPlaced) called AddAsync() but never SaveChangesAsync(),
+  while the sibling HandleAsync(OrderCancelled) on the same class correctly commits; a purely
+  self-contained catch from comparing the two handlers); Rehydrating From a Snapshot (builds the
+  snapshot-aware load path the "Snapshots" theory section names but never shows in code, plus a
+  self-caught access-modifier fix — FromSnapshot needed to be public static, not private); An
+  Upcaster Chain for OrderPlaced v1 to v2 (builds the upcaster the mistakes block/quiz/QnA all
+  describe in prose only, wired into EventStore.Deserialise). No `SUBTOPICS` collision for
+  `event-sourcing` (the only near-match was the unrelated `cqrs-event-sourcing` key from the
+  Architecture Patterns hub), left bare. All three `solution` fields clean on first sweep. Build
+  passed clean. Browser-verified: nav accordion opens with 28 toggles total; all 3 subtopic links
+  render correctly; the main-page fix confirmed rendering after switching to the "Event Store +
+  Projection" tab; breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`;
+  no console errors. **Design Patterns hub Phase 10: 28 of 36 topics complete.**
+- [x] `/design-patterns/saga` — Saga Pattern (2026-08-30) — 3 subtopics: The Missing Order Total
+  in InventoryReservedEvent (fixed a real cross-service data-contract bug — the main page's own
+  choreography codeTab's InventoryReservedConsumer read ctx.Message.Amount, but
+  InventoryReservedEvent was only ever constructed with (OrderId, reservationId), never an
+  amount; fixed by threading Total through); Ordering Steps Around the Pivot Transaction (builds
+  the pivot-aware step-ordering rule the mistakes block names in one sentence but never shows);
+  Building a Commutative Compensation (contrasts a decrement-style vs. set-style compensation to
+  make the quiz's own commutativity definition concrete, with a lost-update Try It). No
+  `SUBTOPICS` collision for `saga`, left bare. All three `solution` fields clean on first sweep.
+  Build passed clean. Browser-verified: nav accordion opens with 29 toggles total; all 3 subtopic
+  links render correctly; the main-page fix confirmed rendering after expanding the "Choreography
+  Saga" tab specifically; breadcrumb showed all 4 levels; 860px wrapper confirmed via
+  `getComputedStyle`; no console errors. **Design Patterns hub Phase 10: 29 of 36 topics
+  complete.**
+- [x] `/design-patterns/outbox` — Outbox Pattern (2026-08-30) — 3 subtopics: The Mismatched
+  Consumer Type in AddConsumer (fixed a real compile error — the main page's own MassTransit
+  registration called AddConsumer<OrderPlacedConsumer>(), a type never declared anywhere in the
+  codeTab; the actual class is PlaceOrderConsumer : IConsumer<PlaceOrderCommand>); Building the
+  Inbox Pattern's Idempotency Table (builds the constraint-backed inbox table two separate QnA
+  answers describe in prose but never show in code); Preserving Event Order With a
+  Per-Aggregate Relay (builds the per-aggregate grouped relay the QnA names in one sentence,
+  giving real parallelism across aggregates while keeping each aggregate's own events ordered).
+  No `SUBTOPICS` collision for `outbox`, left bare. All three `solution` fields clean on first
+  sweep. Build passed clean. Browser-verified: nav accordion opens with 30 toggles total; all 3
+  subtopic links render correctly; the main-page fix confirmed rendering after expanding the
+  "MassTransit Built-In Outbox" tab; breadcrumb showed all 4 levels; 860px wrapper confirmed via
+  `getComputedStyle`; no console errors. **Design Patterns hub Phase 10: 30 of 36 topics
+  complete.**
+- [x] `/design-patterns/specification` — Specification Pattern (2026-08-30) — 3 subtopics: The
+  Expression.Invoke Composition Problem (fixed a real internal contradiction — the QnA explains
+  the ExpressionVisitor Parameter Replacer technique is needed to combine expression trees
+  safely for EF Core translation, but AndSpec/OrSpec/NotSpec used Expression.Invoke() instead;
+  added a real ParameterReplacer and rewrote all three composites); Specification as a
+  Construction Rule (builds the third "classic use" — construction — a quiz question names but
+  no codeTab shows, via a specification-driven EligibleCustomerFactory); A Hybrid
+  Database-Then-In-Memory Pipeline (builds the two-stage pipeline the QnA's own performance
+  answer suggests for specifications that can't be translated to SQL). No `SUBTOPICS` collision
+  for `specification`, left bare. All three `solution` fields clean on first sweep. Build passed
+  clean. Browser-verified: nav accordion opens with 31 toggles total; all 3 subtopic links
+  render correctly; the main-page fix confirmed rendering (zero remaining Expression.Invoke
+  calls); breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`; no
+  console errors. **Real tooling gotcha**: a `git commit -m '...'` with embedded apostrophes
+  broke the shell quoting mid-message — fixed with `git commit -F -` + a heredoc instead, now
+  the standing approach for any commit message quoting code identifiers or possessives.
+  **Design Patterns hub Phase 10: 31 of 36 topics complete.**
+- [x] `/design-patterns/clean-architecture` — Clean Architecture Pattern (2026-08-30) — 3
+  subtopics: The Order Aggregate's Missing Ship() and AddDomainEvent (fixed TWO real bugs
+  spanning the main page's own two codeTabs — Order.Cancel() calls AddDomainEvent(...), never
+  declared on Order; a separate test calls order.Ship(), also never declared; added a
+  domain-events list + AddDomainEvent, and a Ship() method); Input and Output Ports, Made
+  Concrete (builds the explicit port interfaces a quiz question defines but no codeTab shows,
+  serving three callers from one unchanged use case); Returning a Result Type Instead of
+  Throwing (builds the Result<T> type the QnA's own validation answer recommends in one
+  sentence, alongside the domain exception it deliberately doesn't replace). First Design
+  Patterns hub topic to reuse a bare SUBTOPICS key the Architecture Patterns hub's own
+  identically-slugged topic deliberately left free (`arch-clean-architecture`) — confirmed via
+  browser that `/arch-patterns/clean-architecture` renders unaffected. All three `solution`
+  fields clean on first sweep. Build passed clean. Browser-verified: nav accordion opens with 32
+  toggles total; all 3 subtopic links render correctly; both main-page fixes confirmed
+  rendering; cross-hub isolation confirmed; breadcrumb showed all 4 levels; 860px wrapper
+  confirmed via `getComputedStyle`; no console errors. **This completes the Enterprise nav group
+  entirely (8 of 8 topics). Design Patterns hub Phase 10: 32 of 36 topics complete — only the
+  Principles group remains.**
+- [x] `/design-patterns/solid` — SOLID Principles (2026-08-30) — 3 subtopics: The
+  Composition-Based LSP Fix (fixed a real theory/code mismatch — the LSP theory promised
+  "composition" but the codeTab's fix was two unrelated types, neither inheritance nor
+  composition; tightened the wording and built the actual composition-based fix); Tracing How
+  One SRP Violation Cascades (traces one class mechanically through SRP → OCP → ISP violations,
+  making the QnA's own "principles work together" claim concrete instead of asserted); How Much
+  Segregation Is Too Much (a three-way granularity comparison applying the "one reason to
+  change" test, answering a warning repeated three times on the page with no worked boundary).
+  Self-caught and fixed two bugs in my own illustrative code before the sweep (a readonly-field
+  reassignment, a void-to-Console.WriteLine mismatch). First Principles-group topic done. No
+  `SUBTOPICS` collision for `solid`, left bare. All three `solution` fields clean. Build passed
+  clean. Browser-verified: nav accordion opens with 33 toggles total; all 3 subtopic links
+  render correctly; the main-page theory fix confirmed rendering; breadcrumb showed all 4
+  levels; 860px wrapper confirmed via `getComputedStyle`; no console errors. **Design Patterns
+  hub Phase 10: 33 of 36 topics complete.**
+- [x] `/design-patterns/grasp` — GRASP Principles (2026-08-30) — 3 subtopics, all gap-closing
+  (cleanest main page found in a while, no compile bug): The Low Coupling vs. High Cohesion
+  Tension (the theory names this tension in one sentence; built an over-decoupled, low-cohesion
+  contrast against the main page's own balanced design); A Second Protected Variations Example
+  (the QnA names a SQL-to-NoSQL storage-swap scenario; the only codeTab example protects against
+  tax-law changes instead — built the storage-swap IOrderRepository example); Avoiding a Law of
+  Demeter Violation (the Low Coupling QnA names it in one parenthetical — built a concrete
+  "train wreck" chain and its fix). Self-caught and fixed a real syntax error in my own
+  authoring (a missing array-closing bracket) via a bracket-balance sweep before the build. No
+  `SUBTOPICS` collision for `grasp`, left bare. All three `solution` fields clean. Build passed
+  clean. Browser-verified: nav accordion opens with 34 toggles total; all 3 subtopic links
+  render correctly; breadcrumb showed all 4 levels; 860px wrapper confirmed via
+  `getComputedStyle`; no console errors. **Design Patterns hub Phase 10: 34 of 36 topics
+  complete.**
+- [x] `/design-patterns/dry-kiss-yagni` — DRY, KISS & YAGNI (2026-08-30) — 3 subtopics, all
+  gap-closing (cleanest main page found in a while, no compile bug): DRY vs. DAMP in Tests, Made
+  Concrete (DAMP is named three times but never shown — built the same test suite both ways);
+  Why Microservices Duplicate Domain Models (one QnA clause on bounded-context duplication —
+  built a shared-Customer-model anti-pattern and its per-service fix); Applying the YAGNI → DRY
+  → KISS Resolution Order (the QnA states the resolution order in one paragraph — walked a CSV
+  export feature through all three stages, then re-applied when a new requirement arrived).
+  Verified a tricky nested C# string-escaping codeTab by actually evaluating the resulting JS
+  string in Node before trusting it. No `SUBTOPICS` collision, left bare. All three `solution`
+  fields clean; bracket-balance checked. Build passed clean. Browser-verified: nav accordion
+  opens with 35 toggles total; all 3 subtopic links render correctly including arrow characters;
+  the nested-escaping codeTab confirmed rendering as valid C#; breadcrumb showed all 4 levels;
+  860px wrapper confirmed via `getComputedStyle`; no console errors. **Design Patterns hub Phase
+  10: 35 of 36 topics complete — only Dependency Inversion remains.**
+- [x] `/design-patterns/dependency-inversion` — Dependency Inversion (2026-08-30) — 3 subtopics:
+  The Missing GetSummaryAsync Method (fixed a real bug spanning two codeTabs — the
+  "DIP + Constructor Injection" codeTab declares IOrderRepository with only SaveAsync(); the
+  separate "Lifetimes + Captive Dependency" codeTab's fixed OrderSummaryService calls
+  repo.GetSummaryAsync() on that same interface, never declared; added the missing method to
+  both the interface and SqlOrderRepository); Who Should Own the Abstraction? (a quiz question
+  makes a precise ownership claim in prose — built the wrong project layout, interface owned by
+  Infrastructure, next to the correct one, owned by Application); Property and Method Injection,
+  Shown (the theory names all three DI styles but every codeTab uses only constructor injection —
+  built both missing styles with the theory's own example scenarios). No `SUBTOPICS` collision
+  for `dependency-inversion`, left bare. All three `solution` fields clean; bracket-balance
+  checked. Build passed clean. Browser-verified: nav accordion opens with 36 toggles total; all 3
+  subtopic links render correctly; both main-page fixes confirmed rendering; breadcrumb showed
+  all 4 levels; 860px wrapper confirmed via `getComputedStyle`; no console errors. **This
+  completes the Design Patterns hub's ENTIRE Phase 10 rollout — all 36 topics now have deep-dive
+  subtopic pages, 108 subtopic pages total across the hub, finished 2026-08-30.**
 
 #### Security — 23 topic pages
 
-- [ ] `/security/fundamentals` — Security Fundamentals
-- [ ] `/security/owasp-top-10` — OWASP Top 10
-- [ ] `/security/threat-modelling` — Threat Modelling
-- [ ] `/security/secure-coding` — Secure Coding Practices
-- [ ] `/security/password-security` — Password Security
-- [ ] `/security/oauth-oidc` — OAuth 2.0 & OIDC
-- [ ] `/security/jwt` — JWT (JSON Web Tokens)
-- [ ] `/security/mfa` — Multi-Factor Authentication
-- [ ] `/security/sso` — Single Sign-On (SSO)
+- [x] `/security/fundamentals` — Security Fundamentals (2026-08-30) — FIRST Security & Auth hub
+  Phase 10 pilot. Fixed the structural gap every `*NavComponent`-based hub's own pilot has hit
+  before this one: `SecurityNavComponent` had zero subtopics-accordion support — added the
+  standard trio + router subscription, copied from `DpNavComponent`. Real `SUBTOPICS` collision:
+  bare `fundamentals` was already claimed by the JavaScript hub — hub-prefixed to
+  `sec-fundamentals`. 3 subtopics, all gap-closing (clean main page, no compile bug): Threat-
+  Modeling a Password-Reset Endpoint (a quiz question defines all six STRIDE categories in one
+  line each — built a single feature walked through every one); Fail-Secure vs. Fail-Safe, Made
+  Concrete (the QnA describes this distinction with a specific example — built the exact
+  middleware bug and the fix); What SAST Actually Catches (SAST/SCA/DAST named with real tools
+  but shown catching nothing — built the SQL-injection pattern a SAST scanner is designed to
+  flag, plus a variant it can miss). Self-caught and fixed a duplicate Express route registration
+  in my own authoring before the sweep. All three `solution` fields clean; bracket-balance
+  checked. Build passed clean on the first attempt (no stale-nav incident). Browser-verified: nav
+  accordion opens with 1 toggle; all 3 subtopic links render correctly; breadcrumb showed all 4
+  levels; sidebar showed tailored composite-key content; 860px wrapper confirmed via
+  `getComputedStyle`; no console errors. **Security & Auth hub Phase 10: 1 of 23 topics
+  complete.**
+- [x] `/security/owasp-top-10` — OWASP Top 10 (2026-08-30) — Phase 10: 3 subtopics added.
+  Found and fixed a genuine bug in the main page's own Challenge solution, verified by actually
+  EXECUTING the code via `node -e`: `INJECTION_PATTERNS` included `"'or"` (no space), which never
+  matches the classic SQL injection test string (which has a space before "OR"), so the function
+  returned `'SAFE'` instead of the `'INJECTION'` its own comment claims — fixed to `' or '`,
+  re-verified via Node execution against all three of the page's own test cases. Subtopics: The
+  Injection Pattern That Missed Its Own Test (fix-adjacent, Before/After codeTabs, a boundary-
+  condition Try It); A08 Insecure Deserialization, Made Concrete (gap-closing — an illustrative
+  Node.js `unserialize()` RCE vs. safe `JSON.parse()` + Zod schema validation); Preventing SSRF
+  With an IP Allowlist (gap-closing — a vulnerable link-preview fetch endpoint vs. an allowlist-
+  scheme + DNS-resolved-IP-range fix, with a Try It surfacing a genuine unaddressed HTTP-redirect
+  edge case the quiz's own explanation never mentions). No `SUBTOPICS` collision, left bare. Build
+  passed clean. Browser-verified: nav accordion opens with all 3 labels (confirmed underlying
+  logic directly via `ng.getComponent(...)` due to a UI click-dispatch flakiness already
+  documented elsewhere); breadcrumb showed all 4 levels; sidebar showed tailored composite-key
+  content; 860px wrapper confirmed; the main-page Challenge fix confirmed genuinely live by
+  reading the running component's own `challenge.solution` string directly; no console errors.
+  **Security & Auth hub Phase 10: 2 of 23 topics complete.**
+- [x] `/security/threat-modelling` — Threat Modelling (2026-08-30) — Phase 10: 3 subtopics added.
+  Clean main page — no compile bug found, but one verified via direct Node.js execution (the
+  STRIDE Analysis codeTab's own DREAD-sort). All three subtopics gap-closing: Mapping a STRIDE
+  Threat to Real MITRE ATT&CK Techniques (T1528 + T1550.001, both verified via WebSearch against
+  attack.mitre.org, revealing the main page's own T1 mitigation only covers the second half of a
+  two-step attacker chain); Building an Attack Tree in Code (a real AND/OR `AttackNode` tree with
+  a `rollUp()` function, verified via Node execution that the tree's overall difficulty resolves
+  to 3, the insider-phishing leaf); A PASTA-Style Business-Risk Reprioritization (a PCI-DSS
+  compliance multiplier applied on top of the main page's own DREAD scores, verified via Node
+  execution that it flips T2 from lowest to highest priority). No `SUBTOPICS` collision, left
+  bare. Build passed clean. Browser-verified: nav accordion opens with all 3 labels (3 toggles
+  total across the hub); breadcrumb showed all 4 levels; sidebar showed tailored composite-key
+  content; 860px wrapper confirmed; no console errors on any of the 4 pages.
+  **Security & Auth hub Phase 10: 3 of 23 topics complete.**
+- [x] `/security/secure-coding` — Secure Coding Practices (2026-08-30) — Phase 10: 3 subtopics
+  added. Verified via direct Node.js execution that the Challenge's own truncate-then-encode order
+  can produce a final string longer than `maxLength` once entity expansion runs after truncation
+  (neither of the Challenge's own two demo calls happens to reveal this). Subtopics: Why
+  Truncate-Then-Encode Can Exceed maxLength (fix-adjacent, plus a contrasting encode-then-truncate
+  variant that trades the length-bound issue for a mangled HTML entity instead); Path Traversal —
+  Vulnerable Endpoint and Fix (gap-closing, a real vulnerable Node.js endpoint + the quiz's own
+  resolve-and-check fix, including a sibling-directory prefix trap verified via Node execution); A
+  TOCTOU Race Condition, Timelined (gap-closing, a millisecond-by-millisecond race timeline + an
+  `O_NOFOLLOW`-based atomic fix verified against Node's real documented behavior, extended to a
+  database check-then-decrement race in the Try It). Self-caught and fixed a missing closing brace
+  in my own authoring of the second codeTab before the build. No `SUBTOPICS` collision, left bare.
+  Build passed clean. Browser-verified: nav accordion opens with all 3 labels (4 toggles total
+  across the hub); breadcrumb and 860px wrapper confirmed on every subtopic; sidebar showed
+  tailored composite-key content; no console errors on any of the 4 pages.
+  **Security & Auth hub Phase 10: 4 of 23 topics complete.**
+- [x] `/security/password-security` — Password Security (2026-08-30) — Phase 10: 3 subtopics
+  added. Found and fixed an imprecise Challenge comment, verified via direct Node.js execution:
+  `checkPasswordStrength('P@ssw0rd123!')` was commented "score: 3 or 4" for a fully deterministic
+  function that always returns exactly 3 (all 4 character classes present, but only 12 chars,
+  short of score 4's separate 16-char floor). Subtopics: Score 3 vs 4 — the Real Boundary
+  (fix-adjacent, plus what it actually takes to reach score 4, Node-verified); A Simplified
+  Passkey Registration and Login Flow (gap-closing, real `navigator.credentials.create()`/`.get()`
+  API verified against the WebAuthn spec and MDN via WebSearch, plus origin-bound phishing
+  resistance verified via WebSearch); Detecting Password Spraying Across Accounts (gap-closing, a
+  Set-based per-IP cross-account detector, Node-verified to correctly ignore same-account brute
+  force while flagging genuine spraying). Self-caught and fixed a mistaken Angular-interpolation
+  brace-escape trick inside an `[innerHTML]`-bound field before the build. No `SUBTOPICS`
+  collision, left bare. Build passed clean. Browser-verified: nav accordion opens with all 3
+  labels (5 toggles total across the hub); main-page fix confirmed live via direct component
+  inspection; breadcrumb and 860px wrapper confirmed on every subtopic; no console errors on any
+  of the 4 pages. **Security & Auth hub Phase 10: 5 of 23 topics complete.**
+- [x] `/security/oauth-oidc` — OAuth 2.0 & OIDC (2026-08-30) — Phase 10: 3 subtopics added.
+  Found a real environment mismatch in the main page's own PKCE codeTab — it imports Node's
+  `crypto` module for a flow explicitly labeled "the correct flow for SPAs," which won't run in
+  any browser. Subtopics: PKCE in the Browser With the Web Crypto API (the actual
+  `crypto.getRandomValues()`/`crypto.subtle.digest()` implementation, verified against the spec
+  via WebSearch and confirmed working via Node execution); Token Introspection Alongside JWT
+  Validation (the QnA's own "hybrid approach," wired together on one endpoint); The Device
+  Authorization Grant, Implemented (the actual RFC 8628 polling loop, verified against the spec's
+  `authorization_pending`-vs-`slow_down` distinction and the cumulative interval math). No
+  `SUBTOPICS` collision, left bare. Build passed clean. Browser-verified: nav accordion opens with
+  all 3 labels (6 toggles total across the hub); breadcrumb and 860px wrapper confirmed on every
+  subtopic; no console errors on any of the 4 pages.
+  **Security & Auth hub Phase 10: 6 of 23 topics complete.**
+- [x] `/security/jwt` — JWT (JSON Web Tokens) (2026-08-30) — Phase 10: 3 subtopics added, all
+  gap-closing (clean main page). Token Revocation, Both Ways (tokenVersion vs. JTI blacklist,
+  both implemented and wired into the same verify flow); The RS256 → HS256 Confusion Attack,
+  Demonstrated (the actual vulnerable verifier and a forged token, verified end-to-end via real
+  RSA key generation and HMAC computation in Node, confirming both the exploit succeeds against
+  the vulnerable verifier and fails against the main page's own algorithms allowlist); Refresh
+  Token Rotation With Reuse Detection (the quiz's own "token families" mechanism, built, with a
+  Try It on why reuse detection costs the legitimate user their session too). No `SUBTOPICS`
+  collision, left bare. Build passed clean. Browser-verified: nav accordion opens with all 3
+  labels (7 toggles total across the hub); breadcrumb and 860px wrapper confirmed on every
+  subtopic; no console errors on any of the 4 pages.
+  **Security & Auth hub Phase 10: 7 of 23 topics complete.**
+- [x] `/security/mfa` — Multi-Factor Authentication (2026-08-30) — Phase 10: 3 subtopics added.
+  A real self-caught FALSE finding: a stated 60s anti-replay cache TTL looked inconsistent with
+  the mistake block's own "±1 window = 90 seconds" explanation, and an initial "fix" was applied
+  — but precise Node.js simulation of the actual accept-window mechanics before publishing
+  revealed the 60s TTL was ALREADY correct (mathematically covers the full replay window in every
+  boundary case tested). The incorrect fix was reverted before the build (git diff confirmed
+  mfa.ts byte-identical to original). Subtopics rebuilt around three properly-verified findings
+  instead: MFA Fatigue and Number Matching, Implemented; Step-Up Authentication for High-Risk
+  Operations (TTL boundary timing verified via execution); HOTP Counter Resynchronization (RFC
+  4226's look-ahead window, verified against the RFC and confirmed via execution, reusing the
+  main page's own hotp() function unmodified). No `SUBTOPICS` collision, left bare. Build passed
+  clean. Browser-verified: nav accordion opens with all 3 labels (8 toggles total across the
+  hub); main page confirmed unchanged from original; no console errors on any of the 4 pages.
+  **Security & Auth hub Phase 10: 8 of 23 topics complete.**
+- [x] `/security/sso` — Single Sign-On (SSO) (2026-08-30) — Phase 10: 3 subtopics added, all
+  gap-closing. The SAML Signature Wrapping Attack, Demonstrated (a simplified document model
+  isolating the structural bug, verified against real XSW attack mechanics via WebSearch and
+  confirmed end-to-end via Node execution, including a reversed-order variant); Multi-Tenant SSO
+  — Domain Resolution and Isolation (domain-based IdP resolution + the isolation check catching a
+  signature-valid assertion from the wrong tenant's own real IdP, verified via execution); SCIM
+  Deprovisioning — the JIT Gap SCIM Closes (the SCIM endpoint closing JIT's one structural gap,
+  with a Try It on why session revocation must be explicit). No `SUBTOPICS` collision, left bare.
+  Build passed clean. Browser-verified: nav accordion opens with all 3 labels (9 toggles total
+  across the hub); breadcrumb and 860px wrapper confirmed on every subtopic; no console errors on
+  any of the 4 pages.
+  **Security & Auth hub Phase 10: 9 of 23 topics complete.**
 - [ ] `/security/rbac-abac` — RBAC & ABAC
 - [ ] `/security/claims-identity` — Claims & Identity
 - [ ] `/security/api-security` — API Security

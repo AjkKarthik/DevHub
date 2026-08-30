@@ -1,0 +1,26 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Bash Scripting Basics" topicRoute="/linux/bash-scripting" subtopicLabel="Exit Codes Wrap Around at 256 — return 256 Means Success" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">Exit Codes Wrap Around at 256 — return 256 Means Success</h1>
+  <p class="page-subtitle">The main page states the 0-255 range as a passing fact — exit statuses are unsigned 8-bit values, so return 256 silently computes to 0, the value that conventionally means success.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="POSIX shells (all)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This turns the main page's bare "0-255" range into a real hazard and fix. Next: a subtler set -e gap involving local variable assignment.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Bash Scripting Basics" topicRoute="/linux/bash-scripting"
+    [next]="{ label: 'local Assignment Masks set -e Command Failures', route: '/linux/bash-scripting/local-assignment-masks-set-e-command-failures' }" />
+</div>

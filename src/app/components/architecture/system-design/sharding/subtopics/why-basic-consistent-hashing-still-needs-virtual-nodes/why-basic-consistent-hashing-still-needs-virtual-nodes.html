@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Database Sharding" topicRoute="/system-design/sharding" subtopicLabel="Why Basic Consistent Hashing Still Needs Virtual Nodes" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">Why Basic Consistent Hashing Still Needs Virtual Nodes</h1>
+  <p class="page-subtitle">The Quick Reference says virtual nodes give "better load distribution" but never says why they're needed — quantified: basic single-position placement can hit ~30% load variance; virtual nodes cut that to under 1%.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This quantifies why virtual nodes are standard practice, not an optional extra. Next topic: SQL vs NoSQL.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Database Sharding" topicRoute="/system-design/sharding"
+    [prev]="{ label: 'Naive Double-Write Resharding Is Risky — Vitess Uses CDC Instead', route: '/system-design/sharding/naive-double-write-resharding-is-risky-vitess-uses-cdc-instead' }" />
+</div>

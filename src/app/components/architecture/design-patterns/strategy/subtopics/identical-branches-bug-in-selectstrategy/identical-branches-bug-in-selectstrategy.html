@@ -1,0 +1,29 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Strategy" topicRoute="/design-patterns/strategy"
+    subtopicLabel="The Identical-Branches Bug in SelectStrategy" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">The Identical-Branches Bug in SelectStrategy</h1>
+  <p class="page-subtitle">The main page's own SelectStrategy pattern-matched on three arms, but two of them
+    returned the exact same result — the order.Total > 100m check never actually changed the outcome.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="C# 9.0+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>Both remaining subtopics build actual code for two things the main page's own QnA discusses in prose
+      only: keyed dependency injection for runtime strategy selection, and why a shared strategy instance
+      must stay reentrant.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Strategy" topicRoute="/design-patterns/strategy"
+    [next]="{ label: 'Keyed DI Strategy Selection', route: '/design-patterns/strategy/keyed-di-strategy-selection' }" />
+</div>

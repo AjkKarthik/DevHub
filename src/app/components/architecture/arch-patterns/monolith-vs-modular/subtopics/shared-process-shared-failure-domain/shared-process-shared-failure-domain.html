@@ -1,0 +1,26 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Monolith vs Modular Monolith" topicRoute="/arch-patterns/monolith-vs-modular" subtopicLabel="The Modular Monolith's Unstated Tradeoff: One Process, One Failure Domain" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">The Modular Monolith's Unstated Tradeoff: One Process, One Failure Domain</h1>
+  <p class="page-subtitle">The page covers logical isolation extensively but never names the flip side of a single deployable unit: every module shares one process, so a crash or memory leak in one module can take every other module down too.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>With the team-size guidance reconciled, the SharedKernel's own type usage fixed, and this operational-isolation tradeoff now named explicitly, the page's coverage of when and why to split a monolith is more complete. Next up: Layered Architecture, a different (and often complementary) way of organizing code within a single module or service.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Monolith vs Modular Monolith" topicRoute="/arch-patterns/monolith-vs-modular"
+    [prev]="{ label: 'SharedKernel’s Own ProductId Type Was Never Actually Used', route: '/arch-patterns/monolith-vs-modular/sharedkernel-productid-never-used' }" />
+</div>

@@ -1,0 +1,27 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="System Design Framework" topicRoute="/system-design/framework" subtopicLabel="Size for Peak QPS, Not Average QPS" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">Size for Peak QPS, Not Average QPS</h1>
+  <p class="page-subtitle">The main page's worked QPS example computes a 24-hour average and stops there — real capacity planning needs to size for peak traffic, typically 2–3x higher.</p>
+  <app-page-meta [readingTime]="7" difficulty="beginner" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This closes a gap in the main page's own worked example. Next: turning a QPS figure (average or peak) into a concrete concurrency/thread-pool number via Little's Law.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="System Design Framework" topicRoute="/system-design/framework"
+    [prev]="{ label: 'SSD Random Read Is 150 Microseconds, Not 100', route: '/system-design/framework/ssd-random-read-is-150-microseconds-not-100' }"
+    [next]="{ label: 'Little’s Law Turns QPS Into Concurrent Connections Needed', route: '/system-design/framework/littles-law-turns-qps-into-concurrent-connections-needed' }" />
+</div>

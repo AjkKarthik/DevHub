@@ -1,0 +1,26 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Environment Variables &amp; Shell Config" topicRoute="/linux/environment-variables" subtopicLabel="unset Removes a Variable — VAR= Only Empties It" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">unset Removes a Variable — VAR= Only Empties It</h1>
+  <p class="page-subtitle">The main page treats "empty" and "unset" as interchangeable — they look identical to echo and -z, but only &#36;&#123;VAR+x&#125; or [[ -v VAR ]] can actually tell them apart.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Bash (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the topic's three deep dives, adding a distinction the main page's own theory glosses over entirely.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Environment Variables &amp; Shell Config" topicRoute="/linux/environment-variables"
+    [prev]="{ label: 'docker inspect Reveals Every -e Secret in Plaintext', route: '/linux/environment-variables/docker-inspect-reveals-every-e-secret-in-plaintext' }" />
+</div>

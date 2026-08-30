@@ -1,0 +1,30 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Memento" topicRoute="/design-patterns/memento"
+    subtopicLabel="Delta Mementos: Storing Only What Changed" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Delta Mementos: Storing Only What Changed</h1>
+  <p class="page-subtitle">The main page's own QnA recommends incremental snapshots for large state, but
+    both codeTabs copy everything on every snapshot. Here's what a delta-based Memento actually looks like,
+    and the ordering trade-off it introduces.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="C# 9.0+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>Together with the previous two subtopics, this closes out the main page's own three biggest
+      unstated gaps: a snapshot that isn't actually independent, a Caretaker that isn't actually blocked from
+      reading it, and a QnA recommendation with no code to back it up.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Memento" topicRoute="/design-patterns/memento"
+    [prev]="{ label: 'A Real Nested-Class Memento', route: '/design-patterns/memento/nested-class-memento-narrow-interface' }" />
+</div>

@@ -1,0 +1,27 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="mTLS &amp; Certificate Management" topicRoute="/service-mesh/mtls" subtopicLabel="Mesh-Wide PeerAuthentication Must Be Named default in the Root Namespace" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">Mesh-Wide PeerAuthentication Must Be Named "default" in the Root Namespace</h1>
+  <p class="page-subtitle">The main page describes the general shape of a mesh-wide policy but skips the exact naming requirement — get it wrong and the policy applies with no error, yet is silently never enforced.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Istio (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This closes a real gap in the main page's mesh-wide policy guidance. Next: why the CA secret is named cacerts, not istio-ca-secret — a genuine inaccuracy on the main page, now corrected.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="mTLS &amp; Certificate Management" topicRoute="/service-mesh/mtls"
+    [prev]="{ label: 'Probe Traffic Is Rewritten to Port 15020, Not Simply Exempted', route: '/service-mesh/mtls/probe-traffic-is-rewritten-to-port-15020-not-simply-exempted' }"
+    [next]="{ label: 'The CA Secret Is Named cacerts, Not istio-ca-secret', route: '/service-mesh/mtls/the-ca-secret-is-named-cacerts-not-istio-ca-secret' }" />
+</div>

@@ -75,8 +75,11 @@ const codeTabs: CodeTab[] = [
     code: `// Base class with Template Method
 public abstract class ReportGenerator
 {
-    // Template Method — sealed; defines the algorithm skeleton
-    public sealed void GenerateReport(ReportRequest request)
+    // Template Method — non-virtual, so no subclass can override it or
+    // change the algorithm order (C# only allows "sealed" on a method
+    // that is also an "override" — a base class's own plain, non-virtual
+    // method is already un-overridable without needing that keyword)
+    public void GenerateReport(ReportRequest request)
     {
         var data     = FetchData(request);          // abstract step
         var filtered = FilterData(data, request);   // hook — default: no filter
@@ -153,7 +156,9 @@ public partial class AddUserTimestamps : Migration
 }
 
 // ASP.NET Core Controller action filters — hook methods in Template Method
-public class AuditController : ControllerBase
+// Note: Controller (not ControllerBase) is what declares these as virtual
+// no-op hooks — ControllerBase does not implement IActionFilter at all.
+public class AuditController : Controller
 {
     // OnActionExecuting/OnActionExecuted are hook methods called by the MVC pipeline
     public override void OnActionExecuting(ActionExecutingContext context)
@@ -169,8 +174,8 @@ const mistakes: CommonMistake[] = [
   {
     title: 'Making the template method overridable (not sealed)',
     wrong: `public virtual void GenerateReport(ReportRequest r) { ... } // subclass can change the ORDER`,
-    right: `public sealed void GenerateReport(ReportRequest r) { ... } // algorithm order is fixed`,
-    explanation: 'The template method must be sealed (or non-virtual) to preserve the algorithm skeleton. Making it virtual allows subclasses to change the order of steps — defeating the pattern\'s purpose.',
+    right: `public void GenerateReport(ReportRequest r) { ... } // non-virtual — order is fixed`,
+    explanation: 'The template method must be non-virtual (or sealed, if it happens to be overriding something itself) to preserve the algorithm skeleton. Making it virtual allows subclasses to change the order of steps — defeating the pattern\'s purpose. Note: C# only allows the sealed keyword on a method that is also override — a plain method on a base class is already non-overridable without it.',
   },
   {
     title: 'Providing too many abstract steps (rigid base class)',

@@ -1,0 +1,27 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Import & Generated Config" topicRoute="/terraform/import" subtopicLabel="The Import ID Format Is Resource-Specific, Not Universal" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">The Import ID Format Is Resource-Specific, Not Universal</h1>
+  <p class="page-subtitle">Every example on the main page happens to use a simple single-value ID — nothing prepares a reader for a composite ID, which many resource types actually require.</p>
+  <app-page-meta [readingTime]="7" difficulty="beginner" since="Terraform (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This fills in what the main page's own "identify the resource ID" step leaves unsaid about format variation. Next: what import genuinely leaves for you to handle — dependent resources and sensitive values.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Import & Generated Config" topicRoute="/terraform/import"
+    [prev]="{ label: 'for_each Import Blocks Handle Bulk Import', route: '/terraform/import/for-each-import-blocks-handle-bulk-import-not-one-at-a-time' }"
+    [next]="{ label: 'Import Never Pulls in Dependents or Sensitive Values', route: '/terraform/import/import-never-pulls-in-dependents-or-sensitive-values' }" />
+</div>

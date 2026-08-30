@@ -26742,6 +26742,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Reach for Abstract Factory only when there are genuinely multiple interchangeable families — for one family, plain Factory Method or direct construction is simpler.',
     ],
   },
+  'design-patterns/abstract-factory/what-versioning-the-factory-interface-actually-looks-like': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Abstract Factory (overview)', route: '/design-patterns/abstract-factory' },
+      { label: 'A Registry-Based Factory Selector, Made Concrete', route: '/design-patterns/abstract-factory/a-registry-based-factory-selector-made-concrete' },
+    ],
+    tip: 'A newer interface extending the original lets existing factories and client code stay completely untouched — only code that wants the new capability has to depend on the newer interface.',
+    gotchas: [
+      'Versioning trades one cost for a smaller one — it does not eliminate the cost of adding a new product type entirely.',
+    ],
+  },
+  'design-patterns/abstract-factory/a-registry-based-factory-selector-made-concrete': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'What Versioning the Factory Interface Actually Looks Like', route: '/design-patterns/abstract-factory/what-versioning-the-factory-interface-actually-looks-like' },
+      { label: 'Using Abstract Factory for Test Doubles', route: '/design-patterns/abstract-factory/using-abstract-factory-for-test-doubles' },
+    ],
+    tip: 'A registry\'s dictionary lookup never changes as new factories are added — only the independent Register() call for each new factory needs to exist.',
+    gotchas: [
+      'A switch statement mapping a config key to a factory type has the exact same maintenance cost as any other type-switch — a registry avoids this entirely.',
+    ],
+  },
+  'design-patterns/abstract-factory/using-abstract-factory-for-test-doubles': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Abstract Factory (overview)', route: '/design-patterns/abstract-factory' },
+      { label: 'A Registry-Based Factory Selector, Made Concrete', route: '/design-patterns/abstract-factory/a-registry-based-factory-selector-made-concrete' },
+    ],
+    tip: 'A client depending only on the abstract factory interface — never a concrete factory by name — is what makes swapping in a purpose-built fake for tests possible with zero changes to the client.',
+    gotchas: [
+      'A lightweight production alternative (like an in-memory implementation) and a purpose-built test fake serve different goals — a fake exists specifically to record and assert on HOW it was used.',
+    ],
+  },
   'design-patterns/adapter': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [
@@ -26753,6 +26786,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'An adapter should stay a thin translation layer — business logic creeping into an adapter blurs its purpose.',
       'Adapter vs Facade confusion: Adapter fixes an incompatible interface; Facade simplifies a complex one. They can look similar but solve different problems.',
+    ],
+  },
+  'design-patterns/adapter/processpayment-void-compile-error': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Adapter (overview)', route: '/design-patterns/adapter' },
+      { label: 'The Missing LogLevel Mappings', route: '/design-patterns/adapter/missing-loglevel-mappings' },
+    ],
+    tip: 'Console.WriteLine returns void — C# cannot compare a void expression to null, so this one-liner fails to compile, not just at style review.',
+    gotchas: [
+      'A broken left-hand operand stops the whole expression from compiling, regardless of what a trailing || true is meant to do — short-circuiting is a runtime concept, not a compile-time rescue.',
+    ],
+  },
+  'design-patterns/adapter/missing-loglevel-mappings': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'The ProcessPayment One-Liner Doesn’t Compile', route: '/design-patterns/adapter/processpayment-void-compile-error' },
+      { label: 'IObservable vs. IQueryable: Which One Really Needs an Adapter', route: '/design-patterns/adapter/iobservable-vs-iqueryable-real-adapter-need' },
+    ],
+    tip: 'Trace maps to Verbose and Critical maps to Fatal in Serilog — leaving both out of a catch-all silently demotes the most urgent log level to the same bucket as logging being off.',
+    gotchas: [
+      'IsEnabled() and Log() must agree on which levels exist, or a caller that checks IsEnabled first behaves differently from one that logs unconditionally.',
+    ],
+  },
+  'design-patterns/adapter/iobservable-vs-iqueryable-real-adapter-need': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Adapter (overview)', route: '/design-patterns/adapter' },
+      { label: 'The Missing LogLevel Mappings', route: '/design-patterns/adapter/missing-loglevel-mappings' },
+    ],
+    tip: 'IQueryable<T> already extends IEnumerable<T> through interface inheritance — no adapter needed. IObservable<T> shares no inheritance with IEnumerable<T> at all, which is the genuine Adapter case.',
+    gotchas: [
+      'Different interface names or different intended use cases do not by themselves mean an Adapter is needed — check member-level compatibility first.',
     ],
   },
   'design-patterns/bridge': {
@@ -26768,6 +26834,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Applying Bridge to a stable, unlikely-to-change hierarchy adds complexity with no payoff.',
     ],
   },
+  'design-patterns/bridge/does-ilogger-really-fit-the-bridge-shape': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Bridge (overview)', route: '/design-patterns/bridge' },
+      { label: 'Bridge vs. Strategy: Which Side Actually Grows?', route: '/design-patterns/bridge/bridge-vs-strategy-which-side-grows' },
+    ],
+    tip: '.NET\'s Logger holds one ILogger instance per registered provider and broadcasts every call to all of them — a one-to-many Bridge, not the one-to-one shape the main page\'s Shape/Renderer example uses.',
+    gotchas: [
+      'IsEnabled has to be checked per provider before each Log() call, since different providers can have different minimum levels configured — a concern that only exists because of the broadcast shape.',
+    ],
+  },
+  'design-patterns/bridge/bridge-vs-strategy-which-side-grows': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Does ILogger Really Fit the Bridge Shape?', route: '/design-patterns/bridge/does-ilogger-really-fit-the-bridge-shape' },
+      { label: 'Bridge Wrapping an Adapter: A ConcreteImplementor for a Legacy System', route: '/design-patterns/bridge/bridge-wrapping-an-adapter' },
+    ],
+    tip: 'Bridge expects BOTH sides to grow into their own hierarchies; Strategy expects only the algorithm side to grow while the context stays one class.',
+    gotchas: [
+      'A large number of implementations on one side (many Strategy implementations, for instance) says nothing about which pattern it is — check whether the OTHER side also grows.',
+    ],
+  },
+  'design-patterns/bridge/bridge-wrapping-an-adapter': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Bridge (overview)', route: '/design-patterns/bridge' },
+      { label: 'The ProcessPayment One-Liner Doesn’t Compile', route: '/design-patterns/adapter/processpayment-void-compile-error' },
+    ],
+    tip: 'A ConcreteImplementor can itself be an Adapter wrapping a legacy system — from the Bridge hierarchy\'s point of view, it is just another implementor, indistinguishable from any other.',
+    gotchas: [
+      'The Adapter class has zero awareness it is being used inside a Bridge — the two patterns stay cleanly isolated even when combined.',
+    ],
+  },
   'design-patterns/builder': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [
@@ -26778,6 +26877,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Builder is the standard way to construct genuinely IMMUTABLE objects with many optional fields.',
       'Named/default parameters in modern languages reduce the need for Builder on simpler cases — reserve it for genuinely complex, validated construction.',
+    ],
+  },
+  'design-patterns/builder/the-director-used-backticks-instead-of-c-sharp-interpolation': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Builder Pattern (overview)', route: '/design-patterns/builder' },
+      { label: 'The Wrong Example Was a Compile Error, Not a Design Smell', route: '/design-patterns/builder/the-wrong-example-was-a-compile-error-not-a-design-smell' },
+    ],
+    tip: 'C# has no backtick string syntax at all — a string that already contains embedded double quotes needs either escaping or a verbatim ($@"...") string once it is written correctly as $"...".',
+    gotchas: [
+      'The same backtick-instead-of-interpolation mistake recurred on a second topic in this hub — worth specifically checking for on any C#-labeled codeTab.',
+    ],
+  },
+  'design-patterns/builder/the-wrong-example-was-a-compile-error-not-a-design-smell': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'The Director Used Backticks Instead of C# Interpolation', route: '/design-patterns/builder/the-director-used-backticks-instead-of-c-sharp-interpolation' },
+      { label: 'What a Test Data Builder Actually Looks Like', route: '/design-patterns/builder/what-a-test-data-builder-actually-looks-like' },
+    ],
+    tip: 'A method declared to return a non-void type with no return statement is a compile error at that method\'s own definition — a genuinely void-returning method compiles fine and only breaks a chain later, at the call site.',
+    gotchas: [
+      'Where a compiler error actually appears changes what a reader learns from a mistakes-block example — matching the real place a mistake gets discovered matters, not just failing somehow.',
+    ],
+  },
+  'design-patterns/builder/what-a-test-data-builder-actually-looks-like': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Builder Pattern (overview)', route: '/design-patterns/builder' },
+      { label: 'The Wrong Example Was a Compile Error, Not a Design Smell', route: '/design-patterns/builder/the-wrong-example-was-a-compile-error-not-a-design-smell' },
+    ],
+    tip: 'A Test Data Builder\'s defining feature is DEFAULTS — every field starts populated with a realistic value, so a test only ever sets the one field it actually cares about.',
+    gotchas: [
+      'When a class gains a new required field, only the builder\'s own default needs updating — not every individual test that constructs that type.',
     ],
   },
   'design-patterns/chain-of-responsibility': {
@@ -26793,6 +26925,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Reordering handlers only requires changing the chain\'s wiring, not the handler classes themselves.',
     ],
   },
+  'design-patterns/chain-of-responsibility/auth-middleware-operator-precedence-bug': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Chain of Responsibility (overview)', route: '/design-patterns/chain-of-responsibility' },
+      { label: 'Making "No Handler Accepted This" a Real Signal', route: '/design-patterns/chain-of-responsibility/making-unhandled-a-real-signal' },
+    ],
+    tip: 'C#\'s unary ! binds tighter than binary ?? — !x?.y ?? false does NOT mean !(x?.y ?? false); use != true to check "not definitely true" without the precedence trap.',
+    gotchas: [
+      'The buggy form happens to work for both true and explicit-false cases — only the null (no Identity at all) case silently slips through, making it easy to miss in casual testing.',
+    ],
+  },
+  'design-patterns/chain-of-responsibility/pass-through-with-side-effect-handler': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'The Auth Middleware\'s Operator-Precedence Bug', route: '/design-patterns/chain-of-responsibility/auth-middleware-operator-precedence-bug' },
+      { label: 'Making "No Handler Accepted This" a Real Signal', route: '/design-patterns/chain-of-responsibility/making-unhandled-a-real-signal' },
+    ],
+    tip: 'A handler that always calls next() is still genuine CoR, not Decorator — what matters is that it COULD stop propagation via the same mechanism every other handler uses, not that it always does.',
+    gotchas: [
+      'Placing an always-forwarding handler INSIDE the chain (vs. wrapping the whole chain in a Decorator) allows fine-grained placement at any specific point in the sequence.',
+    ],
+  },
+  'design-patterns/chain-of-responsibility/making-unhandled-a-real-signal': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Chain of Responsibility (overview)', route: '/design-patterns/chain-of-responsibility' },
+      { label: 'The Pass-Through-With-Side-Effect Handler, Made Concrete', route: '/design-patterns/chain-of-responsibility/pass-through-with-side-effect-handler' },
+    ],
+    tip: 'A Console.WriteLine for the unhandled case is not silent, but it is not actionable either — calling code needs a real return value or signal to route on, not just a log line.',
+    gotchas: [
+      'Reaching the end of a chain is not automatically an error condition — an exception forces every caller into a try/catch even for an expected, valid business outcome.',
+    ],
+  },
   'design-patterns/clean-architecture': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [
@@ -26804,6 +26969,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Clean Architecture\'s ceremony (more files, more interfaces) only pays off for applications with genuinely complex business logic expected to outlive any framework choice.',
       'The testability benefit only materializes if the team actually keeps business logic out of the outer layers — the structure alone does not enforce it.',
+    ],
+  },
+  'design-patterns/clean-architecture/the-order-aggregates-missing-ship-and-adddomainevent': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Clean Architecture Pattern (overview)', route: '/design-patterns/clean-architecture' },
+      { label: 'Input and Output Ports, Made Concrete', route: '/design-patterns/clean-architecture/input-and-output-ports-made-concrete' },
+    ],
+    tip: 'The main page\'s own Order.Cancel() calls AddDomainEvent(...), and a separate test calls order.Ship() — neither method was ever declared on the Order class.',
+    gotchas: [
+      'Reading either codeTab in isolation looks complete — the gap only shows up by checking one codeTab\'s assumptions against the other\'s actual declarations.',
+    ],
+  },
+  'design-patterns/clean-architecture/input-and-output-ports-made-concrete': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'The Order Aggregate\'s Missing Ship() and AddDomainEvent', route: '/design-patterns/clean-architecture/the-order-aggregates-missing-ship-and-adddomainevent' },
+      { label: 'Returning a Result Type Instead of Throwing', route: '/design-patterns/clean-architecture/returning-a-result-type-instead-of-throwing' },
+    ],
+    tip: 'An explicit Output Port lets the SAME use case serve multiple callers (HTTP, CLI, a background job) each with their own presenter — without the use case knowing which one is listening.',
+    gotchas: [
+      'Adding a new caller only requires a new presenter implementation — the use case itself never needs to change.',
+    ],
+  },
+  'design-patterns/clean-architecture/returning-a-result-type-instead-of-throwing': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Input and Output Ports, Made Concrete', route: '/design-patterns/clean-architecture/input-and-output-ports-made-concrete' },
+      { label: 'Clean Architecture Pattern (overview)', route: '/design-patterns/clean-architecture' },
+    ],
+    tip: 'A Result type is for EXPECTED business failures a caller needs to branch on; a genuine domain-invariant violation still throws — the two categories coexist deliberately.',
+    gotchas: [
+      'Only the FIRST failing check is ever reported — a caller only sees the earliest applicable reason, not every rule an input happens to violate.',
     ],
   },
   'design-patterns/command': {
@@ -26819,6 +27017,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Macro commands combine Command with Composite so a multi-step operation can be undone as one atomic unit.',
     ],
   },
+  'design-patterns/command/redo-silently-wipes-the-redo-stack': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Command (overview)', route: '/design-patterns/command' },
+      { label: 'A Real MacroCommand, Undone in Reverse Order', route: '/design-patterns/command/a-real-macrocommand-undone-in-reverse' },
+    ],
+    tip: 'Redo() must NOT route through the same Execute() used for new commands — that method clears the redo stack as a side effect meant only for genuinely new commands.',
+    gotchas: [
+      'Redoing one command should never invalidate OTHER commands still waiting in the redo stack — only a genuinely new Execute() should clear redo history.',
+    ],
+  },
+  'design-patterns/command/a-real-macrocommand-undone-in-reverse': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Redo() Silently Wipes the Rest of the Redo Stack', route: '/design-patterns/command/redo-silently-wipes-the-redo-stack' },
+      { label: 'When a Lambda Command Stops Being Enough', route: '/design-patterns/command/when-a-lambda-command-stops-being-enough' },
+    ],
+    tip: 'MacroCommand.Undo() must reverse sub-commands in the OPPOSITE order from Execute() — later sub-commands can depend on earlier ones already having run.',
+    gotchas: [
+      'Getting undo order wrong does not always fail obviously — a specific example can happen to produce the right result by coincidence while the underlying logic is still broken.',
+    ],
+  },
+  'design-patterns/command/when-a-lambda-command-stops-being-enough': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Command (overview)', route: '/design-patterns/command' },
+      { label: 'A Real MacroCommand, Undone in Reverse Order', route: '/design-patterns/command/a-real-macrocommand-undone-in-reverse' },
+    ],
+    tip: 'A bare Action is a genuine Command for simple, one-shot cases — it breaks down the moment undo state, meaningful logging, or serialization is actually needed.',
+    gotchas: [
+      'Retrofitting a name or state onto a lambda-based command usually reinvents, ad hoc, exactly what a named Command class already provides for free.',
+    ],
+  },
   'design-patterns/composite': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [
@@ -26830,6 +27061,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Whether add/remove methods live on the shared Component interface (uniform, less safe) or only on Composite (safer, breaks uniformity) is a recurring design tension.',
       'Composite fits genuinely tree-shaped data — applying it to flat data adds structure with no benefit.',
+    ],
+  },
+  'design-patterns/composite/does-filesysteminfo-really-give-you-composite': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Composite (overview)', route: '/design-patterns/composite' },
+      { label: 'Bridge Wrapping an Adapter: A ConcreteImplementor for a Legacy System', route: '/design-patterns/bridge/bridge-wrapping-an-adapter' },
+    ],
+    tip: 'A shared base class for METADATA (FileSystemInfo) is not the same as a shared recursive OPERATION — Composite specifically needs the latter.',
+    gotchas: [
+      'DirectoryInfo has no built-in recursive size method — getting real Composite behavior over the real file system means wrapping FileInfo/DirectoryInfo yourself.',
+    ],
+  },
+  'design-patterns/composite/the-transparency-design-made-concrete': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Does System.IO’s FileSystemInfo Really Give You Composite?', route: '/design-patterns/composite/does-filesysteminfo-really-give-you-composite' },
+      { label: 'Composite Plus Visitor, Made Concrete', route: '/design-patterns/composite/composite-plus-visitor-made-concrete' },
+    ],
+    tip: 'Transparency catches a leaf/composite mistake at RUNTIME (an exception); Safety catches the same mistake at COMPILE time (a missing method forcing a downcast).',
+    gotchas: [
+      'A silent no-op Add() on a leaf is worse than either design — it fails neither at compile time nor at runtime, just silently does nothing.',
+    ],
+  },
+  'design-patterns/composite/composite-plus-visitor-made-concrete': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Composite (overview)', route: '/design-patterns/composite' },
+      { label: 'What the Transparency Design Actually Looks Like', route: '/design-patterns/composite/the-transparency-design-made-concrete' },
+    ],
+    tip: 'Accept() is added once, as infrastructure — every future operation after that arrives as a new Visitor class with zero changes to the node classes.',
+    gotchas: [
+      'Visitor and baking operations into node classes trade off in opposite directions: Visitor makes new operations cheap but new node types expensive, and vice versa.',
     ],
   },
   'design-patterns/cqrs': {
@@ -26845,6 +27109,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Applying full CQRS to simple CRUD screens with no real read/write divergence adds overhead without benefit.',
     ],
   },
+  'design-patterns/cqrs/the-cancel-endpoints-invalid-arrow-block': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'CQRS Pattern (overview)', route: '/design-patterns/cqrs' },
+      { label: 'Syncing a Read Model Projection From a Domain Event', route: '/design-patterns/cqrs/syncing-a-read-model-projection-from-a-domain-event' },
+    ],
+    tip: 'The main page\'s own Cancel action combined => with a { } block — expression-bodied syntax accepts only a single expression, never a multi-statement block.',
+    gotchas: [
+      'Place and Get on the same controller were fine because their bodies really are single expressions — only Cancel needed a block.',
+    ],
+  },
+  'design-patterns/cqrs/syncing-a-read-model-projection-from-a-domain-event': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'The Cancel Endpoint\'s Invalid Arrow-Block', route: '/design-patterns/cqrs/the-cancel-endpoints-invalid-arrow-block' },
+      { label: 'Read-Your-Writes for the Issuing User', route: '/design-patterns/cqrs/read-your-writes-for-the-issuing-user' },
+    ],
+    tip: 'MediatR\'s INotificationHandler<T> (via Publish) is a separate, fan-out mechanism from the single-handler IRequestHandler<T> (via Send) the main page\'s commands and queries already use.',
+    gotchas: [
+      'The command handler that publishes the event has zero knowledge of how many projection handlers (if any) subscribe to it — that\'s what keeps the write side decoupled.',
+    ],
+  },
+  'design-patterns/cqrs/read-your-writes-for-the-issuing-user': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Syncing a Read Model Projection From a Domain Event', route: '/design-patterns/cqrs/syncing-a-read-model-projection-from-a-domain-event' },
+      { label: 'CQRS Pattern (overview)', route: '/design-patterns/cqrs' },
+    ],
+    tip: 'Read-your-writes is scoped to one actor\'s one request right after their own write — every other concurrent read keeps using the fast projection path unchanged.',
+    gotchas: [
+      'A query with no MinVersion hint always takes the fast projection path, regardless of whether the projection has finished syncing yet.',
+    ],
+  },
   'design-patterns/decorator': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [
@@ -26856,6 +27153,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'A decorator must implement the SAME interface as what it wraps — callers should not be able to tell how many layers of decoration are present.',
       'Decorating behaviors that are actually always needed together adds unneeded indirection — the pattern earns its keep when behaviors are genuinely independently optional.',
+    ],
+  },
+  'design-patterns/decorator/castle-dynamicproxy-vs-postsharp': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Decorator (overview)', route: '/design-patterns/decorator' },
+      { label: 'When Decorator Breaks Object Identity', route: '/design-patterns/decorator/when-decorator-breaks-object-identity' },
+    ],
+    tip: 'Castle DynamicProxy generates a genuine runtime wrapper object — real Decorator. PostSharp weaves aspect code directly into compiled IL, with no wrapper object at all.',
+    gotchas: [
+      'Only the wrapper-based approach (DynamicProxy) inherits Decorator\'s own limitations — virtual-only interception, object identity divergence.',
+    ],
+  },
+  'design-patterns/decorator/when-decorator-breaks-object-identity': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Castle DynamicProxy vs. PostSharp: Which One Is Actually Decorator?', route: '/design-patterns/decorator/castle-dynamicproxy-vs-postsharp' },
+      { label: 'Removing One Decorator from the Middle of the Stack', route: '/design-patterns/decorator/removing-one-decorator-from-the-middle' },
+    ],
+    tip: 'A decorator is, by construction, a different heap object from the one it wraps — ReferenceEquals(decorated, raw) can never be true, no matter how the decorator is implemented.',
+    gotchas: [
+      'Reference-keyed collections (ConditionalWeakTable, a HashSet with ReferenceEqualityComparer) silently miss once decoration is introduced — track a stable ID instead.',
+    ],
+  },
+  'design-patterns/decorator/removing-one-decorator-from-the-middle': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Decorator (overview)', route: '/design-patterns/decorator' },
+      { label: 'When Decorator Breaks Object Identity', route: '/design-patterns/decorator/when-decorator-breaks-object-identity' },
+    ],
+    tip: 'A hand-nested decorator registration has no "list of active layers" to edit — removing one middle layer means rewriting the composition-root expression itself.',
+    gotchas: [
+      'A fully list-based, reconfigurable decorator pipeline is only worth its extra indirection once the number of independently-toggled layers actually justifies it — not for a 2-layer stack.',
     ],
   },
   'design-patterns/dependency-inversion': {
@@ -26871,6 +27201,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Depending directly on a concrete class (SqlDatabase) instead of an interface locks business logic to that specific infrastructure choice.',
     ],
   },
+  'design-patterns/dependency-inversion/the-missing-getsummaryasync-method': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Dependency Inversion (overview)', route: '/design-patterns/dependency-inversion' },
+      { label: 'Who Should Own the Abstraction?', route: '/design-patterns/dependency-inversion/who-should-own-the-abstraction' },
+    ],
+    tip: 'The main page\'s own captive-dependency fix calls repo.GetSummaryAsync() on IOrderRepository — a method the interface, declared in a separate codeTab, was never given.',
+    gotchas: [
+      'Each codeTab reads correctly in isolation — the gap only surfaces by checking one codeTab\'s method calls against another codeTab\'s own interface declaration.',
+    ],
+  },
+  'design-patterns/dependency-inversion/who-should-own-the-abstraction': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'The Missing GetSummaryAsync Method', route: '/design-patterns/dependency-inversion/the-missing-getsummaryasync-method' },
+      { label: 'Property and Method Injection, Shown', route: '/design-patterns/dependency-inversion/property-and-method-injection-shown' },
+    ],
+    tip: 'If the low-level module defines the interface, the high-level module still depends on something the low-level module controls — true inversion requires the high-level side to own the abstraction.',
+    gotchas: [
+      'Injecting an interface achieves the DI mechanism regardless of ownership — but the DIP principle genuinely depends on which project the interface\'s own definition lives in.',
+    ],
+  },
+  'design-patterns/dependency-inversion/property-and-method-injection-shown': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Who Should Own the Abstraction?', route: '/design-patterns/dependency-inversion/who-should-own-the-abstraction' },
+      { label: 'Dependency Inversion (overview)', route: '/design-patterns/dependency-inversion' },
+    ],
+    tip: 'Property Injection fits genuinely optional dependencies; Method Injection fits dependencies that vary per call — neither is a lesser substitute for Constructor Injection.',
+    gotchas: [
+      'A dependency that varies per call can\'t be expressed through Constructor Injection at all — the constructor only runs once, at creation.',
+    ],
+  },
   'design-patterns/dry-kiss-yagni': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [
@@ -26881,6 +27244,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'DRY applies to KNOWLEDGE and business rules, not merely to code that happens to look textually similar.',
       'A shared abstraction created too early tends to accumulate special-case branches as new requirements reveal it wasn\'t as universal as assumed.',
+    ],
+  },
+  'design-patterns/dry-kiss-yagni/dry-vs-damp-in-tests-made-concrete': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'DRY, KISS & YAGNI (overview)', route: '/design-patterns/dry-kiss-yagni' },
+      { label: 'Why Microservices Duplicate Domain Models', route: '/design-patterns/dry-kiss-yagni/why-microservices-duplicate-domain-models' },
+    ],
+    tip: 'A failing test is read to understand what went WRONG — a shared setup helper means the reader has to jump elsewhere just to see what state a specific test started from.',
+    gotchas: [
+      'DAMP means some repetition, not zero sharing — genuinely stable test infrastructure is still worth centralizing.',
+    ],
+  },
+  'design-patterns/dry-kiss-yagni/why-microservices-duplicate-domain-models': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'DRY vs. DAMP in Tests, Made Concrete', route: '/design-patterns/dry-kiss-yagni/dry-vs-damp-in-tests-made-concrete' },
+      { label: 'Applying the YAGNI → DRY → KISS Resolution Order', route: '/design-patterns/dry-kiss-yagni/applying-the-yagni-dry-kiss-resolution-order' },
+    ],
+    tip: 'DRY is about knowledge, not textual similarity — two services both having a "Customer" concept isn\'t duplicated knowledge if each owns a genuinely different slice of what that means.',
+    gotchas: [
+      'A shared domain model across services forces both to redeploy for a change relevant to only one of them.',
+    ],
+  },
+  'design-patterns/dry-kiss-yagni/applying-the-yagni-dry-kiss-resolution-order': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Why Microservices Duplicate Domain Models', route: '/design-patterns/dry-kiss-yagni/why-microservices-duplicate-domain-models' },
+      { label: 'DRY, KISS & YAGNI (overview)', route: '/design-patterns/dry-kiss-yagni' },
+    ],
+    tip: 'YAGNI sets the scope, DRY finds the genuinely shared knowledge within that scope, KISS checks the result didn\'t introduce machinery the scope never asked for.',
+    gotchas: [
+      'The three-stage pass isn\'t a one-time ritual — a genuinely new requirement gets its own pass through all three stages again.',
     ],
   },
   'design-patterns/event-sourcing': {
@@ -26896,6 +27292,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'GDPR right-to-erasure conflicts with immutable events — techniques like crypto-shredding address this tension.',
     ],
   },
+  'design-patterns/event-sourcing/the-orderplaced-handler-never-persists-its-insert': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Event Sourcing (overview)', route: '/design-patterns/event-sourcing' },
+      { label: 'Rehydrating From a Snapshot', route: '/design-patterns/event-sourcing/rehydrating-from-a-snapshot' },
+    ],
+    tip: 'DbSet<T>.AddAsync() only tracks an entity as "Added" — only a following SaveChangesAsync() call actually writes the INSERT.',
+    gotchas: [
+      'The main page\'s own OrderCancelled handler on the same class already ends with SaveChangesAsync() — comparing sibling handler methods is what surfaces this kind of gap.',
+    ],
+  },
+  'design-patterns/event-sourcing/rehydrating-from-a-snapshot': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'The OrderPlaced Handler Never Persists Its Insert', route: '/design-patterns/event-sourcing/the-orderplaced-handler-never-persists-its-insert' },
+      { label: 'An Upcaster Chain for OrderPlaced v1 to v2', route: '/design-patterns/event-sourcing/an-upcaster-chain-for-orderplaced-v1-to-v2' },
+    ],
+    tip: 'A snapshot is disposable, derived data — correctness never depends on it, only load performance does.',
+    gotchas: [
+      'Replaying events from Version 0 on top of a snapshot-seeded aggregate double-applies every event up to the snapshot\'s own version.',
+    ],
+  },
+  'design-patterns/event-sourcing/an-upcaster-chain-for-orderplaced-v1-to-v2': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Rehydrating From a Snapshot', route: '/design-patterns/event-sourcing/rehydrating-from-a-snapshot' },
+      { label: 'Event Sourcing (overview)', route: '/design-patterns/event-sourcing' },
+    ],
+    tip: 'Upcasting happens entirely at read time inside deserialisation — the stored bytes for an old event never change.',
+    gotchas: [
+      'A multi-step chain (v1 -> v2 -> v3) applies each upcaster in sequence — an old event never jumps straight to the current shape in one step.',
+    ],
+  },
   'design-patterns/facade': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [
@@ -26906,6 +27335,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Facade vs Adapter: Facade simplifies a complex subsystem; Adapter fixes an incompatible interface. Similar shape, different intent.',
       'A Facade accumulating real business logic of its own has effectively become a service, not just a coordination layer.',
+    ],
+  },
+  'design-patterns/facade/the-missing-rollback-on-partial-checkout-failure': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Facade (overview)', route: '/design-patterns/facade' },
+      { label: 'Facade vs. Mediator, Made Concrete', route: '/design-patterns/facade/facade-vs-mediator-made-concrete' },
+    ],
+    tip: 'A Facade orchestrating several stateful subsystem calls has to undo its OWN earlier steps when a later step fails — that is orchestration staying correct, not business logic creeping in.',
+    gotchas: [
+      'A partial mid-loop failure and an exception thrown mid-sequence are two separate failure paths — both need their own rollback, not just one.',
+    ],
+  },
+  'design-patterns/facade/facade-vs-mediator-made-concrete': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'The Missing Rollback on Partial Checkout Failure', route: '/design-patterns/facade/the-missing-rollback-on-partial-checkout-failure' },
+      { label: 'The API Gateway: A Network-Boundary Facade', route: '/design-patterns/facade/api-gateway-a-network-boundary-facade' },
+    ],
+    tip: 'Facade coordinates between an external client and a subsystem; Mediator coordinates between the subsystem classes themselves, which report events to a shared coordinator instead of calling each other directly.',
+    gotchas: [
+      'The two shapes can produce identical observable behavior for a simple case while organizing the underlying decision-making completely differently.',
+    ],
+  },
+  'design-patterns/facade/api-gateway-a-network-boundary-facade': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Facade (overview)', route: '/design-patterns/facade' },
+      { label: 'The Missing Rollback on Partial Checkout Failure', route: '/design-patterns/facade/the-missing-rollback-on-partial-checkout-failure' },
+    ],
+    tip: 'An API Gateway is the same Facade shape at the network boundary — but a timeout there means the gateway genuinely cannot tell whether the backend call completed or not.',
+    gotchas: [
+      'Network-boundary Facades need idempotency keys in addition to compensating rollback logic — an in-process Facade never faces the "did this actually happen?" ambiguity a timeout introduces.',
     ],
   },
   'design-patterns/factory-method': {
@@ -26920,6 +27382,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'For a fixed, unlikely-to-grow set of types, a simple factory function is often sufficient without subclass-based extension.',
     ],
   },
+  'design-patterns/factory-method/di-approach-referenced-an-undefined-push-notification-class': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Factory Method (overview)', route: '/design-patterns/factory-method' },
+      { label: 'Backticks Are Not C#', route: '/design-patterns/factory-method/backticks-are-not-c-sharp' },
+    ],
+    tip: 'A class referenced elsewhere on a page but never declared is a real compile error — checking that every used type has a matching declaration is worth doing even when the theory text already names it correctly.',
+    gotchas: [
+      'Two codeTabs meant to be read together, where the second reuses classes from the first, is exactly the situation where a new undeclared reference is easiest to introduce unnoticed.',
+    ],
+  },
+  'design-patterns/factory-method/backticks-are-not-c-sharp': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'DI Approach Referenced an Undefined PushNotification Class', route: '/design-patterns/factory-method/di-approach-referenced-an-undefined-push-notification-class' },
+      { label: 'Does the channel Switch Really Decouple Which Factory?', route: '/design-patterns/factory-method/does-the-channel-switch-really-decouple-which-factory' },
+    ],
+    tip: 'C# has no backtick string syntax at all — its interpolation uses a completely different delimiter ($ plus double quotes), unlike TypeScript\'s backtick template literals.',
+    gotchas: [
+      'Swapping backticks for double quotes without adding the leading $ compiles fine but silently stops interpolating anything at all.',
+    ],
+  },
+  'design-patterns/factory-method/does-the-channel-switch-really-decouple-which-factory': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Factory Method (overview)', route: '/design-patterns/factory-method' },
+      { label: 'Backticks Are Not C#', route: '/design-patterns/factory-method/backticks-are-not-c-sharp' },
+    ],
+    tip: 'Dependency injection solves how a dependency reaches its consumer — it says nothing about whether that dependency\'s own internal logic still needs editing for every new case.',
+    gotchas: [
+      'A DI-registered factory with an internal type-switch has the exact same Open/Closed cost as the classic pattern\'s own anti-pattern example — DI alone does not preserve OCP.',
+    ],
+  },
   'design-patterns/flyweight': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [
@@ -26930,6 +27425,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'A Flyweight factory must deduplicate identical intrinsic state via caching — without it there is no actual memory benefit.',
       'Only worth the added API complexity when a system creates a genuinely large number of similar objects.',
+    ],
+  },
+  'design-patterns/flyweight/no-small-integer-boxing-cache-in-dotnet': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Flyweight (overview)', route: '/design-patterns/flyweight' },
+      { label: 'The Race in ParticleFactory.Get() Under Concurrent Access', route: '/design-patterns/flyweight/the-race-in-particlefactory-get' },
+    ],
+    tip: 'Java\'s Integer.valueOf() caches -128 to 127 by spec — the CLR has no equivalent; every C# boxing operation allocates a fresh heap object regardless of value.',
+    gotchas: [
+      'ReferenceEquals on two independently-boxed small ints is always false in C#, unlike the equivalent Java == comparison inside -128..127.',
+    ],
+  },
+  'design-patterns/flyweight/the-race-in-particlefactory-get': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Why .NET Has No Small-Integer Boxing Cache', route: '/design-patterns/flyweight/no-small-integer-boxing-cache-in-dotnet' },
+      { label: 'When Flyweight Identity Silently Merges Logically Distinct Objects', route: '/design-patterns/flyweight/when-flyweight-identity-merges-distinct-objects' },
+    ],
+    tip: 'A plain Dictionary-backed FlyweightFactory has a check-then-act race under concurrent Get() calls — two threads can both miss the cache and create separate instances, defeating sharing entirely.',
+    gotchas: [
+      'ConcurrentDictionary.GetOrAdd() guarantees one shared VALUE per key, not that the factory delegate itself only ever runs once under contention.',
+    ],
+  },
+  'design-patterns/flyweight/when-flyweight-identity-merges-distinct-objects': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Flyweight (overview)', route: '/design-patterns/flyweight' },
+      { label: 'The Race in ParticleFactory.Get() Under Concurrent Access', route: '/design-patterns/flyweight/the-race-in-particlefactory-get' },
+    ],
+    tip: '"Identity is not important" describes the flyweight itself, not the object that references it — tracking identity by the shared flyweight instead of the containing object silently merges distinct entities.',
+    gotchas: [
+      'This bug is easy to introduce precisely because Flyweight was applied correctly — the same sharing that saves memory causes the identity mix-up.',
     ],
   },
   'design-patterns/grasp': {
@@ -26944,6 +27472,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'GRASP principles help evaluate whether a named pattern genuinely fits a situation, or would actually increase coupling.',
     ],
   },
+  'design-patterns/grasp/the-low-coupling-vs-high-cohesion-tension': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'GRASP Principles (overview)', route: '/design-patterns/grasp' },
+      { label: 'A Second Protected Variations Example', route: '/design-patterns/grasp/a-second-protected-variations-example' },
+    ],
+    tip: 'Pursuing coupling reduction past the point where it still tracks a genuine, cohesive responsibility produces classes with almost no reason to exist on their own.',
+    gotchas: [
+      'More, narrower classes is not automatically evidence of higher cohesion — cohesion is about whether a class\'s own members relate to one coherent purpose, not about class count.',
+    ],
+  },
+  'design-patterns/grasp/a-second-protected-variations-example': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'The Low Coupling vs. High Cohesion Tension', route: '/design-patterns/grasp/the-low-coupling-vs-high-cohesion-tension' },
+      { label: 'Avoiding a Law of Demeter Violation', route: '/design-patterns/grasp/avoiding-a-law-of-demeter-violation' },
+    ],
+    tip: 'The main page\'s own tax-calculator example and this storage-swap example protect against two completely different kinds of variation — neither interface protects against the other kind of change.',
+    gotchas: [
+      'The protection comes from the interface existing as what callers depend on — even with only one concrete implementation, the caller is already protected.',
+    ],
+  },
+  'design-patterns/grasp/avoiding-a-law-of-demeter-violation': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'A Second Protected Variations Example', route: '/design-patterns/grasp/a-second-protected-variations-example' },
+      { label: 'GRASP Principles (overview)', route: '/design-patterns/grasp' },
+    ],
+    tip: 'A "train wreck" call chain (order.Customer.Address.City) couples the caller to the internal shape of every class along the chain, not just one.',
+    gotchas: [
+      'Fluent APIs like LINQ chaining are NOT Demeter violations — the restriction is on reaching through progressively different, unrelated objects, not method calls in general.',
+    ],
+  },
   'design-patterns/iterator': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [
@@ -26954,6 +27515,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Most modern languages bake iterator protocols directly into the language (for...of, IEnumerable) — the pattern has largely become invisible infrastructure.',
       'External iterators give the caller pacing control; internal iterators (forEach) are simpler but offer less control.',
+    ],
+  },
+  'design-patterns/iterator/recursive-yield-tree-traversal-is-on-squared': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Iterator (overview)', route: '/design-patterns/iterator' },
+      { label: 'Merging Two External Iterators, Made Concrete', route: '/design-patterns/iterator/merging-two-external-iterators' },
+    ],
+    tip: 'A recursive foreach-wrapped yield return adds a layer of enumerator nesting per recursion level — O(n log n) for a balanced tree, genuinely O(n²) for a degenerate one.',
+    gotchas: [
+      'An explicit-stack iterator keeps yield return\'s ergonomics while doing O(n) total work regardless of tree shape.',
+    ],
+  },
+  'design-patterns/iterator/merging-two-external-iterators': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'The Recursive-Yield Tree Traversal Is Secretly O(n²)', route: '/design-patterns/iterator/recursive-yield-tree-traversal-is-on-squared' },
+      { label: 'What Happens When Range\'s step Is Negative', route: '/design-patterns/iterator/what-happens-when-range-step-is-negative' },
+    ],
+    tip: 'Merging two already-sorted sequences by value requires explicit MoveNext() control over both — an internal iterator like ForEach() has no way to pause one traversal to compare against another.',
+    gotchas: [
+      'LINQ\'s Zip() pairs elements by position, not by value — it cannot replace a value-based merge of two sorted sequences.',
+    ],
+  },
+  'design-patterns/iterator/what-happens-when-range-step-is-negative': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Iterator (overview)', route: '/design-patterns/iterator' },
+      { label: 'Merging Two External Iterators, Made Concrete', route: '/design-patterns/iterator/merging-two-external-iterators' },
+    ],
+    tip: 'The Range Challenge\'s step parameter accepts any number, but next() hardcodes an ascending-only check — a negative step either silently yields nothing or loops forever, depending on start/end.',
+    gotchas: [
+      'The two failure modes are genuinely different: Range(10,1,-1) silently produces zero values, while Range(1,10,-1) loops forever — never assume a bug is "harmless" without tracing every input combination.',
     ],
   },
   'design-patterns/mediator': {
@@ -26968,6 +27562,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Mediator vs Observer: Mediator coordinates a fixed, known set of colleagues with specific rules; Observer supports an open-ended number of generic subscribers.',
     ],
   },
+  'design-patterns/mediator/mediatr-2025-license-change': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Mediator (overview)', route: '/design-patterns/mediator' },
+      { label: 'Publish() Stops on the First Handler Exception', route: '/design-patterns/mediator/publish-exception-halts-later-handlers' },
+    ],
+    tip: 'MediatR v13+ (July 2025) ships under a dual RPL-1.5/commercial license — free under $5M USD annual revenue, paid above that; v12.x and earlier stay Apache 2.0 forever.',
+    gotchas: [
+      'The licensing change only applies to a company choosing to upgrade past v12 — staying on 12.x sidesteps the question entirely.',
+    ],
+  },
+  'design-patterns/mediator/publish-exception-halts-later-handlers': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'MediatR\'s 2025 Commercial License Change', route: '/design-patterns/mediator/mediatr-2025-license-change' },
+      { label: 'Pipeline Behavior Execution Order', route: '/design-patterns/mediator/pipeline-behavior-order' },
+    ],
+    tip: 'MediatR\'s default Publish() strategy (ForeachAwaitPublisher) awaits handlers sequentially in registration order — one throwing stops every handler registered after it from running at all.',
+    gotchas: [
+      'Swap to TaskWhenAllPublisher for genuinely independent notification handlers — it runs all of them regardless of one failing.',
+    ],
+  },
+  'design-patterns/mediator/pipeline-behavior-order': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Publish() Stops on the First Handler Exception', route: '/design-patterns/mediator/publish-exception-halts-later-handlers' },
+      { label: 'Mediator (overview)', route: '/design-patterns/mediator' },
+    ],
+    tip: 'IPipelineBehavior registration order determines wrap order — the first behavior registered becomes the OUTERMOST layer, running before and after every other behavior.',
+    gotchas: [
+      'Swapping two AddTransient(IPipelineBehavior<,>, ...) registrations swaps the resulting execution order with no other code change.',
+    ],
+  },
   'design-patterns/memento': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [
@@ -26978,6 +27605,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Deep-copying large object graphs for every undo step can have real memory implications — production undo often stores diffs instead of full snapshots.',
       'The Caretaker never interprets the Memento\'s contents — that boundary is what preserves the Originator\'s encapsulation.',
+    ],
+  },
+  'design-patterns/memento/asreadonly-is-a-view-not-a-copy': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Memento (overview)', route: '/design-patterns/memento' },
+      { label: 'A Real Nested-Class Memento', route: '/design-patterns/memento/nested-class-memento-narrow-interface' },
+    ],
+    tip: 'List<T>.AsReadOnly() wraps the original list — it is a live view, not a copy. Mutating the source list after the "snapshot" is taken still shows up in it.',
+    gotchas: [
+      'ToArray() genuinely copies; AsReadOnly() genuinely does not — the two are easy to confuse when reaching for a "safe" collection to store in a Memento.',
+    ],
+  },
+  'design-patterns/memento/nested-class-memento-narrow-interface': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'AsReadOnly() Is a View, Not a Copy', route: '/design-patterns/memento/asreadonly-is-a-view-not-a-copy' },
+      { label: 'Delta Mementos: Storing Only What Changed', route: '/design-patterns/memento/delta-mementos-storing-only-what-changed' },
+    ],
+    tip: 'A private nested Memento class exposed only through an empty public marker interface makes "the Caretaker cannot read this" a compiler-enforced guarantee, not just a convention.',
+    gotchas: [
+      'A Caretaker holding only the marker interface has no legal way to cast down to the private concrete Memento type from outside the Originator.',
+    ],
+  },
+  'design-patterns/memento/delta-mementos-storing-only-what-changed': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'A Real Nested-Class Memento', route: '/design-patterns/memento/nested-class-memento-narrow-interface' },
+      { label: 'Memento (overview)', route: '/design-patterns/memento' },
+    ],
+    tip: 'A delta memento stores only what one change touched, not the whole Originator — O(N) total memory for N edits instead of O(N x M) for M total fields.',
+    gotchas: [
+      'A single user-facing "undo" that touches multiple fields at once needs ALL of the resulting deltas grouped together, not just the last one, or undo only partially reverses the action.',
     ],
   },
   'design-patterns/null-object': {
@@ -26992,6 +27652,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Overusing Null Object can hide genuine errors that a caller should have been alerted to.',
     ],
   },
+  'design-patterns/null-object/the-undeclared-db-field-in-productrepository': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Null Object (overview)', route: '/design-patterns/null-object' },
+      { label: 'Nested Null Objects for Object-Returning Methods', route: '/design-patterns/null-object/nested-null-objects-for-object-returning-methods' },
+    ],
+    tip: 'The main page\'s own ProductRepository referenced _db without ever declaring it — a plain undeclared-identifier compile error, fixed with a primary constructor matching the codeTab\'s own established style.',
+    gotchas: [
+      'This category of mistake — a field or method referenced but never declared in the same class — has recurred across many topics in this hub, usually in the last, smallest snippet of a multi-example codeTab.',
+    ],
+  },
+  'design-patterns/null-object/nested-null-objects-for-object-returning-methods': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'The Undeclared _db Field in ProductRepository', route: '/design-patterns/null-object/the-undeclared-db-field-in-productrepository' },
+      { label: 'When a Null Object Violates Liskov Substitution', route: '/design-patterns/null-object/when-a-null-object-violates-liskov-substitution' },
+    ],
+    tip: 'A Null Object whose own methods return object types needs its own recursive Null Object down every level — NullCustomer.Orders should return an empty collection, not null or a thrown exception.',
+    gotchas: [
+      'Whether a nested Null Object is the right choice depends entirely on whether the caller needs to distinguish "found" from "not found" — the same judgment call the main page\'s own fourth mistake block makes.',
+    ],
+  },
+  'design-patterns/null-object/when-a-null-object-violates-liskov-substitution': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Nested Null Objects for Object-Returning Methods', route: '/design-patterns/null-object/nested-null-objects-for-object-returning-methods' },
+      { label: 'Null Object (overview)', route: '/design-patterns/null-object' },
+    ],
+    tip: 'A Null Object that throws NotImplementedException on only some methods is worse than a null check — it fails unpredictably, deep in unrelated code, instead of immediately and obviously at the call site.',
+    gotchas: [
+      'Every method needs a genuinely safe default, not just the ones a test suite happens to exercise — a compiling, passing Null Object can still violate LSP on an untested path.',
+    ],
+  },
   'design-patterns/object-pool': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [
@@ -27004,6 +27697,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Modern generational garbage collectors have reduced how broadly necessary this pattern is for ordinary allocation.',
     ],
   },
+  'design-patterns/object-pool/count-check-race-condition': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Object Pool (overview)', route: '/design-patterns/object-pool' },
+      { label: 'Implementing Idle-Object Eviction', route: '/design-patterns/object-pool/idle-object-eviction' },
+    ],
+    tip: 'A Count-then-Add pair is a check-then-act race even when both individual operations are individually thread-safe — thread-safety of one step does not compose across two steps.',
+    gotchas: [
+      'This race causes a soft overshoot of maxSize, not data corruption — severity depends entirely on whether the cap is meant to be a hard resource ceiling.',
+    ],
+  },
+  'design-patterns/object-pool/idle-object-eviction': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'The Count-Check Race Condition', route: '/design-patterns/object-pool/count-check-race-condition' },
+      { label: 'ConcurrentBag vs. ConcurrentQueue for Pool Storage', route: '/design-patterns/object-pool/concurrentbag-vs-concurrentqueue' },
+    ],
+    tip: 'Evicting a pooled item from the collection and disposing its underlying resource are two separate steps — for disposable pooled items, both have to happen together or the resource leaks.',
+    gotchas: [
+      'A background Timer sweep keeps eviction off the Acquire()/Release() hot path entirely.',
+    ],
+  },
+  'design-patterns/object-pool/concurrentbag-vs-concurrentqueue': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Object Pool (overview)', route: '/design-patterns/object-pool' },
+      { label: 'Implementing Idle-Object Eviction', route: '/design-patterns/object-pool/idle-object-eviction' },
+    ],
+    tip: 'maxSize on the main page\'s pool only bounds retained IDLE instances — a real concurrency cap needs a SemaphoreSlim that Acquire() actually waits on.',
+    gotchas: [
+      'ConcurrentBag is optimized for same-thread produce/consume; a pool whose Acquire and Release routinely happen on different thread-pool threads (common with async/await) is exactly the pattern it is weak at.',
+    ],
+  },
   'design-patterns/observer': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [
@@ -27014,6 +27740,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Subscribers that forget to unsubscribe are a classic memory leak source — the subject holds a reference preventing garbage collection.',
       'Many subscribers with frequent notifications can create real performance concerns at scale.',
+    ],
+  },
+  'design-patterns/observer/field-like-events-are-already-thread-safe': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Observer (overview)', route: '/design-patterns/observer' },
+      { label: 'A Real IObservable<T> Implementation', route: '/design-patterns/observer/a-real-iobservable-implementation' },
+    ],
+    tip: 'Since C# 4, field-like event add/remove accessors are compiler-generated lock-free CAS — a hand-rolled List<T> Subject still needs manual locking, a genuine event does not.',
+    gotchas: [
+      'This only covers concurrent add/remove — it says nothing about synchronizing an event\'s own business logic with what happens during Invoke().',
+    ],
+  },
+  'design-patterns/observer/a-real-iobservable-implementation': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Field-Like Events Are Already Thread-Safe', route: '/design-patterns/observer/field-like-events-are-already-thread-safe' },
+      { label: 'What a WeakReference-Based Observer Looks Like', route: '/design-patterns/observer/weakreference-based-observer-implementation' },
+    ],
+    tip: 'IObservable<T>/IObserver<T> ship in the base class library with zero Rx.NET dependency — the real grammar is OnNext*, then at most one of OnError or OnCompleted, ever.',
+    gotchas: [
+      'A late subscriber to an already-completed stream should still receive OnCompleted, not silently hear nothing ever again.',
+    ],
+  },
+  'design-patterns/observer/weakreference-based-observer-implementation': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'A Real IObservable<T> Implementation', route: '/design-patterns/observer/a-real-iobservable-implementation' },
+      { label: 'Observer (overview)', route: '/design-patterns/observer' },
+    ],
+    tip: 'A WeakReference-based Subject trades a deterministic, reliably-reproducible leak for a non-deterministic one — notifications silently stop whenever the GC happens to collect the observer.',
+    gotchas: [
+      'The Subject still needs to prune dead WeakReference entries itself, or its own observer list grows forever with entries that will never fire again.',
     ],
   },
   'design-patterns/outbox': {
@@ -27029,6 +27788,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'This "record intent atomically, execute asynchronously" structure generalizes beyond messaging to any local-plus-external-side-effect scenario.',
     ],
   },
+  'design-patterns/outbox/the-mismatched-consumer-type-in-addconsumer': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Outbox Pattern (overview)', route: '/design-patterns/outbox' },
+      { label: 'Building the Inbox Pattern\'s Idempotency Table', route: '/design-patterns/outbox/building-the-inbox-patterns-idempotency-table' },
+    ],
+    tip: 'AddConsumer<T>() requires T to be a concrete class implementing IConsumer<TMessage> — the main page\'s own registration referenced a type never declared anywhere in the same codeTab.',
+    gotchas: [
+      'The actual consumer class, PlaceOrderConsumer, is correctly named after the COMMAND it handles, not the event it later publishes.',
+    ],
+  },
+  'design-patterns/outbox/building-the-inbox-patterns-idempotency-table': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'The Mismatched Consumer Type in AddConsumer', route: '/design-patterns/outbox/the-mismatched-consumer-type-in-addconsumer' },
+      { label: 'Preserving Event Order With a Per-Aggregate Relay', route: '/design-patterns/outbox/preserving-event-order-with-a-per-aggregate-relay' },
+    ],
+    tip: 'A unique-constraint-backed insert detects a duplicate delivery atomically — a separate read-then-write idempotency check cannot, under concurrent redelivery.',
+    gotchas: [
+      'Outbox guarantees at-least-once DELIVERY from the producer; Inbox is what turns that into effectively-once PROCESSING on the consumer.',
+    ],
+  },
+  'design-patterns/outbox/preserving-event-order-with-a-per-aggregate-relay': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Building the Inbox Pattern\'s Idempotency Table', route: '/design-patterns/outbox/building-the-inbox-patterns-idempotency-table' },
+      { label: 'Outbox Pattern (overview)', route: '/design-patterns/outbox' },
+    ],
+    tip: 'Grouping outbox rows by aggregate ID gives real parallelism across aggregates while keeping each aggregate\'s own events strictly in order.',
+    gotchas: [
+      'Naive Task.WhenAll over every pending row with no grouping can let a later event reach the broker before an earlier one for the SAME aggregate.',
+    ],
+  },
   'design-patterns/prototype': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [
@@ -27041,6 +27833,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Less needed in languages/frameworks with efficient construction and DI — remains valuable when construction is genuinely expensive.',
     ],
   },
+  'design-patterns/prototype/polymorphic-cloning-via-iprototype': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Prototype Pattern (overview)', route: '/design-patterns/prototype' },
+      { label: 'Why Immutable Sub-Objects Make Shallow Copy Safe', route: '/design-patterns/prototype/why-immutable-sub-objects-make-shallow-copy-safe' },
+    ],
+    tip: 'A shared Clone() interface lets client code duplicate objects without knowing their concrete type — the cloning equivalent of what a factory interface does for creation.',
+    gotchas: [
+      'Adding a new prototype type requires zero changes to client code that only depends on the shared interface, not the concrete implementations.',
+    ],
+  },
+  'design-patterns/prototype/why-immutable-sub-objects-make-shallow-copy-safe': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Polymorphic Cloning via IPrototype', route: '/design-patterns/prototype/polymorphic-cloning-via-iprototype' },
+      { label: 'Is with Prototype, or an Alternative to It?', route: '/design-patterns/prototype/is-with-prototype-or-an-alternative-to-it' },
+    ],
+    tip: 'A shallow copy sharing a reference to an immutable sub-object is completely safe — there is no method that could mutate it through either reference.',
+    gotchas: [
+      'The danger of a shallow copy comes from mutability, not from reference-sharing itself — sharing a reference to something that can never change is never a bug.',
+    ],
+  },
+  'design-patterns/prototype/is-with-prototype-or-an-alternative-to-it': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Prototype Pattern (overview)', route: '/design-patterns/prototype' },
+      { label: 'Why Immutable Sub-Objects Make Shallow Copy Safe', route: '/design-patterns/prototype/why-immutable-sub-objects-make-shallow-copy-safe' },
+    ],
+    tip: 'Record with expressions are structurally identical to Prototype\'s own definition — copy an existing instance, override specific fields — just implemented as a built-in language feature.',
+    gotchas: [
+      'Mistake #3 warns against building unnecessary explicit Prototype infrastructure for records, not against the underlying clone-and-modify operation itself.',
+    ],
+  },
   'design-patterns/proxy': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [
@@ -27051,6 +27876,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'A virtual proxy defers expensive object creation until first actual use — do not confuse this with caching, which is a different concern.',
       'Choose the specific proxy variant based on the actual reason access needs controlling, not as a generic wrapper habit.',
+    ],
+  },
+  'design-patterns/proxy/loggingorderproxy-isnt-a-proxy-its-a-decorator': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Proxy (overview)', route: '/design-patterns/proxy' },
+      { label: 'GetOrCreateAsync Silently Caches null', route: '/design-patterns/proxy/getorcreateasync-silently-caches-null' },
+    ],
+    tip: 'Proxy decides WHETHER/WHEN to forward a call (auth checks, cache hits can skip it); Decorator always forwards and only adds behavior around the call — logging always forwards, so it is a Decorator concern.',
+    gotchas: [
+      'Structural identity between Proxy and Decorator makes intent-carrying class names the main signal a reader has — a misleading name actively works against that signal.',
+    ],
+  },
+  'design-patterns/proxy/getorcreateasync-silently-caches-null': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'LoggingOrderProxy Isn’t a Proxy — It’s a Decorator', route: '/design-patterns/proxy/loggingorderproxy-isnt-a-proxy-its-a-decorator' },
+      { label: 'Smart Reference: GoF’s Actual Fourth Proxy Type', route: '/design-patterns/proxy/smart-reference-gofs-actual-fourth-type' },
+    ],
+    tip: 'IMemoryCache.GetOrCreateAsync caches whatever the factory returns, including null — a "not found" lookup gets cached for the full TTL by default, not skipped.',
+    gotchas: [
+      'entry.Dispose() inside the factory delegate opts a null result OUT of caching — or give misses their own, much shorter TTL if negative caching is actually wanted.',
+    ],
+  },
+  'design-patterns/proxy/smart-reference-gofs-actual-fourth-type': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Proxy (overview)', route: '/design-patterns/proxy' },
+      { label: 'GetOrCreateAsync Silently Caches null', route: '/design-patterns/proxy/getorcreateasync-silently-caches-null' },
+    ],
+    tip: 'GoF\'s own original four proxy types are Remote, Virtual, Protection, and Smart Reference — this page substitutes Caching for Smart Reference as the more commonly-used modern variant.',
+    gotchas: [
+      'Smart Reference adds lifetime management (reference counting) on top of what Virtual Proxy alone provides — Virtual Proxy only handles WHEN to create, not WHEN to release.',
     ],
   },
   'design-patterns/repository': {
@@ -27066,6 +27924,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Repository should generally operate at the AGGREGATE level, not per individual entity or table.',
     ],
   },
+  'design-patterns/repository/connecting-efspecificationevaluator-to-a-real-repository': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Repository (overview)', route: '/design-patterns/repository' },
+      { label: 'Generic RepositoryBase as an Internal Implementation Detail', route: '/design-patterns/repository/generic-repositorybase-as-an-internal-implementation-detail' },
+    ],
+    tip: 'The main page\'s own EfSpecificationEvaluator.Apply() is defined but never called by anything — a real repository method must pass db.Orders (a live IQueryable), not a materialized list, into it to get the specification translated into one SQL query.',
+    gotchas: [
+      'Materializing the source with ToList() before applying the specification moves every filter/sort/page operation from the database into application memory.',
+    ],
+  },
+  'design-patterns/repository/generic-repositorybase-as-an-internal-implementation-detail': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Connecting EfSpecificationEvaluator to a Real Repository', route: '/design-patterns/repository/connecting-efspecificationevaluator-to-a-real-repository' },
+      { label: 'The N+1 Lazy-Loading Pitfall, Demonstrated', route: '/design-patterns/repository/the-n-plus-1-lazy-loading-pitfall-demonstrated' },
+    ],
+    tip: 'A generic RepositoryBase<T> used purely as internal boilerplate (protected methods, never part of the public interface) gets the code-reuse benefit without the interface-leakage cost a publicly-exposed IRepository<T> has.',
+    gotchas: [
+      'The safety only holds if callers are consistently handed IOrderRepository references, not the concrete class or the base class directly.',
+    ],
+  },
+  'design-patterns/repository/the-n-plus-1-lazy-loading-pitfall-demonstrated': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Generic RepositoryBase as an Internal Implementation Detail', route: '/design-patterns/repository/generic-repositorybase-as-an-internal-implementation-detail' },
+      { label: 'Repository (overview)', route: '/design-patterns/repository' },
+    ],
+    tip: 'With lazy-loading proxies enabled, reading an un-Included navigation property on each of N returned entities triggers N separate database round trips — Include() fixes it by folding the related data into one JOIN.',
+    gotchas: [
+      'Include() only eagerly loads the specific navigation property it names — a second property read without its own Include() call reintroduces N+1 independently.',
+    ],
+  },
   'design-patterns/saga': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [
@@ -27079,6 +27970,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Orchestration (central coordinator) vs choreography (event reactions, no coordinator) trades debuggability against decoupling.',
     ],
   },
+  'design-patterns/saga/the-missing-order-total-in-inventoryreservedevent': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Saga Pattern (overview)', route: '/design-patterns/saga' },
+      { label: 'Ordering Steps Around the Pivot Transaction', route: '/design-patterns/saga/ordering-steps-around-the-pivot-transaction' },
+    ],
+    tip: 'The main page\'s own InventoryReservedEvent was constructed with only two fields, but a downstream consumer referenced a third (Amount) that was never included.',
+    gotchas: [
+      'Each choreography consumer reads correctly in isolation — the gap only shows up in the DATA CONTRACT between publisher and consumer, not in either file alone.',
+    ],
+  },
+  'design-patterns/saga/ordering-steps-around-the-pivot-transaction': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'The Missing Order Total in InventoryReservedEvent', route: '/design-patterns/saga/the-missing-order-total-in-inventoryreservedevent' },
+      { label: 'Building a Commutative Compensation', route: '/design-patterns/saga/building-a-commutative-compensation' },
+    ],
+    tip: 'A pivot transaction is the first non-compensatable step in a saga\'s sequence — order every compensatable step before it, never after.',
+    gotchas: [
+      'The rule is "minimise work after the pivot," not "eliminate it entirely" — some steps are constrained by real business ordering regardless of compensatability.',
+    ],
+  },
+  'design-patterns/saga/building-a-commutative-compensation': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Ordering Steps Around the Pivot Transaction', route: '/design-patterns/saga/ordering-steps-around-the-pivot-transaction' },
+      { label: 'Saga Pattern (overview)', route: '/design-patterns/saga' },
+    ],
+    tip: 'A commutative compensation (decrement by X) never reads current state first, so it stays correct regardless of what order it runs in relative to other concurrent operations.',
+    gotchas: [
+      'A "set to exactly Y" compensation silently discards any concurrent change that landed between its own read and write.',
+    ],
+  },
   'design-patterns/singleton': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [
@@ -27089,6 +28013,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Global static access makes code depending on it hard to unit test — you cannot easily substitute a test double for getInstance().',
       'Global mutable state on a Singleton creates hidden coupling between otherwise unrelated parts of a codebase.',
+    ],
+  },
+  'design-patterns/singleton/sealed-does-not-fix-what-the-mistake-said-it-fixes': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Singleton Pattern (overview)', route: '/design-patterns/singleton' },
+      { label: 'Double-Checked Locking, Actually Written Out', route: '/design-patterns/singleton/double-checked-locking-actually-written-out' },
+    ],
+    tip: 'A private constructor already blocks external subclassing in C# — sealed instead guards against a future constructor-visibility change and a nested class inheriting from its own enclosing type.',
+    gotchas: [
+      'A nested class DOES have access to its enclosing type\'s private members, including a private constructor — an ordinary external class never does.',
+    ],
+  },
+  'design-patterns/singleton/double-checked-locking-actually-written-out': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Sealed Does Not Fix What the Mistake Said It Fixes', route: '/design-patterns/singleton/sealed-does-not-fix-what-the-mistake-said-it-fixes' },
+      { label: 'What Monostate Actually Looks Like in Code', route: '/design-patterns/singleton/what-monostate-actually-looks-like-in-code' },
+    ],
+    tip: 'The lock statement only protects code inside the lock block — the outer, unlocked fast-path check relies entirely on volatile for its memory-ordering safety.',
+    gotchas: [
+      'Removing volatile from a double-checked-locking Singleton reopens the exact race condition the pattern exists to close.',
+    ],
+  },
+  'design-patterns/singleton/what-monostate-actually-looks-like-in-code': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Singleton Pattern (overview)', route: '/design-patterns/singleton' },
+      { label: 'Dependency Inversion', route: '/design-patterns/dependency-inversion' },
+    ],
+    tip: 'Monostate\'s public constructor lets you build genuinely independent-looking instances — but every field is static, so all of them read and write the exact same underlying storage.',
+    gotchas: [
+      'Constructing and injecting a real Monostate instance solves the coupling problem but does nothing for the shared-mutable-state problem underneath it.',
     ],
   },
   'design-patterns/solid': {
@@ -27104,6 +28061,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'SOLID principles are heuristics for managing growing complexity, not rules to dogmatically apply to every small, stable class.',
     ],
   },
+  'design-patterns/solid/the-composition-based-lsp-fix': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'SOLID Principles (overview)', route: '/design-patterns/solid' },
+      { label: 'Tracing How One SRP Violation Cascades', route: '/design-patterns/solid/tracing-how-one-srp-violation-cascades' },
+    ],
+    tip: 'The main page\'s own Square/Rectangle fix uses neither inheritance nor composition — just two unrelated types. Composition is a genuinely different third option, worth it once there\'s real behaviour to reuse.',
+    gotchas: [
+      'Composition only exposes what the wrapping class explicitly delegates to — a new method on the wrapped type isn\'t automatically available through it.',
+    ],
+  },
+  'design-patterns/solid/tracing-how-one-srp-violation-cascades': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'The Composition-Based LSP Fix', route: '/design-patterns/solid/the-composition-based-lsp-fix' },
+      { label: 'How Much Segregation Is Too Much', route: '/design-patterns/solid/how-much-segregation-is-too-much' },
+    ],
+    tip: 'Splitting a class by responsibility fixes OCP and ISP as a mechanical SIDE EFFECT — each new focused class gets its own extension point and its own narrow public surface for free.',
+    gotchas: [
+      'A caller depending on the whole unsplit class can trigger unwanted real side effects (like actually sending a message) just to reach one piece of behaviour it needed.',
+    ],
+  },
+  'design-patterns/solid/how-much-segregation-is-too-much': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Tracing How One SRP Violation Cascades', route: '/design-patterns/solid/tracing-how-one-srp-violation-cascades' },
+      { label: 'SOLID Principles (overview)', route: '/design-patterns/solid' },
+    ],
+    tip: 'The "one reason to change" test is about REASONS, not class or method count — two classes that always change together for the same reason aren\'t genuinely separable.',
+    gotchas: [
+      'A split that doesn\'t align with how requirements actually evolve is a sign the granularity was chosen for its own sake, not for a concrete reason.',
+    ],
+  },
   'design-patterns/specification': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [
@@ -27114,6 +28104,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'The same Specification can filter an in-memory collection and (with more effort) translate into a database query — a powerful reuse benefit with real implementation cost on the query side.',
       'New rule combinations should ideally be expressed by combining EXISTING specifications rather than writing new bespoke conditionals.',
+    ],
+  },
+  'design-patterns/specification/the-expression-invoke-composition-problem': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Specification Pattern (overview)', route: '/design-patterns/specification' },
+      { label: 'Specification as a Construction Rule', route: '/design-patterns/specification/specification-as-a-construction-rule' },
+    ],
+    tip: 'Expression.Invoke() works fine once compiled and run in memory, but LINQ providers like EF Core have well-documented trouble translating it — a Parameter Replacer produces one flat, translatable tree instead.',
+    gotchas: [
+      'The main page\'s own QnA already names the correct fix (an ExpressionVisitor Parameter Replacer) — the composite AndSpec/OrSpec/NotSpec just never actually used it.',
+    ],
+  },
+  'design-patterns/specification/specification-as-a-construction-rule': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'The Expression.Invoke Composition Problem', route: '/design-patterns/specification/the-expression-invoke-composition-problem' },
+      { label: 'A Hybrid Database-Then-In-Memory Pipeline', route: '/design-patterns/specification/a-hybrid-database-then-in-memory-pipeline' },
+    ],
+    tip: 'Construction needs the specification\'s rule PLUS separate knowledge of what values satisfy it — a bare IsSatisfiedBy() predicate alone can\'t build a new object.',
+    gotchas: [
+      'A defensive IsSatisfiedBy() check inside the factory catches the factory and the specification falling out of sync — nothing enforces that automatically otherwise.',
+    ],
+  },
+  'design-patterns/specification/a-hybrid-database-then-in-memory-pipeline': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Specification as a Construction Rule', route: '/design-patterns/specification/specification-as-a-construction-rule' },
+      { label: 'Specification Pattern (overview)', route: '/design-patterns/specification' },
+    ],
+    tip: 'The SQL-translatable stage runs FIRST to shrink the candidate set before the expensive, non-translatable in-memory stage ever runs on it.',
+    gotchas: [
+      'A specification calling an external service can\'t be composed into the same expression tree as a SQL-translatable one — they stay as two separate pipeline stages, not one combined specification.',
     ],
   },
   'design-patterns/state': {
@@ -27128,6 +28151,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'State vs Strategy: State represents an object\'s self-managed behavioral mode over its lifecycle; Strategy represents an externally-selected algorithm variant.',
     ],
   },
+  'design-patterns/state/singleton-states-making-them-actually-stateless': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'State (overview)', route: '/design-patterns/state' },
+      { label: 'A Data-Driven State Transition Table', route: '/design-patterns/state/data-driven-state-transition-table' },
+    ],
+    tip: 'Every one of the main page\'s own five concrete states has zero instance fields — provably stateless, and provably safe to share as static readonly singletons instead of reallocating on every transition.',
+    gotchas: [
+      'The moment a state needs to remember something per-transition, singleton sharing becomes unsafe — that data belongs on the Context instead.',
+    ],
+  },
+  'design-patterns/state/data-driven-state-transition-table': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Singleton States: Making Them Actually Stateless', route: '/design-patterns/state/singleton-states-making-them-actually-stateless' },
+      { label: 'Reconstructing State From Persisted Data', route: '/design-patterns/state/reconstructing-state-from-persisted-data' },
+    ],
+    tip: 'A (state, event) -> nextState Dictionary replaces five separate classes with one lookup — but per-transition side effects need a parallel action map, since a pure lookup only maps to a next state.',
+    gotchas: [
+      'Prefer class-per-state when behavior per state is genuinely complex; prefer a table when transitions are uniform or need to be data-driven.',
+    ],
+  },
+  'design-patterns/state/reconstructing-state-from-persisted-data': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'A Data-Driven State Transition Table', route: '/design-patterns/state/data-driven-state-transition-table' },
+      { label: 'State (overview)', route: '/design-patterns/state' },
+    ],
+    tip: 'Reconstructing IOrderState from a stored string needs a deliberate decision on unrecognized values — silently defaulting hides real data-integrity problems that throwing surfaces instead.',
+    gotchas: [
+      'C# switch pattern matching on string literals is case-sensitive by default — a stored "shipped" will not match a "Shipped" arm.',
+    ],
+  },
   'design-patterns/strategy': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [
@@ -27138,6 +28194,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'In languages with first-class functions, simple strategies can be plain functions/lambdas — no full class hierarchy required.',
       'Strategy avoids large conditional blocks that select behavior based on a type flag.',
+    ],
+  },
+  'design-patterns/strategy/identical-branches-bug-in-selectstrategy': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Strategy (overview)', route: '/design-patterns/strategy' },
+      { label: 'Keyed DI Strategy Selection', route: '/design-patterns/strategy/keyed-di-strategy-selection' },
+    ],
+    tip: 'The main page\'s own SelectStrategy had two pattern-match arms returning the identical result — the order.Total > 100m threshold never actually changed the outcome until fixed.',
+    gotchas: [
+      'A bug where two branches produce the same result passes every individual test case — it only surfaces when comparing cases across the threshold side by side.',
+    ],
+  },
+  'design-patterns/strategy/keyed-di-strategy-selection': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'The Identical-Branches Bug in SelectStrategy', route: '/design-patterns/strategy/identical-branches-bug-in-selectstrategy' },
+      { label: 'Why Strategies Must Be Reentrant', route: '/design-patterns/strategy/why-strategies-must-be-reentrant' },
+    ],
+    tip: '.NET 8 Keyed Services (AddKeyedScoped/GetKeyedService) resolve a strategy directly by key with no custom selector code; the older IEnumerable<T>-plus-filter approach works on any .NET version.',
+    gotchas: [
+      'Keyed Services requires .NET 8+ — a real constraint for codebases still targeting an earlier framework.',
+    ],
+  },
+  'design-patterns/strategy/why-strategies-must-be-reentrant': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Keyed DI Strategy Selection', route: '/design-patterns/strategy/keyed-di-strategy-selection' },
+      { label: 'Strategy (overview)', route: '/design-patterns/strategy' },
+    ],
+    tip: 'A mutable instance field on a shared strategy is a real risk once the strategy is reused across calls (DI Scoped/Singleton, or a recursive call) — per-call data belongs in a local variable, not a field.',
+    gotchas: [
+      'The failure mode is a silently wrong result, not a crash — often harder to notice than a thrown exception.',
     ],
   },
   'design-patterns/template-method': {
@@ -27152,6 +28241,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Every subclass overriding hooks is implicitly coupled to the base class\'s exact algorithm sequence, a real cost if that skeleton needs to evolve.',
     ],
   },
+  'design-patterns/template-method/why-sealed-requires-override-in-csharp': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Template Method (overview)', route: '/design-patterns/template-method' },
+      { label: 'ControllerBase vs Controller for Action Filter Hooks', route: '/design-patterns/template-method/controllerbase-vs-controller-for-action-filter-hooks' },
+    ],
+    tip: 'C# only allows sealed on a method that is also an override — a plain, non-virtual base class method is already un-overridable without it.',
+    gotchas: [
+      'sealed on a class is unconditional; sealed on a method requires override alongside it — two genuinely different rules sharing one keyword.',
+    ],
+  },
+  'design-patterns/template-method/controllerbase-vs-controller-for-action-filter-hooks': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Why sealed Requires override in C#', route: '/design-patterns/template-method/why-sealed-requires-override-in-csharp' },
+      { label: 'Converting Template Method to Strategy, Concretely', route: '/design-patterns/template-method/converting-template-method-to-strategy-concretely' },
+    ],
+    tip: 'ControllerBase does not implement IActionFilter — only Controller declares OnActionExecuting/OnActionExecuted as virtual hooks; ControllerBase-only controllers need IActionFilter implemented directly instead.',
+    gotchas: [
+      'A standalone IActionFilter class registered globally via options.Filters.Add<T>() scales across many controllers; switching every controller to Controller does not.',
+    ],
+  },
+  'design-patterns/template-method/converting-template-method-to-strategy-concretely': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'ControllerBase vs Controller for Action Filter Hooks', route: '/design-patterns/template-method/controllerbase-vs-controller-for-action-filter-hooks' },
+      { label: 'Template Method (overview)', route: '/design-patterns/template-method' },
+    ],
+    tip: 'Converting each abstract step and hook to its own interface turns a fixed subclass into independently mixable strategy classes — at the cost of composing several constructor parameters instead of one subclass definition.',
+    gotchas: [
+      'The optional-hook behavior survives the conversion — it just moves from an overridable default to a caller-supplied no-op implementation at construction time.',
+    ],
+  },
   'design-patterns/unit-of-work': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [
@@ -27164,6 +28286,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Repository abstracts HOW objects persist; Unit of Work coordinates WHEN a batch of changes commits together.',
     ],
   },
+  'design-patterns/unit-of-work/the-orphaned-transferfundsasync-method': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Unit of Work (overview)', route: '/design-patterns/unit-of-work' },
+      { label: 'Handling Optimistic Concurrency Conflicts', route: '/design-patterns/unit-of-work/handling-optimistic-concurrency-conflicts' },
+    ],
+    tip: 'The main page\'s own TransferFundsAsync method sat outside any class entirely — a misplaced closing brace, not a missing one, so every brace in the file was still perfectly balanced.',
+    gotchas: [
+      'The fix is mechanical: move the method back inside OrderService so its own db parameter comes back into scope.',
+    ],
+  },
+  'design-patterns/unit-of-work/handling-optimistic-concurrency-conflicts': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'The Orphaned TransferFundsAsync Method', route: '/design-patterns/unit-of-work/the-orphaned-transferfundsasync-method' },
+      { label: 'A Manual Unit of Work Without Entity Framework', route: '/design-patterns/unit-of-work/a-manual-unit-of-work-without-entity-framework' },
+    ],
+    tip: 'A [Timestamp]/RowVersion column makes EF Core include it in every generated UPDATE\'s WHERE clause — a stale RowVersion means zero rows affected, which EF Core reports as DbUpdateConcurrencyException.',
+    gotchas: [
+      'Retrying SaveChangesAsync() without first calling entry.OriginalValues.SetValues() on the fresh database values repeats the exact same failed comparison.',
+    ],
+  },
+  'design-patterns/unit-of-work/a-manual-unit-of-work-without-entity-framework': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Handling Optimistic Concurrency Conflicts', route: '/design-patterns/unit-of-work/handling-optimistic-concurrency-conflicts' },
+      { label: 'Unit of Work (overview)', route: '/design-patterns/unit-of-work' },
+    ],
+    tip: 'Without EF Core\'s change tracker, a manual Unit of Work\'s only real job is transaction lifecycle — sharing one SqlConnection and SqlTransaction across every participating repository\'s explicit SQL commands.',
+    gotchas: [
+      'A repository opening its own separate SqlConnection cannot participate in the shared transaction, regardless of how correctly the rest of the UnitOfWork is wired.',
+    ],
+  },
   'design-patterns/visitor': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [
@@ -27174,6 +28329,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Double dispatch (element.accept(visitor) calling visitor.visit(this)) is what selects the right type-specific method based on BOTH types at once.',
       'Best for a stable set of element types needing many operations added over time — not for element hierarchies expected to grow frequently.',
+    ],
+  },
+  'design-patterns/visitor/the-non-virtual-accept-failure-demonstrated': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Visitor (overview)', route: '/design-patterns/visitor' },
+      { label: 'Simulating Double Dispatch With dynamic', route: '/design-patterns/visitor/simulating-double-dispatch-with-dynamic' },
+    ],
+    tip: 'If Accept() is defined once on a base class and never overridden per concrete type, the second (Visit-side) dispatch resolves against the base type at compile time — silently calling the wrong overload.',
+    gotchas: [
+      'Both main-page codeTabs use an interface for elements, which makes this specific bug structurally impossible — it only surfaces with a non-virtual Accept() on an abstract base class.',
+    ],
+  },
+  'design-patterns/visitor/simulating-double-dispatch-with-dynamic': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'The Non-Virtual Accept() Failure, Demonstrated', route: '/design-patterns/visitor/the-non-virtual-accept-failure-demonstrated' },
+      { label: 'Visitor + Composite: A Recursive Order Group', route: '/design-patterns/visitor/visitor-plus-composite-recursive-order-group' },
+    ],
+    tip: 'dynamic forces the DLR to resolve the correct Visit overload at runtime, letting elements skip Accept()/an interface entirely — at the cost of moving unmatched-overload errors from compile time to a RuntimeBinderException.',
+    gotchas: [
+      'The DLR caches the resolved binding per call site once a type combination has been seen — the real performance cost concentrates on the first call, not every call equally.',
+    ],
+  },
+  'design-patterns/visitor/visitor-plus-composite-recursive-order-group': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Simulating Double Dispatch With dynamic', route: '/design-patterns/visitor/simulating-double-dispatch-with-dynamic' },
+      { label: 'Visitor (overview)', route: '/design-patterns/visitor' },
+    ],
+    tip: 'A Composite element\'s Accept() visits itself, then recurses into every child\'s own Accept() — the same visitor written for a flat list works unchanged against an arbitrarily nested tree.',
+    gotchas: [
+      'Visiting the group STRUCTURE and visiting the LEAF elements are independent capabilities — a visitor that only cares about leaves can leave the composite\'s own Visit() overload as a no-op.',
     ],
   },
 
@@ -27191,6 +28379,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Modeling something that should be a Value Object (like an Address) as an Entity adds unnecessary identity-tracking complexity.',
     ],
   },
+  'arch-patterns/ddd-core/transfer-funds-never-handled-partial-save-failure': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'DDD Core Concepts (overview)', route: '/arch-patterns/ddd-core' },
+      { label: 'Saga & Choreography', route: '/arch-patterns/saga-choreography' },
+    ],
+    tip: 'Classic DDD recommends one transaction per aggregate — a domain service spanning two aggregates needs explicit compensation if the second save fails, not one shared transaction.',
+    gotchas: [
+      'A domain service touching multiple aggregates without a shared transaction is a small-scale saga in substance and needs the same compensating-action discipline.',
+    ],
+  },
+  'arch-patterns/ddd-core/what-a-ddd-factory-actually-looks-like': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'TransferFunds Never Handled Partial Save Failure', route: '/arch-patterns/ddd-core/transfer-funds-never-handled-partial-save-failure' },
+      { label: 'What a DDD Repository Actually Looks Like', route: '/arch-patterns/ddd-core/what-a-ddd-repository-actually-looks-like' },
+    ],
+    tip: 'A factory becomes necessary once construction needs something a constructor structurally can\'t do — most commonly, asynchronous I/O like a repository lookup.',
+    gotchas: [
+      'A static create() method on the aggregate itself is often enough — a dedicated factory class is only worthwhile once construction needs its own external dependencies.',
+    ],
+  },
+  'arch-patterns/ddd-core/what-a-ddd-repository-actually-looks-like': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'DDD Core Concepts (overview)', route: '/arch-patterns/ddd-core' },
+      { label: 'What a DDD Factory Actually Looks Like', route: '/arch-patterns/ddd-core/what-a-ddd-factory-actually-looks-like' },
+    ],
+    tip: 'A DDD repository exposes domain-meaningful operations (findDormantAccounts) hiding storage details entirely — a generic DAO exposes the storage shape (rows, query criteria) directly to callers.',
+    gotchas: [
+      'The repository interface belongs in the domain layer; only its implementation belongs in infrastructure — the same dependency inversion the hub\'s Hexagonal Architecture topic covers.',
+    ],
+  },
   'arch-patterns/bounded-contexts': {
     apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
     related: [
@@ -27202,6 +28423,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Context boundaries should align with actual team boundaries (Conway\'s Law) — a boundary cutting across one team\'s work creates unnecessary coordination overhead.',
       'Getting context boundaries wrong is expensive to fix later, since data and behavior entangle across the incorrect boundary over time.',
+    ],
+  },
+  'arch-patterns/bounded-contexts/order-catalog-is-acl-not-customer-supplier': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Bounded Contexts (overview)', route: '/arch-patterns/bounded-contexts' },
+      { label: 'Event Publisher: Mechanism vs. Relationship', route: '/arch-patterns/bounded-contexts/event-publisher-mechanism-vs-relationship' },
+    ],
+    tip: 'ACL is a translation mechanism the downstream builds unilaterally; Customer/Supplier is a planning relationship that depends on how the upstream team actually behaves — the two are not the same fact.',
+    gotchas: [
+      'Building an Anti-Corruption Layer against a context does not by itself prove a Customer/Supplier relationship — that needs separate evidence the upstream accommodates your requests in its own planning.',
+    ],
+  },
+  'arch-patterns/bounded-contexts/event-publisher-mechanism-vs-relationship': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Order-Catalog Is ACL, Not Customer/Supplier', route: '/arch-patterns/bounded-contexts/order-catalog-is-acl-not-customer-supplier' },
+      { label: 'Published Language Prevents ACL Sprawl', route: '/arch-patterns/bounded-contexts/published-language-prevents-acl-sprawl' },
+    ],
+    tip: 'Event Publisher is a real, named upstream context-map pattern (alongside Open Host Service) — it describes HOW data moves, not WHO has influence over whom.',
+    gotchas: [
+      'A relationship can be Event Publisher without being Customer/Supplier — publishing events with zero regard for subscriber needs is Event Publisher alone.',
+    ],
+  },
+  'arch-patterns/bounded-contexts/published-language-prevents-acl-sprawl': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Bounded Contexts (overview)', route: '/arch-patterns/bounded-contexts' },
+      { label: 'Event Publisher: Mechanism vs. Relationship', route: '/arch-patterns/bounded-contexts/event-publisher-mechanism-vs-relationship' },
+    ],
+    tip: 'Published Language replaces N bespoke ACLs (each hand-translating the upstream\'s own internal model) with one shared, upstream-independent schema.',
+    gotchas: [
+      'Published Language does not have to be an external industry standard — what defines it is that the schema is shared and independent of any single context\'s internal model.',
     ],
   },
   'arch-patterns/anti-corruption-layer': {
@@ -27216,6 +28470,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'ACLs are especially valuable during a strangler-fig migration, isolating the new codebase from legacy quirks.',
     ],
   },
+  'arch-patterns/anti-corruption-layer/legacy-erp-adapter-referenced-undeclared-erp-client': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Anti-Corruption Layer (overview)', route: '/arch-patterns/anti-corruption-layer' },
+      { label: 'The Missing IPaymentGateway Interface', route: '/arch-patterns/anti-corruption-layer/the-missing-ipaymentgateway-interface' },
+    ],
+    tip: 'A collaborator like an ERP client cannot be a bare property initializer — it has to be supplied from outside via the constructor, since there is no literal value to initialize it with inline.',
+    gotchas: [
+      'TypeScript strict mode rejects an undeclared field at compile time (TS2339) — the class already having one declared field does not mean every field its methods use is declared too.',
+    ],
+  },
+  'arch-patterns/anti-corruption-layer/the-missing-ipaymentgateway-interface': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'LegacyErpAdapter Referenced an Undeclared erpClient', route: '/arch-patterns/anti-corruption-layer/legacy-erp-adapter-referenced-undeclared-erp-client' },
+      { label: 'Splitting Call and Translate Lets Stripe Leak Back In', route: '/arch-patterns/anti-corruption-layer/splitting-call-and-translate-lets-stripe-leak-back-in' },
+    ],
+    tip: 'Without the Domain-defined interface actually existing, nothing forces the ACL\'s public shape to stay aligned with what the Domain needs — the type system cannot catch a silent drift toward external concepts.',
+    gotchas: [
+      'A dependency-inversion claim is structural, not just prose — it either shows the interface and the implements clause in code, or it isn\'t actually demonstrated.',
+    ],
+  },
+  'arch-patterns/anti-corruption-layer/splitting-call-and-translate-lets-stripe-leak-back-in': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Anti-Corruption Layer (overview)', route: '/arch-patterns/anti-corruption-layer' },
+      { label: 'The Missing IPaymentGateway Interface', route: '/arch-patterns/anti-corruption-layer/the-missing-ipaymentgateway-interface' },
+    ],
+    tip: 'A full-round-trip ACL (one method that both calls the external system and translates the result) removes the bypass path entirely — a split call/translate design leaves a raw shortcut for domain code to reach for.',
+    gotchas: [
+      'A code review checklist is a process control, not a structural one — it depends on human vigilance under exactly the time pressure the risk describes.',
+    ],
+  },
   'arch-patterns/api-gateway-pattern': {
     apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
     related: [
@@ -27226,6 +28513,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Business logic creeping into the gateway beyond routing/cross-cutting concerns recreates the tight coupling microservices were meant to avoid.',
       'Gateway aggregation introduces a new failure mode — decide explicitly whether a failed partial call fails the whole request or degrades gracefully.',
+    ],
+  },
+  'arch-patterns/api-gateway-pattern/promise-all-hid-an-accidental-fail-fast-choice': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'API Gateway Pattern (overview)', route: '/arch-patterns/api-gateway-pattern' },
+      { label: 'The Boundary Burst Problem in Fixed-Window Rate Limiting', route: '/arch-patterns/api-gateway-pattern/fixed-window-rate-limiting-boundary-burst' },
+    ],
+    tip: 'Promise.all rejects the whole batch on any single failure; Promise.allSettled reports every call\'s outcome individually — the choice between them should be deliberate, not whichever function was reached for first.',
+    gotchas: [
+      'A theory section stating a design principle doesn\'t guarantee its own adjacent code example actually follows it — check them against each other.',
+    ],
+  },
+  'arch-patterns/api-gateway-pattern/fixed-window-rate-limiting-boundary-burst': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Promise.all Hid an Accidental Fail-Fast Choice', route: '/arch-patterns/api-gateway-pattern/promise-all-hid-an-accidental-fail-fast-choice' },
+      { label: 'How mTLS Makes the Forwarded-Identity Header Trustworthy', route: '/arch-patterns/api-gateway-pattern/mtls-makes-forwarded-identity-trustworthy' },
+    ],
+    tip: 'A fixed-window rate limiter can allow roughly double its stated limit in a short burst straddling the reset boundary — sliding window avoids this by never fully resetting to zero at one instant.',
+    gotchas: [
+      '"100 requests/minute" describes each fixed window correctly but is not a hard worst-case guarantee on any 60-second span.',
+    ],
+  },
+  'arch-patterns/api-gateway-pattern/mtls-makes-forwarded-identity-trustworthy': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'API Gateway Pattern (overview)', route: '/arch-patterns/api-gateway-pattern' },
+      { label: 'Sidecar & Service Mesh', route: '/arch-patterns/sidecar-service-mesh' },
+    ],
+    tip: 'A forwarded X-User-Id header is just a claim — mTLS verifies the CALLER\'S cryptographic identity on every connection, which is what actually makes trusting that header safe.',
+    gotchas: [
+      'A network policy restricting which pods can reach a service is not the same protection as mTLS — anything already inside the allowed scope can still forge the header.',
     ],
   },
   'arch-patterns/backend-for-frontend': {
@@ -27240,6 +28560,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Overusing BFFs for client types that don\'t actually diverge significantly adds operational overhead without benefit.',
     ],
   },
+  'arch-patterns/backend-for-frontend/graphql-bff-n-plus-one-problem-made-concrete': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Backend for Frontend (overview)', route: '/arch-patterns/backend-for-frontend' },
+      { label: 'Is hasBreakingNews Business Logic in the BFF?', route: '/arch-patterns/backend-for-frontend/is-has-breaking-news-business-logic-in-the-bff' },
+    ],
+    tip: 'A GraphQL resolver resolving a field per item in a list scales its downstream calls with the SHAPE of the query — a REST BFF decides its call count once, up front, regardless of result size.',
+    gotchas: [
+      'A per-key cache does not fix N+1 for a list of genuinely distinct items — DataLoader\'s batching (not its caching) is what collapses N calls into one.',
+    ],
+  },
+  'arch-patterns/backend-for-frontend/is-has-breaking-news-business-logic-in-the-bff': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'GraphQL BFF’s N+1 Problem, Made Concrete', route: '/arch-patterns/backend-for-frontend/graphql-bff-n-plus-one-problem-made-concrete' },
+      { label: 'What the v2 Migration Actually Looks Like', route: '/arch-patterns/backend-for-frontend/what-the-v2-migration-actually-looks-like' },
+    ],
+    tip: 'The test for business logic in a BFF is not how consequential a rule is — it is whether the rule could reasonably change independently of the client UI.',
+    gotchas: [
+      'Response shaping (like picking the first image as a thumbnail) is legitimate BFF work — a hardcoded classification threshold like a one-hour "breaking news" cutoff is not.',
+    ],
+  },
+  'arch-patterns/backend-for-frontend/what-the-v2-migration-actually-looks-like': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Backend for Frontend (overview)', route: '/arch-patterns/backend-for-frontend' },
+      { label: 'Is hasBreakingNews Business Logic in the BFF?', route: '/arch-patterns/backend-for-frontend/is-has-breaking-news-business-logic-in-the-bff' },
+    ],
+    tip: 'v1 and v2 call the SAME underlying services — they are two different response shapes over one source of truth, not two systems that could drift out of sync.',
+    gotchas: [
+      'Blindly deriving one version\'s shaped output from the other risks silently breaking a contract existing partners depend on — share the data fetch, not the shaping logic.',
+    ],
+  },
   'arch-patterns/circuit-breaker': {
     apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
     related: [
@@ -27250,6 +28603,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Aggressive retries combined with a circuit breaker can overwhelm a struggling service further if applied without care — wrap retries INSIDE the circuit breaker, not the other way around.',
       'An open circuit needs a graceful fallback (cached/default data) to actually improve user experience, not just protect the system.',
+    ],
+  },
+  'arch-patterns/circuit-breaker/half-open-max-calls-was-never-used': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Circuit Breaker (overview)', route: '/arch-patterns/circuit-breaker' },
+      { label: 'The Polly Example Had the Strategy Order Backwards', route: '/arch-patterns/circuit-breaker/polly-strategy-order-was-backwards' },
+    ],
+    tip: 'A constructor parameter can be declared, typed, and stored while never actually being read anywhere in the class — check usage, not just declaration.',
+    gotchas: [
+      'The basic manual CircuitBreaker closed after ONE successful half-open call regardless of the halfOpenMaxCalls value passed to it.',
+    ],
+  },
+  'arch-patterns/circuit-breaker/polly-strategy-order-was-backwards': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'halfOpenMaxCalls Was Never Actually Used', route: '/arch-patterns/circuit-breaker/half-open-max-calls-was-never-used' },
+      { label: 'Making the Bulkhead Pattern Concrete', route: '/arch-patterns/circuit-breaker/bulkhead-pattern-made-concrete' },
+    ],
+    tip: 'Polly v8 wraps strategies in the order they\'re added — the first strategy added is the OUTERMOST, so circuit breaker must be added before retry to gate the whole retry sequence.',
+    gotchas: [
+      'Adding retry before circuit breaker makes retry the outer strategy — each individual retry attempt still reaches the inner circuit breaker check.',
+    ],
+  },
+  'arch-patterns/circuit-breaker/bulkhead-pattern-made-concrete': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Circuit Breaker (overview)', route: '/arch-patterns/circuit-breaker' },
+      { label: 'The Polly Example Had the Strategy Order Backwards', route: '/arch-patterns/circuit-breaker/polly-strategy-order-was-backwards' },
+    ],
+    tip: 'Bulkhead caps concurrency regardless of success or failure; circuit breaker reacts only to failure rate — a merely slow (not yet failing) dependency can exhaust resources without ever tripping the circuit breaker.',
+    gotchas: [
+      'A bulkhead needs to be scoped per downstream dependency, the same way a shared circuit breaker instance is a documented mistake on this same page.',
     ],
   },
   'arch-patterns/clean-architecture': {
@@ -27264,6 +28650,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A simple CRUD app with minimal business logic often does not need the full layering.',
     ],
   },
+  'arch-patterns/clean-architecture/mustknow-ring-order-mislabeled': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Clean / Onion Architecture (overview)', route: '/arch-patterns/clean-architecture' },
+      { label: 'The Controller Skipped Its Own Presenter', route: '/arch-patterns/clean-architecture/controller-skipped-the-presenter' },
+    ],
+    tip: 'Check a labeled sequence\'s direction against the page\'s own separately-stated definitions — which item it calls "innermost" and which it calls "outermost" — rather than trusting the parenthetical label at face value.',
+    gotchas: [
+      'A quick-revision summary is often trusted MORE than detailed sections for fast recall — a wrong label there can be more consequential than the same error buried in prose.',
+    ],
+  },
+  'arch-patterns/clean-architecture/controller-skipped-the-presenter': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'The mustKnow Ring Order Was Labeled Backwards', route: '/arch-patterns/clean-architecture/mustknow-ring-order-mislabeled' },
+      { label: 'The OutputPort Pattern: One Use Case, Multiple Presenters', route: '/arch-patterns/clean-architecture/one-usecase-multiple-presenters' },
+    ],
+    tip: 'A controller that builds even a trivial response object inline is the first step toward response-shaping logic re-accumulating there — keep the presenter as a real, separate class regardless of current complexity.',
+    gotchas: [
+      'A page can correctly explain an anti-pattern in its mistakes block while a DIFFERENT code sample elsewhere on the same page quietly commits a milder version of it.',
+    ],
+  },
+  'arch-patterns/clean-architecture/one-usecase-multiple-presenters': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'The Controller Skipped Its Own Presenter', route: '/arch-patterns/clean-architecture/controller-skipped-the-presenter' },
+      { label: 'Clean / Onion Architecture (overview)', route: '/arch-patterns/clean-architecture' },
+    ],
+    tip: 'OutputPort earns its extra indirection specifically when a single Use Case needs to serve multiple, differently-shaped callers — for a Use Case with one caller, a plain return value is simpler and just as compliant.',
+    gotchas: [
+      'OutputPort is a generalization of the single-presenter pattern, not a separate concept — the Use Case pushes its result through an interface DIFFERENT presenters can each implement.',
+    ],
+  },
   'arch-patterns/cqrs-event-sourcing': {
     apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
     related: [
@@ -27274,6 +28693,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Event sourcing adds genuine complexity (schema evolution, eventual consistency between log and read models) — appropriate where the audit trail and temporal queries are genuinely valuable.',
       'Snapshotting avoids replaying an aggregate\'s entire history every time current state is needed.',
+    ],
+  },
+  'arch-patterns/cqrs-event-sourcing/snapshots-referenced-six-undefined-methods': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'CQRS & Event Sourcing (overview)', route: '/arch-patterns/cqrs-event-sourcing' },
+      { label: 'Optimistic UI Updates, Made Concrete', route: '/arch-patterns/cqrs-event-sourcing/optimistic-ui-updates-made-concrete' },
+    ],
+    tip: 'A class used consistently across multiple code samples needs its declared members checked against every place it\'s actually used — each snippet can read fine in isolation while disagreeing about what the class contains.',
+    gotchas: [
+      'rehydrate() (replaying history) and apply() (recording new writes) serve different purposes — rehydrate should not re-mark an already-persisted event as uncommitted.',
+    ],
+  },
+  'arch-patterns/cqrs-event-sourcing/optimistic-ui-updates-made-concrete': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Snapshots Referenced Six Undefined Methods', route: '/arch-patterns/cqrs-event-sourcing/snapshots-referenced-six-undefined-methods' },
+      { label: 'What an Upcaster Actually Looks Like', route: '/arch-patterns/cqrs-event-sourcing/what-an-upcaster-actually-looks-like' },
+    ],
+    tip: 'Optimistic UI updates need a stable, client-generated ID carried through to the read model\'s eventual response — without one, reconciliation can\'t tell which authoritative record replaces which placeholder.',
+    gotchas: [
+      'A failed command needs an explicit rollback and user notification — silently leaving a failed optimistic entry on screen shows something that never happened.',
+    ],
+  },
+  'arch-patterns/cqrs-event-sourcing/what-an-upcaster-actually-looks-like': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'CQRS & Event Sourcing (overview)', route: '/arch-patterns/cqrs-event-sourcing' },
+      { label: 'Service Communication', route: '/arch-patterns/service-communication' },
+    ],
+    tip: 'Upcasters convert an old stored event shape to the current one at the read boundary — consumers downstream only ever see the latest shape and need zero version-awareness of their own.',
+    gotchas: [
+      'Chain upcasters incrementally (v1→v2, v2→v3) rather than writing one large v1-to-latest conversion — a future version only needs one new step, not a full rewrite.',
     ],
   },
   'arch-patterns/event-driven': {
@@ -27288,6 +28740,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Event ordering and timing at scale is expected to be inconsistent — application logic must explicitly account for this, not treat it as an edge case.',
     ],
   },
+  'arch-patterns/event-driven/broker-stub-was-secretly-blocking': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Event-Driven Architecture (overview)', route: '/arch-patterns/event-driven' },
+      { label: 'The DB Save Was Commented Out', route: '/arch-patterns/event-driven/db-save-was-commented-out' },
+    ],
+    tip: 'A publish() that awaits every subscriber before returning secretly turns an asynchronous fire-and-forget operation into a blocking one — check what a stub actually does, not just whether it eventually calls every subscriber.',
+    gotchas: [
+      'A demo/stub still needs to model the real behavior it\'s teaching — simplification and accidentally demonstrating the opposite concept are different things.',
+    ],
+  },
+  'arch-patterns/event-driven/db-save-was-commented-out': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'The Broker Stub Was Secretly Blocking', route: '/arch-patterns/event-driven/broker-stub-was-secretly-blocking' },
+      { label: 'The Fat-Events Staleness Risk, Made Concrete', route: '/arch-patterns/event-driven/fat-events-staleness-risk-made-concrete' },
+    ],
+    tip: 'A comment describing intended behavior is not a substitute for code that actually does it — a reference solution\'s job is to demonstrate working code, not document an intention.',
+    gotchas: [
+      'The Challenge\'s own hint explicitly asked for DB-save-before-publish ordering that the original reference solution never actually implemented.',
+    ],
+  },
+  'arch-patterns/event-driven/fat-events-staleness-risk-made-concrete': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Event-Driven Architecture (overview)', route: '/arch-patterns/event-driven' },
+      { label: 'The DB Save Was Commented Out', route: '/arch-patterns/event-driven/db-save-was-commented-out' },
+    ],
+    tip: 'Fat events risk acting on data that has aged past validity by processing time — whether that matters depends on how often the embedded data actually changes and how costly a stale read would be.',
+    gotchas: [
+      'Staleness (a genuine event carrying outdated data) is a different problem from duplicate delivery (the same event arriving twice) — the two need different fixes.',
+    ],
+  },
   'arch-patterns/hexagonal-architecture': {
     apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
     related: [
@@ -27298,6 +28783,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Hexagonal Architecture and Clean Architecture share the same fundamental goal — largely equivalent in practice, differing mainly in terminology.',
       'Adapters still need their own integration tests — hexagonal architecture isolates WHERE integration testing happens, it does not eliminate the need for it.',
+    ],
+  },
+  'arch-patterns/hexagonal-architecture/challenge-referenced-undefined-types': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Hexagonal Architecture (overview)', route: '/arch-patterns/hexagonal-architecture' },
+      { label: 'The Hexagon-Shape Explanation Was Half the Story', route: '/arch-patterns/hexagonal-architecture/hexagon-shape-explanation-incomplete' },
+    ],
+    tip: 'For any Challenge solution, check that every type name used after "implements", "new", or as a parameter type actually has a matching declaration somewhere in the same Challenge.',
+    gotchas: [
+      'A class that\'s internally well-formed can still reference undeclared types elsewhere in the same file — the bug is in what\'s missing, not what\'s written.',
+    ],
+  },
+  'arch-patterns/hexagonal-architecture/hexagon-shape-explanation-incomplete': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'The Challenge Referenced Two Types It Never Defined', route: '/arch-patterns/hexagonal-architecture/challenge-referenced-undefined-types' },
+      { label: 'The Solution Named a Real Adapter It Never Actually Used', route: '/arch-patterns/hexagonal-architecture/challenge-solution-missing-real-adapter' },
+    ],
+    tip: 'Cockburn\'s hexagon choice has two distinct reasons: breaking the rectangle-hierarchy habit, and simple drawing mechanics (room for multiple ports per side) — the number six itself carries no architectural meaning either way.',
+    gotchas: [
+      'A directionally-true explanation can still be incomplete — check whether a claim answers ALL the natural follow-up questions a reader might have, not just the most commonly repeated one.',
+    ],
+  },
+  'arch-patterns/hexagonal-architecture/challenge-solution-missing-real-adapter': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'The Hexagon-Shape Explanation Was Half the Story', route: '/arch-patterns/hexagonal-architecture/hexagon-shape-explanation-incomplete' },
+      { label: 'Hexagonal Architecture (overview)', route: '/arch-patterns/hexagonal-architecture' },
+    ],
+    tip: 'A secondary port with only ONE implementation anywhere in the codebase isn\'t genuinely demonstrating ports & adapters — the pattern\'s actual payoff is swappability, which needs at least two real implementations to exist.',
+    gotchas: [
+      'Check a Challenge\'s hints against its own solution — a class explicitly named in the hints but never built anywhere in the solution is a real, checkable gap.',
     ],
   },
   'arch-patterns/inbox-outbox': {
@@ -27312,6 +28830,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Both patterns rely on the same core mechanism: atomically combining a DB state change with a messaging operation within one local transaction.',
     ],
   },
+  'arch-patterns/inbox-outbox/relay-lock-was-released-before-publishing': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Inbox & Outbox Pattern (overview)', route: '/arch-patterns/inbox-outbox' },
+      { label: 'The Inbox Upsert Was Invalid SQL', route: '/arch-patterns/inbox-outbox/inbox-upsert-was-invalid-sql' },
+    ],
+    tip: 'A row lock from SELECT ... FOR UPDATE only lasts as long as its enclosing transaction — everything that needs the lock\'s protection has to run inside that same transaction.',
+    gotchas: [
+      'A comment claiming a query "locks to prevent duplicate workers" doesn\'t verify the surrounding code actually keeps that lock held while it matters.',
+    ],
+  },
+  'arch-patterns/inbox-outbox/inbox-upsert-was-invalid-sql': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'The Relay Lock Was Released Before Publishing', route: '/arch-patterns/inbox-outbox/relay-lock-was-released-before-publishing' },
+      { label: 'The Inbox Table Needs Cleanup Too', route: '/arch-patterns/inbox-outbox/inbox-table-needs-cleanup-too' },
+    ],
+    tip: 'ON CONFLICT DO UPDATE requires an explicit conflict target — omitting it isn\'t shorthand, it\'s a syntax error.',
+    gotchas: [
+      'A syntactically valid upsert can still be semantically wrong — SET points = EXCLUDED.points overwrites a balance instead of accumulating onto it.',
+    ],
+  },
+  'arch-patterns/inbox-outbox/inbox-table-needs-cleanup-too': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Inbox & Outbox Pattern (overview)', route: '/arch-patterns/inbox-outbox' },
+      { label: 'The Inbox Upsert Was Invalid SQL', route: '/arch-patterns/inbox-outbox/inbox-upsert-was-invalid-sql' },
+    ],
+    tip: 'An Inbox retention window that\'s too short is a correctness bug, not just housekeeping — deleting a row before the broker\'s worst-case redelivery window has passed lets a legitimate late redelivery slip through as if new.',
+    gotchas: [
+      'Base the retention window on the broker\'s documented WORST CASE redelivery time, not how quickly redelivery usually happens.',
+    ],
+  },
   'arch-patterns/layered-architecture': {
     apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
     related: [
@@ -27322,6 +28873,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       '"Layer skipping" (a presentation component directly hitting data access for a "quick" read) erodes the guarantee that business rules are consistently applied.',
       'Layering constrains the VERTICAL dependency direction but does nothing to organize horizontal structure within a layer, which is where real complexity accumulates at scale.',
+    ],
+  },
+  'arch-patterns/layered-architecture/dip-vs-ntier-contradiction': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Layered Architecture (overview)', route: '/arch-patterns/layered-architecture' },
+      { label: 'The Solution’s PlaceOrderHandler Never Declared Its Own repo Field', route: '/arch-patterns/layered-architecture/handler-repo-field-never-declared' },
+    ],
+    tip: 'When several independent sections of a page describe the same rule and one disagrees, check whether the outlier can be reconciled to match the majority rather than assuming it\'s an intentional nuance.',
+    gotchas: [
+      'Plain layered architecture and dependency-inverted layered architecture are two real, differently-disciplined variants — a page needs to be explicit about which one it\'s teaching.',
+    ],
+  },
+  'arch-patterns/layered-architecture/handler-repo-field-never-declared': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Three Sections Said DIP, One Section Said N-Tier', route: '/arch-patterns/layered-architecture/dip-vs-ntier-contradiction' },
+      { label: 'Why “Read-Only” Is the Safe Case for Skipping a Layer', route: '/arch-patterns/layered-architecture/why-reads-are-the-safe-skip-case' },
+    ],
+    tip: 'Every property a class body USES should be declared somewhere — a field, a constructor parameter property, or inherited — check for properties that appear only inside a method body.',
+    gotchas: [
+      'A "reference solution" deserves MORE scrutiny than an illustrative snippet, since learners are likely to trust and compare their own attempt against it directly.',
+    ],
+  },
+  'arch-patterns/layered-architecture/why-reads-are-the-safe-skip-case': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'The Solution’s PlaceOrderHandler Never Declared Its Own repo Field', route: '/arch-patterns/layered-architecture/handler-repo-field-never-declared' },
+      { label: 'Layered Architecture (overview)', route: '/arch-patterns/layered-architecture' },
+    ],
+    tip: 'A layer-skip is safe exactly when the skipped layer\'s only job on that path would have been enforcing invariants over a state change — no state change means no invariant to bypass.',
+    gotchas: [
+      'CQRS formalizes this same read/write asymmetry as a first-class architectural decision — loose layering\'s "skip for reads only" rule is an informal version of the same insight.',
     ],
   },
   'arch-patterns/microservices-principles': {
@@ -27336,6 +28920,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Conway\'s Law means microservices work best when service boundaries align with actual team boundaries.',
     ],
   },
+  'arch-patterns/microservices-principles/decentralised-data-example-undefined-type': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Microservices Principles (overview)', route: '/arch-patterns/microservices-principles' },
+      { label: 'Why Chatty Nanoservices Actually Get Slow', route: '/arch-patterns/microservices-principles/why-chatty-nanoservices-actually-get-slow' },
+    ],
+    tip: 'A code sample can teach its intended lesson clearly while still being technically incomplete — "reads clearly" and "actually compiles" are separate checks.',
+    gotchas: [
+      'A reader inferring a missing type\'s shape from context is exactly what makes a missing declaration easy to miss on a read-through.',
+    ],
+  },
+  'arch-patterns/microservices-principles/why-chatty-nanoservices-actually-get-slow': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Decentralised-Data Example', route: '/arch-patterns/microservices-principles/decentralised-data-example-undefined-type' },
+      { label: 'Consumer-Driven Contract Testing in Practice', route: '/arch-patterns/microservices-principles/consumer-driven-contract-testing-in-practice' },
+    ],
+    tip: 'Chatty nanoservices are really a bounded-context mistake in disguise — the fix is drawing the boundary around what changes together, not just reducing raw service count.',
+    gotchas: [
+      'Per-hop network/serialization overhead is a fixed cost paid on every call regardless of how little work that call does — it adds up linearly across a sequential chain.',
+    ],
+  },
+  'arch-patterns/microservices-principles/consumer-driven-contract-testing-in-practice': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Microservices Principles (overview)', route: '/arch-patterns/microservices-principles' },
+      { label: 'The Tolerant Reader Pattern', route: '/arch-patterns/service-oriented/tolerant-reader-pattern-for-contracts' },
+    ],
+    tip: 'A provider\'s own integration tests only verify the provider\'s own understanding of its API — consumer-driven contract tests verify it against what real consumers actually depend on.',
+    gotchas: [
+      'Pact-style contract testing replays each consumer\'s published expectations against the provider\'s real implementation before every deploy, catching breaks before they reach production.',
+    ],
+  },
   'arch-patterns/monolith-vs-modular': {
     apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
     related: [
@@ -27346,6 +28963,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Splitting into microservices without one of the genuine driving needs (scaling divergence, deployment cadence, tech diversity) usually adds complexity without benefit.',
       'Module boundaries in a monolith are far cheaper to refactor than service boundaries once real network contracts exist between separate services.',
+    ],
+  },
+  'arch-patterns/monolith-vs-modular/team-size-threshold-contradiction': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Monolith vs Modular Monolith (overview)', route: '/arch-patterns/monolith-vs-modular' },
+      { label: 'SharedKernel’s Own ProductId Type Was Never Actually Used', route: '/arch-patterns/monolith-vs-modular/sharedkernel-productid-never-used' },
+    ],
+    tip: 'When a page states a numeric "rule of thumb" in more than one place, pick a single canonical figure and reference it everywhere rather than letting each section restate its own approximate number.',
+    gotchas: [
+      'Two independently-stated thresholds for the same decision can create a real disagreement zone even when both sound like reasonable rules of thumb individually.',
+    ],
+  },
+  'arch-patterns/monolith-vs-modular/sharedkernel-productid-never-used': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Team-Size Thresholds Disagreed by 5-10 Engineers', route: '/arch-patterns/monolith-vs-modular/team-size-threshold-contradiction' },
+      { label: 'The Modular Monolith’s Unstated Tradeoff: One Process, One Failure Domain', route: '/arch-patterns/monolith-vs-modular/shared-process-shared-failure-domain' },
+    ],
+    tip: 'A SharedKernel value object only delivers type safety if it\'s actually used at the module boundary it\'s meant to protect — declaring it without using it is a subtle "looks right, doesn\'t deliver" gap.',
+    gotchas: [
+      'A bare string parameter accepts any string, including the wrong kind of identifier — a distinct value-object type turns that mistake into a compile error instead.',
+    ],
+  },
+  'arch-patterns/monolith-vs-modular/shared-process-shared-failure-domain': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'SharedKernel’s Own ProductId Type Was Never Actually Used', route: '/arch-patterns/monolith-vs-modular/sharedkernel-productid-never-used' },
+      { label: 'Monolith vs Modular Monolith (overview)', route: '/arch-patterns/monolith-vs-modular' },
+    ],
+    tip: 'A modular monolith provides logical isolation (module boundaries) but not operational isolation (process-level fault containment) — a crash or memory leak in one module can take every module down.',
+    gotchas: [
+      'A module whose failure modes threaten the whole application\'s uptime is a legitimate fourth reason to split it out, alongside scale, team, and technology needs.',
     ],
   },
   'arch-patterns/saga-choreography': {
@@ -27360,6 +29010,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A saga failing partway through can be hard to detect without a lightweight observability projection, since no single component tracks the full expected sequence.',
     ],
   },
+  'arch-patterns/saga-choreography/choreography-never-handled-stock-failure': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Saga & Choreography (overview)', route: '/arch-patterns/saga-choreography' },
+      { label: 'The Durable Saga Dropped Its Own Compensation', route: '/arch-patterns/saga-choreography/durable-saga-dropped-compensation-logic' },
+    ],
+    tip: 'Every event a choreographed saga step publishes needs at least one subscriber somewhere — publishing the right event on failure isn\'t enough if nothing ever reacts to it.',
+    gotchas: [
+      'A saga with an unhandled failure path stalls silently — no error, no alert, just an order stuck in limbo forever.',
+    ],
+  },
+  'arch-patterns/saga-choreography/durable-saga-dropped-compensation-logic': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Choreography Never Handled Stock Failure', route: '/arch-patterns/saga-choreography/choreography-never-handled-stock-failure' },
+      { label: 'The Semantic Lock Counter-Measure, Made Concrete', route: '/arch-patterns/saga-choreography/semantic-lock-countermeasure-made-concrete' },
+    ],
+    tip: 'Durability (surviving a crash between steps) and compensation (undoing completed steps when a later one fails) solve different problems — a saga needs both.',
+    gotchas: [
+      'The same completedSteps record used to resume forward progress after a crash is exactly what a compensation routine needs to know what to undo.',
+    ],
+  },
+  'arch-patterns/saga-choreography/semantic-lock-countermeasure-made-concrete': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Saga & Choreography (overview)', route: '/arch-patterns/saga-choreography' },
+      { label: 'Durable Saga Dropped Its Own Compensation', route: '/arch-patterns/saga-choreography/durable-saga-dropped-compensation-logic' },
+    ],
+    tip: 'A semantic lock (a pending flag) protects against unrelated operations touching a resource mid-saga — a different risk from step idempotency, which protects against the same step retrying.',
+    gotchas: [
+      'The lock must be released on BOTH the success path and the compensation path — clearing it only on success leaves a cleanly-compensated resource permanently stuck.',
+    ],
+  },
   'arch-patterns/service-communication': {
     apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
     related: [
@@ -27370,6 +29053,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Synchronous calls couple the caller\'s availability directly to the callee\'s — a slow downstream service degrades the caller too.',
       'A service mesh moves resilience/observability into infrastructure but adds real per-call latency and operational overhead.',
+    ],
+  },
+  'arch-patterns/service-communication/grpc-size-claim-was-overprecise': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Service Communication (overview)', route: '/arch-patterns/service-communication' },
+      { label: 'How the Outbox Pattern Actually Works', route: '/arch-patterns/service-communication/how-the-outbox-pattern-actually-works' },
+    ],
+    tip: 'Protobuf is reliably smaller than JSON, but the ratio depends heavily on payload shape — integer/enum-heavy payloads compress far better than string-heavy ones.',
+    gotchas: [
+      'A precise-sounding multiplier is not automatically more trustworthy than a caveated range — it can come from one edge-case benchmark rather than the typical case.',
+    ],
+  },
+  'arch-patterns/service-communication/how-the-outbox-pattern-actually-works': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'The gRPC Size Claim Was Overprecise', route: '/arch-patterns/service-communication/grpc-size-claim-was-overprecise' },
+      { label: 'Why Browsers Cannot Call gRPC Directly', route: '/arch-patterns/service-communication/why-browsers-cannot-call-grpc-directly' },
+    ],
+    tip: 'The Outbox Pattern works by writing the event into the SAME database transaction as the business data — the relay process that publishes it to the broker is a separate, later step.',
+    gotchas: [
+      'The pattern guarantees at-least-once delivery, never exactly-once — the relay can publish the same row twice if it crashes right after publishing but before marking it sent.',
+    ],
+  },
+  'arch-patterns/service-communication/why-browsers-cannot-call-grpc-directly': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Service Communication (overview)', route: '/arch-patterns/service-communication' },
+      { label: 'How the Outbox Pattern Actually Works', route: '/arch-patterns/service-communication/how-the-outbox-pattern-actually-works' },
+    ],
+    tip: 'The Fetch API has never implemented HTTP/2 trailers, where gRPC sends its final call status — that gap, not convention, is why browsers need gRPC-Web and a translating proxy.',
+    gotchas: [
+      'gRPC-Web deliberately gives up client-streaming and full bidirectional streaming to work within what a browser can actually read.',
     ],
   },
   'arch-patterns/service-discovery': {
@@ -27384,6 +29100,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Liveness and readiness checks answer different questions — a service can be alive but not yet ready to accept traffic.',
     ],
   },
+  'arch-patterns/service-discovery/registry-register-was-not-idempotent': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Service Discovery (overview)', route: '/arch-patterns/service-discovery' },
+      { label: 'The Cache Never Actually Refreshed in the Background', route: '/arch-patterns/service-discovery/cache-never-refreshed-in-background' },
+    ],
+    tip: 'A registration method that only ever appends silently creates duplicate entries when a service re-registers with the same id — a real, common reconnection scenario, not an edge case.',
+    gotchas: [
+      'setHealth() finding only the FIRST matching id means a stale duplicate entry can keep reporting healthy after the real instance is marked down.',
+    ],
+  },
+  'arch-patterns/service-discovery/cache-never-refreshed-in-background': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'The Registry\'s register() Was Not Idempotent', route: '/arch-patterns/service-discovery/registry-register-was-not-idempotent' },
+      { label: 'Why Long-Lived Connections Can Outlive a Dead Pod', route: '/arch-patterns/service-discovery/long-lived-connections-outlive-dead-pods' },
+    ],
+    tip: 'Cache-aside with TTL deletion and refresh-ahead are genuinely different strategies — only the second guarantees no caller ever waits on a live registry lookup.',
+    gotchas: [
+      'Under concurrent load, cache-aside can let multiple callers independently trigger redundant lookups in the same brief window right after expiry.',
+    ],
+  },
+  'arch-patterns/service-discovery/long-lived-connections-outlive-dead-pods': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Service Discovery (overview)', route: '/arch-patterns/service-discovery' },
+      { label: 'Sidecar & Service Mesh', route: '/arch-patterns/sidecar-service-mesh' },
+    ],
+    tip: 'kube-proxy\'s routing rules only affect NEW connections — an already-open, kept-alive connection stays pinned via conntrack to its original pod even after that pod is removed.',
+    gotchas: [
+      'Retry-on-connection-failure and a bounded max connection lifetime are the standard mitigations — without either, a client can stay pinned to a dead pod indefinitely.',
+    ],
+  },
   'arch-patterns/service-oriented': {
     apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
     related: [
@@ -27394,6 +29143,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Contract-first design (WSDL then, OpenAPI/protobuf now) is a shared practice across both eras — the discipline matters more than the specific technology.',
       'An ESB-heavy SOA and a microservices system can look superficially similar while having very different maintainability characteristics.',
+    ],
+  },
+  'arch-patterns/service-oriented/smart-endpoints-dumb-pipes-was-reversed': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Service-Oriented Architecture (overview)', route: '/arch-patterns/service-oriented' },
+      { label: 'The SOA Done Right Quote Has No Real Source', route: '/arch-patterns/service-oriented/soa-done-right-quote-unattributable' },
+    ],
+    tip: 'The coined phrase is "smart endpoints, dumb pipes" (Fowler & Lewis, 2014) — reversed, it reads as a fair one-line description of the ESB-centric SOA model instead.',
+    gotchas: [
+      'A two-word swap doesn\'t always produce nonsense — here it produced a coherent description of the wrong architecture, which is exactly what makes it easy to miss on a skim.',
+    ],
+  },
+  'arch-patterns/service-oriented/soa-done-right-quote-unattributable': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Smart Endpoints, Dumb Pipes Was Reversed', route: '/arch-patterns/service-oriented/smart-endpoints-dumb-pipes-was-reversed' },
+      { label: 'The Tolerant Reader Pattern', route: '/arch-patterns/service-oriented/tolerant-reader-pattern-for-contracts' },
+    ],
+    tip: 'A specific quote attributed to a named, real author is a checkable claim distinct from whether the underlying sentiment is reasonable — verify both separately.',
+    gotchas: [
+      'A false attribution can\'t be "partially right" the way an imprecise technical fact sometimes can — either the named person said those words or the citation is inaccurate.',
+    ],
+  },
+  'arch-patterns/service-oriented/tolerant-reader-pattern-for-contracts': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Service-Oriented Architecture (overview)', route: '/arch-patterns/service-oriented' },
+      { label: 'Smart Endpoints, Dumb Pipes Was Reversed', route: '/arch-patterns/service-oriented/smart-endpoints-dumb-pipes-was-reversed' },
+    ],
+    tip: 'Additive-only contract changes only stay non-breaking if consumers are also written as tolerant readers — a strict schema validator can still break on a purely additive change.',
+    gotchas: [
+      'additionalProperties: false in a modern JSON Schema validator reproduces the exact brittleness that broke strict WSDL-bound SOAP clients — the failure mode outlived the SOAP era.',
     ],
   },
   'arch-patterns/sidecar-service-mesh': {
@@ -27408,6 +29190,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Automatic mTLS enforcement underlies a zero-trust model where no service is implicitly trusted just for being inside the perimeter.',
     ],
   },
+  'arch-patterns/sidecar-service-mesh/three-different-latency-figures-reconciled': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Sidecar & Service Mesh (overview)', route: '/arch-patterns/sidecar-service-mesh' },
+      { label: 'Ambient Mesh\'s GA Version Was Off By One Release', route: '/arch-patterns/sidecar-service-mesh/ambient-mesh-ga-version-was-off-by-one-release' },
+    ],
+    tip: 'A number quoted without a version or percentile attached is rarely a stable fact — Istio\'s own benchmarks show sidecar overhead dropping release over release.',
+    gotchas: [
+      'Tail latency (p99+) and typical/median latency are genuinely different measurements — a tail figure presented as "typical" overstates the common case.',
+    ],
+  },
+  'arch-patterns/sidecar-service-mesh/ambient-mesh-ga-version-was-off-by-one-release': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Three Different Latency Figures, Reconciled', route: '/arch-patterns/sidecar-service-mesh/three-different-latency-figures-reconciled' },
+      { label: 'The Retry Latency Math Undercounted By One Try', route: '/arch-patterns/sidecar-service-mesh/retry-latency-math-undercounted-by-one-try' },
+    ],
+    tip: 'Istio Ambient Mesh reached GA in 1.24 (November 2024) — 1.22 still carried it as Beta, a fact already verified once on this project\'s own dedicated Service Mesh hub.',
+    gotchas: [
+      'A fact verified once elsewhere in a project doesn\'t automatically get fixed everywhere it\'s repeated — the same stale claim can reappear independently.',
+    ],
+  },
+  'arch-patterns/sidecar-service-mesh/retry-latency-math-undercounted-by-one-try': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Sidecar & Service Mesh (overview)', route: '/arch-patterns/sidecar-service-mesh' },
+      { label: 'Ambient Mesh\'s GA Version Was Off By One Release', route: '/arch-patterns/sidecar-service-mesh/ambient-mesh-ga-version-was-off-by-one-release' },
+    ],
+    tip: 'Istio\'s VirtualService attempts field counts RETRIES after the original request — attempts: 2 means 3 total tries, not 2.',
+    gotchas: [
+      'The correct worst-case latency formula is (attempts + 1) x perTryTimeout, not attempts x perTryTimeout.',
+    ],
+  },
   'arch-patterns/strangler-fig': {
     apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
     related: [
@@ -27418,6 +29233,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'The facade itself becomes critical infrastructure during migration — a routing mistake can send traffic to the wrong system or neither.',
       'The pattern has a natural completion state — once every route is migrated, the legacy system and facade can be decommissioned.',
+    ],
+  },
+  'arch-patterns/strangler-fig/feature-flag-comment-named-the-wrong-migrated-feature': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Strangler Fig Pattern (overview)', route: '/arch-patterns/strangler-fig' },
+      { label: 'Parallel Run Skipped Its Own Discrepancy Check', route: '/arch-patterns/strangler-fig/parallel-run-skipped-its-own-discrepancy-check' },
+    ],
+    tip: 'A rollout-ramp comment naming a specific feature is making a claim about that feature\'s migration mechanism — if the named method has no flag check at all, the comment is simply inaccurate.',
+    gotchas: [
+      'placeOrder(), getOrder(), and cancelOrder() are deliberately shown at three different migration states — flagged, fully-migrated, and not-yet-started — so a rollout comment needs to specify precisely which one it describes.',
+    ],
+  },
+  'arch-patterns/strangler-fig/parallel-run-skipped-its-own-discrepancy-check': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Feature-Flag Comment Named the Wrong Migrated Feature', route: '/arch-patterns/strangler-fig/feature-flag-comment-named-the-wrong-migrated-feature' },
+      { label: 'The Split-Brain Risk Made Concrete', route: '/arch-patterns/strangler-fig/the-split-brain-risk-made-concrete' },
+    ],
+    tip: 'IDs matching or differing says nothing about whether status or total also match — the status/total comparison has to run unconditionally, not nested behind an ID-difference check.',
+    gotchas: [
+      'This class of bug fails silently — no crash, no error — it just quietly stops running the one check it exists to run, under a condition rare enough to go unnoticed for a long time.',
+    ],
+  },
+  'arch-patterns/strangler-fig/the-split-brain-risk-made-concrete': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Strangler Fig Pattern (overview)', route: '/arch-patterns/strangler-fig' },
+      { label: 'Inbox/Outbox', route: '/arch-patterns/inbox-outbox' },
+    ],
+    tip: 'Every individual write and read can succeed perfectly while a customer\'s data silently splits across two disconnected systems — split-brain shows up as incomplete results, not errors.',
+    gotchas: [
+      'A sticky feature flag (once migrated, always migrated) only stops the gap from growing — it does nothing to reconcile data already split before the flag became sticky.',
     ],
   },
   'arch-patterns/vertical-slice': {
@@ -27432,6 +29280,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Pairs naturally with CQRS/mediator — each feature becomes a single Command or Query handler with a consistent, predictable shape.',
     ],
   },
+  'arch-patterns/vertical-slice/mediatr-went-commercial-2025': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Vertical Slice Architecture (overview)', route: '/arch-patterns/vertical-slice' },
+      { label: 'Source-Generator Mediators: A Different Technical Tradeoff', route: '/arch-patterns/vertical-slice/source-generator-mediator-alternatives' },
+    ],
+    tip: 'MediatR remains free for individuals and companies under $5M USD annual revenue — the July 2025 licensing change only requires a paid license above that threshold.',
+    gotchas: [
+      '"X is the standard tool" recommendations are time-stamped facts about current circumstances, not permanent architectural truths — worth periodically re-verifying on any reference page.',
+    ],
+  },
+  'arch-patterns/vertical-slice/source-generator-mediator-alternatives': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'MediatR Went Commercial in July 2025', route: '/arch-patterns/vertical-slice/mediatr-went-commercial-2025' },
+      { label: 'The Rule of Three for Cross-Slice Duplication', route: '/arch-patterns/vertical-slice/rule-of-three-for-slice-duplication' },
+    ],
+    tip: 'Source-generator-based mediators resolve handlers at compile time instead of MediatR\'s original runtime reflection — a real technical tradeoff, not just a licensing difference.',
+    gotchas: [
+      'Swapping the underlying mediator library is a composition-root change only — every slice is written against the same abstract IRequestHandler pattern regardless of which library implements it.',
+    ],
+  },
+  'arch-patterns/vertical-slice/rule-of-three-for-slice-duplication': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Source-Generator Mediators: A Different Technical Tradeoff', route: '/arch-patterns/vertical-slice/source-generator-mediator-alternatives' },
+      { label: 'Vertical Slice Architecture (overview)', route: '/arch-patterns/vertical-slice' },
+    ],
+    tip: 'The Rule of Three: duplicate the first two times similar logic appears across slices, and extract a shared abstraction only on the third genuine occurrence.',
+    gotchas: [
+      'Extracting after only two occurrences risks shaping the abstraction around just those two cases — a real third example gives evidence of what\'s actually common, not coincidental.',
+    ],
+  },
   'arch-patterns/aggregates-domain-events': {
     apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
     related: [
@@ -27443,6 +29324,41 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Reference other aggregates by ID, not direct object reference — this keeps aggregates small and independently persistable.',
       'When a rule spans multiple aggregates, a domain event published AFTER the originating transaction commits achieves eventual consistency without violating the boundary.',
+    ],
+  },
+  'arch-patterns/aggregates-domain-events/place-order-handler-referenced-undeclared-catalog-service': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Aggregates & Domain Events (overview)', route: '/arch-patterns/aggregates-domain-events' },
+      { label: 'The Save-Then-Publish CodeTab Has a Dual-Write Bug', route: '/arch-patterns/aggregates-domain-events/save-then-publish-has-a-dual-write-bug' },
+    ],
+    tip: 'A constructor parameter list is the authoritative list of what a class has to work with — a method body cannot use a dependency that was never declared there, no matter how reasonable it would be.',
+    gotchas: [
+      'TypeScript strict mode rejects this at compile time (TS2339) — plain JavaScript would instead crash at runtime the first time the undeclared field is used.',
+    ],
+  },
+  'arch-patterns/aggregates-domain-events/save-then-publish-has-a-dual-write-bug': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'PlaceOrderHandler Referenced an Undeclared catalogService', route: '/arch-patterns/aggregates-domain-events/place-order-handler-referenced-undeclared-catalog-service' },
+      { label: 'Fixing It With the Outbox Pattern', route: '/arch-patterns/aggregates-domain-events/fixing-it-with-the-outbox-pattern' },
+      { label: 'Inbox/Outbox', route: '/arch-patterns/inbox-outbox' },
+    ],
+    tip: 'Publishing after commit only fixes the ordering half of the dual-write problem — the publish call can still fail independently and lose the event forever, which is the durability half.',
+    gotchas: [
+      'A process crash between the save and a successful publish loses the event even with retries, since it was only ever held in memory, not in anything durable.',
+    ],
+  },
+  'arch-patterns/aggregates-domain-events/fixing-it-with-the-outbox-pattern': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Aggregates & Domain Events (overview)', route: '/arch-patterns/aggregates-domain-events' },
+      { label: 'The Save-Then-Publish CodeTab Has a Dual-Write Bug', route: '/arch-patterns/aggregates-domain-events/save-then-publish-has-a-dual-write-bug' },
+      { label: 'Inbox/Outbox', route: '/arch-patterns/inbox-outbox' },
+    ],
+    tip: 'A single transaction inserting both the order row and an outbox row closes the gap entirely — the relay process, not the request path, becomes responsible for the broker publish.',
+    gotchas: [
+      'Events are no longer published synchronously as part of the request — there is a small, bounded delay until the relay actually delivers them.',
     ],
   },
 
@@ -28615,6 +30531,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Bicep benefits automatically from any new ARM feature without needing a separate tooling update.',
     ],
   },
+  'azure/bicep/forgetting-existing-turns-a-reference-into-a-redeploy': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Modules Need Their Own scope Property', route: '/azure/bicep/modules-need-their-own-scope-property-for-a-different-target' },
+      { label: 'Bicep overview', route: '/azure/bicep' },
+    ],
+    tip: 'A resource block referencing something already live needs the existing keyword — without it, Bicep manages and redeploys that resource instead of just reading from it.',
+    gotchas: [
+      'Omitting existing doesn\'t fail loudly — it succeeds, having quietly taken over management of the live resource.',
+      'A wrong name/scope on an existing reference DOES fail immediately, with a NotFound error — the opposite failure mode.',
+    ],
+  },
+  'azure/bicep/modules-need-their-own-scope-property-for-a-different-target': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Forgetting existing Turns a Reference Into a Redeploy', route: '/azure/bicep/forgetting-existing-turns-a-reference-into-a-redeploy' },
+      { label: 'A Module’s Static name Can Cause a Silent Collision', route: '/azure/bicep/a-modules-static-name-can-cause-a-silent-output-collision' },
+    ],
+    tip: 'A module with no scope property deploys at the PARENT file\'s own target scope, not wherever it happens to sit in the file — an explicit scope property is required to target a different resource group, subscription, or management group.',
+    gotchas: [
+      'scope accepts either a symbolic name declared in the same file or a scope function (resourceGroup(), subscription(), managementGroup(), tenant()).',
+      'A subscription-scoped file creating a new resource group must still set scope: <rgSymbolicName> on any module deploying resources into it.',
+    ],
+  },
+  'azure/bicep/a-modules-static-name-can-cause-a-silent-output-collision': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Modules Need Their Own scope Property', route: '/azure/bicep/modules-need-their-own-scope-property-for-a-different-target' },
+      { label: 'Bicep overview', route: '/azure/bicep' },
+    ],
+    tip: 'A module\'s name property is the identity ARM tracks, not just a label — two concurrent deployments to the same scope sharing a static module name can read back each other\'s output.',
+    gotchas: [
+      'Fix: fold something unique-per-run into the name (e.g. deployment().name), or omit name entirely for an auto-generated GUID.',
+      'The no-module-name linter rule flags any module still using an explicit static name property.',
+    ],
+  },
   'azure/aks': {
     apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
     related: [
@@ -28879,6 +30831,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Application Gateway is required specifically when routing decisions need to be based on URL path or hostname.',
     ],
   },
+  'azure/load-balancer/default-outbound-access-was-retired-march-2026-need-explicit-method': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Load Balancer overview', route: '/azure/load-balancer' },
+      { label: 'Default SNAT Port Allocation Is Per-VM', route: '/azure/load-balancer/default-snat-port-allocation-is-per-vm-not-per-ip' },
+    ],
+    tip: 'Default outbound access (the implicit, no-configuration fallback) was retired for new VNets as of March 31, 2026 — a VM with no NAT Gateway, no instance-level public IP, and no public LB outbound rule now has zero outbound internet path.',
+    gotchas: [
+      'An internal-only Standard Load Balancer never provides outbound connectivity by itself — it has no public frontend IP to source SNAT from.',
+      'NAT Gateway takes precedence over every other outbound method automatically when both are present.',
+    ],
+  },
+  'azure/load-balancer/default-snat-port-allocation-is-per-vm-not-per-ip': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Default Outbound Access Retired', route: '/azure/load-balancer/default-outbound-access-was-retired-march-2026-need-explicit-method' },
+      { label: 'Front Door Health Probe SampleSize Explained', route: '/azure/load-balancer/front-door-health-probe-samplesize-and-successfulsamples-explained' },
+    ],
+    tip: 'Default SNAT allocation follows a fixed pool-size tier table (1024/512/256/128/64/32 ports per VM), not an even division of the 64K total — and it caps at 1,024 ports per VM no matter how many frontend IPs are added.',
+    gotchas: [
+      'Microsoft explicitly discourages default allocation for production — use NAT Gateway or manually-allocated outbound rules instead.',
+      'Manual "ports per instance" allocation follows a different formula (frontend IPs × 64K / backend instances) and isn\'t capped at 1,024.',
+    ],
+  },
+  'azure/load-balancer/front-door-health-probe-samplesize-and-successfulsamples-explained': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Default SNAT Port Allocation Is Per-VM', route: '/azure/load-balancer/default-snat-port-allocation-is-per-vm-not-per-ip' },
+      { label: 'Load Balancer overview', route: '/azure/load-balancer' },
+    ],
+    tip: 'Front Door judges origin health from a rolling window of the last SampleSize probes, requiring SuccessfulSamplesRequired of them to pass — not a single latest-probe pass/fail check.',
+    gotchas: [
+      'If every origin in a group fails simultaneously, Front Door keeps routing traffic in round-robin rather than failing every request.',
+      'Probe frequency adapts down when an edge location isn\'t receiving real client traffic — actual probe volume can be lower than the configured interval implies.',
+    ],
+  },
   'azure/api-management': {
     apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
     related: [
@@ -28889,6 +30877,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'The developer portal automatically generates interactive documentation and lets consumers self-service API key provisioning.',
       'Policies execute at request/response time and add a small amount of latency per request compared to calling a backend directly.',
+    ],
+  },
+  'azure/api-management/cache-is-shared-per-region-only-and-fails-silently': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'rate-limit-by-key Counts Per Gateway', route: '/azure/api-management/rate-limit-by-key-counts-per-gateway-not-per-instance' },
+      { label: 'API Management overview', route: '/azure/api-management' },
+    ],
+    tip: 'The built-in cache is shared only by units in the SAME region — a multi-region Premium deployment maintains a fully separate cache per region. Cache failures also never raise an error in either cache type; a read just returns null.',
+    gotchas: [
+      'Internal caching isn\'t available at all on the Consumption tier — only an external Redis-compatible cache works there.',
+      'A cache-lookup miss from a genuinely empty cache and one from an unreachable cache look identical to the policy pipeline.',
+    ],
+  },
+  'azure/api-management/rate-limit-by-key-counts-per-gateway-not-per-instance': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Cache Is Shared Per Region Only', route: '/azure/api-management/cache-is-shared-per-region-only-and-fails-silently' },
+      { label: 'Self-Hosted Gateway Fails Static', route: '/azure/api-management/self-hosted-gateway-fails-static-but-needs-backup-to-restart' },
+    ],
+    tip: 'rate-limit-by-key tracks calls independently at EACH gateway — regional gateways in a multi-region deployment, workspace gateways, and self-hosted gateways never aggregate counts with each other.',
+    gotchas: [
+      'A subscriber\'s effective global rate limit scales with however many distinct gateways their traffic happens to reach.',
+      'A self-hosted gateway cluster can sync counters among its own nodes, but never with the cloud-managed gateway.',
+    ],
+  },
+  'azure/api-management/self-hosted-gateway-fails-static-but-needs-backup-to-restart': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'rate-limit-by-key Counts Per Gateway', route: '/azure/api-management/rate-limit-by-key-counts-per-gateway-not-per-instance' },
+      { label: 'API Management overview', route: '/azure/api-management' },
+    ],
+    tip: '"Fail static" only protects a self-hosted gateway that\'s already RUNNING when connectivity to Azure drops — a stopped instance can\'t restart during the outage unless configuration backup (a persistent volume) was explicitly configured.',
+    gotchas: [
+      'A routine pod restart (node patching, autoscaling) that overlaps with a connectivity outage can strand a gateway with no backup configured.',
+      'Reconnection and config catch-up are fully automatic once connectivity returns, regardless of the backup setting.',
     ],
   },
   'azure/service-bus': {
@@ -28902,6 +30926,78 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Subscriptions can apply SQL-like filters to receive only a matching subset of messages from a topic.',
     ],
   },
+  'azure/service-bus/duplicate-detection-is-off-by-default-10-minute-window-when-on': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Auto-Forwarding Caps at 4 Hops', route: '/azure/service-bus/auto-forwarding-caps-at-4-hops-then-dead-letters' },
+      { label: 'Service Bus overview', route: '/azure/service-bus' },
+    ],
+    tip: 'Duplicate detection is off by default and, once enabled, defaults to a 10-minute window — not the 7-day maximum — and isn\'t available on Basic tier at all.',
+    gotchas: [
+      'On a partitioned entity, uniqueness is MessageId + PartitionKey together, not MessageId alone.',
+      'Scheduled and non-scheduled sends share the same duplicate-detection pool — a duplicate MessageId across either type gets dropped.',
+    ],
+  },
+  'azure/service-bus/auto-forwarding-caps-at-4-hops-then-dead-letters': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Duplicate Detection Is Off by Default', route: '/azure/service-bus/duplicate-detection-is-off-by-default-10-minute-window-when-on' },
+      { label: 'High Prefetch Count Expires Locks Early', route: '/azure/service-bus/high-prefetch-count-expires-locks-before-processing-even-starts' },
+    ],
+    tip: 'Auto-forwarding chains cap at 4 hops — a 5th hop doesn\'t error at setup, it silently dead-letters the message at runtime.',
+    gotchas: [
+      'A full or disabled downstream entity backs messages up at the SOURCE\'s own DLQ, not the destination\'s.',
+      'A session-enabled entity can\'t be the SOURCE of auto-forwarding, though it can be a valid destination.',
+    ],
+  },
+  'azure/service-bus/high-prefetch-count-expires-locks-before-processing-even-starts': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Auto-Forwarding Caps at 4 Hops', route: '/azure/service-bus/auto-forwarding-caps-at-4-hops-then-dead-letters' },
+      { label: 'Service Bus overview', route: '/azure/service-bus' },
+    ],
+    tip: 'A prefetched message is locked the moment it enters the local cache — an oversized prefetchCount can expire locks before the receiver even reaches those messages, regardless of how fast processing itself is.',
+    gotchas: [
+      'Microsoft\'s own sizing guidance: roughly 20x the processing rate per second, tied to the same lock duration used for lock renewal.',
+      'For topologies with many competing receivers, a smaller prefetch count avoids starving other receivers of messages.',
+    ],
+  },
+  'azure/container-apps/scale-to-zero-has-a-hidden-5-minute-cooldown': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'No Scale Rule Means an Implicit HTTP Rule Applies', route: '/azure/container-apps/no-scale-rule-means-an-implicit-http-rule-applies' },
+      { label: 'Container Apps overview', route: '/azure/container-apps' },
+    ],
+    tip: 'The final replica\'s trip to zero waits out a 300-second cool down period by default — it\'s not instant, and the cooldown resets on any new event.',
+    gotchas: [
+      'The 300-second cool down only gates the LAST replica reaching zero — scaling down from any higher count uses the separate scale-down stabilization window instead.',
+      'Bursty traffic that repeats faster than every 5 minutes can keep resetting the cooldown clock and prevent the app from ever actually reaching zero.',
+    ],
+  },
+  'azure/container-apps/no-scale-rule-means-an-implicit-http-rule-applies': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Scale-to-Zero Has a Hidden 5-Minute Cooldown', route: '/azure/container-apps/scale-to-zero-has-a-hidden-5-minute-cooldown' },
+      { label: 'Secret Updates Don’t Auto-Restart Active Revisions', route: '/azure/container-apps/secret-updates-dont-auto-restart-active-revisions' },
+    ],
+    tip: 'No scale rule defined? Container Apps silently applies a default HTTP rule capped at 10 replicas, not 300 — the true configurable ceiling is 1,000.',
+    gotchas: [
+      'A non-HTTP worker with ingress disabled and no explicit scale rule can scale to zero via the implicit default and then have no way to start back up.',
+      'Fixing max-replicas alone doesn\'t solve the ingress-disabled trap — that needs an explicit min-replicas or a real trigger-based scale rule.',
+    ],
+  },
+  'azure/container-apps/secret-updates-dont-auto-restart-active-revisions': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'No Scale Rule Means an Implicit HTTP Rule Applies', route: '/azure/container-apps/no-scale-rule-means-an-implicit-http-rule-applies' },
+      { label: 'Container Apps overview', route: '/azure/container-apps' },
+    ],
+    tip: 'Updating a secret never auto-restarts a running revision — restart it or deploy a new one; only an unversioned Key Vault reference auto-restarts on its own, within 30 minutes.',
+    gotchas: [
+      'Container Apps\' own Key Vault reference refresh is 30 minutes, a different (much faster) figure than App Service\'s 24-hour default covered elsewhere in this hub.',
+      'In multiple-revision mode, every OTHER active revision referencing the same secret needs its own restart too — updating the value doesn\'t discriminate between them.',
+    ],
+  },
   'azure/sql-cosmos': {
     apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
     related: [
@@ -28911,6 +31007,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'A poorly chosen Cosmos partition key creates hot partitions that bottleneck throughput regardless of provisioned RU/s.',
       'Cost models differ significantly — Azure SQL is priced by compute tier, Cosmos DB by provisioned/consumed Request Units.',
+    ],
+  },
+  'azure/sql-cosmos/cosmos-logical-partition-caps-at-20gb-not-50gb': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Change Feed Now Captures Deletes Natively', route: '/azure/sql-cosmos/change-feed-all-versions-and-deletes-mode-captures-deletes-natively' },
+      { label: 'SQL & Cosmos DB overview', route: '/azure/sql-cosmos' },
+    ],
+    tip: 'A logical partition (what your partition key value determines) is capped at 20 GB — 50 GB is a separate, internally-managed physical partition limit you don\'t control directly.',
+    gotchas: [
+      'Watch logical partition size specifically via Azure Monitor alerts, not physical partition size, which Cosmos DB manages transparently.',
+      'Hierarchical partition keys are the documented fix once a single key value is expected to exceed 20 GB.',
+    ],
+  },
+  'azure/sql-cosmos/change-feed-all-versions-and-deletes-mode-captures-deletes-natively': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Logical Partition Caps at 20 GB', route: '/azure/sql-cosmos/cosmos-logical-partition-caps-at-20gb-not-50gb' },
+      { label: 'Long-Term Retention Goes to 10 Years', route: '/azure/sql-cosmos/azure-sql-long-term-retention-goes-to-10-years-beyond-pitr' },
+    ],
+    tip: '"All versions and deletes" change feed mode captures real delete events natively — no soft-delete flag needed — but requires continuous backups and is bounded by that backup retention window.',
+    gotchas: [
+      'It can only start reading from "now" or a checkpoint — never from the beginning of the container, unlike the default Latest version mode.',
+      'NoSQL API accounts only, and incompatible with accounts that have ever used partition merge.',
+    ],
+  },
+  'azure/sql-cosmos/azure-sql-long-term-retention-goes-to-10-years-beyond-pitr': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Change Feed Now Captures Deletes Natively', route: '/azure/sql-cosmos/change-feed-all-versions-and-deletes-mode-captures-deletes-natively' },
+      { label: 'SQL & Cosmos DB overview', route: '/azure/sql-cosmos' },
+    ],
+    tip: 'Long-Term Retention reaches up to 10 years by reusing the same PITR full backups on a weekly/monthly/yearly policy — it must be configured in advance, not requested retroactively.',
+    gotchas: [
+      'The first LTR backup can take up to 7 days to appear after the policy is set — it is not immediate.',
+      'LTR backups outlive the server that created them and remain restorable even after the logical server is deleted.',
     ],
   },
   'azure/storage': {
@@ -28924,6 +31056,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The appropriate redundancy tier should reflect the actual business impact of data loss or unavailability, not a blanket default.',
     ],
   },
+  'azure/storage/user-delegation-sas-max-validity-is-7-days-not-your-expiry-param': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Stored Access Policies Don’t Work With User Delegation SAS', route: '/azure/storage/stored-access-policies-dont-work-with-user-delegation-sas' },
+      { label: 'Storage overview', route: '/azure/storage' },
+    ],
+    tip: 'A User Delegation SAS is signed by a user delegation key valid for a maximum of 7 days from the start time — a longer --expiry is silently truncated, not rejected at creation time.',
+    gotchas: [
+      'The SAS URL\'s own se= parameter keeps showing the requested (longer) expiry even after the token has stopped working.',
+      'Service SAS and Account SAS have no such cap since they\'re signed by the storage account key, not a temporary Entra ID-derived key.',
+    ],
+  },
+  'azure/storage/stored-access-policies-dont-work-with-user-delegation-sas': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'User Delegation SAS Caps at 7 Days', route: '/azure/storage/user-delegation-sas-max-validity-is-7-days-not-your-expiry-param' },
+      { label: 'Lifecycle baseBlob Actions Don’t Cover Versions', route: '/azure/storage/lifecycle-baseblob-actions-dont-cover-versions-or-snapshots' },
+    ],
+    tip: 'Stored Access Policies only attach to a Service SAS — Microsoft\'s own docs state they "are not supported for the user delegation SAS or the account SAS," so the two "most secure" recommendations on the main page can\'t be combined.',
+    gotchas: [
+      'The only revocation lever for User Delegation SAS is az storage account revoke-delegation-keys, which invalidates every delegation key for the whole account at once.',
+      'Choosing per-token revocation (Service SAS + policy) means accepting account-key signing instead of Entra ID-based signing.',
+    ],
+  },
+  'azure/storage/lifecycle-baseblob-actions-dont-cover-versions-or-snapshots': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Stored Access Policies Don’t Work With User Delegation SAS', route: '/azure/storage/stored-access-policies-dont-work-with-user-delegation-sas' },
+      { label: 'Storage overview', route: '/azure/storage' },
+    ],
+    tip: 'A lifecycle rule\'s baseBlob actions never apply to blob versions or snapshots — those need their own separate version/snapshot action blocks, keyed on daysAfterCreationGreaterThan instead of daysAfterModificationGreaterThan.',
+    gotchas: [
+      'Enabling Blob Versioning after a baseBlob-only policy already exists silently opens a cost gap — old versions accumulate at full price with no automatic cleanup.',
+      'A version is immutable from creation, so there is no "last modified" trigger available for it — only a creation-time one.',
+    ],
+  },
   'azure/redis': {
     apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
     related: [
@@ -28933,6 +31101,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Even with Premium persistence enabled, cached data should still be treated as ephemeral and reconstructible from the source of truth.',
       'Basic tier node failure or maintenance causes a complete cache outage with data loss.',
+    ],
+  },
+  'azure/redis/theres-no-redis-contributor-data-role': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'The Real Default Eviction Policy Is volatile-lru', route: '/azure/redis/default-eviction-policy-is-volatile-lru-not-noeviction' },
+      { label: 'Cache for Redis overview', route: '/azure/redis' },
+    ],
+    tip: 'The real data access policies are Data Owner, Data Contributor, and Data Reader — assigned via Data Access Configuration, not a role picker. The similarly-named "Redis Cache Contributor" Azure RBAC role grants zero data access.',
+    gotchas: [
+      '"Redis Cache Contributor" is a control-plane-only role — it manages the cache resource but defines no dataActions at all.',
+      'A real deployment often needs BOTH an RBAC role (to manage the resource) and a Data Access Configuration entry (for an identity to read/write data).',
+    ],
+  },
+  'azure/redis/default-eviction-policy-is-volatile-lru-not-noeviction': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'There’s No “Redis Contributor” Data Role', route: '/azure/redis/theres-no-redis-contributor-data-role' },
+      { label: 'Enabling Entra ID Auth Reboots Every Node', route: '/azure/redis/enabling-entra-id-auth-reboots-every-node-up-to-30-minutes' },
+    ],
+    tip: 'Every new Azure Cache for Redis instance defaults to volatile-lru, not noeviction — meaning a key with no TTL is completely exempt from eviction, not just at greater risk.',
+    gotchas: [
+      'Forgetting a TTL isn\'t "random" eviction under the real default — it\'s a guarantee that key is protected until every TTL\'d key around it is gone first.',
+      'For a pure caching workload with no permanently-protected keys, allkeys-lru avoids this trap entirely.',
+    ],
+  },
+  'azure/redis/enabling-entra-id-auth-reboots-every-node-up-to-30-minutes': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'The Real Default Eviction Policy Is volatile-lru', route: '/azure/redis/default-eviction-policy-is-volatile-lru-not-noeviction' },
+      { label: 'Cache for Redis overview', route: '/azure/redis' },
+    ],
+    tip: 'Enabling Entra ID auth (and granting the first data access policy) reboots every node and can take up to 30 minutes — plan it for a maintenance window, not a routine mid-day change.',
+    gotchas: [
+      'Disabling access keys terminates ALL existing connections, including ones already using Entra tokens.',
+      'A geo-replicated cache must be unlinked before disabling access keys, then relinked — a 3-step operation, not a single toggle.',
     ],
   },
   'azure/entra-id': {
@@ -28947,6 +31151,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Test new policies in report-only mode before enforcing them broadly.',
     ],
   },
+  'azure/entra-id/client-credentials-scope-must-be-default-not-individual-permissions': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'SPA Refresh Tokens Cap at 24 Hours', route: '/azure/entra-id/spa-refresh-tokens-cap-at-24-hours-not-90-days-and-never-reset' },
+      { label: 'Entra ID overview', route: '/azure/entra-id' },
+    ],
+    tip: 'The client_credentials grant only ever accepts <resource>/.default as its scope — there is no individual-permission scope alternative, and mixing resources in one request is explicitly rejected.',
+    gotchas: [
+      'A non-.default scope returns AADSTS70011 invalid_scope, per Microsoft\'s own documented error example.',
+      'Least privilege for this flow is enforced entirely by the app registration\'s configured Application permissions, not by the token request.',
+    ],
+  },
+  'azure/entra-id/spa-refresh-tokens-cap-at-24-hours-not-90-days-and-never-reset': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Client Credentials Scope Must Be .default', route: '/azure/entra-id/client-credentials-scope-must-be-default-not-individual-permissions' },
+      { label: 'PKCE Required for SPAs', route: '/azure/entra-id/pkce-is-required-for-spas-but-only-recommended-for-native-apps' },
+    ],
+    tip: 'SPAs get a 24-hour refresh token lifetime, not the 90-day figure that applies to confidential clients — and that 24-hour window carries over to every subsequent refresh rather than resetting.',
+    gotchas: [
+      'Old refresh tokens are not automatically revoked when a new one is issued — the app must delete them itself (MSAL handles this automatically).',
+      'The 24-hour SPA cap is a deliberate tradeoff for XSS exposure in browser-accessible token storage, not an oversight.',
+    ],
+  },
+  'azure/entra-id/pkce-is-required-for-spas-but-only-recommended-for-native-apps': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'SPA Refresh Tokens Cap at 24 Hours', route: '/azure/entra-id/spa-refresh-tokens-cap-at-24-hours-not-90-days-and-never-reset' },
+      { label: 'Entra ID overview', route: '/azure/entra-id' },
+    ],
+    tip: 'PKCE is platform-enforced for SPAs but only recommended (not enforced) for native and confidential clients — using MSAL for your client type closes that gap by default.',
+    gotchas: [
+      'A native app can still complete the Authorization Code flow successfully without PKCE — the risk it protects against doesn\'t go away just because it\'s not enforced.',
+      'MSAL.js implements PKCE automatically for SPAs — there\'s no separate flag or setting to configure.',
+    ],
+  },
   'azure/rbac': {
     apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
     related: [
@@ -28957,6 +31197,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Azure RBAC is purely additive — auditing effective access requires checking role assignments at every applicable scope level.',
       'Built-in roles cover most needs — custom roles add ongoing governance overhead and should be reserved for genuinely unique combinations.',
+    ],
+  },
+  'azure/rbac/role-assignment-propagation-isnt-one-number-10-min-to-24-hours': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Classic Co-Administrators Auto-Converted to Owner', route: '/azure/rbac/classic-co-administrators-auto-converted-to-owner-december-2025' },
+      { label: 'RBAC overview', route: '/azure/rbac' },
+    ],
+    tip: 'General role assignment changes take ~10 minutes to propagate — not the 30 minutes often assumed — but group-based Managed Identity role assignments can take up to 24 hours due to a separate per-resource-URI cache.',
+    gotchas: [
+      'DataActions changes at management group scope have their own separate slow path — up to several hours, control-plane access at the same scope is unaffected.',
+      'For time-sensitive pipelines, assign roles directly to a Managed Identity\'s own principal ID rather than via group membership to stay on the faster path.',
+    ],
+  },
+  'azure/rbac/classic-co-administrators-auto-converted-to-owner-december-2025': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Propagation Isn’t One Number', route: '/azure/rbac/role-assignment-propagation-isnt-one-number-10-min-to-24-hours' },
+      { label: 'IMDS Metadata:true and Blast Radius', route: '/azure/rbac/imds-metadata-true-header-and-unauthenticated-blast-radius' },
+    ],
+    tip: 'Azure auto-converted lingering Co-Administrator/Service Administrator assignments to Owner starting December 2025 — these carry a distinguishing description and a fixed createdBy GUID, filterable in an audit.',
+    gotchas: [
+      'The retirement preserved access rather than revoking it — cleanup of no-longer-needed auto-converted Owner assignments is a manual follow-up step.',
+      'Classic administrator roles are fully retired as of May 2026 — the Classic Administrators tab no longer exists in the portal.',
+    ],
+  },
+  'azure/rbac/imds-metadata-true-header-and-unauthenticated-blast-radius': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Classic Co-Administrators Auto-Converted to Owner', route: '/azure/rbac/classic-co-administrators-auto-converted-to-owner-december-2025' },
+      { label: 'RBAC overview', route: '/azure/rbac' },
+    ],
+    tip: 'The IMDS Managed Identity token endpoint is unauthenticated to every process on the VM — any code running there, not just the intended app, can mint a token with the identity\'s full RBAC permissions.',
+    gotchas: [
+      'The Metadata: true header (and banning X-Forwarded-For) exists specifically to prevent SSRF-style unintended redirection, not as an arbitrary API convention.',
+      'IMDS is unsupported behind a proxy — even an auto-discovered one you\'re unaware of can silently break Managed Identity token acquisition.',
     ],
   },
   'azure/key-vault': {
@@ -28971,6 +31247,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'System-assigned identities are tied to one resource\'s lifecycle; user-assigned identities can be shared across resources and managed independently.',
     ],
   },
+  'azure/key-vault/key-vault-reference-refresh-is-24-hours-not-minutes': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Soft-Deleted Vaults Reserve Their Name', route: '/azure/key-vault/soft-deleted-vault-reserves-its-name-and-loses-rbac-bindings' },
+      { label: 'Key Vault overview', route: '/azure/key-vault' },
+    ],
+    tip: 'App Service caches Key Vault Reference values and refetches every 24 hours by default — a rotated secret is not picked up "within minutes" without an explicit trigger.',
+    gotchas: [
+      'An unrelated app setting change forces an immediate refetch as a side effect — a real config change causes an app restart.',
+      'For emergency rotation, force resolution via a POST to the app\'s configreferences/appsettings/refresh management API.',
+    ],
+  },
+  'azure/key-vault/soft-deleted-vault-reserves-its-name-and-loses-rbac-bindings': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Reference Refresh Is 24 Hours', route: '/azure/key-vault/key-vault-reference-refresh-is-24-hours-not-minutes' },
+      { label: 'New Vaults Now Default to RBAC', route: '/azure/key-vault/new-vaults-now-default-to-rbac-but-only-on-newer-api-versions' },
+    ],
+    tip: 'A soft-deleted vault\'s name is reserved for the full retention period, and recovering the vault does NOT restore its RBAC role assignments or Event Grid subscriptions.',
+    gotchas: [
+      'A CI/CD pipeline that deletes-and-recreates a vault by design can hit a name-conflict error against its own prior soft-deleted vault.',
+      'Post-recovery, re-provision access exactly as if configuring a brand-new vault — recovery alone leaves apps with 403 errors.',
+    ],
+  },
+  'azure/key-vault/new-vaults-now-default-to-rbac-but-only-on-newer-api-versions': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Soft-Deleted Vaults Reserve Their Name', route: '/azure/key-vault/soft-deleted-vault-reserves-its-name-and-loses-rbac-bindings' },
+      { label: 'Key Vault overview', route: '/azure/key-vault' },
+    ],
+    tip: 'Azure RBAC became the default for new Key Vaults starting API version 2026-02-01 — but tooling or templates pinned to an older API version still silently default to legacy access policies.',
+    gotchas: [
+      'Two teams running the identical az keyvault create command can get different permission models depending on their underlying API version.',
+      'Explicitly setting --enable-rbac-authorization true remains the only reliable way to guarantee RBAC regardless of tooling defaults.',
+    ],
+  },
   'azure/security-defender': {
     apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
     related: [
@@ -28981,6 +31293,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'A high Secure Score reduces but does not eliminate risk — it measures adherence to known best-practice configurations, not protection against zero-days or logic flaws.',
       'Each recommendation carries relative risk weighting, not equal importance — prioritize accordingly.',
+    ],
+  },
+  'azure/security-defender/mma-agent-fully-retired-defender-servers-now-agentless': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Defender CSPM Is a Separate Paid Plan', route: '/azure/security-defender/defender-cspm-is-a-separate-paid-plan-beyond-foundational-cspm' },
+      { label: 'Security & Defender overview', route: '/azure/security-defender' },
+    ],
+    tip: 'The Log Analytics Agent (MMA) is fully retired (August 31, 2024) — Defender for Servers Plan 2 now uses agentless scanning, not a like-for-like AMA swap.',
+    gotchas: [
+      'MMA data upload can now stop at any time without further notice, past the documented cutoff.',
+      'Custom telemetry still needing an agent should move to Azure Monitor Agent via Data Collection Rules, not MMA.',
+    ],
+  },
+  'azure/security-defender/defender-cspm-is-a-separate-paid-plan-beyond-foundational-cspm': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'MMA Is Fully Retired', route: '/azure/security-defender/mma-agent-fully-retired-defender-servers-now-agentless' },
+      { label: 'JIT Quick-Enable Only Protects One Port', route: '/azure/security-defender/jit-quick-enable-only-protects-one-port-not-the-full-set' },
+    ],
+    tip: 'Defender CSPM is a separate, paid plan beyond free Foundational CSPM — attack path analysis, agentless scanning, and DSPM/EASM all require it, independent of Defender for Servers/Containers.',
+    gotchas: [
+      'Enabling Defender for Servers or Containers does NOT also enable Defender CSPM — they\'re billed and enabled independently.',
+      'Full Defender for DevOps features (PR annotations, code-to-cloud mapping) require the paid CSPM plan, not just connecting a DevOps org.',
+    ],
+  },
+  'azure/security-defender/jit-quick-enable-only-protects-one-port-not-the-full-set': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Defender CSPM Is a Separate Paid Plan', route: '/azure/security-defender/defender-cspm-is-a-separate-paid-plan-beyond-foundational-cspm' },
+      { label: 'Security & Defender overview', route: '/azure/security-defender' },
+    ],
+    tip: 'Enabling JIT from a VM\'s own Configuration blade only protects RDP or SSH — WinRM ports and custom ports need Defender for Cloud\'s own JIT page to add.',
+    gotchas: [
+      'Both enable paths write to the same underlying JIT policy — the VM blade toggle just starts with a narrower default.',
+      'Custom application admin ports are never auto-included in either default set — they require an explicit "Add" step.',
     ],
   },
   'azure/monitor': {
@@ -28994,6 +31342,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Choose based on whether the data is a simple numeric metric for fast alerting, or rich structured data benefiting from KQL flexibility.',
     ],
   },
+  'azure/monitor/sampling-silently-skews-count-use-sum-itemcount-instead': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Basic Logs Supports Full KQL', route: '/azure/monitor/basic-logs-supports-full-kql-tradeoff-is-per-query-pricing' },
+      { label: 'Monitor overview', route: '/azure/monitor' },
+    ],
+    tip: 'Application Insights sampling is on by default — a stored row can represent multiple real events via itemCount, so summarize count() undercounts unless replaced with summarize sum(itemCount).',
+    gotchas: [
+      'Metrics aren\'t sampled — only log-based telemetry (requests, dependencies, exceptions, traces) needs the itemCount correction.',
+      'Check current sampling rate with RetainedPercentage = 100/avg(itemCount) before trusting a raw count().',
+    ],
+  },
+  'azure/monitor/basic-logs-supports-full-kql-tradeoff-is-per-query-pricing': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Sampling Silently Skews count()', route: '/azure/monitor/sampling-silently-skews-count-use-sum-itemcount-instead' },
+      { label: 'Daily Cap Stops All Ingestion', route: '/azure/monitor/daily-cap-stops-all-ingestion-not-just-the-excess' },
+    ],
+    tip: 'Basic Logs tables support full KQL — the real tradeoff versus Analytics is that query price isn\'t included, it\'s billed per GB scanned at query time.',
+    gotchas: [
+      'A table\'s plan can only be switched once a week — plan governance and automation around this limit.',
+      'Total retention for both plans can reach up to 12 years, not the 30-730 day figure often cited as a ceiling.',
+    ],
+  },
+  'azure/monitor/daily-cap-stops-all-ingestion-not-just-the-excess': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Basic Logs Supports Full KQL', route: '/azure/monitor/basic-logs-supports-full-kql-tradeoff-is-per-query-pricing' },
+      { label: 'Monitor overview', route: '/azure/monitor' },
+    ],
+    tip: 'A triggered daily ingestion cap stops telemetry entirely, not just the excess — and it resets on the daily UTC boundary, not a rolling window from when it fired.',
+    gotchas: [
+      'An incident\'s own telemetry spike is exactly the scenario most likely to trip the cap and go dark.',
+      'Detecting a triggered cap requires a signal outside the capped data path — the Activity Log or a Usage-table query, not the affected telemetry itself.',
+    ],
+  },
   'azure/cost-management': {
     apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
     related: [
@@ -29005,6 +31389,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Azure Advisor surfaces savings opportunities (underutilized VMs, orphaned disks) manual review would likely miss.',
     ],
   },
+  'azure/cost-management/spot-vm-eviction-notice-is-30-seconds-not-2-minutes': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Reservations Apply Before Savings Plans', route: '/azure/cost-management/reservations-apply-before-savings-plans-in-a-best-fit-model' },
+      { label: 'Cost Management overview', route: '/azure/cost-management' },
+    ],
+    tip: 'Azure Spot VMs are evicted with 30-seconds notice, not 2 minutes — and the warning requires opting into Azure Scheduled Events to actually receive it.',
+    gotchas: [
+      'Eviction policy (Deallocate vs Delete) determines whether disk storage costs continue after eviction.',
+      'Setting max price to -1 removes price-based eviction entirely, leaving only capacity-based eviction to design around.',
+    ],
+  },
+  'azure/cost-management/reservations-apply-before-savings-plans-in-a-best-fit-model': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Spot VM Eviction Is 30 Seconds', route: '/azure/cost-management/spot-vm-eviction-notice-is-30-seconds-not-2-minutes' },
+      { label: 'Amortized Cost View Gap', route: '/azure/cost-management/amortized-cost-view-doesnt-work-for-payg-reservations' },
+    ],
+    tip: 'When both an RI and a Savings Plan could cover the same usage, Azure automatically applies the reservation first — no configuration needed or possible.',
+    gotchas: [
+      'A Savings Plan utilization reading above 100% mid-window is expected — the billing system reconciles usage for up to 48 hours after the fact.',
+      'Between multiple Savings Plans, the 3-year term and more restrictively-scoped plan are consumed first.',
+    ],
+  },
+  'azure/cost-management/amortized-cost-view-doesnt-work-for-payg-reservations': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Reservations Apply Before Savings Plans', route: '/azure/cost-management/reservations-apply-before-savings-plans-in-a-best-fit-model' },
+      { label: 'Cost Management overview', route: '/azure/cost-management' },
+    ],
+    tip: 'Amortised cost view silently does nothing for Reserved Instances purchased under a pay-as-you-go subscription — it renders identically to Actual cost.',
+    gotchas: [
+      'This limitation doesn\'t apply to Enterprise Agreement or Microsoft Customer Agreement subscriptions.',
+      'A manual (total cost ÷ term months) calculation is the workaround for PAYG-purchased RIs.',
+    ],
+  },
   'azure/devops-pipelines': {
     apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
     related: [
@@ -29014,6 +31434,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Templates in YAML pipelines let common stages be defined once and reused across many pipelines, reducing duplication.',
       'YAML has a steeper initial learning curve than the Classic editor, but the long-term maintainability benefit of pipeline-as-code is usually worth it.',
+    ],
+  },
+  'azure/devops-pipelines/new-orgs-get-zero-free-parallel-jobs-must-request-a-grant': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Unanswered Approvals Are Skipped, Not Rejected', route: '/azure/devops-pipelines/unanswered-approvals-are-skipped-not-rejected-at-timeout' },
+      { label: 'DevOps & Pipelines overview', route: '/azure/devops-pipelines' },
+    ],
+    tip: 'New Azure DevOps organizations no longer get a free Microsoft-hosted parallel job automatically — it must be requested via a form and is reviewed manually, sometimes taking days.',
+    gotchas: [
+      'Self-hosted agents entirely bypass the Microsoft-hosted parallelism grant process.',
+      'Purchasing a paid parallel job is available immediately, unlike the free grant request.',
+    ],
+  },
+  'azure/devops-pipelines/unanswered-approvals-are-skipped-not-rejected-at-timeout': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'New Orgs Get Zero Free Parallel Jobs', route: '/azure/devops-pipelines/new-orgs-get-zero-free-parallel-jobs-must-request-a-grant' },
+      { label: 'Fork PR Builds on Self-Hosted Agents', route: '/azure/devops-pipelines/fork-pr-builds-on-self-hosted-agents-run-untrusted-code-on-prem' },
+    ],
+    tip: 'An unanswered approval times out to a stage marked Skipped, not Failed or Rejected — a condition like failed() will not catch it.',
+    gotchas: [
+      'The eligible-approver list is fixed when the check starts running — adding someone mid-wait doesn\'t let them approve that run.',
+      'A group approver only needs ONE member to approve, not unanimous consent.',
+    ],
+  },
+  'azure/devops-pipelines/fork-pr-builds-on-self-hosted-agents-run-untrusted-code-on-prem': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Unanswered Approvals Are Skipped, Not Rejected', route: '/azure/devops-pipelines/unanswered-approvals-are-skipped-not-rejected-at-timeout' },
+      { label: 'DevOps & Pipelines overview', route: '/azure/devops-pipelines' },
+    ],
+    tip: 'Fork PR builds run attacker-controlled YAML — on self-hosted agents, that code executes on your own infrastructure, and any state a self-hosted agent persists between jobs can leak to a later, trusted build.',
+    gotchas: [
+      'Fork builds don\'t get secrets by default — never enable "Make fork builds have the same permissions as regular builds."',
+      'Route fork PR builds to Microsoft-hosted agents specifically, even if trusted-branch builds use self-hosted ones.',
     ],
   },
 
@@ -31625,6 +34081,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Security added as an afterthought is consistently more expensive and less effective than security designed in from the start.',
     ],
   },
+  'security/fundamentals/threat-modeling-a-password-reset-endpoint': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Security Fundamentals (overview)', route: '/security/fundamentals' },
+      { label: 'Fail-Secure vs. Fail-Safe, Made Concrete', route: '/security/fundamentals/fail-secure-vs-fail-safe-made-concrete' },
+    ],
+    tip: 'A password-reset flow genuinely triggers all six STRIDE categories at once — identity, a stored token, an audit trail, a secret in transit, an unauthenticated endpoint, and a privilege boundary.',
+    gotchas: [
+      'Forgetting to invalidate the reset token after use opens a replay-attack window even though the token itself was never leaked.',
+    ],
+  },
+  'security/fundamentals/fail-secure-vs-fail-safe-made-concrete': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Threat-Modeling a Password-Reset Endpoint', route: '/security/fundamentals/threat-modeling-a-password-reset-endpoint' },
+      { label: 'What SAST Actually Catches', route: '/security/fundamentals/what-sast-actually-catches' },
+    ],
+    tip: 'A fail-open bug rarely looks like a security bug — it usually looks like defensive error handling that swallows an exception and lets the request continue.',
+    gotchas: [
+      'Fail-secure isn\'t universally correct — the right default depends on the threat model (a fire exit should fail safe, not secure).',
+    ],
+  },
+  'security/fundamentals/what-sast-actually-catches': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Fail-Secure vs. Fail-Safe, Made Concrete', route: '/security/fundamentals/fail-secure-vs-fail-safe-made-concrete' },
+      { label: 'Security Fundamentals (overview)', route: '/security/fundamentals' },
+    ],
+    tip: 'SAST is static analysis — it never runs the code, which is why it can scan every commit in seconds but can only catch patterns it was taught to recognize.',
+    gotchas: [
+      'Routing an unsafe value through an intermediate helper function can slip past a SAST rule that only checks the immediate call site.',
+    ],
+  },
   'security/threat-modelling': {
     apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
     related: [
@@ -31637,6 +34126,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A threat model is a living document — it should be revisited when the system\'s architecture or trust boundaries change.',
     ],
   },
+  'security/threat-modelling/mapping-a-stride-threat-to-mitre-attck': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Threat Modelling (overview)', route: '/security/threat-modelling' },
+      { label: 'Building an Attack Tree in Code', route: '/security/threat-modelling/building-an-attack-tree-in-code' },
+    ],
+    tip: 'A generic STRIDE category like "Spoofing" can hide a two-step attacker chain — naming the specific ATT&CK techniques for each step can surface a mitigation gap the category alone never would.',
+    gotchas: [
+      'Not every STRIDE threat decomposes into a multi-technique chain — some really are a single atomic action, and forcing an artificial chain just to look thorough misrepresents the threat.',
+    ],
+  },
+  'security/threat-modelling/building-an-attack-tree-in-code': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Mapping a STRIDE Threat to Real MITRE ATT&CK Techniques', route: '/security/threat-modelling/mapping-a-stride-threat-to-mitre-attck' },
+      { label: 'A PASTA-Style Business-Risk Reprioritization', route: '/security/threat-modelling/a-pasta-style-business-risk-reprioritization' },
+    ],
+    tip: 'An OR node\'s difficulty is set by its EASIEST branch, not its average — a high-difficulty branch sitting next to an easy one contributes nothing to the overall risk as long as the easier path still exists.',
+    gotchas: [
+      'An AND node is bottlenecked by its HARDEST step — defeating just one step in the chain is enough to block that entire branch, even if every other step in it is trivial.',
+    ],
+  },
+  'security/threat-modelling/a-pasta-style-business-risk-reprioritization': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Building an Attack Tree in Code', route: '/security/threat-modelling/building-an-attack-tree-in-code' },
+      { label: 'Threat Modelling (overview)', route: '/security/threat-modelling' },
+    ],
+    tip: 'A PASTA business-context multiplier is applied ON TOP OF a raw DREAD score, not instead of it — the two methodologies combine into a two-pass process, not a choice between them.',
+    gotchas: [
+      'A low raw-DREAD threat can still become the top overall priority once a real business consequence (a specific regulation or contract\'s scope) applies — technical severity and business consequence are independent axes.',
+    ],
+  },
   'security/owasp-top-10': {
     apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
     related: [
@@ -31647,6 +34169,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'The list is periodically revised (categories merge, split, or reorder) as the threat landscape changes — always check which version a resource references.',
       'Broken Access Control has topped the list in recent revisions, reflecting how commonly authorization checks are missed or implemented incorrectly.',
+    ],
+  },
+  'security/owasp-top-10/the-injection-pattern-that-missed-its-own-test': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'OWASP Top 10 (overview)', route: '/security/owasp-top-10' },
+      { label: 'A08 Insecure Deserialization, Made Concrete', route: '/security/owasp-top-10/a08-insecure-deserialization-made-concrete' },
+    ],
+    tip: 'A pattern-matching detector is only as good as its test suite — the same string that "looks like" a bypass in a code comment can silently fail to actually match, and the only way to know is to run it.',
+    gotchas: [
+      'A missing space around a keyword like "or" can make a blocklist pattern fail to match the exact classic injection string it was written to catch.',
+    ],
+  },
+  'security/owasp-top-10/a08-insecure-deserialization-made-concrete': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'The Injection Pattern That Missed Its Own Test', route: '/security/owasp-top-10/the-injection-pattern-that-missed-its-own-test' },
+      { label: 'Preventing SSRF With an IP Allowlist', route: '/security/owasp-top-10/preventing-ssrf-with-an-ip-allowlist' },
+    ],
+    tip: 'Deserializing untrusted data with a format that can reconstruct executable objects (not just plain data) hands the attacker a way to run code — validating the RESULT after deserializing is already too late.',
+    gotchas: [
+      'Swapping to JSON.parse() alone only removes the code-execution risk — it does not validate the SHAPE of the data, which is what a schema validator like Zod is still needed for.',
+    ],
+  },
+  'security/owasp-top-10/preventing-ssrf-with-an-ip-allowlist': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'A08 Insecure Deserialization, Made Concrete', route: '/security/owasp-top-10/a08-insecure-deserialization-made-concrete' },
+      { label: 'OWASP Top 10 (overview)', route: '/security/owasp-top-10' },
+    ],
+    tip: 'Checking a resolved IP address up front is not the same as checking it on every hop — a fetch client that follows redirects by default can still land on a blocked address the first check never saw.',
+    gotchas: [
+      'A hostname an attacker controls the DNS record for can be pointed at a private or link-local IP just as easily as a public one — validate the resolved address, never the hostname text.',
     ],
   },
   'security/injection': {
@@ -31721,6 +34276,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Rate limiting and account lockout policies protect against online brute-force even with a strong hashing algorithm protecting the stored hash.',
     ],
   },
+  'security/password-security/score-3-vs-4-the-real-boundary': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Password Security (overview)', route: '/security/password-security' },
+      { label: 'A Simplified Passkey Registration and Login Flow', route: '/security/password-security/a-simplified-passkey-registration-and-login-flow' },
+    ],
+    tip: 'The Challenge\'s own scoring function is fully deterministic — a worked example that hedges between two possible scores is a signal to actually run the code, not a real ambiguity in the algorithm.',
+    gotchas: [
+      'Score 3 and score 4 check completely independent dimensions (character variety vs. length) — satisfying one does nothing to satisfy the other.',
+    ],
+  },
+  'security/password-security/a-simplified-passkey-registration-and-login-flow': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Score 3 vs 4 — the Real Boundary', route: '/security/password-security/score-3-vs-4-the-real-boundary' },
+      { label: 'Detecting Password Spraying Across Accounts', route: '/security/password-security/detecting-password-spraying-across-accounts' },
+    ],
+    tip: 'A passkey\'s private key never leaves the device, and the browser itself enforces that a credential can only be used on the exact origin it was created for — this is what makes passkeys structurally, not just behaviourally, resistant to phishing.',
+    gotchas: [
+      'The server only ever stores a public key, never a secret — a full breach of a passkey database is a fundamentally different, far less severe event than a breach of password hashes.',
+    ],
+  },
+  'security/password-security/detecting-password-spraying-across-accounts': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'A Simplified Passkey Registration and Login Flow', route: '/security/password-security/a-simplified-passkey-registration-and-login-flow' },
+      { label: 'Password Security (overview)', route: '/security/password-security' },
+    ],
+    tip: 'The spray-detection signal is the number of DISTINCT accounts one IP has touched with failures, not the total failure count — a Set naturally collapses repeated failures against the same account, which is exactly the behaviour a legitimate mistyping user should never trigger.',
+    gotchas: [
+      'Per-account temporary lockout and cross-account spray detection catch two different attack shapes — a spray attack deliberately stays under any single account\'s lockout threshold, so lockout alone never catches it.',
+    ],
+  },
   'security/hashing': {
     apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
     related: [
@@ -31769,6 +34357,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'JWTs are typically stateless and cannot be revoked before expiry without an additional server-side revocation list, unlike traditional session tokens.',
     ],
   },
+  'security/jwt/token-revocation-both-ways': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'JSON Web Tokens (overview)', route: '/security/jwt' },
+      { label: 'The RS256 → HS256 Confusion Attack, Demonstrated', route: '/security/jwt/the-rs256-to-hs256-confusion-attack-demonstrated' },
+    ],
+    tip: 'tokenVersion revokes ALL of a user\'s tokens at once with a single integer compare; JTI blacklisting can target one specific token, at the cost of a growing lookup store — pick based on whether "log out everywhere" or per-device revocation is what you actually need.',
+    gotchas: [
+      'Both revocation checks must run AFTER signature verification — trusting a claim from an unverified token to perform the lookup lets an attacker probe or bypass the revocation store entirely.',
+    ],
+  },
+  'security/jwt/the-rs256-to-hs256-confusion-attack-demonstrated': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Token Revocation, Both Ways', route: '/security/jwt/token-revocation-both-ways' },
+      { label: 'Refresh Token Rotation With Reuse Detection', route: '/security/jwt/refresh-token-rotation-with-reuse-detection' },
+    ],
+    tip: 'The RSA public key is intentionally public — the attack works only because a vulnerable server reuses that same key material as an HS256 HMAC secret, not because any actual secret was leaked.',
+    gotchas: [
+      'Accepting multiple algorithms and letting the token\'s own header pick the verification key is the root vulnerability — hard-coding a single expected algorithm removes the attacker\'s ability to choose entirely.',
+    ],
+  },
+  'security/jwt/refresh-token-rotation-with-reuse-detection': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'The RS256 → HS256 Confusion Attack, Demonstrated', route: '/security/jwt/the-rs256-to-hs256-confusion-attack-demonstrated' },
+      { label: 'JSON Web Tokens (overview)', route: '/security/jwt' },
+    ],
+    tip: 'A "token family" is just a shared ID linking every refresh token descended from one login — the actual security mechanism is the used flag and the invalidate-on-reuse logic, not any special token format.',
+    gotchas: [
+      'Detecting refresh-token reuse invalidates the WHOLE family, including the legitimate user\'s currently-active token — a deliberate cost, since the server can\'t tell which party currently holds the family\'s valid token once reuse occurs.',
+    ],
+  },
   'security/oauth-oidc': {
     apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
     related: [
@@ -31781,6 +34402,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'An access token proves what the bearer can DO; an ID token proves WHO the user is — using one where the other is needed is a common integration bug.',
     ],
   },
+  'security/oauth-oidc/pkce-in-the-browser-with-the-web-crypto-api': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'OAuth 2.0 & OIDC (overview)', route: '/security/oauth-oidc' },
+      { label: 'Token Introspection Alongside JWT Validation', route: '/security/oauth-oidc/token-introspection-alongside-jwt-validation' },
+    ],
+    tip: 'Node\'s crypto module and the browser\'s Web Crypto API are NOT interchangeable — the browser version is asynchronous and hands back raw, unencoded bytes rather than an already-base64url-encoded string.',
+    gotchas: [
+      'crypto.subtle is only available in a secure context (HTTPS, or localhost for local dev) — a SPA served over plain HTTP finds it silently undefined.',
+    ],
+  },
+  'security/oauth-oidc/token-introspection-alongside-jwt-validation': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'PKCE in the Browser With the Web Crypto API', route: '/security/oauth-oidc/pkce-in-the-browser-with-the-web-crypto-api' },
+      { label: 'The Device Authorization Grant, Implemented', route: '/security/oauth-oidc/the-device-authorization-grant-implemented' },
+    ],
+    tip: 'Introspecting every single request defeats the point of using self-contained JWTs at all — reserve it for the specific high-risk operations where a revoked-but-not-yet-expired token would be genuinely dangerous.',
+    gotchas: [
+      'Introspection checks whether a token is still active, not whether it was legitimately issued in the first place — local signature validation is still required even on an introspection-gated endpoint.',
+    ],
+  },
+  'security/oauth-oidc/the-device-authorization-grant-implemented': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Token Introspection Alongside JWT Validation', route: '/security/oauth-oidc/token-introspection-alongside-jwt-validation' },
+      { label: 'OAuth 2.0 & OIDC (overview)', route: '/security/oauth-oidc' },
+    ],
+    tip: 'authorization_pending and slow_down both mean "keep polling," but only slow_down carries the RFC-mandated instruction to increase the interval by 5 seconds, cumulatively, for every subsequent poll.',
+    gotchas: [
+      'The device requesting the code never receives a redirect at all — the user approves on a SEPARATE device (their phone), which is what makes this flow work for TVs, CLIs, and other screens that cannot receive a callback.',
+    ],
+  },
   'security/sso': {
     apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
     related: [
@@ -31791,6 +34445,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'SAML and OIDC are the two dominant SSO protocols — they are not interchangeable and require different integration code.',
       'Single logout (ensuring a logout at the IdP actually terminates sessions at every connected application) is notoriously difficult to implement reliably.',
+    ],
+  },
+  'security/sso/the-saml-signature-wrapping-attack-demonstrated': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Single Sign-On (overview)', route: '/security/sso' },
+      { label: 'Multi-Tenant SSO — Domain Resolution and Isolation', route: '/security/sso/multi-tenant-sso-domain-resolution-and-isolation' },
+    ],
+    tip: 'Signature verification only proves ONE specific element hasn\'t been tampered with — it says nothing about other content that might also be present in the same document, which is exactly what a wrapping attack exploits.',
+    gotchas: [
+      'Claims extraction must reuse the SAME element the signature check referenced — a separate "first assertion in the document" query can return an attacker-injected, unsigned element even when the real signature check genuinely passes.',
+    ],
+  },
+  'security/sso/multi-tenant-sso-domain-resolution-and-isolation': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'The SAML Signature Wrapping Attack, Demonstrated', route: '/security/sso/the-saml-signature-wrapping-attack-demonstrated' },
+      { label: 'SCIM Deprovisioning — the JIT Gap SCIM Closes', route: '/security/sso/scim-deprovisioning-the-jit-gap-scim-closes' },
+    ],
+    tip: 'A valid signature only proves an assertion came from SOME trusted IdP — in a multi-tenant platform, a separate isolation check is needed to confirm it came from the SPECIFIC IdP the current login flow expected.',
+    gotchas: [
+      'The expected tenant must be recorded at the START of the login flow, before the IdP redirect — the returned assertion\'s own issuer alone has no independent value to compare against otherwise.',
+    ],
+  },
+  'security/sso/scim-deprovisioning-the-jit-gap-scim-closes': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Multi-Tenant SSO — Domain Resolution and Isolation', route: '/security/sso/multi-tenant-sso-domain-resolution-and-isolation' },
+      { label: 'Single Sign-On (overview)', route: '/security/sso' },
+    ],
+    tip: 'JIT provisioning only ever reacts to login events — a departed employee never logs in again, so JIT structurally has no way to learn about a deactivation on its own.',
+    gotchas: [
+      'Deactivating an account alone doesn\'t revoke an already-active session — the SCIM handler must also explicitly kill existing sessions, or a still-valid session keeps working until it separately expires.',
     ],
   },
   'security/claims-identity': {
@@ -31827,6 +34514,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'FIDO2/WebAuthn is phishing-resistant by design, since the authentication is cryptographically bound to the specific origin — a major advantage over OTP codes that can be phished.',
     ],
   },
+  'security/mfa/mfa-fatigue-and-number-matching-implemented': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Multi-Factor Authentication (overview)', route: '/security/mfa' },
+      { label: 'Step-Up Authentication for High-Risk Operations', route: '/security/mfa/step-up-authentication-for-high-risk-operations' },
+    ],
+    tip: 'Number matching works because it requires the user to already be looking at their own real login screen to have a correct answer — a plain Approve/Deny push needs no such context, which is exactly what makes it vulnerable to fatigue spam.',
+    gotchas: [
+      'Number matching must show the choices on the AUTH APP and the correct number on the LOGIN SCREEN — a single-device implementation defeats the whole point, since an attacker\'s own push could just display its own correct answer.',
+    ],
+  },
+  'security/mfa/step-up-authentication-for-high-risk-operations': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'MFA Fatigue and Number Matching, Implemented', route: '/security/mfa/mfa-fatigue-and-number-matching-implemented' },
+      { label: 'HOTP Counter Resynchronization', route: '/security/mfa/hotp-counter-resynchronization' },
+    ],
+    tip: 'Step-up freshness needs its own separate timestamp, distinct from the session\'s original login-time MFA pass — otherwise a session hijacked hours after login inherits that old MFA pass as if it were still recent.',
+    gotchas: [
+      'A single shared lastStepUpAt timestamp means completing a step-up challenge for ONE sensitive action can also satisfy a DIFFERENT sensitive action within the same TTL window — a real design tradeoff, not a bug.',
+    ],
+  },
+  'security/mfa/hotp-counter-resynchronization': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Step-Up Authentication for High-Risk Operations', route: '/security/mfa/step-up-authentication-for-high-risk-operations' },
+      { label: 'Multi-Factor Authentication (overview)', route: '/security/mfa' },
+    ],
+    tip: 'HOTP\'s look-ahead window only ever checks FORWARD from the server\'s stored counter, never backward — unlike TOTP\'s symmetric window, since a device\'s counter can only increase, never decrease.',
+    gotchas: [
+      'A successful match at counter+i resyncs the server to (counter+i)+1, not just counter+1 — fully absorbing whatever drift had accumulated, not just advancing by one step.',
+    ],
+  },
   'security/secrets-management': {
     apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
     related: [
@@ -31849,6 +34569,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Allowlisting (accepting only known-good patterns) is generally safer than denylisting (blocking known-bad patterns), since denylists are inherently incomplete against novel attack variants.',
       'Error messages shown to users should never leak internal implementation details (stack traces, database schema) that could aid an attacker.',
+    ],
+  },
+  'security/secure-coding/why-truncate-then-encode-can-exceed-maxlength': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Secure Coding (overview)', route: '/security/secure-coding' },
+      { label: 'Path Traversal — Vulnerable Endpoint and Fix', route: '/security/secure-coding/path-traversal-vulnerable-endpoint-and-fix' },
+    ],
+    tip: 'Whether a length bound applies to the raw input or the final encoded output is easy to leave unstated — decide which one a "maxLength" parameter actually means before choosing where to truncate.',
+    gotchas: [
+      'Encoding after truncation can produce a final string longer than maxLength; truncating after encoding can produce a mangled, incomplete HTML entity — pick the failure mode that matches what the bound is actually protecting.',
+    ],
+  },
+  'security/secure-coding/path-traversal-vulnerable-endpoint-and-fix': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Why Truncate-Then-Encode Can Exceed maxLength', route: '/security/secure-coding/why-truncate-then-encode-can-exceed-maxlength' },
+      { label: 'A TOCTOU Race Condition, Timelined', route: '/security/secure-coding/a-toctou-race-condition-timeline' },
+    ],
+    tip: 'Resolving to an absolute path and checking it against an allowlisted base directory defeats every encoding variant of a traversal attack at once — the check never needs to recognize the string ".." in the first place.',
+    gotchas: [
+      'A base-directory prefix check without a trailing path separator can be bypassed by a sibling directory that happens to share the same string prefix (e.g. uploads vs. uploads-backup).',
+    ],
+  },
+  'security/secure-coding/a-toctou-race-condition-timeline': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Path Traversal — Vulnerable Endpoint and Fix', route: '/security/secure-coding/path-traversal-vulnerable-endpoint-and-fix' },
+      { label: 'Secure Coding (overview)', route: '/security/secure-coding' },
+    ],
+    tip: 'Any await sitting between a check and its corresponding use is a potential TOCTOU gap — not just filesystem symlink swaps, the identical race shows up in check-then-decrement database patterns too.',
+    gotchas: [
+      'A TOCTOU fix is not "add more validation" — it is eliminating the gap entirely by making the check and the use a single atomic operation (O_NOFOLLOW at open time; a WHERE clause folded into the same UPDATE).',
     ],
   },
   'security/api-security': {
@@ -38910,6 +41663,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Case sensitivity in Linux paths (unlike Windows) means File.txt and file.txt are different files — a common cross-platform gotcha.',
     ],
   },
+  'linux/fundamentals/systemd-targets-map-to-runlevels-but-not-one-to-one': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'journald Logs Are Lost on Reboot by Default', route: '/linux/fundamentals/journald-logs-are-lost-on-reboot-unless-var-log-journal-exists' },
+      { label: 'Linux Fundamentals overview', route: '/linux/fundamentals' },
+    ],
+    tip: 'Runlevels 2, 3, and 4 all resolve to the exact same systemd unit, multi-user.target — there is no dedicated target distinguishing them, even though they were three separate SysV states.',
+    gotchas: [
+      'runlevelN.target names are real unit files implemented as symlinks — confirmed directly via ls -l, not just documentation shorthand.',
+      'systemctl isolate only changes the CURRENT state; systemctl set-default changes the permanent, reboot-persistent default.',
+    ],
+  },
+  'linux/fundamentals/journald-logs-are-lost-on-reboot-unless-var-log-journal-exists': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'systemd Targets Map to Runlevels, But Not One-to-One', route: '/linux/fundamentals/systemd-targets-map-to-runlevels-but-not-one-to-one' },
+      { label: 'A sysctl Change Is Runtime-Only Until Persisted', route: '/linux/fundamentals/a-sysctl-change-is-runtime-only-until-persisted-to-a-file' },
+    ],
+    tip: 'journald\'s "auto" storage mode only persists logs across reboot if /var/log/journal already exists — without it, logs live only in RAM-backed /run/log/journal and vanish every reboot.',
+    gotchas: [
+      'journalctl -b -1 silently returns nothing if the previous boot\'s logs were never persisted — not a query error.',
+      'Fix: mkdir -p /var/log/journal + systemd-tmpfiles --create --prefix /var/log/journal — no service restart needed.',
+    ],
+  },
+  'linux/fundamentals/a-sysctl-change-is-runtime-only-until-persisted-to-a-file': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'journald Logs Are Lost on Reboot by Default', route: '/linux/fundamentals/journald-logs-are-lost-on-reboot-unless-var-log-journal-exists' },
+      { label: 'Linux Fundamentals overview', route: '/linux/fundamentals' },
+    ],
+    tip: 'sysctl -w and a direct /proc/sys/ write only change the live kernel value — neither touches disk, so the change is gone at the next reboot unless it\'s also added to a sysctl config file.',
+    gotchas: [
+      'Multiple sysctl config files setting the same key: the file processed LAST silently wins, with no conflict warning.',
+      'sudo sysctl --system applies every configured file to the running kernel immediately — no reboot needed to verify persistence.',
+    ],
+  },
   'linux/essential-commands': {
     apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
     related: [
@@ -38920,6 +41709,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'rm has no trash/recycle bin by default — rm -rf on the wrong path is irreversible, especially dangerous in a script with a variable that could unexpectedly be empty.',
       'Command exit codes (0 = success, non-zero = failure) are what && and || chain on — a command that "looks like" it worked but returns non-zero breaks conditional chaining.',
+    ],
+  },
+  'linux/essential-commands/xargs-without-print0-breaks-on-filenames-with-spaces': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'awk’s Default Field Split Collapses Repeated Delimiters', route: '/linux/essential-commands/awk-default-field-split-collapses-repeated-delimiters' },
+      { label: 'Essential Commands overview', route: '/linux/essential-commands' },
+    ],
+    tip: 'Plain xargs splits on spaces AND newlines by default — a filename with a space gets silently split into multiple wrong arguments. find -print0 | xargs -0 uses a null byte, which can never appear in a real filename.',
+    gotchas: [
+      'find -exec {} + never has this problem — it passes each match as a real argument, with no intermediate text stream to split.',
+      '-print0 and -0 are a matched pair — using only one half still produces broken results.',
+    ],
+  },
+  'linux/essential-commands/awk-default-field-split-collapses-repeated-delimiters': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'xargs Without -print0 Breaks on Filenames With Spaces', route: '/linux/essential-commands/xargs-without-print0-breaks-on-filenames-with-spaces' },
+      { label: 'tar Already Strips Leading Slashes Unless -P Is Used', route: '/linux/essential-commands/tar-already-strips-leading-slashes-unless-p-is-used' },
+    ],
+    tip: 'awk\'s default field separator specially collapses runs of whitespace so two spaces never make an empty field — an explicit -F\' \' loses that special case and treats each space as its own delimiter.',
+    gotchas: [
+      'FS=" " (the literal two-character string) keeps the collapsing behavior — a bare -F\' \' single-character separator does not.',
+      'This breaks parsing of column-aligned output (ls -l, ps) where padding width varies.',
+    ],
+  },
+  'linux/essential-commands/tar-already-strips-leading-slashes-unless-p-is-used': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'awk’s Default Field Split Collapses Repeated Delimiters', route: '/linux/essential-commands/awk-default-field-split-collapses-repeated-delimiters' },
+      { label: 'Essential Commands overview', route: '/linux/essential-commands' },
+    ],
+    tip: 'tar strips the leading slash from an absolute path by default (with a warning) for safety — archiving /etc/nginx/ actually stores etc/nginx/, not /etc/nginx/.',
+    gotchas: [
+      '-P/--absolute-names restores the original absolute path but is explicitly documented as risky — extraction can overwrite system files.',
+      'Safer controlled restores: tar -C / -czf ... etc/nginx archives a relative path with no warning at all.',
     ],
   },
   'linux/file-system': {
@@ -38934,6 +41759,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Inodes (not filenames) are the actual filesystem-level identity of a file — a file can have multiple names (hard links) pointing to one inode.',
     ],
   },
+  'linux/file-system/tmp-cleared-on-reboot-is-only-half-the-story': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'Skip nofail in fstab and Boot Hangs, Then Emergency Mode', route: '/linux/file-system/skip-nofail-in-fstab-and-boot-hangs-then-drops-to-emergency' },
+      { label: 'File System overview', route: '/linux/file-system' },
+    ],
+    tip: 'Beyond the tmpfs-wipe-at-reboot behavior, systemd-tmpfiles separately deletes /tmp files untouched for 10 days on a DAILY timer — no reboot required.',
+    gotchas: [
+      'A long-uptime server can lose /tmp files with zero reboots, purely from the age-based cleanup.',
+      'Override the default age per-path via a local drop-in under /etc/tmpfiles.d/ if a file genuinely needs to live longer.',
+    ],
+  },
+  'linux/file-system/skip-nofail-in-fstab-and-boot-hangs-then-drops-to-emergency': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: '/tmp Cleared on Reboot Is Only Half the Story', route: '/linux/file-system/tmp-cleared-on-reboot-is-only-half-the-story' },
+      { label: '/usr/local vs /opt: Shared Tree vs One Subdirectory Per App', route: '/linux/file-system/usr-local-vs-opt-shared-tree-vs-one-subdirectory-per-app' },
+    ],
+    tip: 'An fstab entry for a missing device without nofail makes systemd wait ~90 seconds, then drop the ENTIRE boot to emergency mode — not just skip that one mount.',
+    gotchas: [
+      'Emergency mode often needs the root password to log in — a bad place to discover a boot problem on a headless server.',
+      'x-systemd.device-timeout= shortens the wait; x-systemd.automount defers the mount until first access so boot never waits at all.',
+    ],
+  },
+  'linux/file-system/usr-local-vs-opt-shared-tree-vs-one-subdirectory-per-app': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'Skip nofail in fstab and Boot Hangs, Then Emergency Mode', route: '/linux/file-system/skip-nofail-in-fstab-and-boot-hangs-then-drops-to-emergency' },
+      { label: 'File System overview', route: '/linux/file-system' },
+    ],
+    tip: 'Per the FHS, /usr/local mirrors /usr\'s own shared bin/lib layout (files merged by TYPE); /opt gives each app its own self-contained subdirectory (files kept together by APPLICATION).',
+    gotchas: [
+      'Cleanly removing a /usr/local install needs make uninstall or checkinstall — there\'s no single folder representing just one app.',
+      '/opt is meant for pre-built, often vendor-distributed software; /usr/local is meant for the admin\'s own source-compiled builds.',
+    ],
+  },
   'linux/file-permissions': {
     apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
     related: [
@@ -38944,6 +41805,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'The setuid bit lets a program run with the FILE OWNER\'s privileges rather than the invoking user\'s — a powerful and dangerous mechanism if misapplied to an untrusted binary.',
       'Directory execute permission (not just read) is required to actually access files WITHIN that directory, a common confusion for people new to the permission model.',
+    ],
+  },
+  'linux/file-permissions/setuid-is-ignored-on-shell-scripts-not-just-risky': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'ACL Mask Caps Effective Permissions', route: '/linux/file-permissions/acl-mask-caps-effective-permissions-and-auto-recalculates' },
+      { label: 'File Permissions overview', route: '/linux/file-permissions' },
+    ],
+    tip: 'The Linux kernel simply ignores setuid/setgid on any file starting with a #!shebang line — ls -l can show the bit set while it has zero effect at runtime, a deliberate mitigation for a historical race condition.',
+    gotchas: [
+      'A setuid script fails silently — it runs with the CALLER\'s privileges, not the owner\'s, despite every visible permission indicator looking correct.',
+      'The documented fix is a minimal setuid wrapper BINARY that execs the script via a fixed, hardcoded path.',
+    ],
+  },
+  'linux/file-permissions/acl-mask-caps-effective-permissions-and-auto-recalculates': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'setuid Is Ignored on Shell Scripts, Not Just Risky', route: '/linux/file-permissions/setuid-is-ignored-on-shell-scripts-not-just-risky' },
+      { label: 'chmod 755 on a Directory Does NOT Clear setgid', route: '/linux/file-permissions/chmod-755-on-a-directory-does-not-clear-setgid' },
+    ],
+    tip: 'The ACL mask caps effective permissions for named users/groups and the owning group (never owner or other) — and recalculates itself automatically on every subsequent setfacl call unless -n is used.',
+    gotchas: [
+      'getfacl shows an "#effective:" annotation whenever the mask caps an entry below what it literally states.',
+      'An unrelated setfacl call adding a DIFFERENT user\'s entry can silently widen the mask and restore everyone else\'s full permissions.',
+    ],
+  },
+  'linux/file-permissions/chmod-755-on-a-directory-does-not-clear-setgid': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'ACL Mask Caps Effective Permissions', route: '/linux/file-permissions/acl-mask-caps-effective-permissions-and-auto-recalculates' },
+      { label: 'File Permissions overview', route: '/linux/file-permissions' },
+    ],
+    tip: 'GNU chmod preserves an existing setgid bit on a DIRECTORY when given a 3-digit octal mode — the same 3-digit mode DOES clear setgid on a FILE. Clearing it on a directory needs an explicit 4-digit mode (a leading 0) or chmod g-s.',
+    gotchas: [
+      'A recursive chmod -R 755 on a shared setgid directory does NOT undo its group-inheritance setup, contrary to "octal is absolute."',
+      'This special-casing is directory-specific — there\'s no equivalent for setuid, which has no meaning on a directory.',
     ],
   },
   'linux/users-groups': {
@@ -38958,6 +41855,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'UID 0 is always root, regardless of the username assigned to it — renaming the root account doesn\'t change its actual privilege level.',
     ],
   },
+  'linux/users-groups/userdel-without-r-leaves-orphaned-files-for-uid-reuse': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'A NOPASSWD Grant Can Be a Full Root Escalation', route: '/linux/users-groups/nopasswd-grant-to-a-safe-command-can-be-a-full-root-escalation' },
+      { label: 'Users & Groups overview', route: '/linux/users-groups' },
+    ],
+    tip: 'Files left behind by userdel (without -r) are tagged only with a bare numeric UID — the next ordinary useradd call can silently assign that same freed UID to an unrelated new account.',
+    gotchas: [
+      'This applies to files anywhere on the system, not just the home directory — userdel -r never touches /tmp, /var, or shared directories.',
+      'Mitigation: find / -uid OLD_UID immediately at deletion time, before the number can be reused.',
+    ],
+  },
+  'linux/users-groups/nopasswd-grant-to-a-safe-command-can-be-a-full-root-escalation': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'userdel Without -r Leaves Orphaned Files for UID Reuse', route: '/linux/users-groups/userdel-without-r-leaves-orphaned-files-for-uid-reuse' },
+      { label: '/etc/skel Populates New Homes Once, Not Retroactively', route: '/linux/users-groups/etc-skel-populates-new-homes-once-not-retroactively' },
+    ],
+    tip: 'Dozens of common commands (vim, less, awk, find, nano...) have a documented shell-escape — a NOPASSWD grant to one of them, even scoped to a single file, is functionally equivalent to full root. Check GTFOBins before adding any command to sudoers.',
+    gotchas: [
+      'Pinning the FULL command string (not just the binary) limits this for some commands, but not ones with their own interactive shell escape.',
+      'sudoedit is the safer alternative for editor grants — it never runs the editor itself as root.',
+    ],
+  },
+  'linux/users-groups/etc-skel-populates-new-homes-once-not-retroactively': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'A NOPASSWD Grant Can Be a Full Root Escalation', route: '/linux/users-groups/nopasswd-grant-to-a-safe-command-can-be-a-full-root-escalation' },
+      { label: 'Users & Groups overview', route: '/linux/users-groups' },
+    ],
+    tip: '/etc/skel is copied into a new home directory ONCE, at useradd -m creation time — editing /etc/skel later has zero effect on any account that already exists.',
+    gotchas: [
+      'Produces a classic "works for new hires, not existing users" support pattern that looks broken but is expected behavior.',
+      'Retroactively applying a change to existing accounts needs a deliberate separate step — no automatic propagation exists.',
+    ],
+  },
   'linux/process-management': {
     apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
     related: [
@@ -38968,6 +41901,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'A background process started in an interactive shell dies when that shell session ends unless launched with nohup, disown, or run as a proper service.',
       'Zombie processes (a terminated child whose exit status hasn\'t been reaped by its parent) accumulate PIDs but consume no real resources beyond a process table entry.',
+    ],
+  },
+  'linux/process-management/orphans-reparent-to-pid-1-which-may-not-reap-in-a-container': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'kill Signals One Process — Use a Negative PID for the Group', route: '/linux/process-management/kill-signals-one-process-use-negative-pid-for-the-group' },
+      { label: 'Process Management overview', route: '/linux/process-management' },
+    ],
+    tip: 'Reparenting to PID 1 only reaps zombies if whatever occupies PID 1 actually implements that — inside a container, PID 1 is often the app itself, with no reaping logic at all.',
+    gotchas: [
+      'Zombies accumulate silently until the process table fills, preventing new process creation entirely.',
+      'Fix: docker run --init (uses tini) or registering the app as a subreaper if it must stay PID 1.',
+    ],
+  },
+  'linux/process-management/kill-signals-one-process-use-negative-pid-for-the-group': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'Orphans Reparent to PID 1, Which May Not Reap in a Container', route: '/linux/process-management/orphans-reparent-to-pid-1-which-may-not-reap-in-a-container' },
+      { label: 'renice Is a One-Way Ratchet for Non-Root Users', route: '/linux/process-management/renice-is-a-one-way-ratchet-for-non-root-users' },
+    ],
+    tip: 'A backgrounded pipeline is MULTIPLE processes, but $! only captures one of them — kill "$!" leaves other pipeline stages running. Use kill -- -"$PID" (negative) to signal the whole process group.',
+    gotchas: [
+      'kill -- -1 is a special, reserved value that broadcasts to nearly every process on the system — never a normal per-job target.',
+      'The signal must come first, or use -- before the negative number, or the number is misparsed as a signal.',
+    ],
+  },
+  'linux/process-management/renice-is-a-one-way-ratchet-for-non-root-users': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'kill Signals One Process — Use a Negative PID for the Group', route: '/linux/process-management/kill-signals-one-process-use-negative-pid-for-the-group' },
+      { label: 'Process Management overview', route: '/linux/process-management' },
+    ],
+    tip: 'A non-root user can raise a process\'s niceness, but can never lower it again afterward — even to a value still well above 0. It\'s a one-way door, not just a floor at zero.',
+    gotchas: [
+      'The same restriction applies to the setpriority() syscall directly, not just the renice command.',
+      'Only root can undo an over-eager niceness increase made by a non-root user.',
     ],
   },
   'linux/system-monitoring': {
@@ -38982,6 +41951,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Memory reported as "used" by free often includes disk cache, which the kernel will happily reclaim under pressure — it is not the same as memory unavailable to applications.',
     ],
   },
+  'linux/system-monitoring/load-average-has-blind-spots-psi-is-the-modern-replacement': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'oom_score_adj = -1000 Can Hang the Whole System', route: '/linux/system-monitoring/oom-score-adj-negative-1000-can-hang-the-whole-system' },
+      { label: 'System Monitoring overview', route: '/linux/system-monitoring' },
+    ],
+    tip: 'Load average conflates CPU contention and I/O contention into one number — a process stuck on a hung NFS mount inflates it identically to a genuine CPU spike. PSI (/proc/pressure/cpu, memory, io) reports each resource\'s pressure separately.',
+    gotchas: [
+      'The "full" line in each PSI file has no load-average equivalent — it measures time the ENTIRE system was stalled on that specific resource.',
+      'PSI complements load average, it doesn\'t replace it — load average is still a useful quick trend check.',
+    ],
+  },
+  'linux/system-monitoring/oom-score-adj-negative-1000-can-hang-the-whole-system': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'Load Average Has Blind Spots — PSI Is the Modern Replacement', route: '/linux/system-monitoring/load-average-has-blind-spots-psi-is-the-modern-replacement' },
+      { label: 'iostat’s %util Is Misleading on NVMe SSDs', route: '/linux/system-monitoring/iostats-percent-util-is-misleading-on-nvme-ssds' },
+    ],
+    tip: 'oom_score_adj = -1000 makes a process fully exempt from the OOM killer, guaranteed. Protecting too many "critical" processes this way can leave the OOM killer with no candidate at all, hanging the whole system instead of killing one.',
+    gotchas: [
+      'A hang from this cause shows NO OOM-kill entry in dmesg — the standard diagnostic comes back empty because nothing was ever killable.',
+      'Safer: reserve true -1000 for one or two truly irreplaceable processes; use a strongly negative but non-absolute value (like -500) for everything else.',
+    ],
+  },
+  'linux/system-monitoring/iostats-percent-util-is-misleading-on-nvme-ssds': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'oom_score_adj = -1000 Can Hang the Whole System', route: '/linux/system-monitoring/oom-score-adj-negative-1000-can-hang-the-whole-system' },
+      { label: 'System Monitoring overview', route: '/linux/system-monitoring' },
+    ],
+    tip: '%util measures "any request in flight," meaningless for NVMe\'s deep parallel queues — an NVMe drive can sit at 100% %util while running at 5% of its real capacity.',
+    gotchas: [
+      'Trust r_await/w_await (should stay under ~1ms) and aqu-sz (vs. the device\'s real queue depth) instead of %util for NVMe specifically.',
+      'The 70-80% %util saturation rule still applies reasonably well to spinning disks and shallow-queue SATA SSDs.',
+    ],
+  },
   'linux/performance-tuning': {
     apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
     related: [
@@ -38993,6 +41998,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Swap being used doesn\'t automatically mean a problem — a small amount of swapped-out, rarely-accessed memory can be entirely healthy; heavy, ongoing swap activity (thrashing) is the actual red flag.',
     ],
   },
+  'linux/performance-tuning/io-scheduler-writes-to-sys-block-are-not-persistent-use-a-udev-rule': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'discard in fstab Has a Real Penalty — fstrim.timer Is Preferred', route: '/linux/performance-tuning/discard-in-fstab-has-a-real-penalty-fstrim-timer-is-preferred' },
+      { label: 'Performance Tuning overview', route: '/linux/performance-tuning' },
+    ],
+    tip: 'echo scheduler | tee /sys/block/sda/queue/scheduler only changes the running kernel — exactly like sysctl -w, it resets on reboot. A udev rule in /etc/udev/rules.d/ is the actual persistence mechanism.',
+    gotchas: [
+      'There is no sysctl.d-style config directory for I/O scheduler settings — the persistence mechanism is structurally different, not just a different file path.',
+      'udevadm test /sys/block/sda validates a new rule\'s logic without needing an actual reboot to find out whether it worked.',
+    ],
+  },
+  'linux/performance-tuning/discard-in-fstab-has-a-real-penalty-fstrim-timer-is-preferred': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'I/O Scheduler Writes to /sys/block Are Not Persistent — Use a udev Rule', route: '/linux/performance-tuning/io-scheduler-writes-to-sys-block-are-not-persistent-use-a-udev-rule' },
+      { label: 'numactl --membind Is a Hard Constraint — --preferred Is the Safer Default', route: '/linux/performance-tuning/numactl-membind-is-a-hard-constraint-preferred-is-the-safer-default' },
+    ],
+    tip: 'Continuous discard triggers TRIM synchronously on every delete, with a real documented fsync-latency cost — fstrim.timer (enabled by default on most distros) batches it into one weekly, scheduled run instead.',
+    gotchas: [
+      'systemctl status fstrim.timer confirms whether the periodic, recommended approach is already active before reaching for the discard mount option.',
+      'Continuous discard remains a legitimate choice for a specific, already-tested workload — just not the default the main page\'s own phrasing implies.',
+    ],
+  },
+  'linux/performance-tuning/numactl-membind-is-a-hard-constraint-preferred-is-the-safer-default': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'discard in fstab Has a Real Penalty — fstrim.timer Is Preferred', route: '/linux/performance-tuning/discard-in-fstab-has-a-real-penalty-fstrim-timer-is-preferred' },
+      { label: 'Performance Tuning overview', route: '/linux/performance-tuning' },
+    ],
+    tip: '--membind is a hard constraint — if the bound node runs low on memory, the kernel does NOT fall back to other nodes, risking an OOM-kill even while other nodes sit nearly empty. --preferred falls back gracefully instead.',
+    gotchas: [
+      'numactl --hardware shows PER-NODE free memory — system-wide free -h can look healthy while a specific bound node is actually exhausted.',
+      '--preferred trades a small cross-node latency cost (only when the preferred node is under pressure) for a categorically safer failure mode — the right default for most production workloads.',
+    ],
+  },
   'linux/disk-storage': {
     apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
     related: [
@@ -39002,6 +42043,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'LVM (Logical Volume Manager) adds a flexible abstraction layer over physical disks, enabling resizing volumes without the rigid constraints of raw partitions — but adds a layer of indirection to reason about during recovery.',
       'inode exhaustion (running out of inodes despite having free disk SPACE) is a distinct failure mode from running out of actual bytes — df -i checks this separately from df.',
+    ],
+  },
+  'linux/disk-storage/deleted-but-open-files-hide-space-df-and-du-never-agree': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'XFS Has No Shrink Command — Backup, Recreate, Restore Is the Only Path', route: '/linux/disk-storage/xfs-has-no-shrink-command-backup-recreate-restore-is-the-only-path' },
+      { label: 'Disk & Storage overview', route: '/linux/disk-storage' },
+    ],
+    tip: 'lsof +L1 lists open files with a link count of 0 — deleted, but still held open by a running process. A large SIZE on one of those rows is exactly the gap between what df and du report.',
+    gotchas: [
+      'Restarting the process holding the file open is the clean fix — its blocks are only released once every open file descriptor to it closes.',
+      'Truncating a still-existing log file in place (: > file, or truncate -s 0) reclaims space instantly without restarting anything, since the process keeps its same file descriptor.',
+    ],
+  },
+  'linux/disk-storage/xfs-has-no-shrink-command-backup-recreate-restore-is-the-only-path': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'Deleted-but-Open Files Hide Space — df and du Never Agree', route: '/linux/disk-storage/deleted-but-open-files-hide-space-df-and-du-never-agree' },
+      { label: 'Growing a Cloud VM’s LVM Root Needs pvresize, Not Just growpart', route: '/linux/disk-storage/growing-a-cloud-vms-lvm-root-needs-pvresize-not-just-growpart' },
+    ],
+    tip: 'There is no xfs_shrink or any command that shrinks XFS in place — the only supported path is xfsdump, recreate a smaller filesystem with mkfs.xfs, then xfsrestore.',
+    gotchas: [
+      'If a volume\'s size requirements might ever need to shrink (not just grow), that uncertainty alone is a real argument for ext4 over XFS, independent of XFS\'s other performance advantages.',
+      'The backup/recreate/restore cycle needs real downtime and somewhere to put the backup — plan for it before choosing XFS on a volume that might need to shrink.',
+    ],
+  },
+  'linux/disk-storage/growing-a-cloud-vms-lvm-root-needs-pvresize-not-just-growpart': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'XFS Has No Shrink Command — Backup, Recreate, Restore Is the Only Path', route: '/linux/disk-storage/xfs-has-no-shrink-command-backup-recreate-restore-is-the-only-path' },
+      { label: 'Disk & Storage overview', route: '/linux/disk-storage' },
+    ],
+    tip: 'growpart only grows the partition — many cloud images (especially RHEL-family) default to LVM root, so pvresize is required before lvextend and resize2fs/xfs_growfs can actually use the new space.',
+    gotchas: [
+      '"Bad magic number in super-block" from resize2fs right after growpart on a cloud VM is the classic symptom of a missed pvresize step on an LVM-root layout.',
+      'Always confirm the actual disk/partition/LVM layout with lsblk first, rather than assuming a fixed 2-step or 4-step sequence applies to every cloud image.',
     ],
   },
   'linux/networking': {
@@ -39016,6 +42093,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'DNS resolution order (files, then DNS, or vice versa) is controlled by /etc/nsswitch.conf — a misconfigured order causes confusing, inconsistent name resolution behavior.',
     ],
   },
+  'linux/networking/time-wait-is-normal-not-a-bug-and-cant-be-tuned': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'Traceroute Defaults to UDP, Which Firewalls Often Block', route: '/linux/networking/traceroute-defaults-to-udp-which-firewalls-often-block' },
+      { label: 'Networking overview', route: '/linux/networking' },
+    ],
+    tip: 'TIME_WAIT is the mandatory final step of a clean TCP close, hardcoded to 60 seconds in the Linux kernel (TCP_TIMEWAIT_LEN) — tcp_fin_timeout is a different, unrelated sysctl (it governs FIN_WAIT_2).',
+    gotchas: [
+      'A high TIME_WAIT count alone is not a problem — it only matters if the local ephemeral port range is actually being exhausted by rapid outbound connection churn to the same destination.',
+      'tcp_tw_recycle was removed from the kernel (4.12+) for breaking NAT\'d clients — tcp_tw_reuse is the safe alternative for outgoing connections.',
+    ],
+  },
+  'linux/networking/traceroute-defaults-to-udp-which-firewalls-often-block': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'TIME_WAIT Is Normal, Not a Bug — and It Can’t Be Tuned', route: '/linux/networking/time-wait-is-normal-not-a-bug-and-cant-be-tuned' },
+      { label: 'Jumbo Frames + MTU Mismatch Creates a Silent PMTUD Blackhole', route: '/linux/networking/jumbo-frames-mtu-mismatch-creates-a-silent-pmtud-blackhole' },
+    ],
+    tip: 'Plain traceroute sends UDP probes to ports 33434+ by default — a firewall dropping those (or the ICMP replies) produces "* * *" even though the path is fully reachable for real traffic. Try -I (ICMP) or -T (TCP SYN) instead.',
+    gotchas: [
+      'mtr defaults to ICMP probes, not UDP — a different default than plain traceroute, which is why the two tools can disagree on the same path.',
+      '-T probes port 80 by default — pair it with -p to test the actual port your application traffic uses (e.g. -p 443).',
+    ],
+  },
+  'linux/networking/jumbo-frames-mtu-mismatch-creates-a-silent-pmtud-blackhole': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'Traceroute Defaults to UDP, Which Firewalls Often Block', route: '/linux/networking/traceroute-defaults-to-udp-which-firewalls-often-block' },
+      { label: 'Networking overview', route: '/linux/networking' },
+    ],
+    tip: 'ip link set eth0 mtu 9000 always succeeds locally even if the switch or peer NIC doesn\'t match — PMTUD then silently fails for large packets if the ICMP "Fragmentation Needed" message is blocked anywhere on the path.',
+    gotchas: [
+      'Symptom is distinctive: small transfers (SSH, short curls) work fine while large transfers hang with no error at all — that asymmetry is the actual signature of a blackhole, not a routing failure.',
+      'ping -M do -s SIZE binary-searches the real MTU directly, without depending on the (possibly blocked) ICMP feedback loop.',
+    ],
+  },
   'linux/firewall': {
     apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
     related: [
@@ -39026,6 +42139,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'A default-deny policy (block everything, then explicitly allow needed traffic) is significantly more secure than default-allow with denial rules bolted on afterward.',
       'ufw (Uncomplicated Firewall) is a friendlier frontend over iptables/nftables — rules configured through one tool may not be visible or obvious when inspecting through the other.',
+    ],
+  },
+  'linux/firewall/ufw-limit-throttles-one-ip-not-distributed-brute-force': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'iptables -F Doesn’t Reset the Default Policy — a DROP Policy Can Lock You Out', route: '/linux/firewall/iptables-flush-does-not-reset-policy-can-lock-you-out' },
+      { label: 'Firewall overview', route: '/linux/firewall' },
+    ],
+    tip: 'ufw limit blocks a single source IP after 6 connection attempts in 30 seconds — a fixed, non-customizable threshold, and useless against a distributed attack spread across many IPs that each stay under it.',
+    gotchas: [
+      'For distributed brute-force protection, use fail2ban (log-based, cross-IP) or disable SSH password auth entirely (key-only) instead of relying on ufw limit alone.',
+      'ufw limit provides no option to change the 6-connections/30-seconds threshold — a different value requires writing a raw iptables recent or hashlimit rule directly.',
+    ],
+  },
+  'linux/firewall/iptables-flush-does-not-reset-policy-can-lock-you-out': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'ufw limit Throttles One IP — Not Distributed Brute Force', route: '/linux/firewall/ufw-limit-throttles-one-ip-not-distributed-brute-force' },
+      { label: 'ip_forward Alone Isn’t Enough for UFW Router Mode', route: '/linux/firewall/ip-forward-alone-is-not-enough-for-ufw-router-mode' },
+    ],
+    tip: 'iptables -F removes rules but never touches the chain\'s own default policy — if INPUT policy is already DROP, flushing over SSH removes the very ACCEPT rules letting your session through and can lock you out instantly.',
+    gotchas: [
+      'Safe reset order: set every policy to ACCEPT first (iptables -P INPUT ACCEPT, etc.), THEN flush — reversing that order is the exact cause of remote lockouts.',
+      'Recovering from a policy-DROP lockout generally requires out-of-band console access (VNC/serial), since the mechanism to fix it remotely is the one that just got cut off.',
+    ],
+  },
+  'linux/firewall/ip-forward-alone-is-not-enough-for-ufw-router-mode': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'iptables -F Doesn’t Reset the Default Policy — a DROP Policy Can Lock You Out', route: '/linux/firewall/iptables-flush-does-not-reset-policy-can-lock-you-out' },
+      { label: 'Firewall overview', route: '/linux/firewall' },
+    ],
+    tip: 'echo 1 > /proc/sys/net/ipv4/ip_forward is temporary and never persists across reboots — and on a UFW-managed system, DEFAULT_FORWARD_POLICY="DROP" in /etc/default/ufw can still block forwarded traffic even after ip_forward is enabled.',
+    gotchas: [
+      'Persist ip_forward via UFW\'s own /etc/ufw/sysctl.conf (then ufw reload), not just a generic /etc/sysctl.conf entry, on a UFW-managed system.',
+      'Router/NAT setup needs THREE independent pieces correct at once: kernel ip_forward, the MASQUERADE/NAT rule, and UFW\'s own FORWARD chain policy.',
     ],
   },
   'linux/ssh': {
@@ -39040,6 +42189,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'SSH agent forwarding, while convenient, exposes your local key to whatever you SSH into next — a real risk if that intermediate host is compromised.',
     ],
   },
+  'linux/ssh/agent-forwarding-exposes-signing-proxyjump-avoids-it': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'ssh -R Binds to Remote Loopback Only, Without GatewayPorts', route: '/linux/ssh/ssh-r-binds-to-remote-loopback-only-without-gatewayports' },
+      { label: 'SSH overview', route: '/linux/ssh' },
+    ],
+    tip: 'ForwardAgent never leaks your private key file — it exposes a live signing socket on the remote host that anyone with access (most directly, root) can use to authenticate as you elsewhere. ProxyJump avoids this entirely.',
+    gotchas: [
+      'Since OpenSSH 7.3, ProxyJump tunnels the connection through a bastion at the client level — the bastion never needs to see an agent socket at all.',
+      'If ForwardAgent is genuinely unavoidable, ssh-add -x locks the agent with a separate passphrase, requiring it for every forwarded signing request.',
+    ],
+  },
+  'linux/ssh/ssh-r-binds-to-remote-loopback-only-without-gatewayports': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'Agent Forwarding Exposes Signing, Not Your Key — ProxyJump Avoids It', route: '/linux/ssh/agent-forwarding-exposes-signing-proxyjump-avoids-it' },
+      { label: 'ControlMaster Multiplexing Can Hit the Server’s MaxSessions Limit', route: '/linux/ssh/controlmaster-multiplexing-hits-the-maxsessions-limit' },
+    ],
+    tip: 'ssh -R binds the forwarded port to the remote host\'s own loopback (127.0.0.1) by default — reachable only from that machine itself, not other machines on the network, until GatewayPorts is set.',
+    gotchas: [
+      'GatewayPorts clientspecified is the targeted option — it lets the CLIENT request the wildcard bind per connection (ssh -R 0.0.0.0:port:...) rather than exposing every future -R forward by server-wide default.',
+      'A successful curl against the forwarded port FROM the remote host itself proves nothing about reachability from other machines on that network.',
+    ],
+  },
+  'linux/ssh/controlmaster-multiplexing-hits-the-maxsessions-limit': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'ssh -R Binds to Remote Loopback Only, Without GatewayPorts', route: '/linux/ssh/ssh-r-binds-to-remote-loopback-only-without-gatewayports' },
+      { label: 'SSH overview', route: '/linux/ssh' },
+    ],
+    tip: 'ControlMaster reuses one TCP connection for speed, but the server caps channels per connection via MaxSessions (default 10) — enough parallel scp/rsync jobs to the same host can hit that ceiling and fail outright.',
+    gotchas: [
+      '"channel N: open failed: administratively prohibited" during multiplexed parallel operations is the MaxSessions ceiling, not an auth or permissions problem.',
+      'An already-established master connection (kept alive by ControlPersist) keeps enforcing the OLD MaxSessions value even after the server config is raised and reloaded — delete the stale control socket to force a fresh master connection.',
+    ],
+  },
   'linux/systemd': {
     apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
     related: [
@@ -39052,6 +42237,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Unit dependency ordering (After=, Requires=) does not automatically mean a dependency is fully READY, only that it has started — a service depending on a database should still handle a not-yet-accepting-connections database gracefully.',
     ],
   },
+  'linux/systemd/execreload-kill-hup-mainpid-can-kill-not-reload-a-nodejs-service': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'StartLimitBurst Locks a Service in Failed State Until reset-failed', route: '/linux/systemd/startlimitburst-locks-a-service-in-failed-state-until-reset-failed' },
+      { label: 'systemd overview', route: '/linux/systemd' },
+    ],
+    tip: 'ExecReload= just runs whatever command you give it — SIGHUP is only "graceful" because nginx/apache\'s own code catches it; a process with no SIGHUP handler (like a plain Node.js server.js) is killed by SIGHUP\'s default disposition instead.',
+    gotchas: [
+      'Registering process.on(\'SIGHUP\', ...) in Node.js removes the default termination behavior entirely — with no handler at all, SIGHUP kills the process.',
+      'If there\'s no real in-process reload logic, omit ExecReload= entirely so systemctl reload fails honestly instead of silently killing the process.',
+    ],
+  },
+  'linux/systemd/startlimitburst-locks-a-service-in-failed-state-until-reset-failed': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'ExecReload=kill -HUP $MAINPID Can Kill, Not Reload, a Node.js Service', route: '/linux/systemd/execreload-kill-hup-mainpid-can-kill-not-reload-a-nodejs-service' },
+      { label: 'systemctl edit Drop-Ins Need an Empty ExecStart= to Override It', route: '/linux/systemd/systemctl-edit-drop-ins-need-an-empty-execstart-to-override-it' },
+    ],
+    tip: 'StartLimitBurst/StartLimitIntervalSec are a circuit breaker — exceed the burst count within the interval and systemd stops retrying entirely, landing the unit in failed state even after Restart=on-failure would otherwise keep trying.',
+    gotchas: [
+      'Fixing the underlying bug does NOT clear a tripped start-limit counter — systemctl reset-failed is required before the service starts normally again.',
+      'Size StartLimitIntervalSec comfortably greater than RestartSec × StartLimitBurst, or the limit can trip faster (or slower) than intended.',
+    ],
+  },
+  'linux/systemd/systemctl-edit-drop-ins-need-an-empty-execstart-to-override-it': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'StartLimitBurst Locks a Service in Failed State Until reset-failed', route: '/linux/systemd/startlimitburst-locks-a-service-in-failed-state-until-reset-failed' },
+      { label: 'systemd overview', route: '/linux/systemd' },
+    ],
+    tip: 'Most drop-in settings simply override the original, but ExecStart= is treated as an appendable list — a new ExecStart= line in a drop-in ADDS to the original rather than replacing it, causing "more than one ExecStart=" errors.',
+    gotchas: [
+      'The fix is two lines: an empty ExecStart= first (clears every prior value), then the new ExecStart=/path/to/command on the next line.',
+      'systemctl cat <service> shows the fully-merged effective unit (original + all drop-ins) — useful for confirming a drop-in did what was intended before restarting.',
+    ],
+  },
   'linux/log-analysis': {
     apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
     related: [
@@ -39061,6 +42282,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'journald logs are binary and rotated based on configurable size/time limits — logs can be lost if retention is shorter than the window needed to investigate a delayed-discovery incident.',
       'grep/awk/sed pipelines remain powerful for ad-hoc log analysis, but a centralized log aggregator becomes necessary once logs span more than a handful of hosts.',
+    ],
+  },
+  'linux/log-analysis/sort-t-k3-rn-sorts-garbage-unless-request-time-is-in-the-log-format': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'journalctl Only Shows the Current Boot by Default', route: '/linux/log-analysis/journalctl-only-shows-the-current-boot-by-default' },
+      { label: 'Log Analysis overview', route: '/linux/log-analysis' },
+    ],
+    tip: 'nginx\'s default "combined" log format has no $request_time field at all — a quote-delimited-field sort against it silently sorts by User-Agent instead, with no error to indicate the mistake.',
+    gotchas: [
+      'nginx -T | grep log_format confirms whether $request_time is actually in the format currently in use before trusting any timing-based sort against the log.',
+      'Once added via a custom log_format, sort by the actual field position (often the last field) rather than assuming it still lines up with the default combined format.',
+    ],
+  },
+  'linux/log-analysis/journalctl-only-shows-the-current-boot-by-default': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'The Slowest-Responses Sort Assumes request_time Is Already Logged', route: '/linux/log-analysis/sort-t-k3-rn-sorts-garbage-unless-request-time-is-in-the-log-format' },
+      { label: 'logrotate’s copytruncate Has a Real Data-Loss Race Window', route: '/linux/log-analysis/logrotates-copytruncate-has-a-real-data-loss-race-window' },
+    ],
+    tip: 'Plain journalctl -u service defaults to the CURRENT boot only — a --since filter narrows within that scope, it doesn\'t reach into prior boots. journalctl --list-boots then -b all or -b -N searches across reboots.',
+    gotchas: [
+      'An empty search result only confirms the event isn\'t in the current boot\'s journal — check --list-boots before concluding something "never happened."',
+      'Journal persistence across reboots depends on /var/log/journal/ existing and being writable — not universal across every system.',
+    ],
+  },
+  'linux/log-analysis/logrotates-copytruncate-has-a-real-data-loss-race-window': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'journalctl Only Shows the Current Boot by Default', route: '/linux/log-analysis/journalctl-only-shows-the-current-boot-by-default' },
+      { label: 'Log Analysis overview', route: '/linux/log-analysis' },
+    ],
+    tip: 'copytruncate is a fallback for apps that can\'t reopen log files on a signal — it copies then truncates, and anything written in that small window is genuinely lost (documented in logrotate\'s own man page).',
+    gotchas: [
+      'Severity scales with write volume — a high-throughput log can lose real, meaningful amounts of data on every single rotation, not just a hypothetical edge case.',
+      'Whenever the app supports reopening on a signal, the rename + postrotate approach has no equivalent data-loss window at all — prefer it over copytruncate by default.',
     ],
   },
   'linux/security-hardening': {
@@ -39087,6 +42344,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A pinned/held package version prevents accidental upgrades but also prevents automatic security patches for that specific package — a deliberate tradeoff, not a default.',
     ],
   },
+  'linux/package-management/apt-key-is-deprecated-signed-by-keyrings-is-the-modern-replacement': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'apt-mark auto/manual Is What Actually Drives autoremove', route: '/linux/package-management/apt-mark-auto-manual-is-what-actually-drives-autoremove' },
+      { label: 'Package Management overview', route: '/linux/package-management' },
+    ],
+    tip: 'apt-key trusts a key system-wide for every repo on the system — signed-by= (with a key under /etc/apt/keyrings/) scopes trust to just the one repository entry, closing the gap that got apt-key deprecated.',
+    gotchas: [
+      'apt-key is deprecated as of Debian 11 / Ubuntu 22.04 and scheduled for removal — apt itself now warns about it directly on apt update.',
+      'A compromised apt-key-trusted key can forge packages claiming to come from ANY repo on the system, not just the one it was meant for.',
+    ],
+  },
+  'linux/package-management/apt-mark-auto-manual-is-what-actually-drives-autoremove': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'apt-key Is Deprecated — signed-by Keyrings Is the Modern Replacement', route: '/linux/package-management/apt-key-is-deprecated-signed-by-keyrings-is-the-modern-replacement' },
+      { label: 'dnf history undo Can Fail When the Old Version Left the Repo', route: '/linux/package-management/dnf-history-undo-can-fail-when-the-old-version-left-the-repo' },
+    ],
+    tip: 'Every package is flagged automatic or manual at install time in /var/lib/apt/extended_states — autoremove only ever removes automatic packages nothing manual depends on, regardless of how the package is actually being used today.',
+    gotchas: [
+      'A dependency you\'ve come to rely on directly needs apt-mark manual BEFORE its parent package is removed, or autoremove will silently take it too.',
+      'apt-get autoremove -s (or apt autoremove --dry-run) simulates the removal without actually removing anything — worth running on any unfamiliar system first.',
+    ],
+  },
+  'linux/package-management/dnf-history-undo-can-fail-when-the-old-version-left-the-repo': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'apt-mark auto/manual Is What Actually Drives autoremove', route: '/linux/package-management/apt-mark-auto-manual-is-what-actually-drives-autoremove' },
+      { label: 'Package Management overview', route: '/linux/package-management' },
+    ],
+    tip: 'dnf history undo needs the OLDER package version to reinstall it — repos typically keep only the latest version, so an undo on an old transaction can fail with "package X is not available" even though the history itself is intact.',
+    gotchas: [
+      'keepcache=True in /etc/dnf/dnf.conf keeps every downloaded RPM in /var/cache/dnf/ indefinitely, so a future undo doesn\'t depend on the remote repo still having the old version.',
+      'dnf list --showduplicates confirms what versions are still available before assuming an undo failure means something is broken.',
+    ],
+  },
   'linux/environment-variables': {
     apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
     related: [
@@ -39096,6 +42389,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'PATH order matters — a malicious or unexpected binary earlier in PATH than the intended one silently gets executed instead when a bare command name is run.',
       'Environment variables set in one shell session do not persist to a new session unless added to a shell startup file (.bashrc, .profile).',
+    ],
+  },
+  'linux/environment-variables/env-cat-env-xargs-breaks-on-values-containing-spaces': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'docker inspect Reveals Every -e Secret in Plaintext', route: '/linux/environment-variables/docker-inspect-reveals-every-e-secret-in-plaintext' },
+      { label: 'Environment Variables overview', route: '/linux/environment-variables' },
+    ],
+    tip: 'env $(cat .env | xargs) word-splits the file\'s content, silently corrupting any value with a space — set -a; source .env; set +a respects each line\'s own shell quoting correctly instead.',
+    gotchas: [
+      'This bug stays invisible for as long as every .env value happens to contain no whitespace — it doesn\'t show up until someone adds a multi-word value.',
+      'A quoted value in the .env file (KEY="two words") only survives correctly if the LOADING method itself respects quoting — xargs destroys it regardless of quoting.',
+    ],
+  },
+  'linux/environment-variables/docker-inspect-reveals-every-e-secret-in-plaintext': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'env $(cat .env | xargs) Breaks on Values Containing Spaces', route: '/linux/environment-variables/env-cat-env-xargs-breaks-on-values-containing-spaces' },
+      { label: 'unset Removes a Variable — VAR= Only Empties It', route: '/linux/environment-variables/unset-removes-a-variable-var-only-empties-it' },
+    ],
+    tip: 'docker inspect <container> --format \'{{json .Config.Env}}\' shows every -e secret in plaintext to anyone with daemon access — a separate exposure path from baked-in image layers, present even on stopped containers.',
+    gotchas: [
+      'A Kubernetes Secret mounted as an env var has the equivalent exposure via kubectl describe pod — mount it as a volume/file instead to avoid this specific path.',
+      'Docker\'s own secrets mechanism (docker secret + --secret) mounts values as files under /run/secrets/, which never appear in Config.Env at all.',
+    ],
+  },
+  'linux/environment-variables/unset-removes-a-variable-var-only-empties-it': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'docker inspect Reveals Every -e Secret in Plaintext', route: '/linux/environment-variables/docker-inspect-reveals-every-e-secret-in-plaintext' },
+      { label: 'Environment Variables overview', route: '/linux/environment-variables' },
+    ],
+    tip: 'unset VAR and VAR= look identical to echo and [[ -z "$VAR" ]], but they are different states — only ${VAR+x} (POSIX) or [[ -v VAR ]] (bash 4.2+) can actually tell "never set" apart from "set to empty."',
+    gotchas: [
+      'A deliberately empty .env value (KEY=) meant to signal "explicitly disabled" gets silently overwritten by a default if the script only checks -z instead of -v.',
+      '[[ -v VAR ]] tests SET-NESS specifically, regardless of value — [[ ! -v VAR ]] reads naturally as "if VAR is not set."',
     ],
   },
   'linux/bash-scripting': {
@@ -39110,6 +42439,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A shebang line (#!/bin/bash) determines which interpreter runs the script — a missing or wrong shebang causes confusing "command not found" or unexpected syntax errors.',
     ],
   },
+  'linux/bash-scripting/exit-codes-wrap-around-at-256-return-256-means-success': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'local Assignment Masks set -e Command Failures', route: '/linux/bash-scripting/local-assignment-masks-set-e-command-failures' },
+      { label: 'Bash Scripting overview', route: '/linux/bash-scripting' },
+    ],
+    tip: 'Exit statuses are unsigned 8-bit values (0-255) — return/exit takes any larger or negative number modulo 256, so return 256 silently computes to 0, the value that conventionally means success.',
+    gotchas: [
+      'Never return a computed count or numeric result directly as an exit code — report it via stdout (echo, captured with command substitution) and reserve return/exit strictly for pass/fail.',
+      'Negative exit codes wrap from the other direction — exit -1 becomes 255, exit -2 becomes 254.',
+    ],
+  },
+  'linux/bash-scripting/local-assignment-masks-set-e-command-failures': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'Exit Codes Wrap Around at 256 — return 256 Means Success', route: '/linux/bash-scripting/exit-codes-wrap-around-at-256-return-256-means-success' },
+      { label: 'trap EXIT Overwrites, It Doesn’t Chain Multiple Handlers', route: '/linux/bash-scripting/trap-exit-overwrites-not-chains-multiple-handlers' },
+    ],
+    tip: 'local var=$(command) written on one line reports the local builtin\'s own exit status to set -e, not the command substitution\'s — a genuinely failing command inside it goes completely undetected. Split into local var; var=$(command).',
+    gotchas: [
+      'ShellCheck flags this exact pattern as SC2155 — running it against a script catches the masking before it ships.',
+      'The main page\'s own check_disk function already (correctly, if unintentionally) uses the safe two-statement form.',
+    ],
+  },
+  'linux/bash-scripting/trap-exit-overwrites-not-chains-multiple-handlers': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'local Assignment Masks set -e Command Failures', route: '/linux/bash-scripting/local-assignment-masks-set-e-command-failures' },
+      { label: 'Bash Scripting overview', route: '/linux/bash-scripting' },
+    ],
+    tip: 'Calling trap ... EXIT a second time silently REPLACES the first handler, it never chains — a real risk once a script sources multiple library files that each register their own cleanup.',
+    gotchas: [
+      'trap -p EXIT shows only the currently active handler — a missing earlier cleanup function confirms it was silently overwritten.',
+      'Fix: one combined trap (\'cleanup_a; cleanup_b\' EXIT), or a helper that reads and appends to the existing trap instead of replacing it.',
+    ],
+  },
   'linux/bash-advanced': {
     apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
     related: [
@@ -39119,6 +42484,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Arrays in bash have subtly different syntax for expansion ("${arr[@]}" vs "${arr[*]}") that changes word-splitting behavior — a common source of "why did this only process one element" bugs.',
       'trap lets a script run cleanup code on exit (or specific signals) — essential for scripts that create temporary resources needing guaranteed cleanup even on failure.',
+    ],
+  },
+  'linux/bash-advanced/mapfile-without-t-keeps-the-trailing-newline-in-every-element': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'exec + tee Process Substitution Can Race the Script’s Own Exit', route: '/linux/bash-advanced/exec-tee-redirect-races-script-exit-truncating-the-log' },
+      { label: 'Bash Advanced overview', route: '/linux/bash-advanced' },
+    ],
+    tip: 'mapfile without -t keeps each line\'s trailing newline embedded in the array element — mapfile -t strips it, which is why every main-page example uses -t even though the page never explains why.',
+    gotchas: [
+      'A string comparison against a mapfile-without-t element can silently fail even when the values "look identical" — the invisible embedded newline is the usual cause.',
+      'readarray is a synonym for mapfile — the same -t requirement applies to both.',
+    ],
+  },
+  'linux/bash-advanced/exec-tee-redirect-races-script-exit-truncating-the-log': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'mapfile Without -t Keeps the Trailing Newline in Every Element', route: '/linux/bash-advanced/mapfile-without-t-keeps-the-trailing-newline-in-every-element' },
+      { label: 'check_host Always Exits 0, Regardless of Up or Down', route: '/linux/bash-advanced/check-host-always-exits-0-regardless-of-up-or-down' },
+    ],
+    tip: 'exec > >(tee log) 2>&1 starts tee as an asynchronous process the script never waits for by default — the script can exit before tee finishes flushing, silently dropping the final log lines.',
+    gotchas: [
+      'Capture tee\'s PID with $! immediately after the exec line, close the redirected fds, then wait "$TEE_PID" before the script\'s own exit to close the race.',
+      'A missing final log line despite correct terminal output is the classic symptom — terminal display and the file write don\'t share identical flush timing.',
+    ],
+  },
+  'linux/bash-advanced/check-host-always-exits-0-regardless-of-up-or-down': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'exec + tee Process Substitution Can Race the Script’s Own Exit', route: '/linux/bash-advanced/exec-tee-redirect-races-script-exit-truncating-the-log' },
+      { label: 'Bash Advanced overview', route: '/linux/bash-advanced' },
+    ],
+    tip: 'A function\'s exit status, without an explicit return, is whatever its LAST command returns — check_host\'s last command in both branches is echo, so it always exits 0 regardless of whether the host is up or down.',
+    gotchas: [
+      'This breaks || / && logic built on top of the function silently — the printed output looks correct, only exit-code-based control flow fails.',
+      'Always add an explicit return in any function whose caller might check its exit code, rather than relying on the last command\'s own exit status.',
     ],
   },
   'linux/cron': {
@@ -39144,6 +42545,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       ':wq vs :q! — accidentally discarding intended changes (or the reverse, saving unintended ones) is a very common beginner mistake before muscle memory develops.',
     ],
   },
+  'linux/vim/a-delete-silently-clobbers-your-yank-use-0p-to-paste-it-back': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'smartcase Does Nothing Unless ignorecase Is Also Set', route: '/linux/vim/smartcase-does-nothing-unless-ignorecase-is-also-set' },
+      { label: 'Vim overview', route: '/linux/vim' },
+    ],
+    tip: 'Plain p pastes from the unnamed register, which is overwritten by BOTH yanks and deletes — any delete after a yank silently corrupts what p will paste. Register 0 is yank-only and immune to this.',
+    gotchas: [
+      ':reg shows exactly what every register currently holds — a fast way to confirm whether the unnamed register or register 0 actually has the text you expect.',
+      'Build the habit of reaching for "0p by default whenever a yank needs to survive past any intervening edits, which is most of the time.',
+    ],
+  },
+  'linux/vim/smartcase-does-nothing-unless-ignorecase-is-also-set': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'A Delete Silently Clobbers Your Yank — Paste From Register 0 Instead', route: '/linux/vim/a-delete-silently-clobbers-your-yank-use-0p-to-paste-it-back' },
+      { label: 'vim -d Diff Mode Has Its Own Commands the Main Page Never Shows', route: '/linux/vim/vim-d-diff-mode-has-its-own-commands-the-main-page-never-shows' },
+    ],
+    tip: 'smartcase only modifies ignorecase\'s behavior — without ignorecase also set, smartcase is a silent no-op and every search stays plain case-sensitive, with no error to indicate why.',
+    gotchas: [
+      ':set ignorecase? and :set smartcase? query each option\'s current value directly inside vim — worth checking both before assuming a copied .vimrc snippet is actually working.',
+      'Both settings need to be present together for "case-insensitive unless uppercase" behavior — copying just one produces different, unintended behavior.',
+    ],
+  },
+  'linux/vim/vim-d-diff-mode-has-its-own-commands-the-main-page-never-shows': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'smartcase Does Nothing Unless ignorecase Is Also Set', route: '/linux/vim/smartcase-does-nothing-unless-ignorecase-is-also-set' },
+      { label: 'Vim overview', route: '/linux/vim' },
+    ],
+    tip: 'do (diff obtain) and dp (diff put) transfer a hunk between diff-mode windows with one keystroke — ]c and [c jump between hunks, turning vim -d into a real keyboard-only merge workflow.',
+    gotchas: [
+      'git mergetool commonly launches exactly this diff-mode setup — the same ]c/do/dp commands resolve merge conflicts, not just arbitrary file comparisons.',
+      'do pulls the OTHER window\'s version into the current one; dp pushes the current window\'s version to the other — easy to mix up which direction each one goes.',
+    ],
+  },
 
   // ── Terraform: per-page entries ─────────────────────────────────────────────
   'terraform/fundamentals': {
@@ -39158,6 +42595,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Terraform is idempotent by design — running apply repeatedly with no config changes should produce no changes, not repeated resource recreation.',
     ],
   },
+  'terraform/fundamentals/for-each-requires-a-map-or-set-not-a-bare-list': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Terraform Fundamentals',                     route: '/terraform/fundamentals' },
+      { label: 'depends_on Is for Dependencies Terraform Cannot See', route: '/terraform/fundamentals/depends-on-is-for-dependencies-terraform-cannot-see' },
+    ],
+    tip: 'for_each accepts only a map or a set of strings — never a bare list. toset(var.my_list) is the standard fix, but it discards ordering and silently drops duplicate values.',
+    gotchas: [
+      'A plain list passed to for_each fails at plan time with a type-mismatch error, before any provider is contacted.',
+      'toset() collapses duplicate list entries with no warning — a genuine duplicate can silently under-provision resources.',
+    ],
+  },
+  'terraform/fundamentals/depends-on-is-for-dependencies-terraform-cannot-see': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'for_each Requires a Map or Set — Not a Bare List', route: '/terraform/fundamentals/for-each-requires-a-map-or-set-not-a-bare-list' },
+      { label: 'moved Blocks, Not Manual Edits, Fix a Renamed Resource', route: '/terraform/fundamentals/moved-blocks-not-manual-edits-fix-a-renamed-resource' },
+    ],
+    tip: 'Terraform\'s dependency graph is built purely from attribute references in the HCL — a runtime-only dependency (like IAM permission propagation before a boot script calls an API) is invisible to it unless declared explicitly with depends_on.',
+    gotchas: [
+      'Never add depends_on to a resource that already references its dependency through an attribute — the reference already establishes the order, and the redundant depends_on just adds noise.',
+      'Always comment a depends_on explaining WHY it is needed — nothing else documents the invisible relationship it is expressing.',
+    ],
+  },
+  'terraform/fundamentals/moved-blocks-not-manual-edits-fix-a-renamed-resource': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'depends_on Is for Dependencies Terraform Cannot See', route: '/terraform/fundamentals/depends-on-is-for-dependencies-terraform-cannot-see' },
+      { label: 'Terraform Fundamentals',                     route: '/terraform/fundamentals' },
+    ],
+    tip: 'A plain rename of a resource block (same arguments, new name) looks like a destroy-and-recreate to Terraform. A moved block declares the rename in version-controlled config; terraform state mv is the older, imperative, uncommitted equivalent.',
+    gotchas: [
+      'moved blocks only work within the SAME state file — moving a resource to a different state file still needs terraform state mv (or import/removed blocks).',
+      'Never hand-edit the state file\'s JSON to fix a resource address — the main page\'s own "never manually edit it" rule applies here too.',
+    ],
+  },
   'terraform/resources': {
     apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
     related: [
@@ -39170,6 +42643,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Resource dependencies can be inferred automatically from references, or declared explicitly via depends_on when the relationship isn\'t visible through a direct attribute reference.',
     ],
   },
+  'terraform/resources/prevent-destroy-is-bypassed-by-removing-the-whole-resource-block': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Resources & Meta-Arguments',                                    route: '/terraform/resources' },
+      { label: 'replace_triggered_by Forces Replacement From an Unrelated Resource', route: '/terraform/resources/replace-triggered-by-forces-replacement-from-an-unrelated-resource' },
+    ],
+    tip: 'prevent_destroy is checked only against the CURRENT .tf configuration at plan time, never persisted to state — deleting the whole resource block (not just the lifecycle setting) removes the protection along with it, with no error.',
+    gotchas: [
+      'The safe way to retire a protected resource is two separate applies: first flip prevent_destroy to false and apply that alone, THEN remove the block in a later change.',
+    ],
+  },
+  'terraform/resources/replace-triggered-by-forces-replacement-from-an-unrelated-resource': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'prevent_destroy Is Bypassed by Removing the Whole Resource Block', route: '/terraform/resources/prevent-destroy-is-bypassed-by-removing-the-whole-resource-block' },
+      { label: 'A Timeout Doesn\'t Mean the Resource Wasn\'t Created',              route: '/terraform/resources/a-timeout-does-not-mean-the-resource-was-not-created' },
+    ],
+    tip: 'An ordinary attribute reference only creates an ORDERING dependency — replace_triggered_by is the specific lifecycle meta-argument needed to force one resource\'s replacement when a referenced resource\'s planned action changes.',
+    gotchas: [
+      'Only resource/attribute references are valid — a plain value (local, variable) needs to be wrapped in a terraform_data resource first.',
+    ],
+  },
+  'terraform/resources/a-timeout-does-not-mean-the-resource-was-not-created': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'replace_triggered_by Forces Replacement From an Unrelated Resource', route: '/terraform/resources/replace-triggered-by-forces-replacement-from-an-unrelated-resource' },
+      { label: 'Resources & Meta-Arguments',                                    route: '/terraform/resources' },
+    ],
+    tip: 'A timeout means Terraform stopped WAITING for a response — the real cloud API call may still succeed afterward, leaving state with no record of it and the next apply hitting an "already exists" conflict.',
+    gotchas: [
+      'The documented recovery path is terraform import, not repeatedly retrying apply or deleting the real resource that may have finished provisioning correctly.',
+    ],
+  },
   'terraform/data-sources': {
     apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
     related: [
@@ -39179,6 +42685,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'A data source failing to find a match (like an AMI filter matching zero results) causes an error at plan time, not a silently empty result.',
       'Overusing data sources to reference resources that COULD be managed directly by Terraform (instead of importing them) creates unnecessary cross-configuration coupling.',
+    ],
+  },
+  'terraform/data-sources/external-data-source-query-and-result-are-both-string-only-maps': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Data Sources',                                          route: '/terraform/data-sources' },
+      { label: 'for_each, Not count, for Iterating a Data Source\'s Own Results', route: '/terraform/data-sources/for-each-not-count-for-iterating-a-data-sources-own-results' },
+    ],
+    tip: 'The external data source protocol is stricter than general JSON — every value in both the query sent in and the result returned must be a string; a nested object or number needs to be JSON-encoded into a string and decoded with jsondecode() on the Terraform side.',
+    gotchas: [
+      'The query object\'s values also arrive as strings on the program\'s stdin, regardless of what type they appeared to be in the Terraform configuration.',
+    ],
+  },
+  'terraform/data-sources/for-each-not-count-for-iterating-a-data-sources-own-results': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'external Data Source: query and result Are Both String-Only Maps', route: '/terraform/data-sources/external-data-source-query-and-result-are-both-string-only-maps' },
+      { label: 'A Data Source Can Need depends_on Too',                     route: '/terraform/data-sources/a-data-source-can-need-depends-on-too-for-a-hidden-dependency' },
+    ],
+    tip: 'Many data sources returning a list of results don\'t guarantee stable ordering across API calls — count ties resource identity to list position, so a reordered (but unchanged) result produces a spurious destroy/recreate diff. for_each, keyed on the actual values, does not.',
+    gotchas: [
+      'This is the same underlying count-vs-for_each instability the main page\'s own Resources topic covers for human-edited lists — just harder to notice, since the reordering comes from an external API.',
+    ],
+  },
+  'terraform/data-sources/a-data-source-can-need-depends-on-too-for-a-hidden-dependency': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'for_each, Not count, for Iterating a Data Source\'s Own Results', route: '/terraform/data-sources/for-each-not-count-for-iterating-a-data-sources-own-results' },
+      { label: 'Data Sources',                                          route: '/terraform/data-sources' },
+    ],
+    tip: 'A data source with no attribute reference to a resource created in the same apply can be evaluated before that resource exists. depends_on on the data source itself fixes this, at the cost of deferring its evaluation to apply time.',
+    gotchas: [
+      'This mirrors the main page\'s own resource-level depends_on guidance — use it only when the dependency genuinely cannot be expressed through a reference, and comment why.',
     ],
   },
   'terraform/variables': {
@@ -39193,6 +42732,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A variable with no default and no value supplied prompts interactively during apply — fine for local development, a blocking problem for unattended CI/CD pipelines.',
     ],
   },
+  'terraform/variables/nullable-false-substitutes-default-even-for-explicit-null': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Variables & Locals',                                              route: '/terraform/variables' },
+      { label: 'optional() Lets Object Variables Evolve Without Breaking Callers', route: '/terraform/variables/optional-lets-object-variables-evolve-without-breaking-callers' },
+    ],
+    tip: 'A plain default only fills in a MISSING argument — an explicitly passed null bypasses it entirely. nullable = false is what catches an explicit null and substitutes the default instead.',
+    gotchas: [
+      'nullable = false without a default behaves differently again: it makes the variable strictly required and rejects null outright, rather than substituting anything.',
+    ],
+  },
+  'terraform/variables/optional-lets-object-variables-evolve-without-breaking-callers': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'nullable = false Substitutes the Default for an Explicit null', route: '/terraform/variables/nullable-false-substitutes-default-even-for-explicit-null' },
+      { label: 'A Sensitive Output Needs Its Own sensitive = true',             route: '/terraform/variables/sensitive-output-needs-its-own-sensitive-true-declaration' },
+    ],
+    tip: 'Every attribute in an object() type constraint is required by default. Wrapping a new attribute in optional(type, default) is what makes adding it to an existing module interface backward-compatible.',
+    gotchas: [
+      'optional(type) with no default resolves to null when omitted rather than erroring — only a plain (non-optional) attribute produces a type error when a caller omits it.',
+    ],
+  },
+  'terraform/variables/sensitive-output-needs-its-own-sensitive-true-declaration': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'optional() Lets Object Variables Evolve Without Breaking Callers', route: '/terraform/variables/optional-lets-object-variables-evolve-without-breaking-callers' },
+      { label: 'Variables & Locals',                                              route: '/terraform/variables' },
+    ],
+    tip: 'Sensitivity propagates from a sensitive variable to anything derived from it, but an output block must still explicitly opt in with its own sensitive = true — otherwise Terraform refuses to plan at all.',
+    gotchas: [
+      'terraform output -raw deliberately prints a sensitive output\'s real value — the sanctioned way for scripts/CI to consume it, not a bypass.',
+    ],
+  },
   'terraform/outputs': {
     apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
     related: [
@@ -39203,6 +42775,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Marking an output sensitive = true hides it from standard CLI output, but the value is still retrievable via terraform output -json or by reading the state file directly.',
       'Module outputs must be explicitly re-exposed by the calling configuration if the ROOT module itself needs to surface them further.',
+    ],
+  },
+  'terraform/outputs/precondition-blocks-catch-a-bad-output-value-before-export': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Outputs',                                                    route: '/terraform/outputs' },
+      { label: 'terraform_remote_state Grants Access to the Whole State File', route: '/terraform/outputs/remote-state-grants-access-to-the-entire-state-not-just-outputs' },
+    ],
+    tip: 'A resource attribute being known in state is not the same as the resource being operationally ready — a precondition block on an output checks readiness (e.g. status == "available") right at the export boundary, before a downstream consumer can hit a confusing, disconnected failure.',
+    gotchas: [
+      'A failed precondition halts the operation with the given error_message — it does not just warn while still exporting the value.',
+    ],
+  },
+  'terraform/outputs/remote-state-grants-access-to-the-entire-state-not-just-outputs': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'precondition Blocks Catch a Bad Output Value Before Export', route: '/terraform/outputs/precondition-blocks-catch-a-bad-output-value-before-export' },
+      { label: 'output -json Reveals Sensitive Values the Plain Command Redacts', route: '/terraform/outputs/output-json-reveals-sensitive-values-the-plain-command-redacts' },
+    ],
+    tip: 'terraform_remote_state reads the ENTIRE state file from the backend, not just the specific output referenced — HashiCorp\'s own current guidance recommends resource-specific data sources or tfe_outputs (HCP Terraform/Enterprise) instead.',
+    gotchas: [
+      'State files commonly contain resource attribute values well beyond what any output intentionally exposes — full read access to one is a much broader exposure than "just the outputs I reference."',
+    ],
+  },
+  'terraform/outputs/output-json-reveals-sensitive-values-the-plain-command-redacts': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'terraform_remote_state Grants Access to the Whole State File', route: '/terraform/outputs/remote-state-grants-access-to-the-entire-state-not-just-outputs' },
+      { label: 'Outputs',                                                    route: '/terraform/outputs' },
+    ],
+    tip: 'sensitive = true only redacts the PLAIN terraform output display — terraform output -json prints every output\'s real, unredacted value regardless of sensitivity, with the sensitive flag present only as metadata.',
+    gotchas: [
+      'A CI step piping -json output into a logged or archived file can leak a "correctly" sensitive-marked value in plain text — extract only what\'s needed via -raw into an environment variable instead.',
     ],
   },
   'terraform/expressions': {
@@ -39217,6 +42822,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Conditional expressions (cond ? true_val : false_val) are common for toggling resource configuration based on a variable, but deeply nested conditionals hurt readability fast.',
     ],
   },
+  'terraform/expressions/can-is-for-variable-validation-try-is-the-real-fallback-tool': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Expressions & Dynamic Blocks',                              route: '/terraform/expressions' },
+      { label: 'Nested Dynamic Blocks Shadow the Outer Iterator by Default', route: '/terraform/expressions/nested-dynamic-blocks-shadow-the-outer-iterator-by-default' },
+    ],
+    tip: 'can() is intended for variable validation blocks (a simple pass/fail check) — try() is the real fallback-VALUE tool, and HashiCorp\'s own guidance is to confine it to a few dedicated locals rather than scattering it everywhere.',
+    gotchas: [
+      'Both functions swallow ANY error the wrapped expression produces — a genuine typo is silently treated the same as an "expected" missing value.',
+    ],
+  },
+  'terraform/expressions/nested-dynamic-blocks-shadow-the-outer-iterator-by-default': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'can() Is for Variable Validation — try() Is the Real Fallback Tool', route: '/terraform/expressions/can-is-for-variable-validation-try-is-the-real-fallback-tool' },
+      { label: 'A for Expression Map Errors on Duplicate Keys Unless Grouped',        route: '/terraform/expressions/a-for-expression-map-errors-on-duplicate-keys-unless-grouped' },
+    ],
+    tip: 'A dynamic block\'s default iteration variable name is its own label — nesting two dynamic blocks that land on the same default name means the inner one silently shadows the outer, with no error. The iterator argument gives each level its own explicit name.',
+    gotchas: [
+      'This produces wrong VALUES, not an error — easy to miss without deliberately checking the innermost content block\'s output.',
+    ],
+  },
+  'terraform/expressions/a-for-expression-map-errors-on-duplicate-keys-unless-grouped': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Nested Dynamic Blocks Shadow the Outer Iterator by Default', route: '/terraform/expressions/nested-dynamic-blocks-shadow-the-outer-iterator-by-default' },
+      { label: 'Expressions & Dynamic Blocks',                              route: '/terraform/expressions' },
+    ],
+    tip: 'A map-producing for expression ({ }) requires unique keys — a duplicate is a plan-time "Duplicate object key" error, not a silent overwrite. Appending ... after the value expression activates grouping mode, collecting matching values into a list instead.',
+    gotchas: [
+      '... is harmless even without duplicates present — it just produces single-element lists for every key, so it can be used proactively whenever duplicates are possible.',
+    ],
+  },
   'terraform/functions': {
     apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
     related: [
@@ -39226,6 +42864,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'The console command (terraform console) lets you test expressions and function calls interactively without needing a full plan/apply cycle — a fast way to verify function behavior.',
       'Some functions (like timestamp()) return a different value on every evaluation, which can cause unexpected "changes" reported on every plan if used in a resource argument.',
+    ],
+  },
+  'terraform/functions/merge-null-overwrites-not-skips-an-earlier-non-null-value': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Built-in Functions',                          route: '/terraform/functions' },
+      { label: 'flatten() Only Unwraps Nested Lists',          route: '/terraform/functions/flatten-only-unwraps-nested-lists-not-lists-inside-maps' },
+    ],
+    tip: 'merge() treats a later map\'s null exactly like any other value — it OVERWRITES an earlier map\'s real value for that key rather than being skipped, which can silently wipe a required default when merging in optional overrides.',
+    gotchas: [
+      'Filter null-valued keys out before merging ({for k, v in map : k => v if v != null}) if an unset override should mean "use the default."',
+    ],
+  },
+  'terraform/functions/flatten-only-unwraps-nested-lists-not-lists-inside-maps': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'merge() null Overwrites, It Doesn\'t Skip, an Earlier Value',            route: '/terraform/functions/merge-null-overwrites-not-skips-an-earlier-non-null-value' },
+      { label: 'Mixing newbits in cidrsubnet() Can Overlap',   route: '/terraform/functions/mixing-newbits-in-cidrsubnet-can-overlap-cidrsubnets-avoids-it' },
+    ],
+    tip: 'flatten() only unwraps directly-nested LIST-within-LIST structures — a list value sitting inside a map or object is left completely untouched. Extract the inner lists with a for expression first, then flatten the result.',
+    gotchas: [
+      'flatten() on a list of objects containing lists silently returns the input unchanged — no error, no warning.',
+    ],
+  },
+  'terraform/functions/mixing-newbits-in-cidrsubnet-can-overlap-cidrsubnets-avoids-it': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'flatten() Only Unwraps Nested Lists',          route: '/terraform/functions/flatten-only-unwraps-nested-lists-not-lists-inside-maps' },
+      { label: 'Built-in Functions',                          route: '/terraform/functions' },
+    ],
+    tip: 'Each cidrsubnet() call is independent, with no awareness of other calls against the same parent CIDR — mixing different newbits (subnet sizes) can silently overlap. cidrsubnets() (plural) computes multiple prefixes together, guaranteed non-overlapping.',
+    gotchas: [
+      'When every subnet is genuinely the same size, cidrsubnet() with sequential netnum indices remains correct and simpler — the overlap risk is specific to mixing sizes.',
     ],
   },
   'terraform/state': {
@@ -39240,6 +42911,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'terraform state mv is the correct way to rename/move a resource in configuration without Terraform destroying and recreating the underlying real infrastructure.',
     ],
   },
+  'terraform/state/force-unlock-verify-the-lock-holder-is-actually-stale-first': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Terraform State',                                     route: '/terraform/state' },
+      { label: 'The State serial Number Detects a Stale state push',   route: '/terraform/state/the-state-serial-number-is-what-detects-a-stale-state-push' },
+    ],
+    tip: 'The lock error\'s Who/Operation/Created fields are the actual data needed to verify staleness before force-unlock — check the specific CI run or ask the specific person, don\'t assume from elapsed time alone.',
+    gotchas: [
+      'force-unlock only releases the lock — it cannot verify the state file itself is consistent. Follow up with terraform state pull to sanity-check.',
+    ],
+  },
+  'terraform/state/the-state-serial-number-is-what-detects-a-stale-state-push': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'force-unlock: Verify the Lock Holder Is Actually Stale First',     route: '/terraform/state/force-unlock-verify-the-lock-holder-is-actually-stale-first' },
+      { label: 'Workspaces Share the Same Backend — Prefer Directories for Prod',  route: '/terraform/state/workspaces-share-the-same-backend-prefer-directories-for-prod' },
+    ],
+    tip: 'State push compares the pushed state\'s serial number against the destination\'s current serial by default, refusing a stale push — this is the mechanism behind the main page\'s own "use with caution" note. -force bypasses both the serial AND lineage checks.',
+    gotchas: [
+      'Locking prevents SIMULTANEOUS writes; the serial check catches a stale push happening at a completely different, later time — two separate mechanisms.',
+    ],
+  },
+  'terraform/state/workspaces-share-the-same-backend-prefer-directories-for-prod': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'The State serial Number Detects a Stale state push',   route: '/terraform/state/the-state-serial-number-is-what-detects-a-stale-state-push' },
+      { label: 'Terraform State',                                     route: '/terraform/state' },
+    ],
+    tip: 'CLI workspaces partition state within ONE shared backend and its access controls — dev and prod workspaces share the same credential boundary. Separate directories give each environment its own backend, credentials, and an obvious blast radius.',
+    gotchas: [
+      'HashiCorp\'s own guidance: workspaces fit short-lived, identical environments (per-PR previews) — not meaningfully different, long-lived ones like dev vs prod.',
+    ],
+  },
   'terraform/remote-backends': {
     apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
     related: [
@@ -39250,6 +42954,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Remote state without locking (missing the DynamoDB table or equivalent) risks concurrent applies corrupting state — always enable locking for any shared/team state.',
       'Backend configuration itself cannot use variables — it must be static or use partial configuration with a separate backend config file.',
+    ],
+  },
+  'terraform/remote-backends/s3-backend-no-longer-needs-dynamodb-use-lockfile-is-current': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Remote Backends',                                    route: '/terraform/remote-backends' },
+      { label: 'cloud and backend Blocks Are Mutually Exclusive',     route: '/terraform/remote-backends/cloud-block-and-backend-block-are-mutually-exclusive' },
+    ],
+    tip: 'Terraform 1.10+ supports use_lockfile on the S3 backend — native locking via S3\'s own conditional-write support, no DynamoDB table needed. dynamodb_table is deprecated (1.11+) but still functional.',
+    gotchas: [
+      'Migrating an existing DynamoDB-locked backend to use_lockfile is a normal backend-config change: update the block, run terraform init -migrate-state.',
+    ],
+  },
+  'terraform/remote-backends/cloud-block-and-backend-block-are-mutually-exclusive': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'S3 Backend No Longer Needs DynamoDB',                 route: '/terraform/remote-backends/s3-backend-no-longer-needs-dynamodb-use-lockfile-is-current' },
+      { label: 'GCS Backend Supports a Customer-Managed KMS Key',     route: '/terraform/remote-backends/gcs-backend-supports-a-customer-managed-kms-key' },
+    ],
+    tip: 'A configuration cannot contain both a cloud block and a backend block — hard error, not a style choice. Execution mode (remote vs local) is a property of the HCP Terraform workspace itself, not a setting in the cloud block\'s own HCL.',
+    gotchas: [
+      'Mixing HCP Terraform for one environment and a plain backend for another requires genuinely separate root configurations, not a conditional within one.',
+    ],
+  },
+  'terraform/remote-backends/gcs-backend-supports-a-customer-managed-kms-key': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'cloud and backend Blocks Are Mutually Exclusive',     route: '/terraform/remote-backends/cloud-block-and-backend-block-are-mutually-exclusive' },
+      { label: 'Remote Backends',                                    route: '/terraform/remote-backends' },
+    ],
+    tip: 'The gcs backend accepts kms_encryption_key directly, encrypting state with an account-controlled Cloud KMS key instead of Google\'s default — requires granting the GCS service agent the CryptoKey Encrypter/Decrypter role first.',
+    gotchas: [
+      'A reader\'s terraform_remote_state config needs no special handling to decrypt KMS-encrypted state — decryption happens automatically on GCS\'s own end.',
     ],
   },
   'terraform/workspaces': {
@@ -39263,6 +43000,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'terraform.workspace can be referenced in configuration to vary behavior per workspace, but overusing it for complex per-environment logic makes configuration harder to follow.',
     ],
   },
+  'terraform/workspaces/workspace-delete-force-orphans-resources-it-does-not-destroy': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Workspaces',                                                route: '/terraform/workspaces' },
+      { label: 'terraform.workspace Cannot Parameterize the backend Block',  route: '/terraform/workspaces/terraform-workspace-cannot-parameterize-the-backend-block' },
+    ],
+    tip: 'The empty-workspace check genuinely blocks deleting a workspace with live resources — but -force bypasses it, deleting the state while every real resource keeps running and billing, now untracked ("dangling").',
+    gotchas: [
+      'Safe sequence: select the workspace, terraform destroy, confirm terraform state list is empty, switch away, then delete — no -force needed at all.',
+    ],
+  },
+  'terraform/workspaces/terraform-workspace-cannot-parameterize-the-backend-block': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'workspace delete -force Orphans Resources',                  route: '/terraform/workspaces/workspace-delete-force-orphans-resources-it-does-not-destroy' },
+      { label: 'The default Workspace\'s State Path Is Asymmetric',           route: '/terraform/workspaces/the-default-workspace-key-path-is-asymmetric-workspace-key-prefix' },
+    ],
+    tip: 'The backend block is resolved during init, before any expression evaluation exists — terraform.workspace is unavailable there for the same reason variables are. Separate per-workspace state paths happen automatically anyway.',
+    gotchas: [
+      'For a genuinely different bucket per environment, use partial configuration (-backend-config) — resolved by the CLI at init, outside the expression system.',
+    ],
+  },
+  'terraform/workspaces/the-default-workspace-key-path-is-asymmetric-workspace-key-prefix': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'terraform.workspace Cannot Parameterize the backend Block',  route: '/terraform/workspaces/terraform-workspace-cannot-parameterize-the-backend-block' },
+      { label: 'Workspaces',                                                route: '/terraform/workspaces' },
+    ],
+    tip: 'Named workspaces store state at <workspace_key_prefix>/<name>/<key> (prefix defaults to the literal "env:") — the default workspace uses the bare key with no prefix at all. There is no env:/default/ path.',
+    gotchas: [
+      'A bucket policy scoped to env:/* silently excludes the default workspace\'s state — often the oldest and most important one in a team that adopted workspaces later.',
+    ],
+  },
   'terraform/modules': {
     apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
     related: [
@@ -39272,6 +43042,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'A module\'s internal resource addresses become PREFIXED by the module call name in state — renaming a module call in configuration causes Terraform to see it as an entirely different set of resources unless state is explicitly moved.',
       'Deeply nested module hierarchies (modules calling modules calling modules) can make understanding the actual resulting infrastructure harder to trace.',
+    ],
+  },
+  'terraform/modules/version-is-a-registry-only-argument-not-a-general-pin': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Modules',                                                route: '/terraform/modules' },
+      { label: 'Remote Modules Are Cached',                              route: '/terraform/modules/remote-modules-are-cached-a-changed-ref-needs-init-upgrade' },
+    ],
+    tip: 'The version argument only works for registry sources — a registry is a versioned catalog a constraint can resolve against. Git sources pin via ?ref= in the source address; local paths have no version concept at all.',
+    gotchas: [
+      '.terraform.lock.hcl locks PROVIDER versions, not module versions — it is not a fallback pin for an unpinned module.',
+    ],
+  },
+  'terraform/modules/remote-modules-are-cached-a-changed-ref-needs-init-upgrade': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'version Is a Registry-Only Argument, Not a General Pin',  route: '/terraform/modules/version-is-a-registry-only-argument-not-a-general-pin' },
+      { label: 'The Double Slash Marks Where the Package Ends',           route: '/terraform/modules/the-double-slash-marks-where-the-package-ends' },
+    ],
+    tip: 'Remote modules are downloaded once into .terraform/modules and read from that cache afterwards — a changed ?ref= is not guaranteed to take effect on a plain init. terraform init -upgrade forces a genuine re-fetch.',
+    gotchas: [
+      'A mutable branch ref makes this hardest to spot: the config text never changes when the module updates upstream, so nothing prompts a re-init.',
+    ],
+  },
+  'terraform/modules/the-double-slash-marks-where-the-package-ends': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Remote Modules Are Cached',                              route: '/terraform/modules/remote-modules-are-cached-a-changed-ref-needs-init-upgrade' },
+      { label: 'Modules',                                                route: '/terraform/modules' },
+    ],
+    tip: 'The // separates the PACKAGE Terraform fetches (the whole repo) from the SUBDIRECTORY inside it where the module lives — a single slash makes Terraform read the whole string as the repository address instead.',
+    gotchas: [
+      'Ordering is fixed: the subdirectory comes BEFORE query arguments like ?ref=, since those belong to the package address as a whole.',
     ],
   },
   'terraform/module-patterns': {
@@ -39286,6 +43089,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Composing several small, focused modules is generally more maintainable than one large, all-purpose module trying to handle every possible use case.',
     ],
   },
+  'terraform/module-patterns/count-on-a-module-changes-how-every-output-is-accessed': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Module Patterns',                                       route: '/terraform/module-patterns' },
+      { label: 'terraform test Defaults to apply, Not plan',            route: '/terraform/module-patterns/terraform-test-defaults-to-apply-not-plan' },
+    ],
+    tip: 'Adding count to a module block turns it into an indexed collection — every output reference must become module.name[0].output. With count = 0 there is no instance 0 at all, so a bare indexed reference fails rather than yielding null.',
+    gotchas: [
+      'one(module.name[*].output) is the idiomatic zero-or-one accessor — it collapses to the value or null with no index-out-of-range risk.',
+    ],
+  },
+  'terraform/module-patterns/terraform-test-defaults-to-apply-not-plan': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'count on a Module Changes How Every Output Is Accessed', route: '/terraform/module-patterns/count-on-a-module-changes-how-every-output-is-accessed' },
+      { label: 'Module depends_on Makes the Whole Module Conservative',  route: '/terraform/module-patterns/module-depends-on-makes-the-whole-module-conservative' },
+    ],
+    tip: 'A run block with no command attribute defaults to a real apply — provisioning live infrastructure, asserting, then destroying it. command = plan makes it fast and free, at the cost of only seeing plan-time-known values.',
+    gotchas: [
+      'Conventional split: *_unit_test.tftest.hcl uses command = plan; *_integration_test.tftest.hcl uses the default apply.',
+    ],
+  },
+  'terraform/module-patterns/module-depends-on-makes-the-whole-module-conservative': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'terraform test Defaults to apply, Not plan',            route: '/terraform/module-patterns/terraform-test-defaults-to-apply-not-plan' },
+      { label: 'Module Patterns',                                       route: '/terraform/module-patterns' },
+    ],
+    tip: 'depends_on on a module applies its conservatism to everything inside — HashiCorp names module depends_on as the case most likely to produce large swaths of "(known after apply)". Depend through a real reference instead wherever one exists.',
+    gotchas: [
+      'Data sources inside the module get deferred from plan to apply time, so anything computed from them becomes unknown at plan time too.',
+    ],
+  },
   'terraform/providers': {
     apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
     related: [
@@ -39297,6 +43133,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Multiple provider configurations (aliases) let a single configuration manage resources across multiple regions or accounts within one apply.',
     ],
   },
+  'terraform/providers/pessimistic-constraint-upper-bound-depends-on-segment-count': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Providers',                                          route: '/terraform/providers' },
+      { label: 'Module Provider Alias Needs configuration_aliases Declared', route: '/terraform/providers/module-provider-alias-needs-configuration-aliases-declared' },
+    ],
+    tip: 'A ~> constraint locks everything except the RIGHTMOST segment you write — two segments (~> 5.0) locks the major version and lets minor move; three segments (~> 5.0.1) also locks the minor version, only letting patch move.',
+    gotchas: [
+      'Adding a patch digit to an existing constraint (going from ~> 5.0 to ~> 5.0.1) silently NARROWS the allowed range — it is not a strictly more precise refinement of the same range.',
+    ],
+  },
+  'terraform/providers/module-provider-alias-needs-configuration-aliases-declared': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'The ~> Constraint\'s Upper Bound Depends on Segment Count', route: '/terraform/providers/pessimistic-constraint-upper-bound-depends-on-segment-count' },
+      { label: 'init -upgrade Upgrades Every Provider, Not Just One',        route: '/terraform/providers/init-upgrade-upgrades-every-provider-not-just-one' },
+    ],
+    tip: 'Default (unaliased) provider inheritance into a module is automatic — but passing an ALIASED provider requires the module to explicitly declare configuration_aliases in its own required_providers block, or the module is not a valid, complete configuration.',
+    gotchas: [
+      'configuration_aliases only names which alias identifiers a module accepts — the actual region/credentials for each alias still live in the root module\'s own aliased provider blocks.',
+    ],
+  },
+  'terraform/providers/init-upgrade-upgrades-every-provider-not-just-one': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Module Provider Alias Needs configuration_aliases Declared', route: '/terraform/providers/module-provider-alias-needs-configuration-aliases-declared' },
+      { label: 'Providers',                                          route: '/terraform/providers' },
+    ],
+    tip: 'terraform init -upgrade is global — it re-selects EVERY provider (and every already-installed module) to its newest allowed version, not just the one you meant to bump. Narrowing that one provider\'s own constraint and running plain init is the targeted alternative.',
+    gotchas: [
+      'A blanket -upgrade can silently bump providers nobody intended to touch that day, each governed only by its own, possibly loose, version constraint.',
+    ],
+  },
   'terraform/provisioners': {
     apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
     related: [
@@ -39306,6 +43175,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'A failed provisioner during resource creation, by default, marks the ENTIRE resource as tainted, forcing recreation on the next apply — a real operational cost for a flaky provisioner script.',
       'Configuration management tools (Ansible, cloud-init) or baked-in machine images are generally preferred over provisioners for actual instance configuration.',
+    ],
+  },
+  'terraform/provisioners/self-is-scoped-to-the-resource-the-provisioner-is-attached-to': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Provisioners',                                          route: '/terraform/provisioners' },
+      { label: 'Create-Time Failure Taints — Destroy-Time Failure Can Stick', route: '/terraform/provisioners/create-time-failure-taints-destroy-time-failure-can-stick' },
+    ],
+    tip: 'self inside a provisioner/connection block always resolves to the resource that block is physically attached to — a null_resource\'s provisioner can never reach another resource\'s attributes through self, only through a full reference.',
+    gotchas: [
+      'A destroy-time provisioner needs the triggers map to carry a value forward — a live cross-resource reference is not reliable by the time destroy runs.',
+    ],
+  },
+  'terraform/provisioners/create-time-failure-taints-destroy-time-failure-can-stick': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'self Is Scoped to the Resource the Provisioner Is Attached To', route: '/terraform/provisioners/self-is-scoped-to-the-resource-the-provisioner-is-attached-to' },
+      { label: 'on_failure = continue Only Silences It',                route: '/terraform/provisioners/on-failure-continue-only-silences-it-never-retries-or-fixes' },
+    ],
+    tip: 'A failed create-time provisioner taints the resource for self-healing recreation on the next apply. A failed destroy-time provisioner leaves the resource stuck in state, failing the same way on every retry — and a tainted resource\'s destroy-time provisioner does not run at all.',
+    gotchas: [
+      'HashiCorp specifically recommends on_failure = continue as the default for destroy-time provisioners, unlike create-time ones.',
+    ],
+  },
+  'terraform/provisioners/on-failure-continue-only-silences-it-never-retries-or-fixes': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Create-Time Failure Taints — Destroy-Time Failure Can Stick', route: '/terraform/provisioners/create-time-failure-taints-destroy-time-failure-can-stick' },
+      { label: 'Provisioners',                                          route: '/terraform/provisioners' },
+    ],
+    tip: 'on_failure = continue only stops Terraform treating a provisioner failure as an error — no retry, no fallback, no fix. apply reports success while the intended side effect silently never happened, with only a warning line marking it.',
+    gotchas: [
+      'Right default for genuinely optional side effects; wrong default for anything the rest of the configuration or system depends on actually being true.',
     ],
   },
   'terraform/import': {
@@ -39320,6 +43222,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Terraform 1.5+\'s import blocks (declarative, in-configuration import) improve on the imperative import CLI command by making the import itself reviewable in a plan.',
     ],
   },
+  'terraform/import/for-each-import-blocks-handle-bulk-import-not-one-at-a-time': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Import & Generated Config',                              route: '/terraform/import' },
+      { label: 'The Import ID Format Is Resource-Specific, Not Universal', route: '/terraform/import/the-import-id-format-is-resource-specific-not-universal' },
+    ],
+    tip: 'Terraform 1.7+ supports for_each directly on the import block, generating one import operation per entry in a map from a single block — the resource being imported into must also be declared with a matching for_each.',
+    gotchas: [
+      'A newer capability than import blocks themselves (1.5+) — check the Terraform version in use before relying on it.',
+    ],
+  },
+  'terraform/import/the-import-id-format-is-resource-specific-not-universal': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'for_each Import Blocks Handle Bulk Import',              route: '/terraform/import/for-each-import-blocks-handle-bulk-import-not-one-at-a-time' },
+      { label: 'Import Never Pulls in Dependents or Sensitive Values',    route: '/terraform/import/import-never-pulls-in-dependents-or-sensitive-values' },
+    ],
+    tip: 'There is no universal import ID shape — each resource type defines its own, from a simple name to a composite value joined with a slash, colon, or pipe. The resource type\'s own Terraform Registry docs are the authoritative source.',
+    gotchas: [
+      'The same resource-specific format rule applies identically to both the legacy CLI command and the import block\'s own id argument.',
+    ],
+  },
+  'terraform/import/import-never-pulls-in-dependents-or-sensitive-values': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'The Import ID Format Is Resource-Specific, Not Universal', route: '/terraform/import/the-import-id-format-is-resource-specific-not-universal' },
+      { label: 'Import & Generated Config',                              route: '/terraform/import' },
+    ],
+    tip: 'Import operates on exactly one resource address — dependent resources (security groups, subnets, IAM roles) need their own separate import. Some sensitive attributes are never returned by the provider API at all, and are silently absent from generated config.',
+    gotchas: [
+      'A clean plan after generate-config-out does not guarantee every real attribute was captured — only that everything the API exposed matches.',
+    ],
+  },
   'terraform/drift': {
     apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
     related: [
@@ -39330,6 +43265,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'terraform plan -refresh-only surfaces drift without proposing any changes, useful for detecting drift before deciding how to reconcile it.',
       'Manual "emergency fixes" that bypass Terraform are a common, recurring source of ongoing drift — the emergency fix should be backported into configuration promptly, not left as a permanent exception.',
+    ],
+  },
+  'terraform/drift/refresh-false-and-refresh-only-do-near-opposite-things': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Drift Detection',                                                              route: '/terraform/drift' },
+      { label: 'ignore_changes Does Not Refresh a Stale Value — It Just Stops Future Diffs',    route: '/terraform/drift/ignore-changes-does-not-refresh-a-stale-value-it-just-stops-future-diffs' },
+    ],
+    tip: '-refresh-only performs a full refresh specifically to detect drift; -refresh=false skips refresh entirely and trusts the existing state, hiding any drift from that plan. Despite the similar names, they are near-opposite tools.',
+    gotchas: [
+      'A -refresh=false plan reporting "no changes" only means state matches config — it says nothing about whether reality has drifted from state, since it never checked.',
+    ],
+  },
+  'terraform/drift/ignore-changes-does-not-refresh-a-stale-value-it-just-stops-future-diffs': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: '-refresh=false and -refresh-only Do Near-Opposite Things',              route: '/terraform/drift/refresh-false-and-refresh-only-do-near-opposite-things' },
+      { label: 'TFC Health Assessments Are Read-Only — They Never Write to State',      route: '/terraform/drift/tfc-health-assessments-are-read-only-they-never-write-to-state' },
+    ],
+    tip: 'Adding ignore_changes only stops FUTURE plan diffs on that attribute — it never refreshes or captures the current real value into state. If drift already existed, run apply -refresh-only first, or the stale pre-drift value stays in state indefinitely.',
+    gotchas: [
+      'terraform show or any remote-state reader keeps returning the stale, pre-drift value for an ignored attribute until an explicit refresh actually updates state.',
+    ],
+  },
+  'terraform/drift/tfc-health-assessments-are-read-only-they-never-write-to-state': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'ignore_changes Does Not Refresh a Stale Value — It Just Stops Future Diffs', route: '/terraform/drift/ignore-changes-does-not-refresh-a-stale-value-it-just-stops-future-diffs' },
+      { label: 'Drift Detection',                                                           route: '/terraform/drift' },
+    ],
+    tip: 'A Terraform Cloud health assessment only detects and reports drift on a schedule — it never applies changes or writes to state, unlike a manual apply -refresh-only. The same drift is reported again on every subsequent run until a human acts on it.',
+    gotchas: [
+      'Waiting for a health assessment alert to "clear itself" on the next scheduled run never works — nothing about the underlying state changes as a result of the assessment itself.',
     ],
   },
   'terraform/testing': {
@@ -39343,6 +43311,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Static analysis tools (tflint, checkov) catch style and security-policy issues before a plan even runs, complementing (not replacing) plan-based testing.',
     ],
   },
+  'terraform/testing/run-name-output-lets-later-blocks-reference-earlier-run-blocks': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Testing Terraform Code',                                            route: '/terraform/testing' },
+      { label: 'mock_resource Values Apply to Every Instance, Not Per-Instance',     route: '/terraform/testing/mock-resource-values-apply-to-every-instance-not-per-instance' },
+    ],
+    tip: 'A later run block reads an earlier one\'s output with run.<name>.<output> — e.g. run.create_vpc.vpc_id. This reference is what forces Terraform to run the two run blocks sequentially rather than in parallel.',
+    gotchas: [
+      'Independent run blocks (no shared run.<name>.<output> reference, no shared state file) CAN execute in parallel — the "run blocks execute sequentially" rule only applies to blocks actually connected by a reference.',
+    ],
+  },
+  'terraform/testing/mock-resource-values-apply-to-every-instance-not-per-instance': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'run.NAME.output Lets Later Blocks Reference Earlier Run Blocks',            route: '/terraform/testing/run-name-output-lets-later-blocks-reference-earlier-run-blocks' },
+      { label: 'Destroy Runs in Reverse Order — a Referenced Run’s State Is Already Gone', route: '/terraform/testing/destroy-runs-in-reverse-order-a-referenced-runs-state-is-already-gone' },
+    ],
+    tip: 'mock_resource defaults apply to EVERY instance of that resource type uniformly — a for_each or count block gets identical mocked values on every instance. Use override_resource to target one specific instance with its own distinct values.',
+    gotchas: [
+      'An assertion expecting distinct values across multiple mocked instances (e.g. distinct AZs) will fail under a plain mock_resource block, since every instance shares the same defaults.',
+    ],
+  },
+  'terraform/testing/destroy-runs-in-reverse-order-a-referenced-runs-state-is-already-gone': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'mock_resource Values Apply to Every Instance, Not Per-Instance', route: '/terraform/testing/mock-resource-values-apply-to-every-instance-not-per-instance' },
+      { label: 'Testing Terraform Code',                                        route: '/terraform/testing' },
+    ],
+    tip: 'terraform test destroys run blocks in REVERSE of their apply order. A run block whose output a later block referenced can show zero resources destroyed during its own cleanup step — that state was already torn down as part of the later, dependent block\'s destroy.',
+    gotchas: [
+      'Seeing "nothing destroyed" for an earlier run block in terraform test -verbose output is expected, correct behavior when a later block depended on it — not a sign of a resource leak.',
+    ],
+  },
   'terraform/security': {
     apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
     related: [
@@ -39352,6 +43353,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'State files can contain plaintext sensitive values even when the corresponding variable is marked sensitive — state access itself needs the same rigor as protecting secrets directly.',
       'checkov/tfsec-style static analysis catches common misconfigurations (an S3 bucket without encryption, an overly permissive security group) before they are ever applied.',
+    ],
+  },
+  'terraform/security/soft-mandatory-overrides-need-a-specific-tfc-permission-not-just-plan-access': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Security & Compliance',                                                    route: '/terraform/security' },
+      { label: 'prevent_destroy Blocks terraform destroy Too — But Not a Removed Block',    route: '/terraform/security/prevent-destroy-blocks-terraform-destroy-too-but-not-a-removed-block' },
+    ],
+    tip: 'Overriding a soft-mandatory Sentinel failure needs the "Manage Policy Overrides" (or default "Manage Policies") permission at the org level — ordinary workspace write access to trigger plans/applies does not include this.',
+    gotchas: [
+      'For a team member without override permission, a soft-mandatory failure blocks the run exactly like hard-mandatory — the escape hatch only exists for privileged users.',
+    ],
+  },
+  'terraform/security/prevent-destroy-blocks-terraform-destroy-too-but-not-a-removed-block': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Soft-Mandatory Overrides Need a Specific TFC Permission, Not Just Plan Access', route: '/terraform/security/soft-mandatory-overrides-need-a-specific-tfc-permission-not-just-plan-access' },
+      { label: 'OPA/conftest Enforcement Is a CI-Pipeline Responsibility, Not Native',           route: '/terraform/security/opa-conftest-enforcement-is-a-ci-pipeline-responsibility-not-native' },
+    ],
+    tip: 'prevent_destroy = true blocks ANY plan that would destroy the resource, including an explicit terraform destroy — not just accidental config-driven destroys. It is fully bypassed only by removing the resource\'s lifecycle block from configuration first, then applying.',
+    gotchas: [
+      '-target does not bypass prevent_destroy — it only narrows plan scope; the guard still evaluates and blocks the targeted resource\'s destroy the same as without -target.',
+    ],
+  },
+  'terraform/security/opa-conftest-enforcement-is-a-ci-pipeline-responsibility-not-native': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'prevent_destroy Blocks terraform destroy Too — But Not a Removed Block', route: '/terraform/security/prevent-destroy-blocks-terraform-destroy-too-but-not-a-removed-block' },
+      { label: 'Security & Compliance',                                                 route: '/terraform/security' },
+    ],
+    tip: 'Unlike Sentinel (natively wired into HCP Terraform/TFE\'s own run pipeline), OPA/conftest is just a CLI command with no enforcement-level concept — whether a failed check blocks an apply depends entirely on how the CI pipeline is configured around it.',
+    gotchas: [
+      'A conftest check that CI runs but doesn\'t gate the apply job on is effectively advisory-only, regardless of the team\'s intent — conftest itself has no "hard-mandatory" mode.',
     ],
   },
   'terraform/cicd': {
@@ -39366,6 +43400,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'CI runners need the same remote state locking guarantees as local runs — concurrent pipeline runs against the same state without locking risk the same corruption as concurrent local applies.',
     ],
   },
+  'terraform/cicd/a-saved-plan-file-needs-the-same-version-and-can-go-stale': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'CI/CD with Terraform',                                        route: '/terraform/cicd' },
+      { label: 'The OIDC sub Claim Differs Between push and pull_request',     route: '/terraform/cicd/the-oidc-sub-claim-differs-between-push-and-pull-request' },
+    ],
+    tip: 'A saved plan file (-out) is tied to the exact Terraform version that created it and to state as it existed at plan time — pin the version identically across every pipeline stage, and keep the plan-to-apply window short so state does not drift underneath a stale plan.',
+    gotchas: [
+      'State locking prevents SIMULTANEOUS conflicting writes only — it does nothing to prevent a saved plan going stale from a SEQUENTIAL change that already completed cleanly before apply ran.',
+    ],
+  },
+  'terraform/cicd/the-oidc-sub-claim-differs-between-push-and-pull-request': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'A Saved Plan File Needs the Same Version and Can Go Stale',          route: '/terraform/cicd/a-saved-plan-file-needs-the-same-version-and-can-go-stale' },
+      { label: 'A Saved Plan File Is Plaintext and Must Be Treated as a Secret',     route: '/terraform/cicd/a-saved-plan-file-is-plaintext-and-must-be-treated-as-a-secret' },
+    ],
+    tip: 'An OIDC token\'s sub claim shape differs by triggering event — a push to main looks like repo:org/repo:ref:refs/heads/main, a pull_request does not. Scope the IAM trust policy\'s sub condition to the exact ref an apply-capable role should run from, never just the repository name.',
+    gotchas: [
+      'A trust policy that only checks the repository name grants the same role-assumption ability to a pull_request run from a fork as to a push on the protected branch — a real, distinct risk from the stored-credential problem OIDC itself solves.',
+    ],
+  },
+  'terraform/cicd/a-saved-plan-file-is-plaintext-and-must-be-treated-as-a-secret': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'The OIDC sub Claim Differs Between push and pull_request', route: '/terraform/cicd/the-oidc-sub-claim-differs-between-push-and-pull-request' },
+      { label: 'CI/CD with Terraform',                                    route: '/terraform/cicd' },
+      { label: 'Security & Compliance',                                   route: '/terraform/security' },
+    ],
+    tip: 'sensitive = true only redacts CLI display output — the saved plan file itself still contains every value in plain text, provable via terraform show -json. Treat the plan artifact as a secret: short retention, restricted access, never posted verbatim.',
+    gotchas: [
+      'Posting the CLI\'s own redacted STDOUT text on a PR is safe; posting the raw plan file\'s JSON output is not — that reveals every sensitive value in plain text into a permanent, widely-readable thread.',
+    ],
+  },
   'terraform/refactoring': {
     apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
     related: [
@@ -39378,6 +43446,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Refactoring a widely-used shared module requires coordinating with every consumer, since a breaking interface change affects all of them simultaneously.',
     ],
   },
+  'terraform/refactoring/moved-blocks-require-the-same-resource-type-on-both-sides': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Refactoring & State Ops',                                          route: '/terraform/refactoring' },
+      { label: 'removed Defaults to Actually Destroying the Resource',              route: '/terraform/refactoring/removed-defaults-to-actually-destroying-the-resource' },
+    ],
+    tip: 'moved requires from and to to reference the exact same resource type — it only remaps a state address, it never transforms one resource type\'s schema into another\'s. Migrating between different resource types needs a real destroy-and-recreate.',
+    gotchas: [
+      'The resource-type mismatch error surfaces at plan/apply time, not terraform validate — double-check both sides of a moved block reference the identical type string before relying on it.',
+    ],
+  },
+  'terraform/refactoring/removed-defaults-to-actually-destroying-the-resource': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'moved Blocks Require the Same Resource Type on Both Sides',               route: '/terraform/refactoring/moved-blocks-require-the-same-resource-type-on-both-sides' },
+      { label: '-target Pulls In Dependencies Automatically, But Never Dependents',        route: '/terraform/refactoring/target-pulls-in-dependencies-automatically-but-never-dependents' },
+    ],
+    tip: 'A plain removed {} block DESTROYS the real resource by default — the opposite of terraform state rm, which never destroys. Add lifecycle { destroy = false } explicitly to get state-rm-equivalent, state-only removal.',
+    gotchas: [
+      'Reaching for removed {} because you trust state rm\'s "never destroys" behavior is a real trap — that safety property is not inherited by default.',
+    ],
+  },
+  'terraform/refactoring/target-pulls-in-dependencies-automatically-but-never-dependents': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'removed Defaults to Actually Destroying the Resource',              route: '/terraform/refactoring/removed-defaults-to-actually-destroying-the-resource' },
+      { label: 'Refactoring & State Ops',                                          route: '/terraform/refactoring' },
+    ],
+    tip: '-target automatically walks UP the dependency graph, including everything the target needs — but never walks DOWN to dependents. A dependent resource can be left silently out of sync until a full, untargeted apply catches up.',
+    gotchas: [
+      'A dependent resource missing from a -target plan doesn\'t mean it has no pending changes — it means -target never checked it at all.',
+    ],
+  },
   'terraform/opentofu': {
     apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
     related: [
@@ -39387,6 +43488,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'OpenTofu and Terraform have begun to diverge in newer features over time — a configuration relying on a Terraform-only feature added after the fork may not work identically in OpenTofu.',
       'Most existing modules and providers work with both tools due to their shared HCL-based configuration language and provider protocol compatibility, but this compatibility isn\'t an absolute guarantee going forward.',
+    ],
+  },
+  'terraform/opentofu/key-rotation-needs-the-fallback-method-not-just-a-swapped-key': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'OpenTofu',                                                              route: '/terraform/opentofu' },
+      { label: 'BSL Has a Four-Year Change Date That Converts to MPL Automatically',     route: '/terraform/opentofu/bsl-has-a-four-year-change-date-that-converts-to-mpl-automatically' },
+    ],
+    tip: 'Swapping an encryption key\'s value alone fails against already-encrypted state. Rotate safely with a three-phase fallback: new key primary + old key as fallback, force a write with apply -refresh-only, then remove the fallback.',
+    gotchas: [
+      'Writes always use the primary method only, never the fallback — a plain plan doesn\'t necessarily force re-encryption; use apply -refresh-only to guarantee it.',
+    ],
+  },
+  'terraform/opentofu/bsl-has-a-four-year-change-date-that-converts-to-mpl-automatically': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Key Rotation Needs the fallback Method, Not Just a Swapped Key',      route: '/terraform/opentofu/key-rotation-needs-the-fallback-method-not-just-a-swapped-key' },
+      { label: 'remote_state Data Source Needs Its Own Encryption Config Too',        route: '/terraform/opentofu/remote-state-data-source-needs-its-own-encryption-config-too' },
+    ],
+    tip: 'BSL 1.1 is not permanently proprietary — each Terraform release automatically converts to the MPL 2.0 open-source license four years after ITS OWN release date, per release, not on one shared date for the whole project.',
+    gotchas: [
+      'The "Terraform is closed-source now" framing overstates it — the restriction on any given release has a fixed, known expiration built into the license itself.',
+    ],
+  },
+  'terraform/opentofu/remote-state-data-source-needs-its-own-encryption-config-too': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'BSL Has a Four-Year Change Date That Converts to MPL Automatically', route: '/terraform/opentofu/bsl-has-a-four-year-change-date-that-converts-to-mpl-automatically' },
+      { label: 'OpenTofu',                                                          route: '/terraform/opentofu' },
+    ],
+    tip: 'Encryption does not travel with a terraform_remote_state reference — a consuming project reading another project\'s encrypted state needs its own remote_state_data_source encryption config, or the read fails outright even if the source project\'s own encryption works fine.',
+    gotchas: [
+      'A remote_state read failure here points at the CONSUMING project\'s missing encryption config, not the source project\'s — the source\'s own plans/applies can be working perfectly.',
     ],
   },
 
@@ -39403,6 +43537,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Adopting a service mesh for a small number of services often adds more operational complexity than the cross-cutting benefits justify.',
     ],
   },
+  'service-mesh/fundamentals/ambient-mode-ztunnel-is-l4-only-l7-routing-needs-a-waypoint': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Service Mesh Fundamentals',                                          route: '/service-mesh/fundamentals' },
+      { label: 'xDS Updates Need Make-Before-Break Ordering, or Traffic Black-Holes', route: '/service-mesh/fundamentals/xds-updates-need-make-before-break-ordering-or-traffic-black-holes' },
+    ],
+    tip: 'ztunnel alone only handles L4 (mTLS, basic authorization) — VirtualService routing, retries, and header-based rules are L7 and need a waypoint proxy deployed, or they silently have no effect on traffic.',
+    gotchas: [
+      'A sidecar-to-ambient migration without deploying waypoints keeps mTLS working but silently drops any L7 policy the workload depended on — no error is raised.',
+    ],
+  },
+  'service-mesh/fundamentals/xds-updates-need-make-before-break-ordering-or-traffic-black-holes': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Ambient Mode: ztunnel Is L4-Only — L7 Routing Needs a Waypoint',           route: '/service-mesh/fundamentals/ambient-mode-ztunnel-is-l4-only-l7-routing-needs-a-waypoint' },
+      { label: 'A VirtualService Subset Missing From DestinationRule Returns 503',        route: '/service-mesh/fundamentals/a-virtualservice-subset-missing-from-destinationrule-returns-503' },
+    ],
+    tip: 'xDS is eventually consistent — an RDS update can outrace its corresponding CDS/EDS update at a given proxy, briefly black-holing traffic (503 UH) until the cluster/endpoint data catches up. Istiod\'s own pushes respect make-before-break ordering to minimize this.',
+    gotchas: [
+      'A brief 503 spike with response_flags UH exactly coinciding with a config change can be expected, self-resolving xDS propagation behavior — not necessarily a real fault.',
+    ],
+  },
+  'service-mesh/fundamentals/a-virtualservice-subset-missing-from-destinationrule-returns-503': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'xDS Updates Need Make-Before-Break Ordering, or Traffic Black-Holes', route: '/service-mesh/fundamentals/xds-updates-need-make-before-break-ordering-or-traffic-black-holes' },
+      { label: 'Service Mesh Fundamentals',                                          route: '/service-mesh/fundamentals' },
+    ],
+    tip: 'A VirtualService referencing a subset absent from its DestinationRule applies with no error — the mismatch only surfaces as a 503 (response_flags NR) when real traffic hits that path. Check Envoy access logs, not kubectl/istioctl validation.',
+    gotchas: [
+      'Renaming a DestinationRule subset without auditing every VirtualService that references the old name is a common, silent way to introduce this exact failure.',
+    ],
+  },
   'service-mesh/envoy': {
     apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
     related: [
@@ -39413,6 +43580,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Envoy\'s xDS APIs (how the control plane pushes configuration to proxies dynamically) are what enable configuration changes without restarting proxies — a key operational advantage over static config reloads.',
       'A misconfigured Envoy filter chain can silently drop or mis-route traffic — Envoy\'s admin interface (/config_dump) is essential for debugging what configuration is actually active.',
+    ],
+  },
+  'service-mesh/envoy/wasmplugin-phase-determines-order-relative-to-built-in-filters': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Envoy Proxy Deep Dive',                                              route: '/service-mesh/envoy' },
+      { label: 'INSERT_AFTER Targeting router Means the Filter Never Runs',          route: '/service-mesh/envoy/insert-after-targeting-router-means-the-filter-never-runs' },
+    ],
+    tip: 'A WasmPlugin\'s phase determines its position relative to Istio\'s own built-in security filters — AUTHN-phase plugins run BEFORE jwt_authn, which is what lets a plugin produce a JWT for Istio\'s own filter to then validate.',
+    gotchas: [
+      'A custom auth plugin placed in AUTHZ instead of AUTHN runs too late — jwt_authn rejects every request before the plugin ever gets a chance to run.',
+    ],
+  },
+  'service-mesh/envoy/insert-after-targeting-router-means-the-filter-never-runs': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'WasmPlugin phase Determines Order Relative to Built-in Filters',              route: '/service-mesh/envoy/wasmplugin-phase-determines-order-relative-to-built-in-filters' },
+      { label: 'Delta xDS Isolates a NACK’d Resource — SotW Blocks the Whole Type',            route: '/service-mesh/envoy/delta-xds-isolates-a-nackd-resource-sotw-blocks-the-whole-type' },
+    ],
+    tip: 'router terminates the HTTP filter chain — an EnvoyFilter using INSERT_AFTER to target router applies cleanly but the inserted filter never actually runs. Use INSERT_BEFORE instead.',
+    gotchas: [
+      'config_dump/proxy-config showing the filter present only confirms the patch applied — it does not confirm the filter chain ever reaches that position during real requests.',
+    ],
+  },
+  'service-mesh/envoy/delta-xds-isolates-a-nackd-resource-sotw-blocks-the-whole-type': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'INSERT_AFTER Targeting router Means the Filter Never Runs', route: '/service-mesh/envoy/insert-after-targeting-router-means-the-filter-never-runs' },
+      { label: 'Envoy Proxy Deep Dive',                                    route: '/service-mesh/envoy' },
+    ],
+    tip: 'Delta xDS isn\'t just a bandwidth optimization — it isolates a NACK to the one bad resource. Under SotW, one invalid resource in a type-wide bundle (e.g. one bad cluster among 50) NACKs the entire push, freezing every OTHER valid resource of that type too.',
+    gotchas: [
+      'A STALE proxy under SotW can mean dozens of unrelated, valid resources are stuck behind one unrelated mistake — not just the specific resource that\'s actually broken.',
     ],
   },
   'service-mesh/istio-architecture': {
@@ -39427,6 +43627,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Istio adds meaningful operational complexity — running and correctly configuring it is itself a significant undertaking, appropriate at genuine microservices scale.',
     ],
   },
+  'service-mesh/istio-architecture/cert-rotation-overlaps-old-and-new-certs-to-avoid-handshake-failures': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Istio Architecture',                                                              route: '/service-mesh/istio-architecture' },
+      { label: 'Sidecar CRD Scoping Egress Does Not Block Unmatched Inbound Traffic',              route: '/service-mesh/istio-architecture/sidecar-crd-scoping-egress-does-not-block-unmatched-inbound-traffic' },
+    ],
+    tip: 'Certificate rotation is not an atomic swap — the old cert stays valid for an overlap window after the new one is issued, so peers mid-rotation relative to each other still complete TLS handshakes normally. The same overlap principle applies to root CA migration.',
+    gotchas: [
+      'Root CA rotation without an overlap period (removing the old CA before every workload has rotated) recreates the exact handshake-failure risk the leaf-cert overlap prevents, at mesh-wide scale.',
+    ],
+  },
+  'service-mesh/istio-architecture/sidecar-crd-scoping-egress-does-not-block-unmatched-inbound-traffic': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Cert Rotation Overlaps Old and New Certs to Avoid Handshake Failures',        route: '/service-mesh/istio-architecture/cert-rotation-overlaps-old-and-new-certs-to-avoid-handshake-failures' },
+      { label: 'Live Traffic Surviving an Istiod Outage Has a Cert TTL Time Limit',            route: '/service-mesh/istio-architecture/live-traffic-surviving-an-istiod-outage-has-a-cert-ttl-time-limit' },
+    ],
+    tip: 'Sidecar CRD egress scoping reduces a proxy\'s xDS config size for memory efficiency — it is not an access-control mechanism. Traffic to an unscoped destination is still allowed by default, and omitting the ingress block leaves inbound traffic completely unaffected.',
+    gotchas: [
+      'Use AuthorizationPolicy (or an egress Gateway), not Sidecar CRD scoping, when the actual goal is restricting which services can call a workload.',
+    ],
+  },
+  'service-mesh/istio-architecture/live-traffic-surviving-an-istiod-outage-has-a-cert-ttl-time-limit': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Sidecar CRD Scoping Egress Does Not Block Unmatched Inbound Traffic', route: '/service-mesh/istio-architecture/sidecar-crd-scoping-egress-does-not-block-unmatched-inbound-traffic' },
+      { label: 'Istio Architecture',                                                 route: '/service-mesh/istio-architecture' },
+    ],
+    tip: '"Live traffic continues" during an Istiod outage is only true for a bounded window — certificate rotation also requires Istiod, so once a workload\'s cert reaches its TTL (default 24h) without rotating, its mTLS traffic starts failing too.',
+    gotchas: [
+      'Treat a prolonged Istiod outage as time-sensitive well before the cert TTL boundary, not just a blocked-deployments inconvenience to fix "eventually."',
+    ],
+  },
   'service-mesh/istio-install': {
     apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
     related: [
@@ -39436,6 +43669,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Upgrading Istio requires careful version compatibility checking between istiod and already-injected sidecars — a mismatch can cause subtle traffic routing issues.',
       'Canary upgrades of the control plane itself (running two istiod revisions side by side) reduce the risk of a mesh-wide outage during an Istio version upgrade.',
+    ],
+  },
+  'service-mesh/istio-install/both-injection-labels-present-istio-injection-silently-wins': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Istio Installation & Configuration',                                    route: '/service-mesh/istio-install' },
+      { label: 'uninstall --purge Does Not Reliably Remove Every Webhook',               route: '/service-mesh/istio-install/uninstall-purge-does-not-reliably-remove-every-webhook' },
+    ],
+    tip: 'If a namespace carries both istio-injection=enabled and istio.io/rev at once, istio-injection silently wins (backward compatibility) — istio.io/rev is ignored with no error. Remove the old label and add the new one in the same command to avoid the ambiguous dual-label state entirely.',
+    gotchas: [
+      'A revision migration that adds istio.io/rev without removing istio-injection first can leave pods injected from the OLD control plane, with no warning surfaced.',
+    ],
+  },
+  'service-mesh/istio-install/uninstall-purge-does-not-reliably-remove-every-webhook': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Both Injection Labels Present: istio-injection Silently Wins',              route: '/service-mesh/istio-install/both-injection-labels-present-istio-injection-silently-wins' },
+      { label: 'Revision Uninstall Checks Active Proxies, Not Namespace Labels',            route: '/service-mesh/istio-install/revision-uninstall-checks-active-proxies-not-namespace-labels' },
+    ],
+    tip: 'istioctl uninstall --purge does not reliably remove every webhook (e.g. istiod-default-validator is a known gap). A leftover, cluster-scoped webhook pointing at a deleted istiod can reject operations in unrelated namespaces if its failurePolicy is Fail.',
+    gotchas: [
+      'Always verify with kubectl get mutatingwebhookconfigurations,validatingwebhookconfigurations | grep istio after uninstall, rather than trusting --purge\'s name alone.',
+    ],
+  },
+  'service-mesh/istio-install/revision-uninstall-checks-active-proxies-not-namespace-labels': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'uninstall --purge Does Not Reliably Remove Every Webhook', route: '/service-mesh/istio-install/uninstall-purge-does-not-reliably-remove-every-webhook' },
+      { label: 'Istio Installation & Configuration',                      route: '/service-mesh/istio-install' },
+    ],
+    tip: 'istioctl uninstall --revision\'s safety check looks at live, currently-connected proxies — not namespace labels. A namespace still labeled for the old revision but with zero running pods at that exact moment produces no warning at all.',
+    gotchas: [
+      'Infrequently-running namespaces (nightly batch jobs, scaled-to-zero) are the highest-risk case for this gap — check namespace labels explicitly (kubectl get namespaces -l istio.io/rev=<old>) before uninstalling, not just live proxy status.',
     ],
   },
   'service-mesh/traffic-management': {
@@ -39448,6 +43714,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Traffic splitting (90/10 canary weighting) requires DestinationRule subsets to already be correctly defined — a VirtualService referencing an undefined subset fails routing entirely.',
       'Mirroring (shadow traffic) sends a COPY of production traffic to a new version without affecting the real response — useful for validating a new version\'s behavior under real load before it serves any actual users.',
+    ],
+  },
+  'service-mesh/traffic-management/fault-injection-and-retries-cannot-coexist-on-the-same-route': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Traffic Management',                                                     route: '/service-mesh/traffic-management' },
+      { label: 'retryOn: 5xx Can Amplify Load Into an Already-Overloaded Upstream',       route: '/service-mesh/traffic-management/retryon-5xx-can-amplify-load-into-an-already-overloaded-upstream' },
+    ],
+    tip: 'Istio silently disables retries/timeout on any route that also has fault injection configured — the two cannot coexist on the same route, so testing "does my retry policy recover from this?" needs a separate, header-matched route or VirtualService.',
+    gotchas: [
+      'Both blocks are accepted with no validation error — the retries field just quietly does nothing on a route where fault is also present.',
+    ],
+  },
+  'service-mesh/traffic-management/retryon-5xx-can-amplify-load-into-an-already-overloaded-upstream': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Fault Injection and Retries Cannot Coexist on the Same Route',   route: '/service-mesh/traffic-management/fault-injection-and-retries-cannot-coexist-on-the-same-route' },
+      { label: 'Mirroring Is Fire-and-Forget — the Primary Response Never Waits', route: '/service-mesh/traffic-management/mirroring-is-fire-and-forget-the-primary-response-never-waits' },
+    ],
+    tip: 'retryOn: 5xx retries a circuit breaker\'s own "upstream overflow" 503 too — sending MORE load at an upstream that just signaled it\'s overloaded. Use a maxRetries connection-pool budget, or scope retryOn away from blanket 5xx.',
+    gotchas: [
+      'This compounds across a multi-hop call chain — 3 retries at each of 3 layers can turn one failing request into up to 9 actual requests reaching the struggling service.',
+    ],
+  },
+  'service-mesh/traffic-management/mirroring-is-fire-and-forget-the-primary-response-never-waits': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'retryOn: 5xx Can Amplify Load Into an Already-Overloaded Upstream', route: '/service-mesh/traffic-management/retryon-5xx-can-amplify-load-into-an-already-overloaded-upstream' },
+      { label: 'Traffic Management',                                              route: '/service-mesh/traffic-management' },
+    ],
+    tip: 'Mirroring is genuinely fire-and-forget — the primary response never waits for the mirror in any capacity, even if the shadow is completely down. It still consumes real resources though; size the shadow deployment for the mirrored volume.',
+    gotchas: [
+      'A struggling shadow service can never show up as slower real-user latency — but it CAN fall over from under-provisioned capacity, which is a separate, real operational risk.',
     ],
   },
   'service-mesh/load-balancing': {
@@ -39472,6 +43771,72 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Circuit breaker thresholds configured mesh-wide as a blanket default may not fit every individual service\'s actual failure/recovery characteristics.',
     ],
   },
+  'service-mesh/resilience/consecutivelocaloriginfailures-needs-splitexternallocaloriginerrors-to-work': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Resilience',                                                        route: '/service-mesh/resilience' },
+      { label: 'minHealthPercent Defaults to 0% (Disabled), Not 50%',                route: '/service-mesh/resilience/minhealthpercent-defaults-to-0-percent-disabled-not-50-percent' },
+    ],
+    tip: 'consecutiveLocalOriginFailures only counts connection-level failures Envoy itself detects (timeouts, refused connections) — by default those are lumped in with HTTP 5xx failures unless splitExternalLocalOriginErrors is explicitly set to true.',
+    gotchas: [
+      'Without splitExternalLocalOriginErrors: true, a service returning legitimate 5xx responses can trip what looks like a "local origin" threshold, or vice versa — the two failure categories stay merged.',
+    ],
+  },
+  'service-mesh/resilience/minhealthpercent-defaults-to-0-percent-disabled-not-50-percent': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'consecutiveLocalOriginFailures Needs splitExternalLocalOriginErrors to Work', route: '/service-mesh/resilience/consecutivelocaloriginfailures-needs-splitexternallocaloriginerrors-to-work' },
+      { label: 'A Service With No DestinationRule Still Has a 1024-Connection Cap',            route: '/service-mesh/resilience/a-service-with-no-destinationrule-still-has-a-1024-connection-cap' },
+    ],
+    tip: 'A genuine inaccuracy on the main page (claiming a 50% default) was caught and fixed during this batch — minHealthPercent actually defaults to 0% (disabled), so the cascading-failure safety floor must be explicitly configured to take effect at all.',
+    gotchas: [
+      'Once minHealthPercent\'s threshold is crossed, outlier detection disables entirely — already-ejected hosts are restored to rotation too, not just "no new ejections."',
+    ],
+  },
+  'service-mesh/resilience/a-service-with-no-destinationrule-still-has-a-1024-connection-cap': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'minHealthPercent Defaults to 0% (Disabled), Not 50%', route: '/service-mesh/resilience/minhealthpercent-defaults-to-0-percent-disabled-not-50-percent' },
+      { label: 'Resilience',                                          route: '/service-mesh/resilience' },
+    ],
+    tip: 'Envoy\'s own built-in defaults (maxConnections and max_pending_requests both 1024) apply even with zero DestinationRule configuration — a service is never truly "unprotected," just protected at a generic value that may not match its real capacity.',
+    gotchas: [
+      'A default of 1024 is likely far too high to meaningfully protect a small, lightly-provisioned service — the circuit breaker exists but provides little practical benefit until deliberately tuned.',
+    ],
+  },
+  'service-mesh/load-balancing/warmupdurationsecs-starts-new-pods-at-10-percent-not-0-percent': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Load Balancing',                                                    route: '/service-mesh/load-balancing' },
+      { label: 'consistentHash Defaults to Ring Hash With a 1024-Node Ring',         route: '/service-mesh/load-balancing/consistenthash-defaults-to-ring-hash-with-a-1024-node-ring' },
+    ],
+    tip: 'Envoy\'s slow-start floor (min_weight_percent) defaults to 10%, not 0% — a new pod under warmupDurationSecs receives real traffic immediately, giving monitoring an early signal rather than waiting for the ramp to finish.',
+    gotchas: [
+      'Istio\'s DestinationRule only exposes the ramp WINDOW (warmupDurationSecs) — Envoy\'s own aggression parameter (ramp shape) and the 10% floor itself are only reachable via EnvoyFilter.',
+    ],
+  },
+  'service-mesh/load-balancing/consistenthash-defaults-to-ring-hash-with-a-1024-node-ring': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'warmupDurationSecs Starts New Pods at 10% Traffic, Not 0%',          route: '/service-mesh/load-balancing/warmupdurationsecs-starts-new-pods-at-10-percent-not-0-percent' },
+      { label: 'Active Health Checks Have No Native DestinationRule Field',          route: '/service-mesh/load-balancing/active-health-checks-have-no-native-destinationrule-field' },
+    ],
+    tip: 'consistentHash defaults to RING_HASH with a 1024-node ring when neither ringHash nor maglev is explicitly set — the ring size is exactly why the "~1/N remapping" claim holds at small scale but degrades as pod count grows.',
+    gotchas: [
+      'Maglev is a fully native DestinationRule field (no EnvoyFilter needed) — both ringHash and maglev are directly configurable sub-fields of consistentHash.',
+    ],
+  },
+  'service-mesh/load-balancing/active-health-checks-have-no-native-destinationrule-field': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'consistentHash Defaults to Ring Hash With a 1024-Node Ring',         route: '/service-mesh/load-balancing/consistenthash-defaults-to-ring-hash-with-a-1024-node-ring' },
+      { label: 'Load Balancing',                                                    route: '/service-mesh/load-balancing' },
+    ],
+    tip: 'trafficPolicy has exactly 8 fields (loadBalancer, connectionPool, outlierDetection, tls, portLevelSettings, tunnel, proxyProtocol, retryBudget) — healthCheck is not one of them. Active health checks require an EnvoyFilter patching the cluster\'s own health_checks field.',
+    gotchas: [
+      'outlierDetection is the only native, DestinationRule-configurable health signal — and it is exclusively passive (observes real traffic), never sends its own probes.',
+    ],
+  },
   'service-mesh/mtls': {
     apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
     related: [
@@ -39481,6 +43846,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Enabling mTLS mesh-wide without a migration period (PERMISSIVE mode first, then STRICT) can break traffic from services not yet part of the mesh.',
       'Certificate issuance and rotation is handled automatically by the mesh\'s control plane, removing a significant manual operational burden — but also meaning certificate-related outages trace back to the control plane, not individual services.',
+    ],
+  },
+  'service-mesh/mtls/probe-traffic-is-rewritten-to-port-15020-not-simply-exempted': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'mTLS & Certificate Management',                                          route: '/service-mesh/mtls' },
+      { label: 'Mesh-Wide PeerAuthentication Must Be Named default in the Root Namespace', route: '/service-mesh/mtls/mesh-wide-peerauthentication-must-be-named-default-in-the-root-ns' },
+    ],
+    tip: 'The sidecar injector rewrites HTTP/gRPC probes to target istio-agent\'s own port 15020 instead of the app\'s real port — that\'s what actually keeps probe traffic out of Envoy\'s mTLS-enforcing inbound listener, not just "coming from the kubelet."',
+    gotchas: [
+      'Disabling sidecar.istio.io/rewriteAppHTTPProbers removes this protection — probes then genuinely fail their TLS handshake under STRICT mode.',
+    ],
+  },
+  'service-mesh/mtls/mesh-wide-peerauthentication-must-be-named-default-in-the-root-ns': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Probe Traffic Is Rewritten to Port 15020, Not Simply Exempted',  route: '/service-mesh/mtls/probe-traffic-is-rewritten-to-port-15020-not-simply-exempted' },
+      { label: 'The CA Secret Is Named cacerts, Not istio-ca-secret',            route: '/service-mesh/mtls/the-ca-secret-is-named-cacerts-not-istio-ca-secret' },
+    ],
+    tip: 'A mesh-wide PeerAuthentication needs no selector, must live in the root namespace, AND must be named exactly "default" — a differently-named policy meeting the other two conditions applies with no error but is never picked up as the mesh baseline.',
+    gotchas: [
+      'The same "must be named default" rule applies at the namespace level too, for a namespace\'s own baseline policy.',
+    ],
+  },
+  'service-mesh/mtls/the-ca-secret-is-named-cacerts-not-istio-ca-secret': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Mesh-Wide PeerAuthentication Must Be Named default in the Root Namespace', route: '/service-mesh/mtls/mesh-wide-peerauthentication-must-be-named-default-in-the-root-ns' },
+      { label: 'mTLS & Certificate Management',                                          route: '/service-mesh/mtls' },
+    ],
+    tip: 'Modern Istio unified two historically separate secret names (cacerts for a custom CA, istio-ca-secret for the auto-generated one) into a single cacerts secret for both cases — an istio-generated key distinguishes them internally now.',
+    gotchas: [
+      'Deleting a secret named istio-ca-secret on a current Istio installation silently does nothing — the running control plane is watching for cacerts specifically.',
     ],
   },
   'service-mesh/authorization': {
@@ -39494,6 +43892,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Authorization policies are evaluated per-namespace by default — a policy intended mesh-wide needs to be applied at the correct scope, or it silently only applies to one namespace.',
     ],
   },
+  'service-mesh/authorization/empty-rules-array-vs-one-empty-rule-are-opposite-behaviors': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Authorization Policies',                                                     route: '/service-mesh/authorization' },
+      { label: 'AuthorizationPolicy Has No Naming Requirement, Unlike PeerAuthentication',    route: '/service-mesh/authorization/authorizationpolicy-has-no-naming-requirement-unlike-peerauthentication' },
+    ],
+    tip: 'Empty rules under DENY match nothing (no effect); empty rules under ALLOW also match nothing, but that flips the workload to deny-by-default — making empty-rules ALLOW, not DENY, the correct deny-all idiom.',
+    gotchas: [
+      'rules: [] (empty array, never matches) and rules: [{}] (one empty rule, always matches) look almost identical but produce opposite results.',
+    ],
+  },
+  'service-mesh/authorization/authorizationpolicy-has-no-naming-requirement-unlike-peerauthentication': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Empty Rules Array vs. One Empty Rule Are Opposite Behaviors',  route: '/service-mesh/authorization/empty-rules-array-vs-one-empty-rule-are-opposite-behaviors' },
+      { label: 'CUSTOM Is a Fourth Action, Evaluated Before DENY and ALLOW',   route: '/service-mesh/authorization/custom-is-a-fourth-action-evaluated-before-deny-and-allow' },
+    ],
+    tip: 'Unlike PeerAuthentication\'s mesh-wide policy (which must be named exactly "default"), AuthorizationPolicy has no naming requirement at all — multiple mesh-wide resources with any names all apply cumulatively.',
+    gotchas: [
+      'The real risk here runs opposite to PeerAuthentication\'s: forgetting about old, differently-named mesh-wide policies that are still silently contributing to the effective decision.',
+    ],
+  },
+  'service-mesh/authorization/custom-is-a-fourth-action-evaluated-before-deny-and-allow': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'AuthorizationPolicy Has No Naming Requirement, Unlike PeerAuthentication', route: '/service-mesh/authorization/authorizationpolicy-has-no-naming-requirement-unlike-peerauthentication' },
+      { label: 'Authorization Policies',                                                  route: '/service-mesh/authorization' },
+    ],
+    tip: 'CUSTOM delegates the authorization decision to an external extension provider and is evaluated even before DENY — the full precedence is CUSTOM → DENY → ALLOW, one stage more than ALLOW/DENY/AUDIT alone.',
+    gotchas: [
+      'A CUSTOM provider\'s "allow" result cannot bypass a separately-configured DENY policy — it still has to clear DENY/ALLOW afterward.',
+    ],
+  },
   'service-mesh/gateway-api': {
     apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
     related: [
@@ -39503,6 +43934,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Gateway API adoption varies by mesh/ingress implementation — not every feature in the spec is necessarily supported by every implementation yet.',
       'Migrating from Ingress to Gateway API is a real migration effort, not a drop-in replacement, despite solving overlapping problems.',
+    ],
+  },
+  'service-mesh/gateway-api/specificity-beats-timestamp-in-httproute-conflict-resolution': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Kubernetes Gateway API',                                                     route: '/service-mesh/gateway-api' },
+      { label: 'ReferenceGrant Graduated to v1 — the Main Page Used the Older v1beta1',       route: '/service-mesh/gateway-api/referencegrant-graduated-to-v1-main-page-uses-the-older-v1beta1' },
+    ],
+    tip: 'HTTPRoute conflict resolution checks match specificity (method, header count, query param count, path) FIRST — creation timestamp only breaks ties between equally-specific rules, it is never the primary rule.',
+    gotchas: [
+      'A more specific route always wins over a less specific one, even if the less specific route was created first — deploy order is not a reliable precedence lever.',
+    ],
+  },
+  'service-mesh/gateway-api/referencegrant-graduated-to-v1-main-page-uses-the-older-v1beta1': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Specificity Beats Timestamp in HTTPRoute Conflict Resolution',                route: '/service-mesh/gateway-api/specificity-beats-timestamp-in-httproute-conflict-resolution' },
+      { label: 'Check the Gateway’s Own Programmed Condition, Not Just the Route',            route: '/service-mesh/gateway-api/check-the-gateways-own-programmed-condition-not-just-the-route' },
+    ],
+    tip: 'ReferenceGrant recently graduated from v1beta1 to a stable v1 — existing v1beta1 manifests still work fine (identical schema), but new ones should use v1 to match Gateway/HTTPRoute/GatewayClass.',
+    gotchas: [
+      'Different resource kinds within the same API group can graduate to stable versions at different times — check each resource\'s own current version rather than assuming the whole group moves together.',
+    ],
+  },
+  'service-mesh/gateway-api/check-the-gateways-own-programmed-condition-not-just-the-route': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'ReferenceGrant Graduated to v1 — the Main Page Used the Older v1beta1', route: '/service-mesh/gateway-api/referencegrant-graduated-to-v1-main-page-uses-the-older-v1beta1' },
+      { label: 'Kubernetes Gateway API',                                               route: '/service-mesh/gateway-api' },
+    ],
+    tip: 'When multiple HTTPRoutes attached to the same Gateway all fail at once, check the Gateway\'s own status.conditions for Programmed FIRST — a shared root cause there explains simultaneous failures far more often than coincidental per-route issues.',
+    gotchas: [
+      'Individual listeners on a Gateway carry their own separate conditions — one can be healthy while another on the same Gateway is not.',
     ],
   },
   'service-mesh/ingress-gateway': {
@@ -39517,6 +43981,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'TLS termination at the ingress gateway versus passthrough to the backend service are meaningfully different configurations with different certificate-management implications.',
     ],
   },
+  'service-mesh/ingress-gateway/tls-secret-must-match-the-gateways-own-namespace-not-always-istio-system': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Ingress Gateway',                                                    route: '/service-mesh/ingress-gateway' },
+      { label: 'SNI Filter Chain Matching Is What Actually Selects the Right Cert',   route: '/service-mesh/ingress-gateway/sni-filter-chain-matching-is-what-actually-selects-the-right-cert' },
+    ],
+    tip: 'TLS secrets must live in the SAME namespace as the Gateway workload — istio-system for the default gateway, but a dedicated gateway deployed elsewhere needs its secrets in THAT namespace instead.',
+    gotchas: [
+      'Granting every team broad Secret-write access to istio-system to satisfy a misunderstood "always istio-system" rule is an avoidable, real security over-grant.',
+    ],
+  },
+  'service-mesh/ingress-gateway/sni-filter-chain-matching-is-what-actually-selects-the-right-cert': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'TLS Secret Must Match the Gateway’s Own Namespace, Not Always istio-system',      route: '/service-mesh/ingress-gateway/tls-secret-must-match-the-gateways-own-namespace-not-always-istio-system' },
+      { label: 'REGISTRY_ONLY Blocks Traffic via a BlackHoleCluster 502, Not by Removing Routes',  route: '/service-mesh/ingress-gateway/registry-only-blocks-traffic-via-a-blackholecluster-502-not-by-removing-routes' },
+    ],
+    tip: 'Multiple TLS certs on one gateway port work via SNI-based filter chain matching on the plaintext ClientHello — a wrong-cert symptom is a TLS-listener bug, not a VirtualService routing bug, since VirtualService runs entirely after this match happens.',
+    gotchas: [
+      'An overly broad or mistyped "hosts" value on a Gateway server entry becomes the literal SNI match criteria — it can silently steal traffic meant for a different hostname\'s filter chain.',
+    ],
+  },
+  'service-mesh/ingress-gateway/registry-only-blocks-traffic-via-a-blackholecluster-502-not-by-removing-routes': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'SNI Filter Chain Matching Is What Actually Selects the Right Cert', route: '/service-mesh/ingress-gateway/sni-filter-chain-matching-is-what-actually-selects-the-right-cert' },
+      { label: 'Ingress Gateway',                                                  route: '/service-mesh/ingress-gateway' },
+    ],
+    tip: 'REGISTRY_ONLY mode blocks unmatched egress via a BlackHoleCluster that returns a local 502 from the CALLER\'s own sidecar — the request never reaches the real destination, so checking the destination\'s logs is always a dead end.',
+    gotchas: [
+      'envoy_cluster_upstream_rq{cluster_name="BlackHoleCluster"} is a real, actionable metric for catching services that need a ServiceEntry they don\'t have yet.',
+    ],
+  },
   'service-mesh/multi-cluster': {
     apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
     related: [
@@ -39528,6 +44025,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Certificate trust must be shared across clusters (a common root CA) for cross-cluster mTLS to work — mismatched trust domains break cross-cluster communication silently.',
     ],
   },
+  'service-mesh/multi-cluster/multi-primary-discovery-is-independent-api-watching-not-a-peer-protocol': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Multi-Cluster Mesh',                                                    route: '/service-mesh/multi-cluster' },
+      { label: 'remotePilotAddress Belongs to Primary-Remote, Not Multi-Primary',        route: '/service-mesh/multi-cluster/remotepilotaddress-belongs-to-primary-remote-not-multi-primary' },
+    ],
+    tip: 'Each Istiod in a multi-primary mesh independently watches the OTHER cluster\'s Kubernetes API server via remote-secret credentials — there is no Istiod-to-Istiod peer protocol, so one cluster\'s Istiod crashing does not stale the other cluster\'s view of it as long as its API server stays reachable.',
+    gotchas: [
+      'Assuming Istiod instances talk to each other directly (rather than each independently watching the other cluster\'s API server) leads to the wrong diagnosis when troubleshooting cross-cluster discovery issues.',
+      'A remote secret grants API-server access, not a link to the other cluster\'s Istiod — check API server reachability, not Istiod health, when cross-cluster discovery breaks.',
+    ],
+  },
+  'service-mesh/multi-cluster/remotepilotaddress-belongs-to-primary-remote-not-multi-primary': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Multi-Primary Discovery Is Independent API Watching, Not a Peer Protocol', route: '/service-mesh/multi-cluster/multi-primary-discovery-is-independent-api-watching-not-a-peer-protocol' },
+      { label: 'Kiali Multi-Cluster Support Predates 1.73 by Years',                       route: '/service-mesh/multi-cluster/kiali-multi-cluster-support-predates-1-73-by-years' },
+    ],
+    tip: '`remotePilotAddress` points a Primary-Remote REMOTE cluster\'s sidecars at the primary\'s Istiod for xDS — it has no role in Multi-Primary, where every cluster runs its own full Istiod and never needs to borrow another cluster\'s control plane.',
+    gotchas: [
+      'Seeing `remotePilotAddress` in a cluster\'s config is a reliable signal that cluster is a Primary-Remote "remote," not a Multi-Primary peer.',
+      'Setting `remotePilotAddress` to try to fix Multi-Primary cross-cluster discovery is the wrong lever — the actual mechanism is remote-secret-based API watching.',
+    ],
+  },
+  'service-mesh/multi-cluster/kiali-multi-cluster-support-predates-1-73-by-years': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'remotePilotAddress Belongs to Primary-Remote, Not Multi-Primary', route: '/service-mesh/multi-cluster/remotepilotaddress-belongs-to-primary-remote-not-multi-primary' },
+      { label: 'Kiali Service Graph',                                            route: '/service-mesh/kiali' },
+    ],
+    tip: 'Kiali multi-cluster graph support goes back to its early 1.x line (v1.29/1.30\'s initial "Cluster Boxes" feature), refined gradually since — check your specific version\'s own release notes rather than relying on a remembered version-number gate, especially since Kiali has since moved to a v2.x release series.',
+    gotchas: [
+      'Assuming an older Kiali install has zero multi-cluster graph capability can trigger an unnecessary upgrade — check that version\'s own release notes first.',
+      'Kiali has moved past its 1.x line entirely to a v2.x series — a 1.x version-number gate is stale regardless of whether the specific number was ever accurate.',
+    ],
+  },
   'service-mesh/ambient-mesh': {
     apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
     related: [
@@ -39537,6 +44070,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Ambient mesh is a genuinely different architecture, not just a configuration toggle — migrating from sidecar mode requires understanding what functionality moves where.',
       'Not every mesh feature available in sidecar mode has full parity in ambient mode yet, given how recently ambient mesh was introduced relative to the sidecar model.',
+    ],
+  },
+  'service-mesh/ambient-mesh/ambient-mesh-reached-ga-at-istio-1-24-not-1-22': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Ambient Mesh',                                             route: '/service-mesh/ambient-mesh' },
+      { label: 'Default Redirection Is iptables+GENEVE, Not eBPF',         route: '/service-mesh/ambient-mesh/default-redirection-is-iptables-geneve-not-ebpf' },
+    ],
+    tip: 'Istio\'s own dedicated GA blog post is the authoritative source for "when did X become stable" claims — a version number remembered from an earlier Beta-era announcement will understate how long the real stability guarantee has existed.',
+    gotchas: [
+      'Citing an earlier Beta-release version as the "stable since" date overstates how long a feature\'s official stability guarantees have actually applied.',
+      'Beta and GA carry different upgrade-compatibility and support commitments in Istio\'s own versioning process — treat them as distinct milestones, not interchangeable synonyms for "usable."',
+    ],
+  },
+  'service-mesh/ambient-mesh/default-redirection-is-iptables-geneve-not-ebpf': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Ambient Mesh Reached GA at Istio 1.24, Not 1.22',                          route: '/service-mesh/ambient-mesh/ambient-mesh-reached-ga-at-istio-1-24-not-1-22' },
+      { label: 'HBONE Identity Comes From the mTLS Handshake, Not HTTP Headers',            route: '/service-mesh/ambient-mesh/hbone-identity-comes-from-the-mtls-handshake-not-http-headers' },
+    ],
+    tip: 'iptables+GENEVE is the DEFAULT ambient redirection mechanism with no special kernel floor — eBPF is a separate, explicitly opt-in mode (`values.cni.ambient.redirectMode: "ebpf"`) requiring kernel 4.20+.',
+    gotchas: [
+      'Ruling out Ambient Mesh entirely because of an older kernel is often premature — the default iptables+GENEVE path has no comparable kernel requirement; only the opt-in eBPF mode does.',
+      'Assuming eBPF is automatically active by default risks misattributing eBPF-specific debugging tools and failure modes to a cluster actually running the default iptables path.',
+    ],
+  },
+  'service-mesh/ambient-mesh/hbone-identity-comes-from-the-mtls-handshake-not-http-headers': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Default Redirection Is iptables+GENEVE, Not eBPF', route: '/service-mesh/ambient-mesh/default-redirection-is-iptables-geneve-not-ebpf' },
+      { label: 'Ambient Mesh',                                     route: '/service-mesh/ambient-mesh' },
+    ],
+    tip: 'HBONE\'s identity guarantee comes from the underlying mTLS handshake (verified SPIFFE certificates) — the HTTP/2 CONNECT request that follows only tunnels the original TCP stream, it does not itself carry or verify identity.',
+    gotchas: [
+      'Assuming identity travels in an HTTP header (rather than the TLS layer) understates HBONE\'s actual security guarantee — a header would be trivially forgeable application data, unlike a cryptographically-verified certificate.',
+      'The HTTP/2 CONNECT request happens AFTER the mTLS channel is already established — it is not the mechanism that authenticates the connection.',
     ],
   },
   'service-mesh/consul': {
@@ -39551,6 +44120,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Multi-datacenter Consul federation has its own operational model distinct from Istio\'s multi-cluster approach.',
     ],
   },
+  'service-mesh/consul/consul-certs-are-genuinely-spiffe-format-not-a-separate-identity-model': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Consul Service Mesh',                                                route: '/service-mesh/consul' },
+      { label: 'Leaf Cert Rotation Is a 60–90% Window, Not a Fixed 60%',              route: '/service-mesh/consul/leaf-cert-rotation-is-a-60-90-percent-window-not-a-fixed-60-percent' },
+    ],
+    tip: 'Consul\'s per-service mTLS certs genuinely use spiffe:// URI SANs, the same format Istio uses — what differs is the issuer (Consul\'s own CA vs. Istiod\'s), not the identity scheme, so cross-mesh federation is a CA-trust problem, not a format-translation problem.',
+    gotchas: [
+      'Assuming Consul uses a wholly different identity model than SPIFFE leads to overestimating the effort of federating Consul with an Istio mesh.',
+      'Consul ACL tokens govern API/agent-level access — they are not the same thing as the per-request mTLS identity carried in service mesh traffic.',
+    ],
+  },
+  'service-mesh/consul/leaf-cert-rotation-is-a-60-90-percent-window-not-a-fixed-60-percent': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Consul Certs Are Genuinely SPIFFE-Format, Not a Separate Identity Model', route: '/service-mesh/consul/consul-certs-are-genuinely-spiffe-format-not-a-separate-identity-model' },
+      { label: 'Peered Service DNS Names Include the Peer’s Own Name as a Segment',       route: '/service-mesh/consul/peered-service-dns-names-include-the-peers-own-name-as-a-segment' },
+    ],
+    tip: 'consul-dataplane refreshes a leaf certificate somewhere in a jittered 60%–90% window of its elapsed TTL, not at one fixed instant — a refresh landing anywhere in that range is normal, healthy behavior, not a fault.',
+    gotchas: [
+      'Alerting on a cert that hasn\'t refreshed by exactly 60% of its TTL will fire constantly on perfectly healthy proxies — widen the threshold to the real 60%–90% window instead.',
+      'The rotation jitter is deliberate: it spreads CA request load across many proxies instead of synchronizing every proxy to refresh at the same instant.',
+    ],
+  },
+  'service-mesh/consul/peered-service-dns-names-include-the-peers-own-name-as-a-segment': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Leaf Cert Rotation Is a 60–90% Window, Not a Fixed 60%', route: '/service-mesh/consul/leaf-cert-rotation-is-a-60-90-percent-window-not-a-fixed-60-percent' },
+      { label: 'Consul Service Mesh',                                   route: '/service-mesh/consul' },
+    ],
+    tip: 'A peered Consul service is queried as `<service>.service.<peer-name>.peer.<domain>` — the peer\'s own name is a required, distinct segment, not an implicit or optional part of the DNS name.',
+    gotchas: [
+      'A DNS template with no place for the peer\'s name fails precisely when you have multiple peers exporting same-named services — exactly the scenario cluster peering exists to support.',
+      'The SRV form (`_<service>._<tag>.service.<peer-name>.peer.<domain>`) returns the advertised port too, useful when a plain A/AAAA lookup isn\'t enough.',
+    ],
+  },
   'service-mesh/linkerd': {
     apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
     related: [
@@ -39561,6 +44166,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Linkerd\'s narrower feature set means certain advanced Istio capabilities (like some traffic-splitting patterns) may not have a direct equivalent.',
       'The lower resource footprint versus Istio is a real, measurable difference at scale, not just a marketing claim — worth benchmarking for genuinely resource-constrained clusters.',
+    ],
+  },
+  'service-mesh/linkerd/trafficsplit-cannot-be-self-referential-apex-needs-its-own-name': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Linkerd',                                                                    route: '/service-mesh/linkerd' },
+      { label: 'Circuit Breaking Exists — It Needs an Explicit failure-accrual Annotation',   route: '/service-mesh/linkerd/circuit-breaking-exists-but-needs-an-explicit-failure-accrual-annotation' },
+    ],
+    tip: 'SMI TrafficSplit forbids a backend sharing the apex service\'s own name — the apex (spec.service) and every backend need distinct Kubernetes Service names, or the config is self-referential and hard to reason about.',
+    gotchas: [
+      'A correct canary setup needs THREE real Services (apex + stable + canary), not two — reusing the apex name for the "stable" backend is the exact mistake to avoid.',
+    ],
+  },
+  'service-mesh/linkerd/circuit-breaking-exists-but-needs-an-explicit-failure-accrual-annotation': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'TrafficSplit Cannot Be Self-Referential — apex Needs Its Own Name',      route: '/service-mesh/linkerd/trafficsplit-cannot-be-self-referential-apex-needs-its-own-name' },
+      { label: 'external-issuer Alone Leaves the Self-Generated Trust Anchor in Place',  route: '/service-mesh/linkerd/external-issuer-alone-leaves-the-self-generated-trust-anchor-in-place' },
+    ],
+    tip: 'Linkerd has real failure-accrual circuit breaking — it\'s just off by default. EWMA load balancing alone does not eject a failing endpoint; add balancer.linkerd.io/failure-accrual to a Service to actually enable ejection and recovery probing.',
+    gotchas: [
+      'Building custom application-level failure handling because "Linkerd has no circuit breaking" usually means the failure-accrual annotation was never checked first.',
+    ],
+  },
+  'service-mesh/linkerd/external-issuer-alone-leaves-the-self-generated-trust-anchor-in-place': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Circuit Breaking Exists — It Needs an Explicit failure-accrual Annotation', route: '/service-mesh/linkerd/circuit-breaking-exists-but-needs-an-explicit-failure-accrual-annotation' },
+      { label: 'Linkerd',                                                                   route: '/service-mesh/linkerd' },
+    ],
+    tip: '--identity-external-issuer only externalizes the issuer cert — Linkerd\'s trust anchor (root CA) stays self-generated with its original long TTL unless --identity-trust-anchors-file is ALSO provided at install time.',
+    gotchas: [
+      'A team that only sets --identity-external-issuer has genuinely improved issuer rotation, but the actual root of trust is still unmanaged — verify by inspecting the linkerd-identity-trust-roots secret directly.',
     ],
   },
   'service-mesh/kiali': {
@@ -39575,6 +44213,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The visual graph is a useful diagnostic tool, not a substitute for actual metrics-based alerting — nobody watches a topology graph 24/7 the way an alert fires.',
     ],
   },
+  'service-mesh/kiali/envoy-config-viewer-queries-istiod-not-prometheus': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Kiali & Dashboards',                                            route: '/service-mesh/kiali' },
+      { label: 'KIA0201 Is Duplicate DestinationRules, Not a Missing Subset',    route: '/service-mesh/kiali/kia0201-is-duplicate-destinationrules-not-missing-subset' },
+    ],
+    tip: 'Kiali\'s service graph reads from Prometheus, but the Envoy Config Viewer is a separate feature entirely — it queries Istiod\'s debug endpoint directly, so a Prometheus outage doesn\'t break it.',
+    gotchas: [
+      'Different Kiali features have independent data-source dependencies — know which one (Prometheus vs. Istiod) a specific feature relies on before assuming a single outage explains every symptom.',
+    ],
+  },
+  'service-mesh/kiali/kia0201-is-duplicate-destinationrules-not-missing-subset': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Envoy Config Viewer Queries Istiod, Not Prometheus',            route: '/service-mesh/kiali/envoy-config-viewer-queries-istiod-not-prometheus' },
+      { label: 'Animation Dot Speed Is Response Time, Density Is RPS',          route: '/service-mesh/kiali/animation-dot-speed-is-response-time-density-is-rps' },
+    ],
+    tip: 'KIA0201 means "more than one DestinationRule for the same host/subset combination" — the real code for a VirtualService referencing a non-existent subset is KIA1107.',
+    gotchas: [
+      'A CI/CD check filtering Kiali validation output for the wrong code silently fails to catch the real problem, with no indication anything is wrong until it causes an incident.',
+    ],
+  },
+  'service-mesh/kiali/animation-dot-speed-is-response-time-density-is-rps': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'KIA0201 Is Duplicate DestinationRules, Not a Missing Subset',  route: '/service-mesh/kiali/kia0201-is-duplicate-destinationrules-not-missing-subset' },
+      { label: 'Kiali & Dashboards',                                          route: '/service-mesh/kiali' },
+    ],
+    tip: 'Traffic animation dot SPEED represents response time (faster = quicker responses), while dot DENSITY represents request rate — the two are easy to conflate but encode different signals.',
+    gotchas: [
+      'A dense-but-slow edge (high RPS AND high latency together) is the highest-priority edge to investigate during an incident — the corrected mental model makes this pattern visible at a glance.',
+    ],
+  },
   'service-mesh/metrics': {
     apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
     related: [
@@ -39585,6 +44256,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Mesh-level metrics show NETWORK-layer success/failure (did the HTTP call succeed) — they cannot see application-level logical errors returned with a 200 status code, a genuine blind spot to be aware of.',
       'High-cardinality labels on mesh metrics (like per-request unique IDs) can overwhelm a metrics backend not designed for that cardinality.',
+    ],
+  },
+  'service-mesh/metrics/grafana-dashboard-ids-were-mismatched-with-their-actual-names': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Metrics & Telemetry',                                                        route: '/service-mesh/metrics' },
+      { label: 'Telemetry API Scope Override Is Full Field Replacement, Not a Merge',         route: '/service-mesh/metrics/telemetry-api-scope-override-is-full-field-replacement-not-merge' },
+    ],
+    tip: 'The correct official Istio Grafana dashboard IDs, verified against grafana.com: 7639 (mesh), 7636 (service), 7630 (workload), 7645 (control plane), 11829 (performance).',
+    gotchas: [
+      'A specific numeric ID reads as authoritative, making it less likely to be double-checked before use — importing the wrong dashboard by ID gives no error, just the wrong panels.',
+    ],
+  },
+  'service-mesh/metrics/telemetry-api-scope-override-is-full-field-replacement-not-merge': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Grafana Dashboard IDs Were Mismatched With Their Actual Names',   route: '/service-mesh/metrics/grafana-dashboard-ids-were-mismatched-with-their-actual-names' },
+      { label: 'Histogram Bucket Boundaries Are Fixed and Cannot Be Customized',  route: '/service-mesh/metrics/histogram-bucket-boundaries-are-fixed-and-cannot-be-customized' },
+    ],
+    tip: 'A namespace- or workload-level Telemetry resource completely REPLACES whichever specific field it touches from the broader scope — it does not merge with it, so unspecified parts of that same field must be re-declared explicitly.',
+    gotchas: [
+      'Only the touched field is replaced — other untouched fields and other metric matches still inherit normally from the broader scope.',
+    ],
+  },
+  'service-mesh/metrics/histogram-bucket-boundaries-are-fixed-and-cannot-be-customized': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Telemetry API Scope Override Is Full Field Replacement, Not a Merge', route: '/service-mesh/metrics/telemetry-api-scope-override-is-full-field-replacement-not-merge' },
+      { label: 'Metrics & Telemetry',                                                route: '/service-mesh/metrics' },
+    ],
+    tip: 'In-proxy telemetry has no mechanism to customize histogram bucket boundaries — every current Istio installation is stuck with the fixed defaults, which limits histogram_quantile() precision for tight SLOs near widely-spaced buckets.',
+    gotchas: [
+      'A reported p99 value between two fixed bucket boundaries (e.g. 10ms and 25ms) is a linear interpolation, not a genuinely measured latency.',
     ],
   },
   'service-mesh/tracing': {
@@ -39599,6 +44303,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A trace missing a hop usually means that specific service forgot to propagate the trace context headers, not that the mesh itself failed to instrument it.',
     ],
   },
+  'service-mesh/tracing/telemetry-api-sampling-wins-over-meshconfig-when-both-are-set': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Distributed Tracing',                                          route: '/service-mesh/tracing' },
+      { label: 'OpenTelemetry Provider Needs Istio 1.22+, Not 1.16+',          route: '/service-mesh/tracing/opentelemetry-provider-needs-istio-1-22-not-1-16' },
+    ],
+    tip: 'When both meshConfig.defaultConfig.tracing.sampling and a Telemetry resource\'s randomSamplingPercentage are configured, the Telemetry API value always wins — the mesh-config value becomes silently irrelevant wherever the Telemetry resource applies.',
+    gotchas: [
+      'Editing meshConfig.defaultConfig.tracing.sampling has no effect if a competing Telemetry resource already governs that scope — no error, just silence.',
+    ],
+  },
+  'service-mesh/tracing/opentelemetry-provider-needs-istio-1-22-not-1-16': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Telemetry API Sampling Wins Over meshConfig When Both Are Set', route: '/service-mesh/tracing/telemetry-api-sampling-wins-over-meshconfig-when-both-are-set' },
+      { label: 'Exemplars Are Defined by OpenMetrics, Not an IETF RFC',         route: '/service-mesh/tracing/exemplars-are-defined-by-openmetrics-not-an-ietf-rfc' },
+    ],
+    tip: 'The OpenTelemetry extension provider (meshConfig.extensionProviders[0].opentelemetry) is documented starting at Istio 1.22, not 1.16 — confirm the running control plane version before planning a migration around it.',
+    gotchas: [
+      'On an unsupported older version, the failure mode can be silent (no error, just no data reaching the collector) rather than an obvious validation rejection.',
+    ],
+  },
+  'service-mesh/tracing/exemplars-are-defined-by-openmetrics-not-an-ietf-rfc': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'OpenTelemetry Provider Needs Istio 1.22+, Not 1.16+', route: '/service-mesh/tracing/opentelemetry-provider-needs-istio-1-22-not-1-16' },
+      { label: 'Distributed Tracing',                                 route: '/service-mesh/tracing' },
+    ],
+    tip: 'Prometheus Exemplars are defined by the OpenMetrics specification, not any IETF RFC — a fabricated "RFC 4652" citation was caught and corrected on the main page during this batch.',
+    gotchas: [
+      'OpenMetrics caps a histogram bucket at one exemplar and limits total exemplar label length to 128 UTF-8 characters — exemplars are a lightweight pointer, not a full event-logging channel.',
+    ],
+  },
   'service-mesh/performance': {
     apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
     related: [
@@ -39608,6 +44345,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Proxy resource requests/limits need explicit tuning per workload — a default sidecar resource allocation that\'s too small throttles the proxy itself under high traffic.',
       'Ambient mesh\'s per-node proxy architecture specifically targets this overhead concern by eliminating the per-pod sidecar, a real architectural response to a genuine performance criticism of the sidecar model.',
+    ],
+  },
+  'service-mesh/performance/useremoteaddress-is-about-client-ip-trust-not-http2-performance': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Service Mesh Performance',                                        route: '/service-mesh/performance' },
+      { label: 'Envoy Has No JIT Warmup — Only Optional WASM Filters Do',          route: '/service-mesh/performance/envoy-has-no-jit-warmup-only-optional-wasm-filters-do' },
+    ],
+    tip: 'useRemoteAddress controls whether Envoy trusts the raw connection address or the X-Forwarded-For chain for client identity — it has nothing to do with HTTP/2 performance, and the correct value differs for edge vs. internal proxies.',
+    gotchas: [
+      'Setting it to true on internal sidecars overwrites the original client IP with each hop\'s own upstream address, corrupting log/access-control attribution for zero performance benefit.',
+    ],
+  },
+  'service-mesh/performance/envoy-has-no-jit-warmup-only-optional-wasm-filters-do': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'useRemoteAddress Is About Client IP Trust, Not HTTP/2 Performance', route: '/service-mesh/performance/useremoteaddress-is-about-client-ip-trust-not-http2-performance' },
+      { label: 'Memory Overhead Scales Per Service, Not Per 1000 Services',         route: '/service-mesh/performance/memory-overhead-scales-per-service-not-per-1000-services' },
+    ],
+    tip: 'Envoy\'s standard filter chain is natively-compiled C++ with no runtime JIT step — the real warmup effect on fresh pods comes from cold connection pools, DNS caches, and incomplete xDS propagation, not "JIT-compiled filters."',
+    gotchas: [
+      'Only optional WASM filters (via V8/Wasmtime) involve any JIT-like compilation — most Istio sidecars never load one.',
+    ],
+  },
+  'service-mesh/performance/memory-overhead-scales-per-service-not-per-1000-services': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Envoy Has No JIT Warmup — Only Optional WASM Filters Do', route: '/service-mesh/performance/envoy-has-no-jit-warmup-only-optional-wasm-filters-do' },
+      { label: 'Service Mesh Performance',                                route: '/service-mesh/performance' },
+    ],
+    tip: 'The main page\'s own formula and its own worked examples disagreed by roughly 1000x — reconciled to ~1MB per service (not per 1000), which also makes the Sidecar CRD scoping recommendation numerically well-motivated.',
+    gotchas: [
+      'Cross-checking a stated formula against a page\'s own separately-authored worked examples is a real, self-contained way to catch this kind of drift.',
     ],
   },
 
@@ -39624,6 +44394,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Explicitly stating assumptions and tradeoffs out loud shows the interviewer your reasoning, not just your conclusion.',
     ],
   },
+  'system-design/framework/ssd-random-read-is-150-microseconds-not-100': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'System Design Framework',              route: '/system-design/framework' },
+      { label: 'Size for Peak QPS, Not Average QPS',    route: '/system-design/framework/size-for-peak-qps-not-average-qps' },
+    ],
+    tip: 'The canonical "Latency Numbers Every Programmer Should Know" figure for a 4K random SSD read is ~150 microseconds (0.15ms) — not 0.1ms. Chained across multiple reads against a tight latency budget, that rounding difference compounds fast.',
+    gotchas: [
+      'Using 0.1ms instead of 0.15ms understates real storage latency by a third — enough to make a design look safely within budget when it is actually near the edge.',
+      'The other classic numbers (disk seek 10ms, same-DC round trip ~0.5ms, cross-region round trip ~150ms) are accurate as commonly cited — only the SSD figure needed correction.',
+    ],
+  },
+  'system-design/framework/size-for-peak-qps-not-average-qps': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'SSD Random Read Is 150 Microseconds, Not 100',                          route: '/system-design/framework/ssd-random-read-is-150-microseconds-not-100' },
+      { label: 'Little’s Law Turns QPS Into Concurrent Connections Needed',              route: '/system-design/framework/littles-law-turns-qps-into-concurrent-connections-needed' },
+    ],
+    tip: 'A 24-hour average QPS figure is not what you provision infrastructure to handle — real traffic is non-uniform, and the standard interview default is to size for roughly 2–3x the average at peak.',
+    gotchas: [
+      'Stating "that\'s the average; I\'d provision for ~2-3x that at peak" unprompted is a strong, low-cost signal in a system design interview.',
+      'A system provisioned exactly to its average QPS will be under-capacity during its busiest, highest-stakes hours.',
+    ],
+  },
+  'system-design/framework/littles-law-turns-qps-into-concurrent-connections-needed': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Size for Peak QPS, Not Average QPS', route: '/system-design/framework/size-for-peak-qps-not-average-qps' },
+      { label: 'System Design Framework',             route: '/system-design/framework' },
+    ],
+    tip: 'Little\'s Law (L = λW) converts QPS (λ) and average latency (W) into the concurrency (L) — worker threads, connections — a service actually needs provisioned to avoid queueing delay.',
+    gotchas: [
+      'An undersized thread/connection pool causes queueing, which raises real latency, which (per Little\'s Law) raises the true required concurrency further — a feedback loop, not a stable degraded state.',
+      'Use the PEAK QPS figure (not the average) as λ when sizing a pool with Little\'s Law, for the same reason peak matters for raw capacity planning.',
+    ],
+  },
   'system-design/capacity-estimation': {
     apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
     related: [
@@ -39633,6 +44439,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Rough order-of-magnitude estimates are usually sufficient — obsessing over precise numbers in an interview setting wastes time better spent on the actual architecture discussion.',
       'Peak traffic (not average) is usually the number that matters for capacity planning — average load can look comfortably low while peak load reveals a real bottleneck.',
+    ],
+  },
+  'system-design/capacity-estimation/ssd-is-65x-faster-than-hdd-seek-not-1000x': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Capacity Estimation',                                          route: '/system-design/capacity-estimation' },
+      { label: 'Redis GET Latency Is Network RTT, Not an Extra 1ms',            route: '/system-design/capacity-estimation/redis-get-latency-is-network-rtt-not-an-extra-1ms' },
+    ],
+    tip: 'SSD random read (~150µs) is roughly 65x faster than a disk seek (~10ms) — check a "rule of thumb" against its own supporting table before trusting it; this one was off by an order of magnitude.',
+    gotchas: [
+      'Cross-checking a summary claim against the raw numbers it summarizes is a fast, zero-external-research way to catch this class of error.',
+      'The 1,000x figure isn\'t meaningless — it\'s closer to right for RAM vs. disk seek (100,000x) or certain sequential-throughput comparisons, just not for "random SSD read vs. disk seek."',
+    ],
+  },
+  'system-design/capacity-estimation/redis-get-latency-is-network-rtt-not-an-extra-1ms': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'SSD Is ~65x Faster Than HDD Seek, Not 1,000x',                          route: '/system-design/capacity-estimation/ssd-is-65x-faster-than-hdd-seek-not-1000x' },
+      { label: 'Decimal Vendor GB vs. Binary OS GiB Diverge by ~7%',                    route: '/system-design/capacity-estimation/decimal-vendor-gb-vs-binary-os-gib-diverge-by-7-percent' },
+    ],
+    tip: 'Redis/Memcached command processing is sub-microsecond — a same-datacenter GET\'s real latency is close to the network round trip alone (~0.5ms), not an extra ~0.5ms stacked on top of it.',
+    gotchas: [
+      'Overstating a cache\'s own latency cost understates how much benefit the caching layer actually provides — the more accurate number makes the case for caching stronger, not weaker.',
+      'This compounds when stacking multiple cache/network hops in a request\'s critical path — each hop\'s overstated cost inflates the total estimated latency budget.',
+    ],
+  },
+  'system-design/capacity-estimation/decimal-vendor-gb-vs-binary-os-gib-diverge-by-7-percent': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Redis GET Latency Is Network RTT, Not an Extra 1ms', route: '/system-design/capacity-estimation/redis-get-latency-is-network-rtt-not-an-extra-1ms' },
+      { label: 'Capacity Estimation',                                route: '/system-design/capacity-estimation' },
+    ],
+    tip: 'Storage vendors use decimal (×1,000) units; OS/software report binary (×1,024) units — the gap grows from ~2.4% at KB scale to ~7.4% at GB/TB scale, which is why a "1 TB" drive shows up as "~931 GB" in an OS file browser.',
+    gotchas: [
+      'No bytes are missing when a vendor-marketed capacity and an OS-reported capacity disagree — it\'s the same physical bytes expressed in two different unit conventions.',
+      'Pick ONE convention for an entire back-of-envelope estimate and say so out loud, rather than silently mixing ×1,000 and ×1,024 across different steps of the same calculation.',
     ],
   },
   'system-design/cap-theorem': {
@@ -39647,6 +44489,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'PACELC extends CAP by also addressing the tradeoff when there is NO partition (latency vs. consistency), a distinction CAP alone doesn\'t cover.',
     ],
   },
+  'system-design/cap-theorem/the-quorum-quiz-had-a-second-technically-correct-answer': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'CAP & PACELC Theorems',                                              route: '/system-design/cap-theorem' },
+      { label: 'Sequential Consistency Orders ALL Operations, Not Just Writes',       route: '/system-design/cap-theorem/sequential-consistency-orders-all-ops-not-just-writes' },
+    ],
+    tip: 'W + R > N is a threshold, not a single specific pair — for N=3, both W=2/R=2 and W=3/R=3 satisfy it. Any quiz built around a numeric formula needs every "wrong" option checked against that same formula, not just chosen because it looks different.',
+    gotchas: [
+      'Checking a quiz\'s own internal logic (applying its stated rule to every option) is a distinct, useful verification skill from checking prose claims against external sources.',
+      'A labeled-correct answer being accurate doesn\'t guarantee every labeled-wrong option is actually wrong — both need independent verification.',
+    ],
+  },
+  'system-design/cap-theorem/sequential-consistency-orders-all-ops-not-just-writes': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'The Quorum Quiz Had a Second Technically-Correct Answer',              route: '/system-design/cap-theorem/the-quorum-quiz-had-a-second-technically-correct-answer' },
+      { label: 'Brewer Conjectured CAP in 2000 — Gilbert & Lynch Proved It in 2002',    route: '/system-design/cap-theorem/brewer-conjectured-cap-in-2000-gilbert-lynch-proved-it-in-2002' },
+    ],
+    tip: 'Sequential consistency requires ALL processes to agree on the SAME total order of ALL operations (reads and writes) — not real-time order (that\'s linearizability), and not just "writes in order" (that undersells the model).',
+    gotchas: [
+      'The property that makes sequential consistency stronger than causal consistency is "same order for EVERYONE," not merely "writes appear in order" for each observer individually.',
+      'Two unrelated (non-causal) writes CAN be seen in different orders by different observers under causal consistency, but NOT under sequential consistency — everyone must agree.',
+    ],
+  },
+  'system-design/cap-theorem/brewer-conjectured-cap-in-2000-gilbert-lynch-proved-it-in-2002': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Sequential Consistency Orders ALL Operations, Not Just Writes', route: '/system-design/cap-theorem/sequential-consistency-orders-all-ops-not-just-writes' },
+      { label: 'CAP & PACELC Theorems',                                        route: '/system-design/cap-theorem' },
+    ],
+    tip: 'Brewer conjectured CAP informally at PODC 2000; Gilbert and Lynch proved it formally in 2002, specifically for asynchronous networks and atomic (linearizable) consistency — the actual scope of "the CAP theorem."',
+    gotchas: [
+      'Modern critiques of CAP usually target its narrow formal scope (asynchronous networks, linearizable consistency specifically), not the theorem itself being wrong.',
+      'Naming both Brewer (conjecture, 2000) and Gilbert & Lynch (proof, 2002) is a level of precision that differentiates a strong interview answer from a surface-level "pick 2 of 3."',
+    ],
+  },
   'system-design/sql-vs-nosql': {
     apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
     related: [
@@ -39657,6 +44535,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Many production systems use BOTH — a relational database for transactional core data and a NoSQL store for a specific high-scale, access-pattern-optimized use case, rather than treating it as an all-or-nothing choice.',
       'NoSQL\'s "schema flexibility" shifts data consistency responsibility to the APPLICATION layer — a real tradeoff, not a free lunch.',
+    ],
+  },
+  'system-design/sql-vs-nosql/isolation-as-taught-describes-serializable-not-the-default': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'SQL vs NoSQL (overview)', route: '/system-design/sql-vs-nosql' },
+      { label: 'CAP Theorem',              route: '/system-design/cap-theorem' },
+    ],
+    tip: '"ACID-compliant" tells you a database CAN provide strong isolation — it does not tell you which isolation level is actually configured for a given transaction. Check the default before assuming the strongest guarantee applies.',
+    gotchas: [
+      'PostgreSQL defaults to Read Committed; MySQL/InnoDB defaults to Repeatable Read — neither is Serializable, the level "transactions execute as if serial" actually describes.',
+    ],
+  },
+  'system-design/sql-vs-nosql/mongodb-sharded-cluster-transactions-arrived-in-42-not-40': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'SQL vs NoSQL (overview)', route: '/system-design/sql-vs-nosql' },
+      { label: 'Database Sharding',        route: '/system-design/sharding' },
+    ],
+    tip: 'A "supported since version X" claim can depend on deployment topology — always check whether it applies to your specific shape (replica set vs. sharded cluster), not just the version number.',
+    gotchas: [
+      'MongoDB 4.0 added multi-document transactions on a single replica set only. Sharded-cluster transaction support did not ship until 4.2, a year later.',
+    ],
+  },
+  'system-design/sql-vs-nosql/dynamodb-scales-automatically-but-one-partition-still-has-a-ceiling': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'SQL vs NoSQL (overview)', route: '/system-design/sql-vs-nosql' },
+      { label: 'Database Sharding',        route: '/system-design/sharding' },
+    ],
+    tip: 'Low table-wide utilization in CloudWatch does not rule out a hot-partition problem — check per-key traffic distribution, not just the aggregate, before assuming more provisioned capacity will fix throttling.',
+    gotchas: [
+      'A single DynamoDB partition is capped at roughly 10 GB storage and 3,000 RCU / 1,000 WCU — no amount of table-level provisioning raises that ceiling for one hot key.',
     ],
   },
   'system-design/scaling': {
@@ -39671,6 +44582,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Scaling reads and scaling writes are DIFFERENT problems requiring different solutions (read replicas vs. sharding) — conflating them leads to the wrong architecture.',
     ],
   },
+  'system-design/scaling/the-largest-aws-instance-figure-was-stale-u7in-32tb-is-current': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Horizontal vs Vertical Scaling',                              route: '/system-design/scaling' },
+      { label: 'Gustafson’s Law Is Amdahl’s Optimistic Counterpart',           route: '/system-design/scaling/gustafsons-law-is-amdahls-optimistic-counterpart' },
+    ],
+    tip: 'AWS\'s current largest instance (u7in-32tb.224xlarge) is 896 vCPUs / 32 TiB RAM — the older u-24tb1.metal (448 vCPU / 24 TB) some material still cites is deprecated for new launches. A "biggest instance" figure is a snapshot in time, not a fixed ceiling.',
+    gotchas: [
+      'A stale vertical-scaling ceiling can lead to concluding horizontal scaling is needed sooner than it actually is for a given workload.',
+      'The durable interview-ready understanding is the CONCEPT (a moving ceiling set by the largest currently-available instance), not a specific memorized number.',
+    ],
+  },
+  'system-design/scaling/gustafsons-law-is-amdahls-optimistic-counterpart': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'The Largest AWS Instance Figure Was Stale — u7in-32tb Is Current', route: '/system-design/scaling/the-largest-aws-instance-figure-was-stale-u7in-32tb-is-current' },
+      { label: 'Firecracker MicroVMs Boot in ~125ms, Not Minutes',                 route: '/system-design/scaling/firecracker-microvms-boot-in-125ms-not-minutes' },
+    ],
+    tip: 'Amdahl\'s Law assumes a FIXED problem size (strong scaling) and gives a pessimistic speedup ceiling; Gustafson\'s Law assumes the problem size grows WITH the processors (weak scaling) — the scenario most horizontal scaling for user/data growth actually is.',
+    gotchas: [
+      'The two laws don\'t conflict — they answer different questions ("same job, faster?" vs. "more processors, more work done?"); the skill is recognizing which one describes your actual scaling scenario.',
+      'Citing only Amdahl\'s pessimistic ceiling for a workload that\'s actually scaling with the resources (Gustafson\'s case) understates how well horizontal scaling can work.',
+    ],
+  },
+  'system-design/scaling/firecracker-microvms-boot-in-125ms-not-minutes': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Gustafson’s Law Is Amdahl’s Optimistic Counterpart', route: '/system-design/scaling/gustafsons-law-is-amdahls-optimistic-counterpart' },
+      { label: 'Horizontal vs Vertical Scaling',                     route: '/system-design/scaling' },
+    ],
+    tip: 'AWS Lambda\'s Firecracker microVMs cold-start in ~125ms — roughly 1,000x faster than a traditional VM (2-5 min) or container (30-60s) — often making dedicated pre-warming automation unnecessary for workloads that fit serverless\'s constraints.',
+    gotchas: [
+      'The microVM boot time is only part of the picture — a heavy runtime on top (an un-optimized JVM app) can still take seconds to fully initialize even on a fast-booting microVM.',
+      'Serverless isn\'t a strictly-better replacement for VM/container autoscaling — it\'s a different point on the trade-off curve (execution time limits, runtime constraints) that happens to have near-instant elasticity.',
+    ],
+  },
   'system-design/load-balancing': {
     apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
     related: [
@@ -39681,6 +44628,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Health checks determine which backends receive traffic — a health check that doesn\'t reflect genuine readiness (just "is the process running") can route traffic to a technically-alive-but-actually-broken instance.',
       'Sticky sessions (routing a client to the same backend) reintroduce a form of statefulness that complicates horizontal scaling and failover — avoid them when possible by externalizing session state instead.',
+    ],
+  },
+  'system-design/load-balancing/albs-default-deregistration-delay-is-300-seconds-not-60': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Load Balancing',                                                    route: '/system-design/load-balancing' },
+      { label: 'VRRP Failover Takes About 3 Seconds by Default, Not Under 2',        route: '/system-design/load-balancing/vrrp-failover-takes-about-3-seconds-by-default-not-under-2' },
+    ],
+    tip: 'AWS ALB\'s default deregistration delay (connection draining) is 300 seconds (5 minutes), configurable 0-3600s — 30-60s is a common TUNED-down value, not the out-of-the-box default.',
+    gotchas: [
+      'A rolling deployment budgeted on a "typical 30-60s" drain assumption will take up to 5x longer than expected if the target group\'s deregistration delay was never explicitly configured.',
+      'NGINX and other self-managed LBs have no fixed vendor default at all — drain behavior there is purely whatever you configure.',
+    ],
+  },
+  'system-design/load-balancing/vrrp-failover-takes-about-3-seconds-by-default-not-under-2': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'ALB’s Default Deregistration Delay Is 300 Seconds, Not 60',    route: '/system-design/load-balancing/albs-default-deregistration-delay-is-300-seconds-not-60' },
+      { label: 'Why Power of Two Choices Beats Picking One Random Server',     route: '/system-design/load-balancing/why-power-of-two-choices-beats-picking-one-random-server' },
+    ],
+    tip: 'VRRP\'s failure-detection formula is (advert_int x 3) + skew_time — with keepalived\'s default 1-second advert_int, that\'s a ~3-second failover window, not under 2 seconds. Sub-second failover requires deliberately lowering advert_int.',
+    gotchas: [
+      'VRRP requires missing THREE consecutive advertisements before declaring the master down — this "x3" is baked into the protocol\'s own formula.',
+      'An alert threshold set below the real ~3-second default failover window will false-positive on every normal failover.',
+    ],
+  },
+  'system-design/load-balancing/why-power-of-two-choices-beats-picking-one-random-server': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'VRRP Failover Takes About 3 Seconds by Default, Not Under 2', route: '/system-design/load-balancing/vrrp-failover-takes-about-3-seconds-by-default-not-under-2' },
+      { label: 'Load Balancing',                                             route: '/system-design/load-balancing' },
+    ],
+    tip: 'Picking the less-loaded of 2 random servers (power of two choices) gives an EXPONENTIAL improvement in max load over picking 1 random server (Mitzenmacher) — going from 2 choices to 3+ only yields a constant-factor improvement.',
+    gotchas: [
+      'The big win is specifically the jump from 1 choice to 2 — adding a 3rd, 4th, or 5th random choice costs more per-request overhead for comparatively little further gain.',
+      'This achieves near-optimal load distribution using only cheap, local, 2-server state — not a continuously-maintained global view of every backend\'s load.',
     ],
   },
   'system-design/caching': {
@@ -39695,6 +44678,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Cache-aside is the most common pattern, but write-through and write-behind exist for different consistency/latency tradeoffs worth knowing for interview depth.',
     ],
   },
+  'system-design/caching/redis-defaults-to-noeviction-not-lru': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Caching Strategies',                                        route: '/system-design/caching' },
+      { label: 'The Multi-Level Cache Example Never Invalidates L1',        route: '/system-design/caching/the-multi-level-cache-example-never-invalidates-l1' },
+    ],
+    tip: 'Redis\'s actual out-of-the-box `maxmemory-policy` default is `noeviction` — it rejects writes with an error at the memory limit rather than evicting anything. `allkeys-lru` is a common, recommended CHOICE, not the automatic default.',
+    gotchas: [
+      'Setting `maxmemory` alone, without explicitly setting `maxmemory-policy`, means Redis rejects new writes at the limit instead of evicting old data — the opposite of what most teams assume.',
+      'This only matters once `maxmemory` is actually configured — an unconfigured (unlimited) instance never triggers any eviction policy.',
+    ],
+  },
+  'system-design/caching/the-multi-level-cache-example-never-invalidates-l1': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Redis Defaults to noeviction, Not LRU',                          route: '/system-design/caching/redis-defaults-to-noeviction-not-lru' },
+      { label: 'The PER Code Is Missing XFetch’s Recompute-Cost Signal',          route: '/system-design/caching/the-per-code-is-missing-xfetchs-recompute-cost-signal' },
+    ],
+    tip: 'redis.del() only clears the SHARED L2 (Redis) entry — it has no reach into any other instance\'s independent, in-process L1 cache. L1 invalidation needs an explicit fan-out mechanism (e.g. Redis Pub/Sub), or staleness is bounded only by L1\'s own TTL.',
+    gotchas: [
+      'This gap is only visible by cross-checking two separately-presented code samples against each other — neither sample alone shows the problem.',
+      'L1 invalidation is fundamentally harder than L2 invalidation because L1 is NOT shared across instances — one DEL command cannot reach every process\'s own local memory.',
+    ],
+  },
+  'system-design/caching/the-per-code-is-missing-xfetchs-recompute-cost-signal': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'The Multi-Level Cache Example Never Invalidates L1', route: '/system-design/caching/the-multi-level-cache-example-never-invalidates-l1' },
+      { label: 'Caching Strategies',                                 route: '/system-design/caching' },
+    ],
+    tip: 'The real XFetch algorithm\'s trigger formula includes `delta` (observed recompute cost) — the main page\'s PER code only uses `timeLeft` and `ttl`, with no way to start expensive keys\' early refresh sooner than cheap keys\'.',
+    gotchas: [
+      'Without tracking `delta`, an expensive-to-recompute key gets the same early-refresh timing as a cheap one, which can mean its recompute doesn\'t finish before the old value actually expires.',
+      'The fix is straightforward: time each key\'s own `computeFn()` call and feed that observed cost into the real formula.',
+    ],
+  },
   'system-design/cdn': {
     apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
     related: [
@@ -39704,6 +44723,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Dynamic, personalized content is generally a poor fit for CDN caching — CDNs excel at static or infrequently-changing content shared across many users.',
       'A CDN doesn\'t eliminate the need for origin capacity planning — a cache miss (or an uncacheable request) still hits the origin, which must handle that residual load.',
+    ],
+  },
+  'system-design/cdn/cloudflares-100-tbps-figure-is-stale-network-passed-500': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Content Delivery Networks (overview)', route: '/system-design/cdn' },
+      { label: 'Anycast Failover Timing',              route: '/system-design/cdn/anycast-failover-takes-bgp-convergence-time-not-instant' },
+    ],
+    tip: 'Treat a specific vendor bandwidth/capacity figure quoted in an interview answer as something to verify, not memorize — these numbers grow fast, and a stale figure understates a CDN\'s actual current scale.',
+    gotchas: [
+      '"Network capacity" (provisioned) and "traffic served" (actual) are different numbers — a vendor\'s headline figure is almost always the former, the ceiling, not the typical load.',
+    ],
+  },
+  'system-design/cdn/anycast-failover-takes-bgp-convergence-time-not-instant': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Content Delivery Networks (overview)', route: '/system-design/cdn' },
+      { label: 'Load Balancing (VRRP failover timing)', route: '/system-design/load-balancing' },
+    ],
+    tip: '"Automatic failover" answers the WHO (no human intervenes); it never answers the HOW LONG — always follow up an anycast/BGP failover claim with the actual convergence-time window.',
+    gotchas: [
+      'BFD is an optional, explicitly-configured protocol that shrinks BGP failure detection to ~100-150ms — it is not automatically part of every anycast deployment.',
+    ],
+  },
+  'system-design/cdn/raw-vary-cookie-fragments-the-cache-normalize-it-instead': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Content Delivery Networks (overview)', route: '/system-design/cdn' },
+      { label: 'Caching Strategies',                    route: '/system-design/caching' },
+    ],
+    tip: 'Never Vary on the raw Cookie header for broadly-cacheable content — extract the one small signal that actually changes the response into its own normalized, bounded header instead.',
+    gotchas: [
+      'A cache key\'s cardinality determines whether a cache actually caches anything — Vary: Cookie on a unique per-user session ID drives effective hit rate toward zero.',
     ],
   },
   'system-design/replication': {
@@ -39718,6 +44770,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Replication lag (the delay between a write on the primary and its appearance on a replica) means reading from a replica right after writing to the primary can return stale data — a common source of confusing "why don\'t I see my own write" bugs.',
     ],
   },
+  'system-design/replication/postgresqls-synchronous-standby-names-needs-a-quoted-name': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Replication Strategies (overview)', route: '/system-design/replication' },
+      { label: 'SQL vs NoSQL',                       route: '/system-design/sql-vs-nosql' },
+    ],
+    tip: 'synchronous_standby_names controls the exact RPO=0 guarantee a "synchronous replication" claim depends on — an invalid value can silently degrade that guarantee rather than failing loudly.',
+    gotchas: [
+      'synchronous_standby_names never accepts a bare number — it takes a quoted standby name, a comma-separated list, or the FIRST/ANY num (...) keyword forms.',
+    ],
+  },
+  'system-design/replication/quorum-w-plus-r-over-n-guarantees-overlap-not-linearizability': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Replication Strategies (overview)', route: '/system-design/replication' },
+      { label: 'CAP Theorem',                        route: '/system-design/cap-theorem' },
+    ],
+    tip: 'W + R > N is a NECESSARY condition for read/write overlap under ideal conditions — it is not, by itself, sufficient for full linearizability once sloppy quorums or concurrent writes enter the picture.',
+    gotchas: [
+      'Sloppy quorums (writing to a substitute node during a brief outage) can break the overlap guarantee entirely — the write may land somewhere the read set never checks.',
+    ],
+  },
+  'system-design/replication/dynamodb-isnt-tunable-like-cassandra-its-a-binary-choice': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Replication Strategies (overview)', route: '/system-design/replication' },
+      { label: 'Database Sharding',                  route: '/system-design/sharding' },
+    ],
+    tip: 'DynamoDB\'s consistency choice is a binary read-side switch (eventually vs. strongly consistent), not a numeric W/R quorum knob like Cassandra — plan around the actual options it exposes.',
+    gotchas: [
+      'DynamoDB has no QUORUM setting and no user-tunable write consistency — writes are always durably coordinated internally regardless of the read-side choice.',
+    ],
+  },
   'system-design/sharding': {
     apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
     related: [
@@ -39727,6 +44812,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Cross-shard queries (joining data that lives on different shards) are expensive or impossible without application-level orchestration — sharding trades this capability away for write/storage scalability.',
       'Resharding (changing the shard key or count after the fact) is a genuinely difficult, high-risk operation on a live production system — getting the initial design right matters enormously.',
+    ],
+  },
+  'system-design/sharding/the-64tb-100k-tps-figures-are-rds-limits-not-postgresql-itself': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Database Sharding (overview)', route: '/system-design/sharding' },
+      { label: 'Capacity Estimation',           route: '/system-design/capacity-estimation' },
+    ],
+    tip: 'Before repeating a specific "X tops out at N" figure, check whether N describes the software itself, a specific managed-hosting product, or a workload-specific benchmark result — these are three different kinds of ceiling.',
+    gotchas: [
+      'AWS RDS\'s 64 TiB storage ceiling is a product limit, not a PostgreSQL software limit — the actual PostgreSQL-specific limit is 32 TB per single table, a different figure describing a different scope.',
+    ],
+  },
+  'system-design/sharding/naive-double-write-resharding-is-risky-vitess-uses-cdc-instead': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Database Sharding (overview)', route: '/system-design/sharding' },
+      { label: 'Replication Strategies',        route: '/system-design/replication' },
+    ],
+    tip: 'When a migration plan says "double-write," ask whether that means naive application-level dual writes (risky) or CDC/binlog-based replication (what production tools like Vitess actually use) — the two have very different failure modes.',
+    gotchas: [
+      'A failure between two independent application writes leaves shards silently disagreeing, with no built-in mechanism to detect or repair the drift — logging the error afterward does not fix the inconsistency.',
+    ],
+  },
+  'system-design/sharding/why-basic-consistent-hashing-still-needs-virtual-nodes': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Database Sharding (overview)', route: '/system-design/sharding' },
+      { label: 'Load Balancing (power of two choices)', route: '/system-design/load-balancing' },
+    ],
+    tip: 'A good hash function distributes individual KEYS evenly — it does not by itself guarantee even node SHARES with only one ring position per node. Virtual nodes fix the share, not the key distribution.',
+    gotchas: [
+      'Basic (single-position) consistent hashing can show ~30% load variance across nodes; virtual nodes (commonly ~200 per physical node) cut that to under 1%.',
     ],
   },
   'system-design/distributed-transactions': {
@@ -39741,6 +44859,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Distributed transactions are expensive enough that good service boundary design (minimizing cross-service transactional needs in the first place) is often a better solution than solving the distributed transaction problem well.',
     ],
   },
+  'system-design/distributed-transactions/the-idempotency-key-example-used-date-now-defeating-retries': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Distributed Transactions (overview)', route: '/system-design/distributed-transactions' },
+      { label: 'Load Balancing',                        route: '/system-design/load-balancing' },
+    ],
+    tip: 'Generate an idempotency key ONCE per logical operation and store it before the first attempt — never derive it from anything that changes between retries, like the current timestamp.',
+    gotchas: [
+      'A key that regenerates on every retry looks like it implements idempotency (the field exists, the server checks it) while quietly not delivering the guarantee at all.',
+    ],
+  },
+  'system-design/distributed-transactions/kafka-offset-committing-is-specific-to-consume-transform-produce': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Distributed Transactions (overview)', route: '/system-design/distributed-transactions' },
+      { label: 'Replication Strategies',                route: '/system-design/replication' },
+    ],
+    tip: 'sendOffsetsToTransaction() only applies to the consume-transform-produce pattern — a plain producer (like an outbox relay) has no consumer offset in the picture at all.',
+    gotchas: [
+      'The main page\'s own outbox example is a plain-producer case — its atomicity comes from the database transaction, not from Kafka\'s offset-committing feature.',
+    ],
+  },
+  'system-design/distributed-transactions/tccs-timeout-recovery-still-needs-a-transaction-manager': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Distributed Transactions (overview)', route: '/system-design/distributed-transactions' },
+      { label: 'High Availability Design',               route: '/system-design/high-availability' },
+    ],
+    tip: 'TCC avoids 2PC\'s specific lock-holding blocking behavior, but a Transaction Manager still coordinates timeout-triggered Cancel calls — coordination doesn\'t disappear, it just changes shape.',
+    gotchas: [
+      'A Try request delayed by network congestion can arrive AFTER Cancel already ran, leaving a participant "suspended" — a real TCC edge case, not something that self-resolves automatically.',
+    ],
+  },
   'system-design/fault-tolerance': {
     apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
     related: [
@@ -39751,6 +44902,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'A circuit breaker prevents a struggling downstream service from being overwhelmed further by continued requests, fast-failing instead of piling up load against an already-failing dependency.',
       'Redundancy (multiple instances of a critical component) only provides fault tolerance if those instances are genuinely independent — sharing a single point of failure (like one power supply or one AZ) defeats the purpose.',
+    ],
+  },
+  'system-design/fault-tolerance/rate-limiter-unit-bug-per-second-not-per-minute': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Fault Tolerance Patterns (overview)', route: '/system-design/fault-tolerance' },
+      { label: 'Load Balancing',                        route: '/system-design/load-balancing' },
+    ],
+    tip: 'Always check what UNIT a rate-limiter or config value actually expects (per-second vs. per-minute) — a plausible-looking number can be off by an order of magnitude if the unit assumption is wrong.',
+    gotchas: [
+      'A rate limit that is too PERMISSIVE (not too strict) is a quiet failure mode — normal usage still works fine, and the gap only shows up under abuse or a runaway retry loop.',
+    ],
+  },
+  'system-design/fault-tolerance/fraud-timeout-breaks-the-pages-own-2-3x-rule': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Fault Tolerance Patterns (overview)', route: '/system-design/fault-tolerance' },
+      { label: 'High Availability',                     route: '/system-design/high-availability' },
+    ],
+    tip: 'When a page or codebase states an explicit sizing rule (like "timeout = 2-3x p99"), check EVERY place that value is set against the rule individually — one correct instance does not guarantee the rest follow it.',
+    gotchas: [
+      'A timeout with little headroom above p99 latency routes a meaningfully larger fraction of healthy calls into fallback paths than a properly-sized timeout would — a quiet degradation, not an outright failure.',
+    ],
+  },
+  'system-design/fault-tolerance/put-is-idempotent-by-definition-no-key-needed': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Fault Tolerance Patterns (overview)', route: '/system-design/fault-tolerance' },
+      { label: 'Distributed Transactions',              route: '/system-design/distributed-transactions' },
+    ],
+    tip: 'PUT, DELETE, and GET are idempotent by RFC 7231\'s own definition — no idempotency-key infrastructure is needed for them. That workaround exists specifically for POST.',
+    gotchas: [
+      'Adding an idempotency key to an already-idempotent method (PUT/DELETE/GET) is harmless but unnecessary engineering effort for a guarantee the HTTP method already provides.',
     ],
   },
   'system-design/high-availability': {
@@ -39765,6 +44949,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Availability and durability are DIFFERENT guarantees — a highly available system can still lose data if it isn\'t also designed for durability (proper replication, backups).',
     ],
   },
+  'system-design/high-availability/rds-multi-az-db-clusters-fail-over-in-under-35-seconds-not-just-60-120': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'High Availability Design (overview)', route: '/system-design/high-availability' },
+      { label: 'Database Sharding',                     route: '/system-design/sharding' },
+    ],
+    tip: 'For workloads where every second of failover time matters, name the RDS Multi-AZ DB CLUSTER option specifically — its under-35-second failover and readable standbys are a meaningfully different capability from the traditional Multi-AZ instance deployment.',
+    gotchas: [
+      'A traditional Multi-AZ DB instance\'s standby cannot serve any read traffic at all until it is promoted — only the newer Multi-AZ DB cluster option\'s standbys are readable.',
+    ],
+  },
+  'system-design/high-availability/request-based-and-time-based-error-budgets-arent-the-same-thing': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'High Availability Design (overview)', route: '/system-design/high-availability' },
+      { label: 'Fault Tolerance',                       route: '/system-design/fault-tolerance' },
+    ],
+    tip: 'A chronic low-level error rate can fully exhaust a request-based error budget while showing zero downtime on a time-based measure — check which methodology an SLO actually uses before assuming "never down" means "within budget."',
+    gotchas: [
+      'Google\'s own SRE book favors request-based measurement specifically because it captures partial degradation a binary up/down time-based clock misses entirely.',
+    ],
+  },
+  'system-design/high-availability/active-actives-instant-failover-still-waits-on-health-check-detection': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'High Availability Design (overview)', route: '/system-design/high-availability' },
+      { label: 'Load Balancing',                        route: '/system-design/load-balancing' },
+    ],
+    tip: 'Detection time = interval × unhealthy-threshold — tune these two health-check settings deliberately if a specific failover-time bound matters, rather than treating active-active as uniformly "instant."',
+    gotchas: [
+      'A very short interval/threshold detects failures faster but increases false-positive risk on a merely slow-but-healthy node — a real tradeoff, not a setting to minimize for free.',
+    ],
+  },
   'system-design/disaster-recovery': {
     apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
     related: [
@@ -39774,6 +44991,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'A backup that has never been restored from is not a verified backup — the only way to know a backup actually works is to test the restore process, not just confirm the backup job "succeeded."',
       'Multi-region active-active provides the best RTO/RPO but is significantly more complex and costly than active-passive — the right choice depends on how costly actual downtime genuinely is for the business.',
+    ],
+  },
+  'system-design/disaster-recovery/pitr-5-min-window-confuses-granularity-with-recency-lag': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Disaster Recovery (overview)', route: '/system-design/disaster-recovery' },
+      { label: 'Indexes & Query Optimisation', route: '/system-design/indexes' },
+    ],
+    tip: 'RDS PITR supports second-level restore precision — the commonly-cited "5 minutes" figure is AWS\'s LatestRestorableTime (how close to now you can restore), not the spacing between valid restore points.',
+    gotchas: [
+      'A destructive event from more than ~5 minutes ago can be restored to the exact second before it — the 5-minute figure only limits restoring to very recent activity that has not finished archiving yet.',
+    ],
+  },
+  'system-design/disaster-recovery/rds-multi-az-db-clusters-apply-here-too': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Disaster Recovery (overview)', route: '/system-design/disaster-recovery' },
+      { label: 'High Availability Design',       route: '/system-design/high-availability' },
+    ],
+    tip: 'For an RTO-sensitive DR plan, use RDS Multi-AZ DB CLUSTER (under 35s failover) instead of the traditional Multi-AZ instance deployment (60-120s) — the same fact this hub\'s own High Availability topic already verifies.',
+    gotchas: [
+      'Multi-AZ DB Cluster\'s standbys are also independently readable, unlike the traditional Multi-AZ instance deployment\'s unreadable standby — a second, separate benefit beyond failover speed.',
+    ],
+  },
+  'system-design/disaster-recovery/why-aurora-global-beats-a-plain-cross-region-replica': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Disaster Recovery (overview)', route: '/system-design/disaster-recovery' },
+      { label: 'Replication Strategies',         route: '/system-design/replication' },
+    ],
+    tip: 'Aurora Global Database\'s sub-1-second RPO comes from dedicated, storage-based replication infrastructure specific to the Aurora engine — it is not a configuration setting available on plain RDS PostgreSQL/MySQL.',
+    gotchas: [
+      'Adopting Aurora Global Database\'s replication characteristics requires migrating to the Aurora engine itself — a real migration project, not a config change on an existing RDS instance.',
     ],
   },
   'system-design/networking': {
@@ -39788,6 +45038,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'TCP connection setup (and TLS handshake on top of it) has real latency cost — connection pooling and keep-alive avoid paying this cost on every single request.',
     ],
   },
+  'system-design/networking/ednso-raises-dns-udp-limit-past-the-legacy-512-bytes': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Networking Fundamentals',                                       route: '/system-design/networking' },
+      { label: 'TCP Teardown: TIME_WAIT Can Exhaust Ephemeral Ports',            route: '/system-design/networking/tcp-teardown-time-wait-can-exhaust-ephemeral-ports' },
+    ],
+    tip: 'EDNS0 lets DNS resolvers negotiate a UDP buffer well past the legacy 512-byte limit (commonly ~1232 bytes today) — most DNSSEC-signed and multi-record responses fit over UDP without needing TCP fallback at all.',
+    gotchas: [
+      'TCP fallback still exists for zone transfers and truly oversized/truncated responses — the correction is about the threshold NUMBER, not whether TCP fallback exists at all.',
+      'Assuming near-constant TCP fallback above 512 bytes overestimates real DNS resolution latency and TCP listener load in a capacity plan.',
+    ],
+  },
+  'system-design/networking/tcp-teardown-time-wait-can-exhaust-ephemeral-ports': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'EDNS0 Raises the DNS UDP Limit Past the Legacy 512 Bytes',        route: '/system-design/networking/ednso-raises-dns-udp-limit-past-the-legacy-512-bytes' },
+      { label: 'Stale-While-Revalidate Exists to Stop Cache Stampedes',           route: '/system-design/networking/stale-while-revalidate-exists-to-stop-cache-stampedes' },
+    ],
+    tip: 'TCP closes via a 4-way handshake, and the active closer lingers in TIME_WAIT for ~2×MSL (commonly ~60s) — a service opening a fresh connection per request to the same destination can exhaust its ~28,000 ephemeral ports under sustained load.',
+    gotchas: [
+      'This is a real, recurring production failure mode, not protocol trivia — it\'s the concrete reason "use a connection pool" is standard advice for HTTP clients and database drivers.',
+      'The fix is connection reuse/pooling, NOT shortening TIME_WAIT itself, which risks the stale-packet problem TIME_WAIT exists to prevent.',
+    ],
+  },
+  'system-design/networking/stale-while-revalidate-exists-to-stop-cache-stampedes': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'TCP Teardown: TIME_WAIT Can Exhaust Ephemeral Ports', route: '/system-design/networking/tcp-teardown-time-wait-can-exhaust-ephemeral-ports' },
+      { label: 'Networking Fundamentals',                             route: '/system-design/networking' },
+    ],
+    tip: 'stale-while-revalidate exists to prevent a cache stampede (thundering herd) — when a popular object\'s TTL expires, it serves the stale copy to everyone immediately while ONE background request refreshes it, instead of every concurrent request hitting origin at once.',
+    gotchas: [
+      'Request coalescing and jittered TTLs are complementary stampede-prevention techniques, not substitutes for stale-while-revalidate — a robust CDN strategy often combines more than one.',
+      'Without stampede protection, a popular object\'s synchronized TTL expiry can spike origin load far beyond its normal cached baseline, exactly when the cache was supposed to be protecting it.',
+    ],
+  },
   'system-design/indexes': {
     apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
     related: [
@@ -39799,6 +45085,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A covered query (the index alone contains every field the query needs) avoids touching the actual table data at all, a significant performance win worth designing for on hot query paths.',
     ],
   },
+  'system-design/indexes/mysql-innodb-auto-creates-the-fk-index-it-doesnt-just-warn': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Indexes & Query Optimisation (overview)', route: '/system-design/indexes' },
+      { label: 'SQL vs NoSQL',                              route: '/system-design/sql-vs-nosql' },
+    ],
+    tip: 'When standardizing a checklist across MySQL and PostgreSQL, don\'t assume "index your FK columns" needs the same manual action on both — MySQL/InnoDB already does it for you in the common case.',
+    gotchas: [
+      'MySQL can later silently DROP an auto-created FK index if a different index is added that also satisfies the constraint — expected behavior, not a bug.',
+    ],
+  },
+  'system-design/indexes/reindex-concurrently-avoids-write-locks-but-isnt-fully-lock-free': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Indexes & Query Optimisation (overview)', route: '/system-design/indexes' },
+      { label: 'Replication Strategies',                    route: '/system-design/replication' },
+    ],
+    tip: '"Non-blocking" for one maintenance operation does not automatically mean safe to run alongside ANY other maintenance operation on the same table — check exactly which lock is (and isn\'t) held.',
+    gotchas: [
+      'REINDEX CONCURRENTLY holds a SHARE UPDATE EXCLUSIVE lock — it does not block reads/writes, but it does block other schema-modifying operations on the same table.',
+    ],
+  },
+  'system-design/indexes/the-full-rule-is-equality-sort-range-not-just-equality-then-range': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Indexes & Query Optimisation (overview)', route: '/system-design/indexes' },
+      { label: 'Caching Strategies',                        route: '/system-design/caching' },
+    ],
+    tip: 'A column used only in ORDER BY (no range predicate) is a SORT column under the ESR rule — it belongs right after the equality columns, not lumped in with "range last."',
+    gotchas: [
+      'When a query\'s sort column and range column are the SAME column, the simple "equality first, range last" rule and the full ESR rule agree — the gap only shows up when they differ.',
+    ],
+  },
   'system-design/distributed-tracing': {
     apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
     related: [
@@ -39808,6 +45127,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Async message boundaries (a queue between services) break automatic trace propagation unless the trace context is explicitly carried in message headers.',
       'Sampling (recording only a percentage of traces) is often necessary at scale, but sampling out the rare slow/erroring requests defeats the entire purpose of tracing them.',
+    ],
+  },
+  'system-design/distributed-tracing/tail-sampling-example-was-actually-head-based': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Distributed Tracing (overview)', route: '/system-design/distributed-tracing' },
+      { label: 'Fault Tolerance Patterns',         route: '/system-design/fault-tolerance' },
+    ],
+    tip: 'Head-based sampling decides at trace start (fast, no outcome visibility); tail-based sampling buffers the full trace and decides at the end (can guarantee errors/slow traces are kept) — they run in different components and are configured differently.',
+    gotchas: [
+      'TraceIdRatioBased/ParentBasedSampler is a head-based sampler regardless of how low its probability is set — it cannot by itself guarantee errors are kept.',
+    ],
+  },
+  'system-design/distributed-tracing/jaeger-no-longer-needs-the-otel-collector': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Distributed Tracing (overview)', route: '/system-design/distributed-tracing' },
+      { label: 'High Availability Design',         route: '/system-design/high-availability' },
+    ],
+    tip: 'For a single-backend setup with no need for Collector-side processing (fan-out, tail sampling), point the OTel SDK\'s exporter directly at Jaeger\'s own OTLP endpoint instead of deploying a Collector.',
+    gotchas: [
+      'Jaeger\'s native OTLP receiver has been available since v1.35 (2022) — this is a stable, long-standing capability, not a new or experimental one.',
+    ],
+  },
+  'system-design/distributed-tracing/tempos-no-indexing-claim-needs-a-traceql-caveat': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Distributed Tracing (overview)', route: '/system-design/distributed-tracing' },
+      { label: 'Caching Strategies',               route: '/system-design/caching' },
+    ],
+    tip: 'Tempo\'s "no indexing" describes its storage architecture, not a search limitation — TraceQL supports real attribute-based search by scanning object-storage blocks narrowed via bloom filters.',
+    gotchas: [
+      'TraceQL queries are generally slower and more resource-intensive per search than an indexed backend like Jaeger — the storage-cost savings come at a real query-time cost.',
     ],
   },
   'system-design/url-shortener': {
@@ -39822,6 +45174,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Read-heavy access pattern (far more redirects than URL creations) argues strongly for aggressive caching of the short-code-to-URL mapping.',
     ],
   },
+  'system-design/url-shortener/collision-probability-is-near-certain-not-negligible': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Design a URL Shortener (overview)', route: '/system-design/url-shortener' },
+      { label: 'Capacity Estimation',                 route: '/system-design/capacity-estimation' },
+    ],
+    tip: 'Before trusting a "collision probability is negligible" claim, actually evaluate the birthday-paradox formula with the stated numbers — the intuition that a huge code space means rare collisions is often wrong at high volume.',
+    gotchas: [
+      'The 50%-collision point is reached at roughly 1.18×√(code space size) draws — far fewer draws than the total space size might suggest.',
+    ],
+  },
+  'system-design/url-shortener/quiz-answer-was-the-mistakes-blocks-own-anti-pattern': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Design a URL Shortener (overview)', route: '/system-design/url-shortener' },
+      { label: 'Security & Auth',                      route: '/security' },
+    ],
+    tip: 'Counter-based short codes are collision-free but enumerable; random codes are non-enumerable but collision-prone at scale — obfuscating the counter before exposure gets both properties at once.',
+    gotchas: [
+      'A fixed XOR mask is basic obfuscation, not cryptographic security — combine it with rate limiting and monitoring for a genuinely security-critical system.',
+    ],
+  },
+  'system-design/url-shortener/read-qps-comment-didnt-match-its-own-formula': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Design a URL Shortener (overview)', route: '/system-design/url-shortener' },
+      { label: 'Capacity Estimation',                 route: '/system-design/capacity-estimation' },
+    ],
+    tip: 'When a worked-example comment sits under a formula, check that every division/multiplication term in the formula actually appears in the comment\'s claimed arithmetic — not just that the final number looks plausible.',
+    gotchas: [
+      'A dropped term in an intermediate capacity-estimate number propagates into every downstream calculation that builds on it (Redis sizing, read-replica count).',
+    ],
+  },
   'system-design/chat-application': {
     apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
     related: [
@@ -39831,6 +45216,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Message ordering and delivery guarantees (at-least-once vs. exactly-once) need explicit design decisions — a naive implementation can deliver duplicate or out-of-order messages under real network conditions.',
       'Presence (online/offline status) at scale requires its own design consideration — a naive "ping every user" approach doesn\'t scale to millions of concurrent connections.',
+    ],
+  },
+  'system-design/chat-application/websocket-map-silently-drops-first-device-on-multi-login': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Design a Chat Application (overview)', route: '/system-design/chat-application' },
+      { label: '‘Exactly-Once Delivery’ Contradicts the Page’s Own At-Least-Once Theory', route: '/system-design/chat-application/exactly-once-contradicts-at-least-once-theory' },
+    ],
+    tip: 'Any connection-tracking data structure keyed by user ID needs to ask: can this key legitimately have more than one simultaneous value (multiple devices, multiple tabs, multiple sessions)? If so, a plain Map will silently misbehave.',
+    gotchas: [
+      'A Map that overwrites on a second connection produces no error at all — the bug only surfaces as an unexplained "I stopped getting notifications on my other device" complaint.',
+    ],
+  },
+  'system-design/chat-application/exactly-once-contradicts-at-least-once-theory': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'WebSocket Map Silently Drops First Device on Multi-Login', route: '/system-design/chat-application/websocket-map-silently-drops-first-device-on-multi-login' },
+      { label: 'E2E Encryption Hint Skipped the Double Ratchet', route: '/system-design/chat-application/e2e-encryption-hint-skipped-the-double-ratchet' },
+    ],
+    tip: 'If a design needs client-side deduplication by message ID, that alone proves duplicates CAN occur — the correct term for that guarantee is "effectively-once" (at-least-once + dedup), not "exactly-once."',
+    gotchas: [
+      'Being asked to design "exactly-once" delivery in an interview is often a deliberate trap — reaching for at-least-once + idempotent-consumer instead usually signals the stronger answer.',
+    ],
+  },
+  'system-design/chat-application/e2e-encryption-hint-skipped-the-double-ratchet': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: '‘Exactly-Once Delivery’ Contradicts the Page’s Own At-Least-Once Theory', route: '/system-design/chat-application/exactly-once-contradicts-at-least-once-theory' },
+      { label: 'Design a Chat Application (overview)', route: '/system-design/chat-application' },
+    ],
+    tip: 'Signal-style E2E encryption uses a ONE-TIME key agreement (X3DH) followed by a per-message ratchet (Double Ratchet) — never describe it as repeatedly encrypting with a static public key.',
+    gotchas: [
+      'Even correctly implemented E2E encryption protects message content only — the server still sees plaintext sender/recipient/timestamp metadata needed to route messages at all.',
     ],
   },
   'system-design/social-feed': {
@@ -39845,6 +45263,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Feed ranking (not just chronological order) adds significant complexity beyond the basic fan-out mechanism, often intentionally out of scope for a first-pass interview answer.',
     ],
   },
+  'system-design/social-feed/redis-zset-memory-estimate-ignored-skiplist-overhead': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Design a Social Feed (overview)', route: '/system-design/social-feed' },
+      { label: 'Active-User Count Mismatch: 500M vs. 100M DAU', route: '/system-design/social-feed/active-user-count-mismatch-500m-vs-100m-dau' },
+    ],
+    tip: 'For any Redis (or similar) data-structure capacity estimate, check whether the structure carries PER-ENTRY overhead beyond the raw payload size before multiplying count × bytes — for a sorted set past the listpack threshold, that overhead can be 15-20x the payload itself.',
+    gotchas: [
+      'Redis ZSETs switch from compact listpack encoding to full skiplist+hashtable encoding once a set exceeds a configurable threshold (128 entries by default) — a feed trimmed to 1,000 entries is well past it.',
+    ],
+  },
+  'system-design/social-feed/active-user-count-mismatch-500m-vs-100m-dau': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'The Redis ZSET Memory Estimate Ignored Skiplist Overhead', route: '/system-design/social-feed/redis-zset-memory-estimate-ignored-skiplist-overhead' },
+      { label: 'Feed Read Code Still Joined What Denormalization Was For', route: '/system-design/social-feed/feed-read-code-still-joined-what-denorm-was-for' },
+    ],
+    tip: 'Registered users and daily active users are different populations for capacity purposes — only DAU generates read/write traffic, so any QPS estimate should be built on DAU, not total registered accounts.',
+    gotchas: [
+      'Using the larger "registered users" figure for a read/write QPS estimate produces an inflated number that looks conservative but leads to real, unnecessary over-provisioning.',
+    ],
+  },
+  'system-design/social-feed/feed-read-code-still-joined-what-denorm-was-for': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Active-User Count Mismatch: 500M vs. 100M DAU', route: '/system-design/social-feed/active-user-count-mismatch-500m-vs-100m-dau' },
+      { label: 'Design a Social Feed (overview)', route: '/system-design/social-feed' },
+    ],
+    tip: 'When a page argues for denormalizing a field to avoid a JOIN on the hot path, check every code sample on that same page actually uses the denormalized column instead of quietly re-joining — the prose and the code need to be checked against each other.',
+    gotchas: [
+      'A stray JOIN on a read path that already has denormalized columns pays both the write-time sync cost AND the read-time join cost — worse than picking one approach consistently.',
+    ],
+  },
   'system-design/search-engine': {
     apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
     related: [
@@ -39855,6 +45306,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Relevance ranking (not just matching) is a genuinely hard, often ML-driven problem distinct from the indexing/retrieval mechanics — most interview answers can reasonably scope this out as "a ranking service" without full design.',
       'Index updates for frequently-changing content require a strategy (near-real-time indexing vs. batch reindexing) with real tradeoffs in freshness versus system load.',
+    ],
+  },
+  'system-design/search-engine/shard-doc-count-mismatch': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Design a Search Engine (overview)', route: '/system-design/search-engine' },
+      { label: 'Elasticsearch’s Default Shard Count Has Been 1, Not 5, Since 7.0', route: '/system-design/search-engine/es-default-shard-count-stale' },
+    ],
+    tip: 'Any worked example with two totals (a document count AND a storage size) that share a shard count is worth dividing BOTH ways separately — a figure derived from one can easily get mislabeled as the other.',
+    gotchas: [
+      'A document-count-per-shard figure that\'s off by ~2x can propagate an inaccurate assumption into downstream memory/latency reasoning if not checked against the page\'s own stated totals.',
+    ],
+  },
+  'system-design/search-engine/es-default-shard-count-stale': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: '30 Shards Doesn’t Divide to 33M Docs Per Shard', route: '/system-design/search-engine/shard-doc-count-mismatch' },
+      { label: 'The Split API Resizes Shards Without a Full Reindex', route: '/system-design/search-engine/split-api-faster-than-reindex' },
+    ],
+    tip: 'The default primary shard count changed from 5 to 1 in Elasticsearch 7.0 (2019) — but the more durable lesson is that a real index should always set shard count explicitly rather than relying on any default.',
+    gotchas: [
+      'Version-specific technical defaults are a common source of stale interview/tutorial material — a fact that was true for years can silently become outdated as the underlying software changes.',
+    ],
+  },
+  'system-design/search-engine/split-api-faster-than-reindex': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Elasticsearch’s Default Shard Count Has Been 1, Not 5, Since 7.0', route: '/system-design/search-engine/es-default-shard-count-stale' },
+      { label: 'Design a Search Engine (overview)', route: '/system-design/search-engine' },
+    ],
+    tip: 'The Split API can increase primary shard count by rerouting existing shard data instead of a full document copy — but only when the target count is a valid multiple of the source\'s current shard count.',
+    gotchas: [
+      'Split requires the source index to be read-only first, and cannot reduce shard count or change mappings/analyzers — Reindex is still needed for those cases.',
     ],
   },
   'system-design/payment-system': {
@@ -39868,6 +45352,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A payment system needs a reliable audit trail (every state transition logged immutably) for both debugging and regulatory/compliance requirements — this is a hard requirement, not an optional nicety.',
     ],
   },
+  'system-design/payment-system/ledger-example-fee-mismatch': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Design a Payment System (overview)', route: '/system-design/payment-system' },
+      { label: 'Sorting IDs Doesn’t Guarantee Lock Order Without ORDER BY', route: '/system-design/payment-system/for-update-needs-order-by' },
+    ],
+    tip: 'When a page shows the same scenario twice (once in prose, once in code), check that both use the exact same numbers — a mismatch usually means one of them is stale relative to the other.',
+    gotchas: [
+      'A ledger entry with amount = 0 isn\'t just unusual — most real ledger schemas reject it outright via a CHECK constraint; represent "no fee" by omitting the entry, not zeroing it.',
+    ],
+  },
+  'system-design/payment-system/for-update-needs-order-by': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Ledger Worked Example’s Fee Split Contradicted the Code Sample', route: '/system-design/payment-system/ledger-example-fee-mismatch' },
+      { label: 'The Transfer Solution Used the Race Condition Its Own Quiz Warns About', route: '/system-design/payment-system/transfer-idempotency-check-then-act' },
+    ],
+    tip: 'Sorting IDs in application code before a SELECT ... FOR UPDATE only controls the query\'s input — the database still needs an explicit ORDER BY to guarantee it locks the matching rows in that same order.',
+    gotchas: [
+      'This is the classic "lock resources in a consistent order to prevent deadlock" pattern — it only works if the consistent order actually holds at the layer doing the locking, not just in application code.',
+    ],
+  },
+  'system-design/payment-system/transfer-idempotency-check-then-act': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Sorting IDs Doesn’t Guarantee Lock Order Without ORDER BY', route: '/system-design/payment-system/for-update-needs-order-by' },
+      { label: 'Design a Payment System (overview)', route: '/system-design/payment-system' },
+    ],
+    tip: 'A bare "check if it exists, then insert later" idempotency pattern is unsafe unless a unique constraint AND a catch-and-return-the-winner\'s-result step back it up — a plain SELECT-then-INSERT can let a losing concurrent request see an error instead of the expected success response.',
+    gotchas: [
+      'Money-safety (no duplicate charge) and correct idempotent behavior (retry returns the same success response) are two separate properties — a unique constraint alone guarantees the first but not the second.',
+    ],
+  },
   'system-design/video-streaming': {
     apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
     related: [
@@ -39879,6 +45396,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Video encoding/transcoding (converting an uploaded video into multiple quality/format variants) is a genuinely CPU-intensive asynchronous pipeline, distinct from the actual streaming/delivery path.',
     ],
   },
+  'system-design/video-streaming/stale-cdn-capacity-figure': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Design Netflix / YouTube (overview)', route: '/system-design/video-streaming' },
+      { label: 'CDN', route: '/system-design/cdn' },
+    ],
+    tip: 'When a new page cites a specific real-world figure (provider capacity, pricing, a default value), check whether a sibling page in the same hub already researched the identical fact before doing fresh research.',
+    gotchas: [
+      'A "provisioned capacity" ceiling and "typical traffic served" are different claims — carry over a verified fact\'s important caveats, not just its headline number.',
+    ],
+  },
+  'system-design/video-streaming/pb-per-month-was-actually-per-day': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Stale CDN Capacity Figure, Already Corrected on a Sibling Page', route: '/system-design/video-streaming/stale-cdn-capacity-figure' },
+      { label: 'Compute Formula Used 4 Resolutions, Ladder Lists 6', route: '/system-design/video-streaming/resolution-count-mismatch' },
+    ],
+    tip: 'Multiplying together several "per day" quantities produces a per-day result — an explicit ×30 (or similar) step is needed to actually convert that into a monthly figure.',
+    gotchas: [
+      'Internal consistency between a volume figure and its matching cost figure (volume × price = cost) doesn\'t catch an error in which TIME PERIOD both numbers actually represent.',
+    ],
+  },
+  'system-design/video-streaming/resolution-count-mismatch': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'A “300 PB/Month” Figure That Was Actually Per Day', route: '/system-design/video-streaming/pb-per-month-was-actually-per-day' },
+      { label: 'Design Netflix / YouTube (overview)', route: '/system-design/video-streaming' },
+    ],
+    tip: 'When a resolution ladder or similar list is named explicitly, count its items and compare that count against any multiplier used in a nearby calculation — the two should always match.',
+    gotchas: [
+      'An error in an early compute-demand figure propagates proportionally into every downstream number derived from it (fleet size, hourly cost) — check whether those need the same correction.',
+    ],
+  },
   'system-design/ai-ml-system-design': {
     apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
     related: [
@@ -39888,6 +45438,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Training and serving typically run on fundamentally different infrastructure with different scaling characteristics — batch training jobs versus low-latency real-time inference are genuinely separate design problems.',
       'A model that performs well in offline evaluation can still fail in production due to training-serving skew (subtle differences between training data and live production data) — a design must account for monitoring this gap.',
+    ],
+  },
+  'system-design/ai-ml-system-design/openai-sdk-with-claude-model': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'AI/ML System Design (overview)', route: '/system-design/ai-ml-system-design' },
+      { label: 'Challenge Hint Said “LLM 2-4s”, Solution’s Own P50 Was 1.5s', route: '/system-design/ai-ml-system-design/latency-hint-vs-actual-p50' },
+    ],
+    tip: 'A provider SDK (OpenAI, Anthropic, etc.) sends requests to THAT provider\'s own API — the model name string has to match a model actually registered with that provider, not just be a well-formed request.',
+    gotchas: [
+      'A code sample that\'s internally inconsistent about which SDK pairs with which model name will look correct until someone actually runs it.',
+    ],
+  },
+  'system-design/ai-ml-system-design/latency-hint-vs-actual-p50': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'RAG Pipeline Used the OpenAI SDK With a Claude Model Name', route: '/system-design/ai-ml-system-design/openai-sdk-with-claude-model' },
+      { label: 'Naive Serving: “1 Request/Sec” vs “15 Tokens/Sec” Don’t Reconcile', route: '/system-design/ai-ml-system-design/naive-serving-units-mismatch' },
+    ],
+    tip: 'When a Challenge hint states a specific numeric range, check that range against the solution\'s own figures — matching only one end of a range isn\'t enough to confirm they agree.',
+    gotchas: [
+      'The safest way to keep a hint and its solution in sync is deriving the hint\'s numbers directly from the solution\'s own figures, not estimating them independently.',
+    ],
+  },
+  'system-design/ai-ml-system-design/naive-serving-units-mismatch': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Challenge Hint Said “LLM 2-4s”, Solution’s Own P50 Was 1.5s', route: '/system-design/ai-ml-system-design/latency-hint-vs-actual-p50' },
+      { label: 'AI/ML System Design (overview)', route: '/system-design/ai-ml-system-design' },
+    ],
+    tip: 'When a page states throughput in different units (requests/sec vs. tokens/sec) in different sections, use any stated average response length to convert between them and check for agreement.',
+    gotchas: [
+      'Tokens/sec is the more stable metric for comparing LLM serving techniques — requests/sec depends heavily on assumed response length, which varies a lot by use case.',
     ],
   },
 };

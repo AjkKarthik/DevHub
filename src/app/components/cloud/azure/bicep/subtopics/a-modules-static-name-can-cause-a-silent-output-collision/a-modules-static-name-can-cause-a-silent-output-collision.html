@@ -1,0 +1,26 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Bicep Deep-dive" topicRoute="/azure/bicep" subtopicLabel="A Module’s Static name Can Cause a Silent Collision" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">A Module's Static name Property Can Cause a Silent Output Collision</h1>
+  <p class="page-subtitle">The main page treats a module's name as a cosmetic label — Microsoft's own docs confirm it's the identity ARM tracks, and two concurrent deployments sharing it can read back each other's output.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Azure Bicep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the topic's three deep dives, extending the main page's own module coverage from what the name property does to the concurrency risk a static one carries.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Bicep Deep-dive" topicRoute="/azure/bicep"
+    [prev]="{ label: 'Modules Need Their Own scope Property', route: '/azure/bicep/modules-need-their-own-scope-property-for-a-different-target' }" />
+</div>

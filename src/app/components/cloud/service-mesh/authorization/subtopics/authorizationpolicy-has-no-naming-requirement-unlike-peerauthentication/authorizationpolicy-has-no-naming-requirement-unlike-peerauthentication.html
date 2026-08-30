@@ -1,0 +1,27 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Authorization Policies" topicRoute="/service-mesh/authorization" subtopicLabel="AuthorizationPolicy Has No Naming Requirement, Unlike PeerAuthentication" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">AuthorizationPolicy Has No Naming Requirement, Unlike PeerAuthentication</h1>
+  <p class="page-subtitle">Learned that a mesh-wide PeerAuthentication must be named "default"? That rule does NOT carry over to AuthorizationPolicy — any name works, and multiple mesh-wide policies apply cumulatively.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Istio (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This contrasts directly with the mTLS topic's PeerAuthentication naming rule. Next: AuthorizationPolicy actually has a fourth action — CUSTOM — that the main page's quickRef never mentions.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Authorization Policies" topicRoute="/service-mesh/authorization"
+    [prev]="{ label: 'Empty Rules Array vs. One Empty Rule Are Opposite Behaviors', route: '/service-mesh/authorization/empty-rules-array-vs-one-empty-rule-are-opposite-behaviors' }"
+    [next]="{ label: 'CUSTOM Is a Fourth Action, Evaluated Before DENY and ALLOW', route: '/service-mesh/authorization/custom-is-a-fourth-action-evaluated-before-deny-and-allow' }" />
+</div>

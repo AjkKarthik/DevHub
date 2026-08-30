@@ -1,0 +1,27 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Service-Oriented Architecture" topicRoute="/arch-patterns/service-oriented" subtopicLabel="The SOA Done Right Quote Has No Real Source" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">The "SOA Done Right" Quote Has No Real Source</h1>
+  <p class="page-subtitle">The theory section attributed "Microservices = SOA done right" to Sam Newman by name — WebSearch found it's a widely-repeated industry phrase with no single attributable source.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>Both fixes so far were about a phrase being stated inaccurately. The last subtopic goes further into the page's own content — expanding the "don't version too frequently" advice with the actual pattern that makes additive-only changes safe in practice.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Service-Oriented Architecture" topicRoute="/arch-patterns/service-oriented"
+    [prev]="{ label: 'Smart Endpoints, Dumb Pipes Was Reversed', route: '/arch-patterns/service-oriented/smart-endpoints-dumb-pipes-was-reversed' }"
+    [next]="{ label: 'The Tolerant Reader Pattern: Why Additive Changes Are Actually Safe', route: '/arch-patterns/service-oriented/tolerant-reader-pattern-for-contracts' }" />
+</div>

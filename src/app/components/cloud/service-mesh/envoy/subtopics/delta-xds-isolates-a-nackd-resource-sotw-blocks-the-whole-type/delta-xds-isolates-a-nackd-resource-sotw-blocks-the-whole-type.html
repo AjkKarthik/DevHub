@@ -1,0 +1,26 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Envoy Proxy Deep Dive" topicRoute="/service-mesh/envoy" subtopicLabel="Delta xDS Isolates a NACK'd Resource — SotW Blocks the Whole Type" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">Delta xDS Isolates a NACK'd Resource — SotW Blocks the Whole Type</h1>
+  <p class="page-subtitle">The main page mentions Delta xDS's efficiency and NACK behavior as separate facts — they're actually connected: Delta xDS isolates a bad resource's failure, SotW can freeze an entire resource type mesh-wide.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Istio 1.22+ (Delta xDS default)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This connects the main page's own Delta xDS and NACK bullets into the single failure-isolation story they actually tell together.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Envoy Proxy Deep Dive" topicRoute="/service-mesh/envoy"
+    [prev]="{ label: 'INSERT_AFTER Targeting router Means the Filter Never Runs', route: '/service-mesh/envoy/insert-after-targeting-router-means-the-filter-never-runs' }" />
+</div>

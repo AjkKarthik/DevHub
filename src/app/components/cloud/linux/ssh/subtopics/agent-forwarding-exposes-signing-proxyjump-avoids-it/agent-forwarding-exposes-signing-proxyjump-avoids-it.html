@@ -1,0 +1,26 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="SSH &amp; Remote Access" topicRoute="/linux/ssh" subtopicLabel="Agent Forwarding Exposes Signing, Not Your Key — ProxyJump Avoids It" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">Agent Forwarding Exposes Signing, Not Your Key — ProxyJump Avoids It</h1>
+  <p class="page-subtitle">The main page's own risk warning is one clause with no mechanism. ForwardAgent never leaks the key file — it exposes live signing capability on the remote host, and ProxyJump avoids it entirely.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="OpenSSH 7.3+ (ProxyJump)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This turns the main page's one-clause warning into a full mechanism and fix. Next: why ssh -R only binds to the remote host's own loopback by default.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="SSH &amp; Remote Access" topicRoute="/linux/ssh"
+    [next]="{ label: 'ssh -R Binds to Remote Loopback Only, Without GatewayPorts', route: '/linux/ssh/ssh-r-binds-to-remote-loopback-only-without-gatewayports' }" />
+</div>

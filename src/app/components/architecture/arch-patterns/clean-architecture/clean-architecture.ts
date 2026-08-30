@@ -157,7 +157,16 @@ export class OrdersController {
   async post(req: Request): Promise<Response> {
     const cmd = PlaceOrderCommand.fromRequest(req.body); // HTTP → command
     const result = await this.useCase.execute(cmd);
-    return Response.json({ orderId: result.orderId }, { status: 201 });
+    // Presenter maps the result to an HTTP-friendly shape --
+    // the controller itself never builds the response body directly.
+    return Response.json(OrderPresenter.toDto(result), { status: 201 });
+  }
+}
+
+// Infrastructure/Http/OrderPresenter.ts
+export class OrderPresenter {
+  static toDto(result: PlaceOrderResult): { orderId: string } {
+    return { orderId: result.orderId };
   }
 }`
     },
@@ -320,7 +329,7 @@ const useCase = new SendWelcomeEmailUseCase(
     oneLiner: 'Clean Architecture places business rules at the centre; frameworks and databases are outer-ring plugins that the domain never depends on.',
     mustKnow: [
       'Dependency Rule: source code dependencies point inward only',
-      'Entities → Use Cases → Interface Adapters → Frameworks (outer to inner)',
+      'Entities → Use Cases → Interface Adapters → Frameworks (inner to outer)',
       'Repository interfaces defined in Domain, implemented in Infrastructure',
       'Use Cases are testable without any database or HTTP framework',
       'Controllers and repositories are adapters — converters between formats',

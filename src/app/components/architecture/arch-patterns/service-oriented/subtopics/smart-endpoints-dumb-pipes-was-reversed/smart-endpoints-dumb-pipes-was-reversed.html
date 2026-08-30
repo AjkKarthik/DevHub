@@ -1,0 +1,26 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Service-Oriented Architecture" topicRoute="/arch-patterns/service-oriented" subtopicLabel="Smart Endpoints, Dumb Pipes Was Reversed" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">Smart Endpoints, Dumb Pipes Was Reversed in the QnA</h1>
+  <p class="page-subtitle">The QnA's question title said "smart pipes, dumb endpoints" — backwards from the coined phrase, and contradicted by its own answer body and the page's theory section elsewhere.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>The phrase itself is well-known enough that people quote it — the next subtopic looks at a different QnA line on this same page that quotes something less solid: a specific attribution to a named author that doesn't actually check out.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Service-Oriented Architecture" topicRoute="/arch-patterns/service-oriented"
+    [next]="{ label: 'The SOA Done Right Quote Has No Real Source', route: '/arch-patterns/service-oriented/soa-done-right-quote-unattributable' }" />
+</div>

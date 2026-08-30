@@ -1,0 +1,27 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Factory Method" topicRoute="/design-patterns/factory-method" subtopicLabel="Backticks Are Not C#" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Backticks Are Not C#</h1>
+  <p class="page-subtitle">The same codeTab's exception message used JavaScript template-literal syntax — backticks with a bare placeholder — which isn't valid C# syntax at all.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic steps back to a bigger question the QnA raises — does the now-fixed DI codeTab genuinely decouple "which factory to use" the way one of the QnA's own answers describes, or only partially?</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Factory Method" topicRoute="/design-patterns/factory-method"
+    [prev]="{ label: 'DI Approach Referenced an Undefined PushNotification Class', route: '/design-patterns/factory-method/di-approach-referenced-an-undefined-push-notification-class' }"
+    [next]="{ label: 'Does the channel Switch Really Decouple Which Factory?', route: '/design-patterns/factory-method/does-the-channel-switch-really-decouple-which-factory' }" />
+</div>

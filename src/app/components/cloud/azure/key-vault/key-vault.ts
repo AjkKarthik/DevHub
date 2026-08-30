@@ -342,7 +342,7 @@ console.log(kv.listVersions('db-pass'));            // ['v1', 'v2']`
   qna: QnaItem[] = [
     {
       q: 'How do you rotate a secret in Key Vault without downtime?',
-      a: '(1) Create a new version of the secret in Key Vault (az keyvault secret set). (2) If using Key Vault References with a versionless URI, App Service picks up the new version automatically on the next resolution cycle (usually within minutes) — no app restart needed. (3) If the app reads secrets via SDK, implement secret caching with TTL (e.g. cache for 1 hour) — the app will pick up the new version after the cache expires. (4) Disable the old version after confirming all dependents have rotated to the new version. (5) For high-availability rotation, some teams deploy with two active secret versions briefly, then disable the old one.'
+      a: '(1) Create a new version of the secret in Key Vault (az keyvault secret set). (2) If using Key Vault References with a versionless URI, App Service picks up the new version automatically within 24 hours by default (it caches resolved values and refetches on that schedule) — an app setting/config change triggers an immediate refetch, or you can force one via a POST to the app\'s configreferences/appsettings/refresh management API endpoint. (3) If the app reads secrets via SDK, implement secret caching with TTL (e.g. cache for 1 hour) — the app will pick up the new version after the cache expires. (4) Disable the old version after confirming all dependents have rotated to the new version. (5) For high-availability rotation, some teams deploy with two active secret versions briefly, then disable the old one.'
     },
     {
       q: 'When should I use Key Vault for keys vs just for secrets?',

@@ -1,0 +1,26 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Modules" topicRoute="/terraform/modules" subtopicLabel="version Is a Registry-Only Argument, Not a General Pin" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">version Is a Registry-Only Argument, Not a General Pin</h1>
+  <p class="page-subtitle">The main page states the restriction in one clause, then teaches "always pin with version" as a general habit — here's why each source type pins differently, and which Git refs are real pins.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Terraform (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This sharpens a one-clause restriction the main page's own mistake entry can easily overwrite. Next: why a changed Git ref doesn't take effect until the cached module copy is refreshed.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Modules" topicRoute="/terraform/modules"
+    [next]="{ label: 'Remote Modules Are Cached — a Changed ref Needs init -upgrade', route: '/terraform/modules/remote-modules-are-cached-a-changed-ref-needs-init-upgrade' }" />
+</div>

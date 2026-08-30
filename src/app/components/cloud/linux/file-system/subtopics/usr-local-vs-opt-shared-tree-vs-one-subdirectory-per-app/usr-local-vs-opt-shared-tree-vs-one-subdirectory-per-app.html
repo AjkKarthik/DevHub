@@ -1,0 +1,26 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="File System & Hierarchy" topicRoute="/linux/file-system" subtopicLabel="/usr/local vs /opt" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">/usr/local vs /opt: A Shared Tree vs One Self-Contained Subdirectory Per App</h1>
+  <p class="page-subtitle">The main page describes both directories separately but never contrasts them — the FHS defines a real structural difference: files merged by type vs. files kept together by application.</p>
+  <app-page-meta [readingTime]="8" difficulty="beginner" since="Linux 2.6+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the topic's three deep dives, connecting two directories the main page mentions separately into a single structural contrast defined by the FHS itself.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="File System & Hierarchy" topicRoute="/linux/file-system"
+    [prev]="{ label: 'Skip nofail in fstab and Boot Hangs, Then Emergency Mode', route: '/linux/file-system/skip-nofail-in-fstab-and-boot-hangs-then-drops-to-emergency' }" />
+</div>

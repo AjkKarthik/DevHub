@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Design Netflix / YouTube" topicRoute="/system-design/video-streaming" subtopicLabel="Stale CDN Capacity Figure, Already Corrected on a Sibling Page" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">Stale CDN Capacity Figure, Already Corrected on a Sibling Page</h1>
+  <p class="page-subtitle">The page cited "Cloudflare/Akamai: 200+ Tbps capacity" — this hub's own /system-design/cdn topic already researched and corrected this exact fact to 500+ Tbps during its own Phase 10 authoring.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>With the CDN capacity figure corrected, the next issue is a unit-mislabeling bug in the Challenge's own cost estimate — a "per month" figure that's actually the per-day total.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Design Netflix / YouTube" topicRoute="/system-design/video-streaming"
+    [next]="{ label: 'A “300 PB/Month” Figure That Was Actually Per Day', route: '/system-design/video-streaming/pb-per-month-was-actually-per-day' }" />
+</div>

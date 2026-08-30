@@ -221,7 +221,7 @@ const challenge: Challenge = {
 
 console.log(checkPasswordStrength('abc'));           // { score: 0, feedback: [...] }
 console.log(checkPasswordStrength('password'));      // { score: 1, feedback: [...] }
-console.log(checkPasswordStrength('P@ssw0rd123!')); // { score: 3 or 4, feedback: [] }`,
+console.log(checkPasswordStrength('P@ssw0rd123!')); // { score: 3, feedback: [] } -- 12 chars, all 4 classes, but under 16 chars so score 4 is out of reach`,
 };
 
 const quiz: QuizQuestion[] = [

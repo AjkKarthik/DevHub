@@ -1,0 +1,27 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Clean Architecture Pattern" topicRoute="/design-patterns/clean-architecture"
+    subtopicLabel="Input and Output Ports, Made Concrete" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Input and Output Ports, Made Concrete</h1>
+  <p class="page-subtitle">A quiz question defines Input and Output Ports precisely. Here's a Use Case with explicit port interfaces serving three different callers.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="C# 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic covers a different Application-layer concern the QnA names but never shows: what a use case returns when validation fails — and why a Result type, not a thrown exception, is the QnA's own recommended shape for EXPECTED failures.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Clean Architecture Pattern" topicRoute="/design-patterns/clean-architecture"
+    [prev]="{ label: 'The Order Aggregate’s Missing Ship() and AddDomainEvent', route: '/design-patterns/clean-architecture/the-order-aggregates-missing-ship-and-adddomainevent' }"
+    [next]="{ label: 'Returning a Result Type Instead of Throwing', route: '/design-patterns/clean-architecture/returning-a-result-type-instead-of-throwing' }" />
+</div>

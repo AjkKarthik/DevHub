@@ -1,0 +1,26 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Service Communication" topicRoute="/arch-patterns/service-communication" subtopicLabel="Why Browsers Cannot Call gRPC Directly" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">Why Browsers Cannot Just Call gRPC Directly</h1>
+  <p class="page-subtitle">The page recommends REST for browser clients without ever explaining why — this subtopic covers the real mechanical reason (HTTP/2 trailers the Fetch API has never exposed) and what gRPC-Web trades away to work around it.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>This closes the loop on the page's own REST-vs-gRPC recommendation with the actual platform constraint behind it, rather than leaving it as an unexplained rule of thumb.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Service Communication" topicRoute="/arch-patterns/service-communication"
+    [prev]="{ label: 'How the Outbox Pattern Actually Guarantees Delivery', route: '/arch-patterns/service-communication/how-the-outbox-pattern-actually-works' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Multi-Factor Authentication" topicRoute="/security/mfa"
+    subtopicLabel="HOTP Counter Resynchronization" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">HOTP Counter Resynchronization</h1>
+  <p class="page-subtitle">The QnA names HOTP's "synchronisation problems" in one sentence. Here's RFC 4226's own look-ahead window fix, reusing the main page's own hotp() function unmodified.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>Together, these three subtopics extend the main page's own push-approval assumption, step-up freshness recipe, and HOTP synchronization problem into working, verified code.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Multi-Factor Authentication" topicRoute="/security/mfa"
+    [prev]="{ label: 'Step-Up Authentication for High-Risk Operations', route: '/security/mfa/step-up-authentication-for-high-risk-operations' }" />
+</div>

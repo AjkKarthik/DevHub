@@ -159,6 +159,8 @@ interface Order {
 
 // ACL — translates ERP mess to your clean domain model
 class LegacyErpAdapter {
+  constructor(private erpClient: ErpClient) {}
+
   private readonly STATUS_MAP: Record<string, Order['status']> = {
     '10': 'pending', '20': 'processing', '30': 'shipped', '40': 'cancelled',
   };

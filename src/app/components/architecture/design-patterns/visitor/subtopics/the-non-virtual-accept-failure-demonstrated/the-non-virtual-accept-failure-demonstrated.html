@@ -1,0 +1,30 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Visitor" topicRoute="/design-patterns/visitor"
+    subtopicLabel="The Non-Virtual Accept() Failure, Demonstrated" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">The Non-Virtual Accept() Failure, Demonstrated</h1>
+  <p class="page-subtitle">One of the main page's own quiz questions describes exactly how double dispatch
+    breaks if Accept() isn't itself overridden per element type — but neither codeTab actually triggers it,
+    since both use an interface. Here's the broken version, and why it fails silently.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="C# 1.0+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>Both remaining subtopics build actual code for two more things the main page's own QnA discusses in
+      prose only: simulating double dispatch with C#'s dynamic keyword, and a Composite-plus-Visitor recursive
+      traversal over the page's own Order elements.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Visitor" topicRoute="/design-patterns/visitor"
+    [next]="{ label: 'Simulating Double Dispatch With dynamic', route: '/design-patterns/visitor/simulating-double-dispatch-with-dynamic' }" />
+</div>

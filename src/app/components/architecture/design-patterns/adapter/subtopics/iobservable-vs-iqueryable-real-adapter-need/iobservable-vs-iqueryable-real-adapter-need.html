@@ -1,0 +1,30 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Adapter" topicRoute="/design-patterns/adapter"
+    subtopicLabel="IObservable vs. IQueryable: Which One Really Needs an Adapter" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">IObservable vs. IQueryable: Which One Really Needs an Adapter?</h1>
+  <p class="page-subtitle">The main page's own ".NET Examples" bullet grouped IQueryable&lt;T&gt; and
+    IObservable&lt;T&gt; together as things IEnumerable&lt;T&gt; needs an adapter for. Only one of them
+    actually does — here's why, with the real push-to-pull adapter built out in full.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The lesson generalizes beyond .NET's collection interfaces: before reaching for Adapter, check whether
+      the two interfaces are actually incompatible at the member level, or whether one already extends the
+      other — inheritance can make an "Adapter-shaped" problem disappear entirely.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Adapter" topicRoute="/design-patterns/adapter"
+    [prev]="{ label: 'The Missing LogLevel Mappings', route: '/design-patterns/adapter/missing-loglevel-mappings' }" />
+</div>

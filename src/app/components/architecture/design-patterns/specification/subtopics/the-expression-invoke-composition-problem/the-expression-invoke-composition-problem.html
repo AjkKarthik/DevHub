@@ -1,0 +1,26 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Specification Pattern" topicRoute="/design-patterns/specification"
+    subtopicLabel="The Expression.Invoke Composition Problem" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">The Expression.Invoke Composition Problem</h1>
+  <p class="page-subtitle">The QnA names the correct fix for combining expression trees. The main codeTab's own AndSpec/OrSpec/NotSpec never actually use it.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="C# 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>With composition fixed to genuinely support both evaluation modes, the next two subtopics build out uses the main page names but never demonstrates: Specification as a CONSTRUCTION rule (not just selection/validation), and a hybrid database-then-in-memory pipeline for specifications too complex to translate at all.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Specification Pattern" topicRoute="/design-patterns/specification"
+    [next]="{ label: 'Specification as a Construction Rule', route: '/design-patterns/specification/specification-as-a-construction-rule' }" />
+</div>

@@ -1,0 +1,27 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Load Balancing Algorithms" topicRoute="/service-mesh/load-balancing" subtopicLabel="consistentHash Defaults to Ring Hash With a 1024-Node Ring" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">consistentHash Defaults to Ring Hash With a 1024-Node Ring</h1>
+  <p class="page-subtitle">The main page never names an algorithm behind consistentHash — it defaults to ring hash, and the 1024-node ring size is exactly why the "~1/N remapping" claim holds (or doesn't, at scale).</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Istio / Envoy (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This gives the main page's "~1/N remapping" claim its precise mechanism and a concrete tuning lever. Next: why active health checks have no native DestinationRule field at all — a genuine inaccuracy on the main page, now corrected.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Load Balancing Algorithms" topicRoute="/service-mesh/load-balancing"
+    [prev]="{ label: 'warmupDurationSecs Starts New Pods at 10% Traffic, Not 0%', route: '/service-mesh/load-balancing/warmupdurationsecs-starts-new-pods-at-10-percent-not-0-percent' }"
+    [next]="{ label: 'Active Health Checks Have No Native DestinationRule Field', route: '/service-mesh/load-balancing/active-health-checks-have-no-native-destinationrule-field' }" />
+</div>

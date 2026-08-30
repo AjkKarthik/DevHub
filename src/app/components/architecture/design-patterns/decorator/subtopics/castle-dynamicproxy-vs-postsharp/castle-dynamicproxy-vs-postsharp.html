@@ -1,0 +1,30 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Decorator" topicRoute="/design-patterns/decorator"
+    subtopicLabel="Castle DynamicProxy vs. PostSharp: Which One Is Actually Decorator?" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Castle DynamicProxy vs. PostSharp: Which One Is Actually Decorator?</h1>
+  <p class="page-subtitle">The main page's QnA lumped both AOP frameworks together as "generating Decorator
+    proxies." Only one of them actually does — the other rewrites compiled IL directly, with no wrapper
+    object at all.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>Castle DynamicProxy's genuine wrapper-object approach inherits every one of Decorator's own
+      limitations — the next subtopic makes one of them concrete: what actually breaks when a decorated
+      object's identity diverges from the real one.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Decorator" topicRoute="/design-patterns/decorator"
+    [next]="{ label: 'When Decorator Breaks Object Identity', route: '/design-patterns/decorator/when-decorator-breaks-object-identity' }" />
+</div>

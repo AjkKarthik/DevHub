@@ -1,0 +1,27 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Networking" topicRoute="/linux/networking" subtopicLabel="Traceroute Defaults to UDP, Which Firewalls Often Block" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">Traceroute Defaults to UDP, Which Firewalls Often Block</h1>
+  <p class="page-subtitle">The main page lists -T and -I as bare options — plain traceroute actually sends UDP probes to ports 33434+, and a row of asterisks usually means a firewall is silently dropping that specific pattern, not that the path is down.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Linux 2.6+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This explains the -T/-I flags the main page only lists without justifying. Next: why raising an interface's MTU can create a silent packet blackhole.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Networking" topicRoute="/linux/networking"
+    [prev]="{ label: 'TIME_WAIT Is Normal, Not a Bug — and It Can’t Be Tuned', route: '/linux/networking/time-wait-is-normal-not-a-bug-and-cant-be-tuned' }"
+    [next]="{ label: 'Jumbo Frames + MTU Mismatch Creates a Silent PMTUD Blackhole', route: '/linux/networking/jumbo-frames-mtu-mismatch-creates-a-silent-pmtud-blackhole' }" />
+</div>

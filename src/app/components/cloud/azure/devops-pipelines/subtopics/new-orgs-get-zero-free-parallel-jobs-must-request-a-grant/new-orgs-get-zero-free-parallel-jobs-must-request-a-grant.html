@@ -1,0 +1,26 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure DevOps & Pipelines" topicRoute="/azure/devops-pipelines" subtopicLabel="New Orgs Get Zero Free Parallel Jobs" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">New Organizations Get Zero Free Parallel Jobs, Not the Main Page's "1"</h1>
+  <p class="page-subtitle">The main page's "Free tier: 1 parallel job, 1800 min/month" describes an entitlement new organizations no longer get automatically — it now requires a manually-reviewed request.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Azure Pipelines" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic covers a setup-time blocker the main page's quickRef doesn't anticipate. Next, the Approval Timeout subtopic covers a related "what actually happens" gap in the main page's own Environments coverage.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure DevOps & Pipelines" topicRoute="/azure/devops-pipelines"
+    [next]="{ label: 'Unanswered Approvals Are Skipped, Not Rejected', route: '/azure/devops-pipelines/unanswered-approvals-are-skipped-not-rejected-at-timeout' }" />
+</div>

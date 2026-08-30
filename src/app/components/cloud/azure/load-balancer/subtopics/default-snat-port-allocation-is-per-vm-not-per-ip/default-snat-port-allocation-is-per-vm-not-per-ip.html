@@ -1,0 +1,27 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Load Balancer & Front Door" topicRoute="/azure/load-balancer" subtopicLabel="Default SNAT Port Allocation Is Per-VM" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">Default SNAT Port Allocation Is Per-VM, Not an Even Split</h1>
+  <p class="page-subtitle">The main page's own "~64K SNAT ports" figure is a per-IP total — here's the exact tiered table that determines how few of those ports each VM actually gets by default.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Azure LB" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic fills in the exact numbers behind the main page's own SNAT exhaustion QnA. Next, the Front Door health probe subtopic explains the sample-size/successful-samples values the main page's own code sets without comment.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Load Balancer & Front Door" topicRoute="/azure/load-balancer"
+    [prev]="{ label: 'Default Outbound Access Retired', route: '/azure/load-balancer/default-outbound-access-was-retired-march-2026-need-explicit-method' }"
+    [next]="{ label: 'Front Door Health Probe SampleSize Explained', route: '/azure/load-balancer/front-door-health-probe-samplesize-and-successfulsamples-explained' }" />
+</div>

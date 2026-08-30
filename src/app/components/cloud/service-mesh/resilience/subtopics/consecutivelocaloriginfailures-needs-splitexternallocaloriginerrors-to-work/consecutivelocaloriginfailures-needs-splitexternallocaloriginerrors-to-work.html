@@ -1,0 +1,26 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Resilience Patterns" topicRoute="/service-mesh/resilience" subtopicLabel="consecutiveLocalOriginFailures Needs splitExternalLocalOriginErrors to Work" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">consecutiveLocalOriginFailures Needs splitExternalLocalOriginErrors to Work</h1>
+  <p class="page-subtitle">The main page describes consecutiveLocalOriginFailures as a standalone setting — it silently does nothing unless splitExternalLocalOriginErrors: true is also explicitly set.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Istio / Envoy (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This gives the main page's outlierDetection quickRef entry the required companion flag it never mentions. Next: why minHealthPercent's real default is 0% (disabled), not 50% as the main page's own QnA claimed — now corrected.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Resilience Patterns" topicRoute="/service-mesh/resilience"
+    [next]="{ label: 'minHealthPercent Defaults to 0% (Disabled), Not 50%', route: '/service-mesh/resilience/minhealthpercent-defaults-to-0-percent-disabled-not-50-percent' }" />
+</div>

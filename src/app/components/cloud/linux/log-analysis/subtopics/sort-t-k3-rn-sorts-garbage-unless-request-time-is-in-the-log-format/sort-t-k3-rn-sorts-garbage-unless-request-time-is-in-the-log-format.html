@@ -1,0 +1,26 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Log Analysis" topicRoute="/linux/log-analysis" subtopicLabel="The Slowest-Responses Sort Assumes request_time Is Already Logged" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">The Slowest-Responses Sort Assumes request_time Is Already Logged</h1>
+  <p class="page-subtitle">The main page's own "slowest responses" one-liner is conditional on $request_time being logged — nginx's default format doesn't include it, so the command silently sorts by user-agent instead.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="nginx (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This turns the main page's own unchecked "if $request_time is logged" caveat into a real verification step. Next: why journalctl silently misses every prior reboot's logs by default.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Log Analysis" topicRoute="/linux/log-analysis"
+    [next]="{ label: 'journalctl Only Shows the Current Boot by Default', route: '/linux/log-analysis/journalctl-only-shows-the-current-boot-by-default' }" />
+</div>

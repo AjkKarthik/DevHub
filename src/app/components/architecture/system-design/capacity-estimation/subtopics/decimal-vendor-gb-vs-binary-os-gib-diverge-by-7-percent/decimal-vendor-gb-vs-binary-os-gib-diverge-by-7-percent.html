@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Capacity Estimation" topicRoute="/system-design/capacity-estimation" subtopicLabel="Decimal Vendor GB vs. Binary OS GiB Diverge by ~7%" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">Decimal Vendor GB vs. Binary OS GiB Diverge by ~7%</h1>
+  <p class="page-subtitle">The main page states storage scales by ×1,024 at every step — true for OS/software binary units, but vendors use decimal ×1,000, and the gap grows with scale.</p>
+  <app-page-meta [readingTime]="6" difficulty="beginner" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This is the third and final correction in this batch — together, these three subtopics tighten the main page's own latency table, its rules-of-thumb summary, and its storage-unit conventions.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Capacity Estimation" topicRoute="/system-design/capacity-estimation"
+    [prev]="{ label: 'Redis GET Latency Is Network RTT, Not an Extra 1ms', route: '/system-design/capacity-estimation/redis-get-latency-is-network-rtt-not-an-extra-1ms' }" />
+</div>

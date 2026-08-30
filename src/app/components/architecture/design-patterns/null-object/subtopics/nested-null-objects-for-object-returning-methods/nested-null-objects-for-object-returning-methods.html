@@ -1,0 +1,30 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Null Object" topicRoute="/design-patterns/null-object"
+    subtopicLabel="Nested Null Objects for Object-Returning Methods" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Nested Null Objects for Object-Returning Methods</h1>
+  <p class="page-subtitle">The main page's own QnA lists six patterns for what a Null Object should return
+    per type — only the empty-collection case is ever shown. Here's the most structurally interesting one:
+    a Null Object whose own methods return further Null Objects.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="C# 9.0+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic builds the failure case the main page's own QnA warns about but never shows — a
+      Null Object that violates the Liskov Substitution Principle by throwing on one of its methods.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Null Object" topicRoute="/design-patterns/null-object"
+    [prev]="{ label: 'The Undeclared _db Field in ProductRepository', route: '/design-patterns/null-object/the-undeclared-db-field-in-productrepository' }"
+    [next]="{ label: 'When a Null Object Violates Liskov Substitution', route: '/design-patterns/null-object/when-a-null-object-violates-liskov-substitution' }" />
+</div>

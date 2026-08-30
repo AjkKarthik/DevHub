@@ -1,0 +1,27 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Strangler Fig Pattern" topicRoute="/arch-patterns/strangler-fig" subtopicLabel="Parallel Run Skipped Its Own Discrepancy Check" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">Parallel Run Skipped Its Own Discrepancy Check</h1>
+  <p class="page-subtitle">The comment says "compare status and total" — but the original code nested that comparison inside an ID-difference check, silently skipping the one thing a parallel run exists to do whenever the two systems happen to produce the same ID.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic makes concrete a risk the page's own mistakes block names in one line — what actually happens when data migration is skipped alongside code migration.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Strangler Fig Pattern" topicRoute="/arch-patterns/strangler-fig"
+    [prev]="{ label: 'Feature-Flag Comment Named the Wrong Migrated Feature', route: '/arch-patterns/strangler-fig/feature-flag-comment-named-the-wrong-migrated-feature' }"
+    [next]="{ label: 'The Split-Brain Risk Made Concrete', route: '/arch-patterns/strangler-fig/the-split-brain-risk-made-concrete' }" />
+</div>

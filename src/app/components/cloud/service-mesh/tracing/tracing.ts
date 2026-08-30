@@ -59,7 +59,7 @@ export class MeshTracing {
       heading: 'OpenTelemetry Integration',
       points: [
         'OpenTelemetry (OTel) is the CNCF standard for observability data. It provides SDKs for every language, a protocol (OTLP), and a Collector that receives/processes/exports traces, metrics, and logs.',
-        'Istio 1.16+ supports OpenTelemetry as a first-class tracing provider: `meshConfig.extensionProviders[0].opentelemetry`. This replaces the older Zipkin/Jaeger native integrations.',
+        'Istio 1.22+ documents OpenTelemetry as a first-class tracing provider: `meshConfig.extensionProviders[0].opentelemetry`. This replaces the older Zipkin/Jaeger native integrations.',
         'OTel Collector deployment: run a DaemonSet or Deployment of the OTel Collector in the cluster. Envoy sidecars send spans to the collector via OTLP gRPC (port 4317). The collector then exports to Jaeger, Tempo, Datadog, etc.',
         'Custom spans from application code: use the OTel SDK to create application-level spans within each service. These appear as child spans of the Envoy span in the trace — combining infrastructure and app-level tracing in one view.',
         'Baggage propagation: OTel baggage (key-value pairs attached to a trace context) can be used to pass context across services — e.g., user ID, feature flags. All services in the trace have access to baggage items.',
@@ -70,7 +70,7 @@ export class MeshTracing {
       heading: 'Sampling Strategies',
       points: [
         'Head-based sampling (default): the decision to trace a request is made at the first service. All subsequent hops in the same trace follow the same sampling decision (encoded in `x-b3-sampled`).',
-        '`meshConfig.defaultConfig.tracing.sampling`: sets the sampling percentage (0-100) globally. Overrides can be set per-service via the Telemetry API.',
+        '`meshConfig.defaultConfig.tracing.sampling`: the OLDER way to set the sampling percentage (0-100) globally. When a Telemetry resource\'s `randomSamplingPercentage` is ALSO configured, the Telemetry API value takes precedence — prefer configuring sampling through the Telemetry API alone rather than setting both.',
         'Sampling rates: 100% for development/staging. For production: 1% for extremely high-traffic services, 10% for typical services. At 1000 RPS, 1% sampling still generates 10 traces/sec.',
         'Tail-based sampling: decide AFTER the trace completes — only keep traces that match certain criteria (error traces, slow traces). Requires the OTel Collector or a tool like Tempo with tail sampling. More expensive but keeps the most valuable traces.',
         'Error sampling: combine head sampling (10%) with a policy to always sample requests that result in 5xx responses. This ensures you always have trace data for failures even at low overall sampling rates.',
@@ -432,7 +432,7 @@ console.log(extractTraceHeaders(incoming));
     },
     {
       q: 'How do trace exemplars connect Prometheus metrics to Jaeger traces?',
-      a: 'Prometheus Exemplars (RFC 4652) attach a trace ID to a specific metric sample: <pre><code>http_request_duration_seconds_bucket{le="0.5"} 42 # {trace_id="abc123"} 0.45</code></pre>When you see a latency spike in a Grafana chart, the spike point has an attached trace ID (the exemplar). Click the spike → Grafana jumps to the Jaeger/Tempo trace for that exact request. <br>To use: <ul><li>Application records exemplars when emitting latency histograms (OTel SDK + Prometheus SDK)</li><li>Prometheus scrapes with exemplar support enabled</li><li>Grafana configured to show exemplars in histogram panels</li></ul>This closes the loop between aggregate metrics (what is slow?) and individual traces (why is this specific request slow?).',
+      a: 'Prometheus Exemplars (defined by the OpenMetrics specification) attach a trace ID to a specific metric sample: <pre><code>http_request_duration_seconds_bucket{le="0.5"} 42 # {trace_id="abc123"} 0.45</code></pre>When you see a latency spike in a Grafana chart, the spike point has an attached trace ID (the exemplar). Click the spike → Grafana jumps to the Jaeger/Tempo trace for that exact request. <br>To use: <ul><li>Application records exemplars when emitting latency histograms (OTel SDK + Prometheus SDK)</li><li>Prometheus scrapes with exemplar support enabled</li><li>Grafana configured to show exemplars in histogram panels</li></ul>This closes the loop between aggregate metrics (what is slow?) and individual traces (why is this specific request slow?).',
     },
     {
       q: 'Can you trace gRPC calls with Istio and OpenTelemetry?',

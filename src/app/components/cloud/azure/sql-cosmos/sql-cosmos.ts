@@ -46,7 +46,7 @@ export class AzureSqlCosmos {
     {
       heading: 'Cosmos DB Architecture',
       points: [
-        'Cosmos DB is a globally distributed multi-model database. A Cosmos account holds databases, which hold containers (collections/tables). Data is partitioned by a partition key — all items with the same partition key live on the same logical partition (physical partition = up to 50 GB, ~10,000 RU/s).',
+        'Cosmos DB is a globally distributed multi-model database. A Cosmos account holds databases, which hold containers (collections/tables). Data is partitioned by a partition key — all items with the same partition key live on the same logical partition, capped at 20 GB. Logical partitions are internally mapped onto physical partitions (an implementation detail Cosmos DB fully manages, not something you choose directly), each capped at 50 GB and ~10,000 RU/s.',
         'Partition key choice is critical: high cardinality (many distinct values) distributes load evenly. A poor partition key creates hot partitions — one partition receives all traffic while others are idle, causing throttling (429) on the hot partition.',
         'Throughput: Provisioned (manual RU/s or autoscale max RU/s — scales down automatically, billed for max provisioned) or Serverless (pay per actual RU consumed, best for dev/test or very sporadic workloads, no geo-replication in serverless).',
         'Global distribution: add regions to a Cosmos account with one click. Writes go to the write region; reads can be served from any read region. Multi-region writes (multi-master) allow writes in every region — resolves conflicts via Last Write Wins (timestamp) or custom merge procedures.',

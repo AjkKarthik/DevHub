@@ -1,0 +1,27 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Kubernetes Gateway API" topicRoute="/service-mesh/gateway-api" subtopicLabel="ReferenceGrant Graduated to v1 — the Main Page Used the Older v1beta1" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">ReferenceGrant Graduated to v1 — the Main Page Used the Older v1beta1</h1>
+  <p class="page-subtitle">Every ReferenceGrant example uses v1beta1 while its siblings use v1 — verified this reflects a real, recent graduation, not a mistake, and the older version still works fine.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Gateway API v1.5+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This closes a version-consistency gap in the main page's examples. Next: debugging a broken HTTPRoute should start with the Gateway's own Programmed condition, not just the route's status.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Kubernetes Gateway API" topicRoute="/service-mesh/gateway-api"
+    [prev]="{ label: 'Specificity Beats Timestamp in HTTPRoute Conflict Resolution', route: '/service-mesh/gateway-api/specificity-beats-timestamp-in-httproute-conflict-resolution' }"
+    [next]="{ label: 'Check the Gateway’s Own Programmed Condition, Not Just the Route', route: '/service-mesh/gateway-api/check-the-gateways-own-programmed-condition-not-just-the-route' }" />
+</div>

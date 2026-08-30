@@ -1,0 +1,29 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Iterator" topicRoute="/design-patterns/iterator"
+    subtopicLabel="The Recursive-Yield Tree Traversal Is Secretly O(n²)" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">The Recursive-Yield Tree Traversal Is Secretly O(n²)</h1>
+  <p class="page-subtitle">The main page's own InOrderFrom recurses with a foreach-wrapped yield return at
+    every level — a well-documented C# performance trap. Verified against Eric Lippert's own analysis: this
+    is O(n log n) for a balanced tree, and genuinely O(n²) for a degenerate one.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic makes concrete a technique the main page's own QnA names but never shows: merging
+      two external iterators by hand.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Iterator" topicRoute="/design-patterns/iterator"
+    [next]="{ label: 'Merging Two External Iterators, Made Concrete', route: '/design-patterns/iterator/merging-two-external-iterators' }" />
+</div>

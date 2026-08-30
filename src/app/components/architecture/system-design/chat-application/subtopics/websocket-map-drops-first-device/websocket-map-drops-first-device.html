@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Design a Chat Application" topicRoute="/system-design/chat-application" subtopicLabel="WebSocket Map Silently Drops First Device on Multi-Login" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">WebSocket Map Silently Drops First Device on Multi-Login</h1>
+  <p class="page-subtitle">The page's WebSocket server mapped one connection per user ID — despite its own Challenge requiring multi-device support, a second device silently overwrote the first, with no error anywhere.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>With connection tracking fixed for multi-device support, the next issue is in the Challenge's own delivery-guarantee wording — it asks for something the page's own Theory section says isn't the actual model being used.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Design a Chat Application" topicRoute="/system-design/chat-application"
+    [next]="{ label: '‘Exactly-Once Delivery’ Contradicts the Page’s Own At-Least-Once Theory', route: '/system-design/chat-application/exactly-once-contradicts-at-least-once-theory' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Password Security" topicRoute="/security/password-security"
+    subtopicLabel="Score 3 vs 4 — the Real Boundary" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">Score 3 vs 4 — the Real Boundary</h1>
+  <p class="page-subtitle">The Challenge's own demonstration hedges "score: 3 or 4" for a deterministic function. Here's what it actually returns — and what it would really take to reach 4.</p>
+  <app-page-meta [readingTime]="7" difficulty="beginner" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>The next two subtopics build out attacks and mechanisms the quiz and QnA describe in real detail but never demonstrate in code: a simplified passkey (WebAuthn) flow, and a detector for password spraying's own distinctive cross-account signature.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Password Security" topicRoute="/security/password-security"
+    [next]="{ label: 'A Simplified Passkey Registration and Login Flow', route: '/security/password-security/a-simplified-passkey-registration-and-login-flow' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure RBAC" topicRoute="/azure/rbac" subtopicLabel="IMDS Metadata:true and Unauthenticated Blast Radius" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">IMDS's Metadata:true Header — and Why Any Process on the VM Can Use It</h1>
+  <p class="page-subtitle">The main page's own Managed Identity codeTab uses this header without explaining it's an SSRF defense — or that the token endpoint itself has no per-process authentication at all.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Azure RBAC" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic closes out the topic's three deep dives, extending the main page's own least-privilege discussion to the token-acquisition endpoint itself, not just role assignment scope.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure RBAC" topicRoute="/azure/rbac"
+    [prev]="{ label: 'Classic Co-Administrators Auto-Converted to Owner', route: '/azure/rbac/classic-co-administrators-auto-converted-to-owner-december-2025' }" />
+</div>

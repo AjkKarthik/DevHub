@@ -1,0 +1,26 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Backend for Frontend (BFF)" topicRoute="/arch-patterns/backend-for-frontend" subtopicLabel="What the v2 Migration Actually Looks Like" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">What the v2 Migration Actually Looks Like</h1>
+  <p class="page-subtitle">The Third-Party BFF codeTab's own trailing comment names a v2 migration and never shows it. This subtopic writes the v2 endpoint alongside the untouched v1, and traces exactly what makes the shared-currency price field a genuinely breaking change.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the batch — and completes the Architecture Patterns hub's entire Phase 10 rollout. Together the three subtopics write the GraphQL resolver the QnA describes but never shows, examine a genuine tension between the page's own Challenge and its own mistakes-block principle, and demonstrate the versioning migration the Third-Party BFF codeTab only gestures at.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Backend for Frontend (BFF)" topicRoute="/arch-patterns/backend-for-frontend"
+    [prev]="{ label: 'Is hasBreakingNews Business Logic in the BFF?', route: '/arch-patterns/backend-for-frontend/is-has-breaking-news-business-logic-in-the-bff' }" />
+</div>

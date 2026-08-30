@@ -28,7 +28,7 @@ export class MeshMtls {
     { name: 'SPIFFE', type: 'keyword', desc: 'Secure Production Identity Framework for Everyone — the identity standard Istio uses for workload certificates.' },
     { name: 'SVID', type: 'keyword', desc: 'SPIFFE Verifiable Identity Document — an x.509 certificate embedding a SPIFFE URI (spiffe://cluster/ns/pod/sa/name).' },
     { name: 'DestinationRule TLS', type: 'syntax', desc: 'Outbound TLS mode on DestinationRule: ISTIO_MUTUAL (use Istio certs), SIMPLE, MUTUAL, or DISABLE.' },
-    { name: 'istio-ca-secret', type: 'keyword', desc: 'Kubernetes Secret in istio-system holding the root CA certificate used to sign all SVID certificates.' },
+    { name: 'cacerts', type: 'keyword', desc: 'Kubernetes Secret in istio-system holding the root CA certificate used to sign all SVID certificates.' },
     { name: 'istioctl authn tls-check', type: 'keyword', desc: 'Verifies that mTLS is correctly configured and active between two workloads.' },
   ];
 
@@ -73,7 +73,7 @@ export class MeshMtls {
         'cert-manager integration: cert-manager manages the Istio CA certificate (the one Istiod uses to sign SVIDs). It automatically renews the CA cert before expiry using Kubernetes Certificate resources.',
         'Multi-root trust: when using multi-cluster meshes, each cluster may have its own intermediate CA under a shared root. Pods in cluster A trust cluster B\'s certs because they share the root CA.',
         'Certificate rotation is automatic at the proxy level — Envoy requests renewal before the cert expires. The default cert TTL is 24 hours; the renewal threshold is 80% of TTL (i.e., renewal happens at 19.2 hours).',
-        'Emergency cert rotation: `kubectl -n istio-system delete secret istio-ca-secret` triggers Istiod to generate a new CA. All proxy certs are invalid until the new CA is distributed — causes brief disruption. Do this in planned maintenance windows only.',
+        'Emergency cert rotation: `kubectl -n istio-system delete secret cacerts` triggers Istiod to generate a new self-signed CA (the same secret name used for a plugged-in custom CA, per the cert-manager example above — modern Istio unified what used to be two separate secret names into one). All proxy certs are invalid until the new CA is distributed — causes brief disruption. Do this in planned maintenance windows only.',
         'Monitor cert expiry: `istioctl proxy-config secret <pod>` shows the current certificate and its expiry time. Alert on certs expiring within 24 hours.',
       ],
     },
@@ -96,7 +96,7 @@ export class MeshMtls {
         'External clients (outside the cluster): they cannot use Istio-managed mTLS certs. Use SIMPLE TLS (one-way) for the Gateway, or use mutual TLS with external certs loaded via a Secret on the Gateway.',
         'External services calling INTO the mesh: terminate mTLS at the istio-ingressgateway. The gateway handles TLS with external clients; internal mesh traffic uses Istio mTLS.',
         'Kubernetes Jobs and CronJobs: ensure they are injected if they call STRICT services. Job pods are often overlooked in injection enablement and break after STRICT is enforced.',
-        'Health check probes: Kubernetes liveness/readiness probes bypass Istio\'s mTLS because they come from the kubelet (not through Envoy). Istio automatically exempts probe paths from mTLS enforcement.',
+        'Health check probes: the sidecar injector REWRITES each HTTP/gRPC probe in the pod spec to target the istio-agent\'s own status port instead of the app\'s real port — this is what actually keeps probes out of Envoy\'s mTLS-enforcing inbound listener, not merely "coming from the kubelet."',
       ],
     },
   ];
@@ -369,7 +369,7 @@ console.log(getMtlsConfig());`,
       q: 'Why do Kubernetes liveness probes work even with STRICT PeerAuthentication?',
       options: ['Probes are routed through the Envoy sidecar which handles mTLS automatically', 'Istio automatically exempts kubelet probe traffic from mTLS enforcement', 'Liveness probes use a separate mTLS certificate issued by Kubernetes', 'STRICT mode only applies to east-west mesh traffic, not probes'],
       answer: 1,
-      explanation: 'Kubernetes kubelet probes originate from the node, not from within the pod network, and do not go through Envoy. Istio automatically exempts these probe paths from mTLS enforcement — otherwise all pods would fail health checks immediately after enabling STRICT mode. This is by design.',
+      explanation: 'The sidecar injector rewrites each HTTP/gRPC probe in the pod spec to target the istio-agent\'s own status port instead of the app\'s real port — that rewritten port is what actually keeps probe traffic out of Envoy\'s mTLS-enforcing inbound listener (without the rewrite, iptables would redirect probe traffic to Envoy just like any other inbound request, and it would fail STRICT mTLS). Istio does this automatically — otherwise all pods would fail health checks immediately after enabling STRICT mode.',
     },
     {
       q: 'What is Auto mTLS in Istio and what problem does it solve?',

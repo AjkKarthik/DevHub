@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Distributed Transactions" topicRoute="/system-design/distributed-transactions" subtopicLabel="The Idempotency Key Example Used Date.now(), Defeating Retries" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">The Idempotency Key Example Used Date.now(), Defeating Retries</h1>
+  <p class="page-subtitle">The code sample regenerated its idempotency key from the current timestamp on every call — contradicting its own retry walkthrough and defeating the pattern's whole purpose. Fixed to generate once and reuse.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This fixes a self-contained bug in the idempotency code sample. Next: the "Kafka transactions" claim overgeneralizes a stream-processing-specific mechanism.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Distributed Transactions" topicRoute="/system-design/distributed-transactions"
+    [next]="{ label: 'Kafka Offset-Committing Is Specific to Consume-Transform-Produce', route: '/system-design/distributed-transactions/kafka-offset-committing-is-specific-to-consume-transform-produce' }" />
+</div>

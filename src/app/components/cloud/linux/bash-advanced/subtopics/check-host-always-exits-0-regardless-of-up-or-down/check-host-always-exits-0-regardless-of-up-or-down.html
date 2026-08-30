@@ -1,0 +1,26 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Advanced Bash Scripting" topicRoute="/linux/bash-advanced" subtopicLabel="check_host Always Exits 0, Regardless of Up or Down" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">check_host Always Exits 0, Regardless of Up or Down</h1>
+  <p class="page-subtitle">A genuine bug in the main page's own example: both branches end in echo, so the function's exit code never reflects whether the host was actually up or down.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Bash (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the topic's three deep dives with a direct, fixable bug in the main page's own parallel-execution example.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Advanced Bash Scripting" topicRoute="/linux/bash-advanced"
+    [prev]="{ label: 'exec + tee Process Substitution Can Race the Script’s Own Exit', route: '/linux/bash-advanced/exec-tee-redirect-races-script-exit-truncating-the-log' }" />
+</div>

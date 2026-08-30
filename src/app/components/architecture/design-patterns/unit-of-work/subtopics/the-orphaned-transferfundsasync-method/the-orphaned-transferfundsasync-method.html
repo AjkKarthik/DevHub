@@ -1,0 +1,30 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Unit of Work" topicRoute="/design-patterns/unit-of-work"
+    subtopicLabel="The Orphaned TransferFundsAsync Method" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">The Orphaned TransferFundsAsync Method</h1>
+  <p class="page-subtitle">The main page's own "EF Core DbContext as UoW" codeTab closed OrderService one
+    method too early — TransferFundsAsync landed outside any class, referencing a db variable that no longer
+    exists anywhere it can reach.</p>
+  <app-page-meta [readingTime]="7" difficulty="beginner" since="C# 12.0+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>Both remaining subtopics build actual code for two things the main page's own QnA describes in prose
+      only: handling optimistic concurrency conflicts, and a manual Unit of Work built without Entity
+      Framework at all.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Unit of Work" topicRoute="/design-patterns/unit-of-work"
+    [next]="{ label: 'Handling Optimistic Concurrency Conflicts', route: '/design-patterns/unit-of-work/handling-optimistic-concurrency-conflicts' }" />
+</div>

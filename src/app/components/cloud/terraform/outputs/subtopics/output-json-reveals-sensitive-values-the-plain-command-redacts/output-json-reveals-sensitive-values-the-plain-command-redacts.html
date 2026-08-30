@@ -1,0 +1,26 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Outputs" topicRoute="/terraform/outputs" subtopicLabel="output -json Reveals Sensitive Values the Plain Command Redacts" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">output -json Reveals Sensitive Values the Plain Command Redacts</h1>
+  <p class="page-subtitle">The main page mentions this in one clause buried in a QnA answer — here's the CI-pipeline trap it actually creates for a team that trusted sensitive = true alone.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Terraform (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This expands a one-clause mention buried in the main page's own QnA into a concrete CI-pipeline failure scenario and its fix.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Outputs" topicRoute="/terraform/outputs"
+    [prev]="{ label: 'terraform_remote_state Grants Access to the Whole State File', route: '/terraform/outputs/remote-state-grants-access-to-the-entire-state-not-just-outputs' }" />
+</div>

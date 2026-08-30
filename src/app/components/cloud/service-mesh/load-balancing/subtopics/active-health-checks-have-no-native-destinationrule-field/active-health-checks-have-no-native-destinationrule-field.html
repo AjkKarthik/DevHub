@@ -1,0 +1,26 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Load Balancing Algorithms" topicRoute="/service-mesh/load-balancing" subtopicLabel="Active Health Checks Have No Native DestinationRule Field" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">Active Health Checks Have No Native DestinationRule Field</h1>
+  <p class="page-subtitle">The main page named a trafficPolicy.healthCheck field that doesn't exist — verified against Istio's own API reference and corrected: EnvoyFilter is the only way.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Istio / Envoy (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>Together with the corrected warmupDurationSecs floor and the ring hash default, this closes out the main page's load-balancing trio of corrections — the main page's active-vs-passive health check distinction was directionally right, just missing that only one side has a native API surface.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Load Balancing Algorithms" topicRoute="/service-mesh/load-balancing"
+    [prev]="{ label: 'consistentHash Defaults to Ring Hash With a 1024-Node Ring', route: '/service-mesh/load-balancing/consistenthash-defaults-to-ring-hash-with-a-1024-node-ring' }" />
+</div>

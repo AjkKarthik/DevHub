@@ -308,7 +308,7 @@ const quiz: QuizQuestion[] = [
 const qna: QnaItem[] = [
   {
     q: 'Is ILogger<T> in .NET an example of Bridge?',
-    a: 'Partially. ILogger<T> (the abstraction) is decoupled from ILoggerProvider implementations (the implementors: Console, File, ApplicationInsights). The logging infrastructure uses a bridge-like structure where the abstraction and sinks can vary independently — this is Bridge in spirit, though the .NET logging pipeline has additional complexity.',
+    a: 'Partially. ILogger<T> (the abstraction) is decoupled from ILoggerProvider implementations (the implementors: Console, File, ApplicationInsights) — but it is a broadcast-shaped Bridge, not a swap-one-implementor-at-a-time Bridge: internally, Logger holds one ILogger instance PER registered provider and calls Log() on all of them for every log call, rather than delegating to a single active Implementor the way the Shape/Renderer example above does.',
   },
   {
     q: 'Can Bridge and Adapter be used together?',

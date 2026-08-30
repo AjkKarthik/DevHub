@@ -1,0 +1,30 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Observer" topicRoute="/design-patterns/observer"
+    subtopicLabel="A Real IObservable&lt;T&gt; Implementation" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">A Real IObservable&lt;T&gt; Implementation</h1>
+  <p class="page-subtitle">The main page's quick reference and theory both name IObservable&lt;T&gt; and
+    IObserver&lt;T&gt; at length — but neither codeTab actually implements the .NET-standard reactive
+    protocol. Here's what it looks like, with zero Rx.NET dependency.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since=".NET Framework 4.0+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic closes the remaining named-but-unshown gap on the main page — the WeakReference-based
+      Observer variant two separate QnAs discuss in prose, with no code anywhere.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Observer" topicRoute="/design-patterns/observer"
+    [prev]="{ label: 'Field-Like Events Are Already Thread-Safe', route: '/design-patterns/observer/field-like-events-are-already-thread-safe' }"
+    [next]="{ label: 'What a WeakReference-Based Observer Looks Like', route: '/design-patterns/observer/weakreference-based-observer-implementation' }" />
+</div>

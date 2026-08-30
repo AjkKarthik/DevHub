@@ -1,0 +1,30 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Composite" topicRoute="/design-patterns/composite"
+    subtopicLabel="Does System.IO's FileSystemInfo Really Give You Composite?" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Does System.IO's FileSystemInfo Really Give You Composite?</h1>
+  <p class="page-subtitle">The main page's own ".NET Examples" cited FileInfo/DirectoryInfo sharing
+    FileSystemInfo as a Composite example — but neither has a recursive size operation. Here's what a real
+    Composite wrapper over the BCL's own file system types actually takes.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic makes concrete a design tension the main page's own theory names but never shows in
+      code: what the "transparency" alternative to the main page's Add/Remove-on-Composite-only choice
+      actually looks like.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Composite" topicRoute="/design-patterns/composite"
+    [next]="{ label: 'What the Transparency Design Actually Looks Like', route: '/design-patterns/composite/the-transparency-design-made-concrete' }" />
+</div>

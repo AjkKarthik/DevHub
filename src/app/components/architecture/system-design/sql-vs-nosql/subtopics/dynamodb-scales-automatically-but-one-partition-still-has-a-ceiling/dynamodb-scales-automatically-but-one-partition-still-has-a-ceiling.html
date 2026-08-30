@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="SQL vs NoSQL" topicRoute="/system-design/sql-vs-nosql" subtopicLabel="DynamoDB Scales Automatically, But One Partition Still Has a Ceiling" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">DynamoDB Scales Automatically, But One Partition Still Has a Ceiling</h1>
+  <p class="page-subtitle">The theory section called DynamoDB automatic scaling unqualified — tightened to match the page's own more careful QnA, which names the real per-partition ceiling (~10 GB, ~3,000 RCU, ~1,000 WCU) that no amount of table-level provisioning raises.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This closes the gap between the page's theory section and its own more precise QnA. Next topic: Replication Strategies.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="SQL vs NoSQL" topicRoute="/system-design/sql-vs-nosql"
+    [prev]="{ label: 'MongoDB Sharded-Cluster Transactions Arrived in 4.2, Not 4.0', route: '/system-design/sql-vs-nosql/mongodb-sharded-cluster-transactions-arrived-in-42-not-40' }" />
+</div>

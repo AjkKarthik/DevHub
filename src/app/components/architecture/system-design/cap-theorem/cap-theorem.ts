@@ -62,7 +62,7 @@ const theory: TheoryPoint[] = [
     heading: 'Consistency models (spectrum)',
     points: [
       'Linearisability (strongest): reads see latest write. Think single-node semantics.',
-      'Sequential consistency: writes appear in order, but not necessarily immediately.',
+      'Sequential consistency: ALL operations (reads and writes, from every process) appear to all processes in ONE single, agreed-upon total order — just not necessarily the real-time order they actually happened in.',
       'Causal consistency: causally related operations are seen in order.',
       'Eventual consistency (weakest): all replicas converge eventually. Allows highest throughput.',
     ],
@@ -274,9 +274,9 @@ const quiz: QuizQuestion[] = [
   },
   {
     q: 'In Cassandra with N=3, which quorum settings guarantee strong consistency?',
-    options: ['W=1, R=1', 'W=2, R=1', 'W=2, R=2', 'W=3, R=3'],
+    options: ['W=1, R=1', 'W=2, R=1', 'W=2, R=2', 'W=1, R=2'],
     answer: 2,
-    explanation: 'Strong consistency requires W + R > N. With N=3, W=2 and R=2 gives 2+2=4 > 3. W=2, R=1 gives 3 which is not > 3.',
+    explanation: 'Strong consistency requires W + R > N. With N=3, W=2 and R=2 gives 2+2=4 > 3. W=2, R=1 and W=1, R=2 both give 3, which is not > 3 — every OTHER option in this question fails the same formula the correct answer passes.',
   },
   { q: 'In the CAP theorem, what does Partition Tolerance mean?', options: ['The system can tolerate slow network partitions by queuing requests', 'The system continues operating even when network messages between nodes are lost or delayed', 'Partitioned data is stored redundantly across multiple nodes', 'The database can partition data horizontally across shards'], answer: 1, explanation: 'Partition Tolerance means the system continues to operate even when network partitions occur, meaning some nodes cannot communicate with others. In any real distributed system, network partitions do happen, so partition tolerance is effectively mandatory. This is why the real CAP tradeoff is between Consistency and Availability: during a partition, the system must choose whether to return potentially stale data (favor availability) or refuse to respond until consistency is restored (favor consistency).' },
   { q: 'Why does BASE (Basically Available, Soft state, Eventually consistent) exist as an alternative to ACID?', options: ['BASE was designed for financial systems that need strict transaction guarantees', 'BASE allows distributed systems to scale horizontally by relaxing strict consistency for higher availability and performance', 'BASE is an older model that ACID replaced in modern databases', 'BASE applies only to columnar databases while ACID applies to row-based databases'], answer: 1, explanation: 'BASE trades strict ACID consistency for higher availability and scalability in distributed systems. Basically Available means the system responds even if data might be stale. Soft state means state can change over time even without input due to eventual consistency. Eventually consistent means all nodes will eventually converge to the same state. NoSQL databases like Cassandra and DynamoDB use BASE to achieve linear horizontal scaling that strict ACID systems cannot match in distributed deployments.' },

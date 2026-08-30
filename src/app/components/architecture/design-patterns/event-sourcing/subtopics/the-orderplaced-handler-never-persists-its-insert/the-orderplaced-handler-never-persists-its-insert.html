@@ -1,0 +1,26 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Event Sourcing" topicRoute="/design-patterns/event-sourcing"
+    subtopicLabel="The OrderPlaced Handler Never Persists Its Insert" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">The OrderPlaced Handler Never Persists Its Insert</h1>
+  <p class="page-subtitle">One projection handler on the main page ends with <code>SaveChangesAsync()</code>. The other, doing the identical kind of write, never did.</p>
+  <app-page-meta [readingTime]="6" difficulty="beginner" since="C# 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The main page's own theory says a projection "listens to events and builds a denormalised read model" — that promise only holds if every handler that touches the read model actually commits its change. The next two subtopics build out pieces the main page names but never shows in code: restoring an aggregate from a snapshot, and upcasting an old event shape to a new one.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Event Sourcing" topicRoute="/design-patterns/event-sourcing"
+    [next]="{ label: 'Rehydrating From a Snapshot', route: '/design-patterns/event-sourcing/rehydrating-from-a-snapshot' }" />
+</div>

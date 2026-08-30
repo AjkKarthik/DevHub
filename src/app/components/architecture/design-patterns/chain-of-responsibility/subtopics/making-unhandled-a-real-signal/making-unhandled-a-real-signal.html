@@ -1,0 +1,30 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Chain of Responsibility" topicRoute="/design-patterns/chain-of-responsibility"
+    subtopicLabel="Making “No Handler Accepted This” a Real Signal" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Making "No Handler Accepted This" a Real Signal</h1>
+  <p class="page-subtitle">The main page's DirectorApprover handles the unhandled case with a
+    Console.WriteLine — not silent, but not actionable either. Here's a real ApprovalResult type the caller
+    can actually branch on.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>Across all three subtopics, the theme holds: Chain of Responsibility's flexibility (short-circuiting,
+      runtime assembly, pass-through variants) is exactly where small, easy-to-miss gaps — a precedence bug, an
+      undemonstrated variant, an unactionable fallback — tend to hide.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Chain of Responsibility" topicRoute="/design-patterns/chain-of-responsibility"
+    [prev]="{ label: 'The Pass-Through-With-Side-Effect Handler, Made Concrete', route: '/design-patterns/chain-of-responsibility/pass-through-with-side-effect-handler' }" />
+</div>

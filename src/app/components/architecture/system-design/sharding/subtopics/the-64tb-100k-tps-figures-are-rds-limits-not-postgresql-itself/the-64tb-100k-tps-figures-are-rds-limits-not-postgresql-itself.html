@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Database Sharding" topicRoute="/system-design/sharding" subtopicLabel="The 64 TB / 100k TPS Figures Are RDS Limits, Not PostgreSQL Itself" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">The 64 TB / 100k TPS Figures Are RDS Limits, Not PostgreSQL Itself</h1>
+  <p class="page-subtitle">The page's "Why shard?" opener cited a PostgreSQL vertical-scaling ceiling — verified that 64 TB is AWS RDS's managed-storage cap and 100k TPS badly undersells what single-node Postgres has actually benchmarked.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This untangles a stale/misattributed "vertical scaling ceiling" claim. Next: the page's own resharding advice names a technique with a well-documented reliability trap.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Database Sharding" topicRoute="/system-design/sharding"
+    [next]="{ label: 'Naive Double-Write Resharding Is Risky — Vitess Uses CDC Instead', route: '/system-design/sharding/naive-double-write-resharding-is-risky-vitess-uses-cdc-instead' }" />
+</div>

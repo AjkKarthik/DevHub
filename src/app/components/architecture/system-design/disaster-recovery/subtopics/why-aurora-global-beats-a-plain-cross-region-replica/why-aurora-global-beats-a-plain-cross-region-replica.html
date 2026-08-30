@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Disaster Recovery" topicRoute="/system-design/disaster-recovery" subtopicLabel="Why Aurora Global Beats a Plain Cross-Region Replica" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">Why Aurora Global Beats a Plain Cross-Region Replica</h1>
+  <p class="page-subtitle">The page states two cross-region RPO figures (Aurora Global's under 1s vs. a plain replica's under 1 min) without ever explaining why — verified the mechanical reason: dedicated storage-based replication vs. logical WAL replication.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This closes the gap between two figures the page states but never contrasts. Next topic: Design a URL Shortener.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Disaster Recovery" topicRoute="/system-design/disaster-recovery"
+    [prev]="{ label: 'RDS Multi-AZ DB Clusters Apply Here Too', route: '/system-design/disaster-recovery/rds-multi-az-db-clusters-apply-here-too' }" />
+</div>

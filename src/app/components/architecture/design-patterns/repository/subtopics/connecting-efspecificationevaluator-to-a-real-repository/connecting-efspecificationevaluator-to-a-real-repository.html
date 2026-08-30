@@ -1,0 +1,30 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Repository" topicRoute="/design-patterns/repository"
+    subtopicLabel="Connecting EfSpecificationEvaluator to a Real Repository" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Connecting EfSpecificationEvaluator to a Real Repository</h1>
+  <p class="page-subtitle">The main page's own "Specification + Repository" codeTab shows the interface,
+    the evaluator utility, and a usage line — but never the repository class that actually wires them
+    together. EfSpecificationEvaluator.Apply is called by nothing on the page.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="EF Core 6.0+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>Both remaining subtopics build real code for two more things the main page's own QnA describes in
+      prose only: a generic repository base class used purely as an internal reuse detail, and the classic
+      N+1 lazy-loading pitfall.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Repository" topicRoute="/design-patterns/repository"
+    [next]="{ label: 'Generic RepositoryBase as an Internal Implementation Detail', route: '/design-patterns/repository/generic-repositorybase-as-an-internal-implementation-detail' }" />
+</div>

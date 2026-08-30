@@ -1,0 +1,29 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Visitor" topicRoute="/design-patterns/visitor"
+    subtopicLabel="Simulating Double Dispatch With dynamic" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Simulating Double Dispatch With dynamic</h1>
+  <p class="page-subtitle">The main page's own QnA names C#'s dynamic keyword as an Accept/Visit alternative
+    "at a performance cost" — but never shows what it looks like or what that cost actually is.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="C# 4.0+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic builds real code for the last thing the main page's own QnA describes but never
+      shows — combining Composite and Visitor over the page's own Order elements.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Visitor" topicRoute="/design-patterns/visitor"
+    [prev]="{ label: 'The Non-Virtual Accept() Failure, Demonstrated', route: '/design-patterns/visitor/the-non-virtual-accept-failure-demonstrated' }"
+    [next]="{ label: 'Visitor + Composite: A Recursive Order Group', route: '/design-patterns/visitor/visitor-plus-composite-recursive-order-group' }" />
+</div>

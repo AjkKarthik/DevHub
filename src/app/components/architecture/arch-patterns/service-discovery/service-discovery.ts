@@ -243,7 +243,11 @@ class InMemoryRegistry {
 
   register(instance: ServiceInstance): void {
     const existing = this.store.get(instance.name) ?? [];
-    this.store.set(instance.name, [...existing, instance]);
+    // Upsert by id -- a re-registration with the same id (a service
+    // reconnecting after a network blip, without ever deregistering first)
+    // must replace the old entry, not create a duplicate alongside it.
+    const withoutDuplicate = existing.filter(i => i.id !== instance.id);
+    this.store.set(instance.name, [...withoutDuplicate, instance]);
   }
 
   deregister(id: string): void {

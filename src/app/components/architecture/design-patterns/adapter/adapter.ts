@@ -43,15 +43,15 @@ const theory: TheoryPoint[] = [
     heading: 'Common Scenarios',
     points: [
       'Wrapping a legacy payment gateway with a modern IPaymentProvider interface.',
-      'Adapting a third-party logging library (log4net, Serilog) to ILogger<T>.',
+      'Adapting a third-party logging library (log4net, Serilog) to <code>ILogger&lt;T&gt;</code>.',
       'Bridging XML-based APIs to JSON-based clients.',
-      'Making collections with custom iteration interfaces work with standard IEnumerable<T>.',
+      'Making collections with custom iteration interfaces work with standard <code>IEnumerable&lt;T&gt;</code>.',
     ],
   },
   {
     heading: '.NET Examples',
     points: [
-      'IEnumerable<T> adapters for IQueryable<T>, IObservable<T> — different iteration contracts.',
+      'Rx.NET bridges push-based <code>IObservable&lt;T&gt;</code> and pull-based <code>IEnumerable&lt;T&gt;</code> via genuine adapters (ToEnumerable()/ToObservable()) — unlike <code>IQueryable&lt;T&gt;</code>, which already extends IEnumerable&lt;T&gt; directly through interface inheritance and needs no adapting at all.',
       'StreamReader wraps Stream and adapts byte-level I/O to text-level I/O.',
       'HttpMessageHandler adapters in HttpClient testing (MockHttpMessageHandler).',
       'DataAdapter in ADO.NET adapts between DataSet and database-specific commands.',
@@ -81,8 +81,11 @@ public interface IPaymentProvider
 // Adaptee (legacy or third-party — cannot be changed)
 public class LegacyPaymentGateway
 {
-    public bool ProcessPayment(int clientId, double amount, string currencyCode) =>
-        Console.WriteLine($"Legacy: charging {clientId} {amount} {currencyCode}") is null || true;
+    public bool ProcessPayment(int clientId, double amount, string currencyCode)
+    {
+        Console.WriteLine($"Legacy: charging {clientId} {amount} {currencyCode}");
+        return true;
+    }
 }
 
 // Adapter — wraps the adaptee, implements the target interface
@@ -123,11 +126,13 @@ public class SerilogAdapter<T>(Serilog.ILogger serilog) : ILogger<T>
 
     public bool IsEnabled(LogLevel logLevel) => logLevel switch
     {
+        LogLevel.Trace       => serilog.IsEnabled(Serilog.Events.LogEventLevel.Verbose),
         LogLevel.Debug       => serilog.IsEnabled(Serilog.Events.LogEventLevel.Debug),
         LogLevel.Information => serilog.IsEnabled(Serilog.Events.LogEventLevel.Information),
         LogLevel.Warning     => serilog.IsEnabled(Serilog.Events.LogEventLevel.Warning),
         LogLevel.Error       => serilog.IsEnabled(Serilog.Events.LogEventLevel.Error),
-        _                    => false
+        LogLevel.Critical    => serilog.IsEnabled(Serilog.Events.LogEventLevel.Fatal),
+        _                    => false // LogLevel.None
     };
 
     public void Log<TState>(LogLevel logLevel, EventId eventId, TState state,
@@ -136,9 +141,11 @@ public class SerilogAdapter<T>(Serilog.ILogger serilog) : ILogger<T>
         var message = formatter(state, exception);
         switch (logLevel)
         {
-            case LogLevel.Error:   serilog.Error(exception, message); break;
-            case LogLevel.Warning: serilog.Warning(message); break;
-            default:               serilog.Information(message); break;
+            case LogLevel.Critical: serilog.Fatal(exception, message); break;
+            case LogLevel.Error:    serilog.Error(exception, message); break;
+            case LogLevel.Warning:  serilog.Warning(message); break;
+            case LogLevel.Trace:    serilog.Verbose(message); break;
+            default:                serilog.Information(message); break;
         }
     }
 }`,

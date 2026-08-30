@@ -1,0 +1,26 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Traffic Management" topicRoute="/service-mesh/traffic-management" subtopicLabel="Fault Injection and Retries Cannot Coexist on the Same Route" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">Fault Injection and Retries Cannot Coexist on the Same Route</h1>
+  <p class="page-subtitle">The main page covers fault injection and retries as two independent features — combining both on one route silently disables the retries, defeating the natural "does my retry policy recover from this?" test.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Istio (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This closes a real gap between the main page's separately-covered retries and fault-injection sections. Next: why retrying on 5xx can amplify load into an upstream that's already overloaded.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Traffic Management" topicRoute="/service-mesh/traffic-management"
+    [next]="{ label: 'retryOn: 5xx Can Amplify Load Into an Already-Overloaded Upstream', route: '/service-mesh/traffic-management/retryon-5xx-can-amplify-load-into-an-already-overloaded-upstream' }" />
+</div>

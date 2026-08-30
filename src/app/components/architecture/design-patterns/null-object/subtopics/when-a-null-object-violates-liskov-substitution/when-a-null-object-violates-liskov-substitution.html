@@ -1,0 +1,30 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Null Object" topicRoute="/design-patterns/null-object"
+    subtopicLabel="When a Null Object Violates Liskov Substitution" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">When a Null Object Violates Liskov Substitution</h1>
+  <p class="page-subtitle">The main page's own QnA states a Null Object that throws NotImplementedException
+    on some methods is "worse than a null check" — but never shows one actually doing this. Here's the
+    broken version, and why the failure is harder to trace than a plain null-dereference.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="C# 1.0+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>Together with the previous two subtopics, this closes out the main page's own three biggest gaps: a
+      plain undeclared-field compile error, a return-value pattern named but never shown, and a sharp warning
+      about LSP violations that was never actually demonstrated breaking.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Null Object" topicRoute="/design-patterns/null-object"
+    [prev]="{ label: 'Nested Null Objects for Object-Returning Methods', route: '/design-patterns/null-object/nested-null-objects-for-object-returning-methods' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Prototype Pattern" topicRoute="/design-patterns/prototype" subtopicLabel="Is with Prototype, or an Alternative to It?" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Is with Prototype, or an Alternative to It?</h1>
+  <p class="page-subtitle">Mistake #3 reads as "use with instead of Prototype." The quiz elsewhere calls with "the prototype pattern made idiomatic." This subtopic resolves the tension — they're describing the same thing from different angles.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the batch: together the three subtopics demonstrate the polymorphic use case the theory names but never shows, build the missing safe half of the shallow-copy claim, and reconcile a real tension between two sections of the main page.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Prototype Pattern" topicRoute="/design-patterns/prototype"
+    [prev]="{ label: 'Why Immutable Sub-Objects Make Shallow Copy Safe', route: '/design-patterns/prototype/why-immutable-sub-objects-make-shallow-copy-safe' }" />
+</div>

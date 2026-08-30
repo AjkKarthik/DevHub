@@ -36,12 +36,12 @@ export class MeshAmbient {
     {
       heading: 'What is Ambient Mesh and Why It Exists',
       points: [
-        'Ambient Mesh is Istio\'s sidecar-free data plane mode, introduced as stable in Istio 1.22 (May 2024). Instead of injecting a proxy container into every pod, Ambient uses shared per-node proxies (ztunnel) and optional per-namespace L7 proxies (Waypoints).',
+        'Ambient Mesh is Istio\'s sidecar-free data plane mode, reaching General Availability (GA/Stable) in Istio 1.24 (November 2024) — 1.22 was still the BETA stage. Instead of injecting a proxy container into every pod, Ambient uses shared per-node proxies (ztunnel) and optional per-namespace L7 proxies (Waypoints).',
         'The core problem Ambient solves: sidecar injection adds 50-80MB RAM and 0.2-0.5ms latency per pod, requires init containers (with elevated privileges) for iptables setup, complicates pod lifecycle (proxy must start before app, drain before kill), and adds operational overhead (injection webhook, version skew).',
         'Ambient Mesh decouples "mesh connectivity" from "workload pods" — the mesh infrastructure (ztunnel) runs at the node level, separate from application pods. Pods need no modification, no injection webhook, no special annotations.',
         'The trade-off: Ambient provides less granular per-pod isolation than sidecars (a compromised ztunnel affects all pods on a node), and L7 features require deploying Waypoint proxies (extra resources, extra hop). For pure mTLS + observability without L7 routing, Ambient is ideal.',
         'Ambient is now the recommended Istio deployment mode for new installations (Istio 1.24+). The sidecar mode is not deprecated but Ambient is the direction of the project.',
-        'Kubernetes version requirement: Ambient requires Kubernetes 1.26+ and iptables-nft or eBPF (for node-level traffic capture). The CNI plugin must support Ambient — Cilium and Calico both have Ambient support.',
+        'Traffic capture defaults to iptables + GENEVE overlay tunnels — NOT eBPF. eBPF-based redirection is an opt-in alternative (`values.cni.ambient.redirectMode: "ebpf"`) requiring a newer kernel (4.20+); the default iptables path has no such kernel floor. The CNI plugin must support Ambient — Cilium and Calico both have Ambient support.',
       ],
     },
     {
@@ -49,7 +49,7 @@ export class MeshAmbient {
       points: [
         'ztunnel (zero-trust tunnel) is a lightweight Rust-based proxy deployed as a DaemonSet — one ztunnel pod per node. It handles all L4 mesh concerns for every pod on that node.',
         'ztunnel\'s responsibilities: establish mTLS connections between pods (using SPIFFE SVIDs issued by Istiod), enforce L4 AuthorizationPolicies (source namespace, source principal), collect L4 telemetry (TCP bytes, connections), and tunnel traffic via HBONE.',
-        'HBONE (HTTP-Based Overlay Network Encapsulation): ztunnel tunnels pod-to-pod traffic inside HTTP/2 CONNECT requests. The inner payload is the original TCP stream. HBONE adds metadata (source workload identity) in HTTP headers that ztunnel verifies. This is how mTLS identity is conveyed without touching the pod.',
+        'HBONE (HTTP-Based Overlay Network Encapsulation): a standard HTTP/2 CONNECT tunnel running OVER an already-established mutual TLS connection — the mTLS handshake itself (client/server SPIFFE certificates) is what authenticates and conveys workload identity, not an HTTP header. The HTTP/2 CONNECT request only happens AFTER that mTLS channel is up, to establish the inner tunnel for the original TCP stream.',
         'Traffic capture: Ambient uses the Istio CNI plugin (not init containers) to redirect pod traffic to ztunnel on the same node. The CNI plugin runs as a DaemonSet and modifies node-level iptables/eBPF rules — no elevated capabilities needed in pods.',
         'ztunnel resource cost: ~20MB RAM per node (vs 50-80MB per pod). For a 100-pod/10-node cluster, sidecar total = 100×70MB = 7GB; Ambient ztunnel total = 10×20MB = 200MB. Significant at scale.',
         'ztunnel L4 AuthorizationPolicy: you can write AuthorizationPolicies that apply at L4 (source principal, source namespace) and ztunnel enforces them. For L7 policy (path, method, headers, JWT), you need a Waypoint proxy.',
@@ -81,7 +81,7 @@ export class MeshAmbient {
       heading: 'Ambient vs Sidecar — Choosing the Right Mode',
       points: [
         'Choose Ambient when: pod density is high (memory cost of sidecars is significant), you want mesh features (mTLS, observability) without L7 routing, you run batch jobs or short-lived pods, you want simpler operations (no injection webhook, no init container privileges), or you are doing a greenfield deployment.',
-        'Choose Sidecar when: you need per-pod L7 isolation (each pod has independent L7 policy enforcement, not shared by namespace), you run workloads on kernels < 5.10 (Ambient eBPF requires newer kernels), or you have existing sidecar-based tooling (Wasm plugins, EnvoyFilters) that aren\'t Ambient-compatible yet.',
+        'Choose Sidecar when: you need per-pod L7 isolation (each pod has independent L7 policy enforcement, not shared by namespace), you specifically want to use the OPT-IN eBPF redirection mode on kernels older than 4.20 (the DEFAULT iptables+GENEVE redirection has no comparable kernel floor), or you have existing sidecar-based tooling (Wasm plugins, EnvoyFilters) that aren\'t Ambient-compatible yet.',
         'Mixed mode: run sidecar namespaces and Ambient namespaces in the same cluster. Istio routes traffic correctly across mode boundaries — a sidecar pod can communicate with an Ambient pod with full mTLS. Migration path: label namespace-by-namespace, verify, proceed.',
         'Ambient limitations (as of Istio 1.24): some advanced EnvoyFilter patterns don\'t apply to ztunnel (which is Rust, not Envoy). Per-pod Wasm plugins are not supported in Ambient mode (Wasm on Waypoints is supported). Multi-cluster Ambient requires specific gateway configuration.',
         'ztunnel node failure: if a node\'s ztunnel crashes, all pods on that node lose mesh connectivity (mTLS, observability) until ztunnel restarts. With sidecars, a proxy crash affects only its pod. This is the key isolation trade-off.',
@@ -431,7 +431,7 @@ console.log(JSON.stringify(getMigrationPlan('production', true), null, 2));`,
       q: 'What is HBONE in the context of Ambient Mesh?',
       options: ['A Kubernetes node feature gate for eBPF traffic capture', 'HTTP-Based Overlay Network Encapsulation — the HTTP/2 CONNECT tunnel ztunnel uses for secure pod-to-pod traffic', 'A new Envoy filter type for high-bandwidth connections', 'The Ambient Mesh health check protocol'],
       answer: 1,
-      explanation: 'HBONE tunnels pod-to-pod traffic inside HTTP/2 CONNECT requests. The inner payload is the original TCP stream wrapped in mTLS. HBONE headers carry the source workload\'s SPIFFE identity, which the destination ztunnel verifies. This is how Ambient achieves transparent mTLS without sidecars.',
+      explanation: 'HBONE is an HTTP/2 CONNECT tunnel running OVER an mTLS connection — the mTLS handshake itself (client/server SPIFFE certificates) authenticates and conveys the source workload\'s identity, and the HTTP/2 CONNECT request only happens once that mTLS channel is already established, to tunnel the original TCP stream. This is how Ambient achieves transparent mTLS without sidecars.',
     },
     {
       q: 'What is the key isolation trade-off between ztunnel and per-pod sidecars?',
@@ -450,7 +450,7 @@ console.log(JSON.stringify(getMigrationPlan('production', true), null, 2));`,
   qna: QnaItem[] = [
     {
       q: 'Is Ambient Mesh production-ready? When should I use it vs sidecars?',
-      a: 'Ambient Mesh reached stable in Istio 1.22 (May 2024) and is production-ready for most use cases. Use Ambient when: <ul><li>You want mTLS + observability with minimal overhead (no sidecar memory/CPU cost)</li><li>You run batch jobs, ML workloads, or high-density services where sidecar overhead is significant</li><li>You want simpler operations (no injection webhook, no init container privileges)</li><li>You\'re doing a greenfield deployment on Kubernetes 1.26+</li></ul>Consider sidecar when: <ul><li>You need per-pod L7 isolation boundaries (not per-namespace)</li><li>You have existing EnvoyFilter or per-pod Wasm plugins that aren\'t Waypoint-compatible yet</li><li>Your kernel is < 5.10 (Ambient CNI requires modern iptables-nft)</li></ul>Istio\'s official recommendation as of 1.24: prefer Ambient for new installations.',
+      a: 'Ambient Mesh reached General Availability (GA/Stable) in Istio 1.24 (November 2024) and is production-ready for most use cases. Use Ambient when: <ul><li>You want mTLS + observability with minimal overhead (no sidecar memory/CPU cost)</li><li>You run batch jobs, ML workloads, or high-density services where sidecar overhead is significant</li><li>You want simpler operations (no injection webhook, no init container privileges)</li><li>You\'re doing a greenfield deployment on Kubernetes 1.26+</li></ul>Consider sidecar when: <ul><li>You need per-pod L7 isolation boundaries (not per-namespace)</li><li>You have existing EnvoyFilter or per-pod Wasm plugins that aren\'t Waypoint-compatible yet</li><li>You specifically want the opt-in eBPF redirection mode on a kernel older than 4.20 (the default iptables+GENEVE redirection has no comparable kernel floor)</li></ul>Istio\'s official recommendation as of 1.24: prefer Ambient for new installations.',
     },
     {
       q: 'How does ztunnel know the identity of a pod without a sidecar?',
@@ -469,11 +469,11 @@ console.log(JSON.stringify(getMigrationPlan('production', true), null, 2));`,
   ];
 
   revision: RevisionSummary = {
-    oneLiner: 'Ambient Mesh removes per-pod sidecars: ztunnel (per-node DaemonSet, Rust) handles L4 mTLS via HBONE tunnels; Waypoint proxy (per-namespace Envoy) handles L7 features when needed. ~35× less memory than sidecars at scale. Stable since Istio 1.22.',
+    oneLiner: 'Ambient Mesh removes per-pod sidecars: ztunnel (per-node DaemonSet, Rust) handles L4 mTLS via HBONE tunnels; Waypoint proxy (per-namespace Envoy) handles L7 features when needed. ~35× less memory than sidecars at scale. GA/Stable since Istio 1.24.',
     mustKnow: [
       'ztunnel: per-node DaemonSet, L4 only (mTLS, basic authz, telemetry). ~20MB per node.',
       'Waypoint: per-namespace Envoy (Gateway API), L7 only when needed (VirtualService, JWT, header policies)',
-      'HBONE: HTTP/2 CONNECT tunnel carrying mTLS-secured pod traffic with SPIFFE identity headers',
+      'HBONE: HTTP/2 CONNECT tunnel established over an mTLS connection — the mTLS handshake\'s SPIFFE certificates convey identity, not an HTTP header',
       'Namespace enrollment: kubectl label namespace X istio.io/dataplane-mode=ambient',
       'L7 AuthorizationPolicy: attach to Waypoint via targetRef (not pod selector)',
       'Isolation trade-off: ztunnel is shared per-node (vs per-pod for sidecars)',

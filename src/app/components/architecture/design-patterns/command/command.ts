@@ -135,7 +135,14 @@ public class CommandHistory
 
     public void Redo()
     {
-        if (_redoStack.TryPop(out var cmd)) { Execute(cmd); }
+        // Re-execute and push to history directly — do NOT call Execute(),
+        // which clears _redoStack and would wipe any further redo-able
+        // commands still waiting after this one.
+        if (_redoStack.TryPop(out var cmd))
+        {
+            cmd.Execute();
+            _history.Push(cmd);
+        }
     }
 }
 

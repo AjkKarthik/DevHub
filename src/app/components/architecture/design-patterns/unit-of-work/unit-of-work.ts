@@ -155,25 +155,27 @@ public class OrderService(ShopDbContext db)
 
         await db.SaveChangesAsync(ct); // single transaction — order + products committed together
     }
-}
 
-// Explicit transaction for extra control
-public async Task TransferFundsAsync(Guid fromId, Guid toId, decimal amount)
-{
-    await using var tx = await db.Database.BeginTransactionAsync();
-    try
+    // Explicit transaction for extra control — a second method on the
+    // SAME OrderService, so 'db' resolves to the class's own
+    // primary-constructor parameter.
+    public async Task TransferFundsAsync(Guid fromId, Guid toId, decimal amount)
     {
-        var from = await db.Accounts.FindAsync(fromId);
-        var to   = await db.Accounts.FindAsync(toId);
-        from!.Debit(amount);
-        to!.Credit(amount);
-        await db.SaveChangesAsync();
-        await tx.CommitAsync();
-    }
-    catch
-    {
-        await tx.RollbackAsync();
-        throw;
+        await using var tx = await db.Database.BeginTransactionAsync();
+        try
+        {
+            var from = await db.Accounts.FindAsync(fromId);
+            var to   = await db.Accounts.FindAsync(toId);
+            from!.Debit(amount);
+            to!.Credit(amount);
+            await db.SaveChangesAsync();
+            await tx.CommitAsync();
+        }
+        catch
+        {
+            await tx.RollbackAsync();
+            throw;
+        }
     }
 }`,
   },

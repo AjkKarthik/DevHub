@@ -1,0 +1,26 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Threat Modelling" topicRoute="/security/threat-modelling"
+    subtopicLabel="A PASTA-Style Business-Risk Reprioritization" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">A PASTA-Style Business-Risk Reprioritization</h1>
+  <p class="page-subtitle">The QnA explains PASTA's seven stages and how it differs from STRIDE — but never runs it against a real example. Here's the main page's own three DREAD-scored threats, re-ranked.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>Together, these three subtopics show the same three threats from three angles the main page names but never combines: an ATT&amp;CK-mapped attacker chain, a goal-oriented attack tree, and a business-context-weighted priority ranking — each surfacing something the other two miss.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Threat Modelling" topicRoute="/security/threat-modelling"
+    [prev]="{ label: 'Building an Attack Tree in Code', route: '/security/threat-modelling/building-an-attack-tree-in-code' }" />
+</div>

@@ -1,0 +1,27 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Distributed Tracing" topicRoute="/service-mesh/tracing" subtopicLabel="OpenTelemetry Provider Needs Istio 1.22+, Not 1.16+" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">OpenTelemetry Provider Needs Istio 1.22+, Not 1.16+</h1>
+  <p class="page-subtitle">The main page's "1.16+" version claim didn't hold up against Istio's own documentation archive — the OpenTelemetry tracing provider's docs first appear at 1.22.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Istio 1.22+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This corrects a real version claim on the main page. Next: the QnA's "RFC 4652" citation for Prometheus Exemplars turned out to be fabricated — verified and corrected to the real source, the OpenMetrics specification.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Distributed Tracing" topicRoute="/service-mesh/tracing"
+    [prev]="{ label: 'Telemetry API Sampling Wins Over meshConfig When Both Are Set', route: '/service-mesh/tracing/telemetry-api-sampling-wins-over-meshconfig-when-both-are-set' }"
+    [next]="{ label: 'Exemplars Are Defined by OpenMetrics, Not an IETF RFC', route: '/service-mesh/tracing/exemplars-are-defined-by-openmetrics-not-an-ietf-rfc' }" />
+</div>

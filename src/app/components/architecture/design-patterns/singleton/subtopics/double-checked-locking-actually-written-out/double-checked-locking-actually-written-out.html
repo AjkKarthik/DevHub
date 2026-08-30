@@ -1,0 +1,27 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Singleton Pattern" topicRoute="/design-patterns/singleton" subtopicLabel="Double-Checked Locking, Actually Written Out" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Double-Checked Locking, Actually Written Out</h1>
+  <p class="page-subtitle">The theory names it, and the QnA sketches it inline — but omits the volatile keyword its own text says is required. This subtopic writes the complete, correct version.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic writes out a second pattern the page only ever describes in prose — Monostate, named once in the theory section, with no codeTab of its own.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Singleton Pattern" topicRoute="/design-patterns/singleton"
+    [prev]="{ label: 'Sealed Does Not Fix What the Mistake Said It Fixes', route: '/design-patterns/singleton/sealed-does-not-fix-what-the-mistake-said-it-fixes' }"
+    [next]="{ label: 'What Monostate Actually Looks Like in Code', route: '/design-patterns/singleton/what-monostate-actually-looks-like-in-code' }" />
+</div>

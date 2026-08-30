@@ -1,0 +1,30 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Template Method" topicRoute="/design-patterns/template-method"
+    subtopicLabel="Converting Template Method to Strategy, Concretely" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Converting Template Method to Strategy, Concretely</h1>
+  <p class="page-subtitle">The main page's own QnA lays out a step-by-step conversion recipe using a
+    different example — never applied to the page's own ReportGenerator/SalesReportGenerator. Here's the
+    actual conversion, and what it trades away.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="C# 9.0+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>Together with the previous two subtopics, this closes out the main page's own three biggest gaps: two
+      real compile errors in its own C# codeTabs, and a conversion procedure described but never demonstrated
+      against the page's own running example.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Template Method" topicRoute="/design-patterns/template-method"
+    [prev]="{ label: 'ControllerBase vs Controller for Action Filter Hooks', route: '/design-patterns/template-method/controllerbase-vs-controller-for-action-filter-hooks' }" />
+</div>

@@ -1,0 +1,30 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Observer" topicRoute="/design-patterns/observer"
+    subtopicLabel="What a WeakReference-Based Observer Looks Like" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">What a WeakReference-Based Observer Looks Like</h1>
+  <p class="page-subtitle">Two of the main page's own QnAs discuss WeakReference-based Observer at length —
+    why it avoids leaks, and its non-deterministic trade-off. Neither shows a single line of code. Here's
+    the concrete version.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since=".NET Framework 1.1+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>Together with the previous two subtopics, this closes out the main page's three biggest named-but-
+      unshown gaps: which Subject pattern actually needs manual thread-safety, what the .NET-standard reactive
+      protocol looks like in code, and what a WeakReference-based Subject actually does at runtime.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Observer" topicRoute="/design-patterns/observer"
+    [prev]="{ label: 'A Real IObservable&lt;T&gt; Implementation', route: '/design-patterns/observer/a-real-iobservable-implementation' }" />
+</div>

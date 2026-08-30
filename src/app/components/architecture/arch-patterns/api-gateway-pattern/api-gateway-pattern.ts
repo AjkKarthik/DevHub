@@ -129,6 +129,12 @@ interface DashboardResponse {
 
 async function getDashboard(userId: string): Promise<DashboardResponse> {
   // Fan out all 3 calls in parallel — total latency = slowest call, not sum
+  //
+  // NOTE: Promise.all() makes an explicit choice here — if ANY of the 3 calls
+  // rejects, the whole aggregation rejects immediately, even if the other 2
+  // succeeded. That is "fail the entire request," one of the two options this
+  // page's own theory names. For "degrade gracefully" instead, use
+  // Promise.allSettled() and return partial data for whichever calls succeeded.
   const [orders, products, profile] = await Promise.all([
     orderService.getRecentOrders(userId),
     catalogService.getFeaturedProducts(),

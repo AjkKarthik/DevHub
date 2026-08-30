@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="System Design Framework" topicRoute="/system-design/framework" subtopicLabel="SSD Random Read Is 150 Microseconds, Not 100" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">SSD Random Read Is 150 Microseconds, Not 100</h1>
+  <p class="page-subtitle">The main page's memorized "0.1ms" figure understates the canonical Jeff Dean latency number by a third — verified against the widely-cited source.</p>
+  <app-page-meta [readingTime]="6" difficulty="beginner" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This tightens one of the main page's memorized numbers. Next: the main page's own worked QPS example is an average — real capacity planning needs to size for peak traffic instead.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="System Design Framework" topicRoute="/system-design/framework"
+    [next]="{ label: 'Size for Peak QPS, Not Average QPS', route: '/system-design/framework/size-for-peak-qps-not-average-qps' }" />
+</div>
