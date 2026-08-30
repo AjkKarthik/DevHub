@@ -34492,6 +34492,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Overloading claims with excessive personal data increases the token\'s exposure surface, since claims are typically readable without decryption.',
     ],
   },
+  'security/claims-identity/claims-transformation-idp-groups-to-app-roles': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Claims & Identity (overview)', route: '/security/claims-identity' },
+      { label: 'The Audience Validation Attack, Demonstrated', route: '/security/claims-identity/the-audience-validation-attack-demonstrated' },
+    ],
+    tip: 'Claims transformation runs on the application side, after signature verification — the IdP keeps sending whatever organisational groups it already manages, and the application maintains its own separate mapping table.',
+    gotchas: [
+      'Mapping multiple IdP groups to overlapping application roles needs de-duplication (a Set, not an array push) — a user in several groups that share a role should end up with that role once, not once per group.',
+    ],
+  },
+  'security/claims-identity/the-audience-validation-attack-demonstrated': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Claims Transformation — IdP Groups to App Roles', route: '/security/claims-identity/claims-transformation-idp-groups-to-app-roles' },
+      { label: 'DB-Verified Role Recheck vs. Freshness-Only', route: '/security/claims-identity/db-verified-role-recheck-vs-freshness-only' },
+    ],
+    tip: 'A replayed token is completely genuine — correct signature, correct issuer, unexpired — audience validation is the ONE check that catches a token being used against a service it was never intended for.',
+    gotchas: [
+      'Configuring two different services with the SAME audience value (a common copy-paste mistake) silently defeats the protection even when the check is technically present and running correctly.',
+    ],
+  },
+  'security/claims-identity/db-verified-role-recheck-vs-freshness-only': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'The Audience Validation Attack, Demonstrated', route: '/security/claims-identity/the-audience-validation-attack-demonstrated' },
+      { label: 'Claims & Identity (overview)', route: '/security/claims-identity' },
+    ],
+    tip: 'A freshness check only confirms WHEN a token was issued — it says nothing about whether the claims inside it are still true, which is exactly the gap a demotion happening after issuance but within the freshness window falls into.',
+    gotchas: [
+      'A DB-verified role recheck should be reserved for the highest-risk operations only — using it on every endpoint reintroduces the per-request database dependency claims-based identity exists to avoid.',
+    ],
+  },
   'security/rbac-abac': {
     apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
     related: [

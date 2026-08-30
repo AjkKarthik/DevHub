@@ -1,0 +1,26 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Claims & Identity" topicRoute="/security/claims-identity"
+    subtopicLabel="DB-Verified Role Recheck vs. Freshness-Only" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">DB-Verified Role Recheck vs. Freshness-Only</h1>
+  <p class="page-subtitle">The main page's own freshness check and the QnA's own DB-verified alternative solve two different problems. Here's both, and exactly which gap only the second one closes.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>Together, these three subtopics extend the main page's own untransformed claims, unprotected audience check, and freshness-only recheck into working, verified code.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Claims & Identity" topicRoute="/security/claims-identity"
+    [prev]="{ label: 'The Audience Validation Attack, Demonstrated', route: '/security/claims-identity/the-audience-validation-attack-demonstrated' }" />
+</div>

@@ -3297,7 +3297,12 @@ export const routes: Routes = [
         { path: 'database-level-row-level-security-vs-a-forgotten-where', loadComponent: () => import('./components/architecture/security/rbac-abac/subtopics/database-level-row-level-security-vs-a-forgotten-where/database-level-row-level-security-vs-a-forgotten-where').then(m => m.DatabaseLevelRowLevelSecurityVsAForgottenWhereSubtopic) },
         { path: 'separation-of-duties-enforced-at-role-assignment', loadComponent: () => import('./components/architecture/security/rbac-abac/subtopics/separation-of-duties-enforced-at-role-assignment/separation-of-duties-enforced-at-role-assignment').then(m => m.SeparationOfDutiesEnforcedAtRoleAssignmentSubtopic) },
       ] },
-    { path: 'claims-identity',       loadComponent: () => import('./components/architecture/security/claims-identity/claims-identity').then(m => m.SecClaimsIdentity) },
+    { path: 'claims-identity', children: [
+        { path: '', loadComponent: () => import('./components/architecture/security/claims-identity/claims-identity').then(m => m.SecClaimsIdentity) },
+        { path: 'claims-transformation-idp-groups-to-app-roles', loadComponent: () => import('./components/architecture/security/claims-identity/subtopics/claims-transformation-idp-groups-to-app-roles/claims-transformation-idp-groups-to-app-roles').then(m => m.ClaimsTransformationIdpGroupsToAppRolesSubtopic) },
+        { path: 'the-audience-validation-attack-demonstrated', loadComponent: () => import('./components/architecture/security/claims-identity/subtopics/the-audience-validation-attack-demonstrated/the-audience-validation-attack-demonstrated').then(m => m.TheAudienceValidationAttackDemonstratedSubtopic) },
+        { path: 'db-verified-role-recheck-vs-freshness-only', loadComponent: () => import('./components/architecture/security/claims-identity/subtopics/db-verified-role-recheck-vs-freshness-only/db-verified-role-recheck-vs-freshness-only').then(m => m.DbVerifiedRoleRecheckVsFreshnessOnlySubtopic) },
+      ] },
     { path: 'api-security',          loadComponent: () => import('./components/architecture/security/api-security/api-security').then(m => m.SecApiSecurity) },
     { path: 'xss',                   loadComponent: () => import('./components/architecture/security/xss/xss').then(m => m.SecXss) },
     { path: 'csrf-clickjacking',     loadComponent: () => import('./components/architecture/security/csrf-clickjacking/csrf-clickjacking').then(m => m.SecCsrfClickjacking) },

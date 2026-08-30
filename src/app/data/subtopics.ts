@@ -3477,4 +3477,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Database-Level Row-Level Security vs. a Forgotten WHERE', route: '/security/rbac-abac/database-level-row-level-security-vs-a-forgotten-where' },
     { label: 'Separation of Duties, Enforced at Role Assignment', route: '/security/rbac-abac/separation-of-duties-enforced-at-role-assignment' },
   ],
+  'claims-identity': [
+    { label: 'Claims Transformation — IdP Groups to App Roles', route: '/security/claims-identity/claims-transformation-idp-groups-to-app-roles' },
+    { label: 'The Audience Validation Attack, Demonstrated', route: '/security/claims-identity/the-audience-validation-attack-demonstrated' },
+    { label: 'DB-Verified Role Recheck vs. Freshness-Only', route: '/security/claims-identity/db-verified-role-recheck-vs-freshness-only' },
+  ],
 };

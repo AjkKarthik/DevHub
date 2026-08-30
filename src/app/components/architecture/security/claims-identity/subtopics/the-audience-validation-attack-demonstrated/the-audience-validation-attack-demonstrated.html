@@ -1,0 +1,27 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Claims & Identity" topicRoute="/security/claims-identity"
+    subtopicLabel="The Audience Validation Attack, Demonstrated" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">The Audience Validation Attack, Demonstrated</h1>
+  <p class="page-subtitle">The quiz explains the mechanism precisely, but the main page's own extractClaims() is already protected. Here's the vulnerable version — and a misconfiguration that defeats the fix too.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic builds a DB-verified role recheck for destructive operations — the QnA's own alternative strategy for handling mid-session claim changes, contrasted with the main page's freshness-only check.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Claims & Identity" topicRoute="/security/claims-identity"
+    [prev]="{ label: 'Claims Transformation — IdP Groups to App Roles', route: '/security/claims-identity/claims-transformation-idp-groups-to-app-roles' }"
+    [next]="{ label: 'DB-Verified Role Recheck vs. Freshness-Only', route: '/security/claims-identity/db-verified-role-recheck-vs-freshness-only' }" />
+</div>

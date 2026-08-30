@@ -222,7 +222,26 @@ const DIFF: Record<string, string> = Object.fromEntries(SEARCH_INDEX.map(e => [e
           </div>
         }
       }
-      <a routerLink="/security/claims-identity" routerLinkActive="active"><span class="nl-text">Claims &amp; Identity</span>@if(progress.isDone('sec-claims-identity')){<span class="nl-done">✓</span>}@if(d('sec-claims-identity');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+      <a routerLink="/security/claims-identity" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Claims &amp; Identity</span>
+        @if(progress.isDone('sec-claims-identity')){<span class="nl-done">✓</span>}
+        @if(d('sec-claims-identity');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}
+        @if (subtopicsOf('claims-identity')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('claims-identity')"
+                  (click)="toggleSubtopics('claims-identity', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('claims-identity'); as claimsSubs) {
+        @if (isSubtopicsExpanded('claims-identity')) {
+          <div class="nav-subtopics">
+            @for (s of claimsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/security/api-security" routerLinkActive="active"><span class="nl-text">API Security</span>@if(progress.isDone('sec-api-security')){<span class="nl-done">✓</span>}@if(d('sec-api-security');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
     </div>
 
