@@ -5175,6 +5175,41 @@ this same check before any other new hub's first subtopic set:
     Browser-verified: no console errors; nav accordion opens with all 3 labels (18 toggles total
     across the hub); breadcrumb and 860px wrapper confirmed on a subtopic page; sidebar showed
     tailored composite-key content. **Security & Auth hub Phase 10: 18 of 23 topics complete.**
+25. **The `asymmetric-cryptography` batch found and fixed a genuine, externally-verified inaccuracy
+    in the main page's own RSA/ECC security-equivalence table**: the QnA grouped Ed25519 with
+    P-224/RSA-2048 (112-bit security) — verified via WebSearch that Ed25519 is actually a
+    128-bit-security curve, equivalent to P-256/RSA-3072, not P-224. Moved it to the correct row.
+    Three subtopics, both attack-demonstration ones rigorously verified via direct Node.js
+    execution before publishing, not just reasoned through: (1) gap-closing — an actual
+    three-party MITM against the main page's own ECDH codeTab (Alice and Bob each unknowingly
+    computing a shared secret with Mallory instead of each other), confirmed via real
+    `crypto.createECDH()` calls showing Alice/Mallory and Bob/Mallory secrets match while
+    Alice/Bob's own never do; (2) gap-closing — a complete RSA key-wrap/unwrap round trip
+    extending the main page's own one-line wrap-only mistake-block example, verified end-to-end
+    including a wrong-key unwrap correctly failing; (3) gap-closing — the QnA's own
+    "surreptitious forwarding" sign-then-encrypt vulnerability, actually run end to end
+    (Alice→Bob→Charlie). **A real, self-caught bug in this subtopic's own FIRST draft**: the
+    naive version RSA-encrypted a (message + base64 signature) bundle directly, which threw
+    `ERR_OSSL_RSA_DATA_TOO_LARGE_FOR_KEY_SIZE` — exceeding RSA-2048-OAEP's own ~190-byte limit,
+    exactly the mistake the main page's OWN mistake block warns against. Caught by actually
+    running the code rather than trusting it would work, then rewritten with proper hybrid
+    encryption (AES-GCM + RSA-wrapped key) and re-verified that Charlie's signature check
+    succeeds against the forwarded content, matching the QnA's description precisely. **A
+    genuine MAX_PATH risk caught and fixed proactively before writing any files**: the third
+    subtopic's fully-descriptive slug measured 243 characters in its full absolute path (folder
+    + filename both using the same ~65-character slug) — used the established short-physical-
+    folder fix (`sign-then-encrypt-attack`) while keeping the full descriptive slug in the route
+    `path:` and every other wiring touchpoint (SUBTOPICS map, breadcrumb, sidebar, search index,
+    nav labels), confirmed via `git add -A -n` (a dry run) that no path-length error would occur
+    BEFORE the real commit, and via direct browser navigation that the long descriptive URL
+    resolves correctly despite the short backing folder. No `SUBTOPICS` collision for
+    `asymmetric-cryptography` (checked both `subtopics.ts` forms and `app.routes.ts` directly,
+    confirmed collision-free, left bare). Build passed clean (explicit `EXITCODE:$?` capture,
+    zero `ERROR` lines). Browser-verified: no console errors; nav accordion opens with all 3
+    labels (19 toggles total across the hub); the corrected RSA/ECC table confirmed rendering
+    with Ed25519 in the right row; breadcrumb and 860px wrapper confirmed on the long-URL/
+    short-folder subtopic specifically; sidebar showed tailored composite-key content.
+    **Security & Auth hub Phase 10: 19 of 23 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -6176,13 +6211,13 @@ this same check before any other new hub's first subtopic set:
   All 25 cards `available: true` in `architecture/security/home/home.ts`. Progress: `secTotal=23` in progress.service.ts.
   Security pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SecurityNavComponent at `shared/security-nav/security-nav.ts`.
-  Phase 10: 18 of 23 topics have subtopics (`/security/fundamentals`, pilot batch;
+  Phase 10: 19 of 23 topics have subtopics (`/security/fundamentals`, pilot batch;
   `/security/owasp-top-10`; `/security/threat-modelling`; `/security/secure-coding`;
   `/security/password-security`; `/security/oauth-oidc`; `/security/jwt`; `/security/mfa`;
   `/security/sso`; `/security/rbac-abac`; `/security/claims-identity`; `/security/api-security`;
   `/security/xss`; `/security/csrf-clickjacking`; `/security/injection`;
-  `/security/security-headers`; `/security/tls-https`; `/security/symmetric-encryption`,
-  2026-08-30) —
+  `/security/security-headers`; `/security/tls-https`; `/security/symmetric-encryption`;
+  `/security/asymmetric-cryptography`, 2026-08-30) —
   see "Security & Auth hub subtopic wiring" section above for the `SecurityNavComponent` accordion
   structural fix, the `sec-fundamentals` SUBTOPICS-map collision resolution (collided with the
   JavaScript hub's own bare `fundamentals` topic key), and the `sec-api-security` proactive

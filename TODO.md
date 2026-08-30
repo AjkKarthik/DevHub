@@ -7973,8 +7973,24 @@ off here with a date.
   accordion opens with all 3 labels (18 toggles total across the hub); breadcrumb and 860px
   wrapper confirmed; sidebar showed tailored composite-key content.
   **Security & Auth hub Phase 10: 18 of 23 topics complete.**
-- [ ] `/security/asymmetric-cryptography` — Asymmetric Cryptography
-- [ ] `/security/asymmetric-cryptography` — Asymmetric Cryptography
+- [x] `/security/asymmetric-cryptography` — Asymmetric Cryptography (2026-08-30). 3 subtopics: The
+  MITM Attack on Unauthenticated ECDH, Demonstrated; Key Wrapping and Unwrapping, End to End;
+  Sign-then-Encrypt vs Encrypt-then-Sign: The Attack, Demonstrated. Found and fixed a real
+  inaccuracy in the QnA's own RSA/ECC equivalence table — verified via WebSearch that Ed25519 is
+  a 128-bit-security curve (matching P-256/RSA-3072), not 112-bit (P-224) as the table originally
+  grouped it. Both attack subtopics verified end-to-end via direct Node.js execution — the ECDH
+  MITM subtopic confirmed real crypto.createECDH() calls produce the claimed shared-secret
+  mismatch, and the sign-then-encrypt subtopic caught a real bug in its own first draft (RSA-only
+  encryption of the bundle exceeded the OAEP payload limit and threw) before rewriting with
+  proper hybrid encryption and re-verifying the full forwarding attack. Proactively caught and
+  fixed a Windows MAX_PATH risk (243-char full path) for the third subtopic's fully-descriptive
+  slug before writing any files, using the established short-physical-folder fix while keeping
+  the descriptive slug in the route and every other wiring touchpoint — confirmed via a git add
+  dry run and direct browser navigation. No SUBTOPICS collision. Build passed clean (explicit
+  EXITCODE capture). Browser-verified: no console errors; nav accordion opens with all 3 labels
+  (19 toggles total across the hub); the corrected RSA/ECC table confirmed rendering; breadcrumb
+  and 860px wrapper confirmed; sidebar showed tailored composite-key content.
+  **Security & Auth hub Phase 10: 19 of 23 topics complete.**
 - [ ] `/security/hashing` — Hashing
 - [ ] `/security/supply-chain` — Supply Chain Security
 
