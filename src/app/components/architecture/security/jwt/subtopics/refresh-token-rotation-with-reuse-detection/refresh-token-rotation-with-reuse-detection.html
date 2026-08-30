@@ -1,0 +1,26 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="JSON Web Tokens" topicRoute="/security/jwt"
+    subtopicLabel="Refresh Token Rotation With Reuse Detection" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">Refresh Token Rotation With Reuse Detection</h1>
+  <p class="page-subtitle">The quiz names "token families" and reuse detection in real detail. Here's what a family actually is — and why detecting reuse means invalidating the whole thing.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>Together, these three subtopics extend the main page's own revocation tradeoffs, algorithm confusion warning, and refresh-token rotation guidance into working, verified code.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="JSON Web Tokens" topicRoute="/security/jwt"
+    [prev]="{ label: 'The RS256 → HS256 Confusion Attack, Demonstrated', route: '/security/jwt/the-rs256-to-hs256-confusion-attack-demonstrated' }" />
+</div>

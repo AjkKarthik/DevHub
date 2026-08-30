@@ -3273,7 +3273,12 @@ export const routes: Routes = [
         { path: 'token-introspection-alongside-jwt-validation', loadComponent: () => import('./components/architecture/security/oauth-oidc/subtopics/token-introspection-alongside-jwt-validation/token-introspection-alongside-jwt-validation').then(m => m.TokenIntrospectionAlongsideJwtValidationSubtopic) },
         { path: 'the-device-authorization-grant-implemented', loadComponent: () => import('./components/architecture/security/oauth-oidc/subtopics/the-device-authorization-grant-implemented/the-device-authorization-grant-implemented').then(m => m.TheDeviceAuthorizationGrantImplementedSubtopic) },
       ] },
-    { path: 'jwt',                   loadComponent: () => import('./components/architecture/security/jwt/jwt').then(m => m.SecJwt) },
+    { path: 'jwt', children: [
+        { path: '', loadComponent: () => import('./components/architecture/security/jwt/jwt').then(m => m.SecJwt) },
+        { path: 'token-revocation-both-ways', loadComponent: () => import('./components/architecture/security/jwt/subtopics/token-revocation-both-ways/token-revocation-both-ways').then(m => m.TokenRevocationBothWaysSubtopic) },
+        { path: 'the-rs256-to-hs256-confusion-attack-demonstrated', loadComponent: () => import('./components/architecture/security/jwt/subtopics/the-rs256-to-hs256-confusion-attack-demonstrated/the-rs256-to-hs256-confusion-attack-demonstrated').then(m => m.TheRs256ToHs256ConfusionAttackDemonstratedSubtopic) },
+        { path: 'refresh-token-rotation-with-reuse-detection', loadComponent: () => import('./components/architecture/security/jwt/subtopics/refresh-token-rotation-with-reuse-detection/refresh-token-rotation-with-reuse-detection').then(m => m.RefreshTokenRotationWithReuseDetectionSubtopic) },
+      ] },
     { path: 'mfa',                   loadComponent: () => import('./components/architecture/security/mfa/mfa').then(m => m.SecMfa) },
     { path: 'sso',                   loadComponent: () => import('./components/architecture/security/sso/sso').then(m => m.SecSso) },
     { path: 'rbac-abac',             loadComponent: () => import('./components/architecture/security/rbac-abac/rbac-abac').then(m => m.SecRbacAbac) },

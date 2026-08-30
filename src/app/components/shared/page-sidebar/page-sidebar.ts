@@ -34357,6 +34357,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'JWTs are typically stateless and cannot be revoked before expiry without an additional server-side revocation list, unlike traditional session tokens.',
     ],
   },
+  'security/jwt/token-revocation-both-ways': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'JSON Web Tokens (overview)', route: '/security/jwt' },
+      { label: 'The RS256 → HS256 Confusion Attack, Demonstrated', route: '/security/jwt/the-rs256-to-hs256-confusion-attack-demonstrated' },
+    ],
+    tip: 'tokenVersion revokes ALL of a user\'s tokens at once with a single integer compare; JTI blacklisting can target one specific token, at the cost of a growing lookup store — pick based on whether "log out everywhere" or per-device revocation is what you actually need.',
+    gotchas: [
+      'Both revocation checks must run AFTER signature verification — trusting a claim from an unverified token to perform the lookup lets an attacker probe or bypass the revocation store entirely.',
+    ],
+  },
+  'security/jwt/the-rs256-to-hs256-confusion-attack-demonstrated': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Token Revocation, Both Ways', route: '/security/jwt/token-revocation-both-ways' },
+      { label: 'Refresh Token Rotation With Reuse Detection', route: '/security/jwt/refresh-token-rotation-with-reuse-detection' },
+    ],
+    tip: 'The RSA public key is intentionally public — the attack works only because a vulnerable server reuses that same key material as an HS256 HMAC secret, not because any actual secret was leaked.',
+    gotchas: [
+      'Accepting multiple algorithms and letting the token\'s own header pick the verification key is the root vulnerability — hard-coding a single expected algorithm removes the attacker\'s ability to choose entirely.',
+    ],
+  },
+  'security/jwt/refresh-token-rotation-with-reuse-detection': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'The RS256 → HS256 Confusion Attack, Demonstrated', route: '/security/jwt/the-rs256-to-hs256-confusion-attack-demonstrated' },
+      { label: 'JSON Web Tokens (overview)', route: '/security/jwt' },
+    ],
+    tip: 'A "token family" is just a shared ID linking every refresh token descended from one login — the actual security mechanism is the used flag and the invalidate-on-reuse logic, not any special token format.',
+    gotchas: [
+      'Detecting refresh-token reuse invalidates the WHOLE family, including the legitimate user\'s currently-active token — a deliberate cost, since the server can\'t tell which party currently holds the family\'s valid token once reuse occurs.',
+    ],
+  },
   'security/oauth-oidc': {
     apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
     related: [

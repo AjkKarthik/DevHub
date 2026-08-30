@@ -3457,4 +3457,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Token Introspection Alongside JWT Validation', route: '/security/oauth-oidc/token-introspection-alongside-jwt-validation' },
     { label: 'The Device Authorization Grant, Implemented', route: '/security/oauth-oidc/the-device-authorization-grant-implemented' },
   ],
+  'jwt': [
+    { label: 'Token Revocation, Both Ways', route: '/security/jwt/token-revocation-both-ways' },
+    { label: 'The RS256 → HS256 Confusion Attack, Demonstrated', route: '/security/jwt/the-rs256-to-hs256-confusion-attack-demonstrated' },
+    { label: 'Refresh Token Rotation With Reuse Detection', route: '/security/jwt/refresh-token-rotation-with-reuse-detection' },
+  ],
 };
