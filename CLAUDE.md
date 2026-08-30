@@ -5597,6 +5597,33 @@ Confirmed via direct file inspection before the pilot (`/api-design/rest-fundame
     (required expanding both the QnA section's own outer toggle and the specific question's own
     row); breadcrumb and 860px wrapper confirmed on every subtopic; sidebar showed tailored
     composite-key content. **API Design hub Phase 10: 6 of 19 topics complete.**
+14. **The `hateoas-hypermedia` batch found and fixed a genuine bug in the main page's own mistakes
+    block**: the "correct" link-following example read `const root = await fetch('...');
+    root._links.users.href` — but `fetch()` resolves to a `Response` object, not the parsed body,
+    so this throws `Cannot read properties of undefined (reading 'users')` immediately. Verified
+    via direct Node.js execution against a `Response`-shaped stand-in, confirming the exact
+    `TypeError` before the fix and the correctly-resolved URL after. Fixed to `await (await
+    fetch(...)).json()`. Three subtopics: (1) **fix-adjacent** — reproduces the exact `TypeError`
+    and the fix, both verified via direct execution matching claimed output exactly, with a Try It
+    on why parsing the body immediately (rather than deferring `.json()` to first point-of-use)
+    avoids the Fetch API's own "body stream already read" trap on a second read; (2)
+    **gap-closing** — a real JSON:API compound document (`data`/`included`/`relationships`,
+    resource identifiers vs. full resource objects), verified against the JSON:API specification
+    itself via WebFetch — named in the QnA in real structural detail, but every codeTab on the
+    page actually uses HAL instead, never JSON:API's own distinct shape; (3) **gap-closing** —
+    real Link-header (RFC 8288) build/parse logic, verified against the RFC's own ABNF and example
+    via WebFetch and via direct execution matching both `buildLinkHeader`'s and
+    `parseLinkHeader`'s claimed output exactly — named with a real GitHub example in quiz Q5 but
+    never built as an actual handler anywhere on the page. No `SUBTOPICS` collision for
+    `hateoas-hypermedia` (checked both forms, confirmed collision-free, left bare) — REST Design's
+    own generic `subtopicsOf(item.path)` toggle again required ZERO further template changes for
+    this THIRD topic in the group. All three `solution`/`heading` fields swept clean via the
+    standing apostrophe/backtick-parity scripts before the build. Build passed clean (explicit
+    `EXITCODE:$?` capture, zero `ERROR` lines). Browser-verified: no console errors on any of the
+    4 pages; nav accordion opens with all 3 labels (7 toggles total across the hub); the
+    link-following fix confirmed rendering live inside the Common Mistakes block; breadcrumb and
+    860px wrapper confirmed on every subtopic; sidebar showed tailored composite-key content.
+    **API Design hub Phase 10: 7 of 19 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -6624,11 +6651,11 @@ Confirmed via direct file inspection before the pilot (`/api-design/rest-fundame
   All 21 cards `available: true` in `architecture/api-design/home/home.ts`. Progress: `apiTotal=19` in progress.service.ts.
   API Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ApiDesignNavComponent at `shared/api-design-nav/api-design-nav.ts`.
-  Phase 10: 6 of 19 topics have subtopics (`/api-design/rest-fundamentals`, pilot batch;
+  Phase 10: 7 of 19 topics have subtopics (`/api-design/rest-fundamentals`, pilot batch;
   `/api-design/resource-url-design`; `/api-design/http-methods-status-codes`;
   `/api-design/pagination-patterns` — Foundations nav group fully done; `/api-design/api-versioning`;
-  `/api-design/error-response-design` — REST Design nav group started, 2026-08-30) — see
-  "API Design hub subtopic wiring" section above
+  `/api-design/error-response-design`; `/api-design/hateoas-hypermedia` — REST Design nav group,
+  2026-08-30) — see "API Design hub subtopic wiring" section above
   for the `ApiDesignNavComponent` accordion structural fix and the generic `subtopicsOf(item.path)`
   toggle-gating pattern this hub's `@for`-looped nav template needed (a first for this hub, since
   most prior hubs hand-write one `<a>` per topic) — generalized from a per-topic hardcoded check to

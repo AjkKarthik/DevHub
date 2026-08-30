@@ -8168,7 +8168,21 @@ off here with a date.
   pages; nav accordion opens with all 3 labels (6 toggles total); the QnA fix confirmed rendering
   live; breadcrumb and 860px wrapper confirmed; sidebar showed tailored composite-key content.
   **API Design hub Phase 10: 6 of 19 topics complete.**
-- [ ] `/api-design/hateoas-hypermedia` — HATEOAS & Hypermedia
+- [x] `/api-design/hateoas-hypermedia` — HATEOAS & Hypermedia (2026-08-30). Fixed a genuine bug in
+  the main page's own mistakes block: the "correct" link-following example read `const root =
+  await fetch('...'); root._links.users.href` -- but fetch() resolves to a Response object, not
+  the parsed body, so this throws "Cannot read properties of undefined (reading 'users')"
+  immediately. Verified via direct execution against a Response-shaped stand-in. Fixed to `await
+  (await fetch(...)).json()`. 3 subtopics: reproduces the exact TypeError and fix (verified via
+  execution); a real JSON:API compound document (verified against the spec via WebFetch) -- named
+  in the QnA but every codeTab actually uses HAL instead; real Link-header (RFC 8288) build/parse
+  logic (verified against the RFC via WebFetch and via execution) -- named with a real GitHub
+  example in quiz Q5 but never built. REST Design's own generic toggle needed zero further
+  template changes for this third topic in the group. No SUBTOPICS collision. Build passed clean.
+  Browser-verified: no console errors on any of the 4 pages; nav accordion opens with all 3
+  labels (7 toggles total); the fix confirmed rendering live; breadcrumb and 860px wrapper
+  confirmed; sidebar showed tailored composite-key content. **API Design hub Phase 10: 7 of 19
+  topics complete.**
 - [ ] `/api-design/protocol-buffers` — Protocol Buffers
 - [ ] `/api-design/grpc-service-patterns` — gRPC Service Patterns
 - [ ] `/api-design/grpc-web-transcoding` — gRPC-Web & Transcoding
