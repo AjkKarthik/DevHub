@@ -1,0 +1,27 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Secrets Management" topicRoute="/security/secrets-management"
+    subtopicLabel="Vault Transit: Encryption as a Service, Implemented" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">Vault Transit: Encryption as a Service, Implemented</h1>
+  <p class="page-subtitle">The quiz explains Transit's encryption-as-a-service model in real depth — here's the actual encrypt/decrypt calls, verified against Vault's current API docs, including why key rotation needs zero code changes.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>The QnA describes four different container secret-injection patterns in prose with zero manifests — the final subtopic builds the Vault Agent Injector sidecar pattern concretely, with real annotation syntax.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Secrets Management" topicRoute="/security/secrets-management"
+    [prev]="{ label: 'Renewing a Vault Lease Before It Expires', route: '/security/secrets-management/renewing-a-vault-lease-before-it-expires' }"
+    [next]="{ label: 'The Vault Agent Injector Sidecar Pattern in Kubernetes', route: '/security/secrets-management/vault-agent-injector-sidecar-pattern' }" />
+</div>

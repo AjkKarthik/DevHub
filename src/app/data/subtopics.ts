@@ -3533,4 +3533,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Benchmarking bcrypt/Argon2id to Choose a Work Factor', route: '/security/hashing/benchmarking-bcrypt-argon2id-to-choose-a-work-factor' },
     { label: 'Rainbow Tables vs Salting, Demonstrated', route: '/security/hashing/rainbow-tables-vs-salting-demonstrated' },
   ],
+  'secrets-management': [
+    { label: 'Renewing a Vault Lease Before It Expires', route: '/security/secrets-management/renewing-a-vault-lease-before-it-expires' },
+    { label: 'Vault Transit: Encryption as a Service, Implemented', route: '/security/secrets-management/vault-transit-encryption-as-a-service-implemented' },
+    { label: 'The Vault Agent Injector Sidecar Pattern in Kubernetes', route: '/security/secrets-management/vault-agent-injector-sidecar-pattern' },
+  ],
 };

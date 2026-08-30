@@ -34889,6 +34889,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Environment variables are safer than hardcoded values but still visible to anyone with process/container inspection access — a genuine secrets manager provides stronger access control.',
     ],
   },
+  'security/secrets-management/renewing-a-vault-lease-before-it-expires': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Vault Transit: Encryption as a Service, Implemented', route: '/security/secrets-management/vault-transit-encryption-as-a-service-implemented' },
+      { label: 'Secrets Management (overview)', route: '/security/secrets-management' },
+    ],
+    tip: 'Renewing a lease extends the SAME credential\'s expiry — the username/password values never change. Fetching a new credential issues a completely different one with its own new lease_id.',
+    gotchas: [
+      'Vault mounts typically cap total lease lifetime (max_ttl) — renewal eventually starts failing as that ceiling approaches, which is why a renewal loop needs a fallback to fetch an entirely fresh credential.',
+    ],
+  },
+  'security/secrets-management/vault-transit-encryption-as-a-service-implemented': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Renewing a Vault Lease Before It Expires', route: '/security/secrets-management/renewing-a-vault-lease-before-it-expires' },
+      { label: 'The Vault Agent Injector Sidecar Pattern in Kubernetes', route: '/security/secrets-management/vault-agent-injector-sidecar-pattern' },
+    ],
+    tip: 'The ciphertext\'s own "vault:v1:..." prefix identifies which key version encrypted it — key rotation needs zero application code changes, since Vault routes decryption to the correct version automatically.',
+    gotchas: [
+      'Rotation creates a new key version without invalidating the old one — existing ciphertext keeps decrypting correctly indefinitely unless an explicit "rewrap" operation is run.',
+    ],
+  },
+  'security/secrets-management/vault-agent-injector-sidecar-pattern': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Vault Transit: Encryption as a Service, Implemented', route: '/security/secrets-management/vault-transit-encryption-as-a-service-implemented' },
+      { label: 'Secrets Management (overview)', route: '/security/secrets-management' },
+    ],
+    tip: 'The application container needs zero Vault-specific code in this pattern — it only reads a plain file from a shared volume; the injected sidecar handles all authentication and fetching.',
+    gotchas: [
+      'The application container\'s own service account needs no Vault permissions at all — it\'s the sidecar\'s identity, not the app container\'s, that Vault\'s policies authorize.',
+    ],
+  },
   'security/secure-coding': {
     apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
     related: [

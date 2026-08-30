@@ -3339,7 +3339,12 @@ export const routes: Routes = [
         { path: 'authorizing-by-client-certificate-cn-not-just-authenticating', loadComponent: () => import('./components/architecture/security/tls-https/subtopics/authorizing-by-client-certificate-cn-not-just-authenticating/authorizing-by-client-certificate-cn-not-just-authenticating').then(m => m.AuthorizingByClientCertificateCnNotJustAuthenticatingSubtopic) },
         { path: 'zero-rtt-replay-protection-concretely', loadComponent: () => import('./components/architecture/security/tls-https/subtopics/zero-rtt-replay-protection-concretely/zero-rtt-replay-protection-concretely').then(m => m.ZeroRttReplayProtectionConcretelySubtopic) },
       ] },
-    { path: 'secrets-management',    loadComponent: () => import('./components/architecture/security/secrets-management/secrets-management').then(m => m.SecSecretsManagement) },
+    { path: 'secrets-management', children: [
+        { path: '', loadComponent: () => import('./components/architecture/security/secrets-management/secrets-management').then(m => m.SecSecretsManagement) },
+        { path: 'renewing-a-vault-lease-before-it-expires', loadComponent: () => import('./components/architecture/security/secrets-management/subtopics/renewing-a-vault-lease-before-it-expires/renewing-a-vault-lease-before-it-expires').then(m => m.RenewingAVaultLeaseBeforeItExpiresSubtopic) },
+        { path: 'vault-transit-encryption-as-a-service-implemented', loadComponent: () => import('./components/architecture/security/secrets-management/subtopics/vault-transit-encryption-as-a-service-implemented/vault-transit-encryption-as-a-service-implemented').then(m => m.VaultTransitEncryptionAsAServiceImplementedSubtopic) },
+        { path: 'vault-agent-injector-sidecar-pattern', loadComponent: () => import('./components/architecture/security/secrets-management/subtopics/vault-agent-injector-sidecar-pattern/vault-agent-injector-sidecar-pattern').then(m => m.VaultAgentInjectorSidecarPatternSubtopic) },
+      ] },
     { path: 'container-security',    loadComponent: () => import('./components/architecture/security/container-security/container-security').then(m => m.SecContainerSecurity) },
     { path: 'symmetric-encryption', children: [
         { path: '', loadComponent: () => import('./components/architecture/security/symmetric-encryption/symmetric-encryption').then(m => m.SecSymmetricEncryption) },
