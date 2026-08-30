@@ -3076,7 +3076,12 @@ export const routes: Routes = [
         { path: 'sub-resource-actions-a-real-cancellations-endpoint', loadComponent: () => import('./components/architecture/api-design/resource-url-design/subtopics/sub-resource-actions-a-real-cancellations-endpoint/sub-resource-actions-a-real-cancellations-endpoint').then(m => m.SubResourceActionsARealCancellationsEndpointSubtopic) },
         { path: 'cursor-based-pagination-actually-implemented', loadComponent: () => import('./components/architecture/api-design/resource-url-design/subtopics/cursor-based-pagination-actually-implemented/cursor-based-pagination-actually-implemented').then(m => m.CursorBasedPaginationActuallyImplementedSubtopic) },
       ] },
-    { path: 'http-methods-status-codes', loadComponent: () => import('./components/architecture/api-design/http-methods-status-codes/http-methods-status-codes').then(m => m.ApiHttpMethods) },
+    { path: 'http-methods-status-codes', children: [
+        { path: '', loadComponent: () => import('./components/architecture/api-design/http-methods-status-codes/http-methods-status-codes').then(m => m.ApiHttpMethods) },
+        { path: '403-vs-404-a-security-posture-decision-not-a-rule', loadComponent: () => import('./components/architecture/api-design/http-methods-status-codes/subtopics/403-vs-404-a-security-posture-decision-not-a-rule/403-vs-404-a-security-posture-decision-not-a-rule').then(m => m.Http403Vs404ASecurityPostureDecisionNotARuleSubtopic) },
+        { path: 'implementing-idempotency-keys-for-post-requests', loadComponent: () => import('./components/architecture/api-design/http-methods-status-codes/subtopics/implementing-idempotency-keys-for-post-requests/implementing-idempotency-keys-for-post-requests').then(m => m.ImplementingIdempotencyKeysForPostRequestsSubtopic) },
+        { path: 'json-patch-rfc-6902-applied', loadComponent: () => import('./components/architecture/api-design/http-methods-status-codes/subtopics/json-patch-rfc-6902-applied/json-patch-rfc-6902-applied').then(m => m.JsonPatchRfc6902AppliedSubtopic) },
+      ] },
     { path: 'pagination-patterns',   loadComponent: () => import('./components/architecture/api-design/pagination-patterns/pagination-patterns').then(m => m.ApiPaginationPatterns) },
     { path: 'api-versioning',        loadComponent: () => import('./components/architecture/api-design/api-versioning/api-versioning').then(m => m.ApiVersioning) },
     { path: 'error-response-design', loadComponent: () => import('./components/architecture/api-design/error-response-design/error-response-design').then(m => m.ApiErrorResponse) },

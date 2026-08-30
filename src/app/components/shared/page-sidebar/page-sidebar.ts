@@ -35172,6 +35172,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'GET requests should never have side effects — a GET that changes state breaks caching, prefetching, and retry-safety assumptions clients rely on.',
     ],
   },
+  'api-design/http-methods-status-codes/403-vs-404-a-security-posture-decision-not-a-rule': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Implementing Idempotency Keys for POST Requests', route: '/api-design/http-methods-status-codes/implementing-idempotency-keys-for-post-requests' },
+      { label: 'HTTP Methods & Status Codes (overview)', route: '/api-design/http-methods-status-codes' },
+    ],
+    tip: 'Making "exists but hidden" and "genuinely doesn\'t exist" produce the identical response is the entire point of hiding a resource behind 404 — it removes the oracle an attacker would otherwise use to enumerate real resource IDs.',
+    gotchas: [
+      'This is a per-resource-TYPE decision, not a universal rule — a public product listing can honestly return 403, while another user\'s private document should be hidden behind 404.',
+    ],
+  },
+  'api-design/http-methods-status-codes/implementing-idempotency-keys-for-post-requests': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: '403 vs. 404: a Security-Posture Decision, Not a Rule', route: '/api-design/http-methods-status-codes/403-vs-404-a-security-posture-decision-not-a-rule' },
+      { label: 'JSON Patch (RFC 6902), Applied', route: '/api-design/http-methods-status-codes/json-patch-rfc-6902-applied' },
+    ],
+    tip: 'An idempotency key must replay the EXACT original response, not just prevent a duplicate resource — a client retrying after a timeout needs to know which resource its request actually resulted in.',
+    gotchas: [
+      'A reused key with a genuinely different request body is a client bug, not a safe retry — comparing the request body hash, not just the key, is what catches this.',
+    ],
+  },
+  'api-design/http-methods-status-codes/json-patch-rfc-6902-applied': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Implementing Idempotency Keys for POST Requests', route: '/api-design/http-methods-status-codes/implementing-idempotency-keys-for-post-requests' },
+      { label: 'HTTP Methods & Status Codes (overview)', route: '/api-design/http-methods-status-codes' },
+    ],
+    tip: 'JSON Patch\'s remove operation deletes a field entirely, something field-replacement PATCH structurally cannot express — it can only ever say a field was not mentioned, never that it should be gone.',
+    gotchas: [
+      'A failing "test" operation aborts the ENTIRE patch, not just that one operation — this makes it a real optimistic-concurrency mechanism, not a debugging aid.',
+    ],
+  },
   'api-design/resource-url-design': {
     apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
     related: [

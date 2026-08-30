@@ -3560,4 +3560,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Sub-Resource Actions: A Real Cancellations Endpoint', route: '/api-design/resource-url-design/sub-resource-actions-a-real-cancellations-endpoint' },
     { label: 'Cursor-Based Pagination, Actually Implemented', route: '/api-design/resource-url-design/cursor-based-pagination-actually-implemented' },
   ],
+  'http-methods-status-codes': [
+    { label: '403 vs. 404: a Security-Posture Decision, Not a Rule', route: '/api-design/http-methods-status-codes/403-vs-404-a-security-posture-decision-not-a-rule' },
+    { label: 'Implementing Idempotency Keys for POST Requests', route: '/api-design/http-methods-status-codes/implementing-idempotency-keys-for-post-requests' },
+    { label: 'JSON Patch (RFC 6902), Applied', route: '/api-design/http-methods-status-codes/json-patch-rfc-6902-applied' },
+  ],
 };
