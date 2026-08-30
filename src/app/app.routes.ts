@@ -3070,7 +3070,12 @@ export const routes: Routes = [
         { path: 'a-real-hateoas-response-with-links', loadComponent: () => import('./components/architecture/api-design/rest-fundamentals/subtopics/a-real-hateoas-response-with-links/a-real-hateoas-response-with-links').then(m => m.ARealHateoasResponseWithLinksSubtopic) },
         { path: 'content-negotiation-the-same-resource-json-or-csv', loadComponent: () => import('./components/architecture/api-design/rest-fundamentals/subtopics/content-negotiation-the-same-resource-json-or-csv/content-negotiation-the-same-resource-json-or-csv').then(m => m.ContentNegotiationTheSameResourceJsonOrCsvSubtopic) },
       ] },
-    { path: 'resource-url-design',   loadComponent: () => import('./components/architecture/api-design/resource-url-design/resource-url-design').then(m => m.ApiResourceUrlDesign) },
+    { path: 'resource-url-design', children: [
+        { path: '', loadComponent: () => import('./components/architecture/api-design/resource-url-design/resource-url-design').then(m => m.ApiResourceUrlDesign) },
+        { path: 'verbs-as-prefixes-not-exact-matches-the-real-fix', loadComponent: () => import('./components/architecture/api-design/resource-url-design/subtopics/verbs-as-prefixes-not-exact-matches-the-real-fix/verbs-as-prefixes-not-exact-matches-the-real-fix').then(m => m.VerbsAsPrefixesNotExactMatchesTheRealFixSubtopic) },
+        { path: 'sub-resource-actions-a-real-cancellations-endpoint', loadComponent: () => import('./components/architecture/api-design/resource-url-design/subtopics/sub-resource-actions-a-real-cancellations-endpoint/sub-resource-actions-a-real-cancellations-endpoint').then(m => m.SubResourceActionsARealCancellationsEndpointSubtopic) },
+        { path: 'cursor-based-pagination-actually-implemented', loadComponent: () => import('./components/architecture/api-design/resource-url-design/subtopics/cursor-based-pagination-actually-implemented/cursor-based-pagination-actually-implemented').then(m => m.CursorBasedPaginationActuallyImplementedSubtopic) },
+      ] },
     { path: 'http-methods-status-codes', loadComponent: () => import('./components/architecture/api-design/http-methods-status-codes/http-methods-status-codes').then(m => m.ApiHttpMethods) },
     { path: 'pagination-patterns',   loadComponent: () => import('./components/architecture/api-design/pagination-patterns/pagination-patterns').then(m => m.ApiPaginationPatterns) },
     { path: 'api-versioning',        loadComponent: () => import('./components/architecture/api-design/api-versioning/api-versioning').then(m => m.ApiVersioning) },

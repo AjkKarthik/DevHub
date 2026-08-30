@@ -35184,6 +35184,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Consistent pluralization and casing conventions across every endpoint reduce cognitive load for API consumers integrating multiple endpoints.',
     ],
   },
+  'api-design/resource-url-design/verbs-as-prefixes-not-exact-matches-the-real-fix': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Sub-Resource Actions: A Real Cancellations Endpoint', route: '/api-design/resource-url-design/sub-resource-actions-a-real-cancellations-endpoint' },
+      { label: 'Resource & URL Design (overview)', route: '/api-design/resource-url-design' },
+    ],
+    tip: 'An exact-match verb check (VERBS.includes(segment)) never fires on a realistic verb-prefixed path like getUsers or createOrder — a prefix-based check (startsWith) catches the real anti-pattern, at the cost of occasionally flagging a genuine noun like listings.',
+    gotchas: [
+      'Testing a function only against the examples in its own comments can hide a real bug — the original code never included an all-lowercase verb-prefixed test case, which is exactly what exposed it.',
+    ],
+  },
+  'api-design/resource-url-design/sub-resource-actions-a-real-cancellations-endpoint': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Verbs as Prefixes, Not Exact Matches: the Real Fix', route: '/api-design/resource-url-design/verbs-as-prefixes-not-exact-matches-the-real-fix' },
+      { label: 'Cursor-Based Pagination, Actually Implemented', route: '/api-design/resource-url-design/cursor-based-pagination-actually-implemented' },
+    ],
+    tip: 'A sub-resource action (POST /orders/42/cancellations) creates a genuinely new, independently-addressable resource with its own record — unlike a status PATCH, it can preserve a full history if the action happens more than once.',
+    gotchas: [
+      'Unlike a status PATCH, a sub-resource POST is not automatically idempotent — a naive implementation would create a duplicate record on a repeated request, requiring an explicit guard.',
+    ],
+  },
+  'api-design/resource-url-design/cursor-based-pagination-actually-implemented': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Sub-Resource Actions: A Real Cancellations Endpoint', route: '/api-design/resource-url-design/sub-resource-actions-a-real-cancellations-endpoint' },
+      { label: 'Resource & URL Design (overview)', route: '/api-design/resource-url-design' },
+    ],
+    tip: 'A cursor encodes the identity of the last item seen, not a row count — deleting or inserting rows before the cursor position has zero effect on where the next page resumes from, unlike offset pagination.',
+    gotchas: [
+      'Sorting by a single field is not enough for a reliable cursor — two rows can share the same value, so a unique tiebreaker field (like id) must be included in both the sort order and the cursor comparison.',
+    ],
+  },
   'api-design/pagination-patterns': {
     apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
     related: [

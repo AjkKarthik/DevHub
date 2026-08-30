@@ -45,22 +45,20 @@ const DIFF: Record<string, string> = {
           @if (progress.isDone(item.route)) { <span class="nl-done">✓</span> }
           <span class="nl-text">{{ item.label }}</span>
           @if (diff(item.route); as d) { <span class="nl-dot" [class]="d"></span> }
-          @if (item.path === 'rest-fundamentals' && subtopicsOf('rest-fundamentals')) {
-            <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('rest-fundamentals')"
-                    (click)="toggleSubtopics('rest-fundamentals', $event)" aria-label="Toggle subtopics">›</button>
+          @if (subtopicsOf(item.path)) {
+            <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded(item.path)"
+                    (click)="toggleSubtopics(item.path, $event)" aria-label="Toggle subtopics">›</button>
           }
         </a>
-        @if (item.path === 'rest-fundamentals') {
-          @if (subtopicsOf('rest-fundamentals'); as restSubs) {
-            @if (isSubtopicsExpanded('rest-fundamentals')) {
-              <div class="nav-subtopics">
-                @for (s of restSubs; track s.route) {
-                  <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
-                    <span class="nl-text">{{ s.label }}</span>
-                  </a>
-                }
-              </div>
-            }
+        @if (subtopicsOf(item.path); as itemSubs) {
+          @if (isSubtopicsExpanded(item.path)) {
+            <div class="nav-subtopics">
+              @for (s of itemSubs; track s.route) {
+                <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                  <span class="nl-text">{{ s.label }}</span>
+                </a>
+              }
+            </div>
           }
         }
       }

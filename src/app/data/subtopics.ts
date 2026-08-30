@@ -3555,4 +3555,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'A Real HATEOAS Response, With Links', route: '/api-design/rest-fundamentals/a-real-hateoas-response-with-links' },
     { label: 'Content Negotiation: the Same Resource, JSON or CSV', route: '/api-design/rest-fundamentals/content-negotiation-the-same-resource-json-or-csv' },
   ],
+  'resource-url-design': [
+    { label: 'Verbs as Prefixes, Not Exact Matches: the Real Fix', route: '/api-design/resource-url-design/verbs-as-prefixes-not-exact-matches-the-real-fix' },
+    { label: 'Sub-Resource Actions: A Real Cancellations Endpoint', route: '/api-design/resource-url-design/sub-resource-actions-a-real-cancellations-endpoint' },
+    { label: 'Cursor-Based Pagination, Actually Implemented', route: '/api-design/resource-url-design/cursor-based-pagination-actually-implemented' },
+  ],
 };
