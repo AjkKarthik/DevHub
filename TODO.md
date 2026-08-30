@@ -8153,7 +8153,21 @@ off here with a date.
   accordion opens with all 3 labels (5 toggles total); the middleware-order fix confirmed
   rendering live; breadcrumb and 860px wrapper confirmed; sidebar showed tailored composite-key
   content. **API Design hub Phase 10: 5 of 19 topics complete.**
-- [ ] `/api-design/error-response-design` — Error Response Design
+- [x] `/api-design/error-response-design` — Error Response Design (2026-08-30). Fixed a genuine
+  HTTP-caching inaccuracy in the main page's own 404-vs-410 QnA: it claimed "410 can be cached
+  indefinitely... 404 tells caches to retry" as a binary distinction. Verified against RFC 9111
+  via WebSearch: BOTH are on the heuristically-cacheable-by-default list -- the real distinction
+  is that 410 signals permanence, justifying a longer freshness lifetime, not whether caching is
+  allowed at all. Fixed the QnA. 3 subtopics: RFC 9111's own 10%-of-Last-Modified-age heuristic
+  formula (verified via execution matching the spec's own worked example exactly); a real
+  traceparent header parser/propagation flow (W3C Trace Context, verified via WebFetch and
+  execution); the correct Express app assembly showing the error handler registered LAST, tying
+  into the API Versioning topic's own middleware-ordering lesson. REST Design's own generic
+  toggle pattern needed zero further template changes for this second topic in the group. No
+  SUBTOPICS collision. Build passed clean. Browser-verified: no console errors on any of the 4
+  pages; nav accordion opens with all 3 labels (6 toggles total); the QnA fix confirmed rendering
+  live; breadcrumb and 860px wrapper confirmed; sidebar showed tailored composite-key content.
+  **API Design hub Phase 10: 6 of 19 topics complete.**
 - [ ] `/api-design/hateoas-hypermedia` — HATEOAS & Hypermedia
 - [ ] `/api-design/protocol-buffers` — Protocol Buffers
 - [ ] `/api-design/grpc-service-patterns` — gRPC Service Patterns

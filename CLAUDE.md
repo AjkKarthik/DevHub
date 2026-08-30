@@ -5562,6 +5562,41 @@ Confirmed via direct file inspection before the pilot (`/api-design/rest-fundame
     middleware-order fix confirmed rendering live; breadcrumb and 860px wrapper confirmed on every
     subtopic; sidebar showed tailored composite-key content. **API Design hub Phase 10: 5 of 19
     topics complete.**
+13. **The `error-response-design` batch found and fixed a genuine HTTP-caching inaccuracy in the
+    main page's own 404-vs-410 QnA**: it claimed "410 can be cached indefinitely (the resource is
+    gone forever). 404 tells caches to retry" — framing it as a binary cacheable-vs-not
+    distinction. Verified against RFC 9111 (HTTP Caching) via WebSearch (§4.2.2's own
+    heuristically-cacheable-by-default list): BOTH 404 and 410 are on that list — a cache MAY
+    heuristically cache either without any explicit `Cache-Control` header at all. The real
+    distinction is that 410 signals PERMANENCE, which can justify a longer heuristic freshness
+    lifetime, not whether caching is permitted at all. Fixed the QnA to state this accurately.
+    Three subtopics: (1) **fix-adjacent** — builds RFC 9111's own documented heuristic freshness
+    formula (10% of the age since `Last-Modified`), verified via direct Node.js execution matching
+    the spec's own "10 days → ~1 day" worked example exactly, with a Try It on why "no real
+    difference at all" overcorrects the fix (the formula applies identically to both codes when
+    `Last-Modified` is present, but 410's permanence signal remains a defensible basis for a
+    LONGER fallback default in its absence — clearly labeled as implementation policy, not a spec
+    requirement); (2) **gap-closing** — a real `traceparent` header parser and hop-by-hop
+    propagation flow (W3C Trace Context), verified against the spec's own example header value via
+    WebFetch and via direct execution matching every parsed field exactly — named in the
+    correlation-ID QnA ("W3C Trace Context... OpenTelemetry implements this standard") but never
+    shown as an actual header anywhere on the page; (3) **gap-closing** — the correct Express app
+    assembly showing the main page's own "Problem Details Middleware" `errorHandler` registered
+    LAST, after every route that might call `next(err)` — the two error-handling codeTabs on the
+    main page were never actually wired together into one app, and this subtopic ties the fix
+    directly into the API Versioning topic's own middleware-ordering lesson from two batches
+    earlier, including why Express's 4-parameter error-handler signature means a misplaced handler
+    fails differently than an ordinary misplaced middleware would. No `SUBTOPICS` collision for
+    `error-response-design` (checked both forms, confirmed collision-free, left bare) — REST
+    Design's own generic `subtopicsOf(item.path)` toggle (extended one batch earlier) again
+    required ZERO further template changes for this SECOND topic in that group, confirmed via a
+    clean diff. All three `solution`/`heading` fields swept clean via the standing apostrophe/
+    backtick-parity scripts before the build. Build passed clean (explicit `EXITCODE:$?` capture,
+    zero `ERROR` lines). Browser-verified: no console errors on any of the 4 pages; nav accordion
+    opens with all 3 labels (6 toggles total across the hub); the QnA fix confirmed rendering live
+    (required expanding both the QnA section's own outer toggle and the specific question's own
+    row); breadcrumb and 860px wrapper confirmed on every subtopic; sidebar showed tailored
+    composite-key content. **API Design hub Phase 10: 6 of 19 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -6589,10 +6624,11 @@ Confirmed via direct file inspection before the pilot (`/api-design/rest-fundame
   All 21 cards `available: true` in `architecture/api-design/home/home.ts`. Progress: `apiTotal=19` in progress.service.ts.
   API Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ApiDesignNavComponent at `shared/api-design-nav/api-design-nav.ts`.
-  Phase 10: 5 of 19 topics have subtopics (`/api-design/rest-fundamentals`, pilot batch;
+  Phase 10: 6 of 19 topics have subtopics (`/api-design/rest-fundamentals`, pilot batch;
   `/api-design/resource-url-design`; `/api-design/http-methods-status-codes`;
-  `/api-design/pagination-patterns` — Foundations nav group fully done; `/api-design/api-versioning`
-  — REST Design nav group started, 2026-08-30) — see "API Design hub subtopic wiring" section above
+  `/api-design/pagination-patterns` — Foundations nav group fully done; `/api-design/api-versioning`;
+  `/api-design/error-response-design` — REST Design nav group started, 2026-08-30) — see
+  "API Design hub subtopic wiring" section above
   for the `ApiDesignNavComponent` accordion structural fix and the generic `subtopicsOf(item.path)`
   toggle-gating pattern this hub's `@for`-looped nav template needed (a first for this hub, since
   most prior hubs hand-write one `<a>` per topic) — generalized from a per-topic hardcoded check to
