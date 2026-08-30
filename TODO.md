@@ -7931,7 +7931,20 @@ off here with a date.
   confirmed rendering; breadcrumb and 860px wrapper confirmed on every subtopic; sidebar showed
   tailored composite-key content.
   **Security & Auth hub Phase 10: 15 of 23 topics complete.**
-- [ ] `/security/security-headers` — Security Headers
+- [x] `/security/security-headers` — Security Headers (2026-08-30). 3 subtopics: The Helmet
+  Config's Own COEP + CDN Image Conflict, Wiring a Real CSP Violation-Report Endpoint, Security
+  Headers in CI: A Real Jest/Supertest Suite. Found a real, self-contained inconsistency in the
+  main page's own helmet config — it allowlists an external CDN in CSP's imgSrc while ALSO
+  enabling crossOriginEmbedderPolicy: true, verified via WebSearch that COEP require-corp blocks
+  exactly that kind of cross-origin image load unless the CDN separately sends a CORP header —
+  added an in-place note. Also fixed one more currently-live [innerHTML] vanishing-tag bug (a raw
+  <script> in theory.points). Self-caught TWO separate straight-apostrophe-in-[prev]-label
+  mistakes before the build. No SUBTOPICS collision. Build passed clean (explicit EXITCODE
+  capture). Browser-verified: no console errors; all 3 lazy chunks recompiled successfully on the
+  first check; nav accordion opens with all 3 labels (16 toggles total across the hub); the
+  main-page COEP note and vanishing-tag fix both confirmed rendering; breadcrumb and 860px
+  wrapper confirmed; sidebar showed tailored composite-key content.
+  **Security & Auth hub Phase 10: 16 of 23 topics complete.**
 - [ ] `/security/tls-https` — TLS & HTTPS
 - [ ] `/security/secrets-management` — Secrets Management
 - [ ] `/security/container-security` — Container Security

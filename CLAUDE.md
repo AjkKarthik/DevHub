@@ -5075,6 +5075,45 @@ this same check before any other new hub's first subtopic set:
     solution's separate one); breadcrumb and 860px wrapper confirmed on every subtopic; sidebar
     showed tailored composite-key content. **Security & Auth hub Phase 10: 15 of 23 topics
     complete.**
+22. **The `security-headers` batch found and fixed a genuine, self-contained inconsistency in the
+    main page's own helmet config codeTab, plus one more currently-live `[innerHTML]` vanishing-tag
+    bug**: the config sets `imgSrc: [..., 'https://cdn.example.com']` in CSP — explicitly
+    allowlisting an external CDN — while ALSO enabling `crossOriginEmbedderPolicy: true` in the
+    SAME config block. Verified via WebSearch that `Cross-Origin-Embedder-Policy: require-corp`
+    (what `true` sets) blocks exactly this kind of cross-origin no-cors resource load unless the
+    CDN separately sends `Cross-Origin-Resource-Policy: cross-origin` — CSP and COEP are
+    independent checks, and a source passing CSP's allowlist says nothing about whether COEP will
+    also let it through. This produces a genuinely confusing production bug (no CSP violation
+    logged, the image just silently fails with a separate, easy-to-miss COEP network error) for
+    anyone who copies the config wholesale. Added an in-place note rather than restructuring the
+    config. A proactive sweep of every `theory.points`/`revision.mustKnow`/`qna.a` field found one
+    more raw, unescaped `<script>` tag in `theory.points` (the "Content Security Policy in Depth"
+    section) — fixed by wrapping in `<code>&lt;script&gt;</code>`, confirmed correct via live
+    `.textContent` inspection. Three subtopics: (1) fix-adjacent — reproducing the COEP block
+    empirically-reasoned (not directly browser-tested, since this requires a real cross-origin CDN
+    response) and both real fixes (a CORP header from the CDN, or switching to `COEP:
+    credentialless`), with a Try It on the credential-stripping trade-off `credentialless`
+    introduces that a real CORP header wouldn't; (2) gap-closing — the QnA's own full CSP
+    report-only rollout recipe never shows the actual endpoint that receives violation reports;
+    built one, verified via WebSearch that browsers POST them as `Content-Type:
+    application/csp-report` (not `application/json`) — a detail the Try It turns into a concrete
+    "what breaks if you drop the `express.json({ type: ... })` option" exercise; (3) gap-closing —
+    turned the main page's own standalone "Security Headers Audit" script into a real Jest/
+    Supertest suite that fails a CI build instead of just reporting for a human to notice,
+    verified the HSTS `max-age` regex-extraction-and-comparison logic via direct Node execution
+    before publishing. Self-caught and fixed TWO separate straight-apostrophe-in-`[prev]`-label
+    mistakes before the build (needed the typographic curly quote for `.html` bound attributes,
+    not a plain apostrophe) — the second one caught by the exact same review step that caught the
+    first, confirming the standing discipline of checking every new `[prev]`/`[next]` label
+    individually rather than assuming one catch means the rest of a batch is clean. No `SUBTOPICS`
+    collision for `security-headers` (checked both `subtopics.ts` forms and `app.routes.ts`
+    directly, confirmed collision-free, left bare). Build passed clean (explicit `EXITCODE:$?`
+    capture, zero `ERROR` lines). Browser-verified: no console errors on any page; the dev server's
+    own `preview_logs` confirmed all 3 new lazy chunks recompiled successfully on the first check
+    (no stale-chunk incident this batch); nav accordion opens with all 3 labels (16 toggles total
+    across the hub); the main-page COEP note and the vanishing-`<script>` fix both confirmed
+    rendering; breadcrumb and 860px wrapper confirmed on a subtopic page; sidebar showed tailored
+    composite-key content. **Security & Auth hub Phase 10: 16 of 23 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -6076,11 +6115,12 @@ this same check before any other new hub's first subtopic set:
   All 25 cards `available: true` in `architecture/security/home/home.ts`. Progress: `secTotal=23` in progress.service.ts.
   Security pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SecurityNavComponent at `shared/security-nav/security-nav.ts`.
-  Phase 10: 15 of 23 topics have subtopics (`/security/fundamentals`, pilot batch;
+  Phase 10: 16 of 23 topics have subtopics (`/security/fundamentals`, pilot batch;
   `/security/owasp-top-10`; `/security/threat-modelling`; `/security/secure-coding`;
   `/security/password-security`; `/security/oauth-oidc`; `/security/jwt`; `/security/mfa`;
   `/security/sso`; `/security/rbac-abac`; `/security/claims-identity`; `/security/api-security`;
-  `/security/xss`; `/security/csrf-clickjacking`; `/security/injection`, 2026-08-30) —
+  `/security/xss`; `/security/csrf-clickjacking`; `/security/injection`;
+  `/security/security-headers`, 2026-08-30) —
   see "Security & Auth hub subtopic wiring" section above for the `SecurityNavComponent` accordion
   structural fix, the `sec-fundamentals` SUBTOPICS-map collision resolution (collided with the
   JavaScript hub's own bare `fundamentals` topic key), and the `sec-api-security` proactive
