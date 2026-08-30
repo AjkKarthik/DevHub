@@ -1,0 +1,26 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Container Security" topicRoute="/security/container-security"
+    subtopicLabel="A Custom seccomp Profile, Beyond RuntimeDefault" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">A Custom seccomp Profile, Beyond RuntimeDefault</h1>
+  <p class="page-subtitle">The theory names RuntimeDefault and draws the seccomp-vs-AppArmor distinction precisely — here’s what a hand-written, workload-specific profile actually looks like, verified against Kubernetes’ own official docs.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>Digest pinning, runtime shell detection, and syscall filtering each close a different gap in the container security model — together they cover build-time integrity, runtime behavior, and kernel-level access control, the three layers this topic’s theory sections walk through in order.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Container Security" topicRoute="/security/container-security"
+    [prev]="{ label: 'A Real Falco Rule Detecting a Shell in a Container', route: '/security/container-security/falco-rule-detects-shell-in-container' }" />
+</div>

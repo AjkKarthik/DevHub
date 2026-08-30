@@ -3345,7 +3345,12 @@ export const routes: Routes = [
         { path: 'vault-transit-encryption-as-a-service-implemented', loadComponent: () => import('./components/architecture/security/secrets-management/subtopics/vault-transit-encryption-as-a-service-implemented/vault-transit-encryption-as-a-service-implemented').then(m => m.VaultTransitEncryptionAsAServiceImplementedSubtopic) },
         { path: 'vault-agent-injector-sidecar-pattern', loadComponent: () => import('./components/architecture/security/secrets-management/subtopics/vault-agent-injector-sidecar-pattern/vault-agent-injector-sidecar-pattern').then(m => m.VaultAgentInjectorSidecarPatternSubtopic) },
       ] },
-    { path: 'container-security',    loadComponent: () => import('./components/architecture/security/container-security/container-security').then(m => m.SecContainerSecurity) },
+    { path: 'container-security', children: [
+        { path: '', loadComponent: () => import('./components/architecture/security/container-security/container-security').then(m => m.SecContainerSecurity) },
+        { path: 'sha256-tag-vs-true-image-digest-pin', loadComponent: () => import('./components/architecture/security/container-security/subtopics/sha256-tag-vs-true-image-digest-pin/sha256-tag-vs-true-image-digest-pin').then(m => m.Sha256TagVsTrueImageDigestPinSubtopic) },
+        { path: 'falco-rule-detects-shell-in-container', loadComponent: () => import('./components/architecture/security/container-security/subtopics/falco-rule-detects-shell-in-container/falco-rule-detects-shell-in-container').then(m => m.FalcoRuleDetectsShellInContainerSubtopic) },
+        { path: 'custom-seccomp-profile-beyond-runtimedefault', loadComponent: () => import('./components/architecture/security/container-security/subtopics/custom-seccomp-profile-beyond-runtimedefault/custom-seccomp-profile-beyond-runtimedefault').then(m => m.CustomSeccompProfileBeyondRuntimedefaultSubtopic) },
+      ] },
     { path: 'symmetric-encryption', children: [
         { path: '', loadComponent: () => import('./components/architecture/security/symmetric-encryption/symmetric-encryption').then(m => m.SecSymmetricEncryption) },
         { path: 'field-level-encryption-you-can-actually-search-blind-indexing', loadComponent: () => import('./components/architecture/security/symmetric-encryption/subtopics/field-level-encryption-you-can-actually-search-blind-indexing/field-level-encryption-you-can-actually-search-blind-indexing').then(m => m.FieldLevelEncryptionYouCanActuallySearchBlindIndexingSubtopic) },

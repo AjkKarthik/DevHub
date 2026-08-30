@@ -3538,4 +3538,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Vault Transit: Encryption as a Service, Implemented', route: '/security/secrets-management/vault-transit-encryption-as-a-service-implemented' },
     { label: 'The Vault Agent Injector Sidecar Pattern in Kubernetes', route: '/security/secrets-management/vault-agent-injector-sidecar-pattern' },
   ],
+  // NOTE: hub-prefixed -- bare 'container-security' is already claimed by the
+  // Containers/K8s hub's own /containers/container-security topic.
+  'sec-container-security': [
+    { label: 'A sha256 Tag vs. a True Image Digest Pin', route: '/security/container-security/sha256-tag-vs-true-image-digest-pin' },
+    { label: 'A Real Falco Rule Detecting a Shell in a Container', route: '/security/container-security/falco-rule-detects-shell-in-container' },
+    { label: 'A Custom seccomp Profile, Beyond RuntimeDefault', route: '/security/container-security/custom-seccomp-profile-beyond-runtimedefault' },
+  ],
 };

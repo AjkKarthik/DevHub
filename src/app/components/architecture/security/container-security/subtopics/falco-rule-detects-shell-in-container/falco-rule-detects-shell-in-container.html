@@ -1,0 +1,27 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Container Security" topicRoute="/security/container-security"
+    subtopicLabel="A Real Falco Rule Detecting a Shell in a Container" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">A Real Falco Rule Detecting a Shell in a Container</h1>
+  <p class="page-subtitle">The QnA describes Falco’s shell-detection scenario in precise prose — here’s the actual rule syntax, verified against Falco’s own official rules reference.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>A Falco rule detects an unusual syscall AFTER it happens — <code>seccomp</code>, named in the main page’s theory but never shown as a custom profile, can stop many dangerous syscalls from being ALLOWED at all. The next subtopic builds one.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Container Security" topicRoute="/security/container-security"
+    [prev]="{ label: 'A sha256 Tag vs. a True Image Digest Pin', route: '/security/container-security/sha256-tag-vs-true-image-digest-pin' }"
+    [next]="{ label: 'A Custom seccomp Profile, Beyond RuntimeDefault', route: '/security/container-security/custom-seccomp-profile-beyond-runtimedefault' }" />
+</div>

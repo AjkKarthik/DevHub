@@ -35023,6 +35023,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Vulnerability scanning at build time catches known CVEs at that point, but new CVEs are disclosed continuously — already-deployed images need periodic re-scanning.',
     ],
   },
+  'security/container-security/sha256-tag-vs-true-image-digest-pin': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'A Real Falco Rule Detecting a Shell in a Container', route: '/security/container-security/falco-rule-detects-shell-in-container' },
+      { label: 'Container Security (overview)', route: '/security/container-security' },
+    ],
+    tip: 'A tag containing "sha256" in its name looks reassuring but carries zero cryptographic guarantee — only a reference using @sha256:<hex> (an at-sign, not a colon) is actually verified against the image\'s real content on pull.',
+    gotchas: [
+      'Docker/OCI image references only recognize two forms: name:tag or name@digest — anything after a colon is parsed as a tag no matter what characters it contains.',
+    ],
+  },
+  'security/container-security/falco-rule-detects-shell-in-container': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'A sha256 Tag vs. a True Image Digest Pin', route: '/security/container-security/sha256-tag-vs-true-image-digest-pin' },
+      { label: 'A Custom seccomp Profile, Beyond RuntimeDefault', route: '/security/container-security/custom-seccomp-profile-beyond-runtimedefault' },
+    ],
+    tip: 'Falco is a DETECTION tool, not a prevention tool — a matched rule emits an alert but does not itself stop the shell from running; blocking it in the first place is a separate concern (image scanning, admission control, minimal base images).',
+    gotchas: [
+      'The container.id != host clause is what scopes a rule to containers only — dropping it means the rule also fires for ordinary shells spawned directly on the node itself.',
+    ],
+  },
+  'security/container-security/custom-seccomp-profile-beyond-runtimedefault': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'A Real Falco Rule Detecting a Shell in a Container', route: '/security/container-security/falco-rule-detects-shell-in-container' },
+      { label: 'Container Security (overview)', route: '/security/container-security' },
+    ],
+    tip: 'A custom Localhost seccomp profile file must already exist on the NODE at /var/lib/kubelet/seccomp/profiles/ before a pod referencing it can schedule there — it is not bundled into the container image the way application code is.',
+    gotchas: [
+      'A hand-written allowlist is only as complete as the testing used to derive it — a syscall never exercised while building the profile fails at runtime, in production, once defaultAction is SCMP_ACT_ERRNO.',
+    ],
+  },
   'security/supply-chain': {
     apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
     related: [

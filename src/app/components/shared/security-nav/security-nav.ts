@@ -454,7 +454,26 @@ const DIFF: Record<string, string> = Object.fromEntries(SEARCH_INDEX.map(e => [e
           </div>
         }
       }
-      <a routerLink="/security/container-security" routerLinkActive="active"><span class="nl-text">Container Security</span>@if(progress.isDone('sec-container-security')){<span class="nl-done">✓</span>}@if(d('sec-container-security');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+      <a routerLink="/security/container-security" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Container Security</span>
+        @if(progress.isDone('sec-container-security')){<span class="nl-done">✓</span>}
+        @if(d('sec-container-security');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}
+        @if (subtopicsOf('sec-container-security')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('sec-container-security')"
+                  (click)="toggleSubtopics('sec-container-security', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('sec-container-security'); as ctrsecSubs) {
+        @if (isSubtopicsExpanded('sec-container-security')) {
+          <div class="nav-subtopics">
+            @for (s of ctrsecSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/security/supply-chain" routerLinkActive="active"><span class="nl-text">Supply Chain Security</span>@if(progress.isDone('sec-supply-chain')){<span class="nl-done">✓</span>}@if(d('sec-supply-chain');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
     </div>
 
