@@ -7959,7 +7959,21 @@ off here with a date.
   **Security & Auth hub Phase 10: 17 of 23 topics complete — Transport & Crypto nav group started.**
 - [ ] `/security/secrets-management` — Secrets Management
 - [ ] `/security/container-security` — Container Security
-- [ ] `/security/symmetric-encryption` — Symmetric Encryption
+- [x] `/security/symmetric-encryption` — Symmetric Encryption (2026-08-30). 3 subtopics, all
+  gap-closing (clean main page — double-checked the "2^32 messages" GCM IV-collision claim
+  against NIST SP 800-38D and confirmed it's correct, no fix needed): Field-Level Encryption You
+  Can Actually Search: Blind Indexing; Streaming AES-256-GCM Encryption for Large Files; Deriving
+  Multiple Keys From One Secret with HKDF. Each builds real code for something the QnA/quiz names
+  but never demonstrates — an HMAC-based blind index, a real Node.js stream pipeline verified
+  end-to-end via direct execution (round-trip encrypt/decrypt AND tamper detection, plus the
+  getAuthTag/setAuthTag timing rule confirmed by reproducing the wrong order and observing it
+  throw), and crypto.hkdfSync deriving multiple independent keys from one shared secret
+  (determinism and info-string independence both verified via execution). No SUBTOPICS collision.
+  Build passed clean (explicit EXITCODE capture). Browser-verified: no console errors; nav
+  accordion opens with all 3 labels (18 toggles total across the hub); breadcrumb and 860px
+  wrapper confirmed; sidebar showed tailored composite-key content.
+  **Security & Auth hub Phase 10: 18 of 23 topics complete.**
+- [ ] `/security/asymmetric-cryptography` — Asymmetric Cryptography
 - [ ] `/security/asymmetric-cryptography` — Asymmetric Cryptography
 - [ ] `/security/hashing` — Hashing
 - [ ] `/security/supply-chain` — Supply Chain Security

@@ -5148,6 +5148,33 @@ this same check before any other new hub's first subtopic set:
     breadcrumb and 860px wrapper confirmed on a subtopic page; sidebar showed tailored composite-
     key content. **Security & Auth hub Phase 10: 17 of 23 topics complete — Transport & Crypto nav
     group started.**
+24. **The `symmetric-encryption` batch was another clean main page — the vanishing-tag sweep found
+    nothing, and a specific numeric claim worth double-checking ("the probability of a collision
+    with a 96-bit random IV is negligible for ≤2^32 messages with the same key") was verified via
+    WebSearch against NIST SP 800-38D directly and confirmed CORRECT (Section 8.3's own documented
+    limit is exactly 2^32 invocations for a randomly-generated 96-bit IV) — a useful reminder that
+    double-checking a precise-sounding number sometimes confirms accuracy rather than finding an
+    error, and that's still worth doing.** All three subtopics are gap-closing: (1) a blind-index
+    pattern (HMAC of the normalized plaintext, stored alongside the AEAD ciphertext) solving the
+    real problem the main page's own `encrypt()` function creates by being correctly
+    non-deterministic — its ciphertext can never be looked up via `WHERE`, which the QnA gestures
+    at ("store a hash of the value for lookup") but never builds; (2) a real Node.js stream
+    pipeline for the QnA's own large-file encryption recipe (a numbered list with zero code),
+    verified END-TO-END via direct execution — a genuine round-trip encrypt/decrypt test AND a
+    tamper-detection test (flipping a ciphertext byte correctly threw the expected GCM
+    authentication error) before ever writing the exercise/misconceptions content, plus the
+    `getAuthTag()`-after-stream-finishes vs. `setAuthTag()`-before-stream-starts timing rule
+    confirmed by deliberately reproducing the WRONG order and observing it throw; (3) `crypto.
+    hkdfSync()` deriving multiple independent keys from one shared secret — the quiz's own
+    PBKDF2/Argon2-vs-HKDF distinction (password hardening vs. general-purpose multi-key
+    derivation) made concrete, with the determinism and info-string-independence claims both
+    verified via direct execution (same secret + same info → identical output; same secret +
+    different info → unrelated output). No `SUBTOPICS` collision for `symmetric-encryption`
+    (checked both `subtopics.ts` forms and `app.routes.ts` directly, confirmed collision-free,
+    left bare). Build passed clean (explicit `EXITCODE:$?` capture, zero `ERROR` lines).
+    Browser-verified: no console errors; nav accordion opens with all 3 labels (18 toggles total
+    across the hub); breadcrumb and 860px wrapper confirmed on a subtopic page; sidebar showed
+    tailored composite-key content. **Security & Auth hub Phase 10: 18 of 23 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -6149,12 +6176,13 @@ this same check before any other new hub's first subtopic set:
   All 25 cards `available: true` in `architecture/security/home/home.ts`. Progress: `secTotal=23` in progress.service.ts.
   Security pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SecurityNavComponent at `shared/security-nav/security-nav.ts`.
-  Phase 10: 17 of 23 topics have subtopics (`/security/fundamentals`, pilot batch;
+  Phase 10: 18 of 23 topics have subtopics (`/security/fundamentals`, pilot batch;
   `/security/owasp-top-10`; `/security/threat-modelling`; `/security/secure-coding`;
   `/security/password-security`; `/security/oauth-oidc`; `/security/jwt`; `/security/mfa`;
   `/security/sso`; `/security/rbac-abac`; `/security/claims-identity`; `/security/api-security`;
   `/security/xss`; `/security/csrf-clickjacking`; `/security/injection`;
-  `/security/security-headers`; `/security/tls-https`, 2026-08-30) —
+  `/security/security-headers`; `/security/tls-https`; `/security/symmetric-encryption`,
+  2026-08-30) —
   see "Security & Auth hub subtopic wiring" section above for the `SecurityNavComponent` accordion
   structural fix, the `sec-fundamentals` SUBTOPICS-map collision resolution (collided with the
   JavaScript hub's own bare `fundamentals` topic key), and the `sec-api-security` proactive
