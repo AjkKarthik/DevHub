@@ -1,0 +1,27 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="OAuth 2.0 & OIDC" topicRoute="/security/oauth-oidc"
+    subtopicLabel="Token Introspection Alongside JWT Validation" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">Token Introspection Alongside JWT Validation</h1>
+  <p class="page-subtitle">The QnA names a "hybrid approach" — fast local validation plus selective introspection — but never builds it. Here's both halves working together on one endpoint.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic builds the device authorization grant's own polling flow — the last mechanism the QnA describes step-by-step in prose without ever showing the code.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="OAuth 2.0 & OIDC" topicRoute="/security/oauth-oidc"
+    [prev]="{ label: 'PKCE in the Browser With the Web Crypto API', route: '/security/oauth-oidc/pkce-in-the-browser-with-the-web-crypto-api' }"
+    [next]="{ label: 'The Device Authorization Grant, Implemented', route: '/security/oauth-oidc/the-device-authorization-grant-implemented' }" />
+</div>

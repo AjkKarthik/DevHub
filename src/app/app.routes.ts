@@ -3267,7 +3267,12 @@ export const routes: Routes = [
         { path: 'a-simplified-passkey-registration-and-login-flow', loadComponent: () => import('./components/architecture/security/password-security/subtopics/a-simplified-passkey-registration-and-login-flow/a-simplified-passkey-registration-and-login-flow').then(m => m.ASimplifiedPasskeyRegistrationAndLoginFlowSubtopic) },
         { path: 'detecting-password-spraying-across-accounts', loadComponent: () => import('./components/architecture/security/password-security/subtopics/detecting-password-spraying-across-accounts/detecting-password-spraying-across-accounts').then(m => m.DetectingPasswordSprayingAcrossAccountsSubtopic) },
       ] },
-    { path: 'oauth-oidc',            loadComponent: () => import('./components/architecture/security/oauth-oidc/oauth-oidc').then(m => m.SecOauthOidc) },
+    { path: 'oauth-oidc', children: [
+        { path: '', loadComponent: () => import('./components/architecture/security/oauth-oidc/oauth-oidc').then(m => m.SecOauthOidc) },
+        { path: 'pkce-in-the-browser-with-the-web-crypto-api', loadComponent: () => import('./components/architecture/security/oauth-oidc/subtopics/pkce-in-the-browser-with-the-web-crypto-api/pkce-in-the-browser-with-the-web-crypto-api').then(m => m.PkceInTheBrowserWithTheWebCryptoApiSubtopic) },
+        { path: 'token-introspection-alongside-jwt-validation', loadComponent: () => import('./components/architecture/security/oauth-oidc/subtopics/token-introspection-alongside-jwt-validation/token-introspection-alongside-jwt-validation').then(m => m.TokenIntrospectionAlongsideJwtValidationSubtopic) },
+        { path: 'the-device-authorization-grant-implemented', loadComponent: () => import('./components/architecture/security/oauth-oidc/subtopics/the-device-authorization-grant-implemented/the-device-authorization-grant-implemented').then(m => m.TheDeviceAuthorizationGrantImplementedSubtopic) },
+      ] },
     { path: 'jwt',                   loadComponent: () => import('./components/architecture/security/jwt/jwt').then(m => m.SecJwt) },
     { path: 'mfa',                   loadComponent: () => import('./components/architecture/security/mfa/mfa').then(m => m.SecMfa) },
     { path: 'sso',                   loadComponent: () => import('./components/architecture/security/sso/sso').then(m => m.SecSso) },

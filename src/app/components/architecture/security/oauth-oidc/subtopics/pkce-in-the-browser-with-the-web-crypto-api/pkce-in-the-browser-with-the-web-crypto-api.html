@@ -1,0 +1,26 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="OAuth 2.0 & OIDC" topicRoute="/security/oauth-oidc"
+    subtopicLabel="PKCE in the Browser With the Web Crypto API" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">PKCE in the Browser With the Web Crypto API</h1>
+  <p class="page-subtitle">The main page's own PKCE codeTab imports Node's crypto module — but PKCE is described as the correct flow for SPAs. Here's the code that actually runs in a browser.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>The next two subtopics build out mechanisms the QnA describes in real detail but never demonstrates in code: token introspection alongside JWT validation, and the full device authorization grant polling flow.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="OAuth 2.0 & OIDC" topicRoute="/security/oauth-oidc"
+    [next]="{ label: 'Token Introspection Alongside JWT Validation', route: '/security/oauth-oidc/token-introspection-alongside-jwt-validation' }" />
+</div>

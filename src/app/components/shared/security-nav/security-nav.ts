@@ -122,7 +122,26 @@ const DIFF: Record<string, string> = Object.fromEntries(SEARCH_INDEX.map(e => [e
           </div>
         }
       }
-      <a routerLink="/security/oauth-oidc" routerLinkActive="active"><span class="nl-text">OAuth 2.0 &amp; OIDC</span>@if(progress.isDone('sec-oauth-oidc')){<span class="nl-done">✓</span>}@if(d('sec-oauth-oidc');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+      <a routerLink="/security/oauth-oidc" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">OAuth 2.0 &amp; OIDC</span>
+        @if(progress.isDone('sec-oauth-oidc')){<span class="nl-done">✓</span>}
+        @if(d('sec-oauth-oidc');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}
+        @if (subtopicsOf('oauth-oidc')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('oauth-oidc')"
+                  (click)="toggleSubtopics('oauth-oidc', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('oauth-oidc'); as oauthSubs) {
+        @if (isSubtopicsExpanded('oauth-oidc')) {
+          <div class="nav-subtopics">
+            @for (s of oauthSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/security/jwt" routerLinkActive="active"><span class="nl-text">JSON Web Tokens</span>@if(progress.isDone('sec-jwt')){<span class="nl-done">✓</span>}@if(d('sec-jwt');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
       <a routerLink="/security/mfa" routerLinkActive="active"><span class="nl-text">Multi-Factor Auth</span>@if(progress.isDone('sec-mfa')){<span class="nl-done">✓</span>}@if(d('sec-mfa');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
       <a routerLink="/security/sso" routerLinkActive="active"><span class="nl-text">Single Sign-On</span>@if(progress.isDone('sec-sso')){<span class="nl-done">✓</span>}@if(d('sec-sso');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>

@@ -3452,4 +3452,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'A Simplified Passkey Registration and Login Flow', route: '/security/password-security/a-simplified-passkey-registration-and-login-flow' },
     { label: 'Detecting Password Spraying Across Accounts', route: '/security/password-security/detecting-password-spraying-across-accounts' },
   ],
+  'oauth-oidc': [
+    { label: 'PKCE in the Browser With the Web Crypto API', route: '/security/oauth-oidc/pkce-in-the-browser-with-the-web-crypto-api' },
+    { label: 'Token Introspection Alongside JWT Validation', route: '/security/oauth-oidc/token-introspection-alongside-jwt-validation' },
+    { label: 'The Device Authorization Grant, Implemented', route: '/security/oauth-oidc/the-device-authorization-grant-implemented' },
+  ],
 };

@@ -34369,6 +34369,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'An access token proves what the bearer can DO; an ID token proves WHO the user is — using one where the other is needed is a common integration bug.',
     ],
   },
+  'security/oauth-oidc/pkce-in-the-browser-with-the-web-crypto-api': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'OAuth 2.0 & OIDC (overview)', route: '/security/oauth-oidc' },
+      { label: 'Token Introspection Alongside JWT Validation', route: '/security/oauth-oidc/token-introspection-alongside-jwt-validation' },
+    ],
+    tip: 'Node\'s crypto module and the browser\'s Web Crypto API are NOT interchangeable — the browser version is asynchronous and hands back raw, unencoded bytes rather than an already-base64url-encoded string.',
+    gotchas: [
+      'crypto.subtle is only available in a secure context (HTTPS, or localhost for local dev) — a SPA served over plain HTTP finds it silently undefined.',
+    ],
+  },
+  'security/oauth-oidc/token-introspection-alongside-jwt-validation': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'PKCE in the Browser With the Web Crypto API', route: '/security/oauth-oidc/pkce-in-the-browser-with-the-web-crypto-api' },
+      { label: 'The Device Authorization Grant, Implemented', route: '/security/oauth-oidc/the-device-authorization-grant-implemented' },
+    ],
+    tip: 'Introspecting every single request defeats the point of using self-contained JWTs at all — reserve it for the specific high-risk operations where a revoked-but-not-yet-expired token would be genuinely dangerous.',
+    gotchas: [
+      'Introspection checks whether a token is still active, not whether it was legitimately issued in the first place — local signature validation is still required even on an introspection-gated endpoint.',
+    ],
+  },
+  'security/oauth-oidc/the-device-authorization-grant-implemented': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Token Introspection Alongside JWT Validation', route: '/security/oauth-oidc/token-introspection-alongside-jwt-validation' },
+      { label: 'OAuth 2.0 & OIDC (overview)', route: '/security/oauth-oidc' },
+    ],
+    tip: 'authorization_pending and slow_down both mean "keep polling," but only slow_down carries the RFC-mandated instruction to increase the interval by 5 seconds, cumulatively, for every subsequent poll.',
+    gotchas: [
+      'The device requesting the code never receives a redirect at all — the user approves on a SEPARATE device (their phone), which is what makes this flow work for TVs, CLIs, and other screens that cannot receive a callback.',
+    ],
+  },
   'security/sso': {
     apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
     related: [

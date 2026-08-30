@@ -1,0 +1,26 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="OAuth 2.0 & OIDC" topicRoute="/security/oauth-oidc"
+    subtopicLabel="The Device Authorization Grant, Implemented" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">The Device Authorization Grant, Implemented</h1>
+  <p class="page-subtitle">The QnA describes every step of RFC 8628 in prose. Here's the actual device-code request and token-polling loop — including the authorization_pending vs. slow_down distinction, verified against the spec.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>Together, these three subtopics extend the main page's own SPA-labeled-but-Node-only PKCE code, its named-but-unbuilt introspection strategy, and its fully-described-in-prose device grant into working, spec-verified code.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="OAuth 2.0 & OIDC" topicRoute="/security/oauth-oidc"
+    [prev]="{ label: 'Token Introspection Alongside JWT Validation', route: '/security/oauth-oidc/token-introspection-alongside-jwt-validation' }" />
+</div>
