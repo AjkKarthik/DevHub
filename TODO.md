@@ -7786,7 +7786,19 @@ off here with a date.
   labels (5 toggles total across the hub); main-page fix confirmed live via direct component
   inspection; breadcrumb and 860px wrapper confirmed on every subtopic; no console errors on any
   of the 4 pages. **Security & Auth hub Phase 10: 5 of 23 topics complete.**
-- [ ] `/security/oauth-oidc` — OAuth 2.0 & OIDC
+- [x] `/security/oauth-oidc` — OAuth 2.0 & OIDC (2026-08-30) — Phase 10: 3 subtopics added.
+  Found a real environment mismatch in the main page's own PKCE codeTab — it imports Node's
+  `crypto` module for a flow explicitly labeled "the correct flow for SPAs," which won't run in
+  any browser. Subtopics: PKCE in the Browser With the Web Crypto API (the actual
+  `crypto.getRandomValues()`/`crypto.subtle.digest()` implementation, verified against the spec
+  via WebSearch and confirmed working via Node execution); Token Introspection Alongside JWT
+  Validation (the QnA's own "hybrid approach," wired together on one endpoint); The Device
+  Authorization Grant, Implemented (the actual RFC 8628 polling loop, verified against the spec's
+  `authorization_pending`-vs-`slow_down` distinction and the cumulative interval math). No
+  `SUBTOPICS` collision, left bare. Build passed clean. Browser-verified: nav accordion opens with
+  all 3 labels (6 toggles total across the hub); breadcrumb and 860px wrapper confirmed on every
+  subtopic; no console errors on any of the 4 pages.
+  **Security & Auth hub Phase 10: 6 of 23 topics complete.**
 - [ ] `/security/jwt` — JWT (JSON Web Tokens)
 - [ ] `/security/mfa` — Multi-Factor Authentication
 - [ ] `/security/sso` — Single Sign-On (SSO)

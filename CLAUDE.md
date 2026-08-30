@@ -4694,6 +4694,42 @@ this same check before any other new hub's first subtopic set:
     tailored composite-key content; the fixed brace text confirmed rendering as literal `{`/`}`
     characters, not the broken interpolation-trick text. **Security & Auth hub Phase 10: 5 of 23
     topics complete.**
+12. **The `oauth-oidc` batch found a real environment mismatch in the main page's own PKCE
+    codeTab — accurate code, wrong runtime — plus two subtopics building mechanisms the QnA
+    describes in prose but never demonstrates**: the theory and quickRef both call PKCE "the
+    correct flow for SPAs and mobile apps," but the main page's own "Auth Code + PKCE Flow"
+    codeTab opens with `import crypto from 'crypto'` and calls `crypto.randomBytes()`/
+    `crypto.createHash()` — Node.js's built-in module, unavailable in any browser. This isn't a
+    factual error in the code shown (it's genuinely correct PKCE logic for a Node.js confidential
+    client or BFF), just a framing mismatch with the SPA context the surrounding prose describes —
+    left the main page as-is (nothing to literally correct) and built the missing piece instead.
+    Three subtopics: (1) **fix-adjacent/gap-closing** — the actual browser Web Crypto API
+    equivalent (`crypto.getRandomValues()`, `crypto.subtle.digest()`), verified against the real
+    spec via WebSearch (confirming the async-Promise return, the raw-ArrayBuffer-not-a-string
+    result, and the secure-context/HTTPS-or-localhost restriction) and confirmed working
+    end-to-end via direct Node execution (Node also implements these same globals) before
+    publishing — a Try It traces exactly what breaks (a `TypeError` on `crypto.subtle.digest`,
+    one line past where `crypto.getRandomValues()` still silently works) when a team deploys over
+    plain HTTP; (2) **gap-closing** — the QnA names a "hybrid approach" (fast local JWT validation
+    + selective RFC 7662 introspection for high-risk operations) but never builds it; wired both
+    together on one endpoint, tracing a revoked-but-not-yet-expired token through a low-risk read
+    (succeeds, since local validation can't see server-side revocation) and a high-risk admin
+    action (correctly blocked, since introspection asks the authorization server directly); (3)
+    **gap-closing** — the QnA describes RFC 8628's device authorization grant step by step with
+    zero code anywhere on the page; built the actual device-code request and token-polling loop,
+    verified via WebSearch against the spec's own `authorization_pending`-vs-`slow_down`
+    distinction (only `slow_down` increases the polling interval, and cumulatively — a detail easy
+    to get wrong by treating both errors identically) and confirmed the cumulative interval math
+    (5s → 20s after three `slow_down` responses) via direct execution before publishing. No
+    `SUBTOPICS` collision for `oauth-oidc` (checked both `subtopics.ts` forms and grepped
+    `app.routes.ts` directly, confirmed collision-free, left bare). All three `solution` fields and
+    bracket-balance/backtick-parity swept clean; several apostrophe-sweep flags across all three
+    files confirmed false positives (multiple correctly-paired single-quoted strings inside
+    backtick-delimited `code:` fields). Build passed clean. Browser-verified: no console errors on
+    any of the 4 pages; nav accordion opens with all 3 labels (6 toggles total across the hub);
+    breadcrumb and 860px wrapper confirmed on every subtopic; sidebar showed tailored composite-key
+    content; Try It solution text confirmed via direct component inspection. **Security & Auth hub
+    Phase 10: 6 of 23 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -5695,9 +5731,9 @@ this same check before any other new hub's first subtopic set:
   All 25 cards `available: true` in `architecture/security/home/home.ts`. Progress: `secTotal=23` in progress.service.ts.
   Security pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SecurityNavComponent at `shared/security-nav/security-nav.ts`.
-  Phase 10: 5 of 23 topics have subtopics (`/security/fundamentals`, pilot batch;
+  Phase 10: 6 of 23 topics have subtopics (`/security/fundamentals`, pilot batch;
   `/security/owasp-top-10`; `/security/threat-modelling`; `/security/secure-coding`;
-  `/security/password-security`, 2026-08-30) —
+  `/security/password-security`; `/security/oauth-oidc`, 2026-08-30) —
   see "Security & Auth hub subtopic wiring" section above for the `SecurityNavComponent` accordion
   structural fix, the `sec-fundamentals` SUBTOPICS-map collision resolution (collided with the
   JavaScript hub's own bare `fundamentals` topic key).
