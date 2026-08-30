@@ -5491,6 +5491,41 @@ Confirmed via direct file inspection before the pilot (`/api-design/rest-fundame
     accordion opens with all 3 labels (3 toggles total across the hub); the theory-bullet fix
     confirmed rendering live; breadcrumb and 860px wrapper confirmed on every subtopic; sidebar
     showed tailored composite-key content. **API Design hub Phase 10: 3 of 19 topics complete.**
+11. **The `pagination-patterns` batch found and fixed a genuine bug in the main page's own Cursor
+    Pagination codeTab**: the `Cursor` interface and `encodeCursor` deliberately encode BOTH `id`
+    and `createdAt`, but the query's own `where` clause originally compared ONLY on `createdAt: {
+    lt: ... }` — never referencing the decoded `id` at all, exactly the single-column instability
+    the page's OWN Keyset Pagination theory bullet warns against one section earlier ("Can be
+    extended to multi-column keys: `WHERE (createdAt, id) > (:lastCreatedAt, :lastId)` for stable
+    sort on non-unique columns"). Verified via direct Node.js execution with concrete data: two
+    posts sharing the cursor's own exact timestamp caused one to be silently DROPPED entirely (not
+    misordered — genuinely missing from the response), confirmed before and after the fix. Fixed
+    to compare on both fields with `id` as the tiebreaker. Three subtopics: (1) **fix-adjacent** —
+    reproduces the exact skip with the same concrete data, both broken and fixed versions verified
+    via direct execution matching claimed output exactly, with a Try It on why a "tiny random
+    timestamp offset at insert time" alternative fix is merely probabilistic (and does nothing for
+    already-existing data) versus the structural guarantee a unique `id` tiebreaker provides; (2)
+    **gap-closing** — the deferred-join SQL trick for deep offset pages, named in the QnA in real
+    detail ("the inner query uses index-only scan on id... the outer join fetches full rows only
+    for the 20 result IDs") but never shown next to the naive version it improves on — with a Try
+    It on why the benefit scales with row width rather than disappearing for narrow-row tables;
+    (3) **gap-closing** — a real Relay Connection GraphQL resolver (`Connection`/`Edge`/`Node`/
+    `PageInfo`, both forward `first`/`after` and backward `last`/`before` pagination on the same
+    field), verified against the Relay Cursor Connections specification itself via WebFetch
+    (confirming the exact four `PageInfo` fields and the two `Edge` fields), answering quiz Q5's
+    own worked example query precisely. **The generic `subtopicsOf(item.path)` nav-toggle pattern
+    again required ZERO template changes** — confirmed via a clean diff (`api-design-nav.ts` did
+    not appear in this batch's changed files, the SAME confirmation as the prior batch, now for a
+    FOURTH topic in the same Foundations group). No `SUBTOPICS` collision for `pagination-patterns`
+    (checked both forms, confirmed collision-free, left bare). All three `solution`/`heading`
+    fields swept clean via the standing apostrophe/backtick-parity scripts before the build. Build
+    passed clean (explicit `EXITCODE:$?` capture, zero `ERROR` lines). Browser-verified: no console
+    errors on any of the 4 pages; nav accordion opens with all 3 labels (4 toggles total across the
+    hub); the `where`-clause fix confirmed rendering live inside the "Cursor Pagination" code tab;
+    breadcrumb and 860px wrapper confirmed on every subtopic; sidebar showed tailored composite-key
+    content. **API Design hub Phase 10: 4 of 19 topics complete — the Foundations nav group is now
+    fully done (rest-fundamentals, resource-url-design, http-methods-status-codes,
+    pagination-patterns all have subtopics); REST Design is next.**
 
 ## Current state (update when it changes!)
 
@@ -6518,14 +6553,16 @@ Confirmed via direct file inspection before the pilot (`/api-design/rest-fundame
   All 21 cards `available: true` in `architecture/api-design/home/home.ts`. Progress: `apiTotal=19` in progress.service.ts.
   API Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ApiDesignNavComponent at `shared/api-design-nav/api-design-nav.ts`.
-  Phase 10: 3 of 19 topics have subtopics (`/api-design/rest-fundamentals`, pilot batch;
-  `/api-design/resource-url-design`; `/api-design/http-methods-status-codes`, 2026-08-30) — see
+  Phase 10: 4 of 19 topics have subtopics (`/api-design/rest-fundamentals`, pilot batch;
+  `/api-design/resource-url-design`; `/api-design/http-methods-status-codes`;
+  `/api-design/pagination-patterns`, 2026-08-30 — Foundations nav group fully done) — see
   "API Design hub subtopic wiring" section above for the `ApiDesignNavComponent` accordion
   structural fix and the generic `subtopicsOf(item.path)` toggle-gating pattern this hub's
   `@for`-looped nav template needed (a first for this hub, since most prior hubs hand-write one
   `<a>` per topic) — generalized from a per-topic hardcoded check to a lookup keyed directly off
   the loop's own `item.path` once a second topic in the same nav group needed subtopics too,
-  confirmed requiring zero further template changes for a third topic in the same group.
+  confirmed requiring zero further template changes for a third AND fourth topic in the same
+  group.
 - **Observability & SRE hub**: 20 trackable topic pages + 2 reference (22 cards total). Feature-complete.
   Emerald theme `$accent: #059669`, `$tint: #ecfdf5`, dark `#34d399`. Search prefix `obs-`. Route: `/observability`.
   CSS classes: `.obs-page`, `.obs-icon`, `.obs-section`. Icon content: `📊` at `font-size: 1.8rem`. `tech="javascript"`.

@@ -8117,7 +8117,23 @@ off here with a date.
   with all 3 labels (3 toggles total); the theory fix confirmed rendering live; breadcrumb and
   860px wrapper confirmed; sidebar showed tailored composite-key content. **API Design hub Phase
   10: 3 of 19 topics complete.**
-- [ ] `/api-design/pagination-patterns` — Pagination Patterns
+- [x] `/api-design/pagination-patterns` — Pagination Patterns (2026-08-30). Fixed a genuine bug
+  in the main page's own Cursor Pagination codeTab: the `Cursor` interface and `encodeCursor`
+  encode both `id` and `createdAt`, but the `where` clause only ever compared on `createdAt: {
+  lt: ... }` -- never using `id` -- exactly the single-column instability the page's own Keyset
+  Pagination bullet warns against one section earlier. Verified via direct execution that two
+  rows sharing the cursor's own timestamp caused one to be silently DROPPED (not misordered --
+  genuinely missing). Fixed to compare on both fields with `id` as tiebreaker. 3 subtopics: a
+  reproduction of the exact skip with concrete data (verified via execution, both broken and
+  fixed); the deferred-join SQL trick for deep offset pages, named in the QnA but never shown
+  next to the naive version; a real Relay Connection GraphQL resolver (verified against the
+  Relay Cursor Connections spec via WebFetch). The generic `subtopicsOf(item.path)` nav-toggle
+  pattern again required ZERO template changes -- confirmed for a FOURTH topic in the same
+  Foundations group. No SUBTOPICS collision. Build passed clean. Browser-verified: no console
+  errors on any of the 4 pages; nav accordion opens with all 3 labels (4 toggles total); the
+  where-clause fix confirmed rendering live; breadcrumb and 860px wrapper confirmed; sidebar
+  showed tailored composite-key content. **API Design hub Phase 10: 4 of 19 topics complete --
+  Foundations nav group fully done.**
 - [ ] `/api-design/api-versioning` — API Versioning Strategies
 - [ ] `/api-design/error-response-design` — Error Response Design
 - [ ] `/api-design/hateoas-hypermedia` — HATEOAS & Hypermedia
