@@ -7858,7 +7858,20 @@ off here with a date.
   breadcrumb and 860px wrapper confirmed on every subtopic; no console errors on any of the 4
   pages.
   **Security & Auth hub Phase 10: 11 of 23 topics complete.**
-- [ ] `/security/api-security` — API Security
+- [x] `/security/api-security` — API Security (2026-08-30) — Phase 10: 3 subtopics added, all
+  gap-closing. BFLA, Demonstrated and Fixed (every main-page codeTab shows BOLA only — built the
+  function-level counterpart); HMAC Request Signing, Implemented (AWS SigV4/Stripe-style signing,
+  verified end-to-end via Node execution, plus a real replay gap the shown implementation
+  doesn't close); The Fixed-Window Rate Limiter's Burst Problem (the main page's own
+  express-rate-limit codeTab is actually subject to the flaw its own theory names — verified via
+  direct simulation, including precise Try It timing math re-derived carefully after the MFA
+  batch's earlier near-miss). Found and proactively fixed a real cross-hub `SUBTOPICS` collision
+  risk with the API Design hub's own `/api-design/api-security` route (hub-prefixed to
+  `sec-api-security`; confirmed the API Design hub's page renders unaffected). Build passed
+  clean. Browser-verified: nav accordion opens with all 3 labels (12 toggles total across the
+  hub); breadcrumb and 860px wrapper confirmed on every subtopic; no console errors on any page
+  checked.
+  **Security & Auth hub Phase 10: 12 of 23 topics complete.**
 - [ ] `/security/xss` — Cross-Site Scripting (XSS)
 - [ ] `/security/csrf-clickjacking` — CSRF & Clickjacking
 - [ ] `/security/injection` — Injection Attacks

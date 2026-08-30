@@ -4902,6 +4902,46 @@ this same check before any other new hub's first subtopic set:
     wrapper confirmed on every subtopic; sidebar showed tailored composite-key content; the fixed
     comment confirmed rendering correctly (no stray bare-dash line) via direct component
     inspection. **Security & Auth hub Phase 10: 11 of 23 topics complete.**
+18. **The `api-security` batch built three subtopics for mechanisms the theory/quiz describe in
+    real detail but never demonstrate in code, plus a proactive cross-hub SUBTOPICS-collision
+    fix**: (1) **gap-closing** — every codeTab and mistake block on the main page demonstrates
+    BOLA; the QnA distinguishes BFLA (function-level) precisely but the concept never appears in
+    code; built vulnerable admin endpoints where `requireAuth` alone passes with no function-level
+    role check, and the `requireRole()` fix, with a Try It confirming the fix deliberately never
+    reasons about object identity (a self-deletion request is still rejected, since function-level
+    checks and object-level checks are structurally different questions); (2) **gap-closing** —
+    the quiz names AWS SigV4 and Stripe webhook signatures at real depth with zero code anywhere;
+    built the signing/verification pair, verified end-to-end via direct Node execution (a
+    legitimate request passes, a tampered body correctly fails via signature mismatch), plus a Try
+    It exposing a genuine, real gap in the shown implementation — age-only timestamp checking
+    doesn't stop a fresh replay of an IDENTICAL request within the same window, confirmed by
+    directly re-verifying the same captured request twice; (3) **gap-closing** — the theory names
+    the fixed-window burst flaw ("2N requests in 2 seconds") one paragraph away from the main
+    page's own `express-rate-limit` codeTab, which — genuinely, not hypothetically — uses that
+    exact fixed-window algorithm by default; built a direct simulation confirming 2× the stated
+    limit (10 of 5) gets accepted within a 10-millisecond span at the window boundary, then the
+    sliding-window-log fix, with the Try It's own precise "earliest successful next request"
+    timestamp claim (119995ms) verified via direct execution rather than hand-derived — a
+    deliberate extra rigor pass given the MFA batch's earlier near-miss with exactly this class of
+    timing-window arithmetic. **A real cross-hub `SUBTOPICS`-key risk found and resolved
+    proactively, not reactively**: the API Design hub's own `/api-design/api-security` route
+    shares the bare `api-security` slug with this Security-hub topic (confirmed via a direct
+    `app.routes.ts` grep, following the standing "grep route paths directly, don't rely on a clean
+    `subtopics.ts` sweep alone" discipline established after the Design Patterns hub's own
+    `clean-architecture` collision). No ACTIVE collision exists today — a direct check of
+    `ApiDesignNavComponent` confirmed it has no `subtopicsOf`/`SUBTOPICS` reference at all yet —
+    but the key was hub-prefixed to `sec-api-security` anyway as a preventive measure, matching
+    that same established precedent rather than waiting for a future pilot batch on the API Design
+    hub to actually trigger the leak. Confirmed via direct browser navigation that
+    `/api-design/api-security` renders completely unaffected, with no leaked BFLA/HMAC/rate-limiter
+    content. No other `SUBTOPICS` collision (checked both quoted/unquoted forms). All three
+    `solution` fields and bracket-balance/backtick-parity swept clean; a dedicated sweep for the
+    Claims & Identity batch's own newly-discovered "missing `//` comment prefix" mistake class
+    found none present in this batch's three files. Build passed clean. Browser-verified: no
+    console errors on any of the 5 pages checked (4 Security-hub pages + the cross-hub isolation
+    check); nav accordion opens with all 3 labels (12 toggles total across the hub); breadcrumb and
+    860px wrapper confirmed on every subtopic; sidebar showed tailored composite-key content.
+    **Security & Auth hub Phase 10: 12 of 23 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -5903,13 +5943,15 @@ this same check before any other new hub's first subtopic set:
   All 25 cards `available: true` in `architecture/security/home/home.ts`. Progress: `secTotal=23` in progress.service.ts.
   Security pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SecurityNavComponent at `shared/security-nav/security-nav.ts`.
-  Phase 10: 11 of 23 topics have subtopics (`/security/fundamentals`, pilot batch;
+  Phase 10: 12 of 23 topics have subtopics (`/security/fundamentals`, pilot batch;
   `/security/owasp-top-10`; `/security/threat-modelling`; `/security/secure-coding`;
   `/security/password-security`; `/security/oauth-oidc`; `/security/jwt`; `/security/mfa`;
-  `/security/sso`; `/security/rbac-abac`; `/security/claims-identity`, 2026-08-30) —
+  `/security/sso`; `/security/rbac-abac`; `/security/claims-identity`; `/security/api-security`,
+  2026-08-30) —
   see "Security & Auth hub subtopic wiring" section above for the `SecurityNavComponent` accordion
   structural fix, the `sec-fundamentals` SUBTOPICS-map collision resolution (collided with the
-  JavaScript hub's own bare `fundamentals` topic key).
+  JavaScript hub's own bare `fundamentals` topic key), and the `sec-api-security` proactive
+  cross-hub collision fix (shares its bare route slug with the API Design hub's own topic).
 - **API Design hub**: 19 trackable topic pages + 2 reference (21 cards total). Feature-complete.
   Cyan theme `$accent: #0891b2`, `$tint: #ecfeff`. Search prefix `api-`. Route: `/api-design`.
   CSS classes: `.api-page`, `.api-icon`, `.api-section`. Icon content: `🔌` at `font-size: 1.8rem`. `tech="javascript"`.
