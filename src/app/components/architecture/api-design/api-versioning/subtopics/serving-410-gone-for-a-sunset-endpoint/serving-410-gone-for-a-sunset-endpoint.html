@@ -1,0 +1,27 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="API Versioning" topicRoute="/api-design/api-versioning"
+    subtopicLabel="Serving 410 Gone for a Sunset Endpoint" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">Serving 410 Gone for a Sunset Endpoint</h1>
+  <p class="page-subtitle">Two separate QnAs describe returning 410 Gone after an API version’s sunset date — here’s the actual middleware, since no codeTab on the main page ever builds it.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>A dedicated QnA describes the expand-contract pattern with a real field-rename worked example, but no codeTab ever builds it. The next subtopic implements it.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="API Versioning" topicRoute="/api-design/api-versioning"
+    [prev]="{ label: 'Middleware Order: Why the Warning Header Never Fired', route: '/api-design/api-versioning/middleware-order-why-the-warning-header-never-fired' }"
+    [next]="{ label: 'The Expand-Contract Pattern, Implemented', route: '/api-design/api-versioning/the-expand-contract-pattern-implemented' }" />
+</div>

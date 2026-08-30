@@ -1,0 +1,26 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="API Versioning" topicRoute="/api-design/api-versioning"
+    subtopicLabel="Middleware Order: Why the Warning Header Never Fired" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">Middleware Order: Why the Warning Header Never Fired</h1>
+  <p class="page-subtitle">The main page’s own Header Versioning codeTab registered the warning middleware AFTER a route handler that never calls next() — making it dead code. Here’s the exact execution trace.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>Two separate QnAs describe returning 410 Gone for a sunsetted endpoint in real detail, but no codeTab ever builds the actual route. The next subtopic writes it.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="API Versioning" topicRoute="/api-design/api-versioning"
+    [next]="{ label: 'Serving 410 Gone for a Sunset Endpoint', route: '/api-design/api-versioning/serving-410-gone-for-a-sunset-endpoint' }" />
+</div>

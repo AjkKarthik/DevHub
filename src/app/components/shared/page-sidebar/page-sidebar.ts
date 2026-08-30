@@ -35316,6 +35316,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Additive, backward-compatible changes (new optional fields) generally don\'t require a version bump — only breaking changes do.',
     ],
   },
+  'api-design/api-versioning/middleware-order-why-the-warning-header-never-fired': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Serving 410 Gone for a Sunset Endpoint', route: '/api-design/api-versioning/serving-410-gone-for-a-sunset-endpoint' },
+      { label: 'API Versioning (overview)', route: '/api-design/api-versioning' },
+    ],
+    tip: 'A middleware that never calls next() ends the request/response chain right there — anything registered after it in Express\'s stack simply never runs for that route, regardless of what it was meant to do.',
+    gotchas: [
+      'This same ordering mistake applied to something functionally important, like authentication or rate limiting, silently disables that middleware entirely for any route registered before it.',
+    ],
+  },
+  'api-design/api-versioning/serving-410-gone-for-a-sunset-endpoint': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Middleware Order: Why the Warning Header Never Fired', route: '/api-design/api-versioning/middleware-order-why-the-warning-header-never-fired' },
+      { label: 'The Expand-Contract Pattern, Implemented', route: '/api-design/api-versioning/the-expand-contract-pattern-implemented' },
+    ],
+    tip: '410 Gone tells a client the server KNOWS this resource existed and was deliberately removed — a stronger, more actionable signal than a plain 404, which could just as easily mean a typo.',
+    gotchas: [
+      'The intercepting middleware needs to run BEFORE the old route handlers, and must not call next() once the sunset date has passed, or the old handlers still run underneath it.',
+    ],
+  },
+  'api-design/api-versioning/the-expand-contract-pattern-implemented': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Serving 410 Gone for a Sunset Endpoint', route: '/api-design/api-versioning/serving-410-gone-for-a-sunset-endpoint' },
+      { label: 'API Versioning (overview)', route: '/api-design/api-versioning' },
+    ],
+    tip: 'Counting how many responses are served with an old field present only proves the server is still sending it — it says nothing about whether any client is actually reading it, which is what genuinely determines when it\'s safe to remove.',
+    gotchas: [
+      'Expand-contract deliberately avoids a version bump entirely — both the old and new field live on the SAME endpoint, at the SAME version, during the expand phase.',
+    ],
+  },
   'api-design/breaking-changes': {
     apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
     related: [

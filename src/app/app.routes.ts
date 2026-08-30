@@ -3088,7 +3088,12 @@ export const routes: Routes = [
         { path: 'the-deferred-join-trick-for-deep-offset-pages', loadComponent: () => import('./components/architecture/api-design/pagination-patterns/subtopics/the-deferred-join-trick-for-deep-offset-pages/the-deferred-join-trick-for-deep-offset-pages').then(m => m.TheDeferredJoinTrickForDeepOffsetPagesSubtopic) },
         { path: 'a-real-relay-connection-graphql-resolver', loadComponent: () => import('./components/architecture/api-design/pagination-patterns/subtopics/a-real-relay-connection-graphql-resolver/a-real-relay-connection-graphql-resolver').then(m => m.ARealRelayConnectionGraphqlResolverSubtopic) },
       ] },
-    { path: 'api-versioning',        loadComponent: () => import('./components/architecture/api-design/api-versioning/api-versioning').then(m => m.ApiVersioning) },
+    { path: 'api-versioning', children: [
+        { path: '', loadComponent: () => import('./components/architecture/api-design/api-versioning/api-versioning').then(m => m.ApiVersioning) },
+        { path: 'middleware-order-why-the-warning-header-never-fired', loadComponent: () => import('./components/architecture/api-design/api-versioning/subtopics/middleware-order-why-the-warning-header-never-fired/middleware-order-why-the-warning-header-never-fired').then(m => m.MiddlewareOrderWhyTheWarningHeaderNeverFiredSubtopic) },
+        { path: 'serving-410-gone-for-a-sunset-endpoint', loadComponent: () => import('./components/architecture/api-design/api-versioning/subtopics/serving-410-gone-for-a-sunset-endpoint/serving-410-gone-for-a-sunset-endpoint').then(m => m.Serving410GoneForASunsetEndpointSubtopic) },
+        { path: 'the-expand-contract-pattern-implemented', loadComponent: () => import('./components/architecture/api-design/api-versioning/subtopics/the-expand-contract-pattern-implemented/the-expand-contract-pattern-implemented').then(m => m.TheExpandContractPatternImplementedSubtopic) },
+      ] },
     { path: 'error-response-design', loadComponent: () => import('./components/architecture/api-design/error-response-design/error-response-design').then(m => m.ApiErrorResponse) },
     { path: 'hateoas-hypermedia',    loadComponent: () => import('./components/architecture/api-design/hateoas-hypermedia/hateoas-hypermedia').then(m => m.ApiHateoas) },
     { path: 'protocol-buffers',      loadComponent: () => import('./components/architecture/api-design/protocol-buffers/protocol-buffers').then(m => m.ApiProtocolBuffers) },

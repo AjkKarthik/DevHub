@@ -3570,4 +3570,12 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Deferred-Join Trick for Deep Offset Pages', route: '/api-design/pagination-patterns/the-deferred-join-trick-for-deep-offset-pages' },
     { label: 'A Real Relay Connection GraphQL Resolver', route: '/api-design/pagination-patterns/a-real-relay-connection-graphql-resolver' },
   ],
+  // NOTE: bare 'api-versioning' is free -- the ASP.NET hub's own topic at
+  // this same slug was pre-emptively hub-prefixed to 'aspnet-api-versioning'
+  // in anticipation of this exact moment (see the NOTE next to that entry).
+  'api-versioning': [
+    { label: 'Middleware Order: Why the Warning Header Never Fired', route: '/api-design/api-versioning/middleware-order-why-the-warning-header-never-fired' },
+    { label: 'Serving 410 Gone for a Sunset Endpoint', route: '/api-design/api-versioning/serving-410-gone-for-a-sunset-endpoint' },
+    { label: 'The Expand-Contract Pattern, Implemented', route: '/api-design/api-versioning/the-expand-contract-pattern-implemented' },
+  ],
 };
