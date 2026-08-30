@@ -3523,4 +3523,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Streaming AES-256-GCM Encryption for Large Files', route: '/security/symmetric-encryption/streaming-aes-256-gcm-encryption-for-large-files' },
     { label: 'Deriving Multiple Keys From One Secret with HKDF', route: '/security/symmetric-encryption/deriving-multiple-keys-from-one-secret-with-hkdf' },
   ],
+  'asymmetric-cryptography': [
+    { label: 'The MITM Attack on Unauthenticated ECDH, Demonstrated', route: '/security/asymmetric-cryptography/the-mitm-attack-on-unauthenticated-ecdh-demonstrated' },
+    { label: 'Key Wrapping and Unwrapping, End to End', route: '/security/asymmetric-cryptography/key-wrapping-and-unwrapping-end-to-end' },
+    { label: 'Sign-then-Encrypt vs Encrypt-then-Sign: The Attack, Demonstrated', route: '/security/asymmetric-cryptography/sign-then-encrypt-vs-encrypt-then-sign-the-attack-demonstrated' },
+  ],
 };

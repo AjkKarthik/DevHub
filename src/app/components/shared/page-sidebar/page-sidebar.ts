@@ -34543,6 +34543,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'RS256 (RSA) vs ES256 (elliptic curve) JWT signing algorithms trade key size and performance differently — ES256 keys are much smaller for equivalent security.',
     ],
   },
+  'security/asymmetric-cryptography/the-mitm-attack-on-unauthenticated-ecdh-demonstrated': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Key Wrapping and Unwrapping, End to End', route: '/security/asymmetric-cryptography/key-wrapping-and-unwrapping-end-to-end' },
+      { label: 'Asymmetric Cryptography (overview)', route: '/security/asymmetric-cryptography' },
+    ],
+    tip: 'Plain ECDH only guarantees both sides compute the same shared secret — it proves nothing about WHO the other party is, which is exactly the gap TLS closes by signing the ephemeral ECDH public key with a certificate-backed private key.',
+    gotchas: [
+      'The computeSecret() calls never fail during a MITM attack — each party genuinely succeeds, just with the attacker instead of the intended party, with no error to signal anything went wrong.',
+    ],
+  },
+  'security/asymmetric-cryptography/key-wrapping-and-unwrapping-end-to-end': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'The MITM Attack on Unauthenticated ECDH, Demonstrated', route: '/security/asymmetric-cryptography/the-mitm-attack-on-unauthenticated-ecdh-demonstrated' },
+      { label: 'Sign-then-Encrypt vs Encrypt-then-Sign: The Attack, Demonstrated', route: '/security/asymmetric-cryptography/sign-then-encrypt-vs-encrypt-then-sign-the-attack-demonstrated' },
+    ],
+    tip: 'Key wrapping and envelope encryption (from the Symmetric Encryption topic) are the same idea — a KEK encrypts a DEK — just with a locally-held RSA key pair as the KEK instead of a KMS API call.',
+    gotchas: [
+      'Rotating the KEK does not retroactively re-wrap already-wrapped DEKs — those still need the OLD private key (or an explicit unwrap-then-rewrap migration step) to ever be recovered.',
+    ],
+  },
+  'security/asymmetric-cryptography/sign-then-encrypt-vs-encrypt-then-sign-the-attack-demonstrated': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Key Wrapping and Unwrapping, End to End', route: '/security/asymmetric-cryptography/key-wrapping-and-unwrapping-end-to-end' },
+      { label: 'Asymmetric Cryptography (overview)', route: '/security/asymmetric-cryptography' },
+    ],
+    tip: 'A signature over the plaintext proves WHO wrote a message, not WHO it was intended for — sign-then-encrypt lets a legitimate recipient re-encrypt the exact same signed content for a new party, who has no way to detect the forwarding.',
+    gotchas: [
+      'Encrypt-then-sign closes this specific gap because the signature covers the ciphertext (bound to one specific recipient\'s key), not the plaintext — a forwarder cannot forge a new valid signature without the original signer\'s private key.',
+    ],
+  },
   'security/jwt': {
     apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
     related: [

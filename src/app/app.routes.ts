@@ -3347,7 +3347,12 @@ export const routes: Routes = [
         { path: 'streaming-aes-256-gcm-encryption-for-large-files', loadComponent: () => import('./components/architecture/security/symmetric-encryption/subtopics/streaming-aes-256-gcm-encryption-for-large-files/streaming-aes-256-gcm-encryption-for-large-files').then(m => m.StreamingAes256GcmEncryptionForLargeFilesSubtopic) },
         { path: 'deriving-multiple-keys-from-one-secret-with-hkdf', loadComponent: () => import('./components/architecture/security/symmetric-encryption/subtopics/deriving-multiple-keys-from-one-secret-with-hkdf/deriving-multiple-keys-from-one-secret-with-hkdf').then(m => m.DerivingMultipleKeysFromOneSecretWithHkdfSubtopic) },
       ] },
-    { path: 'asymmetric-cryptography', loadComponent: () => import('./components/architecture/security/asymmetric-cryptography/asymmetric-cryptography').then(m => m.SecAsymmetricCryptography) },
+    { path: 'asymmetric-cryptography', children: [
+        { path: '', loadComponent: () => import('./components/architecture/security/asymmetric-cryptography/asymmetric-cryptography').then(m => m.SecAsymmetricCryptography) },
+        { path: 'the-mitm-attack-on-unauthenticated-ecdh-demonstrated', loadComponent: () => import('./components/architecture/security/asymmetric-cryptography/subtopics/the-mitm-attack-on-unauthenticated-ecdh-demonstrated/the-mitm-attack-on-unauthenticated-ecdh-demonstrated').then(m => m.TheMitmAttackOnUnauthenticatedEcdhDemonstratedSubtopic) },
+        { path: 'key-wrapping-and-unwrapping-end-to-end', loadComponent: () => import('./components/architecture/security/asymmetric-cryptography/subtopics/key-wrapping-and-unwrapping-end-to-end/key-wrapping-and-unwrapping-end-to-end').then(m => m.KeyWrappingAndUnwrappingEndToEndSubtopic) },
+        { path: 'sign-then-encrypt-vs-encrypt-then-sign-the-attack-demonstrated', loadComponent: () => import('./components/architecture/security/asymmetric-cryptography/subtopics/sign-then-encrypt-attack/sign-then-encrypt-attack').then(m => m.SignThenEncryptAttackSubtopic) },
+      ] },
     { path: 'hashing',               loadComponent: () => import('./components/architecture/security/hashing/hashing').then(m => m.SecHashing) },
     { path: 'supply-chain',          loadComponent: () => import('./components/architecture/security/supply-chain/supply-chain').then(m => m.SecSupplyChain) },
     { path: 'cheatsheet',            loadComponent: () => import('./components/architecture/security/cheatsheet/cheatsheet').then(m => m.SecCheatsheet) },

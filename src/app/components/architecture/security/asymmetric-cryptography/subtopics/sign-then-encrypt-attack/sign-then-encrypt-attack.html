@@ -1,0 +1,26 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Asymmetric Cryptography" topicRoute="/security/asymmetric-cryptography"
+    subtopicLabel="Sign-then-Encrypt vs Encrypt-then-Sign: The Attack, Demonstrated" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">Sign-then-Encrypt vs Encrypt-then-Sign: The Attack, Demonstrated</h1>
+  <p class="page-subtitle">The QnA explains the well-known "surreptitious forwarding" attack in real detail — here's Alice, Bob, and Charlie running it end to end, verified via real RSA sign/verify and hybrid encryption.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>This completes the batch's three angles on the main page's own content — an attacker actually in the middle of an unauthenticated ECDH exchange, a complete key-wrap/unwrap round trip, and now the concrete forwarding attack the QnA only ever described in prose.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Asymmetric Cryptography" topicRoute="/security/asymmetric-cryptography"
+    [prev]="{ label: 'Key Wrapping and Unwrapping, End to End', route: '/security/asymmetric-cryptography/key-wrapping-and-unwrapping-end-to-end' }" />
+</div>

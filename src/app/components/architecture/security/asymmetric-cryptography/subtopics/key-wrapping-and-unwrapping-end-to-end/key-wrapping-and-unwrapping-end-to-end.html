@@ -1,0 +1,27 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Asymmetric Cryptography" topicRoute="/security/asymmetric-cryptography"
+    subtopicLabel="Key Wrapping and Unwrapping, End to End" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">Key Wrapping and Unwrapping, End to End</h1>
+  <p class="page-subtitle">The main page's own mistake block shows one line of RSA key wrapping — here's the complete wrap-then-unwrap round trip the page never shows, chained into a full envelope-decryption flow.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>The QnA describes sign-then-encrypt's own well-known vulnerability in real detail with zero code — the final subtopic builds the actual re-encryption attack it describes.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Asymmetric Cryptography" topicRoute="/security/asymmetric-cryptography"
+    [prev]="{ label: 'The MITM Attack on Unauthenticated ECDH, Demonstrated', route: '/security/asymmetric-cryptography/the-mitm-attack-on-unauthenticated-ecdh-demonstrated' }"
+    [next]="{ label: 'Sign-then-Encrypt vs Encrypt-then-Sign: The Attack, Demonstrated', route: '/security/asymmetric-cryptography/sign-then-encrypt-vs-encrypt-then-sign-the-attack-demonstrated' }" />
+</div>

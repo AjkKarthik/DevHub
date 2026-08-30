@@ -390,7 +390,26 @@ const DIFF: Record<string, string> = Object.fromEntries(SEARCH_INDEX.map(e => [e
           </div>
         }
       }
-      <a routerLink="/security/asymmetric-cryptography" routerLinkActive="active"><span class="nl-text">Asymmetric Cryptography</span>@if(progress.isDone('sec-asymmetric-cryptography')){<span class="nl-done">✓</span>}@if(d('sec-asymmetric-cryptography');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+      <a routerLink="/security/asymmetric-cryptography" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Asymmetric Cryptography</span>
+        @if(progress.isDone('sec-asymmetric-cryptography')){<span class="nl-done">✓</span>}
+        @if(d('sec-asymmetric-cryptography');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}
+        @if (subtopicsOf('asymmetric-cryptography')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('asymmetric-cryptography')"
+                  (click)="toggleSubtopics('asymmetric-cryptography', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('asymmetric-cryptography'); as asymSubs) {
+        @if (isSubtopicsExpanded('asymmetric-cryptography')) {
+          <div class="nav-subtopics">
+            @for (s of asymSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/security/hashing" routerLinkActive="active"><span class="nl-text">Hashing &amp; MACs</span>@if(progress.isDone('sec-hashing')){<span class="nl-done">✓</span>}@if(d('sec-hashing');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
     </div>
 
