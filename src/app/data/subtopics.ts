@@ -3528,4 +3528,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Key Wrapping and Unwrapping, End to End', route: '/security/asymmetric-cryptography/key-wrapping-and-unwrapping-end-to-end' },
     { label: 'Sign-then-Encrypt vs Encrypt-then-Sign: The Attack, Demonstrated', route: '/security/asymmetric-cryptography/sign-then-encrypt-vs-encrypt-then-sign-the-attack-demonstrated' },
   ],
+  hashing: [
+    { label: 'Hash Algorithm Migration: Lazy Rehashing and the Double-Hash Wrapper', route: '/security/hashing/hash-algorithm-migration-lazy-rehashing-and-double-hash-wrapper' },
+    { label: 'Benchmarking bcrypt/Argon2id to Choose a Work Factor', route: '/security/hashing/benchmarking-bcrypt-argon2id-to-choose-a-work-factor' },
+    { label: 'Rainbow Tables vs Salting, Demonstrated', route: '/security/hashing/rainbow-tables-vs-salting-demonstrated' },
+  ],
 };

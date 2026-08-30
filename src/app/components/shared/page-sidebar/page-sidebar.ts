@@ -34486,6 +34486,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Salting prevents precomputed rainbow-table attacks — a unique salt per password is required, not a single shared salt across all users.',
     ],
   },
+  'security/hashing/hash-algorithm-migration-lazy-rehashing-and-double-hash-wrapper': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Benchmarking bcrypt/Argon2id to Choose a Work Factor', route: '/security/hashing/benchmarking-bcrypt-argon2id-to-choose-a-work-factor' },
+      { label: 'Hashing & MACs (overview)', route: '/security/hashing' },
+    ],
+    tip: 'Lazy migration only upgrades users who actually log in again — an abandoned account stays on the old algorithm indefinitely unless a mandatory reset deadline forces the rest.',
+    gotchas: [
+      'Running two migration strategies against the same column without reconciling their own state values (e.g. "bcrypt" vs "md5-then-bcrypt") is a real, easy-to-miss gap — check what EVERY strategy writes, not just the one you\'re adding.',
+    ],
+  },
+  'security/hashing/benchmarking-bcrypt-argon2id-to-choose-a-work-factor': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Hash Algorithm Migration: Lazy Rehashing and the Double-Hash Wrapper', route: '/security/hashing/hash-algorithm-migration-lazy-rehashing-and-double-hash-wrapper' },
+      { label: 'Rainbow Tables vs Salting, Demonstrated', route: '/security/hashing/rainbow-tables-vs-salting-demonstrated' },
+    ],
+    tip: 'A bcrypt cost factor encodes a FIXED iteration count, not a fixed time — the same value takes different amounts of time on different hardware, which is why benchmarking must run on production hardware specifically.',
+    gotchas: [
+      'For Argon2id, raising memoryCost specifically is what resists parallel GPU/ASIC cracking — raising timeCost alone doesn\'t carry the same defense.',
+    ],
+  },
+  'security/hashing/rainbow-tables-vs-salting-demonstrated': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Benchmarking bcrypt/Argon2id to Choose a Work Factor', route: '/security/hashing/benchmarking-bcrypt-argon2id-to-choose-a-work-factor' },
+      { label: 'Hashing & MACs (overview)', route: '/security/hashing' },
+    ],
+    tip: 'Salting defeats PRECOMPUTED lookup tables, not raw guessing speed — a salted SHA-256 hash is still fast to brute-force per-user, which is why slow hashing (bcrypt/Argon2id) is a separate, additional requirement.',
+    gotchas: [
+      'Two users with the identical password get completely different salted hashes — an attacker with database access can\'t even tell they share a password, unlike with an unsalted hash database.',
+    ],
+  },
   'security/symmetric-encryption': {
     apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
     related: [

@@ -410,7 +410,26 @@ const DIFF: Record<string, string> = Object.fromEntries(SEARCH_INDEX.map(e => [e
           </div>
         }
       }
-      <a routerLink="/security/hashing" routerLinkActive="active"><span class="nl-text">Hashing &amp; MACs</span>@if(progress.isDone('sec-hashing')){<span class="nl-done">✓</span>}@if(d('sec-hashing');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+      <a routerLink="/security/hashing" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Hashing &amp; MACs</span>
+        @if(progress.isDone('sec-hashing')){<span class="nl-done">✓</span>}
+        @if(d('sec-hashing');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}
+        @if (subtopicsOf('hashing')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('hashing')"
+                  (click)="toggleSubtopics('hashing', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('hashing'); as hashSubs) {
+        @if (isSubtopicsExpanded('hashing')) {
+          <div class="nav-subtopics">
+            @for (s of hashSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

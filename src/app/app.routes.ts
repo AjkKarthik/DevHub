@@ -3353,7 +3353,12 @@ export const routes: Routes = [
         { path: 'key-wrapping-and-unwrapping-end-to-end', loadComponent: () => import('./components/architecture/security/asymmetric-cryptography/subtopics/key-wrapping-and-unwrapping-end-to-end/key-wrapping-and-unwrapping-end-to-end').then(m => m.KeyWrappingAndUnwrappingEndToEndSubtopic) },
         { path: 'sign-then-encrypt-vs-encrypt-then-sign-the-attack-demonstrated', loadComponent: () => import('./components/architecture/security/asymmetric-cryptography/subtopics/sign-then-encrypt-attack/sign-then-encrypt-attack').then(m => m.SignThenEncryptAttackSubtopic) },
       ] },
-    { path: 'hashing',               loadComponent: () => import('./components/architecture/security/hashing/hashing').then(m => m.SecHashing) },
+    { path: 'hashing', children: [
+        { path: '', loadComponent: () => import('./components/architecture/security/hashing/hashing').then(m => m.SecHashing) },
+        { path: 'hash-algorithm-migration-lazy-rehashing-and-double-hash-wrapper', loadComponent: () => import('./components/architecture/security/hashing/subtopics/hash-algorithm-migration-lazy-rehashing-and-double-hash-wrapper/hash-algorithm-migration-lazy-rehashing-and-double-hash-wrapper').then(m => m.HashAlgorithmMigrationLazyRehashingAndDoubleHashWrapperSubtopic) },
+        { path: 'benchmarking-bcrypt-argon2id-to-choose-a-work-factor', loadComponent: () => import('./components/architecture/security/hashing/subtopics/benchmarking-bcrypt-argon2id-to-choose-a-work-factor/benchmarking-bcrypt-argon2id-to-choose-a-work-factor').then(m => m.BenchmarkingBcryptArgon2idToChooseAWorkFactorSubtopic) },
+        { path: 'rainbow-tables-vs-salting-demonstrated', loadComponent: () => import('./components/architecture/security/hashing/subtopics/rainbow-tables-vs-salting-demonstrated/rainbow-tables-vs-salting-demonstrated').then(m => m.RainbowTablesVsSaltingDemonstratedSubtopic) },
+      ] },
     { path: 'supply-chain',          loadComponent: () => import('./components/architecture/security/supply-chain/supply-chain').then(m => m.SecSupplyChain) },
     { path: 'cheatsheet',            loadComponent: () => import('./components/architecture/security/cheatsheet/cheatsheet').then(m => m.SecCheatsheet) },
     { path: 'interview-prep',        loadComponent: () => import('./components/architecture/security/interview-prep/interview-prep').then(m => m.SecInterviewPrep) },

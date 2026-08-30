@@ -1,0 +1,27 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Hashing &amp; MACs" topicRoute="/security/hashing"
+    subtopicLabel="Benchmarking bcrypt/Argon2id to Choose a Work Factor" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">Benchmarking bcrypt/Argon2id to Choose a Work Factor</h1>
+  <p class="page-subtitle">The quiz names a specific target — "100-300ms per hash, benchmarked on production hardware" — here's the actual benchmark loop that arrives at a concrete number.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>The quiz's own rainbow-table question explains why salting defeats precomputed lookup tables in prose — the final subtopic builds a small working rainbow table and shows salting break it.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Hashing &amp; MACs" topicRoute="/security/hashing"
+    [prev]="{ label: 'Hash Algorithm Migration: Lazy Rehashing and the Double-Hash Wrapper', route: '/security/hashing/hash-algorithm-migration-lazy-rehashing-and-double-hash-wrapper' }"
+    [next]="{ label: 'Rainbow Tables vs Salting, Demonstrated', route: '/security/hashing/rainbow-tables-vs-salting-demonstrated' }" />
+</div>
