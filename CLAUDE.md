@@ -5210,6 +5210,31 @@ this same check before any other new hub's first subtopic set:
     with Ed25519 in the right row; breadcrumb and 860px wrapper confirmed on the long-URL/
     short-folder subtopic specifically; sidebar showed tailored composite-key content.
     **Security & Auth hub Phase 10: 19 of 23 topics complete.**
+26. **The `hashing` batch was another clean main page — the vanishing-tag sweep found nothing, and
+    a specific claim worth double-checking (OWASP's current Argon2id recommendation, "memory=19456
+    KiB, iterations=2, parallelism=1," cited in the quiz's own explanation) was verified via
+    WebSearch against OWASP's Password Storage Cheat Sheet and confirmed CORRECT.** All three
+    subtopics are gap-closing: (1) both migration strategies the QnA describes step by step (lazy
+    rehashing on login, and the double-hash wrapper for immediate migration with no login
+    required) — with a Try It surfacing a real, non-hypothetical bug: running BOTH strategies
+    against the same column writes two DIFFERENT state values (`'bcrypt'` vs.
+    `'md5-then-bcrypt'`), and a naive "is this row migrated?" check recognizing only one of them
+    silently breaks login for rows the OTHER strategy already touched; (2) a real benchmark loop
+    (using `process.hrtime.bigint()`) arriving at the quiz's own named 100-300ms target for both
+    bcrypt and Argon2id, with the Try It reasoning through why a cost factor benchmarked on one
+    machine doesn't transfer to weaker production hardware; (3) a small, WORKING rainbow table —
+    verified end-to-end via direct Node.js execution (a precomputed hash→plaintext map instantly
+    recovering a common password from an unsalted hash, then correctly failing to find ANY match
+    once the same password is salted) — with a second Try It confirming two users sharing an
+    identical password produce completely unrelated salted hashes, a second, separate benefit of
+    salting beyond defeating precomputation. No `SUBTOPICS` collision for `hashing` (checked both
+    `subtopics.ts` forms and `app.routes.ts` directly, confirmed collision-free, left bare). Build
+    passed clean (explicit `EXITCODE:$?` capture, zero `ERROR` lines). Browser-verified: no
+    console errors; nav accordion opens with all 3 labels (20 toggles total across the hub);
+    breadcrumb and 860px wrapper confirmed on a subtopic page; sidebar showed tailored
+    composite-key content. **This completes the Transport & Crypto nav group entirely**
+    (`tls-https`, `symmetric-encryption`, `asymmetric-cryptography`, `hashing` — all 4 topics now
+    have subtopics). **Security & Auth hub Phase 10: 20 of 23 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -6211,13 +6236,13 @@ this same check before any other new hub's first subtopic set:
   All 25 cards `available: true` in `architecture/security/home/home.ts`. Progress: `secTotal=23` in progress.service.ts.
   Security pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SecurityNavComponent at `shared/security-nav/security-nav.ts`.
-  Phase 10: 19 of 23 topics have subtopics (`/security/fundamentals`, pilot batch;
+  Phase 10: 20 of 23 topics have subtopics (`/security/fundamentals`, pilot batch;
   `/security/owasp-top-10`; `/security/threat-modelling`; `/security/secure-coding`;
   `/security/password-security`; `/security/oauth-oidc`; `/security/jwt`; `/security/mfa`;
   `/security/sso`; `/security/rbac-abac`; `/security/claims-identity`; `/security/api-security`;
   `/security/xss`; `/security/csrf-clickjacking`; `/security/injection`;
   `/security/security-headers`; `/security/tls-https`; `/security/symmetric-encryption`;
-  `/security/asymmetric-cryptography`, 2026-08-30) —
+  `/security/asymmetric-cryptography`; `/security/hashing`, 2026-08-30) —
   see "Security & Auth hub subtopic wiring" section above for the `SecurityNavComponent` accordion
   structural fix, the `sec-fundamentals` SUBTOPICS-map collision resolution (collided with the
   JavaScript hub's own bare `fundamentals` topic key), and the `sec-api-security` proactive

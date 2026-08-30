@@ -7991,7 +7991,20 @@ off here with a date.
   (19 toggles total across the hub); the corrected RSA/ECC table confirmed rendering; breadcrumb
   and 860px wrapper confirmed; sidebar showed tailored composite-key content.
   **Security & Auth hub Phase 10: 19 of 23 topics complete.**
-- [ ] `/security/hashing` — Hashing
+- [x] `/security/hashing` — Hashing (2026-08-30). 3 subtopics, all gap-closing (clean main page —
+  double-checked OWASP's current Argon2id parameter recommendation, confirmed correct): Hash
+  Algorithm Migration: Lazy Rehashing and the Double-Hash Wrapper; Benchmarking bcrypt/Argon2id
+  to Choose a Work Factor; Rainbow Tables vs Salting, Demonstrated. Each builds real code for
+  something the QnA/quiz names but never demonstrates — both migration strategies (with a Try It
+  surfacing a real bug when two migration strategies write different state values to the same
+  column without reconciling them); a benchmark loop arriving at the quiz's own named 100-300ms
+  target; and a small, working rainbow table verified via direct Node.js execution, defeated by
+  per-user salting. No SUBTOPICS collision. Build passed clean (explicit EXITCODE capture).
+  Browser-verified: no console errors; nav accordion opens with all 3 labels (20 toggles total
+  across the hub); breadcrumb and 860px wrapper confirmed; sidebar showed tailored composite-key
+  content. **This completes the Transport & Crypto nav group entirely** (tls-https,
+  symmetric-encryption, asymmetric-cryptography, hashing — all 4 topics now have subtopics).
+  **Security & Auth hub Phase 10: 20 of 23 topics complete.**
 - [ ] `/security/supply-chain` — Supply Chain Security
 
 #### API Design — 19 topic pages
