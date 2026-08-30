@@ -8102,7 +8102,21 @@ off here with a date.
   accordion opens with all 3 labels (2 toggles total); the Challenge fix confirmed rendering
   live; breadcrumb and 860px wrapper confirmed; sidebar showed tailored composite-key content.
   **API Design hub Phase 10: 2 of 19 topics complete.**
-- [ ] `/api-design/http-methods-status-codes` — HTTP Methods & Status Codes
+- [x] `/api-design/http-methods-status-codes` — HTTP Methods & Status Codes (2026-08-30). Fixed
+  a genuine internal contradiction: the 403 bullet said "Do NOT return 404 to hide existence" as
+  an absolute rule, contradicted by its own parenthetical, by the 404 bullet right below it, and
+  by the QnA -- all three correctly frame it as posture-dependent. Reworded to match. The generic
+  `subtopicsOf(item.path)` nav-toggle pattern from the prior batch needed ZERO template changes
+  for this THIRD topic in the same Foundations group (confirmed: `api-design-nav.ts` did not
+  appear in this batch's diff at all). 3 subtopics: the fixed 403-vs-404 decision as real code
+  (verified via execution); real idempotency-key middleware for the QnA's X-Idempotency-Key
+  mechanism (verified via execution, including the key-reused-with-different-body case); a real
+  JSON Patch (RFC 6902) `applyJsonPatch` (verified against the RFC via WebFetch and via execution
+  of both the normal and test-failure-aborts-the-patch cases). No SUBTOPICS collision. Build
+  passed clean. Browser-verified: no console errors on any of the 4 pages; nav accordion opens
+  with all 3 labels (3 toggles total); the theory fix confirmed rendering live; breadcrumb and
+  860px wrapper confirmed; sidebar showed tailored composite-key content. **API Design hub Phase
+  10: 3 of 19 topics complete.**
 - [ ] `/api-design/pagination-patterns` — Pagination Patterns
 - [ ] `/api-design/api-versioning` — API Versioning Strategies
 - [ ] `/api-design/error-response-design` — Error Response Design

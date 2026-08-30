@@ -5457,6 +5457,40 @@ Confirmed via direct file inspection before the pilot (`/api-design/rest-fundame
    toggles total across the hub); the Challenge fix confirmed rendering live; breadcrumb and 860px
    wrapper confirmed on every subtopic; sidebar showed tailored composite-key content. **API
    Design hub Phase 10: 2 of 19 topics complete.**
+10. **The `http-methods-status-codes` batch found and fixed a genuine internal contradiction in
+    the main page's own theory**: the 403 Forbidden bullet stated "Do NOT return 404 to hide
+    existence of a resource from unauthorized users" as an absolute rule — directly contradicted
+    by its OWN parenthetical one sentence later ("that would be 403 or 404 based on your security
+    posture"), by the 404 Not Found bullet immediately below it ("Also use when hiding an
+    unauthorized resource for security"), and by the page's own QnA, which correctly frames the
+    choice as posture-dependent. Reworded the 403 bullet to match the two sections that already
+    had it right. **The generic `subtopicsOf(item.path)` nav-toggle pattern introduced in the
+    prior batch required ZERO template changes to pick up this THIRD topic in the same
+    Foundations `@for`-looped nav group** — confirmed via a clean diff (`api-design-nav.ts` did
+    not appear in this batch's changed files at all) — validating the value of generalizing away
+    from per-topic hardcoding one batch earlier than strictly necessary. Three subtopics: (1)
+    **fix-adjacent** — the fixed 403-vs-404 decision built as real code
+    (`selectAccessStatusCode`, branching on an `isEnumerableResourceType` flag), verified via
+    direct Node.js execution matching both claimed outputs exactly, with a Try It on why making
+    the two cases indistinguishable to the CLIENT is the intended anti-enumeration defense, not
+    an accidental UX cost; (2) **gap-closing** — real idempotency-key middleware for the
+    `X-Idempotency-Key` mechanism the QnA describes in prose ("the server stores the key and
+    returns the same response for duplicate requests") but never builds — verified via direct
+    execution of all three cases (first request, genuine retry, key reused with a different
+    body); (3) **gap-closing** — a real `applyJsonPatch` implementing JSON Patch (RFC 6902),
+    verified against the RFC itself via WebFetch (confirming exactly which ops require `value`
+    vs. `from`) and via direct execution of both the normal-application case and the
+    `test`-operation-throws-and-aborts-the-whole-patch case, matching quiz Q4's own "atomic — all
+    or none" claim precisely. No `SUBTOPICS` collision for `http-methods-status-codes` (checked
+    both forms, confirmed collision-free, left bare). All three `solution`/`heading` fields swept
+    clean via the standing apostrophe/backtick-parity scripts before the build (brace-count
+    sweep skipped per this file's own established false-positive caveat for code samples
+    containing a lone brace character in a string literal). Build passed clean, also confirming
+    the untouched nav component still compiles correctly with a third topic now resolving through
+    its existing generic lookup. Browser-verified: no console errors on any of the 4 pages; nav
+    accordion opens with all 3 labels (3 toggles total across the hub); the theory-bullet fix
+    confirmed rendering live; breadcrumb and 860px wrapper confirmed on every subtopic; sidebar
+    showed tailored composite-key content. **API Design hub Phase 10: 3 of 19 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -6484,13 +6518,14 @@ Confirmed via direct file inspection before the pilot (`/api-design/rest-fundame
   All 21 cards `available: true` in `architecture/api-design/home/home.ts`. Progress: `apiTotal=19` in progress.service.ts.
   API Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ApiDesignNavComponent at `shared/api-design-nav/api-design-nav.ts`.
-  Phase 10: 2 of 19 topics have subtopics (`/api-design/rest-fundamentals`, pilot batch;
-  `/api-design/resource-url-design`, 2026-08-30) — see "API Design hub subtopic wiring" section
-  above for the `ApiDesignNavComponent` accordion structural fix and the generic
-  `subtopicsOf(item.path)` toggle-gating pattern this hub's `@for`-looped nav template needed
-  (a first for this hub, since most prior hubs hand-write one `<a>` per topic) — generalized from
-  a per-topic hardcoded check to a lookup keyed directly off the loop's own `item.path` once a
-  second topic in the same nav group needed subtopics too.
+  Phase 10: 3 of 19 topics have subtopics (`/api-design/rest-fundamentals`, pilot batch;
+  `/api-design/resource-url-design`; `/api-design/http-methods-status-codes`, 2026-08-30) — see
+  "API Design hub subtopic wiring" section above for the `ApiDesignNavComponent` accordion
+  structural fix and the generic `subtopicsOf(item.path)` toggle-gating pattern this hub's
+  `@for`-looped nav template needed (a first for this hub, since most prior hubs hand-write one
+  `<a>` per topic) — generalized from a per-topic hardcoded check to a lookup keyed directly off
+  the loop's own `item.path` once a second topic in the same nav group needed subtopics too,
+  confirmed requiring zero further template changes for a third topic in the same group.
 - **Observability & SRE hub**: 20 trackable topic pages + 2 reference (22 cards total). Feature-complete.
   Emerald theme `$accent: #059669`, `$tint: #ecfdf5`, dark `#34d399`. Search prefix `obs-`. Route: `/observability`.
   CSS classes: `.obs-page`, `.obs-icon`, `.obs-section`. Icon content: `📊` at `font-size: 1.8rem`. `tech="javascript"`.
