@@ -8038,7 +8038,24 @@ off here with a date.
   digest-pin fix confirmed rendering live; breadcrumb and 860px wrapper confirmed; sidebar showed
   tailored composite-key content. **Security & Auth hub Phase 10: 22 of 23 topics complete —
   only `supply-chain` remains to finish the entire hub.**
-- [ ] `/security/supply-chain` — Supply Chain Security
+- [x] `/security/supply-chain` — Supply Chain Security (2026-08-30). Fixed a genuine internal
+  contradiction in the main page's own "Dependency Audit in CI" codeTab: the page's own QnA says
+  "pin action versions by commit SHA, not by tag" but the codeTab used `actions/checkout@v4`,
+  `actions/setup-node@v4` (tags) and `snyk/actions/node@master` (a mutable BRANCH ref, worse than
+  a tag). Fixed to SHA-pinned references. 3 subtopics: a directly-executed Node.js simulation
+  proving a tag reassignment silently changes what an unmodified workflow resolves to; the real
+  `cosign sign`/`cosign verify` commands (verified against Sigstore's own official docs via
+  WebFetch) for the keyless-signing flow the QnA describes but never shows; a directly-executed
+  SBOM re-scan function closing the "static SBOM goes stale" gap the theory names but never
+  demonstrates. Self-caught a bare-`@word`-in-static-HTML-text gotcha in an h1 title, fixed with
+  the standard `&#64;` entity escape. No SUBTOPICS collision. Build passed clean (explicit
+  EXITCODE capture; MAX_PATH dry-run also clean). Browser-verified: no console errors on any of
+  the 4 pages; nav accordion opens with all 3 labels (23 toggles total — every topic in the hub
+  now has subtopics); the SHA-pin fix confirmed rendering live; the escaped h1 confirmed
+  rendering as correct literal text; breadcrumb and 860px wrapper confirmed; sidebar showed
+  tailored composite-key content. **This completes the Security & Auth hub's entire Phase 10
+  rollout — all 23 topics now have deep-dive subtopic pages, 69 subtopic pages total across the
+  hub, finished 2026-08-30.**
 
 #### API Design — 19 topic pages
 

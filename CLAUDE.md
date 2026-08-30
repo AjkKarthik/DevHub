@@ -5296,6 +5296,43 @@ this same check before any other new hub's first subtopic set:
     confirmed on every subtopic; sidebar showed tailored composite-key content. **Security & Auth
     hub Phase 10: 22 of 23 topics complete — only `supply-chain` remains to finish the entire
     hub.**
+23. **The `supply-chain` batch — the 23rd and FINAL topic — found and fixed a genuine, self-
+    contained internal contradiction in the main page's own "Dependency Audit in CI" codeTab**:
+    the page's own QnA on securing CI/CD pipelines states the rule precisely — "pin action
+    versions by commit SHA (not by tag)... tags can be moved; SHAs are immutable" — but the SAME
+    page's own primary CI example used <code>actions/checkout@v4</code>, <code>actions/setup-node
+    @v4</code> (tags, not SHAs) and, worse, <code>snyk/actions/node@master</code> — a MUTABLE
+    BRANCH reference, riskier than even a floating tag. Fixed to SHA-pinned references, matching
+    the QnA's own already-published example SHA for checkout. Three subtopics: (1) **fix-adjacent**
+    — a directly-executed Node.js simulation proving a tag reassignment silently changes what an
+    UNMODIFIED workflow file resolves to (verified: the exact same <code>@v4</code> reference
+    resolved to different script content before and after a tag reassignment, matching the
+    codeTab's own claimed output exactly), with a Try It on why <code>@master</code> is strictly
+    riskier than a tag (no release boundary, no review checkpoint between runs); (2) **gap-closing**
+    — the actual <code>cosign sign</code>/<code>cosign verify</code> commands (with
+    <code>--certificate-identity</code>/<code>--certificate-oidc-issuer</code>), verified via
+    WebFetch against Sigstore's own official docs before writing — the QnA names Fulcio, Rekor, and
+    OIDC identity tokens in real detail but no codeTab ever showed the commands; (3) **gap-closing**
+    — a directly-executed SBOM re-scan function comparing a static component list against a LATER
+    vulnerability feed, closing the exact gap the main page's own theory states in prose ("a static
+    SBOM becomes stale... ongoing monitoring is what provides lasting value") but never
+    demonstrates in code — verified via direct Node.js execution matching the codeTab's own claimed
+    output exactly. **A real bare-`@word`-in-static-HTML-text gotcha caught by the standard sweep,
+    not the build**: the first subtopic's own <code>&lt;h1&gt;</code> title contained literal
+    <code>@v4</code>/<code>@master</code> as bare TEXT NODE content (not inside a bound attribute,
+    where the same characters are safe) — fixed with the standard <code>&#64;</code> entity escape,
+    confirmed via a live browser check that both tokens render as correct literal text afterward.
+    No `SUBTOPICS` collision for `supply-chain` (checked both forms in `subtopics.ts` and grepped
+    `app.routes.ts` directly, confirmed collision-free, left bare). Build passed clean (explicit
+    `EXITCODE:$?` capture, zero `ERROR` lines; `git add -A -n` dry run also confirmed no MAX_PATH
+    issue). Browser-verified: no console errors on any of the 4 pages; nav accordion opens with all
+    3 labels (23 toggles total — matching all 23 of 23 Security & Auth hub topics now having
+    subtopics); the SHA-pin fix confirmed rendering live in the "Dependency Audit in CI" code tab;
+    the escaped <code>@v4</code>/<code>@master</code> h1 title confirmed rendering as correct
+    literal text, not vanished; breadcrumb and 860px wrapper confirmed on every subtopic; sidebar
+    showed tailored composite-key content. **This completes the Security & Auth hub's entire
+    Phase 10 rollout — all 23 topics now have deep-dive subtopic pages, 69 subtopic pages total
+    across the hub.**
 
 ## Current state (update when it changes!)
 
@@ -6293,18 +6330,22 @@ this same check before any other new hub's first subtopic set:
 - **Security & Auth hub**: 23 trackable topic pages + 2 reference (25 cards total). Feature-complete.
   Red theme `$accent: #dc2626`, `$tint: #fef2f2`, dark `#f87171`. Search prefix `sec-`. Route: `/security`.
   CSS classes: `.sec-page`, `.sec-icon`, `.sec-section`. Icon content: `🔒` at `font-size: 1.8rem`. `tech="javascript"`.
-  Nav groups: Foundations, Authentication, Authorization, Cryptography, Application Security, Reference.
+  Nav groups (corrected 2026-08-30 — previously misdocumented as "Foundations, Authentication,
+  Authorization, Cryptography, Application Security, Reference"; confirmed against the real
+  `security-nav.ts`): Foundations, Identity & Auth, Web Attacks, Transport & Crypto,
+  Infrastructure, Reference.
   All 25 cards `available: true` in `architecture/security/home/home.ts`. Progress: `secTotal=23` in progress.service.ts.
   Security pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SecurityNavComponent at `shared/security-nav/security-nav.ts`.
-  Phase 10: 22 of 23 topics have subtopics (`/security/fundamentals`, pilot batch;
+  Phase 10: **COMPLETE — 23 of 23 topics have subtopics** (`/security/fundamentals`, pilot batch;
   `/security/owasp-top-10`; `/security/threat-modelling`; `/security/secure-coding`;
   `/security/password-security`; `/security/oauth-oidc`; `/security/jwt`; `/security/mfa`;
   `/security/sso`; `/security/rbac-abac`; `/security/claims-identity`; `/security/api-security`;
   `/security/xss`; `/security/csrf-clickjacking`; `/security/injection`;
   `/security/security-headers`; `/security/tls-https`; `/security/symmetric-encryption`;
   `/security/asymmetric-cryptography`; `/security/hashing`; `/security/secrets-management`;
-  `/security/container-security`, 2026-08-30) —
+  `/security/container-security`; `/security/supply-chain`, finished 2026-08-30, 69 subtopic
+  pages total across the hub) —
   see "Security & Auth hub subtopic wiring" section above for the `SecurityNavComponent` accordion
   structural fix, the `sec-fundamentals` SUBTOPICS-map collision resolution (collided with the
   JavaScript hub's own bare `fundamentals` topic key), and the `sec-api-security` proactive
