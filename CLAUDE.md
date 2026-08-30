@@ -4942,6 +4942,59 @@ this same check before any other new hub's first subtopic set:
     check); nav accordion opens with all 3 labels (12 toggles total across the hub); breadcrumb and
     860px wrapper confirmed on every subtopic; sidebar showed tailored composite-key content.
     **Security & Auth hub Phase 10: 12 of 23 topics complete.**
+19. **The `xss` batch found and fixed FIVE genuine issues on the main page — two externally-verified
+    inaccuracies plus THREE currently-live rendering bugs caught only by direct browser inspection,
+    not by the build**: the theory bullet, mistake block, AND QnA all claimed Angular's
+    `[innerHTML]` binding "does NOT sanitize by default" — verified via WebSearch (multiple sources
+    including a real bug report showing "sanitizing HTML stripped some content" in the dev console)
+    that this is backwards: Angular's built-in sanitizer strips `<script>` tags, `on*`
+    event-handler attributes, and `javascript:` URLs from every `[innerHTML]` binding unless
+    `DomSanitizer.bypassSecurityTrustHtml()` is explicitly called — THAT is the real danger, not
+    plain `[innerHTML]` binding. Fixed all three occurrences. Separately, the SVG XSS QnA claimed
+    "the application displays it as an image... the browser renders it as HTML, executing the
+    embedded script" — verified via WebSearch that `<img>` tags SUPPRESS SVG script execution
+    entirely regardless of Content-Type; only direct navigation, `<object>`, `<embed>`, or
+    `<iframe>` actually execute it. Rewrote the QnA to state the real deciding factor (rendering
+    context, not Content-Type). **While verifying my own theory-bullet fix in the live browser
+    (not just trusting the build), found THREE currently-live rendering bugs, unrelated to my
+    edit**: the Stored/Reflected XSS theory bullets contained raw, unescaped `<script>...</script>`
+    tags inside backticks — since `theory.points` binds via `[innerHTML]`, these were silently
+    parsed as real (inert) `<script>` elements and their content vanished from the rendered page
+    entirely (confirmed via `.textContent` showing empty backticks where the payload example
+    should be). My OWN first-draft fix to the Framework-Specific Protections bullet repeated the
+    identical mistake (`<script>` inside backticks) — caught by the same browser check before
+    committing. Fixed all three by wrapping in `<code>&lt;script&gt;...&lt;/script&gt;</code>`,
+    confirmed correct via `.innerHTML` inspection (a real `<code>` element containing literal
+    escaped text, not a stripped/real script element). A fourth, more subtle bug: the Output
+    Encoding bullet's `&` → `&amp;` mapping was rendering as `&` → `&` (both sides identical,
+    single-decoded) because Angular's `[innerHTML]` sanitizer pipeline decodes named entities
+    during its own parse-and-sanitize pass — confirmed via a raw `div.innerHTML` test that
+    `&amp;amp;` (double-escaped) DOES survive a native assignment as literal `&amp;` text, but
+    Angular's sanitizer decodes it one level further than raw native `innerHTML` does, making a
+    fixed double-escape depth fragile. **Fixed by avoiding the entity-in-innerHTML pattern
+    entirely** — reworded to describe the mapping in prose ("each become their own named HTML
+    entity — see the Output Encoding code tab for the exact names") rather than embedding live
+    entity syntax, since the codeTabs section (plain interpolation, not innerHTML) already shows
+    the exact entity names correctly with zero decoding risk. **Lesson: any `[innerHTML]`-bound
+    field containing what LOOKS like literal HTML tag text needs the SAME empirical live-DOM
+    verification (`.innerHTML` inspection, not just `.textContent`) as new subtopic content, even
+    on an ALREADY-PUBLISHED main page — a clean production build proves nothing about this class
+    of bug.** Three subtopics, all gap-closing: (1) a full Angular sanitizer walkthrough
+    contrasting plain `[innerHTML]` against `bypassSecurityTrustHtml()`, with a correct
+    DOMPurify-then-bypass pipe pattern; (2) the verified SVG rendering-context distinction, with a
+    vulnerable direct-navigation route and the cookieless-origin + `Content-Disposition: attachment`
+    fix; (3) a CSP nonce mechanism trace (the main page's own quiz names nonces precisely but never
+    shows the generate → embed → verify → block sequence for an injected script), including a
+    verified (via WebSearch against MDN/Google's Strict CSP guide) `'unsafe-inline'` + nonce
+    backward-compatibility pattern that modern browsers ignore entirely. Self-caught and fixed a
+    straight-apostrophe-in-a-`[prev]`-label mistake before the build (needed the typographic curly
+    quote for `.html` bound attributes, not `\'`). No `SUBTOPICS` collision for `xss` (checked both
+    `subtopics.ts` forms and `app.routes.ts` directly, confirmed collision-free, left bare). Build
+    passed clean. Browser-verified: no console errors on any of the 4 pages; nav accordion opens
+    with all 3 labels (13 toggles total across the hub); all three previously-vanishing
+    `<script>`/`<img>`/`<style>` mentions confirmed rendering as literal text on every affected
+    page; breadcrumb and 860px wrapper confirmed on every subtopic; sidebar showed tailored
+    composite-key content. **Security & Auth hub Phase 10: 13 of 23 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -5943,11 +5996,11 @@ this same check before any other new hub's first subtopic set:
   All 25 cards `available: true` in `architecture/security/home/home.ts`. Progress: `secTotal=23` in progress.service.ts.
   Security pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SecurityNavComponent at `shared/security-nav/security-nav.ts`.
-  Phase 10: 12 of 23 topics have subtopics (`/security/fundamentals`, pilot batch;
+  Phase 10: 13 of 23 topics have subtopics (`/security/fundamentals`, pilot batch;
   `/security/owasp-top-10`; `/security/threat-modelling`; `/security/secure-coding`;
   `/security/password-security`; `/security/oauth-oidc`; `/security/jwt`; `/security/mfa`;
-  `/security/sso`; `/security/rbac-abac`; `/security/claims-identity`; `/security/api-security`,
-  2026-08-30) —
+  `/security/sso`; `/security/rbac-abac`; `/security/claims-identity`; `/security/api-security`;
+  `/security/xss`, 2026-08-30) —
   see "Security & Auth hub subtopic wiring" section above for the `SecurityNavComponent` accordion
   structural fix, the `sec-fundamentals` SUBTOPICS-map collision resolution (collided with the
   JavaScript hub's own bare `fundamentals` topic key), and the `sec-api-security` proactive

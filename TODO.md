@@ -7872,7 +7872,28 @@ off here with a date.
   hub); breadcrumb and 860px wrapper confirmed on every subtopic; no console errors on any page
   checked.
   **Security & Auth hub Phase 10: 12 of 23 topics complete.**
-- [ ] `/security/xss` — Cross-Site Scripting (XSS)
+- [x] `/security/xss` — Cross-Site Scripting (XSS) (2026-08-30). 3 subtopics: What Angular's
+  [innerHTML] Sanitizer Actually Strips, SVG XSS: Why img Is Safe But Direct Navigation Isn't,
+  CSP Nonces: Why an Injected Script Tag Gets Blocked. Found and fixed FIVE genuine main-page
+  issues: (1) the theory bullet/mistake block/QnA all claimed Angular's [innerHTML] "does NOT
+  sanitize by default" — verified via WebSearch this is backwards (Angular strips <script> tags
+  and on* handlers automatically; the real danger is bypassSecurityTrustHtml()) — fixed all three
+  occurrences; (2) the SVG XSS QnA claimed displaying an SVG "as an image" executes its script —
+  verified via WebSearch that <img> suppresses SVG script execution entirely, only direct
+  navigation/object/embed/iframe execute it — rewrote the QnA; (3-5) THREE currently-live
+  rendering bugs caught only via direct `.innerHTML`/`.textContent` browser inspection (the build
+  stayed green): raw <script> tags inside theory.points backticks were silently vanishing since
+  the field binds via [innerHTML] (parsed as real inert elements, content lost) — including one I
+  introduced myself in my first-draft fix, caught by the same check before committing; and the
+  Output Encoding bullet's `&` → `&amp;` mapping was rendering as `&` → `&` due to Angular's
+  sanitizer double-decoding entities — fixed by rewording to avoid embedding live entity syntax
+  in an [innerHTML] field at all. Self-caught a straight-apostrophe-in-[prev]-label mistake before
+  the build. No SUBTOPICS collision (checked both forms + app.routes.ts). Build passed clean.
+  Browser-verified: no console errors on any of the 4 pages; nav accordion opens with all 3 labels
+  (13 toggles total across the hub); all previously-vanishing tag mentions confirmed rendering as
+  literal text; breadcrumb and 860px wrapper confirmed on every subtopic; sidebar showed tailored
+  composite-key content.
+  **Security & Auth hub Phase 10: 13 of 23 topics complete.**
 - [ ] `/security/csrf-clickjacking` — CSRF & Clickjacking
 - [ ] `/security/injection` — Injection Attacks
 - [ ] `/security/security-headers` — Security Headers
