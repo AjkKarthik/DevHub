@@ -4758,6 +4758,51 @@ this same check before any other new hub's first subtopic set:
     labels (7 toggles total across the hub); breadcrumb and 860px wrapper confirmed on every
     subtopic; sidebar showed tailored composite-key content; Try It solution text confirmed via
     direct component inspection. **Security & Auth hub Phase 10: 7 of 23 topics complete.**
+14. **The `mfa` batch is a real, worth-recording example of a self-caught FALSE finding, corrected
+    via direct execution BEFORE it reached production — not the usual "found and fixed a bug"
+    pattern**: the "Accepting a TOTP code more than once" mistake block explains its own threat
+    model precisely ("A valid TOTP code is good for 30 seconds (or ±1 window = 90 seconds)"), then
+    its own fix caches used codes for only 60 seconds — a 30-second textual mismatch that LOOKED
+    exactly like the many prior self-contained arithmetic inconsistencies this file has documented
+    across dozens of other hubs. An initial "fix" bumping the TTL from 60 to 90 was applied — but
+    before publishing, a precise Node.js simulation of the actual accept-window mechanics (modeling
+    exactly which real-world verification timestamps `window: 1` accepts for a code generated at a
+    given moment) revealed the "bug" was WRONG: because a code can only be USED at or after its own
+    generation time, and the ±1 window's maximum acceptance point is bounded relative to the START
+    of the code's own 30-second slot (not its generation instant), the 60-second TTL mathematically
+    ALWAYS covers the full replay-relevant window in every tested boundary case, including the
+    theoretical worst case (a code generated at the exact instant a new counter window begins,
+    submitted immediately). **The incorrect "fix" was reverted before the build ever ran** (`git
+    diff` on `mfa.ts` after the revert showed zero changes from the original, confirmed byte-
+    identical) — the batch was rebuilt around three different, individually execution-verified
+    findings instead: (1) **gap-closing** — the quiz names MFA fatigue/push-bombing and its
+    number-matching fix in real detail with zero code; built the vulnerable plain Approve/Deny push
+    and the number-matching fix, tracing precisely why requiring the user to correlate a login-
+    screen number against auth-app choices (not just tap one button) breaks the attack's "tap to
+    make it stop" mechanism; (2) **gap-closing** — the QnA's own step-up-authentication recipe
+    (tagged endpoints, TTL-based freshness, a separate step-up timestamp) had no code anywhere;
+    built the middleware, verified the TTL boundary timing (4 min → still fresh; 6.5 min → requires
+    re-challenge) via direct execution, and surfaced a real subtlety the QnA's own one-sentence
+    description skips — a single shared `lastStepUpAt` timestamp means one step-up satisfies ANY
+    subsequently-tagged sensitive action within the TTL window, not just the specific action that
+    triggered it; (3) **gap-closing** — HOTP's counter "synchronisation problems" are named in one
+    QnA sentence with no fix shown; built RFC 4226's own look-ahead-window resync protocol,
+    verified against the RFC via WebSearch first, reusing the main page's own `hotp()` Challenge
+    function UNMODIFIED as the building block, and confirmed the exact resync arithmetic (a match
+    at `counter+3` resyncs the server to `counter+4`, not merely `counter+1`) via direct execution
+    matching the codeTab's own claimed numbers precisely. **A second, unrelated self-authored
+    mistake was also caught and fixed during this batch's own sweep**: an over-escaped `\'` inside
+    a backtick-delimited `solution:` field (backticks never need apostrophe-escaping) — caught by
+    the standing apostrophe-sweep script, fixed before the build. No `SUBTOPICS` collision for
+    `mfa` (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed
+    collision-free, left bare). Build passed clean. Browser-verified: no console errors on any of
+    the 4 pages; the main page's own reverted content confirmed live via direct component
+    inspection (the mistake block's `right` field reads the original, correct `60` — not the
+    incorrectly "fixed" `90` that was never actually published); nav accordion opens with all 3
+    labels (8 toggles total across the hub); breadcrumb and 860px wrapper confirmed on every
+    subtopic; sidebar showed tailored composite-key content; the corrected apostrophe confirmed
+    rendering as literal text with no stray backslash. **Security & Auth hub Phase 10: 8 of 23
+    topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -5759,9 +5804,10 @@ this same check before any other new hub's first subtopic set:
   All 25 cards `available: true` in `architecture/security/home/home.ts`. Progress: `secTotal=23` in progress.service.ts.
   Security pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SecurityNavComponent at `shared/security-nav/security-nav.ts`.
-  Phase 10: 7 of 23 topics have subtopics (`/security/fundamentals`, pilot batch;
+  Phase 10: 8 of 23 topics have subtopics (`/security/fundamentals`, pilot batch;
   `/security/owasp-top-10`; `/security/threat-modelling`; `/security/secure-coding`;
-  `/security/password-security`; `/security/oauth-oidc`; `/security/jwt`, 2026-08-30) —
+  `/security/password-security`; `/security/oauth-oidc`; `/security/jwt`; `/security/mfa`,
+  2026-08-30) —
   see "Security & Auth hub subtopic wiring" section above for the `SecurityNavComponent` accordion
   structural fix, the `sec-fundamentals` SUBTOPICS-map collision resolution (collided with the
   JavaScript hub's own bare `fundamentals` topic key).

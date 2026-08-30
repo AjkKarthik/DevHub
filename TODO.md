@@ -7811,7 +7811,20 @@ off here with a date.
   labels (7 toggles total across the hub); breadcrumb and 860px wrapper confirmed on every
   subtopic; no console errors on any of the 4 pages.
   **Security & Auth hub Phase 10: 7 of 23 topics complete.**
-- [ ] `/security/mfa` — Multi-Factor Authentication
+- [x] `/security/mfa` — Multi-Factor Authentication (2026-08-30) — Phase 10: 3 subtopics added.
+  A real self-caught FALSE finding: a stated 60s anti-replay cache TTL looked inconsistent with
+  the mistake block's own "±1 window = 90 seconds" explanation, and an initial "fix" was applied
+  — but precise Node.js simulation of the actual accept-window mechanics before publishing
+  revealed the 60s TTL was ALREADY correct (mathematically covers the full replay window in every
+  boundary case tested). The incorrect fix was reverted before the build (git diff confirmed
+  mfa.ts byte-identical to original). Subtopics rebuilt around three properly-verified findings
+  instead: MFA Fatigue and Number Matching, Implemented; Step-Up Authentication for High-Risk
+  Operations (TTL boundary timing verified via execution); HOTP Counter Resynchronization (RFC
+  4226's look-ahead window, verified against the RFC and confirmed via execution, reusing the
+  main page's own hotp() function unmodified). No `SUBTOPICS` collision, left bare. Build passed
+  clean. Browser-verified: nav accordion opens with all 3 labels (8 toggles total across the
+  hub); main page confirmed unchanged from original; no console errors on any of the 4 pages.
+  **Security & Auth hub Phase 10: 8 of 23 topics complete.**
 - [ ] `/security/sso` — Single Sign-On (SSO)
 - [ ] `/security/rbac-abac` — RBAC & ABAC
 - [ ] `/security/claims-identity` — Claims & Identity
