@@ -34363,6 +34363,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'securityheaders.com gives a quick external check of which headers are actually being sent in production.',
     ],
   },
+  'security/security-headers/coep-cdn-image-conflict-in-the-helmet-config': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Wiring a Real CSP Violation-Report Endpoint', route: '/security/security-headers/wiring-a-real-csp-violation-report-endpoint' },
+      { label: 'Security Headers (overview)', route: '/security/security-headers' },
+    ],
+    tip: 'CSP allowlisting a source in imgSrc says nothing about whether COEP will also let that same response through — the two checks are independent, and both have to pass.',
+    gotchas: [
+      'COEP: credentialless still enforces cross-origin isolation but strips credentials from no-cors cross-origin requests instead of requiring a third-party CORP header — the right fix depends on whether the resource needs cookies.',
+    ],
+  },
+  'security/security-headers/wiring-a-real-csp-violation-report-endpoint': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'The Helmet Config’s Own COEP + CDN Image Conflict', route: '/security/security-headers/coep-cdn-image-conflict-in-the-helmet-config' },
+      { label: 'Security Headers in CI: A Real Jest/Supertest Suite', route: '/security/security-headers/security-headers-in-ci-a-real-jest-supertest-suite' },
+    ],
+    tip: 'Browsers POST CSP violation reports as Content-Type: application/csp-report, not application/json — express.json() needs the explicit { type: \'application/csp-report\' } option to parse it at all.',
+    gotchas: [
+      'A single misconfigured directive can generate thousands of violation reports per second at real traffic — rate-limit this endpoint like any other public-facing route.',
+    ],
+  },
+  'security/security-headers/security-headers-in-ci-a-real-jest-supertest-suite': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Wiring a Real CSP Violation-Report Endpoint', route: '/security/security-headers/wiring-a-real-csp-violation-report-endpoint' },
+      { label: 'Security Headers (overview)', route: '/security/security-headers' },
+    ],
+    tip: 'Testing that a header is merely present is not the same as testing its VALUE — max-age=1 satisfies "HSTS is present" while shipping a real regression.',
+    gotchas: [
+      'A dependency or middleware upgrade can silently change default header values — a CI test suite catches this the next time it happens, a one-time manual audit does not.',
+    ],
+  },
   'security/password-security': {
     apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
     related: [

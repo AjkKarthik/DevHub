@@ -1,0 +1,26 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Security Headers" topicRoute="/security/security-headers"
+    subtopicLabel="The Helmet Config's Own COEP + CDN Image Conflict" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">The Helmet Config's Own COEP + CDN Image Conflict</h1>
+  <p class="page-subtitle">The main page's own helmet example allowlists an external CDN in CSP while also enabling COEP require-corp — two independent checks that silently work against each other.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>The QnA describes a full CSP report-only rollout process in prose with zero code — the next subtopic wires up a real violation-report endpoint receiving and logging those reports.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Security Headers" topicRoute="/security/security-headers"
+    [next]="{ label: 'Wiring a Real CSP Violation-Report Endpoint', route: '/security/security-headers/wiring-a-real-csp-violation-report-endpoint' }" />
+</div>

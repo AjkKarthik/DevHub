@@ -3508,4 +3508,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'XXE in Node: From ENTITY to File Read', route: '/security/injection/xxe-in-node-from-entity-to-file-read' },
     { label: 'Second-Order SQL Injection, Demonstrated', route: '/security/injection/second-order-sql-injection-demonstrated' },
   ],
+  'security-headers': [
+    { label: 'The Helmet Config’s Own COEP + CDN Image Conflict', route: '/security/security-headers/coep-cdn-image-conflict-in-the-helmet-config' },
+    { label: 'Wiring a Real CSP Violation-Report Endpoint', route: '/security/security-headers/wiring-a-real-csp-violation-report-endpoint' },
+    { label: 'Security Headers in CI: A Real Jest/Supertest Suite', route: '/security/security-headers/security-headers-in-ci-a-real-jest-supertest-suite' },
+  ],
 };

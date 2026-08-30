@@ -3327,7 +3327,12 @@ export const routes: Routes = [
         { path: 'xxe-in-node-from-entity-to-file-read', loadComponent: () => import('./components/architecture/security/injection/subtopics/xxe-in-node-from-entity-to-file-read/xxe-in-node-from-entity-to-file-read').then(m => m.XxeInNodeFromEntityToFileReadSubtopic) },
         { path: 'second-order-sql-injection-demonstrated', loadComponent: () => import('./components/architecture/security/injection/subtopics/second-order-sql-injection-demonstrated/second-order-sql-injection-demonstrated').then(m => m.SecondOrderSqlInjectionDemonstratedSubtopic) },
       ] },
-    { path: 'security-headers',      loadComponent: () => import('./components/architecture/security/security-headers/security-headers').then(m => m.SecSecurityHeaders) },
+    { path: 'security-headers', children: [
+        { path: '', loadComponent: () => import('./components/architecture/security/security-headers/security-headers').then(m => m.SecSecurityHeaders) },
+        { path: 'coep-cdn-image-conflict-in-the-helmet-config', loadComponent: () => import('./components/architecture/security/security-headers/subtopics/coep-cdn-image-conflict-in-the-helmet-config/coep-cdn-image-conflict-in-the-helmet-config').then(m => m.CoepCdnImageConflictInTheHelmetConfigSubtopic) },
+        { path: 'wiring-a-real-csp-violation-report-endpoint', loadComponent: () => import('./components/architecture/security/security-headers/subtopics/wiring-a-real-csp-violation-report-endpoint/wiring-a-real-csp-violation-report-endpoint').then(m => m.WiringARealCspViolationReportEndpointSubtopic) },
+        { path: 'security-headers-in-ci-a-real-jest-supertest-suite', loadComponent: () => import('./components/architecture/security/security-headers/subtopics/security-headers-in-ci-a-real-jest-supertest-suite/security-headers-in-ci-a-real-jest-supertest-suite').then(m => m.SecurityHeadersInCiARealJestSupertestSuiteSubtopic) },
+      ] },
     { path: 'tls-https',             loadComponent: () => import('./components/architecture/security/tls-https/tls-https').then(m => m.SecTlsHttps) },
     { path: 'secrets-management',    loadComponent: () => import('./components/architecture/security/secrets-management/secrets-management').then(m => m.SecSecretsManagement) },
     { path: 'container-security',    loadComponent: () => import('./components/architecture/security/container-security/container-security').then(m => m.SecContainerSecurity) },

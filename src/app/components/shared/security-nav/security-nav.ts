@@ -326,7 +326,26 @@ const DIFF: Record<string, string> = Object.fromEntries(SEARCH_INDEX.map(e => [e
           </div>
         }
       }
-      <a routerLink="/security/security-headers" routerLinkActive="active"><span class="nl-text">Security Headers</span>@if(progress.isDone('sec-security-headers')){<span class="nl-done">✓</span>}@if(d('sec-security-headers');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+      <a routerLink="/security/security-headers" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Security Headers</span>
+        @if(progress.isDone('sec-security-headers')){<span class="nl-done">✓</span>}
+        @if(d('sec-security-headers');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}
+        @if (subtopicsOf('security-headers')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('security-headers')"
+                  (click)="toggleSubtopics('security-headers', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('security-headers'); as shSubs) {
+        @if (isSubtopicsExpanded('security-headers')) {
+          <div class="nav-subtopics">
+            @for (s of shSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
