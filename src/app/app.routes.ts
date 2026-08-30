@@ -3333,7 +3333,12 @@ export const routes: Routes = [
         { path: 'wiring-a-real-csp-violation-report-endpoint', loadComponent: () => import('./components/architecture/security/security-headers/subtopics/wiring-a-real-csp-violation-report-endpoint/wiring-a-real-csp-violation-report-endpoint').then(m => m.WiringARealCspViolationReportEndpointSubtopic) },
         { path: 'security-headers-in-ci-a-real-jest-supertest-suite', loadComponent: () => import('./components/architecture/security/security-headers/subtopics/security-headers-in-ci-a-real-jest-supertest-suite/security-headers-in-ci-a-real-jest-supertest-suite').then(m => m.SecurityHeadersInCiARealJestSupertestSuiteSubtopic) },
       ] },
-    { path: 'tls-https',             loadComponent: () => import('./components/architecture/security/tls-https/tls-https').then(m => m.SecTlsHttps) },
+    { path: 'tls-https', children: [
+        { path: '', loadComponent: () => import('./components/architecture/security/tls-https/tls-https').then(m => m.SecTlsHttps) },
+        { path: 'certificate-pinning-implemented-public-key-hash', loadComponent: () => import('./components/architecture/security/tls-https/subtopics/certificate-pinning-implemented-public-key-hash/certificate-pinning-implemented-public-key-hash').then(m => m.CertificatePinningImplementedPublicKeyHashSubtopic) },
+        { path: 'authorizing-by-client-certificate-cn-not-just-authenticating', loadComponent: () => import('./components/architecture/security/tls-https/subtopics/authorizing-by-client-certificate-cn-not-just-authenticating/authorizing-by-client-certificate-cn-not-just-authenticating').then(m => m.AuthorizingByClientCertificateCnNotJustAuthenticatingSubtopic) },
+        { path: 'zero-rtt-replay-protection-concretely', loadComponent: () => import('./components/architecture/security/tls-https/subtopics/zero-rtt-replay-protection-concretely/zero-rtt-replay-protection-concretely').then(m => m.ZeroRttReplayProtectionConcretelySubtopic) },
+      ] },
     { path: 'secrets-management',    loadComponent: () => import('./components/architecture/security/secrets-management/secrets-management').then(m => m.SecSecretsManagement) },
     { path: 'container-security',    loadComponent: () => import('./components/architecture/security/container-security/container-security').then(m => m.SecContainerSecurity) },
     { path: 'symmetric-encryption',  loadComponent: () => import('./components/architecture/security/symmetric-encryption/symmetric-encryption').then(m => m.SecSymmetricEncryption) },

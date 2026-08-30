@@ -350,7 +350,26 @@ const DIFF: Record<string, string> = Object.fromEntries(SEARCH_INDEX.map(e => [e
 
     <div class="nav-group">
       <p class="nav-group-label">Transport &amp; Crypto</p>
-      <a routerLink="/security/tls-https" routerLinkActive="active"><span class="nl-text">TLS &amp; HTTPS</span>@if(progress.isDone('sec-tls-https')){<span class="nl-done">✓</span>}@if(d('sec-tls-https');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+      <a routerLink="/security/tls-https" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">TLS &amp; HTTPS</span>
+        @if(progress.isDone('sec-tls-https')){<span class="nl-done">✓</span>}
+        @if(d('sec-tls-https');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}
+        @if (subtopicsOf('tls-https')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('tls-https')"
+                  (click)="toggleSubtopics('tls-https', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('tls-https'); as tlsSubs) {
+        @if (isSubtopicsExpanded('tls-https')) {
+          <div class="nav-subtopics">
+            @for (s of tlsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/security/symmetric-encryption" routerLinkActive="active"><span class="nl-text">Symmetric Encryption</span>@if(progress.isDone('sec-symmetric-encryption')){<span class="nl-done">✓</span>}@if(d('sec-symmetric-encryption');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
       <a routerLink="/security/asymmetric-cryptography" routerLinkActive="active"><span class="nl-text">Asymmetric Cryptography</span>@if(progress.isDone('sec-asymmetric-cryptography')){<span class="nl-done">✓</span>}@if(d('sec-asymmetric-cryptography');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
       <a routerLink="/security/hashing" routerLinkActive="active"><span class="nl-text">Hashing &amp; MACs</span>@if(progress.isDone('sec-hashing')){<span class="nl-done">✓</span>}@if(d('sec-hashing');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>

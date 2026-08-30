@@ -3513,4 +3513,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Wiring a Real CSP Violation-Report Endpoint', route: '/security/security-headers/wiring-a-real-csp-violation-report-endpoint' },
     { label: 'Security Headers in CI: A Real Jest/Supertest Suite', route: '/security/security-headers/security-headers-in-ci-a-real-jest-supertest-suite' },
   ],
+  'tls-https': [
+    { label: 'Certificate Pinning, Implemented (Public Key Hash)', route: '/security/tls-https/certificate-pinning-implemented-public-key-hash' },
+    { label: 'Authorizing by Client Certificate CN, Not Just Authenticating', route: '/security/tls-https/authorizing-by-client-certificate-cn-not-just-authenticating' },
+    { label: '0-RTT Replay Protection, Concretely', route: '/security/tls-https/zero-rtt-replay-protection-concretely' },
+  ],
 };

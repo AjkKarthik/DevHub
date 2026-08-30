@@ -1,0 +1,26 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="TLS &amp; HTTPS" topicRoute="/security/tls-https"
+    subtopicLabel="Certificate Pinning, Implemented (Public Key Hash)" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">Certificate Pinning, Implemented (Public Key Hash)</h1>
+  <p class="page-subtitle">The QnA explains public-key pinning and why the intermediate CA is the safer level to pin — here's the actual Node.js checkServerIdentity implementation.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>The mTLS codeTab already extracts a client's identity from its certificate — the next subtopic extends that into a real per-service authorization check, not just authentication.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="TLS &amp; HTTPS" topicRoute="/security/tls-https"
+    [next]="{ label: 'Authorizing by Client Certificate CN, Not Just Authenticating', route: '/security/tls-https/authorizing-by-client-certificate-cn-not-just-authenticating' }" />
+</div>

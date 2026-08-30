@@ -34351,6 +34351,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Certificate expiry is one of the most common self-inflicted outages — automated renewal (like Let\'s Encrypt with ACME) avoids manual tracking failures.',
     ],
   },
+  'security/tls-https/certificate-pinning-implemented-public-key-hash': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Authorizing by Client Certificate CN, Not Just Authenticating', route: '/security/tls-https/authorizing-by-client-certificate-cn-not-just-authenticating' },
+      { label: 'TLS & HTTPS (overview)', route: '/security/tls-https' },
+    ],
+    tip: 'Pin the intermediate CA\'s public key, not the leaf\'s — the intermediate changes far less often than a leaf certificate renewed every 90 days, so routine renewal never breaks the pin.',
+    gotchas: [
+      'A pin check is an ADDITIONAL layer on top of standard chain/hostname validation, never a replacement for it — always run the default checkServerIdentity() first.',
+    ],
+  },
+  'security/tls-https/authorizing-by-client-certificate-cn-not-just-authenticating': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Certificate Pinning, Implemented (Public Key Hash)', route: '/security/tls-https/certificate-pinning-implemented-public-key-hash' },
+      { label: '0-RTT Replay Protection, Concretely', route: '/security/tls-https/zero-rtt-replay-protection-concretely' },
+    ],
+    tip: 'mTLS authenticates WHO is calling — every service with a valid certificate from the trusted client CA reaches every mTLS-protected route unless a separate authorization check keyed by the certificate\'s CN is also enforced.',
+    gotchas: [
+      'A service missing from the permission map should fail closed (zero permissions), not error or default to full access — the safe default for an unrecognized identity.',
+    ],
+  },
+  'security/tls-https/zero-rtt-replay-protection-concretely': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Authorizing by Client Certificate CN, Not Just Authenticating', route: '/security/tls-https/authorizing-by-client-certificate-cn-not-just-authenticating' },
+      { label: 'TLS & HTTPS (overview)', route: '/security/tls-https' },
+    ],
+    tip: 'Node.js exposes no built-in 0-RTT detection — the standard, RFC 8470-defined Early-Data: 1 header, forwarded by whatever actually terminates TLS (nginx, a CDN), is what an app-level check reads instead.',
+    gotchas: [
+      'A method-based check (GET/HEAD only) misses a GET route with a real side effect — the underlying fix is the same "GET must be idempotent" discipline as the CSRF topic, not a 0-RTT-specific patch.',
+    ],
+  },
   'security/security-headers': {
     apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
     related: [
