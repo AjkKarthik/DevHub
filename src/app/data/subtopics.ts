@@ -3503,4 +3503,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Lax+POST: Why Explicit SameSite Beats the Default', route: '/security/csrf-clickjacking/lax-post-why-explicit-samesite-beats-the-default' },
     { label: 'Login CSRF: Defending a Page With No Session Yet', route: '/security/csrf-clickjacking/login-csrf-defending-a-page-with-no-session-yet' },
   ],
+  injection: [
+    { label: 'The Safe Query Builder’s Own Column-Name Gap', route: '/security/injection/safe-query-builders-own-column-name-gap' },
+    { label: 'XXE in Node: From ENTITY to File Read', route: '/security/injection/xxe-in-node-from-entity-to-file-read' },
+    { label: 'Second-Order SQL Injection, Demonstrated', route: '/security/injection/second-order-sql-injection-demonstrated' },
+  ],
 };

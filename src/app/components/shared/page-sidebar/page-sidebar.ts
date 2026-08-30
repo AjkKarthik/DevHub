@@ -34216,6 +34216,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Injection isn\'t limited to SQL — command injection, LDAP injection, and NoSQL injection follow the same root cause of untrusted input treated as executable structure.',
     ],
   },
+  'security/injection/safe-query-builders-own-column-name-gap': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'XXE in Node: From ENTITY to File Read', route: '/security/injection/xxe-in-node-from-entity-to-file-read' },
+      { label: 'Injection Attacks (overview)', route: '/security/injection' },
+    ],
+    tip: 'Parameterization only protects VALUES — there is no placeholder mechanism for identifiers like column or table names in any SQL dialect, so those need an allowlist instead.',
+    gotchas: [
+      'A column allowlist should be scoped PER TABLE, not one flat list shared across every table — a column valid on one table may not even exist on another.',
+    ],
+  },
+  'security/injection/xxe-in-node-from-entity-to-file-read': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'The Safe Query Builder’s Own Column-Name Gap', route: '/security/injection/safe-query-builders-own-column-name-gap' },
+      { label: 'Second-Order SQL Injection, Demonstrated', route: '/security/injection/second-order-sql-injection-demonstrated' },
+    ],
+    tip: 'libxmljs2 disables external entity substitution by default — the vulnerability requires a call site to explicitly opt in with noent: true, usually while enabling DTD validation.',
+    gotchas: [
+      'nonet blocks out-of-band/network-based XXE variants; noent: false is what stops a direct local file-read attack specifically — they protect against different variants, not the same one twice.',
+    ],
+  },
+  'security/injection/second-order-sql-injection-demonstrated': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'XXE in Node: From ENTITY to File Read', route: '/security/injection/xxe-in-node-from-entity-to-file-read' },
+      { label: 'Injection Attacks (overview)', route: '/security/injection' },
+    ],
+    tip: 'Parameterizing the query where tainted data first enters the system does nothing to protect a LATER query that reads that same data back out of the database and concatenates it.',
+    gotchas: [
+      'The vulnerability lives in the gap between two functions, not inside either one — reviewing the first function in isolation, however carefully, cannot reveal a bug that only exists in how a separate feature later consumes its stored output.',
+    ],
+  },
   'security/xss': {
     apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
     related: [

@@ -3321,7 +3321,12 @@ export const routes: Routes = [
         { path: 'lax-post-why-explicit-samesite-beats-the-default', loadComponent: () => import('./components/architecture/security/csrf-clickjacking/subtopics/lax-post-why-explicit-samesite-beats-the-default/lax-post-why-explicit-samesite-beats-the-default').then(m => m.LaxPostWhyExplicitSamesiteBeatsTheDefaultSubtopic) },
         { path: 'login-csrf-defending-a-page-with-no-session-yet', loadComponent: () => import('./components/architecture/security/csrf-clickjacking/subtopics/login-csrf-defending-a-page-with-no-session-yet/login-csrf-defending-a-page-with-no-session-yet').then(m => m.LoginCsrfDefendingAPageWithNoSessionYetSubtopic) },
       ] },
-    { path: 'injection',             loadComponent: () => import('./components/architecture/security/injection/injection').then(m => m.SecInjection) },
+    { path: 'injection', children: [
+        { path: '', loadComponent: () => import('./components/architecture/security/injection/injection').then(m => m.SecInjection) },
+        { path: 'safe-query-builders-own-column-name-gap', loadComponent: () => import('./components/architecture/security/injection/subtopics/safe-query-builders-own-column-name-gap/safe-query-builders-own-column-name-gap').then(m => m.SafeQueryBuildersOwnColumnNameGapSubtopic) },
+        { path: 'xxe-in-node-from-entity-to-file-read', loadComponent: () => import('./components/architecture/security/injection/subtopics/xxe-in-node-from-entity-to-file-read/xxe-in-node-from-entity-to-file-read').then(m => m.XxeInNodeFromEntityToFileReadSubtopic) },
+        { path: 'second-order-sql-injection-demonstrated', loadComponent: () => import('./components/architecture/security/injection/subtopics/second-order-sql-injection-demonstrated/second-order-sql-injection-demonstrated').then(m => m.SecondOrderSqlInjectionDemonstratedSubtopic) },
+      ] },
     { path: 'security-headers',      loadComponent: () => import('./components/architecture/security/security-headers/security-headers').then(m => m.SecSecurityHeaders) },
     { path: 'tls-https',             loadComponent: () => import('./components/architecture/security/tls-https/tls-https').then(m => m.SecTlsHttps) },
     { path: 'secrets-management',    loadComponent: () => import('./components/architecture/security/secrets-management/secrets-management').then(m => m.SecSecretsManagement) },

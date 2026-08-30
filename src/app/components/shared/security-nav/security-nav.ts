@@ -306,7 +306,26 @@ const DIFF: Record<string, string> = Object.fromEntries(SEARCH_INDEX.map(e => [e
           </div>
         }
       }
-      <a routerLink="/security/injection" routerLinkActive="active"><span class="nl-text">Injection Attacks</span>@if(progress.isDone('sec-injection')){<span class="nl-done">✓</span>}@if(d('sec-injection');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+      <a routerLink="/security/injection" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Injection Attacks</span>
+        @if(progress.isDone('sec-injection')){<span class="nl-done">✓</span>}
+        @if(d('sec-injection');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}
+        @if (subtopicsOf('injection')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('injection')"
+                  (click)="toggleSubtopics('injection', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('injection'); as injSubs) {
+        @if (isSubtopicsExpanded('injection')) {
+          <div class="nav-subtopics">
+            @for (s of injSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/security/security-headers" routerLinkActive="active"><span class="nl-text">Security Headers</span>@if(progress.isDone('sec-security-headers')){<span class="nl-done">✓</span>}@if(d('sec-security-headers');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
     </div>
 
