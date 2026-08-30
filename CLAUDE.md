@@ -4730,6 +4730,34 @@ this same check before any other new hub's first subtopic set:
     breadcrumb and 860px wrapper confirmed on every subtopic; sidebar showed tailored composite-key
     content; Try It solution text confirmed via direct component inspection. **Security & Auth hub
     Phase 10: 6 of 23 topics complete.**
+13. **The `jwt` batch built three subtopics for mechanisms the theory/quiz/QnA all describe in
+    real technical detail but never show in a single line of code**: (1) **gap-closing** — the
+    QnA's own tokenVersion-vs-JTI-blacklist tradeoff (blunt-but-simple whole-user revocation vs.
+    precise-but-stateful per-token revocation) had zero code on either side; built both, wired
+    into the same `verifyToken` flow, with a Try It tracing a stolen-phone scenario that only the
+    JTI approach can resolve without also logging out the user's laptop session; (2)
+    **gap-closing** — the theory names the RS256→HS256 confusion attack mechanism precisely but
+    never shows the actual vulnerable verifier or a forged token; built both, verified via
+    WebSearch against real, documented exploit mechanics first, then confirmed END-TO-END via a
+    real Node.js execution generating an actual RSA key pair, forging a token by HMAC-signing with
+    the PUBLIC key as the secret, and confirming both that a vulnerable multi-algorithm verifier
+    genuinely accepts the forged `roles: ['admin']` token AND that the main page's own
+    `algorithms: ['RS256']` allowlist correctly rejects it before any signature computation runs;
+    (3) **gap-closing** — the quiz names "token families" and reuse-triggered invalidation in
+    real detail with zero code anywhere; built the actual rotation chain (a shared `familyId`
+    linking successive refresh tokens) and the reuse-detection branch, with a Try It tracing why
+    catching a reused token forces the LEGITIMATE user's own currently-active session to be
+    invalidated too — a deliberate cost, since the server has no way to tell which of the two
+    parties (legitimate user or attacker) is actually holding the family's current valid token
+    once reuse is detected. No `SUBTOPICS` collision for `jwt` (checked both `subtopics.ts` forms
+    and grepped `app.routes.ts` directly, confirmed collision-free, left bare). All three
+    `solution` fields and bracket-balance/backtick-parity swept clean; every apostrophe-sweep flag
+    across all three files confirmed a false positive (multiple correctly-paired single-quoted
+    strings inside backtick-delimited `code:`/`solution:` fields). Build passed clean.
+    Browser-verified: no console errors on any of the 4 pages; nav accordion opens with all 3
+    labels (7 toggles total across the hub); breadcrumb and 860px wrapper confirmed on every
+    subtopic; sidebar showed tailored composite-key content; Try It solution text confirmed via
+    direct component inspection. **Security & Auth hub Phase 10: 7 of 23 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -5731,9 +5759,9 @@ this same check before any other new hub's first subtopic set:
   All 25 cards `available: true` in `architecture/security/home/home.ts`. Progress: `secTotal=23` in progress.service.ts.
   Security pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SecurityNavComponent at `shared/security-nav/security-nav.ts`.
-  Phase 10: 6 of 23 topics have subtopics (`/security/fundamentals`, pilot batch;
+  Phase 10: 7 of 23 topics have subtopics (`/security/fundamentals`, pilot batch;
   `/security/owasp-top-10`; `/security/threat-modelling`; `/security/secure-coding`;
-  `/security/password-security`; `/security/oauth-oidc`, 2026-08-30) —
+  `/security/password-security`; `/security/oauth-oidc`; `/security/jwt`, 2026-08-30) —
   see "Security & Auth hub subtopic wiring" section above for the `SecurityNavComponent` accordion
   structural fix, the `sec-fundamentals` SUBTOPICS-map collision resolution (collided with the
   JavaScript hub's own bare `fundamentals` topic key).

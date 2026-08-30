@@ -7799,7 +7799,18 @@ off here with a date.
   all 3 labels (6 toggles total across the hub); breadcrumb and 860px wrapper confirmed on every
   subtopic; no console errors on any of the 4 pages.
   **Security & Auth hub Phase 10: 6 of 23 topics complete.**
-- [ ] `/security/jwt` — JWT (JSON Web Tokens)
+- [x] `/security/jwt` — JWT (JSON Web Tokens) (2026-08-30) — Phase 10: 3 subtopics added, all
+  gap-closing (clean main page). Token Revocation, Both Ways (tokenVersion vs. JTI blacklist,
+  both implemented and wired into the same verify flow); The RS256 → HS256 Confusion Attack,
+  Demonstrated (the actual vulnerable verifier and a forged token, verified end-to-end via real
+  RSA key generation and HMAC computation in Node, confirming both the exploit succeeds against
+  the vulnerable verifier and fails against the main page's own algorithms allowlist); Refresh
+  Token Rotation With Reuse Detection (the quiz's own "token families" mechanism, built, with a
+  Try It on why reuse detection costs the legitimate user their session too). No `SUBTOPICS`
+  collision, left bare. Build passed clean. Browser-verified: nav accordion opens with all 3
+  labels (7 toggles total across the hub); breadcrumb and 860px wrapper confirmed on every
+  subtopic; no console errors on any of the 4 pages.
+  **Security & Auth hub Phase 10: 7 of 23 topics complete.**
 - [ ] `/security/mfa` — Multi-Factor Authentication
 - [ ] `/security/sso` — Single Sign-On (SSO)
 - [ ] `/security/rbac-abac` — RBAC & ABAC
