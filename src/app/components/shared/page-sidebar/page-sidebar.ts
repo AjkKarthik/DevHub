@@ -34228,6 +34228,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'DOM-based XSS (client-side JS reading and unsafely writing untrusted data) is not caught by server-side output encoding alone.',
     ],
   },
+  'security/xss/what-angulars-innerhtml-sanitizer-actually-strips': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'SVG XSS: Why img Is Safe But Direct Navigation Isn’t', route: '/security/xss/svg-xss-img-tag-safe-but-direct-navigation-isnt' },
+      { label: 'Cross-Site Scripting (overview)', route: '/security/xss' },
+    ],
+    tip: 'Angular\'s [innerHTML] binding is sanitized by default — the actual danger is DomSanitizer.bypassSecurityTrustHtml(), which exists specifically to disable that sanitization on content you have already verified is safe.',
+    gotchas: [
+      'The sanitizer strips event-handler attributes (onerror, onclick, onload) from every element it keeps, not just from <img> — the same rule applies uniformly across tags.',
+    ],
+  },
+  'security/xss/svg-xss-img-tag-safe-but-direct-navigation-isnt': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'What Angular’s [innerHTML] Sanitizer Actually Strips', route: '/security/xss/what-angulars-innerhtml-sanitizer-actually-strips' },
+      { label: 'CSP Nonces: Why an Injected Script Tag Gets Blocked', route: '/security/xss/csp-nonces-why-an-injected-script-tag-gets-blocked' },
+    ],
+    tip: 'Whether an uploaded SVG\'s embedded script executes depends on the rendering context, not the Content-Type header — <img> suppresses it; direct navigation, object, embed, and iframe do not.',
+    gotchas: [
+      'A safety guarantee scoped to today\'s one <img> usage does not extend to a future "view original" link or embed widget serving the same stored file — sanitize on upload as defense-in-depth regardless.',
+    ],
+  },
+  'security/xss/csp-nonces-why-an-injected-script-tag-gets-blocked': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'SVG XSS: Why img Is Safe But Direct Navigation Isn’t', route: '/security/xss/svg-xss-img-tag-safe-but-direct-navigation-isnt' },
+      { label: 'Cross-Site Scripting (overview)', route: '/security/xss' },
+    ],
+    tip: 'A CSP nonce is a per-response, not per-session, random value — an attacker cannot predict the next response\'s nonce, so their injected script tag has no way to acquire a matching attribute.',
+    gotchas: [
+      'script-src \'nonce-{value}\' \'unsafe-inline\' is a deliberate, spec-defined backward-compatibility pattern — modern browsers ignore unsafe-inline whenever a nonce is present in the same directive.',
+    ],
+  },
   'security/csrf-clickjacking': {
     apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
     related: [

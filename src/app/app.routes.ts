@@ -3309,7 +3309,12 @@ export const routes: Routes = [
         { path: 'hmac-request-signing-implemented', loadComponent: () => import('./components/architecture/security/api-security/subtopics/hmac-request-signing-implemented/hmac-request-signing-implemented').then(m => m.HmacRequestSigningImplementedSubtopic) },
         { path: 'the-fixed-window-rate-limiters-burst-problem', loadComponent: () => import('./components/architecture/security/api-security/subtopics/the-fixed-window-rate-limiters-burst-problem/the-fixed-window-rate-limiters-burst-problem').then(m => m.TheFixedWindowRateLimitersBurstProblemSubtopic) },
       ] },
-    { path: 'xss',                   loadComponent: () => import('./components/architecture/security/xss/xss').then(m => m.SecXss) },
+    { path: 'xss', children: [
+        { path: '', loadComponent: () => import('./components/architecture/security/xss/xss').then(m => m.SecXss) },
+        { path: 'what-angulars-innerhtml-sanitizer-actually-strips', loadComponent: () => import('./components/architecture/security/xss/subtopics/what-angulars-innerhtml-sanitizer-actually-strips/what-angulars-innerhtml-sanitizer-actually-strips').then(m => m.WhatAngularsInnerhtmlSanitizerActuallyStripsSubtopic) },
+        { path: 'svg-xss-img-tag-safe-but-direct-navigation-isnt', loadComponent: () => import('./components/architecture/security/xss/subtopics/svg-xss-img-tag-safe-but-direct-navigation-isnt/svg-xss-img-tag-safe-but-direct-navigation-isnt').then(m => m.SvgXssImgTagSafeButDirectNavigationIsntSubtopic) },
+        { path: 'csp-nonces-why-an-injected-script-tag-gets-blocked', loadComponent: () => import('./components/architecture/security/xss/subtopics/csp-nonces-why-an-injected-script-tag-gets-blocked/csp-nonces-why-an-injected-script-tag-gets-blocked').then(m => m.CspNoncesWhyAnInjectedScriptTagGetsBlockedSubtopic) },
+      ] },
     { path: 'csrf-clickjacking',     loadComponent: () => import('./components/architecture/security/csrf-clickjacking/csrf-clickjacking').then(m => m.SecCsrfClickjacking) },
     { path: 'injection',             loadComponent: () => import('./components/architecture/security/injection/injection').then(m => m.SecInjection) },
     { path: 'security-headers',      loadComponent: () => import('./components/architecture/security/security-headers/security-headers').then(m => m.SecSecurityHeaders) },

@@ -266,7 +266,26 @@ const DIFF: Record<string, string> = Object.fromEntries(SEARCH_INDEX.map(e => [e
 
     <div class="nav-group">
       <p class="nav-group-label">Web Attacks</p>
-      <a routerLink="/security/xss" routerLinkActive="active"><span class="nl-text">Cross-Site Scripting</span>@if(progress.isDone('sec-xss')){<span class="nl-done">✓</span>}@if(d('sec-xss');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+      <a routerLink="/security/xss" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Cross-Site Scripting</span>
+        @if(progress.isDone('sec-xss')){<span class="nl-done">✓</span>}
+        @if(d('sec-xss');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}
+        @if (subtopicsOf('xss')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('xss')"
+                  (click)="toggleSubtopics('xss', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('xss'); as xssSubs) {
+        @if (isSubtopicsExpanded('xss')) {
+          <div class="nav-subtopics">
+            @for (s of xssSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/security/csrf-clickjacking" routerLinkActive="active"><span class="nl-text">CSRF &amp; Clickjacking</span>@if(progress.isDone('sec-csrf-clickjacking')){<span class="nl-done">✓</span>}@if(d('sec-csrf-clickjacking');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
       <a routerLink="/security/injection" routerLinkActive="active"><span class="nl-text">Injection Attacks</span>@if(progress.isDone('sec-injection')){<span class="nl-done">✓</span>}@if(d('sec-injection');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
       <a routerLink="/security/security-headers" routerLinkActive="active"><span class="nl-text">Security Headers</span>@if(progress.isDone('sec-security-headers')){<span class="nl-done">✓</span>}@if(d('sec-security-headers');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>

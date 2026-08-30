@@ -3493,4 +3493,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'HMAC Request Signing, Implemented', route: '/security/api-security/hmac-request-signing-implemented' },
     { label: 'The Fixed-Window Rate Limiter’s Burst Problem', route: '/security/api-security/the-fixed-window-rate-limiters-burst-problem' },
   ],
+  xss: [
+    { label: 'What Angular’s [innerHTML] Sanitizer Actually Strips', route: '/security/xss/what-angulars-innerhtml-sanitizer-actually-strips' },
+    { label: 'SVG XSS: Why img Is Safe But Direct Navigation Isn’t', route: '/security/xss/svg-xss-img-tag-safe-but-direct-navigation-isnt' },
+    { label: 'CSP Nonces: Why an Injected Script Tag Gets Blocked', route: '/security/xss/csp-nonces-why-an-injected-script-tag-gets-blocked' },
+  ],
 };

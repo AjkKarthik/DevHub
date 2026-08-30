@@ -1,0 +1,26 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Cross-Site Scripting" topicRoute="/security/xss"
+    subtopicLabel="What Angular's [innerHTML] Sanitizer Actually Strips" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">What Angular's [innerHTML] Sanitizer Actually Strips</h1>
+  <p class="page-subtitle">The main page's own claim that <code>[innerHTML]</code> "does NOT sanitize by default" has it backwards — Angular strips scripts and event handlers automatically. The real danger is a different API.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>The main page's own SVG QnA raises a related, equally-misunderstood XSS surface — the next subtopic traces exactly which rendering context (<code>&lt;img&gt;</code> vs. direct navigation) decides whether an uploaded SVG's embedded script actually runs.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Cross-Site Scripting" topicRoute="/security/xss"
+    [next]="{ label: 'SVG XSS: Why img Is Safe But Direct Navigation Isn’t', route: '/security/xss/svg-xss-img-tag-safe-but-direct-navigation-isnt' }" />
+</div>
