@@ -3518,4 +3518,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Authorizing by Client Certificate CN, Not Just Authenticating', route: '/security/tls-https/authorizing-by-client-certificate-cn-not-just-authenticating' },
     { label: '0-RTT Replay Protection, Concretely', route: '/security/tls-https/zero-rtt-replay-protection-concretely' },
   ],
+  'symmetric-encryption': [
+    { label: 'Field-Level Encryption You Can Actually Search: Blind Indexing', route: '/security/symmetric-encryption/field-level-encryption-you-can-actually-search-blind-indexing' },
+    { label: 'Streaming AES-256-GCM Encryption for Large Files', route: '/security/symmetric-encryption/streaming-aes-256-gcm-encryption-for-large-files' },
+    { label: 'Deriving Multiple Keys From One Secret with HKDF', route: '/security/symmetric-encryption/deriving-multiple-keys-from-one-secret-with-hkdf' },
+  ],
 };

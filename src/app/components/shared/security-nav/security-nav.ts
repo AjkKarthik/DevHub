@@ -370,7 +370,26 @@ const DIFF: Record<string, string> = Object.fromEntries(SEARCH_INDEX.map(e => [e
           </div>
         }
       }
-      <a routerLink="/security/symmetric-encryption" routerLinkActive="active"><span class="nl-text">Symmetric Encryption</span>@if(progress.isDone('sec-symmetric-encryption')){<span class="nl-done">✓</span>}@if(d('sec-symmetric-encryption');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+      <a routerLink="/security/symmetric-encryption" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Symmetric Encryption</span>
+        @if(progress.isDone('sec-symmetric-encryption')){<span class="nl-done">✓</span>}
+        @if(d('sec-symmetric-encryption');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}
+        @if (subtopicsOf('symmetric-encryption')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('symmetric-encryption')"
+                  (click)="toggleSubtopics('symmetric-encryption', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('symmetric-encryption'); as symSubs) {
+        @if (isSubtopicsExpanded('symmetric-encryption')) {
+          <div class="nav-subtopics">
+            @for (s of symSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/security/asymmetric-cryptography" routerLinkActive="active"><span class="nl-text">Asymmetric Cryptography</span>@if(progress.isDone('sec-asymmetric-cryptography')){<span class="nl-done">✓</span>}@if(d('sec-asymmetric-cryptography');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
       <a routerLink="/security/hashing" routerLinkActive="active"><span class="nl-text">Hashing &amp; MACs</span>@if(progress.isDone('sec-hashing')){<span class="nl-done">✓</span>}@if(d('sec-hashing');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
     </div>

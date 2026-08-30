@@ -1,0 +1,27 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Symmetric Encryption" topicRoute="/security/symmetric-encryption"
+    subtopicLabel="Streaming AES-256-GCM Encryption for Large Files" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">Streaming AES-256-GCM Encryption for Large Files</h1>
+  <p class="page-subtitle">The QnA's large-file guidance is a numbered list with zero code — here's the real Node.js stream pipeline, verified end-to-end including the auth-tag timing gotcha.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>The quiz's own KDF question distinguishes password-based KDFs from general-purpose HKDF in one sentence — the final subtopic builds the HKDF side concretely, deriving multiple independent keys from one shared secret.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Symmetric Encryption" topicRoute="/security/symmetric-encryption"
+    [prev]="{ label: 'Field-Level Encryption You Can Actually Search: Blind Indexing', route: '/security/symmetric-encryption/field-level-encryption-you-can-actually-search-blind-indexing' }"
+    [next]="{ label: 'Deriving Multiple Keys From One Secret with HKDF', route: '/security/symmetric-encryption/deriving-multiple-keys-from-one-secret-with-hkdf' }" />
+</div>

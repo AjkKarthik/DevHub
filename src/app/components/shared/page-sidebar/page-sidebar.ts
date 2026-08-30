@@ -34498,6 +34498,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Symmetric encryption requires securely sharing the same key between parties — key distribution is the hard problem asymmetric cryptography solves differently.',
     ],
   },
+  'security/symmetric-encryption/field-level-encryption-you-can-actually-search-blind-indexing': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Streaming AES-256-GCM Encryption for Large Files', route: '/security/symmetric-encryption/streaming-aes-256-gcm-encryption-for-large-files' },
+      { label: 'Symmetric Encryption (overview)', route: '/security/symmetric-encryption' },
+    ],
+    tip: 'A blind index uses a SEPARATE key from the AES encryption key — a deterministic HMAC of the normalized plaintext, stored alongside the AEAD-encrypted value, enables equality lookups a non-deterministic ciphertext never could.',
+    gotchas: [
+      'Normalization (case, whitespace) must happen identically on both the storage path and the query path, or the same logical value produces two unrelated blind-index entries.',
+    ],
+  },
+  'security/symmetric-encryption/streaming-aes-256-gcm-encryption-for-large-files': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Field-Level Encryption You Can Actually Search: Blind Indexing', route: '/security/symmetric-encryption/field-level-encryption-you-can-actually-search-blind-indexing' },
+      { label: 'Deriving Multiple Keys From One Secret with HKDF', route: '/security/symmetric-encryption/deriving-multiple-keys-from-one-secret-with-hkdf' },
+    ],
+    tip: 'cipher.getAuthTag() only works AFTER the entire ciphertext stream has finished; decipher.setAuthTag() must be called BEFORE any ciphertext is piped through — the two timing rules run in opposite directions.',
+    gotchas: [
+      'The IV and auth tag need FIXED, known byte positions in the output file — streaming decrypt has to locate and read the tag (stored at the end) before it can even construct a working decipher for the ciphertext in the middle.',
+    ],
+  },
+  'security/symmetric-encryption/deriving-multiple-keys-from-one-secret-with-hkdf': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Streaming AES-256-GCM Encryption for Large Files', route: '/security/symmetric-encryption/streaming-aes-256-gcm-encryption-for-large-files' },
+      { label: 'Symmetric Encryption (overview)', route: '/security/symmetric-encryption' },
+    ],
+    tip: 'HKDF solves a different problem than PBKDF2/Argon2 — it\'s fast and assumes the input is already high-entropy (a shared secret), used to derive several independent keys from one secret, not to harden a low-entropy password.',
+    gotchas: [
+      'The info parameter is what makes two keys derived from the SAME secret independent — changing it while holding the secret constant produces a completely unrelated output.',
+    ],
+  },
   'security/asymmetric-cryptography': {
     apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
     related: [

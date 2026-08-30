@@ -3341,7 +3341,12 @@ export const routes: Routes = [
       ] },
     { path: 'secrets-management',    loadComponent: () => import('./components/architecture/security/secrets-management/secrets-management').then(m => m.SecSecretsManagement) },
     { path: 'container-security',    loadComponent: () => import('./components/architecture/security/container-security/container-security').then(m => m.SecContainerSecurity) },
-    { path: 'symmetric-encryption',  loadComponent: () => import('./components/architecture/security/symmetric-encryption/symmetric-encryption').then(m => m.SecSymmetricEncryption) },
+    { path: 'symmetric-encryption', children: [
+        { path: '', loadComponent: () => import('./components/architecture/security/symmetric-encryption/symmetric-encryption').then(m => m.SecSymmetricEncryption) },
+        { path: 'field-level-encryption-you-can-actually-search-blind-indexing', loadComponent: () => import('./components/architecture/security/symmetric-encryption/subtopics/field-level-encryption-you-can-actually-search-blind-indexing/field-level-encryption-you-can-actually-search-blind-indexing').then(m => m.FieldLevelEncryptionYouCanActuallySearchBlindIndexingSubtopic) },
+        { path: 'streaming-aes-256-gcm-encryption-for-large-files', loadComponent: () => import('./components/architecture/security/symmetric-encryption/subtopics/streaming-aes-256-gcm-encryption-for-large-files/streaming-aes-256-gcm-encryption-for-large-files').then(m => m.StreamingAes256GcmEncryptionForLargeFilesSubtopic) },
+        { path: 'deriving-multiple-keys-from-one-secret-with-hkdf', loadComponent: () => import('./components/architecture/security/symmetric-encryption/subtopics/deriving-multiple-keys-from-one-secret-with-hkdf/deriving-multiple-keys-from-one-secret-with-hkdf').then(m => m.DerivingMultipleKeysFromOneSecretWithHkdfSubtopic) },
+      ] },
     { path: 'asymmetric-cryptography', loadComponent: () => import('./components/architecture/security/asymmetric-cryptography/asymmetric-cryptography').then(m => m.SecAsymmetricCryptography) },
     { path: 'hashing',               loadComponent: () => import('./components/architecture/security/hashing/hashing').then(m => m.SecHashing) },
     { path: 'supply-chain',          loadComponent: () => import('./components/architecture/security/supply-chain/supply-chain').then(m => m.SecSupplyChain) },
