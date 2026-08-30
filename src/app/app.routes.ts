@@ -3094,7 +3094,12 @@ export const routes: Routes = [
         { path: 'serving-410-gone-for-a-sunset-endpoint', loadComponent: () => import('./components/architecture/api-design/api-versioning/subtopics/serving-410-gone-for-a-sunset-endpoint/serving-410-gone-for-a-sunset-endpoint').then(m => m.Serving410GoneForASunsetEndpointSubtopic) },
         { path: 'the-expand-contract-pattern-implemented', loadComponent: () => import('./components/architecture/api-design/api-versioning/subtopics/the-expand-contract-pattern-implemented/the-expand-contract-pattern-implemented').then(m => m.TheExpandContractPatternImplementedSubtopic) },
       ] },
-    { path: 'error-response-design', loadComponent: () => import('./components/architecture/api-design/error-response-design/error-response-design').then(m => m.ApiErrorResponse) },
+    { path: 'error-response-design', children: [
+        { path: '', loadComponent: () => import('./components/architecture/api-design/error-response-design/error-response-design').then(m => m.ApiErrorResponse) },
+        { path: '404-and-410-are-both-heuristically-cacheable', loadComponent: () => import('./components/architecture/api-design/error-response-design/subtopics/404-and-410-are-both-heuristically-cacheable/404-and-410-are-both-heuristically-cacheable').then(m => m.Http404And410AreBothHeuristicallyCacheableSubtopic) },
+        { path: 'a-real-traceparent-header-w3c-trace-context', loadComponent: () => import('./components/architecture/api-design/error-response-design/subtopics/a-real-traceparent-header-w3c-trace-context/a-real-traceparent-header-w3c-trace-context').then(m => m.ARealTraceparentHeaderW3cTraceContextSubtopic) },
+        { path: 'wiring-the-error-handler-why-it-must-be-last', loadComponent: () => import('./components/architecture/api-design/error-response-design/subtopics/wiring-the-error-handler-why-it-must-be-last/wiring-the-error-handler-why-it-must-be-last').then(m => m.WiringTheErrorHandlerWhyItMustBeLastSubtopic) },
+      ] },
     { path: 'hateoas-hypermedia',    loadComponent: () => import('./components/architecture/api-design/hateoas-hypermedia/hateoas-hypermedia').then(m => m.ApiHateoas) },
     { path: 'protocol-buffers',      loadComponent: () => import('./components/architecture/api-design/protocol-buffers/protocol-buffers').then(m => m.ApiProtocolBuffers) },
     { path: 'grpc-service-patterns', loadComponent: () => import('./components/architecture/api-design/grpc-service-patterns/grpc-service-patterns').then(m => m.ApiGrpcPatterns) },

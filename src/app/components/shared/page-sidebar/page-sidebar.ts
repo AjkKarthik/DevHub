@@ -35305,6 +35305,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A machine-readable error CODE (not just a human-readable message) lets clients branch programmatically without fragile string matching.',
     ],
   },
+  'api-design/error-response-design/404-and-410-are-both-heuristically-cacheable': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'A Real traceparent Header (W3C Trace Context)', route: '/api-design/error-response-design/a-real-traceparent-header-w3c-trace-context' },
+      { label: 'Error Response Design (overview)', route: '/api-design/error-response-design' },
+    ],
+    tip: 'Both 404 and 410 are on RFC 9111\'s heuristically-cacheable-by-default list — the real distinction is that 410 signals permanence, which can justify a longer freshness lifetime, not a binary cacheable-vs-not split.',
+    gotchas: [
+      'RFC 9111\'s own 10%-of-Last-Modified-age heuristic formula applies identically to both status codes — it is not status-code-specific at all.',
+    ],
+  },
+  'api-design/error-response-design/a-real-traceparent-header-w3c-trace-context': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: '404 and 410 Are Both Heuristically Cacheable', route: '/api-design/error-response-design/404-and-410-are-both-heuristically-cacheable' },
+      { label: 'Wiring the Error Handler: Why It Must Be Last', route: '/api-design/error-response-design/wiring-the-error-handler-why-it-must-be-last' },
+    ],
+    tip: 'traceId stays identical across every service in a call chain, while parentId is regenerated fresh at each hop — a new traceId is only ever created once, at the very first service that receives no existing traceparent header.',
+    gotchas: [
+      'An error response\'s own correlation-ID field can and often should reuse the SAME traceId already flowing through the request, tying a support ticket back to every service the request touched.',
+    ],
+  },
+  'api-design/error-response-design/wiring-the-error-handler-why-it-must-be-last': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'A Real traceparent Header (W3C Trace Context)', route: '/api-design/error-response-design/a-real-traceparent-header-w3c-trace-context' },
+      { label: 'Error Response Design (overview)', route: '/api-design/error-response-design' },
+    ],
+    tip: 'A 4-parameter Express error handler can only catch errors from routes registered BEFORE it in the middleware stack — the same registration-order rule as ordinary middleware, just applied to error handling specifically.',
+    gotchas: [
+      'A misplaced error handler doesn\'t crash the app — Express\'s own built-in default handler catches what the custom one misses, producing a generic, unformatted response instead of the intended Problem Details shape.',
+    ],
+  },
   'api-design/api-versioning': {
     apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
     related: [

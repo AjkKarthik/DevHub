@@ -3578,4 +3578,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Serving 410 Gone for a Sunset Endpoint', route: '/api-design/api-versioning/serving-410-gone-for-a-sunset-endpoint' },
     { label: 'The Expand-Contract Pattern, Implemented', route: '/api-design/api-versioning/the-expand-contract-pattern-implemented' },
   ],
+  'error-response-design': [
+    { label: '404 and 410 Are Both Heuristically Cacheable', route: '/api-design/error-response-design/404-and-410-are-both-heuristically-cacheable' },
+    { label: 'A Real traceparent Header (W3C Trace Context)', route: '/api-design/error-response-design/a-real-traceparent-header-w3c-trace-context' },
+    { label: 'Wiring the Error Handler: Why It Must Be Last', route: '/api-design/error-response-design/wiring-the-error-handler-why-it-must-be-last' },
+  ],
 };
