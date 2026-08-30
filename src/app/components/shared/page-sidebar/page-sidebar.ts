@@ -34447,6 +34447,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Single logout (ensuring a logout at the IdP actually terminates sessions at every connected application) is notoriously difficult to implement reliably.',
     ],
   },
+  'security/sso/the-saml-signature-wrapping-attack-demonstrated': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Single Sign-On (overview)', route: '/security/sso' },
+      { label: 'Multi-Tenant SSO — Domain Resolution and Isolation', route: '/security/sso/multi-tenant-sso-domain-resolution-and-isolation' },
+    ],
+    tip: 'Signature verification only proves ONE specific element hasn\'t been tampered with — it says nothing about other content that might also be present in the same document, which is exactly what a wrapping attack exploits.',
+    gotchas: [
+      'Claims extraction must reuse the SAME element the signature check referenced — a separate "first assertion in the document" query can return an attacker-injected, unsigned element even when the real signature check genuinely passes.',
+    ],
+  },
+  'security/sso/multi-tenant-sso-domain-resolution-and-isolation': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'The SAML Signature Wrapping Attack, Demonstrated', route: '/security/sso/the-saml-signature-wrapping-attack-demonstrated' },
+      { label: 'SCIM Deprovisioning — the JIT Gap SCIM Closes', route: '/security/sso/scim-deprovisioning-the-jit-gap-scim-closes' },
+    ],
+    tip: 'A valid signature only proves an assertion came from SOME trusted IdP — in a multi-tenant platform, a separate isolation check is needed to confirm it came from the SPECIFIC IdP the current login flow expected.',
+    gotchas: [
+      'The expected tenant must be recorded at the START of the login flow, before the IdP redirect — the returned assertion\'s own issuer alone has no independent value to compare against otherwise.',
+    ],
+  },
+  'security/sso/scim-deprovisioning-the-jit-gap-scim-closes': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Multi-Tenant SSO — Domain Resolution and Isolation', route: '/security/sso/multi-tenant-sso-domain-resolution-and-isolation' },
+      { label: 'Single Sign-On (overview)', route: '/security/sso' },
+    ],
+    tip: 'JIT provisioning only ever reacts to login events — a departed employee never logs in again, so JIT structurally has no way to learn about a deactivation on its own.',
+    gotchas: [
+      'Deactivating an account alone doesn\'t revoke an already-active session — the SCIM handler must also explicitly kill existing sessions, or a still-valid session keeps working until it separately expires.',
+    ],
+  },
   'security/claims-identity': {
     apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
     related: [

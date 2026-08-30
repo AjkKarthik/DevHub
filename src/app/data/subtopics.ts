@@ -3467,4 +3467,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Step-Up Authentication for High-Risk Operations', route: '/security/mfa/step-up-authentication-for-high-risk-operations' },
     { label: 'HOTP Counter Resynchronization', route: '/security/mfa/hotp-counter-resynchronization' },
   ],
+  'sso': [
+    { label: 'The SAML Signature Wrapping Attack, Demonstrated', route: '/security/sso/the-saml-signature-wrapping-attack-demonstrated' },
+    { label: 'Multi-Tenant SSO — Domain Resolution and Isolation', route: '/security/sso/multi-tenant-sso-domain-resolution-and-isolation' },
+    { label: 'SCIM Deprovisioning — the JIT Gap SCIM Closes', route: '/security/sso/scim-deprovisioning-the-jit-gap-scim-closes' },
+  ],
 };

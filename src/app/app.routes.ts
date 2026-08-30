@@ -3285,7 +3285,12 @@ export const routes: Routes = [
         { path: 'step-up-authentication-for-high-risk-operations', loadComponent: () => import('./components/architecture/security/mfa/subtopics/step-up-authentication-for-high-risk-operations/step-up-authentication-for-high-risk-operations').then(m => m.StepUpAuthenticationForHighRiskOperationsSubtopic) },
         { path: 'hotp-counter-resynchronization', loadComponent: () => import('./components/architecture/security/mfa/subtopics/hotp-counter-resynchronization/hotp-counter-resynchronization').then(m => m.HotpCounterResynchronizationSubtopic) },
       ] },
-    { path: 'sso',                   loadComponent: () => import('./components/architecture/security/sso/sso').then(m => m.SecSso) },
+    { path: 'sso', children: [
+        { path: '', loadComponent: () => import('./components/architecture/security/sso/sso').then(m => m.SecSso) },
+        { path: 'the-saml-signature-wrapping-attack-demonstrated', loadComponent: () => import('./components/architecture/security/sso/subtopics/the-saml-signature-wrapping-attack-demonstrated/the-saml-signature-wrapping-attack-demonstrated').then(m => m.TheSamlSignatureWrappingAttackDemonstratedSubtopic) },
+        { path: 'multi-tenant-sso-domain-resolution-and-isolation', loadComponent: () => import('./components/architecture/security/sso/subtopics/multi-tenant-sso-domain-resolution-and-isolation/multi-tenant-sso-domain-resolution-and-isolation').then(m => m.MultiTenantSsoDomainResolutionAndIsolationSubtopic) },
+        { path: 'scim-deprovisioning-the-jit-gap-scim-closes', loadComponent: () => import('./components/architecture/security/sso/subtopics/scim-deprovisioning-the-jit-gap-scim-closes/scim-deprovisioning-the-jit-gap-scim-closes').then(m => m.ScimDeprovisioningTheJitGapScimClosesSubtopic) },
+      ] },
     { path: 'rbac-abac',             loadComponent: () => import('./components/architecture/security/rbac-abac/rbac-abac').then(m => m.SecRbacAbac) },
     { path: 'claims-identity',       loadComponent: () => import('./components/architecture/security/claims-identity/claims-identity').then(m => m.SecClaimsIdentity) },
     { path: 'api-security',          loadComponent: () => import('./components/architecture/security/api-security/api-security').then(m => m.SecApiSecurity) },
