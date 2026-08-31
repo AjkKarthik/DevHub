@@ -3106,7 +3106,12 @@ export const routes: Routes = [
         { path: 'a-real-jsonapi-response-shape', loadComponent: () => import('./components/architecture/api-design/hateoas-hypermedia/subtopics/a-real-jsonapi-response-shape/a-real-jsonapi-response-shape').then(m => m.ARealJsonapiResponseShapeSubtopic) },
         { path: 'pagination-via-the-link-header-rfc-8288', loadComponent: () => import('./components/architecture/api-design/hateoas-hypermedia/subtopics/pagination-via-the-link-header-rfc-8288/pagination-via-the-link-header-rfc-8288').then(m => m.PaginationViaTheLinkHeaderRfc8288Subtopic) },
       ] },
-    { path: 'protocol-buffers',      loadComponent: () => import('./components/architecture/api-design/protocol-buffers/protocol-buffers').then(m => m.ApiProtocolBuffers) },
+    { path: 'protocol-buffers', children: [
+        { path: '', loadComponent: () => import('./components/architecture/api-design/protocol-buffers/protocol-buffers').then(m => m.ApiProtocolBuffers) },
+        { path: 'a-oneof-discriminated-union-actually-implemented', loadComponent: () => import('./components/architecture/api-design/protocol-buffers/subtopics/a-oneof-discriminated-union-actually-implemented/a-oneof-discriminated-union-actually-implemented').then(m => m.AOneofDiscriminatedUnionActuallyImplementedSubtopic) },
+        { path: 'google-protobuf-any-real-polymorphic-pack-unpack', loadComponent: () => import('./components/architecture/api-design/protocol-buffers/subtopics/google-protobuf-any-real-polymorphic-pack-unpack/google-protobuf-any-real-polymorphic-pack-unpack').then(m => m.GoogleProtobufAnyRealPolymorphicPackUnpackSubtopic) },
+        { path: 'fieldmask-partial-updates-by-explicit-field-path', loadComponent: () => import('./components/architecture/api-design/protocol-buffers/subtopics/fieldmask-partial-updates-by-explicit-field-path/fieldmask-partial-updates-by-explicit-field-path').then(m => m.FieldmaskPartialUpdatesByExplicitFieldPathSubtopic) },
+      ] },
     { path: 'grpc-service-patterns', loadComponent: () => import('./components/architecture/api-design/grpc-service-patterns/grpc-service-patterns').then(m => m.ApiGrpcPatterns) },
     { path: 'grpc-web-transcoding',  loadComponent: () => import('./components/architecture/api-design/grpc-web-transcoding/grpc-web-transcoding').then(m => m.ApiGrpcWeb) },
     { path: 'graphql-fundamentals',  loadComponent: () => import('./components/architecture/api-design/graphql-fundamentals/graphql-fundamentals').then(m => m.ApiGraphqlFundamentals) },

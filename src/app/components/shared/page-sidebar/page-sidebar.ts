@@ -35584,6 +35584,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Adding a new optional field is backward-compatible; removing or renumbering an existing field is not.',
     ],
   },
+  'api-design/protocol-buffers/a-oneof-discriminated-union-actually-implemented': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'google.protobuf.Any: Real Polymorphic Pack/Unpack', route: '/api-design/protocol-buffers/google-protobuf-any-real-polymorphic-pack-unpack' },
+      { label: 'Protocol Buffers (overview)', route: '/api-design/protocol-buffers' },
+    ],
+    tip: 'A oneof group\'s exclusivity is enforced by GENERATED CODE, not a convention -- every setter for a field in the group clears the others as a side effect, making the "only one at a time" rule structurally impossible to violate.',
+    gotchas: [
+      'A plain TS interface with three optional fields gives no such guarantee -- nothing stops a caller from setting more than one field at once; only the class-based accessor pattern enforces it.',
+    ],
+  },
+  'api-design/protocol-buffers/google-protobuf-any-real-polymorphic-pack-unpack': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'A oneof Discriminated Union, Actually Implemented', route: '/api-design/protocol-buffers/a-oneof-discriminated-union-actually-implemented' },
+      { label: 'FieldMask: Partial Updates by Explicit Field Path', route: '/api-design/protocol-buffers/fieldmask-partial-updates-by-explicit-field-path' },
+    ],
+    tip: 'Any is just a type_url string plus raw bytes -- it carries no decoding intelligence of its own; the actual polymorphism comes entirely from application code maintaining a registry mapping type URLs to decoders.',
+    gotchas: [
+      'An unrecognized type_url does not mean the payload is corrupted -- it usually means the receiver simply has not been updated to recognize a newer message type yet.',
+    ],
+  },
+  'api-design/protocol-buffers/fieldmask-partial-updates-by-explicit-field-path': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'google.protobuf.Any: Real Polymorphic Pack/Unpack', route: '/api-design/protocol-buffers/google-protobuf-any-real-polymorphic-pack-unpack' },
+      { label: 'Protocol Buffers (overview)', route: '/api-design/protocol-buffers' },
+    ],
+    tip: 'proto3 messages can never distinguish "field absent" from "field explicitly zero" the way a JS object can -- FieldMask solves this with an explicit, separate list of field paths the client intends to update, not by inspecting the message\'s own shape.',
+    gotchas: [
+      'A dotted path like address.city reaches precisely into a nested sub-message -- it does not replace the whole address object, and every other field on the record is left completely untouched.',
+    ],
+  },
   'api-design/grpc-web-transcoding': {
     apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
     related: [

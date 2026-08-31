@@ -1,0 +1,26 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Protocol Buffers" topicRoute="/api-design/protocol-buffers"
+    subtopicLabel="A oneof Discriminated Union, Actually Implemented" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">A oneof Discriminated Union, Actually Implemented</h1>
+  <p class="page-subtitle">The main page’s own quiz describes oneof exclusivity in prose — here’s the accessor logic real generated protobuf code uses to actually enforce it.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>The main page’s QnA names google.protobuf.Any as a polymorphic field type in one sentence, with no code showing what a type URL actually looks like or how a receiver decodes one. The next subtopic builds it.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Protocol Buffers" topicRoute="/api-design/protocol-buffers"
+    [next]="{ label: 'google.protobuf.Any: Real Polymorphic Pack/Unpack', route: '/api-design/protocol-buffers/google-protobuf-any-real-polymorphic-pack-unpack' }" />
+</div>

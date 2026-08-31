@@ -98,7 +98,22 @@ const DIFF: Record<string, string> = {
           @if (progress.isDone(item.route)) { <span class="nl-done">✓</span> }
           <span class="nl-text">{{ item.label }}</span>
           @if (diff(item.route); as d) { <span class="nl-dot" [class]="d"></span> }
+          @if (subtopicsOf(item.path)) {
+            <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded(item.path)"
+                    (click)="toggleSubtopics(item.path, $event)" aria-label="Toggle subtopics">›</button>
+          }
         </a>
+        @if (subtopicsOf(item.path); as itemSubs) {
+          @if (isSubtopicsExpanded(item.path)) {
+            <div class="nav-subtopics">
+              @for (s of itemSubs; track s.route) {
+                <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                  <span class="nl-text">{{ s.label }}</span>
+                </a>
+              }
+            </div>
+          }
+        }
       }
     </div>
 

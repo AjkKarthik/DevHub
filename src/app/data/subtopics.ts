@@ -3598,4 +3598,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Extending the Validator for Nested Arrays', route: '/api-design/openapi-contracts/extending-the-validator-for-nested-arrays' },
     { label: 'A Minimal Breaking-Change Detector', route: '/api-design/openapi-contracts/a-minimal-breaking-change-detector' },
   ],
+  'protocol-buffers': [
+    { label: 'A oneof Discriminated Union, Actually Implemented', route: '/api-design/protocol-buffers/a-oneof-discriminated-union-actually-implemented' },
+    { label: 'google.protobuf.Any: Real Polymorphic Pack/Unpack', route: '/api-design/protocol-buffers/google-protobuf-any-real-polymorphic-pack-unpack' },
+    { label: 'FieldMask: Partial Updates by Explicit Field Path', route: '/api-design/protocol-buffers/fieldmask-partial-updates-by-explicit-field-path' },
+  ],
 };
