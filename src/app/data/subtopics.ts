@@ -3618,4 +3618,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'DataLoader Batching via Microtask Timing', route: '/api-design/graphql-fundamentals/dataloader-batching-via-microtask-timing' },
     { label: 'A Directive-Style Auth Wrapper', route: '/api-design/graphql-fundamentals/a-directive-style-auth-wrapper' },
   ],
+  'graphql-vs-rest': [
+    { label: 'The Missing Precedence Rule in recommendApi', route: '/api-design/graphql-vs-rest/the-missing-precedence-rule-in-recommendapi' },
+    { label: 'Automatic Persisted Queries: The Hash Registration Flow', route: '/api-design/graphql-vs-rest/automatic-persisted-queries-the-hash-registration-flow' },
+    { label: 'Federation Entity Resolution Across Two Subgraphs', route: '/api-design/graphql-vs-rest/federation-entity-resolution-across-two-subgraphs' },
+  ],
 };

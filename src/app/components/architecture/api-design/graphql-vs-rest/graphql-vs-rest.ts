@@ -217,15 +217,16 @@ mutation UpdateAvatar(\$userId: ID!, \$avatarUrl: String!) { ... }`,
 const challenge: Challenge = {
   title: 'API Strategy Advisor',
   language: 'typescript',
-  description: `Implement recommendApi(scenario: {clients: number, caching: boolean, fileUploads: boolean, multipleDataSources: boolean}): 'GraphQL' | 'REST' | 'Both' using these rules:
+  description: `Implement recommendApi(scenario: {clients: number, caching: boolean, fileUploads: boolean, multipleDataSources: boolean}): 'GraphQL' | 'REST' | 'Both' using these rules, checked IN ORDER (the first matching rule wins):
 - If fileUploads is true: REST (GraphQL handles files poorly)
+- If caching is true AND multipleDataSources is true: Both (need caching AND aggregation)
 - If caching is true AND multipleDataSources is false: REST (HTTP caching is easier)
 - If multipleDataSources is true AND clients > 2: GraphQL (BFF aggregation)
 - If clients > 3: GraphQL (diverse client data needs)
 - Otherwise: REST`,
   hints: [
     'Check fileUploads first (highest priority)',
-    'Return "Both" when multipleDataSources is true and caching is true',
+    'Check the caching-based rules (Both / REST) BEFORE the clients > 3 rule -- caching takes precedence',
   ],
   starterCode: `function recommendApi(scenario: {clients: number, caching: boolean, fileUploads: boolean, multipleDataSources: boolean}): 'GraphQL' | 'REST' | 'Both' {
   // TODO: recommend based on scenario
@@ -234,6 +235,7 @@ const challenge: Challenge = {
   solution: `function recommendApi(s: {clients: number, caching: boolean, fileUploads: boolean, multipleDataSources: boolean}): 'GraphQL' | 'REST' | 'Both' {
   if (s.fileUploads) return 'REST';
   if (s.caching && s.multipleDataSources) return 'Both';
+  if (s.caching && !s.multipleDataSources) return 'REST';
   if (s.multipleDataSources && s.clients > 2) return 'GraphQL';
   if (s.clients > 3) return 'GraphQL';
   return 'REST';
@@ -241,7 +243,8 @@ const challenge: Challenge = {
 
 console.log(recommendApi({ clients: 1, caching: true, fileUploads: false, multipleDataSources: false })); // REST
 console.log(recommendApi({ clients: 4, caching: false, fileUploads: false, multipleDataSources: true })); // GraphQL
-console.log(recommendApi({ clients: 2, caching: false, fileUploads: true, multipleDataSources: false })); // REST`,
+console.log(recommendApi({ clients: 2, caching: false, fileUploads: true, multipleDataSources: false })); // REST
+console.log(recommendApi({ clients: 5, caching: true, fileUploads: false, multipleDataSources: false })); // REST -- caching takes precedence over clients > 3`,
 };
 
 const quiz: QuizQuestion[] = [

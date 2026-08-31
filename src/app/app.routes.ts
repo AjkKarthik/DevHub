@@ -3130,7 +3130,12 @@ export const routes: Routes = [
         { path: 'dataloader-batching-via-microtask-timing', loadComponent: () => import('./components/architecture/api-design/graphql-fundamentals/subtopics/dataloader-batching-via-microtask-timing/dataloader-batching-via-microtask-timing').then(m => m.DataloaderBatchingViaMicrotaskTimingSubtopic) },
         { path: 'a-directive-style-auth-wrapper', loadComponent: () => import('./components/architecture/api-design/graphql-fundamentals/subtopics/a-directive-style-auth-wrapper/a-directive-style-auth-wrapper').then(m => m.ADirectiveStyleAuthWrapperSubtopic) },
       ] },
-    { path: 'graphql-vs-rest',       loadComponent: () => import('./components/architecture/api-design/graphql-vs-rest/graphql-vs-rest').then(m => m.ApiGraphqlVsRest) },
+    { path: 'graphql-vs-rest', children: [
+        { path: '', loadComponent: () => import('./components/architecture/api-design/graphql-vs-rest/graphql-vs-rest').then(m => m.ApiGraphqlVsRest) },
+        { path: 'the-missing-precedence-rule-in-recommendapi', loadComponent: () => import('./components/architecture/api-design/graphql-vs-rest/subtopics/the-missing-precedence-rule-in-recommendapi/the-missing-precedence-rule-in-recommendapi').then(m => m.TheMissingPrecedenceRuleInRecommendapiSubtopic) },
+        { path: 'automatic-persisted-queries-the-hash-registration-flow', loadComponent: () => import('./components/architecture/api-design/graphql-vs-rest/subtopics/automatic-persisted-queries-the-hash-registration-flow/automatic-persisted-queries-the-hash-registration-flow').then(m => m.AutomaticPersistedQueriesTheHashRegistrationFlowSubtopic) },
+        { path: 'federation-entity-resolution-across-two-subgraphs', loadComponent: () => import('./components/architecture/api-design/graphql-vs-rest/subtopics/federation-entity-resolution-across-two-subgraphs/federation-entity-resolution-across-two-subgraphs').then(m => m.FederationEntityResolutionAcrossTwoSubgraphsSubtopic) },
+      ] },
     { path: 'websockets-sse-polling',loadComponent: () => import('./components/architecture/api-design/websockets-sse-polling/websockets-sse-polling').then(m => m.ApiWebsockets) },
     { path: 'webhook-design',        loadComponent: () => import('./components/architecture/api-design/webhook-design/webhook-design').then(m => m.ApiWebhookDesign) },
     { path: 'api-design-principles', children: [

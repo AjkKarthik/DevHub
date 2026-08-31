@@ -35594,6 +35594,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Many production systems use both — REST for simple CRUD and public APIs, GraphQL for complex, client-driven aggregation needs.',
     ],
   },
+  'api-design/graphql-vs-rest/the-missing-precedence-rule-in-recommendapi': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Automatic Persisted Queries: The Hash Registration Flow', route: '/api-design/graphql-vs-rest/automatic-persisted-queries-the-hash-registration-flow' },
+      { label: 'GraphQL vs REST (overview)', route: '/api-design/graphql-vs-rest' },
+    ],
+    tip: 'A function passing all of its own worked examples says nothing about inputs those examples never cover -- the original Challenge solution had a real precedence bug only exposed by a client count of 5 combined with caching-without-aggregation.',
+    gotchas: [
+      'When a spec says rules are "checked in order," WHERE a new branch sits in the if-chain is part of correctness, not a stylistic choice -- the same condition fixes the bug in one position and does not in another.',
+    ],
+  },
+  'api-design/graphql-vs-rest/automatic-persisted-queries-the-hash-registration-flow': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'The Missing Precedence Rule in recommendApi', route: '/api-design/graphql-vs-rest/the-missing-precedence-rule-in-recommendapi' },
+      { label: 'Federation Entity Resolution Across Two Subgraphs', route: '/api-design/graphql-vs-rest/federation-entity-resolution-across-two-subgraphs' },
+    ],
+    tip: 'APQ registers a query the first time any client sends its full text, keyed by a server-recomputed SHA-256 hash -- every subsequent request for that same query, from ANY client, becomes a cache hit with no need to resend the full query.',
+    gotchas: [
+      'The server must recompute the hash itself rather than trust a client-supplied one -- otherwise a malicious client could register an arbitrary hash pointing at different content, hijacking what another client\'s cached hash actually resolves to.',
+    ],
+  },
+  'api-design/graphql-vs-rest/federation-entity-resolution-across-two-subgraphs': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Automatic Persisted Queries: The Hash Registration Flow', route: '/api-design/graphql-vs-rest/automatic-persisted-queries-the-hash-registration-flow' },
+      { label: 'GraphQL vs REST (overview)', route: '/api-design/graphql-vs-rest' },
+    ],
+    tip: 'An extending subgraph\'s reference resolver receives only the shared @key fields, never the full entity -- keeping subgraphs decoupled so each can evolve its own schema without rippling changes into services that never needed those fields.',
+    gotchas: [
+      'Federation has no single aggregating service the way a BFF does -- each subgraph independently owns a slice of the schema, and the gateway\'s merging logic is completely generic across every subgraph pair.',
+    ],
+  },
   'api-design/grpc-service-patterns': {
     apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
     related: [

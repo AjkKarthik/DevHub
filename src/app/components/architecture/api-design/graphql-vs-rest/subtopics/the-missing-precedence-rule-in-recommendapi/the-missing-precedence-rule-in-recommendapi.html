@@ -1,0 +1,26 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="GraphQL vs REST" topicRoute="/api-design/graphql-vs-rest"
+    subtopicLabel="The Missing Precedence Rule in recommendApi" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">The Missing Precedence Rule in recommendApi</h1>
+  <p class="page-subtitle">The main page’s own Challenge listed a caching-based rule its solution never implemented as its own branch — for one uncovered input, client count silently overrode it.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>A quiz explanation describes Automatic Persisted Queries’ hash-registration flow in real depth, with no codeTab showing it running. The next subtopic builds it.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="GraphQL vs REST" topicRoute="/api-design/graphql-vs-rest"
+    [next]="{ label: 'Automatic Persisted Queries: The Hash Registration Flow', route: '/api-design/graphql-vs-rest/automatic-persisted-queries-the-hash-registration-flow' }" />
+</div>
