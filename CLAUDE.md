@@ -5928,6 +5928,62 @@ Confirmed via direct file inspection before the pilot (`/api-design/rest-fundame
     correct breadcrumb, 860px wrapper, zero console errors, and the entity-escaped `@auth` mentions
     confirmed rendering as literal text; sidebar showed tailored composite-key content on the final
     subtopic. **API Design hub Phase 10: 13 of 19 topics complete.**
+21. **The `graphql-vs-rest` batch found and fixed a genuine precedence bug in the main page’s own
+    Challenge (API Strategy Advisor) — a real if/else-if branch ordering defect, not just an
+    inaccurate comment**: the Challenge’s own `description` listed "If caching is true AND
+    multipleDataSources is false: REST" as one of five stated rules, but the `solution` never
+    implemented that exact condition as its own branch — it only handled
+    `caching && multipleDataSources` together (returning `'Both'`), then fell straight through
+    toward the client-count checks. This went completely unnoticed by all three of the Challenge’s
+    own worked `console.log` examples, since for those specific inputs the fallthrough happened to
+    coincidentally still land on `REST`. Verified via direct execution that a FOURTH, uncovered
+    input — `{ clients: 5, caching: true, multipleDataSources: false }` — exposes the real bug: the
+    `clients > 3` check fires first and incorrectly returns `'GraphQL'`, directly contradicting the
+    stated rule. Fixed by inserting an explicit `if (s.caching && !s.multipleDataSources) return
+    'REST';` branch positioned BEFORE the client-count checks — re-verified via execution that this
+    both fixes the counter-example AND leaves all three original worked examples unchanged. Also
+    tightened the `description` text (now explicitly stating rules are "checked IN ORDER, the first
+    matching rule wins") and added the `'Both'` rule to the description itself, which the original
+    `hints` array named but the `description`’s own rule list never actually stated — a second,
+    smaller inconsistency fixed alongside the precedence bug. Three subtopics: (1) **fix-adjacent**
+    — a broken-vs-fixed side-by-side comparison reproducing the exact counter-example, verified via
+    execution matching both the buggy `'GraphQL'` output and the corrected `'REST'` output exactly;
+    a Try It demonstrates that moving the SAME new branch to a different position in the if-chain
+    (after the `clients > 3` check instead of before it) would NOT fix the bug — branch order is
+    part of correctness here, not a stylistic choice, precisely because JS if/else-if always takes
+    the first matching branch regardless of what exists further down; (2) **gap-closing** — a quiz
+    explanation describes Automatic Persisted Queries’ hash-first, register-on-miss flow in real
+    detail ("the client first sends just the hash via GET... only sends the full query text... the
+    one time that hash is not yet recognized") with zero codeTab demonstrating it; built a real
+    SHA-256-hash registry (Node’s `crypto` module) plus matching client/server logic, verified via
+    execution across a genuine cache miss (registers on the fly), a same-client cache hit, and — the
+    more interesting case — a completely DIFFERENT, unrelated client sending the identical query
+    text getting an immediate cache hit with no registration of its own; a Try It reasons through
+    why the server must independently recompute the hash from the query text rather than trust a
+    client-supplied one (preventing a malicious client from registering an arbitrary hash pointing
+    at substituted content); (3) **gap-closing** — the QnA on federation states plainly that
+    "services can extend each other’s types" with zero code showing the actual mechanism; built a
+    minimal two-subgraph simulation (a Users subgraph owning base fields, an Orders subgraph
+    extending via a reference resolver keyed ONLY by `{ __typename, id }`, and a generic gateway
+    merging both), verified via execution including confirming the extending subgraph is never even
+    called for an ID the owning subgraph doesn’t recognize; a Try It traces why passing only the key
+    (not the full entity) to the extending resolver is what keeps subgraphs genuinely decoupled from
+    each other’s internal schema details. No `SUBTOPICS` collision for `graphql-vs-rest` (checked
+    both forms, confirmed collision-free, left bare) — the GraphQL & Real-Time nav loop’s own
+    accordion toggle (added structurally in the `graphql-fundamentals` batch) required ZERO further
+    template changes for this second topic in the group. All three `solution` fields swept clean
+    via the standing apostrophe/backtick-parity/solution-contamination scripts; the main page’s own
+    edit re-swept for backtick-parity after the fix (32 backticks, even). Build passed clean
+    (single-level backgrounding, explicit `EXITCODE:$?` capture, zero `ERROR` lines).
+    Browser-verified: the main-page fix confirmed rendering live by reading the Challenge block’s
+    own full text content directly (an initial substring-match check against `document.body
+    .innerText` came back as a false negative — a rendering/matching quirk, not a real absence —
+    reading the Challenge section’s own `innerText` directly confirmed both the new branch and the
+    new worked example were genuinely present, after expanding BOTH the starterCode’s own "View
+    Code" toggle AND the separate "Reveal Solution" control plus its own nested "View Code"
+    toggle); nav accordion opens with all 3 labels; all 3 subtopic pages render with correct
+    breadcrumb, 860px wrapper, zero console errors; sidebar showed tailored composite-key content
+    on the final subtopic. **API Design hub Phase 10: 14 of 19 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -6955,13 +7011,14 @@ Confirmed via direct file inspection before the pilot (`/api-design/rest-fundame
   All 21 cards `available: true` in `architecture/api-design/home/home.ts`. Progress: `apiTotal=19` in progress.service.ts.
   API Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ApiDesignNavComponent at `shared/api-design-nav/api-design-nav.ts`.
-  Phase 10: 13 of 19 topics have subtopics (`/api-design/rest-fundamentals`, pilot batch;
+  Phase 10: 14 of 19 topics have subtopics (`/api-design/rest-fundamentals`, pilot batch;
   `/api-design/resource-url-design`; `/api-design/http-methods-status-codes`;
   `/api-design/pagination-patterns` — Foundations nav group fully done; `/api-design/api-versioning`;
   `/api-design/error-response-design`; `/api-design/hateoas-hypermedia`; `/api-design/api-design-principles`;
   `/api-design/openapi-contracts` — REST Design nav group fully done; `/api-design/protocol-buffers`;
   `/api-design/grpc-service-patterns`; `/api-design/grpc-web-transcoding` — Protocols nav group
-  fully done; `/api-design/graphql-fundamentals` — GraphQL & Real-Time nav group, 2026-08-30) — see
+  fully done; `/api-design/graphql-fundamentals`; `/api-design/graphql-vs-rest` — GraphQL &
+  Real-Time nav group, 2026-08-30) — see
   "API Design hub subtopic wiring" section above
   for the `ApiDesignNavComponent` accordion structural fix and the generic `subtopicsOf(item.path)`
   toggle-gating pattern this hub's `@for`-looped nav template needed (a first for this hub, since

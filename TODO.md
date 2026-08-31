@@ -8255,7 +8255,26 @@ off here with a date.
   brand-new template addition); all 3 subtopic pages render with correct breadcrumb, 860px
   wrapper, zero console errors; sidebar showed tailored composite-key content. **API Design hub
   Phase 10: 13 of 19 topics complete.**
-- [ ] `/api-design/graphql-vs-rest` — GraphQL vs REST
+- [x] `/api-design/graphql-vs-rest` — GraphQL vs REST (2026-08-30). Fixed a genuine precedence bug
+  in the main page's own Challenge (API Strategy Advisor): the description listed "caching true
+  AND multipleDataSources false -> REST" as a rule, but the solution never implemented that exact
+  condition as its own branch -- it fell through toward the client-count checks instead, which
+  coincidentally still produced REST for all three of the Challenge's own worked examples but
+  incorrectly returned GraphQL for an uncovered input ({ clients: 5, caching: true,
+  multipleDataSources: false }), verified via direct execution. Fixed by adding an explicit branch
+  before the client-count checks, and tightened the description to state rules are checked in
+  order plus added the 'Both' rule the hints mentioned but the description text never stated. 3
+  subtopics: traces the exact bug/fix with a broken-vs-fixed comparison verified via execution,
+  including why branch ORDER (not just presence) matters; a real SHA-256 Automatic Persisted
+  Queries hash registry + client/server flow, verified via execution across a cache miss and
+  cross-client cache hits; a minimal two-subgraph Apollo-Federation-style entity resolution
+  simulation (key-only reference resolver), verified via execution. No SUBTOPICS collision.
+  GraphQL & Real-Time nav loop's accordion toggle needed no further changes. Build passed clean.
+  Browser-verified: main-page fix confirmed rendering live (required expanding both the
+  starterCode's own View Code toggle and the separate Reveal Solution + its own View Code toggle);
+  nav accordion opens with all 3 labels; all 3 subtopic pages render with correct breadcrumb,
+  860px wrapper, zero console errors; sidebar showed tailored composite-key content. **API Design
+  hub Phase 10: 14 of 19 topics complete.**
 - [ ] `/api-design/websockets-sse-polling` — WebSockets vs SSE vs Polling
 - [ ] `/api-design/webhook-design` — Webhook Design
 - [x] `/api-design/api-design-principles` — API Design Principles (2026-08-30). Fixed a genuine,
