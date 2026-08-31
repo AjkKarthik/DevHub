@@ -8214,7 +8214,24 @@ off here with a date.
   live (old timestamp fully absent, corrected one present); all 3 subtopic pages render with
   correct breadcrumb, 860px wrapper, zero console errors; sidebar showed tailored composite-key
   content. **API Design hub Phase 10: 8 of 19 topics complete.**
-- [ ] `/api-design/openapi-contracts` — OpenAPI & Contracts
+- [x] `/api-design/openapi-contracts` — OpenAPI & Contracts (2026-08-30). Clean main page -- no
+  compile bug or self-contained inconsistency found after a careful read (the Challenge's own
+  worked examples verified exactly via execution; a QnA's literal `\n`-inside-`<pre>` block,
+  initially suspected as the documented double-backslash gotcha, confirmed to be the SAFE
+  single-backslash case; an OpenAPI 3.1-vs-3.0 quiz claim verified accurate via WebFetch/WebSearch
+  against the OpenAPI blog and spec PRs). 3 gap-closing subtopics: Discriminator-Based oneOf,
+  Actually Parsed -- the QnA writes a full discriminator/mapping YAML block with zero code showing
+  what actually reads it and routes to the right schema, verified via execution; Extending the
+  Validator for Nested Arrays -- the Challenge's own validator only checks flat fields but the
+  page's own spec defines a nested array-of-objects CreateOrderRequest it can't check at all,
+  built a recursive extension verified via execution including a correctly-pathed nested error
+  message; A Minimal Breaking-Change Detector -- openapi-diff/Optic named in one sentence with no
+  code, built a minimal schema differ verified via execution against both a genuinely breaking and
+  a genuinely safe revision. No SUBTOPICS collision. REST Design nav loop's existing generic
+  toggle needed zero further template changes. Build passed clean. Browser-verified: nav accordion
+  opens with all 3 labels; all 3 subtopic pages render with correct breadcrumb, 860px wrapper,
+  zero console errors; sidebar showed tailored composite-key content. **API Design hub Phase 10:
+  9 of 19 topics complete -- REST Design nav group fully done.**
 - [ ] `/api-design/api-security` — API Security
 - [ ] `/api-design/breaking-changes` — Breaking Changes
 - [ ] `/api-design/rate-limiting` — Rate Limiting

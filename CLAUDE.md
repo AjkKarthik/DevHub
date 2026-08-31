@@ -5681,6 +5681,53 @@ Confirmed via direct file inspection before the pilot (`/api-design/rest-fundame
     all 3 subtopic pages render with correct breadcrumb, 860px wrapper, zero console errors;
     sidebar showed tailored composite-key content on the final subtopic. **API Design hub Phase
     10: 8 of 19 topics complete.**
+16. **The `openapi-contracts` batch — the last topic in the REST Design nav group — was a clean
+    main page: no compile bug or self-contained inconsistency found after a careful read (the
+    Challenge’s own worked examples verified exactly via execution; a QnA’s literal `\n`-inside-
+    `<pre>` block, initially suspected as the documented double-backslash `\\n` gotcha, was checked
+    and confirmed to be the SAFE single-backslash case — a real newline character that `<pre>`
+    correctly renders as a line break, not the broken case; an OpenAPI 3.1-vs-3.0 quiz claim
+    (nullable removed, JSON Schema 2020-12 alignment, webhooks added as a top-level object) was
+    verified via WebFetch/WebSearch against the OpenAPI blog and spec PRs and confirmed accurate).**
+    All three subtopics are gap-closing, each building runnable code for something the page names
+    in prose but never demonstrates: (1) **Discriminator-Based oneOf, Actually Parsed** — the QnA
+    writes a full `discriminator`/`mapping` YAML block for a `PaymentMethod` `oneOf`, but nothing
+    on the page shows the code that actually reads the discriminator field and routes to the right
+    schema; built `parsePaymentMethod()`, verified via execution across both valid branches, an
+    unrecognized discriminator value, and a payload missing a required field; a Try It contrasts
+    it against a naive "try each `oneOf` branch until one validates" approach, tracing the real
+    ambiguity and error-message costs that approach has and the discriminator avoids; (2)
+    **Extending the Validator for Nested Arrays** — the main page’s own Challenge validator only
+    checks flat, top-level fields, but the page’s OWN OpenAPI spec (in its very first codeTab)
+    defines `CreateOrderRequest` as a nested array-of-objects shape the Challenge’s
+    `SchemaSpec`/`validateAgainstSchema` has no way to express at all; built a recursive
+    `validateAgainstSchemaV2` extension (the array branch recurses into each item using the SAME
+    function, mirroring how OpenAPI itself nests one schema inside another), verified via execution
+    across a valid payload, an empty array (`minItems`), a missing nested field (producing a
+    correctly-pathed `items[0].quantity is required`), and a missing top-level field; (3) **A
+    Minimal Breaking-Change Detector** — a quiz question names `openapi-diff` and Optic for
+    detecting breaking changes between spec versions in one sentence with zero code anywhere; built
+    `diffSchemas()` (three breaking checks — removed field, changed type, newly-required field —
+    plus one safe/additive check — a new optional field), verified via execution against both a
+    genuinely breaking revision (all three breaking cases triggered correctly) and a genuinely safe
+    additive one (only the non-breaking case fired); a Try It surfaces a real, deliberately-
+    undetected gap in the minimal detector — a field moving from required to OPTIONAL isn’t
+    automatically safe or unsafe, since that depends on the server’s actual runtime behavior, not
+    just the schema text, which is why real tools warn rather than hard-fail on it. All three
+    `solution`/`heading` fields swept clean via the standing apostrophe/backtick-parity/solution-
+    contamination scripts before the build; the nested-template-literal escaping in subtopic 2’s
+    own codeTab (`\`` and `\${` inside the outer TS template literal) spot-checked by evaluating the
+    exact pattern in Node to confirm it renders the intended displayed code. No `SUBTOPICS`
+    collision for `openapi-contracts` (checked both forms, confirmed collision-free, left bare) —
+    the REST Design nav loop’s own generic `subtopicsOf(item.path)` toggle (already extended in the
+    `api-versioning` batch) required ZERO further template changes for this fourth topic in the
+    group. Build passed clean (single-level backgrounding this time, explicit `EXITCODE:$?`
+    capture, zero `ERROR` lines — the local `ng serve` picked up the changes via its own HMR/
+    file-watcher with no restart needed, confirming the earlier batch’s stale-server incident was
+    isolated to that specific interrupted session). Browser-verified: nav accordion opens with all
+    3 labels; all 3 subtopic pages render with correct breadcrumb, 860px wrapper, zero console
+    errors; sidebar showed tailored composite-key content on the final subtopic. **API Design hub
+    Phase 10: 9 of 19 topics complete — REST Design nav group fully done.**
 
 ## Current state (update when it changes!)
 
@@ -6708,11 +6755,12 @@ Confirmed via direct file inspection before the pilot (`/api-design/rest-fundame
   All 21 cards `available: true` in `architecture/api-design/home/home.ts`. Progress: `apiTotal=19` in progress.service.ts.
   API Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ApiDesignNavComponent at `shared/api-design-nav/api-design-nav.ts`.
-  Phase 10: 8 of 19 topics have subtopics (`/api-design/rest-fundamentals`, pilot batch;
+  Phase 10: 9 of 19 topics have subtopics (`/api-design/rest-fundamentals`, pilot batch;
   `/api-design/resource-url-design`; `/api-design/http-methods-status-codes`;
   `/api-design/pagination-patterns` — Foundations nav group fully done; `/api-design/api-versioning`;
-  `/api-design/error-response-design`; `/api-design/hateoas-hypermedia`; `/api-design/api-design-principles`
-  — REST Design nav group, 2026-08-30) — see "API Design hub subtopic wiring" section above
+  `/api-design/error-response-design`; `/api-design/hateoas-hypermedia`; `/api-design/api-design-principles`;
+  `/api-design/openapi-contracts` — REST Design nav group fully done, 2026-08-30) — see
+  "API Design hub subtopic wiring" section above
   for the `ApiDesignNavComponent` accordion structural fix and the generic `subtopicsOf(item.path)`
   toggle-gating pattern this hub's `@for`-looped nav template needed (a first for this hub, since
   most prior hubs hand-write one `<a>` per topic) — generalized from a per-topic hardcoded check to
