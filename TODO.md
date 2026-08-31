@@ -8220,7 +8220,20 @@ off here with a date.
   labels; all 3 subtopic pages render with correct breadcrumb, 860px wrapper, zero console errors;
   sidebar showed tailored composite-key content. **API Design hub Phase 10: 11 of 19 topics
   complete.**
-- [ ] `/api-design/grpc-web-transcoding` — gRPC-Web & Transcoding
+- [x] `/api-design/grpc-web-transcoding` — gRPC-Web & Transcoding (2026-08-30). Clean main page --
+  no compile bug found (the Challenge's own worked examples verified exactly via execution; a
+  Kubernetes 1.24+ gRPC-probe version claim verified via WebSearch and confirmed accurate). 3
+  gap-closing subtopics: A Real HTTP Transcoding Router -- the Challenge only parses one annotation
+  string, built a route matcher + nested field binder (user.id) verified via execution; Content
+  Negotiation on a Connect Server -- named in one sentence with zero code, built a decode/encode
+  pair that always responds in the client's requested format, verified via execution; Which
+  Streaming Patterns Actually Work in a Browser -- built a capability lookup REUSING the exact
+  identifyGrpcPattern() classifier from this hub's own gRPC Service Patterns topic, verified via
+  execution across all 8 transport x pattern combinations. No SUBTOPICS collision. Protocols nav
+  loop's accordion toggle needed no further changes. Build passed clean. Browser-verified: nav
+  accordion opens with all 3 labels; all 3 subtopic pages render with correct breadcrumb, 860px
+  wrapper, zero console errors; sidebar showed tailored composite-key content. **API Design hub
+  Phase 10: 12 of 19 topics complete -- Protocols nav group fully done.**
 - [ ] `/api-design/graphql-fundamentals` — GraphQL Fundamentals
 - [ ] `/api-design/graphql-vs-rest` — GraphQL vs REST
 - [ ] `/api-design/websockets-sse-polling` — WebSockets vs SSE vs Polling

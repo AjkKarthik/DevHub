@@ -5826,6 +5826,49 @@ Confirmed via direct file inspection before the pilot (`/api-design/rest-fundame
     labels; all 3 subtopic pages render with correct breadcrumb, 860px wrapper, zero console errors;
     sidebar showed tailored composite-key content on the final subtopic. **API Design hub Phase 10:
     11 of 19 topics complete.**
+19. **The `grpc-web-transcoding` batch — the third and final topic in the Protocols nav group —
+    was another clean main page (the Challenge’s own worked examples verified exactly via
+    execution; a specific, checkable Kubernetes 1.24+ gRPC-probe version claim in the QnA verified
+    via WebSearch and confirmed accurate — gRPC probes entered beta and were enabled by DEFAULT at
+    1.24, matching the page’s "supports... natively" framing, even though full GA followed later at
+    1.27), so all three subtopics are gap-closing.** (1) **A Real HTTP Transcoding Router** — the
+    Challenge’s own `parseHttpAnnotation()` only extracts the method and path TEMPLATE from a single
+    annotation string; the page’s own .proto codeTab includes a genuinely trickier annotation the
+    Challenge never tests — `UpdateUser`’s `/v1/users/{user.id}`, a NESTED field-path binding, not a
+    flat `{id}`; built a `matchRoute()`/`buildRequest()` pair handling both flat and dotted bindings,
+    verified via execution across a successful flat match, a successful nested match, and a "no
+    route matches" case; a Try It traces exactly why a shallow `{ ...body }` copy still correctly
+    preserves a sibling field (`email`) on the SAME nested object the path binding writes into
+    (`req.user` and `body.user` are the identical reference after the spread), while also surfacing
+    that this happens to mutate the caller’s original body object as a side effect; (2) **Content
+    Negotiation on a Connect Server** — the QnA names JSON/proto `Content-Type` negotiation in one
+    line ("clients set Content-Type... JSON encoding allows human-readable debugging") with zero
+    code showing a server branching on it; built a `decodeBody()`/`encodeResponse()` pair that always
+    responds in the SAME format the client requested, verified via execution across both supported
+    formats and an explicit throw on an unsupported one — a Try It reasons through why the
+    illustrative proto stand-in’s response is missing a field the JSON path correctly includes (the
+    stand-in never extracts named fields from raw bytes, unlike `JSON.parse`), distinguishing a
+    deliberate simplification from an actual bug in the negotiation logic itself; (3) **Which
+    Streaming Patterns Actually Work in a Browser** — the page states the gRPC-Web (unary + server
+    streaming only) vs. Connect (all four patterns) capability split in prose with no code checking
+    a given rpc against it; built a `canCallFromBrowser()` lookup that explicitly REUSES the exact
+    `identifyGrpcPattern()` classifier this hub’s own gRPC Service Patterns topic already built in
+    ITS Challenge — rather than re-deriving a separate classifier — verified via execution across
+    all 8 transport×pattern combinations, confirming Connect’s capability set is a strict superset
+    of gRPC-Web’s; a Try It applies the sibling topic’s own `Chat` (Bidirectional Streaming) rpc and
+    traces precisely why this page’s own "batch into a single unary call" fix (which correctly
+    rescues a Client Streaming upload) does NOT generalize to bidirectional real-time chat — batching
+    an ongoing, no-natural-endpoint exchange isn’t a workaround for the same feature, it’s replacing
+    the feature with a different one entirely. No `SUBTOPICS` collision for `grpc-web-transcoding`
+    (checked both forms, confirmed collision-free, left bare) — the Protocols nav loop’s own
+    accordion toggle (added structurally in the `protocol-buffers` batch) required ZERO further
+    template changes for this third and final topic in the group. All three `solution` fields swept
+    clean via the standing apostrophe/backtick-parity/solution-contamination scripts. Build passed
+    clean (single-level backgrounding, explicit `EXITCODE:$?` capture, zero `ERROR` lines).
+    Browser-verified: nav accordion opens with all 3 labels; all 3 subtopic pages render with correct
+    breadcrumb, 860px wrapper, zero console errors; sidebar showed tailored composite-key content on
+    the final subtopic. **API Design hub Phase 10: 12 of 19 topics complete — Protocols nav group
+    fully done.**
 
 ## Current state (update when it changes!)
 
@@ -6853,12 +6896,13 @@ Confirmed via direct file inspection before the pilot (`/api-design/rest-fundame
   All 21 cards `available: true` in `architecture/api-design/home/home.ts`. Progress: `apiTotal=19` in progress.service.ts.
   API Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ApiDesignNavComponent at `shared/api-design-nav/api-design-nav.ts`.
-  Phase 10: 11 of 19 topics have subtopics (`/api-design/rest-fundamentals`, pilot batch;
+  Phase 10: 12 of 19 topics have subtopics (`/api-design/rest-fundamentals`, pilot batch;
   `/api-design/resource-url-design`; `/api-design/http-methods-status-codes`;
   `/api-design/pagination-patterns` — Foundations nav group fully done; `/api-design/api-versioning`;
   `/api-design/error-response-design`; `/api-design/hateoas-hypermedia`; `/api-design/api-design-principles`;
   `/api-design/openapi-contracts` — REST Design nav group fully done; `/api-design/protocol-buffers`;
-  `/api-design/grpc-service-patterns` — Protocols nav group, 2026-08-30) — see
+  `/api-design/grpc-service-patterns`; `/api-design/grpc-web-transcoding` — Protocols nav group
+  fully done, 2026-08-30) — see
   "API Design hub subtopic wiring" section above
   for the `ApiDesignNavComponent` accordion structural fix and the generic `subtopicsOf(item.path)`
   toggle-gating pattern this hub's `@for`-looped nav template needed (a first for this hub, since
