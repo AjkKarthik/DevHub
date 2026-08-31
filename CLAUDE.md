@@ -5869,6 +5869,65 @@ Confirmed via direct file inspection before the pilot (`/api-design/rest-fundame
     breadcrumb, 860px wrapper, zero console errors; sidebar showed tailored composite-key content on
     the final subtopic. **API Design hub Phase 10: 12 of 19 topics complete — Protocols nav group
     fully done.**
+20. **The `graphql-fundamentals` batch — the first topic in the GraphQL & Real-Time nav group —
+    found and fixed a genuine, self-contained inaccuracy requiring zero external research**: the
+    main page’s own third mistake block ("Returning null instead of an error") justified its fix
+    with the inline comment `// field is User! (non-null) so null would error anyway` — but the
+    page’s OWN SDL schema, shown a few sections earlier in its first codeTab, declares
+    `user(id: ID!): User` — nullable, no `!`. Returning `null` from THIS specific field is
+    perfectly valid GraphQL execution producing `{ data: { user: null } }` with no error at all,
+    directly contradicting the comment’s claim. The underlying ADVICE (throw an explicit,
+    coded error rather than a bare null) was never wrong and already matches the block’s own
+    `explanation` field precisely ("For nullable fields, explicit errors with error codes are more
+    useful to clients than null") — only the inline comment’s specific justification, assuming a
+    non-null type this exact field doesn’t have, was inaccurate. Fixed the comment to correctly
+    state the field is nullable and reframe the reasoning around distinguishable error codes,
+    matching the explanation’s own already-correct framing. Three subtopics: (1) **fix-adjacent**
+    — a small `executeField()` simulation of GraphQL’s own null-propagation rule, verified via
+    execution that returns `{ data: null }` (no error) for the page’s real nullable schema and
+    contrasts it against `{ error: ... }` for a hypothetical non-null version — the case the
+    original comment was actually describing, just not the schema the page declares; (2)
+    **gap-closing** — a quiz explanation describes precisely WHY DataLoader batching works
+    ("DataLoader defers each queued key to the end of the current tick... via a
+    microtask/process.nextTick") with no codeTab demonstrating the mechanism running; built a
+    `MiniLoader` using real `process.nextTick()` scheduling, verified via execution that three
+    SYNCHRONOUS `.load()` calls (including a duplicate key) all collapse into exactly ONE batch
+    function call — a Try It traces why adding deduplication (which this minimal loader
+    deliberately omits) would layer on top of, not replace, the timing mechanism itself; (3)
+    **gap-closing** — the QnA on authorization names `@auth(requires: ADMIN)` directives as
+    "centralized but requires a custom directive implementation" in one line, with zero code
+    anywhere showing that implementation or contrasting it against the SAME QnA’s own resolver-level
+    approach; built a `withAuth()` higher-order function achieving the identical centralizing
+    effect without needing full schema-directive machinery, verified via execution across
+    authenticated-correct-role, wrong-role (`FORBIDDEN`), and unauthenticated (`UNAUTHENTICATED`)
+    cases — a Try It directly tests the main page’s own "What to avoid" warning (never rely on
+    hiding fields from introspection as the actual security boundary) by tracing why a raw query
+    string bypasses introspection filtering entirely. **A genuine structural gap found and fixed in
+    `ApiDesignNavComponent` itself**: the GraphQL & Real-Time nav group’s own `@for` loop had NEVER
+    had the subtopics-accordion toggle markup added — this is the group’s first topic to receive
+    subtopics at all (unlike the Protocols group, which already had the pattern from the
+    `protocol-buffers` batch). Added the identical toggle-button-plus-nested-link-list block used by
+    the other three loops. **Two bare `@auth` mentions caught and fixed during the standard
+    pre-build sweep, not the build**: plain prose text in two separate `.html` files’ own
+    "Where this fits" paragraphs used literal `@auth`, which Angular’s template compiler would have
+    misparsed as the start of a control-flow block — escaped as `&#64;auth` before the build ever
+    ran (the SAME mentions inside `[innerHTML]`-bound `theory.points` fields in the `.ts` files
+    needed no escaping at all, per the established per-field-binding rule). No `SUBTOPICS` collision
+    for `graphql-fundamentals` (checked both forms, confirmed collision-free, left bare). All three
+    `solution` fields swept clean via the standing apostrophe/backtick-parity/solution-contamination
+    scripts; the main page’s own edit re-swept for backtick-parity after the fix (56 backticks,
+    even); a nested-apostrophe escape inside one subtopic’s own codeTab (`\\'` surviving the outer
+    template literal to produce a correctly-escaped `\'` in the DISPLAYED inner JS string) was
+    verified precisely by extracting and evaluating the exact codeTab body as real JS before
+    trusting it. Build passed clean (single-level backgrounding, explicit `EXITCODE:$?` capture,
+    zero `ERROR` lines). Browser-verified: the main-page fix confirmed rendering live (required
+    expanding both the codeTab’s own collapsed "▼ View Code" toggle AND the separate Common
+    Mistakes accordion); nav accordion opens with all 3 labels, confirmed via BOTH
+    `window.ng.getComponent()` and a direct `.nav-subtopic-link` DOM query (since this was a
+    brand-new template addition, not a pre-existing toggle); all 3 subtopic pages render with
+    correct breadcrumb, 860px wrapper, zero console errors, and the entity-escaped `@auth` mentions
+    confirmed rendering as literal text; sidebar showed tailored composite-key content on the final
+    subtopic. **API Design hub Phase 10: 13 of 19 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -6896,13 +6955,13 @@ Confirmed via direct file inspection before the pilot (`/api-design/rest-fundame
   All 21 cards `available: true` in `architecture/api-design/home/home.ts`. Progress: `apiTotal=19` in progress.service.ts.
   API Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ApiDesignNavComponent at `shared/api-design-nav/api-design-nav.ts`.
-  Phase 10: 12 of 19 topics have subtopics (`/api-design/rest-fundamentals`, pilot batch;
+  Phase 10: 13 of 19 topics have subtopics (`/api-design/rest-fundamentals`, pilot batch;
   `/api-design/resource-url-design`; `/api-design/http-methods-status-codes`;
   `/api-design/pagination-patterns` — Foundations nav group fully done; `/api-design/api-versioning`;
   `/api-design/error-response-design`; `/api-design/hateoas-hypermedia`; `/api-design/api-design-principles`;
   `/api-design/openapi-contracts` — REST Design nav group fully done; `/api-design/protocol-buffers`;
   `/api-design/grpc-service-patterns`; `/api-design/grpc-web-transcoding` — Protocols nav group
-  fully done, 2026-08-30) — see
+  fully done; `/api-design/graphql-fundamentals` — GraphQL & Real-Time nav group, 2026-08-30) — see
   "API Design hub subtopic wiring" section above
   for the `ApiDesignNavComponent` accordion structural fix and the generic `subtopicsOf(item.path)`
   toggle-gating pattern this hub's `@for`-looped nav template needed (a first for this hub, since

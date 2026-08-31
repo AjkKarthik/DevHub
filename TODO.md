@@ -8234,7 +8234,27 @@ off here with a date.
   accordion opens with all 3 labels; all 3 subtopic pages render with correct breadcrumb, 860px
   wrapper, zero console errors; sidebar showed tailored composite-key content. **API Design hub
   Phase 10: 12 of 19 topics complete -- Protocols nav group fully done.**
-- [ ] `/api-design/graphql-fundamentals` — GraphQL Fundamentals
+- [x] `/api-design/graphql-fundamentals` — GraphQL Fundamentals (2026-08-30). Fixed a genuine,
+  self-contained inaccuracy: the third mistake block's inline comment claimed "field is User!
+  (non-null) so null would error anyway" but the page's own schema declares `user(id: ID!): User`
+  -- nullable, no `!`. Returning null from this field is perfectly valid execution with no error,
+  directly contradicting the comment (the underlying advice to throw explicit errors was always
+  correct and already matched the block's own explanation text -- only the comment's specific
+  justification was wrong). Fixed the comment. 3 subtopics: traces the null-propagation contrast
+  via a small executeField() simulation verified via execution; a MiniLoader demonstrating
+  DataLoader's real process.nextTick()-based batching mechanism, verified via execution that 3
+  synchronous .load() calls collapse into 1 batch call; a withAuth() higher-order function
+  achieving the same centralizing effect as a real @auth schema directive, verified via execution
+  across authenticated/wrong-role/unauthenticated cases. Also fixed a genuine structural gap in
+  ApiDesignNavComponent: the GraphQL & Real-Time nav group's own @for loop had never had the
+  subtopics-accordion toggle markup at all (first topic in this group to get subtopics) -- added
+  it. Caught and fixed two bare @auth mentions in plain .html prose during the standard pre-build
+  sweep (escaped as &#64;auth) before the build ever ran. No SUBTOPICS collision. Build passed
+  clean. Browser-verified: main-page fix confirmed rendering live; nav accordion opens with all 3
+  labels (confirmed via both component method calls and a direct DOM query since this was a
+  brand-new template addition); all 3 subtopic pages render with correct breadcrumb, 860px
+  wrapper, zero console errors; sidebar showed tailored composite-key content. **API Design hub
+  Phase 10: 13 of 19 topics complete.**
 - [ ] `/api-design/graphql-vs-rest` — GraphQL vs REST
 - [ ] `/api-design/websockets-sse-polling` — WebSockets vs SSE vs Polling
 - [ ] `/api-design/webhook-design` — Webhook Design
