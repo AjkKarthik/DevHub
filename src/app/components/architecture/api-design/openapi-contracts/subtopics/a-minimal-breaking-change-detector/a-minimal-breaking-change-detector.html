@@ -1,0 +1,26 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="OpenAPI & Contracts" topicRoute="/api-design/openapi-contracts"
+    subtopicLabel="A Minimal Breaking-Change Detector" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">A Minimal Breaking-Change Detector</h1>
+  <p class="page-subtitle">The main page’s quiz names openapi-diff and Optic for breaking-change detection in one sentence — here’s what a minimal version of that comparison actually checks between two schema versions.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>Discriminator-based routing, a recursive validator for nested schemas, and a minimal breaking-change detector are three concrete implementations of ideas this topic names in prose but leaves as description — this completes the REST Design nav group.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="OpenAPI & Contracts" topicRoute="/api-design/openapi-contracts"
+    [prev]="{ label: 'Extending the Validator for Nested Arrays', route: '/api-design/openapi-contracts/extending-the-validator-for-nested-arrays' }" />
+</div>

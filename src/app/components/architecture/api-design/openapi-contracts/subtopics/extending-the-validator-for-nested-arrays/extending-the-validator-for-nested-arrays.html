@@ -1,0 +1,27 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="OpenAPI & Contracts" topicRoute="/api-design/openapi-contracts"
+    subtopicLabel="Extending the Validator for Nested Arrays" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">Extending the Validator for Nested Arrays</h1>
+  <p class="page-subtitle">The main page’s own Challenge validator only checks flat, top-level fields — here’s the recursive extension that can actually validate the main page’s own nested CreateOrderRequest shape.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>The main page’s quiz names openapi-diff and Optic for detecting breaking changes between spec versions in one sentence, with no code showing what that comparison actually checks. The next subtopic builds a minimal version of it.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="OpenAPI & Contracts" topicRoute="/api-design/openapi-contracts"
+    [prev]="{ label: 'Discriminator-Based oneOf, Actually Parsed', route: '/api-design/openapi-contracts/discriminator-based-oneof-actually-parsed' }"
+    [next]="{ label: 'A Minimal Breaking-Change Detector', route: '/api-design/openapi-contracts/a-minimal-breaking-change-detector' }" />
+</div>

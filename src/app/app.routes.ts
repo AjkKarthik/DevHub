@@ -3119,7 +3119,12 @@ export const routes: Routes = [
         { path: 'implementing-idempotency-key-deduplication', loadComponent: () => import('./components/architecture/api-design/api-design-principles/subtopics/implementing-idempotency-key-deduplication/implementing-idempotency-key-deduplication').then(m => m.ImplementingIdempotencyKeyDeduplicationSubtopic) },
         { path: 'missing-field-vs-explicit-null-in-patch-requests', loadComponent: () => import('./components/architecture/api-design/api-design-principles/subtopics/missing-field-vs-explicit-null-in-patch-requests/missing-field-vs-explicit-null-in-patch-requests').then(m => m.MissingFieldVsExplicitNullInPatchRequestsSubtopic) },
       ] },
-    { path: 'openapi-contracts',     loadComponent: () => import('./components/architecture/api-design/openapi-contracts/openapi-contracts').then(m => m.ApiOpenapiContracts) },
+    { path: 'openapi-contracts', children: [
+        { path: '', loadComponent: () => import('./components/architecture/api-design/openapi-contracts/openapi-contracts').then(m => m.ApiOpenapiContracts) },
+        { path: 'discriminator-based-oneof-actually-parsed', loadComponent: () => import('./components/architecture/api-design/openapi-contracts/subtopics/discriminator-based-oneof-actually-parsed/discriminator-based-oneof-actually-parsed').then(m => m.DiscriminatorBasedOneofActuallyParsedSubtopic) },
+        { path: 'extending-the-validator-for-nested-arrays', loadComponent: () => import('./components/architecture/api-design/openapi-contracts/subtopics/extending-the-validator-for-nested-arrays/extending-the-validator-for-nested-arrays').then(m => m.ExtendingTheValidatorForNestedArraysSubtopic) },
+        { path: 'a-minimal-breaking-change-detector', loadComponent: () => import('./components/architecture/api-design/openapi-contracts/subtopics/a-minimal-breaking-change-detector/a-minimal-breaking-change-detector').then(m => m.AMinimalBreakingChangeDetectorSubtopic) },
+      ] },
     { path: 'api-security',          loadComponent: () => import('./components/architecture/api-design/api-security/api-security').then(m => m.ApiApiSecurity) },
     { path: 'breaking-changes',      loadComponent: () => import('./components/architecture/api-design/breaking-changes/breaking-changes').then(m => m.ApiBreakingChanges) },
     { path: 'rate-limiting',         loadComponent: () => import('./components/architecture/api-design/rate-limiting/rate-limiting').then(m => m.ApiRateLimiting) },

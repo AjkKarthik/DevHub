@@ -35439,6 +35439,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The spec describing an endpoint does not guarantee the implementation actually conforms — contract testing closes this verification gap.',
     ],
   },
+  'api-design/openapi-contracts/discriminator-based-oneof-actually-parsed': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Extending the Validator for Nested Arrays', route: '/api-design/openapi-contracts/extending-the-validator-for-nested-arrays' },
+      { label: 'OpenAPI & Contracts (overview)', route: '/api-design/openapi-contracts' },
+    ],
+    tip: 'The discriminator field is purely a ROUTING hint -- validation still comes entirely from the individual oneOf schemas; discriminator just tells a parser which single schema to check a payload against instead of trying every one.',
+    gotchas: [
+      'An unrecognized discriminator value usually means the client is sending a shape the spec does not know about yet, not a payload that merely fails validation for a known shape -- worth handling as its own case.',
+    ],
+  },
+  'api-design/openapi-contracts/extending-the-validator-for-nested-arrays': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Discriminator-Based oneOf, Actually Parsed', route: '/api-design/openapi-contracts/discriminator-based-oneof-actually-parsed' },
+      { label: 'A Minimal Breaking-Change Detector', route: '/api-design/openapi-contracts/a-minimal-breaking-change-detector' },
+    ],
+    tip: 'A schema validator that only checks one flat level of properties can validate a fraction of what a real OpenAPI spec describes -- real schemas nest arrays and objects constantly, which needs a recursive validator, not a wider flat one.',
+    gotchas: [
+      'The recursive validator tracks no depth counter at all -- each call only prepends its own field[index]. prefix onto whatever the deeper call already returned, which is what builds the full nested error path.',
+    ],
+  },
+  'api-design/openapi-contracts/a-minimal-breaking-change-detector': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Extending the Validator for Nested Arrays', route: '/api-design/openapi-contracts/extending-the-validator-for-nested-arrays' },
+      { label: 'OpenAPI & Contracts (overview)', route: '/api-design/openapi-contracts' },
+    ],
+    tip: 'Only three comparisons catch most breaking changes: a field removed, an existing field\'s type changed, or a field becoming required that was not required before -- a brand-new OPTIONAL field is always safe to add.',
+    gotchas: [
+      'A field moving from required to optional is not automatically safe to leave undetected -- whether it is depends on the server\'s actual runtime behavior, not just the schema text.',
+    ],
+  },
   'api-design/rate-limiting': {
     apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
     related: [

@@ -3593,4 +3593,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Implementing Idempotency-Key Deduplication', route: '/api-design/api-design-principles/implementing-idempotency-key-deduplication' },
     { label: 'Missing Field vs. Explicit Null in PATCH Requests', route: '/api-design/api-design-principles/missing-field-vs-explicit-null-in-patch-requests' },
   ],
+  'openapi-contracts': [
+    { label: 'Discriminator-Based oneOf, Actually Parsed', route: '/api-design/openapi-contracts/discriminator-based-oneof-actually-parsed' },
+    { label: 'Extending the Validator for Nested Arrays', route: '/api-design/openapi-contracts/extending-the-validator-for-nested-arrays' },
+    { label: 'A Minimal Breaking-Change Detector', route: '/api-design/openapi-contracts/a-minimal-breaking-change-detector' },
+  ],
 };
