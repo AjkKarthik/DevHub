@@ -3608,4 +3608,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'A Real gRPC Interceptor Chain', route: '/api-design/grpc-service-patterns/a-real-grpc-interceptor-chain' },
     { label: 'RetryInfo-Aware Retry Instead of a Guessed Backoff', route: '/api-design/grpc-service-patterns/retryinfo-aware-retry-instead-of-a-guessed-backoff' },
   ],
+  'grpc-web-transcoding': [
+    { label: 'A Real HTTP Transcoding Router', route: '/api-design/grpc-web-transcoding/a-real-http-transcoding-router' },
+    { label: 'Content Negotiation on a Connect Server', route: '/api-design/grpc-web-transcoding/content-negotiation-on-a-connect-server' },
+    { label: 'Which Streaming Patterns Actually Work in a Browser', route: '/api-design/grpc-web-transcoding/which-streaming-patterns-actually-work-in-a-browser' },
+  ],
 };

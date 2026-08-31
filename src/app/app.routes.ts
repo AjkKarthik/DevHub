@@ -3118,7 +3118,12 @@ export const routes: Routes = [
         { path: 'a-real-grpc-interceptor-chain', loadComponent: () => import('./components/architecture/api-design/grpc-service-patterns/subtopics/a-real-grpc-interceptor-chain/a-real-grpc-interceptor-chain').then(m => m.ARealGrpcInterceptorChainSubtopic) },
         { path: 'retryinfo-aware-retry-instead-of-a-guessed-backoff', loadComponent: () => import('./components/architecture/api-design/grpc-service-patterns/subtopics/retryinfo-aware-retry-instead-of-a-guessed-backoff/retryinfo-aware-retry-instead-of-a-guessed-backoff').then(m => m.RetryinfoAwareRetryInsteadOfAGuessedBackoffSubtopic) },
       ] },
-    { path: 'grpc-web-transcoding',  loadComponent: () => import('./components/architecture/api-design/grpc-web-transcoding/grpc-web-transcoding').then(m => m.ApiGrpcWeb) },
+    { path: 'grpc-web-transcoding', children: [
+        { path: '', loadComponent: () => import('./components/architecture/api-design/grpc-web-transcoding/grpc-web-transcoding').then(m => m.ApiGrpcWeb) },
+        { path: 'a-real-http-transcoding-router', loadComponent: () => import('./components/architecture/api-design/grpc-web-transcoding/subtopics/a-real-http-transcoding-router/a-real-http-transcoding-router').then(m => m.ARealHttpTranscodingRouterSubtopic) },
+        { path: 'content-negotiation-on-a-connect-server', loadComponent: () => import('./components/architecture/api-design/grpc-web-transcoding/subtopics/content-negotiation-on-a-connect-server/content-negotiation-on-a-connect-server').then(m => m.ContentNegotiationOnAConnectServerSubtopic) },
+        { path: 'which-streaming-patterns-actually-work-in-a-browser', loadComponent: () => import('./components/architecture/api-design/grpc-web-transcoding/subtopics/which-streaming-patterns-actually-work-in-a-browser/which-streaming-patterns-actually-work-in-a-browser').then(m => m.WhichStreamingPatternsActuallyWorkInABrowserSubtopic) },
+      ] },
     { path: 'graphql-fundamentals',  loadComponent: () => import('./components/architecture/api-design/graphql-fundamentals/graphql-fundamentals').then(m => m.ApiGraphqlFundamentals) },
     { path: 'graphql-vs-rest',       loadComponent: () => import('./components/architecture/api-design/graphql-vs-rest/graphql-vs-rest').then(m => m.ApiGraphqlVsRest) },
     { path: 'websockets-sse-polling',loadComponent: () => import('./components/architecture/api-design/websockets-sse-polling/websockets-sse-polling').then(m => m.ApiWebsockets) },

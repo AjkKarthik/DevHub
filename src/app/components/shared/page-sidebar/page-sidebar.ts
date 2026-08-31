@@ -35661,6 +35661,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'JSON transcoding (via a gateway like grpc-gateway) lets REST-only consumers use a gRPC-first backend without them needing any gRPC awareness at all.',
     ],
   },
+  'api-design/grpc-web-transcoding/a-real-http-transcoding-router': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Content Negotiation on a Connect Server', route: '/api-design/grpc-web-transcoding/content-negotiation-on-a-connect-server' },
+      { label: 'gRPC-Web & Transcoding (overview)', route: '/api-design/grpc-web-transcoding' },
+    ],
+    tip: 'Parsing one google.api.http annotation string is only the first step -- routing a REAL request means matching it against many registered routes and binding path parameters, including nested ones like user.id, into the right place on the outgoing request.',
+    gotchas: [
+      'A dotted path binding like user.id must merge into an existing nested object, not overwrite it -- a naive implementation can silently clobber sibling fields the request body already set.',
+    ],
+  },
+  'api-design/grpc-web-transcoding/content-negotiation-on-a-connect-server': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'A Real HTTP Transcoding Router', route: '/api-design/grpc-web-transcoding/a-real-http-transcoding-router' },
+      { label: 'Which Streaming Patterns Actually Work in a Browser', route: '/api-design/grpc-web-transcoding/which-streaming-patterns-actually-work-in-a-browser' },
+    ],
+    tip: 'A Connect server must decode the request AND encode the response using the SAME Content-Type the client specified -- silently switching formats between what was sent and what comes back would break any client that only knows how to parse its own requested format.',
+    gotchas: [
+      'An unrecognized Content-Type should fail explicitly, not silently fall back to a default encoding the client never asked for.',
+    ],
+  },
+  'api-design/grpc-web-transcoding/which-streaming-patterns-actually-work-in-a-browser': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Content Negotiation on a Connect Server', route: '/api-design/grpc-web-transcoding/content-negotiation-on-a-connect-server' },
+      { label: 'gRPC-Web & Transcoding (overview)', route: '/api-design/grpc-web-transcoding' },
+    ],
+    tip: 'Connect\'s streaming support is a strict superset of gRPC-Web\'s -- every pattern gRPC-Web supports, Connect also supports, plus Client and Bidirectional Streaming, which gRPC-Web cannot do at all.',
+    gotchas: [
+      '"Batch into a single unary call" fixes Client Streaming\'s incompatibility with gRPC-Web, but does not generalize to Bidirectional Streaming -- an ongoing, real-time exchange like chat has no natural single batch point.',
+    ],
+  },
   'api-design/websockets-sse-polling': {
     apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
     related: [

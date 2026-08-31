@@ -1,0 +1,27 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="gRPC-Web & Transcoding" topicRoute="/api-design/grpc-web-transcoding"
+    subtopicLabel="Content Negotiation on a Connect Server" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">Content Negotiation on a Connect Server</h1>
+  <p class="page-subtitle">The main page names JSON vs. proto content negotiation in one sentence — here’s a server that actually decodes and re-encodes a request in whatever format the client asked for.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>The main page states gRPC-Web only supports unary and server streaming while Connect supports all four patterns, with no code checking a specific rpc against that split. The next subtopic builds that check, reusing this hub’s own gRPC Service Patterns classifier.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="gRPC-Web & Transcoding" topicRoute="/api-design/grpc-web-transcoding"
+    [prev]="{ label: 'A Real HTTP Transcoding Router', route: '/api-design/grpc-web-transcoding/a-real-http-transcoding-router' }"
+    [next]="{ label: 'Which Streaming Patterns Actually Work in a Browser', route: '/api-design/grpc-web-transcoding/which-streaming-patterns-actually-work-in-a-browser' }" />
+</div>
