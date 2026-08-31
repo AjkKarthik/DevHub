@@ -3136,7 +3136,12 @@ export const routes: Routes = [
         { path: 'automatic-persisted-queries-the-hash-registration-flow', loadComponent: () => import('./components/architecture/api-design/graphql-vs-rest/subtopics/automatic-persisted-queries-the-hash-registration-flow/automatic-persisted-queries-the-hash-registration-flow').then(m => m.AutomaticPersistedQueriesTheHashRegistrationFlowSubtopic) },
         { path: 'federation-entity-resolution-across-two-subgraphs', loadComponent: () => import('./components/architecture/api-design/graphql-vs-rest/subtopics/federation-entity-resolution-across-two-subgraphs/federation-entity-resolution-across-two-subgraphs').then(m => m.FederationEntityResolutionAcrossTwoSubgraphsSubtopic) },
       ] },
-    { path: 'websockets-sse-polling',loadComponent: () => import('./components/architecture/api-design/websockets-sse-polling/websockets-sse-polling').then(m => m.ApiWebsockets) },
+    { path: 'websockets-sse-polling', children: [
+        { path: '', loadComponent: () => import('./components/architecture/api-design/websockets-sse-polling/websockets-sse-polling').then(m => m.ApiWebsockets) },
+        { path: 'the-silently-dropped-browseronly-rule', loadComponent: () => import('./components/architecture/api-design/websockets-sse-polling/subtopics/the-silently-dropped-browseronly-rule/the-silently-dropped-browseronly-rule').then(m => m.TheSilentlyDroppedBrowseronlyRuleSubtopic) },
+        { path: 'redis-pub-sub-fanout-across-server-instances', loadComponent: () => import('./components/architecture/api-design/websockets-sse-polling/subtopics/redis-pub-sub-fanout-across-server-instances/redis-pub-sub-fanout-across-server-instances').then(m => m.RedisPubSubFanoutAcrossServerInstancesSubtopic) },
+        { path: 'sse-gap-recovery-with-a-ring-buffer', loadComponent: () => import('./components/architecture/api-design/websockets-sse-polling/subtopics/sse-gap-recovery-with-a-ring-buffer/sse-gap-recovery-with-a-ring-buffer').then(m => m.SseGapRecoveryWithARingBufferSubtopic) },
+      ] },
     { path: 'webhook-design',        loadComponent: () => import('./components/architecture/api-design/webhook-design/webhook-design').then(m => m.ApiWebhookDesign) },
     { path: 'api-design-principles', children: [
         { path: '', loadComponent: () => import('./components/architecture/api-design/api-design-principles/api-design-principles').then(m => m.ApiDesignPrinciples) },

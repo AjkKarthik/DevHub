@@ -3623,4 +3623,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Automatic Persisted Queries: The Hash Registration Flow', route: '/api-design/graphql-vs-rest/automatic-persisted-queries-the-hash-registration-flow' },
     { label: 'Federation Entity Resolution Across Two Subgraphs', route: '/api-design/graphql-vs-rest/federation-entity-resolution-across-two-subgraphs' },
   ],
+  'websockets-sse-polling': [
+    { label: 'The Silently Dropped browserOnly Rule', route: '/api-design/websockets-sse-polling/the-silently-dropped-browseronly-rule' },
+    { label: 'Redis Pub/Sub Fanout Across Server Instances', route: '/api-design/websockets-sse-polling/redis-pub-sub-fanout-across-server-instances' },
+    { label: 'SSE Gap Recovery With a Ring Buffer', route: '/api-design/websockets-sse-polling/sse-gap-recovery-with-a-ring-buffer' },
+  ],
 };

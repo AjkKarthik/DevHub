@@ -35771,6 +35771,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'WebSockets don\'t work transparently through all corporate proxies/firewalls the way plain HTTP-based SSE does, a real deployment consideration.',
     ],
   },
+  'api-design/websockets-sse-polling/the-silently-dropped-browseronly-rule': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Redis Pub/Sub Fanout Across Server Instances', route: '/api-design/websockets-sse-polling/redis-pub-sub-fanout-across-server-instances' },
+      { label: 'WebSockets vs SSE vs Polling (overview)', route: '/api-design/websockets-sse-polling' },
+    ],
+    tip: 'A "Simplify" shortcut in a Challenge description is a claim to verify, not trust by default -- the original solution silently dropped a browserOnly-based rule that was not actually redundant for one real input.',
+    gotchas: [
+      'A parameter accepted in a function\'s type signature but never referenced in its body is a real gap TypeScript cannot catch on its own -- only comparing the implementation against the stated spec catches it.',
+    ],
+  },
+  'api-design/websockets-sse-polling/redis-pub-sub-fanout-across-server-instances': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'The Silently Dropped browserOnly Rule', route: '/api-design/websockets-sse-polling/the-silently-dropped-browseronly-rule' },
+      { label: 'SSE Gap Recovery With a Ring Buffer', route: '/api-design/websockets-sse-polling/sse-gap-recovery-with-a-ring-buffer' },
+    ],
+    tip: 'Every server instance both publishes to AND subscribes from the same shared channel -- even a message originating locally travels through the pub/sub bus rather than taking a direct shortcut to that instance\'s own local clients.',
+    gotchas: [
+      'The actual WebSocket connections are never shared or moved between instances -- only the message data crosses the shared bus; a client\'s connection stays with whichever single instance it originally connected to.',
+    ],
+  },
+  'api-design/websockets-sse-polling/sse-gap-recovery-with-a-ring-buffer': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Redis Pub/Sub Fanout Across Server Instances', route: '/api-design/websockets-sse-polling/redis-pub-sub-fanout-across-server-instances' },
+      { label: 'WebSockets vs SSE vs Polling (overview)', route: '/api-design/websockets-sse-polling' },
+    ],
+    tip: 'A bounded ring buffer trades guaranteed recovery for bounded memory -- a client reconnecting after the buffer has evicted events it missed needs an explicit gap signal, not a silent "fully caught up" response.',
+    gotchas: [
+      'The event store tracks events globally with zero per-client state -- the client-provided Last-Event-ID header (sent automatically by EventSource on reconnect) is what lets one shared store correctly resume many different clients.',
+    ],
+  },
 
   // ── Observability: per-page entries ─────────────────────────────────────────
   'observability/observability-fundamentals': {

@@ -1,0 +1,27 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="WebSockets vs SSE vs Polling" topicRoute="/api-design/websockets-sse-polling"
+    subtopicLabel="Redis Pub/Sub Fanout Across Server Instances" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">Redis Pub/Sub Fanout Across Server Instances</h1>
+  <p class="page-subtitle">The QnA describes the pub/sub mechanism for scaling WebSockets across servers in prose — here’s a minimal simulation showing a message crossing between two independent instances.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>The QnA describes ring-buffer-based SSE gap recovery via Last-Event-ID in real depth, with no codeTab showing it built. The next subtopic builds it.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="WebSockets vs SSE vs Polling" topicRoute="/api-design/websockets-sse-polling"
+    [prev]="{ label: 'The Silently Dropped browserOnly Rule', route: '/api-design/websockets-sse-polling/the-silently-dropped-browseronly-rule' }"
+    [next]="{ label: 'SSE Gap Recovery With a Ring Buffer', route: '/api-design/websockets-sse-polling/sse-gap-recovery-with-a-ring-buffer' }" />
+</div>

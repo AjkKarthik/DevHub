@@ -1,0 +1,26 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="WebSockets vs SSE vs Polling" topicRoute="/api-design/websockets-sse-polling"
+    subtopicLabel="SSE Gap Recovery With a Ring Buffer" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">SSE Gap Recovery With a Ring Buffer</h1>
+  <p class="page-subtitle">The QnA describes storing recent events in a ring buffer for Last-Event-ID resumption in real depth — here’s the actual store, including what happens when a client reconnects too late to fully recover.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>A corrected Challenge rule, a real pub/sub fanout simulation, and ring-buffer-based gap recovery are three concrete implementations of ideas this topic names in prose but leaves as description. Webhook Design is next, completing the GraphQL & Real-Time nav group.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="WebSockets vs SSE vs Polling" topicRoute="/api-design/websockets-sse-polling"
+    [prev]="{ label: 'Redis Pub/Sub Fanout Across Server Instances', route: '/api-design/websockets-sse-polling/redis-pub-sub-fanout-across-server-instances' }" />
+</div>
