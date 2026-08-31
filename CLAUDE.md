@@ -5777,6 +5777,55 @@ Confirmed via direct file inspection before the pilot (`/api-design/rest-fundame
     pages render with correct breadcrumb, 860px wrapper, zero console errors; sidebar showed
     tailored composite-key content on the final subtopic. **API Design hub Phase 10: 10 of 19
     topics complete.**
+18. **The `grpc-service-patterns` batch — the second topic in the Protocols nav group — found and
+    fixed a genuine, self-contained bug in the main page’s own bidirectional-streaming `chat()`
+    handler**: it was labeled `// Broadcast to all other connected clients` and `// echo back +
+    broadcast`, but the code only ever called `call.write(response)` on the SAME `call` object a
+    message arrived on — in gRPC, `call` is scoped to exactly ONE connection, so this could only
+    ever echo a message back to its own sender, never reach any other connected client at all. The
+    original code was not "broken" in the sense of crashing or failing a naive test — it correctly
+    implemented a legitimate, DIFFERENT feature (an echo server) than the one the comment claimed.
+    Fixed by adding an `activeChatCalls` registry (a module-scoped `Set`), registered on connect and
+    removed on BOTH `'end'` and `'cancelled'` (this page’s own THIRD mistake block already warns
+    against leaking resources by only listening for one disconnect event — a chat registry cleaned
+    up on `'end'` alone would accumulate dead call references from every client whose connection
+    simply dropped), then broadcasting to every registered call except the sender. Three subtopics:
+    (1) **fix-adjacent** — reproduces the exact registry mechanic via a `MockCall` simulation
+    (`write()` recording what a given mock client received), verified via execution across a
+    realistic registration-order scenario (alice’s first message reaches nobody since bob hadn’t
+    registered yet; bob’s later message correctly reaches alice; alice disconnecting and carol
+    joining correctly excludes alice going forward) — a Try It reasons through why the original code
+    was a perfectly legitimate echo server, just mismatched against a comment claiming something
+    else entirely; (2) **gap-closing** — a quiz explanation describes gRPC interceptor chaining
+    ("functions that run before and after each RPC method... chain interceptors: multiple
+    interceptors are chained, run in order") in real depth with zero chaining code anywhere on the
+    page; built a `next()`-based `chainInterceptors()` (the same fundamental pattern already
+    covered for HTTP middleware elsewhere in this hub), verified via execution that an
+    `authInterceptor` placed after a `loggingInterceptor` correctly rejects an unauthenticated call
+    BEFORE the real handler ever runs, while the logging interceptor — wrapping OUTSIDE the rest of
+    the chain — still logs both the "before" and "after" lines for the rejected call; a Try It
+    traces the concrete, observable difference reversing that order produces (the rejected call’s
+    log entries vanish entirely once auth runs first); (3) **gap-closing** — the QnA’s own
+    `RetryInfo` answer states precisely why a "retryable" status code alone isn’t enough (the server
+    knows WHY it failed and can specify exactly how long to wait) but shows no retry function
+    honoring it; built a `callWithRetry()` respecting a server-specified `retryDelayMs` and refusing
+    to retry non-retryable codes (`INVALID_ARGUMENT`) at all, verified via execution across both
+    cases — including confirming a non-retryable failure gives up on the FIRST attempt regardless of
+    `maxAttempts`; a Try It surfaces a real, deliberately-uncovered gap (a thundering-herd retry
+    spike when many clients receive the identical server-specified delay and retry in lockstep,
+    which client-side jitter — not `RetryInfo` itself — has to solve). No `SUBTOPICS` collision for
+    `grpc-service-patterns` (checked both forms, confirmed collision-free, left bare) — the
+    Protocols nav loop’s own accordion toggle (added structurally in the immediately-prior
+    `protocol-buffers` batch) required ZERO further template changes for this second topic in the
+    group. All three `solution` fields swept clean via the standing apostrophe/backtick-parity/
+    solution-contamination scripts; the main page’s own edit re-swept for backtick-parity after the
+    fix (36 backticks, even). Build passed clean (single-level backgrounding, explicit `EXITCODE:$?`
+    capture, zero `ERROR` lines). Browser-verified: the main-page fix confirmed rendering live
+    (required expanding the codeTab’s own collapsed "▼ View Code" toggle before the fixed text —
+    `activeChatCalls`, `broadcast, not echo` — appeared in the DOM); nav accordion opens with all 3
+    labels; all 3 subtopic pages render with correct breadcrumb, 860px wrapper, zero console errors;
+    sidebar showed tailored composite-key content on the final subtopic. **API Design hub Phase 10:
+    11 of 19 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -6804,12 +6853,13 @@ Confirmed via direct file inspection before the pilot (`/api-design/rest-fundame
   All 21 cards `available: true` in `architecture/api-design/home/home.ts`. Progress: `apiTotal=19` in progress.service.ts.
   API Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ApiDesignNavComponent at `shared/api-design-nav/api-design-nav.ts`.
-  Phase 10: 10 of 19 topics have subtopics (`/api-design/rest-fundamentals`, pilot batch;
+  Phase 10: 11 of 19 topics have subtopics (`/api-design/rest-fundamentals`, pilot batch;
   `/api-design/resource-url-design`; `/api-design/http-methods-status-codes`;
   `/api-design/pagination-patterns` — Foundations nav group fully done; `/api-design/api-versioning`;
   `/api-design/error-response-design`; `/api-design/hateoas-hypermedia`; `/api-design/api-design-principles`;
-  `/api-design/openapi-contracts` — REST Design nav group fully done; `/api-design/protocol-buffers`
-  — Protocols nav group, 2026-08-30) — see "API Design hub subtopic wiring" section above
+  `/api-design/openapi-contracts` — REST Design nav group fully done; `/api-design/protocol-buffers`;
+  `/api-design/grpc-service-patterns` — Protocols nav group, 2026-08-30) — see
+  "API Design hub subtopic wiring" section above
   for the `ApiDesignNavComponent` accordion structural fix and the generic `subtopicsOf(item.path)`
   toggle-gating pattern this hub's `@for`-looped nav template needed (a first for this hub, since
   most prior hubs hand-write one `<a>` per topic) — generalized from a per-topic hardcoded check to

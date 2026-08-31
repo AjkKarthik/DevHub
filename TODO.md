@@ -8201,7 +8201,25 @@ off here with a date.
   Browser-verified: nav accordion opens with all 3 labels; all 3 subtopic pages render with
   correct breadcrumb, 860px wrapper, zero console errors; sidebar showed tailored composite-key
   content. **API Design hub Phase 10: 10 of 19 topics complete.**
-- [ ] `/api-design/grpc-service-patterns` — gRPC Service Patterns
+- [x] `/api-design/grpc-service-patterns` — gRPC Service Patterns (2026-08-30). Fixed a genuine bug
+  in the main page's own bidirectional-streaming chat() handler: labeled "broadcast to all other
+  connected clients" but call.write() only ever reached the SAME connection a message arrived on
+  (call is scoped to one connection) -- the original code correctly implemented an echo server,
+  just not the broadcast chat the comment claimed. Fixed with an activeChatCalls registry, added
+  on connect and removed on both 'end' and 'cancelled' (matching this page's own mistake block
+  about not leaking resources on disconnect). 3 subtopics: The Chat Handler That Never Actually
+  Broadcasts -- traces the exact bug via a MockCall registry simulation verified via execution;
+  A Real gRPC Interceptor Chain -- the quiz describes chaining in prose with zero code, built a
+  next()-based chain verified via execution including the concrete effect of interceptor ORDER on
+  what gets logged for a rejected call; RetryInfo-Aware Retry Instead of a Guessed Backoff -- the
+  QnA argues a retryable status code alone isn't enough, built a retry wrapper respecting a
+  server-specified delay and refusing to retry non-retryable codes, verified via execution. No
+  SUBTOPICS collision. Protocols nav loop's accordion toggle (added in the prior batch) needed no
+  further changes. Build passed clean. Browser-verified: main-page fix confirmed rendering live
+  (after expanding the codeTab's own collapsed View Code toggle); nav accordion opens with all 3
+  labels; all 3 subtopic pages render with correct breadcrumb, 860px wrapper, zero console errors;
+  sidebar showed tailored composite-key content. **API Design hub Phase 10: 11 of 19 topics
+  complete.**
 - [ ] `/api-design/grpc-web-transcoding` — gRPC-Web & Transcoding
 - [ ] `/api-design/graphql-fundamentals` — GraphQL Fundamentals
 - [ ] `/api-design/graphql-vs-rest` — GraphQL vs REST
