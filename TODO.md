@@ -8190,7 +8190,30 @@ off here with a date.
 - [ ] `/api-design/graphql-vs-rest` — GraphQL vs REST
 - [ ] `/api-design/websockets-sse-polling` — WebSockets vs SSE vs Polling
 - [ ] `/api-design/webhook-design` — Webhook Design
-- [ ] `/api-design/api-design-principles` — API Design Principles
+- [x] `/api-design/api-design-principles` — API Design Principles (2026-08-30). Fixed a genuine,
+  self-contained worked-example bug in the main page's own Challenge: `description` claimed input
+  `date_joined: 1705312200` transforms to output `joinedAt: "2024-01-15T10:30:00Z"`, but running
+  the Challenge's own correct conversion logic (`new Date(timestamp * 1000).toISOString()`) on that
+  input actually produces `"2024-01-15T09:50:00.000Z"` -- a 40-minute gap, verified via direct
+  Node.js execution. The code was always right; the worked example's own input/output pair simply
+  didn't describe the same instant. Found the correct input by working backwards
+  (`new Date(claimedOutput).getTime() / 1000` -> `1705314600`), verified it round-trips exactly,
+  and fixed all four occurrences (description, starterCode, solution). 3 subtopics: reproduces the
+  timestamp discrepancy via execution with a Try It on why one correct field says nothing about a
+  different, unrelated field; a real Idempotency-Key store (Map-based, 24h expiry) verified
+  end-to-end via execution -- within-window retry replays the cached response and 200, past-window
+  creates a genuinely new resource; the common falsy-fallback PATCH-merge bug
+  (`patch[key] || existing[key]` silently discarding explicit null/0/'') verified via execution
+  against the correct spread-based merge. No SUBTOPICS collision. Hit and correctly diagnosed a
+  double-backgrounding exit-code mask (a nested `&`-backgrounded subshell inside an already-
+  `run_in_background` Bash call reported the wrapper's trivial exit code, not the real build
+  result) plus a separate, genuine transient esbuild artifact and a session-interruption-stopped
+  background build -- all resolved by re-running with correct single-level backgrounding and
+  confirming via process/file-length checks before retrying. Build passed clean on the final
+  attempt. Browser-verified: nav accordion opens with all 3 labels; the main-page fix confirmed
+  live (old timestamp fully absent, corrected one present); all 3 subtopic pages render with
+  correct breadcrumb, 860px wrapper, zero console errors; sidebar showed tailored composite-key
+  content. **API Design hub Phase 10: 8 of 19 topics complete.**
 - [ ] `/api-design/openapi-contracts` — OpenAPI & Contracts
 - [ ] `/api-design/api-security` — API Security
 - [ ] `/api-design/breaking-changes` — Breaking Changes

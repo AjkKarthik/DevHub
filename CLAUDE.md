@@ -5624,6 +5624,63 @@ Confirmed via direct file inspection before the pilot (`/api-design/rest-fundame
     link-following fix confirmed rendering live inside the Common Mistakes block; breadcrumb and
     860px wrapper confirmed on every subtopic; sidebar showed tailored composite-key content.
     **API Design hub Phase 10: 7 of 19 topics complete.**
+15. **The `api-design-principles` batch found and fixed a genuine, self-contained worked-example
+    bug in the main page's own Challenge — verified via direct Node.js execution, not assumed**:
+    the Challenge's `description` claimed input `date_joined: 1705312200` transforms to output
+    `joinedAt: "2024-01-15T10:30:00Z"`, but running the Challenge's own correct conversion logic
+    (`new Date(timestamp * 1000).toISOString()`, exactly what `solution` implements) on that input
+    produces `"2024-01-15T09:50:00.000Z"` — a 40-minute (2,400-second) gap. The code was never
+    wrong; the worked example's own input/output pair simply didn't describe the same instant.
+    Found the correct input by working backwards (`new Date(claimedOutput).getTime() / 1000` →
+    `1705314600`), verified it round-trips to the exact claimed output (including the milliseconds
+    `.toISOString()` always appends, which the original prose's bare `"...Z"` also omitted), and
+    fixed all four occurrences (`description`'s Input/Output/requirements line, `starterCode`,
+    `solution`'s demonstration call). Three subtopics: (1) **fix-adjacent** — reproduces the exact
+    discrepancy and the backwards-derivation fix via direct execution, with a Try It reasoning
+    through why `balanceCents` being independently correct (`Math.round(9.99 * 100) === 999`) says
+    nothing about the unrelated `joinedAt` field — each output needs its own independent check;
+    (2) **gap-closing** — the theory/quiz describe the Idempotency-Key pattern ("server
+    deduplicates requests with the same key within a time window") in real detail, but no codeTab
+    anywhere on the page builds the actual server-side store; built a `Map`-based key→response
+    cache with a 24h expiry window, verified end-to-end via direct execution (a within-window
+    retry replays the identical cached response and status `200`, not a second `201`; a
+    past-window retry correctly creates a genuinely new resource) — a Try It also traces why a
+    simpler `Set<string>`-based "seen keys" version would defeat the pattern's actual purpose (a
+    client can't recover its original successful response, only a generic duplicate error); (3)
+    **gap-closing** — the QnA states the missing-vs-null distinction in one sentence with zero
+    code; built and verified via direct execution the extremely common real bug — a falsy-fallback
+    merge (`patch[key] || existing[key]`) that silently discards an explicit `null`/`0`/`''` — set
+    against a correct plain-spread merge (`{ ...existing, ...patch }`), which gets the distinction
+    right for free purely from JS's own spread semantics; a Try It extends this with the one thing
+    spread alone can't do — rejecting an explicit `null` on a field that must never be nullable,
+    which needs its own `'field' in patch` check before the merge. No `SUBTOPICS` collision for
+    `api-design-principles` (checked both forms, confirmed collision-free, left bare). All three
+    `solution` fields swept clean (zero `<code>`/entity contamination — the plain-interpolation
+    field-binding rule, checked via a precise regex-extracted-block script rather than a naive
+    text search) and backtick-parity confirmed even across all three files. Hit and correctly
+    diagnosed a **double-backgrounding exit-code mask**: piping a background build through an
+    outer `(... ) &`-backgrounded subshell inside an already-`run_in_background: true` Bash call
+    caused the harness to report the WRAPPER script's trivial exit code (0) the instant the
+    subshell was merely *started*, not the real `ng build` result — the actual build was still
+    running (and its log was later found incomplete) when the false "exit code 0" notification
+    arrived. Re-ran with single-level backgrounding (`run_in_background: true` directly on the
+    real build command, no nested `&`) to get a trustworthy result — this surfaced a SEPARATE,
+    genuine transient esbuild artifact (an `NG5002`-style `.ɵɵtext` compiled-output fragment
+    reported as a raw syntax error at a line number past the end of an unrelated, untouched Go-hub
+    subtopic file) — confirmed as a flaky artifact (not a real regression) by checking the cited
+    file's actual line count, then resolved cleanly on an immediate retry with zero files touched,
+    consistent with the transient-esbuild-panic precedent already documented in this file. A
+    session interruption also stopped a subsequent background build mid-run with no completion
+    record — recovered by checking for a live `ng build`/`esbuild` process (found none) and
+    re-running directly. Build passed clean on the final attempt (zero `ERROR` lines). The local
+    `ng serve` preview also needed a full `preview_stop`/`preview_start` restart (found stuck mid-
+    "Building..." from a stale process) before browser verification — waited for readiness via a
+    `curl`-polling background Bash task rather than a fixed sleep, per established practice.
+    Browser-verified: nav accordion opens with all 3 labels; the main-page fix confirmed live (old
+    timestamp `1705312200` fully absent from the rendered page, corrected `1705314600` present);
+    all 3 subtopic pages render with correct breadcrumb, 860px wrapper, zero console errors;
+    sidebar showed tailored composite-key content on the final subtopic. **API Design hub Phase
+    10: 8 of 19 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -6651,11 +6708,11 @@ Confirmed via direct file inspection before the pilot (`/api-design/rest-fundame
   All 21 cards `available: true` in `architecture/api-design/home/home.ts`. Progress: `apiTotal=19` in progress.service.ts.
   API Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ApiDesignNavComponent at `shared/api-design-nav/api-design-nav.ts`.
-  Phase 10: 7 of 19 topics have subtopics (`/api-design/rest-fundamentals`, pilot batch;
+  Phase 10: 8 of 19 topics have subtopics (`/api-design/rest-fundamentals`, pilot batch;
   `/api-design/resource-url-design`; `/api-design/http-methods-status-codes`;
   `/api-design/pagination-patterns` — Foundations nav group fully done; `/api-design/api-versioning`;
-  `/api-design/error-response-design`; `/api-design/hateoas-hypermedia` — REST Design nav group,
-  2026-08-30) — see "API Design hub subtopic wiring" section above
+  `/api-design/error-response-design`; `/api-design/hateoas-hypermedia`; `/api-design/api-design-principles`
+  — REST Design nav group, 2026-08-30) — see "API Design hub subtopic wiring" section above
   for the `ApiDesignNavComponent` accordion structural fix and the generic `subtopicsOf(item.path)`
   toggle-gating pattern this hub's `@for`-looped nav template needed (a first for this hub, since
   most prior hubs hand-write one `<a>` per topic) — generalized from a per-topic hardcoded check to
