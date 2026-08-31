@@ -8183,7 +8183,24 @@ off here with a date.
   labels (7 toggles total); the fix confirmed rendering live; breadcrumb and 860px wrapper
   confirmed; sidebar showed tailored composite-key content. **API Design hub Phase 10: 7 of 19
   topics complete.**
-- [ ] `/api-design/protocol-buffers` — Protocol Buffers
+- [x] `/api-design/protocol-buffers` — Protocol Buffers (2026-08-30). Clean main page -- no compile
+  bug found after a careful read (the Challenge's own worked example verified exactly via
+  execution; wire-compatibility claims in theory cross-checked against the well-known protobuf
+  compatibility rules and confirmed accurate). 3 gap-closing subtopics: A oneof Discriminated
+  Union, Actually Implemented -- the quiz describes oneof exclusivity in prose with no accessor
+  logic shown, built a Notification class whose setters enforce it structurally, verified via
+  execution; google.protobuf.Any: Real Polymorphic Pack/Unpack -- named in one sentence with zero
+  code, built a type-URL registry + pack/unpack pair verified via execution including an
+  unrecognized type URL case; FieldMask: Partial Updates by Explicit Field Path -- named in one
+  sentence, built a recursive applyFieldMask() honoring dotted nested paths, verified via
+  execution including confirming the original target is never mutated. Also fixed a genuine
+  structural gap in ApiDesignNavComponent itself: the Protocols nav group's own @for loop had
+  never had the subtopics-accordion toggle markup added at all (unlike Foundations/REST Design) --
+  added the identical toggle-plus-nested-link-list block, confirmed rendering all 3 links on the
+  first browser check via a live DOM query. No SUBTOPICS collision. Build passed clean.
+  Browser-verified: nav accordion opens with all 3 labels; all 3 subtopic pages render with
+  correct breadcrumb, 860px wrapper, zero console errors; sidebar showed tailored composite-key
+  content. **API Design hub Phase 10: 10 of 19 topics complete.**
 - [ ] `/api-design/grpc-service-patterns` — gRPC Service Patterns
 - [ ] `/api-design/grpc-web-transcoding` — gRPC-Web & Transcoding
 - [ ] `/api-design/graphql-fundamentals` — GraphQL Fundamentals

@@ -5728,6 +5728,55 @@ Confirmed via direct file inspection before the pilot (`/api-design/rest-fundame
     3 labels; all 3 subtopic pages render with correct breadcrumb, 860px wrapper, zero console
     errors; sidebar showed tailored composite-key content on the final subtopic. **API Design hub
     Phase 10: 9 of 19 topics complete — REST Design nav group fully done.**
+17. **The `protocol-buffers` batch — the first topic in the Protocols nav group — was another
+    clean main page (the Challenge’s own worked example verified exactly via execution; the wire-
+    compatibility claims in theory, e.g. `int32 → int64` being safe and `string → bytes` being
+    safe as long as bytes are valid UTF-8, cross-checked against the well-known protobuf
+    compatibility rules and confirmed accurate), so all three subtopics are gap-closing.** (1) **A
+    oneof Discriminated Union, Actually Implemented** — a quiz explanation describes `oneof`
+    exclusivity in real detail (a `Notification` message with `text`/`image`/`video` fields,
+    "setting `notification.text` automatically clears `notification.image` and
+    `notification.video`") but no codeTab anywhere on the page shows the accessor logic that
+    enforces it; built a `Notification` class whose three setters each clear the other two fields
+    as a side effect, plus a `getCase()` mirroring generated code’s `WhichOneof()`/case-enum
+    pattern, verified via execution that setting `image` after `text` correctly clears `text`; a
+    Try It contrasts this against a plain three-optional-fields interface, which TypeScript’s own
+    structural typing happily allows setting more than one of at once — no such guarantee without
+    the class; (2) **google.protobuf.Any: Real Polymorphic Pack/Unpack** — the QnA’s well-known-
+    types answer names `Any` as "any proto message, tagged with its type URL. For polymorphic
+    fields" in one line with zero code; built a `registry: Map<typeUrl, decoder>` plus
+    `packAny()`/`unpackAny()`, verified via execution across two distinct registered types and an
+    unrecognized type URL (throwing a distinct, explicit error rather than silently returning
+    garbage) — explicitly connects back to this hub’s own discriminator-based `oneOf` routing
+    subtopic on OpenAPI & Contracts as the same underlying "tag picks the decoder" idea, just using
+    a fully-qualified type name instead of a short enum-like string as the tag; (3) **FieldMask:
+    Partial Updates by Explicit Field Path** — the QnA names `FieldMask` for partial updates in one
+    line with zero code; built a recursive `applyFieldMask()` honoring dotted nested paths (e.g.
+    `address.city`), verified via execution across a top-level-only update, a nested-only update
+    (confirming a sibling nested field like `zip` stays untouched), and confirming the original
+    `target` object is never mutated by any call — explicitly contrasted against this hub’s own
+    already-published PATCH-merge subtopic on API Design Principles as a genuinely DIFFERENT fix
+    for the same underlying problem (JS’s missing-vs-null distinction via spread vs. proto3’s
+    always-has-a-value fields needing an explicit, separate paths list instead). **A genuine
+    structural gap found and fixed in `ApiDesignNavComponent` itself, not just in the SUBTOPICS
+    data**: unlike the Foundations and REST Design `@for` loops (which already had the
+    `subtopicsOf(item.path)`-gated toggle markup from earlier batches), the Protocols group’s own
+    `@for` loop had NEVER had this markup added at all — its `<a>` tag went straight from the
+    difficulty dot to closing, with no toggle button or nested-subtopics `<div>` block anywhere.
+    Added the identical toggle-button-plus-nested-link-list block used by the other two loops,
+    confirmed via a live DOM query (not just the underlying signal state) that the accordion
+    actually rendered all 3 subtopic links on the very first browser check — no stale-chunk
+    incident this time. No `SUBTOPICS` collision for `protocol-buffers` (checked both forms,
+    confirmed collision-free, left bare). All three `solution` fields swept clean via the standing
+    apostrophe/backtick-parity/solution-contamination scripts; the entity-escaped
+    `&lt;fully.qualified.MessageName&gt;` generic-looking placeholder inside subtopic 2’s own
+    `[innerHTML]`-bound `theory.points` field confirmed rendering as literal text in the browser,
+    not vanished. Build passed clean (single-level backgrounding, explicit `EXITCODE:$?` capture,
+    zero `ERROR` lines). Browser-verified: nav accordion opens with all 3 labels (confirmed via
+    both `window.ng.getComponent()` and a direct `.nav-subtopic-link` DOM query); all 3 subtopic
+    pages render with correct breadcrumb, 860px wrapper, zero console errors; sidebar showed
+    tailored composite-key content on the final subtopic. **API Design hub Phase 10: 10 of 19
+    topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -6755,12 +6804,12 @@ Confirmed via direct file inspection before the pilot (`/api-design/rest-fundame
   All 21 cards `available: true` in `architecture/api-design/home/home.ts`. Progress: `apiTotal=19` in progress.service.ts.
   API Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ApiDesignNavComponent at `shared/api-design-nav/api-design-nav.ts`.
-  Phase 10: 9 of 19 topics have subtopics (`/api-design/rest-fundamentals`, pilot batch;
+  Phase 10: 10 of 19 topics have subtopics (`/api-design/rest-fundamentals`, pilot batch;
   `/api-design/resource-url-design`; `/api-design/http-methods-status-codes`;
   `/api-design/pagination-patterns` — Foundations nav group fully done; `/api-design/api-versioning`;
   `/api-design/error-response-design`; `/api-design/hateoas-hypermedia`; `/api-design/api-design-principles`;
-  `/api-design/openapi-contracts` — REST Design nav group fully done, 2026-08-30) — see
-  "API Design hub subtopic wiring" section above
+  `/api-design/openapi-contracts` — REST Design nav group fully done; `/api-design/protocol-buffers`
+  — Protocols nav group, 2026-08-30) — see "API Design hub subtopic wiring" section above
   for the `ApiDesignNavComponent` accordion structural fix and the generic `subtopicsOf(item.path)`
   toggle-gating pattern this hub's `@for`-looped nav template needed (a first for this hub, since
   most prior hubs hand-write one `<a>` per topic) — generalized from a per-topic hardcoded check to
