@@ -8275,7 +8275,23 @@ off here with a date.
   nav accordion opens with all 3 labels; all 3 subtopic pages render with correct breadcrumb,
   860px wrapper, zero console errors; sidebar showed tailored composite-key content. **API Design
   hub Phase 10: 14 of 19 topics complete.**
-- [ ] `/api-design/websockets-sse-polling` — WebSockets vs SSE vs Polling
+- [x] `/api-design/websockets-sse-polling` — WebSockets vs SSE vs Polling (2026-08-30). Fixed a
+  genuine "Simplify"-shortcut bug in the main page's own Challenge: the description listed a
+  browserOnly-based rule the simplified solution never implemented, silently dropping the
+  parameter entirely. Verified via execution that { bidirectional: false, standardProxy: false,
+  browserOnly: true } incorrectly returned 'SSE or WebSocket' instead of the stated 'SSE'. Fixed
+  by adding an explicit branch. 3 subtopics: traces the exact bug/fix via a broken-vs-fixed
+  comparison verified via execution, with a Try It contrasting this against the sibling
+  graphql-vs-rest precedence bug (this pair of rules is order-independent, unlike that one); a
+  Redis pub/sub-style WebSocket fanout simulation verified via execution that a client on an
+  unrelated server instance still receives a message; a bounded ring-buffer SSE event store with
+  explicit gap detection, verified via execution across a within-window resume, a real gap, and a
+  fully-caught-up client. No SUBTOPICS collision. GraphQL & Real-Time nav loop's accordion toggle
+  needed no further changes. Build passed clean. Browser-verified: main-page fix confirmed
+  rendering live (read via the Challenge block's own innerText after expanding both View Code
+  toggles and Reveal Solution); nav accordion opens with all 3 labels; all 3 subtopic pages render
+  with correct breadcrumb, 860px wrapper, zero console errors; sidebar showed tailored
+  composite-key content. **API Design hub Phase 10: 15 of 19 topics complete.**
 - [ ] `/api-design/webhook-design` — Webhook Design
 - [x] `/api-design/api-design-principles` — API Design Principles (2026-08-30). Fixed a genuine,
   self-contained worked-example bug in the main page's own Challenge: `description` claimed input

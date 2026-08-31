@@ -5984,6 +5984,57 @@ Confirmed via direct file inspection before the pilot (`/api-design/rest-fundame
     toggle); nav accordion opens with all 3 labels; all 3 subtopic pages render with correct
     breadcrumb, 860px wrapper, zero console errors; sidebar showed tailored composite-key content
     on the final subtopic. **API Design hub Phase 10: 14 of 19 topics complete.**
+22. **The `websockets-sse-polling` batch found and fixed another genuine "Simplify"-shortcut bug in
+    the main page’s own Challenge (Real-Time Transport Selector) — the same failure family as the
+    immediately-prior `graphql-vs-rest` batch, but with a materially different root cause worth
+    distinguishing**: the description originally listed a rule ("browserOnly + !bidirectional →
+    'SSE'") the "Simplify" shortcut never implemented — the simplified solution checked only
+    `bidirectional` and `standardProxy`, silently dropping BOTH `highFrequency` and `browserOnly`
+    from the actual logic. Dropping `highFrequency` was genuinely harmless (both bidirectional rules
+    return `'WebSocket'` regardless of its value, confirmed by checking every stated rule
+    systematically) — but dropping `browserOnly` was not: for
+    `{ bidirectional: false, standardProxy: false, browserOnly: true }`, the stated rule requires
+    `'SSE'`, but the original solution fell through to the generic `'SSE or WebSocket'` default
+    instead, verified via direct execution. Fixed by adding an explicit
+    `if (req.browserOnly) return 'SSE';` branch positioned after the `standardProxy` check, and
+    tightened the description to state rules are checked in order. Three subtopics: (1)
+    **fix-adjacent** — reproduces the exact bug/fix via a broken-vs-fixed comparison, verified via
+    execution matching both the buggy `'SSE or WebSocket'` output and the corrected `'SSE'` output
+    exactly; a Try It deliberately contrasts this against the sibling `graphql-vs-rest` precedence
+    bug — for the browserOnly/standardProxy pair specifically, the two rules never actually
+    disagree wherever both apply, so (unlike the GraphQL precedence bug) branch ORDER genuinely
+    doesn’t matter here, confirmed by checking both orderings produce identical results for every
+    input; (2) **gap-closing** — the QnA names Redis pub/sub-based WebSocket horizontal scaling in
+    real depth ("all server instances subscribe to a Redis channel... publish to Redis... forward to
+    their connected clients") with zero codeTab demonstrating cross-instance delivery; built a
+    minimal pub/sub simulation (each `ServerInstance` keeping its own local `clients` Set, all
+    instances subscribing to the same shared channel), verified via execution that a client connected
+    ONLY to a completely unrelated instance still receives a message originating on a different
+    instance, with zero direct connection between them; a Try It traces why even LOCAL delivery
+    (same-instance) routes through the shared bus rather than a special-cased shortcut, keeping
+    exactly one code path for delivery regardless of message origin; (3) **gap-closing** — the QnA
+    describes ring-buffer-based SSE gap recovery ("store recent events in a ring buffer... on
+    reconnection query events with ID greater than lastEventId") in real depth with zero code
+    building the actual store; built a bounded `RingBufferEventStore` with explicit `gap: true`
+    detection (distinguishing "exactly the missed events" from "some events are permanently gone"),
+    verified via execution across a within-window resume, a genuinely out-of-window client, and a
+    fully-caught-up client; a Try It reasons through why the server needs a DISTINCTLY-NAMED SSE
+    event (reusing the page’s own `event:` field convention) to actually surface a detected gap to
+    client-side listeners, rather than relying on a plain, unlabeled `data:` message a normal
+    event-specific listener would never catch. No `SUBTOPICS` collision for `websockets-sse-polling`
+    (checked both forms, confirmed collision-free, left bare) — the GraphQL & Real-Time nav loop’s
+    accordion toggle required ZERO further template changes for this third topic in the group. All
+    three `solution` fields swept clean via the standing apostrophe/backtick-parity/solution-
+    contamination scripts; the main page’s own edit re-swept for backtick-parity after the fix (44
+    backticks, even). Build passed clean (single-level backgrounding, explicit `EXITCODE:$?`
+    capture, zero `ERROR` lines). Browser-verified: the main-page fix confirmed rendering live by
+    reading the Challenge block’s own full `innerText` directly, in a SEPARATE call after the click
+    (an initial same-call read came back stale — the same change-detection timing artifact
+    documented elsewhere in this session, not a real absence — after expanding the starterCode’s own
+    "View Code" toggle, the "Reveal Solution" control, and the solution’s own separate nested "View
+    Code" toggle); nav accordion opens with all 3 labels; all 3 subtopic pages render with correct
+    breadcrumb, 860px wrapper, zero console errors; sidebar showed tailored composite-key content on
+    the final subtopic. **API Design hub Phase 10: 15 of 19 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -7011,14 +7062,14 @@ Confirmed via direct file inspection before the pilot (`/api-design/rest-fundame
   All 21 cards `available: true` in `architecture/api-design/home/home.ts`. Progress: `apiTotal=19` in progress.service.ts.
   API Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ApiDesignNavComponent at `shared/api-design-nav/api-design-nav.ts`.
-  Phase 10: 14 of 19 topics have subtopics (`/api-design/rest-fundamentals`, pilot batch;
+  Phase 10: 15 of 19 topics have subtopics (`/api-design/rest-fundamentals`, pilot batch;
   `/api-design/resource-url-design`; `/api-design/http-methods-status-codes`;
   `/api-design/pagination-patterns` — Foundations nav group fully done; `/api-design/api-versioning`;
   `/api-design/error-response-design`; `/api-design/hateoas-hypermedia`; `/api-design/api-design-principles`;
   `/api-design/openapi-contracts` — REST Design nav group fully done; `/api-design/protocol-buffers`;
   `/api-design/grpc-service-patterns`; `/api-design/grpc-web-transcoding` — Protocols nav group
-  fully done; `/api-design/graphql-fundamentals`; `/api-design/graphql-vs-rest` — GraphQL &
-  Real-Time nav group, 2026-08-30) — see
+  fully done; `/api-design/graphql-fundamentals`; `/api-design/graphql-vs-rest`;
+  `/api-design/websockets-sse-polling` — GraphQL & Real-Time nav group, 2026-08-30) — see
   "API Design hub subtopic wiring" section above
   for the `ApiDesignNavComponent` accordion structural fix and the generic `subtopicsOf(item.path)`
   toggle-gating pattern this hub's `@for`-looped nav template needed (a first for this hub, since
