@@ -1,0 +1,27 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="gRPC Service Patterns" topicRoute="/api-design/grpc-service-patterns"
+    subtopicLabel="A Real gRPC Interceptor Chain" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">A Real gRPC Interceptor Chain</h1>
+  <p class="page-subtitle">A quiz explanation describes interceptor chaining in real depth — here’s the actual next()-based mechanism that makes an auth interceptor able to reject a call before it ever reaches the handler.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>The main page’s QnA explains why a retryable status code alone isn’t enough for a correct retry policy, naming RetryInfo’s server-specified delay in real detail with zero code. The next subtopic builds it.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="gRPC Service Patterns" topicRoute="/api-design/grpc-service-patterns"
+    [prev]="{ label: 'The Chat Handler That Never Actually Broadcasts', route: '/api-design/grpc-service-patterns/the-chat-handler-that-never-actually-broadcasts' }"
+    [next]="{ label: 'RetryInfo-Aware Retry Instead of a Guessed Backoff', route: '/api-design/grpc-service-patterns/retryinfo-aware-retry-instead-of-a-guessed-backoff' }" />
+</div>

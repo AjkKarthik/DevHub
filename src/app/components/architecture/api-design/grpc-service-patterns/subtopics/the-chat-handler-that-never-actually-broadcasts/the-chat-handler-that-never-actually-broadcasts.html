@@ -1,0 +1,26 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="gRPC Service Patterns" topicRoute="/api-design/grpc-service-patterns"
+    subtopicLabel="The Chat Handler That Never Actually Broadcasts" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">The Chat Handler That Never Actually Broadcasts</h1>
+  <p class="page-subtitle">The main page’s own chat handler was labeled "broadcast to all other connected clients" — but the code could only ever echo a message back to its own sender.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>The main page’s quiz explains interceptor chaining in prose in real depth, but no codeTab shows the chaining mechanism itself. The next subtopic builds it.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="gRPC Service Patterns" topicRoute="/api-design/grpc-service-patterns"
+    [next]="{ label: 'A Real gRPC Interceptor Chain', route: '/api-design/grpc-service-patterns/a-real-grpc-interceptor-chain' }" />
+</div>

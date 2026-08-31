@@ -3112,7 +3112,12 @@ export const routes: Routes = [
         { path: 'google-protobuf-any-real-polymorphic-pack-unpack', loadComponent: () => import('./components/architecture/api-design/protocol-buffers/subtopics/google-protobuf-any-real-polymorphic-pack-unpack/google-protobuf-any-real-polymorphic-pack-unpack').then(m => m.GoogleProtobufAnyRealPolymorphicPackUnpackSubtopic) },
         { path: 'fieldmask-partial-updates-by-explicit-field-path', loadComponent: () => import('./components/architecture/api-design/protocol-buffers/subtopics/fieldmask-partial-updates-by-explicit-field-path/fieldmask-partial-updates-by-explicit-field-path').then(m => m.FieldmaskPartialUpdatesByExplicitFieldPathSubtopic) },
       ] },
-    { path: 'grpc-service-patterns', loadComponent: () => import('./components/architecture/api-design/grpc-service-patterns/grpc-service-patterns').then(m => m.ApiGrpcPatterns) },
+    { path: 'grpc-service-patterns', children: [
+        { path: '', loadComponent: () => import('./components/architecture/api-design/grpc-service-patterns/grpc-service-patterns').then(m => m.ApiGrpcPatterns) },
+        { path: 'the-chat-handler-that-never-actually-broadcasts', loadComponent: () => import('./components/architecture/api-design/grpc-service-patterns/subtopics/the-chat-handler-that-never-actually-broadcasts/the-chat-handler-that-never-actually-broadcasts').then(m => m.TheChatHandlerThatNeverActuallyBroadcastsSubtopic) },
+        { path: 'a-real-grpc-interceptor-chain', loadComponent: () => import('./components/architecture/api-design/grpc-service-patterns/subtopics/a-real-grpc-interceptor-chain/a-real-grpc-interceptor-chain').then(m => m.ARealGrpcInterceptorChainSubtopic) },
+        { path: 'retryinfo-aware-retry-instead-of-a-guessed-backoff', loadComponent: () => import('./components/architecture/api-design/grpc-service-patterns/subtopics/retryinfo-aware-retry-instead-of-a-guessed-backoff/retryinfo-aware-retry-instead-of-a-guessed-backoff').then(m => m.RetryinfoAwareRetryInsteadOfAGuessedBackoffSubtopic) },
+      ] },
     { path: 'grpc-web-transcoding',  loadComponent: () => import('./components/architecture/api-design/grpc-web-transcoding/grpc-web-transcoding').then(m => m.ApiGrpcWeb) },
     { path: 'graphql-fundamentals',  loadComponent: () => import('./components/architecture/api-design/graphql-fundamentals/graphql-fundamentals').then(m => m.ApiGraphqlFundamentals) },
     { path: 'graphql-vs-rest',       loadComponent: () => import('./components/architecture/api-design/graphql-vs-rest/graphql-vs-rest').then(m => m.ApiGraphqlVsRest) },

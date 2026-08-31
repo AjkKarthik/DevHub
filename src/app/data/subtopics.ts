@@ -3603,4 +3603,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'google.protobuf.Any: Real Polymorphic Pack/Unpack', route: '/api-design/protocol-buffers/google-protobuf-any-real-polymorphic-pack-unpack' },
     { label: 'FieldMask: Partial Updates by Explicit Field Path', route: '/api-design/protocol-buffers/fieldmask-partial-updates-by-explicit-field-path' },
   ],
+  'grpc-service-patterns': [
+    { label: 'The Chat Handler That Never Actually Broadcasts', route: '/api-design/grpc-service-patterns/the-chat-handler-that-never-actually-broadcasts' },
+    { label: 'A Real gRPC Interceptor Chain', route: '/api-design/grpc-service-patterns/a-real-grpc-interceptor-chain' },
+    { label: 'RetryInfo-Aware Retry Instead of a Guessed Backoff', route: '/api-design/grpc-service-patterns/retryinfo-aware-retry-instead-of-a-guessed-backoff' },
+  ],
 };

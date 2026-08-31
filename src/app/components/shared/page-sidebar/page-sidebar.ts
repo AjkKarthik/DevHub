@@ -35573,6 +35573,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'gRPC\'s strict typed contracts (via .proto files) catch integration mismatches at compile time that a loosely-typed REST/JSON contract would only surface at runtime.',
     ],
   },
+  'api-design/grpc-service-patterns/the-chat-handler-that-never-actually-broadcasts': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'A Real gRPC Interceptor Chain', route: '/api-design/grpc-service-patterns/a-real-grpc-interceptor-chain' },
+      { label: 'gRPC Service Patterns (overview)', route: '/api-design/grpc-service-patterns' },
+    ],
+    tip: 'call.write() can only ever reach the SAME connection a message arrived on -- broadcasting to other connected clients needs an explicit registry of every active call, added on connect and removed on both \'end\' and \'cancelled\'.',
+    gotchas: [
+      'The original, un-registry-backed handler was not broken in the sense of crashing -- it correctly implemented an echo server, just not the broadcast chat the comment claimed.',
+    ],
+  },
+  'api-design/grpc-service-patterns/a-real-grpc-interceptor-chain': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'The Chat Handler That Never Actually Broadcasts', route: '/api-design/grpc-service-patterns/the-chat-handler-that-never-actually-broadcasts' },
+      { label: 'RetryInfo-Aware Retry Instead of a Guessed Backoff', route: '/api-design/grpc-service-patterns/retryinfo-aware-retry-instead-of-a-guessed-backoff' },
+    ],
+    tip: 'Not calling next() is a normal, intentional way for an interceptor to short-circuit the chain -- an auth interceptor that rejects a call simply returns its own error instead, and nothing after it in the chain ever runs.',
+    gotchas: [
+      'Interceptor ORDER is a real design decision, not an implementation detail -- whether a rejected call still gets logged depends entirely on whether logging sits before or after the interceptor that rejected it.',
+    ],
+  },
+  'api-design/grpc-service-patterns/retryinfo-aware-retry-instead-of-a-guessed-backoff': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'A Real gRPC Interceptor Chain', route: '/api-design/grpc-service-patterns/a-real-grpc-interceptor-chain' },
+      { label: 'gRPC Service Patterns (overview)', route: '/api-design/grpc-service-patterns' },
+    ],
+    tip: 'A retryable status code alone does not say how long to wait -- RetryInfo lets the server specify the exact delay based on its own knowledge of the failure, which a fixed or client-guessed backoff has no way to replicate.',
+    gotchas: [
+      'Respecting the server-specified delay precisely can still recreate a thundering-herd overload if many clients received the identical delay and retry in lockstep -- client-side jitter on top of it is a real, separate mitigation.',
+    ],
+  },
   'api-design/protocol-buffers': {
     apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
     related: [

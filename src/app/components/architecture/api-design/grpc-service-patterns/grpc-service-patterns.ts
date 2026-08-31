@@ -78,6 +78,10 @@ import { UserServiceService } from './generated/user/v1/user_grpc_pb';
 
 const server = new grpc.Server();
 
+// Registry of every currently-connected chat call -- needed so a message
+// can actually be broadcast to OTHER clients, not just echoed back.
+const activeChatCalls = new Set();
+
 server.addService(UserServiceService, {
   // 1. Unary RPC — request/response
   async getUser(call, callback) {
@@ -131,14 +135,21 @@ server.addService(UserServiceService, {
 
   // 4. Bidirectional streaming — chat
   chat(call) {
-    call.on('data', async (message) => {
-      // Broadcast to all other connected clients
+    // "Broadcast to all other connected clients" needs a registry of
+    // every active call -- without one, call.write() can only ever
+    // reach the SAME connection the message arrived on.
+    activeChatCalls.add(call);
+
+    call.on('data', (message) => {
       const response = new ChatMessage();
       response.setContent(message.getContent());
       response.setSender(message.getSender());
-      call.write(response); // echo back + broadcast
+      for (const other of activeChatCalls) {
+        if (other !== call) other.write(response); // broadcast, not echo
+      }
     });
-    call.on('end', () => call.end());
+    call.on('end', () => { activeChatCalls.delete(call); call.end(); });
+    call.on('cancelled', () => activeChatCalls.delete(call));
   },
 });
 
