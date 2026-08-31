@@ -1,0 +1,26 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="GraphQL Fundamentals" topicRoute="/api-design/graphql-fundamentals"
+    subtopicLabel="Query.user Is Nullable, Not User! — The Comment Was Wrong" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">Query.user Is Nullable, Not User! — The Comment Was Wrong</h1>
+  <p class="page-subtitle">The main page’s own mistake block justified throwing an error with a comment claiming a field is non-null — but the page’s own schema, shown earlier on the same page, declares it nullable.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>A quiz explanation describes DataLoader’s microtask-based batching mechanism in real depth, with no codeTab showing it actually running. The next subtopic builds a minimal version of it.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="GraphQL Fundamentals" topicRoute="/api-design/graphql-fundamentals"
+    [next]="{ label: 'DataLoader Batching via Microtask Timing', route: '/api-design/graphql-fundamentals/dataloader-batching-via-microtask-timing' }" />
+</div>

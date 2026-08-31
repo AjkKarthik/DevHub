@@ -35549,6 +35549,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'GraphQL\'s single endpoint makes traditional HTTP-level caching (which relies on distinct URLs per resource) much harder than with REST.',
     ],
   },
+  'api-design/graphql-fundamentals/query-user-is-nullable-not-user-the-comment-was-wrong': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'DataLoader Batching via Microtask Timing', route: '/api-design/graphql-fundamentals/dataloader-batching-via-microtask-timing' },
+      { label: 'GraphQL Fundamentals (overview)', route: '/api-design/graphql-fundamentals' },
+    ],
+    tip: 'Returning null from a NON-NULL field triggers an automatic GraphQL execution error -- but returning null from an already-nullable field (like this page\'s own Query.user) is perfectly valid execution, no error at all.',
+    gotchas: [
+      'An explicit thrown error still beats a bare null on a nullable field -- it lets clients distinguish "not found" from "permission denied" from "server error", which a bare null cannot.',
+    ],
+  },
+  'api-design/graphql-fundamentals/dataloader-batching-via-microtask-timing': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Query.user Is Nullable, Not User! — The Comment Was Wrong', route: '/api-design/graphql-fundamentals/query-user-is-nullable-not-user-the-comment-was-wrong' },
+      { label: 'A Directive-Style Auth Wrapper', route: '/api-design/graphql-fundamentals/a-directive-style-auth-wrapper' },
+    ],
+    tip: 'DataLoader batching relies on JS microtask timing (process.nextTick), not a fixed delay -- every synchronously-executing sibling resolver gets to queue its .load() call before the deferred batch dispatch fires.',
+    gotchas: [
+      'A real DataLoader also dedupes identical keys and caches results within a request -- the timing mechanism alone only explains the BATCHING, not those additional optimizations layered on top of it.',
+    ],
+  },
+  'api-design/graphql-fundamentals/a-directive-style-auth-wrapper': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'DataLoader Batching via Microtask Timing', route: '/api-design/graphql-fundamentals/dataloader-batching-via-microtask-timing' },
+      { label: 'GraphQL Fundamentals (overview)', route: '/api-design/graphql-fundamentals' },
+    ],
+    tip: 'A withAuth() wrapper and a real schema directive both centralize the SAME check into one reusable place -- the security outcome is identical to a correctly-written inline resolver check, only where the logic lives differs.',
+    gotchas: [
+      'Hiding an operation from introspection is not a security boundary -- a server still parses and executes any syntactically valid query text sent to the endpoint, regardless of what a client\'s tooling happened to show them.',
+    ],
+  },
   'api-design/graphql-vs-rest': {
     apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
     related: [

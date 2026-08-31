@@ -3124,7 +3124,12 @@ export const routes: Routes = [
         { path: 'content-negotiation-on-a-connect-server', loadComponent: () => import('./components/architecture/api-design/grpc-web-transcoding/subtopics/content-negotiation-on-a-connect-server/content-negotiation-on-a-connect-server').then(m => m.ContentNegotiationOnAConnectServerSubtopic) },
         { path: 'which-streaming-patterns-actually-work-in-a-browser', loadComponent: () => import('./components/architecture/api-design/grpc-web-transcoding/subtopics/which-streaming-patterns-actually-work-in-a-browser/which-streaming-patterns-actually-work-in-a-browser').then(m => m.WhichStreamingPatternsActuallyWorkInABrowserSubtopic) },
       ] },
-    { path: 'graphql-fundamentals',  loadComponent: () => import('./components/architecture/api-design/graphql-fundamentals/graphql-fundamentals').then(m => m.ApiGraphqlFundamentals) },
+    { path: 'graphql-fundamentals', children: [
+        { path: '', loadComponent: () => import('./components/architecture/api-design/graphql-fundamentals/graphql-fundamentals').then(m => m.ApiGraphqlFundamentals) },
+        { path: 'query-user-is-nullable-not-user-the-comment-was-wrong', loadComponent: () => import('./components/architecture/api-design/graphql-fundamentals/subtopics/query-user-is-nullable-not-user-the-comment-was-wrong/query-user-is-nullable-not-user-the-comment-was-wrong').then(m => m.QueryUserIsNullableNotUserTheCommentWasWrongSubtopic) },
+        { path: 'dataloader-batching-via-microtask-timing', loadComponent: () => import('./components/architecture/api-design/graphql-fundamentals/subtopics/dataloader-batching-via-microtask-timing/dataloader-batching-via-microtask-timing').then(m => m.DataloaderBatchingViaMicrotaskTimingSubtopic) },
+        { path: 'a-directive-style-auth-wrapper', loadComponent: () => import('./components/architecture/api-design/graphql-fundamentals/subtopics/a-directive-style-auth-wrapper/a-directive-style-auth-wrapper').then(m => m.ADirectiveStyleAuthWrapperSubtopic) },
+      ] },
     { path: 'graphql-vs-rest',       loadComponent: () => import('./components/architecture/api-design/graphql-vs-rest/graphql-vs-rest').then(m => m.ApiGraphqlVsRest) },
     { path: 'websockets-sse-polling',loadComponent: () => import('./components/architecture/api-design/websockets-sse-polling/websockets-sse-polling').then(m => m.ApiWebsockets) },
     { path: 'webhook-design',        loadComponent: () => import('./components/architecture/api-design/webhook-design/webhook-design').then(m => m.ApiWebhookDesign) },

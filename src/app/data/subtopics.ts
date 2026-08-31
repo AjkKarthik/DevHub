@@ -3613,4 +3613,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Content Negotiation on a Connect Server', route: '/api-design/grpc-web-transcoding/content-negotiation-on-a-connect-server' },
     { label: 'Which Streaming Patterns Actually Work in a Browser', route: '/api-design/grpc-web-transcoding/which-streaming-patterns-actually-work-in-a-browser' },
   ],
+  'graphql-fundamentals': [
+    { label: 'Query.user Is Nullable, Not User! — The Comment Was Wrong', route: '/api-design/graphql-fundamentals/query-user-is-nullable-not-user-the-comment-was-wrong' },
+    { label: 'DataLoader Batching via Microtask Timing', route: '/api-design/graphql-fundamentals/dataloader-batching-via-microtask-timing' },
+    { label: 'A Directive-Style Auth Wrapper', route: '/api-design/graphql-fundamentals/a-directive-style-auth-wrapper' },
+  ],
 };
