@@ -205,12 +205,12 @@ const challenge: Challenge = {
   title: 'Design a consistent API response',
   language: 'typescript',
   description: `You receive poorly designed API responses from a legacy system. Transform them into a consistent, well-designed envelope.
-Input: { success: true, data: { user_id: 42, full_name: "John", date_joined: 1705312200, balance: 9.99 } }
-Output: { data: { userId: 42, fullName: "John", joinedAt: "2024-01-15T10:30:00Z", balanceCents: 999 }, meta: { requestId: "req-001" } }
+Input: { success: true, data: { user_id: 42, full_name: "John", date_joined: 1705314600, balance: 9.99 } }
+Output: { data: { userId: 42, fullName: "John", joinedAt: "2024-01-15T10:30:00.000Z", balanceCents: 999 }, meta: { requestId: "req-001" } }
 
 Requirements:
 - Convert snake_case keys to camelCase
-- Convert Unix timestamp to ISO 8601 string (1705312200 * 1000)
+- Convert Unix timestamp to ISO 8601 string (1705314600 * 1000)
 - Convert float dollars to integer cents (multiply by 100, round)
 - Wrap in { data: ..., meta: { requestId } }`,
   hints: [
@@ -224,7 +224,7 @@ Requirements:
   return {};
 }
 
-const legacy = { success: true, data: { user_id: 42, full_name: "John", date_joined: 1705312200, balance: 9.99 } };
+const legacy = { success: true, data: { user_id: 42, full_name: "John", date_joined: 1705314600, balance: 9.99 } };
 console.log(JSON.stringify(transformResponse(legacy, 'req-001'), null, 2));`,
   solution: `function transformResponse(legacy: any, requestId: string): any {
   const u = legacy.data;
@@ -239,7 +239,7 @@ console.log(JSON.stringify(transformResponse(legacy, 'req-001'), null, 2));`,
   };
 }
 
-const legacy = { success: true, data: { user_id: 42, full_name: "John", date_joined: 1705312200, balance: 9.99 } };
+const legacy = { success: true, data: { user_id: 42, full_name: "John", date_joined: 1705314600, balance: 9.99 } };
 console.log(JSON.stringify(transformResponse(legacy, 'req-001'), null, 2));`,
 };
 

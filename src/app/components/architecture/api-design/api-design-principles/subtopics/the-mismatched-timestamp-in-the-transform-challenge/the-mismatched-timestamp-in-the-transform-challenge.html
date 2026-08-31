@@ -1,0 +1,26 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="API Design Principles" topicRoute="/api-design/api-design-principles"
+    subtopicLabel="The Mismatched Timestamp in the Transform Challenge" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">The Mismatched Timestamp in the Transform Challenge</h1>
+  <p class="page-subtitle">The main page’s own Challenge claimed a specific Unix timestamp converts to a specific ISO 8601 string — running the actual conversion code proved the two numbers didn’t match.</p>
+  <app-page-meta [readingTime]="6" difficulty="beginner" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>The main page’s theory names the Idempotency-Key pattern for making POST retry-safe in real detail, but no codeTab on the page shows the server-side deduplication logic itself. The next subtopic builds it.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="API Design Principles" topicRoute="/api-design/api-design-principles"
+    [next]="{ label: 'Implementing Idempotency-Key Deduplication', route: '/api-design/api-design-principles/implementing-idempotency-key-deduplication' }" />
+</div>

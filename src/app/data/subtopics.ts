@@ -3588,4 +3588,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'A Real JSON:API Response Shape', route: '/api-design/hateoas-hypermedia/a-real-jsonapi-response-shape' },
     { label: 'Pagination via the Link Header (RFC 8288)', route: '/api-design/hateoas-hypermedia/pagination-via-the-link-header-rfc-8288' },
   ],
+  'api-design-principles': [
+    { label: 'The Mismatched Timestamp in the Transform Challenge', route: '/api-design/api-design-principles/the-mismatched-timestamp-in-the-transform-challenge' },
+    { label: 'Implementing Idempotency-Key Deduplication', route: '/api-design/api-design-principles/implementing-idempotency-key-deduplication' },
+    { label: 'Missing Field vs. Explicit Null in PATCH Requests', route: '/api-design/api-design-principles/missing-field-vs-explicit-null-in-patch-requests' },
+  ],
 };

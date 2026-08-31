@@ -35115,6 +35115,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'API design decisions are far more expensive to change after external consumers depend on them — get the shape right before wide adoption, not after.',
     ],
   },
+  'api-design/api-design-principles/the-mismatched-timestamp-in-the-transform-challenge': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Implementing Idempotency-Key Deduplication', route: '/api-design/api-design-principles/implementing-idempotency-key-deduplication' },
+      { label: 'API Design Principles (overview)', route: '/api-design/api-design-principles' },
+    ],
+    tip: 'The Challenge\'s conversion logic (new Date(timestamp * 1000).toISOString()) was always correct -- the bug was that its own worked example paired an input number and a claimed output string that didn\'t describe the same instant.',
+    gotchas: [
+      'A worked example with several independently-computed output fields needs each field checked on its own -- one field being correct says nothing about a different, unrelated field.',
+    ],
+  },
+  'api-design/api-design-principles/implementing-idempotency-key-deduplication': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'The Mismatched Timestamp in the Transform Challenge', route: '/api-design/api-design-principles/the-mismatched-timestamp-in-the-transform-challenge' },
+      { label: 'Missing Field vs. Explicit Null in PATCH Requests', route: '/api-design/api-design-principles/missing-field-vs-explicit-null-in-patch-requests' },
+    ],
+    tip: 'The Idempotency-Key store must cache the ORIGINAL response body, not just a flag that the key was seen -- a retrying client needs back exactly what its first request would have returned.',
+    gotchas: [
+      'A replayed response should return 200 OK, not a second 201 Created -- nothing new was actually created on the retry.',
+    ],
+  },
+  'api-design/api-design-principles/missing-field-vs-explicit-null-in-patch-requests': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Implementing Idempotency-Key Deduplication', route: '/api-design/api-design-principles/implementing-idempotency-key-deduplication' },
+      { label: 'API Design Principles (overview)', route: '/api-design/api-design-principles' },
+    ],
+    tip: 'A falsy-fallback merge (patch[key] || existing[key]) silently discards a client\'s explicit attempt to clear a field to null, 0, or \'\' -- a plain object spread gets the missing-vs-null distinction right for free.',
+    gotchas: [
+      'Spread alone handles correct MERGING but not VALIDATION -- a field that must never be null still needs its own explicit \'field\' in patch check before the merge.',
+    ],
+  },
   'api-design/rest-fundamentals': {
     apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
     related: [

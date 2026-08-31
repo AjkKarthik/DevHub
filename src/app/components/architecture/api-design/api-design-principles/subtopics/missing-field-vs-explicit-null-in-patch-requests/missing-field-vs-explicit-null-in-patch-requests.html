@@ -1,0 +1,26 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="API Design Principles" topicRoute="/api-design/api-design-principles"
+    subtopicLabel="Missing Field vs. Explicit Null in PATCH Requests" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">Missing Field vs. Explicit Null in PATCH Requests</h1>
+  <p class="page-subtitle">The main page’s QnA names the distinction in one sentence — here’s the common falsy-fallback bug that gets it wrong, and the spread-based merge that gets it right.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>Together these three subtopics ground the main page’s Challenge, its Idempotency-Key theory, and its PATCH-semantics QnA in verified, working code — the same discipline the next topic, OpenAPI &amp; Contracts, applies to the API’s written contract itself.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="API Design Principles" topicRoute="/api-design/api-design-principles"
+    [prev]="{ label: 'Implementing Idempotency-Key Deduplication', route: '/api-design/api-design-principles/implementing-idempotency-key-deduplication' }" />
+</div>

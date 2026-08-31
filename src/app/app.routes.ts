@@ -3113,7 +3113,12 @@ export const routes: Routes = [
     { path: 'graphql-vs-rest',       loadComponent: () => import('./components/architecture/api-design/graphql-vs-rest/graphql-vs-rest').then(m => m.ApiGraphqlVsRest) },
     { path: 'websockets-sse-polling',loadComponent: () => import('./components/architecture/api-design/websockets-sse-polling/websockets-sse-polling').then(m => m.ApiWebsockets) },
     { path: 'webhook-design',        loadComponent: () => import('./components/architecture/api-design/webhook-design/webhook-design').then(m => m.ApiWebhookDesign) },
-    { path: 'api-design-principles', loadComponent: () => import('./components/architecture/api-design/api-design-principles/api-design-principles').then(m => m.ApiDesignPrinciples) },
+    { path: 'api-design-principles', children: [
+        { path: '', loadComponent: () => import('./components/architecture/api-design/api-design-principles/api-design-principles').then(m => m.ApiDesignPrinciples) },
+        { path: 'the-mismatched-timestamp-in-the-transform-challenge', loadComponent: () => import('./components/architecture/api-design/api-design-principles/subtopics/the-mismatched-timestamp-in-the-transform-challenge/the-mismatched-timestamp-in-the-transform-challenge').then(m => m.TheMismatchedTimestampInTheTransformChallengeSubtopic) },
+        { path: 'implementing-idempotency-key-deduplication', loadComponent: () => import('./components/architecture/api-design/api-design-principles/subtopics/implementing-idempotency-key-deduplication/implementing-idempotency-key-deduplication').then(m => m.ImplementingIdempotencyKeyDeduplicationSubtopic) },
+        { path: 'missing-field-vs-explicit-null-in-patch-requests', loadComponent: () => import('./components/architecture/api-design/api-design-principles/subtopics/missing-field-vs-explicit-null-in-patch-requests/missing-field-vs-explicit-null-in-patch-requests').then(m => m.MissingFieldVsExplicitNullInPatchRequestsSubtopic) },
+      ] },
     { path: 'openapi-contracts',     loadComponent: () => import('./components/architecture/api-design/openapi-contracts/openapi-contracts').then(m => m.ApiOpenapiContracts) },
     { path: 'api-security',          loadComponent: () => import('./components/architecture/api-design/api-security/api-security').then(m => m.ApiApiSecurity) },
     { path: 'breaking-changes',      loadComponent: () => import('./components/architecture/api-design/breaking-changes/breaking-changes').then(m => m.ApiBreakingChanges) },
