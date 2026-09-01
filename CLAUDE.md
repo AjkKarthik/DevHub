@@ -6692,6 +6692,48 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
     checked individually — zero console errors, correct h1/breadcrumb, 860px wrapper via
     `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the final subtopic.
     **Observability hub Phase 10: 9 of 20 topics complete.**
+18. **The `log-aggregation` batch — the second topic in the Logging nav group — found and fixed a
+    genuine, well-verified inaccuracy in the "Promtail Config" codeTab's "Sample 10% of health
+    check logs" section**: it configured a `drop` stage matching `'"path":"/health"'` with a
+    comment claiming "Drop 90% of health checks: keep only when hash(log_line) % 10 == 0" — but the
+    `drop` stage shown has no such condition at all, it unconditionally drops every matching line.
+    Verified against Loki's own official documentation for the `drop` pipeline stage that its
+    complete configuration field set (`source`, `separator`, `value`, `expression`, `older_than`,
+    `longer_than`, `drop_counter_reason`) includes no percentage or probability parameter whatsoever
+    — the stage is purely deterministic, matching a condition or not, per line. Confirmed by
+    comparing against the SAME page's own LATER mistake block ("Shipping all logs including health
+    check and metrics scrape logs"), which correctly frames the identical `drop` config as a full
+    drop with no sampling claim at all — an internal inconsistency findable without any external
+    research, once cross-referenced. Fixed by correcting the comment and relabeling the counter
+    reason (`health_check_full_drop`). Three subtopics: (1) **fix-adjacent** — lists every real
+    field the `drop` stage supports (confirmed none is a rate), with a Try It on a regex-based
+    workaround (matching on the last hex digit of `traceId`) that technically achieves a crude ~1/16
+    sampling but defeats the actual cost-saving goal, since Promtail still has to receive and
+    evaluate every line before dropping most of them — the real savings only come from never
+    emitting the log line in application code at all, tying back to the sibling Structured Logging
+    topic's own log-sampler subtopic; (2) **gap-closing** — the log-based-alerting QnA names "dead
+    man switch" alerting in one clause with zero code anywhere; verified LogQL's
+    `absent_over_time()` directly against Loki's own documentation ("returns... a 1-element vector
+    with the value 1 if the range vector passed to it has no elements") and built a real alert rule
+    matching the page's own existing `- alert: ... expr: ... for: ... labels: ...` style, with a Try
+    It on why a total-silence outage is structurally invisible to the page's own `rate()`-based
+    error alert (`rate()` of zero logs is 0, and `0 > 10` is always false); (3) **gap-closing** —
+    the Challenge's own `parseStreamSelector()` explicitly scopes itself to exclude regex (`=~`)
+    selectors, but the page's own QnA one section earlier uses exactly that syntax
+    (`{service=~"order|payment"}`) as a realistic example query; verified via direct execution that
+    feeding it to the unmodified reference solution doesn't reject cleanly, it silently GARBLES the
+    result (`indexOf('=')` finds the `=` inside the `=~` operator, producing
+    `{ service: '~"order|payment' }`) — built and verified the fix (`pair.includes('=~')` checked
+    before parsing). No `SUBTOPICS` collision for bare `log-aggregation` (checked both
+    `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed collision-free, left bare).
+    `ObsNavComponent`'s toggle for this topic used a single consistent key across all five
+    accordion-related calls, double-checked via grep after writing. Build passed clean (foreground
+    execution, explicit `EXITCODE:$?` capture, zero `ERROR` lines). Browser-verified with a hard
+    reload first: nav accordion opens with all 3 subtopic links on the first check; both main-page
+    fixes confirmed rendering live via `window.ng.getComponent()`; all 3 subtopic pages checked
+    individually — zero console errors, correct h1/breadcrumb, 860px wrapper via `getComputedStyle`,
+    tailored (not DEFAULT) sidebar content confirmed on the final subtopic. **Observability hub
+    Phase 10: 10 of 20 topics complete — halfway through the hub.**
 
 ## Current state (update when it changes!)
 
@@ -7750,12 +7792,13 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
   All 22 cards `available: true` in `architecture/observability/home/home.ts`. Progress: `obsTotal=20` in progress.service.ts.
   Observability pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ObsNavComponent at `shared/obs-nav/obs-nav.ts`.
-  Phase 10: 9 of 20 topics have subtopics (`/observability/observability-fundamentals`, pilot
+  Phase 10: 10 of 20 topics have subtopics (`/observability/observability-fundamentals`, pilot
   batch; `/observability/opentelemetry`; `/observability/sli-slo-sla` — Core Concepts nav group
   fully done; `/observability/prometheus-metrics`; `/observability/grafana-dashboards`;
   `/observability/custom-app-metrics`; `/observability/infrastructure-metrics`;
   `/observability/cloud-native-monitoring` — Metrics nav group fully done;
-  `/observability/structured-logging` — first Logging nav group topic, 2026-09-01) —
+  `/observability/structured-logging`; `/observability/log-aggregation` — 2 of the Logging nav
+  group's topics, 2026-09-01) —
   see "Observability & SRE hub subtopic wiring" section above for the `ObsNavComponent` accordion
   structural fix, a real self-authored key-mismatch bug caught during browser verification (not a
   stale-server artifact), a cross-hub `opentelemetry` SUBTOPICS collision already resolved by

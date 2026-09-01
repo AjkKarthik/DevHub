@@ -8643,7 +8643,26 @@ off here with a date.
   links on the first check; the traceparent fix confirmed rendering live; all 3 subtopic pages
   checked individually -- zero console errors, correct h1/breadcrumb, 860px wrapper, tailored
   sidebar content. **Observability hub Phase 10: 9 of 20 topics complete.**
-- [ ] `/observability/log-aggregation` — Log Aggregation
+- [x] `/observability/log-aggregation` — Log Aggregation (2026-09-01). Second topic in the Logging
+  nav group. Found and fixed a genuine inaccuracy in the Promtail Config codeTab's "Sample 10% of
+  health check logs" section: it configured a drop stage matching '"path":"/health"' with a comment
+  claiming "Drop 90%... keep only when hash(log_line) % 10 == 0" -- but the drop stage shown has no
+  such condition, it unconditionally drops every matching line. Verified against Loki's own docs
+  that the drop stage's complete field set (source, separator, value, expression, older_than,
+  longer_than, drop_counter_reason) has no percentage/probability parameter at all -- purely
+  deterministic. Confirmed by comparing against the page's OWN later mistake block, which correctly
+  frames the identical config as a full drop with no sampling claim. Fixed the comment and counter
+  reason. Also fixed 2 mistagged codeTabs (LogQL Queries, Promtail Config, both tagged 'typescript',
+  fixed to 'bash'). 3 subtopics: lists every real drop-stage field (none a rate), with a Try It on a
+  regex-based workaround that technically samples but defeats the cost-saving goal; builds the dead
+  man's switch alert the QnA names but never shows, verified LogQL's absent_over_time() against
+  Loki's own docs; finds and fixes a real robustness gap in the Challenge's own parseStreamSelector
+  -- feeding it a regex selector (the exact style the page's own QnA uses) doesn't reject cleanly,
+  it silently garbles the result (verified via execution). No SUBTOPICS collision. Build passed
+  clean. Browser-verified with a hard reload first: nav accordion opened with all 3 links on the
+  first check; both main-page fixes confirmed rendering live; all 3 subtopic pages checked
+  individually -- zero console errors, correct h1/breadcrumb, 860px wrapper, tailored sidebar
+  content. **Observability hub Phase 10: 10 of 20 topics complete -- halfway through the hub.**
 - [ ] `/observability/log-best-practices` — Log Best Practices
 - [ ] `/observability/distributed-tracing` — Distributed Tracing
 - [ ] `/observability/opentelemetry-tracing` — OTel Tracing Deep Dive
