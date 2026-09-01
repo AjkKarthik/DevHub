@@ -3487,7 +3487,12 @@ export const routes: Routes = [
         { path: 'exemplars-linking-a-metric-observation-to-its-trace', loadComponent: () => import('./components/architecture/observability/opentelemetry/subtopics/exemplars-linking-a-metric-observation-to-its-trace/exemplars-linking-a-metric-observation-to-its-trace').then(m => m.ExemplarsLinkingAMetricObservationToItsTraceSubtopic) },
         { path: 'a-tail-sampling-decision-engine', loadComponent: () => import('./components/architecture/observability/opentelemetry/subtopics/a-tail-sampling-decision-engine/a-tail-sampling-decision-engine').then(m => m.ATailSamplingDecisionEngineSubtopic) },
       ] },
-    { path: 'sli-slo-sla',               loadComponent: () => import('./components/architecture/observability/sli-slo-sla/sli-slo-sla').then(m => m.ObsSliSloSla) },
+    { path: 'sli-slo-sla', children: [
+        { path: '', loadComponent: () => import('./components/architecture/observability/sli-slo-sla/sli-slo-sla').then(m => m.ObsSliSloSla) },
+        { path: 'the-challenges-impossible-worked-examples', loadComponent: () => import('./components/architecture/observability/sli-slo-sla/subtopics/the-challenges-impossible-worked-examples/the-challenges-impossible-worked-examples').then(m => m.TheChallengesImpossibleWorkedExamplesSubtopic) },
+        { path: 'reconciling-two-different-status-category-models', loadComponent: () => import('./components/architecture/observability/sli-slo-sla/subtopics/reconciling-two-different-status-category-models/reconciling-two-different-status-category-models').then(m => m.ReconcilingTwoDifferentStatusCategoryModelsSubtopic) },
+        { path: 'the-multi-window-burn-rate-decision-logic', loadComponent: () => import('./components/architecture/observability/sli-slo-sla/subtopics/the-multi-window-burn-rate-decision-logic/the-multi-window-burn-rate-decision-logic').then(m => m.TheMultiWindowBurnRateDecisionLogicSubtopic) },
+      ] },
     { path: 'prometheus-metrics',         loadComponent: () => import('./components/architecture/observability/prometheus-metrics/prometheus-metrics').then(m => m.ObsPrometheusMetrics) },
     { path: 'grafana-dashboards',         loadComponent: () => import('./components/architecture/observability/grafana-dashboards/grafana-dashboards').then(m => m.ObsGrafanaDashboards) },
     { path: 'custom-app-metrics',         loadComponent: () => import('./components/architecture/observability/custom-app-metrics/custom-app-metrics').then(m => m.ObsCustomAppMetrics) },

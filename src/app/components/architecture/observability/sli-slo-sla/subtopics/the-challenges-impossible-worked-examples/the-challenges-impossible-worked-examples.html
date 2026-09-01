@@ -1,0 +1,26 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="SLIs, SLOs &amp; SLAs" topicRoute="/observability/sli-slo-sla"
+    subtopicLabel="The Challenge’s Impossible Worked Examples" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">The Challenge’s Impossible Worked Examples</h1>
+  <p class="page-subtitle">Two codeTabs on the same page claimed outputs their own formulas could never actually produce — verified via direct execution and fixed in both places.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>The main page's own calculateSloStatus() (3 states) and the Challenge's errorBudgetStatus() (4 states) categorize the exact same underlying ratio differently — the next subtopic reconciles them.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="SLIs, SLOs &amp; SLAs" topicRoute="/observability/sli-slo-sla"
+    [next]="{ label: 'Reconciling Two Different Status-Category Models', route: '/observability/sli-slo-sla/reconciling-two-different-status-category-models' }" />
+</div>

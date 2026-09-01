@@ -53,7 +53,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
       </div>
     }
   }
-  <a routerLink="/observability/sli-slo-sla"                routerLinkActive="active"><span class="nl-text">SLIs, SLOs &amp; SLAs</span>@if(progress.isDone('obs-sli-slo-sla')){<span class="nl-done">✓</span>}</a>
+  <a routerLink="/observability/sli-slo-sla" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+    <span class="nl-text">SLIs, SLOs &amp; SLAs</span>
+    @if(progress.isDone('obs-sli-slo-sla')){<span class="nl-done">✓</span>}
+    @if (subtopicsOf('sli-slo-sla')) {
+      <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('sli-slo-sla')"
+              (click)="toggleSubtopics('sli-slo-sla', $event)" aria-label="Toggle subtopics">›</button>
+    }
+  </a>
+  @if (subtopicsOf('sli-slo-sla'); as sloSubs) {
+    @if (isSubtopicsExpanded('sli-slo-sla')) {
+      <div class="nav-subtopics">
+        @for (s of sloSubs; track s.route) {
+          <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+            <span class="nl-text">{{ s.label }}</span>
+          </a>
+        }
+      </div>
+    }
+  }
 </div>
 
 <div class="nav-group">

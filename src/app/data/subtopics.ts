@@ -3671,4 +3671,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Exemplars: Linking a Metric Observation to Its Trace', route: '/observability/opentelemetry/exemplars-linking-a-metric-observation-to-its-trace' },
     { label: 'A Tail-Sampling Decision Engine', route: '/observability/opentelemetry/a-tail-sampling-decision-engine' },
   ],
+  'sli-slo-sla': [
+    { label: 'The Challenge’s Impossible Worked Examples', route: '/observability/sli-slo-sla/the-challenges-impossible-worked-examples' },
+    { label: 'Reconciling Two Different Status-Category Models', route: '/observability/sli-slo-sla/reconciling-two-different-status-category-models' },
+    { label: 'The Multi-Window Burn-Rate Decision Logic', route: '/observability/sli-slo-sla/the-multi-window-burn-rate-decision-logic' },
+  ],
 };

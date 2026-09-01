@@ -36170,6 +36170,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Choosing the wrong SLI (measuring server-side success when users experience client-side failures) can show green dashboards during a real user-facing outage.',
     ],
   },
+  'observability/sli-slo-sla/the-challenges-impossible-worked-examples': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Reconciling Two Different Status-Category Models', route: '/observability/sli-slo-sla/reconciling-two-different-status-category-models' },
+      { label: 'SLIs, SLOs & SLAs (overview)', route: '/observability/sli-slo-sla' },
+    ],
+    tip: 'consumedRate and burnRate are computed by the identical formula in calculateSloStatus() -- they can never disagree, so any claimed output showing them as different values is a mathematical impossibility worth catching before trusting it.',
+    gotchas: [
+      'For a formula this sensitive (allowedErrorRate is often a very small number like 0.001), small differences in an input\'s later decimal places move the result across category boundaries -- always compute the actual value rather than eyeballing whether an example "looks right."',
+    ],
+  },
+  'observability/sli-slo-sla/reconciling-two-different-status-category-models': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The Challenge’s Impossible Worked Examples', route: '/observability/sli-slo-sla/the-challenges-impossible-worked-examples' },
+      { label: 'The Multi-Window Burn-Rate Decision Logic', route: '/observability/sli-slo-sla/the-multi-window-burn-rate-decision-logic' },
+    ],
+    tip: 'Two functions classifying the same underlying consumed-budget ratio into 3 vs. 4 named states are both individually valid design choices -- the real gap is that neither the page nor either function ever reconciles them against each other.',
+    gotchas: [
+      'Mapping a 4-category classifier onto a 3-tier policy isn\'t automatic -- the middle category can straddle a policy boundary, needing an explicit decision about which tier it belongs to.',
+    ],
+  },
+  'observability/sli-slo-sla/the-multi-window-burn-rate-decision-logic': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Reconciling Two Different Status-Category Models', route: '/observability/sli-slo-sla/reconciling-two-different-status-category-models' },
+      { label: 'SLIs, SLOs & SLAs (overview)', route: '/observability/sli-slo-sla' },
+    ],
+    tip: 'The page-level and ticket-level burn-rate conditions are two INDEPENDENT checks over completely different window pairs and thresholds -- one can fire without the other ever being true at all, in either direction.',
+    gotchas: [
+      'A brief 5-minute spike alone can look page-severity by eye, but the actual page condition also requires the 1-hour window to independently exceed the threshold -- a diluted 1h average correctly downgrades it to a ticket instead.',
+    ],
+  },
   'observability/error-budgets-toil': {
     apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
     related: [
