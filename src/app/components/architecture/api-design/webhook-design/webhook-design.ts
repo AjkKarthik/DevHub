@@ -92,7 +92,7 @@ async function dispatchWebhook(event: WebhookEvent, subscriptions: Subscription[
       },
     }, {
       attempts: 6,
-      backoff: { type: 'exponential', delay: 60_000 }, // 1m, 2m, 4m, 8m, 16m, 32m
+      backoff: { type: 'exponential', delay: 60_000 }, // 6 total attempts -- 5 retry delays: 2m, 4m, 8m, 16m, 32m
     });
   }
 }

@@ -3628,4 +3628,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Redis Pub/Sub Fanout Across Server Instances', route: '/api-design/websockets-sse-polling/redis-pub-sub-fanout-across-server-instances' },
     { label: 'SSE Gap Recovery With a Ring Buffer', route: '/api-design/websockets-sse-polling/sse-gap-recovery-with-a-ring-buffer' },
   ],
+  'webhook-design': [
+    { label: 'BullMQ’s Exponential Backoff, Computed Precisely', route: '/api-design/webhook-design/bullmqs-exponential-backoff-computed-precisely' },
+    { label: 'Fan-Out With Per-Subscriber Rate Limiting', route: '/api-design/webhook-design/fan-out-with-per-subscriber-rate-limiting' },
+    { label: 'Secret Rotation During a Transition Window', route: '/api-design/webhook-design/secret-rotation-during-a-transition-window' },
+  ],
 };

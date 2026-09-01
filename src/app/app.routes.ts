@@ -3142,7 +3142,12 @@ export const routes: Routes = [
         { path: 'redis-pub-sub-fanout-across-server-instances', loadComponent: () => import('./components/architecture/api-design/websockets-sse-polling/subtopics/redis-pub-sub-fanout-across-server-instances/redis-pub-sub-fanout-across-server-instances').then(m => m.RedisPubSubFanoutAcrossServerInstancesSubtopic) },
         { path: 'sse-gap-recovery-with-a-ring-buffer', loadComponent: () => import('./components/architecture/api-design/websockets-sse-polling/subtopics/sse-gap-recovery-with-a-ring-buffer/sse-gap-recovery-with-a-ring-buffer').then(m => m.SseGapRecoveryWithARingBufferSubtopic) },
       ] },
-    { path: 'webhook-design',        loadComponent: () => import('./components/architecture/api-design/webhook-design/webhook-design').then(m => m.ApiWebhookDesign) },
+    { path: 'webhook-design', children: [
+        { path: '', loadComponent: () => import('./components/architecture/api-design/webhook-design/webhook-design').then(m => m.ApiWebhookDesign) },
+        { path: 'bullmqs-exponential-backoff-computed-precisely', loadComponent: () => import('./components/architecture/api-design/webhook-design/subtopics/bullmqs-exponential-backoff-computed-precisely/bullmqs-exponential-backoff-computed-precisely').then(m => m.BullmqsExponentialBackoffComputedPreciselySubtopic) },
+        { path: 'fan-out-with-per-subscriber-rate-limiting', loadComponent: () => import('./components/architecture/api-design/webhook-design/subtopics/fan-out-with-per-subscriber-rate-limiting/fan-out-with-per-subscriber-rate-limiting').then(m => m.FanOutWithPerSubscriberRateLimitingSubtopic) },
+        { path: 'secret-rotation-during-a-transition-window', loadComponent: () => import('./components/architecture/api-design/webhook-design/subtopics/secret-rotation-during-a-transition-window/secret-rotation-during-a-transition-window').then(m => m.SecretRotationDuringATransitionWindowSubtopic) },
+      ] },
     { path: 'api-design-principles', children: [
         { path: '', loadComponent: () => import('./components/architecture/api-design/api-design-principles/api-design-principles').then(m => m.ApiDesignPrinciples) },
         { path: 'the-mismatched-timestamp-in-the-transform-challenge', loadComponent: () => import('./components/architecture/api-design/api-design-principles/subtopics/the-mismatched-timestamp-in-the-transform-challenge/the-mismatched-timestamp-in-the-transform-challenge').then(m => m.TheMismatchedTimestampInTheTransformChallengeSubtopic) },

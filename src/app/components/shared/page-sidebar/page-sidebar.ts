@@ -35494,6 +35494,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A receiver that takes too long to respond can cause the sender to time out and retry, potentially causing duplicate processing if the original request eventually also succeeds.',
     ],
   },
+  'api-design/webhook-design/bullmqs-exponential-backoff-computed-precisely': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Fan-Out With Per-Subscriber Rate Limiting', route: '/api-design/webhook-design/fan-out-with-per-subscriber-rate-limiting' },
+      { label: 'Webhook Design (overview)', route: '/api-design/webhook-design' },
+    ],
+    tip: 'BullMQ\'s "attempts" option configures the TOTAL number of tries, not the number of retries after the first -- 6 attempts means only 5 retry delays, verified against BullMQ\'s own documented 2^(attemptNumber-1)*delay formula.',
+    gotchas: [
+      'The first retry delay under exponential backoff starts at TWICE the base delay (2^1), not the bare base delay itself (2^0) -- a common off-by-one assumption.',
+    ],
+  },
+  'api-design/webhook-design/fan-out-with-per-subscriber-rate-limiting': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'BullMQ’s Exponential Backoff, Computed Precisely', route: '/api-design/webhook-design/bullmqs-exponential-backoff-computed-precisely' },
+      { label: 'Secret Rotation During a Transition Window', route: '/api-design/webhook-design/secret-rotation-during-a-transition-window' },
+    ],
+    tip: 'Rate-limiting PER subscriber means each subscriber gets its own independent budget -- a shared limiter across all subscribers would turn "per-subscriber" into a coarser global rate limit instead.',
+    gotchas: [
+      'A rate-limited delivery is a deferral, not a failure -- it never reached the network, so it shouldn\'t consume the same retry/backoff budget reserved for genuine consumer-side delivery failures.',
+    ],
+  },
+  'api-design/webhook-design/secret-rotation-during-a-transition-window': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Fan-Out With Per-Subscriber Rate Limiting', route: '/api-design/webhook-design/fan-out-with-per-subscriber-rate-limiting' },
+      { label: 'Webhook Design (overview)', route: '/api-design/webhook-design' },
+    ],
+    tip: 'Verification during rotation tries every currently-valid secret (new then old) until one matches -- each individual comparison still uses the same timing-safe check, so accepting multiple secrets doesn\'t weaken any single comparison\'s security.',
+    gotchas: [
+      'The old secret must be actively REMOVED once the transition window ends -- leaving both secrets valid forever defeats the security purpose of rotating a potentially-compromised secret in the first place.',
+    ],
+  },
   'api-design/hateoas-hypermedia': {
     apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
     related: [

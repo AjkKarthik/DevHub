@@ -1,0 +1,27 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Webhook Design" topicRoute="/api-design/webhook-design"
+    subtopicLabel="Fan-Out With Per-Subscriber Rate Limiting" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">Fan-Out With Per-Subscriber Rate Limiting</h1>
+  <p class="page-subtitle">The QnA names per-subscriber rate limiting during webhook fan-out in one clause — here’s an independent limiter per subscriber, verified that one subscriber’s limit never affects another’s delivery.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>The QnA names secret rotation with a transition window in one sentence, with no code showing dual-secret verification. The next subtopic builds it.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Webhook Design" topicRoute="/api-design/webhook-design"
+    [prev]="{ label: 'BullMQ’s Exponential Backoff, Computed Precisely', route: '/api-design/webhook-design/bullmqs-exponential-backoff-computed-precisely' }"
+    [next]="{ label: 'Secret Rotation During a Transition Window', route: '/api-design/webhook-design/secret-rotation-during-a-transition-window' }" />
+</div>
