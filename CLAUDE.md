@@ -6609,6 +6609,55 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
     correct h1/breadcrumb, 860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar
     content confirmed on the final subtopic. **Observability hub Phase 10: 7 of 20 topics
     complete.**
+16. **The `cloud-native-monitoring` batch — the fifth and final topic in the Metrics nav group —
+    found and fixed a genuine, thoroughly-verified Docker Compose bug in the "Thanos Setup"
+    codeTab**: the <code>prometheus</code> service's <code>command:</code> list gave four
+    <code>--storage.tsdb.*</code> flags plus <code>--web.enable-lifecycle</code>, but no
+    <code>--config.file</code> flag — verified via WebFetch against the official
+    <code>prom/prometheus</code> Dockerfile that the image's default CMD is
+    <code>["--config.file=/etc/prometheus/prometheus.yml", "--storage.tsdb.path=/prometheus"]</code>,
+    and that Docker Compose's <code>command:</code> REPLACES CMD entirely, not appends — every
+    flag not re-listed is simply gone. Verified via WebSearch against Prometheus's own flag
+    definitions that <code>--config.file</code>'s compiled-in default is a RELATIVE path
+    (<code>Default("prometheus.yml")</code>), and via a second WebFetch that the image's own
+    <code>WORKDIR</code> is <code>/prometheus</code> — meaning the omitted flag makes Prometheus
+    look for <code>/prometheus/prometheus.yml</code>, a path occupied by the
+    <code>prometheus-data</code> TSDB volume, never the config correctly mounted at
+    <code>/etc/prometheus/prometheus.yml</code>. The volume mount itself was completely correct,
+    which is exactly what made this easy to miss on a casual read. Fixed by adding the missing
+    flag. Also fixed two mistagged codeTabs ("Prometheus Operator CRDs" and "Thanos Setup", both
+    YAML/docker-compose content tagged `language: 'typescript'`) to the established `'bash'`
+    convention. Three subtopics: (1) **fix-adjacent** — reproduces the exact failure chain and the
+    fix, with a Try It on why the page's own Prometheus Operator CRDs never hit this failure mode
+    at all (the Operator generates container args programmatically, never hand-writing a
+    `command:` list); (2) **gap-closing** — the Quick Reference names PodMonitor for DaemonSets/
+    StatefulSets but no codeTab ever builds one; verified via WebFetch against the Prometheus
+    Operator's own API reference that PodMonitor's scrape-endpoint field is genuinely
+    `podMetricsEndpoints`, not `endpoints` like ServiceMonitor — a real, easy copy-paste trap since
+    an unrecognized field can be silently dropped rather than rejected; (3) **gap-closing** — the
+    Quick Reference names AlertmanagerConfig for "Slack webhook, PagerDuty key, routing by label"
+    but never shows one; built and verified a manifest routing the EXACT
+    `OrderServiceHighErrorRate` alert already defined on the page's own PrometheusRule codeTab,
+    verified via WebSearch against real AlertmanagerConfig examples for the
+    `route.matchers`/`receivers`/`slackConfigs` shape, including the `apiURL.name`/`apiURL.key`
+    Secret-reference pattern for the webhook URL. **A real, self-caught escaping bug found and
+    fixed before the build, not after**: an early draft of a misconceptions field used `\\'`
+    (double-backslash) around nested array-literal quotes inside a single-quoted TS string — this
+    is NOT the correct single-backslash `\'` convention documented elsewhere in this file; a
+    double-backslash produces a literal backslash character followed by an UNESCAPED quote that
+    prematurely terminates the string. Caught via a direct grep/re-read before the build, fixed by
+    rewording to avoid the nested-quote collision entirely rather than trying to re-escape it. No
+    `SUBTOPICS` collision for bare `cloud-native-monitoring` (checked both `subtopics.ts` forms and
+    grepped `app.routes.ts` directly, confirmed collision-free, left bare). `ObsNavComponent`'s
+    toggle for this topic used a single consistent key across all five accordion-related calls,
+    double-checked via grep after writing. Build passed clean (foreground execution, explicit
+    `EXITCODE:$?` capture, zero `ERROR` lines). Browser-verified with a hard reload first: nav
+    accordion opens with all 3 subtopic links on the first check (8 toggles total across the hub,
+    confirming all 5 Metrics-group topics now have subtopics); both main-page fixes confirmed
+    rendering live via `window.ng.getComponent()`; all 3 subtopic pages checked individually — zero
+    console errors, correct h1/breadcrumb, 860px wrapper via `getComputedStyle`, tailored (not
+    DEFAULT) sidebar content confirmed on the final subtopic. **Observability hub Phase 10: 8 of 20
+    topics complete — Metrics nav group fully done.**
 
 ## Current state (update when it changes!)
 
@@ -7667,11 +7716,11 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
   All 22 cards `available: true` in `architecture/observability/home/home.ts`. Progress: `obsTotal=20` in progress.service.ts.
   Observability pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ObsNavComponent at `shared/obs-nav/obs-nav.ts`.
-  Phase 10: 7 of 20 topics have subtopics (`/observability/observability-fundamentals`, pilot
+  Phase 10: 8 of 20 topics have subtopics (`/observability/observability-fundamentals`, pilot
   batch; `/observability/opentelemetry`; `/observability/sli-slo-sla` — Core Concepts nav group
   fully done; `/observability/prometheus-metrics`; `/observability/grafana-dashboards`;
-  `/observability/custom-app-metrics`; `/observability/infrastructure-metrics` — 4 of the Metrics
-  nav group's topics, 2026-09-01) —
+  `/observability/custom-app-metrics`; `/observability/infrastructure-metrics`;
+  `/observability/cloud-native-monitoring` — Metrics nav group fully done, 2026-09-01) —
   see "Observability & SRE hub subtopic wiring" section above for the `ObsNavComponent` accordion
   structural fix, a real self-authored key-mismatch bug caught during browser verification (not a
   stale-server artifact), a cross-hub `opentelemetry` SUBTOPICS collision already resolved by

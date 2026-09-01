@@ -8597,7 +8597,31 @@ off here with a date.
   both codeTab language fixes confirmed rendering live; all 3 subtopic pages checked individually --
   zero console errors, correct h1/breadcrumb, 860px wrapper, tailored sidebar content.
   **Observability hub Phase 10: 7 of 20 topics complete.**
-- [ ] `/observability/cloud-native-monitoring` — Cloud-Native Monitoring
+- [x] `/observability/cloud-native-monitoring` — Cloud-Native Monitoring (2026-09-01). Fifth and
+  final topic in the Metrics nav group. Found and fixed a genuine Docker Compose bug in the Thanos
+  Setup codeTab: the prometheus service's command: list had four --storage.tsdb.* flags plus
+  --web.enable-lifecycle but no --config.file flag -- verified against the official prom/prometheus
+  Dockerfile that the image's default CMD includes --config.file=/etc/prometheus/prometheus.yml,
+  and that command: replaces CMD entirely (not appends), so any flag not re-listed is gone.
+  Verified via Prometheus's own flag source that --config.file's compiled-in default is a RELATIVE
+  path ("prometheus.yml"), and via the Dockerfile's WORKDIR /prometheus that the omitted flag makes
+  Prometheus look for /prometheus/prometheus.yml -- a path occupied by the prometheus-data TSDB
+  volume, never the config correctly mounted at /etc/prometheus/prometheus.yml. Fixed by adding the
+  missing flag. Also fixed 2 mistagged codeTabs (Prometheus Operator CRDs, Thanos Setup, both
+  tagged 'typescript', fixed to 'bash'). 3 subtopics: reproduces the exact failure chain and fix,
+  with a Try It on why the Operator-based CRDs never hit this failure mode; builds a PodMonitor CRD
+  (named but never coded in Quick Reference), verified against the Prometheus Operator's own API
+  reference that its scrape field is genuinely podMetricsEndpoints, not endpoints like
+  ServiceMonitor -- a real copy-paste trap; builds an AlertmanagerConfig routing the exact
+  OrderServiceHighErrorRate alert already defined on the page's own PrometheusRule codeTab.
+  Self-caught and fixed a real escaping bug before the build (a double-backslash \\' around nested
+  array-literal quotes in a misconceptions field, which would have prematurely terminated the
+  string -- reworded to avoid the collision). No SUBTOPICS collision. Build passed clean.
+  Browser-verified with a hard reload first: nav accordion opened with all 3 links on the first
+  check (8 toggles total across the hub, confirming all 5 Metrics-group topics now have subtopics);
+  both main-page fixes confirmed rendering live; all 3 subtopic pages checked individually -- zero
+  console errors, correct h1/breadcrumb, 860px wrapper, tailored sidebar content.
+  **Observability hub Phase 10: 8 of 20 topics complete -- Metrics nav group fully done.**
 - [ ] `/observability/structured-logging` — Structured Logging
 - [ ] `/observability/log-aggregation` — Log Aggregation
 - [ ] `/observability/log-best-practices` — Log Best Practices
