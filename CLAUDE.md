@@ -6144,6 +6144,59 @@ Confirmed via direct file inspection before the pilot (`/api-design/rest-fundame
     errors, correct h1/breadcrumb, 860px wrapper via `getComputedStyle`, and tailored (not
     DEFAULT) sidebar content confirmed on the final subtopic. **API Design hub Phase 10: 17 of 19
     topics complete.**
+24. **The `breaking-changes` batch found and fixed a genuine, well-verified staleness issue,
+    checked directly against a primary source rather than assumed**: the main page named Optic
+    (`opticdev/optic`) as a still-current breaking-change tool in SIX separate places (theory, a
+    mistake explanation, a quiz question's option AND explanation, and two QnA answers) — confirmed
+    directly against GitHub's own repo page that it was archived by its own maintainer on January
+    12, 2026 ("This repository was archived by the owner... It is now read-only"), following a 2024
+    Atlassian acquisition that never shipped the promised product integration; cross-checked against
+    a second, independent source (a migration-guide post) confirming the same date and naming
+    `oasdiff` as the maintained replacement covering the identical CLI + GitHub Action use case. Fixed
+    all six occurrences — five swap "Optic" for "openapi-diff/oasdiff"; the sixth (the theory bullet)
+    deliberately keeps a one-sentence archival note rather than silently erasing the "verify a tool's
+    status before trusting it" teaching point. A second, related inaccuracy on the same page: a quiz
+    question's correct answer grouped Spectral alongside `openapi-diff` and Optic as a tool that
+    "compares two OpenAPI spec versions" — verified via WebSearch that Spectral is structurally a
+    single-spec linter (style rules only) with no mechanism to diff two versions and cannot detect
+    breaking changes on its own; fixed the option text and explanation to state Spectral's real,
+    narrower role. Three subtopics, each verified via direct Node execution: (1) **fix-adjacent** —
+    traces the Optic archival finding, with a small tool-health-check function distinguishing
+    `'archived'` (a definitive maintainer decision) from merely `'stale'` (a softer, ambiguous
+    signal), verified via execution across both cases; (2) **gap-closing** — the QnA describes all
+    three Expand-Contract phases in prose using the page's own `userName`/`fullName` example, but no
+    codeTab implements any of them; built all three as real serialization functions, verified via
+    execution that both old and new simulated clients read correctly during Phase 1 (Expand) and only
+    the migrated client survives Phase 3 (Contract) — the expected, deliberate breakage; (3)
+    **gap-closing** — the Challenge's own `classifyChange()` explicitly states it "compares only
+    top-level field names" and correctly does exactly that, but the SAME page's theory and codeTab
+    both treat field type changes (string → number) as a core breaking-change example; verified via
+    execution that the ORIGINAL, unmodified Challenge solution misclassifies a genuine type change as
+    `'safe'`, then built an extended version adding a `typeof` check, verified against all four cases
+    (the original three plus the new type-change case) matching every expected classification exactly
+    — the Try It exercise also confirms the extended check correctly does NOT flag an enum-VALUE
+    change (same `typeof`, different value) as breaking, matching the page's own nuanced framing for
+    that separate category. No `SUBTOPICS` collision for bare `breaking-changes` (checked both
+    `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed collision-free, left bare).
+    `ApiDesignNavComponent`'s Advanced nav-group toggle needed no further changes (added in the prior
+    `api-security` batch this session). Build passed clean (foreground execution, explicit
+    `EXITCODE:$?` capture, zero `ERROR` lines). Browser-verified: all six main-page Optic/Spectral
+    fixes confirmed live via direct component-data inspection (`window.ng.getComponent()` on the
+    theory block, mistakes block, quiz block, and QnA block) rather than relying on text search alone,
+    since several of those sections render collapsed by default. **Hit a real, resolved tooling
+    artifact distinct from every prior stale-chunk incident**: the nav accordion toggle failed to
+    expand for BOTH `breaking-changes` and the already-shipped `api-security` topic immediately after
+    the build, despite `preview_logs` confirming a genuine fresh recompile of `main.js` and every new
+    lazy chunk — a hard `window.location.reload(true)` fixed both immediately, confirming this was a
+    stale IN-BROWSER bundle instance held by the already-open tab, not a server-side staleness issue
+    at all (worth trying a hard reload FIRST, before any file-write-based fix, whenever a genuinely
+    fresh server-side rebuild is already confirmed via `preview_logs` but the browser still shows
+    stale behavior). After the reload: nav accordion opens with all 3 subtopic links (6 total
+    alongside `api-security`'s own, confirmed no regression); all 3 subtopic pages checked
+    individually — zero console errors, correct h1/breadcrumb, 860px wrapper via `getComputedStyle`,
+    tailored (not DEFAULT) sidebar content confirmed on the final subtopic. **This completes the
+    entire API Design hub's Phase 10 rollout except for one remaining topic. API Design hub Phase 10:
+    18 of 19 topics complete — only `rate-limiting` remains.**
 
 ## Current state (update when it changes!)
 
@@ -7171,7 +7224,7 @@ Confirmed via direct file inspection before the pilot (`/api-design/rest-fundame
   All 21 cards `available: true` in `architecture/api-design/home/home.ts`. Progress: `apiTotal=19` in progress.service.ts.
   API Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ApiDesignNavComponent at `shared/api-design-nav/api-design-nav.ts`.
-  Phase 10: 17 of 19 topics have subtopics (`/api-design/rest-fundamentals`, pilot batch;
+  Phase 10: 18 of 19 topics have subtopics (`/api-design/rest-fundamentals`, pilot batch;
   `/api-design/resource-url-design`; `/api-design/http-methods-status-codes`;
   `/api-design/pagination-patterns` — Foundations nav group fully done; `/api-design/api-versioning`;
   `/api-design/error-response-design`; `/api-design/hateoas-hypermedia`; `/api-design/api-design-principles`;
@@ -7179,8 +7232,8 @@ Confirmed via direct file inspection before the pilot (`/api-design/rest-fundame
   `/api-design/grpc-service-patterns`; `/api-design/grpc-web-transcoding` — Protocols nav group
   fully done; `/api-design/graphql-fundamentals`; `/api-design/graphql-vs-rest`;
   `/api-design/websockets-sse-polling`; `/api-design/webhook-design` — GraphQL & Real-Time nav
-  group fully done; `/api-design/api-security` — first topic in the Advanced nav group,
-  2026-09-01) — see
+  group fully done; `/api-design/api-security`; `/api-design/breaking-changes` — Advanced nav
+  group, only `rate-limiting` remains, 2026-09-01) — see
   "API Design hub subtopic wiring" section above
   for the `ApiDesignNavComponent` accordion structural fix and the generic `subtopicsOf(item.path)`
   toggle-gating pattern this hub's `@for`-looped nav template needed (a first for this hub, since

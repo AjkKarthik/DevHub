@@ -8385,7 +8385,35 @@ off here with a date.
   live; all 3 subtopic pages render with correct breadcrumb, 860px wrapper, zero console errors;
   sidebar showed tailored composite-key content. **API Design hub Phase 10: 17 of 19 topics
   complete.**
-- [ ] `/api-design/breaking-changes` — Breaking Changes
+- [x] `/api-design/breaking-changes` — Breaking Changes (2026-09-01). Fixed a genuine, well-
+  verified staleness issue: the main page named Optic as a still-current breaking-change tool in
+  6 separate places (theory, a mistake explanation, a quiz option+explanation, and two QnA
+  answers) -- confirmed directly against GitHub's own repo page that `opticdev/optic` was
+  archived by its own maintainer on January 12, 2026, following a 2024 Atlassian acquisition
+  that never shipped a promised integration; cross-checked against a second source confirming the
+  same date and naming `oasdiff` as the maintained replacement. Fixed all 6 occurrences (5 swap
+  Optic for openapi-diff/oasdiff; the theory bullet keeps a deliberate archival note). Also fixed
+  a related inaccuracy: a quiz question grouped Spectral as a "compares two spec versions" tool
+  when it's actually a single-spec linter with no diffing capability at all -- verified via
+  WebSearch. 3 subtopics: traces the archival finding with a tool-health-check function
+  distinguishing 'archived' from merely 'stale', verified via execution; implements all 3
+  Expand-Contract phases as real code (the QnA describes them in prose only), verified via
+  execution that old and new clients both work during Phase 1 and only the migrated client
+  survives Phase 3; extends the Challenge's classifyChange() (which explicitly scopes itself to
+  field-name comparison only) with a typeof check to catch the type changes the page's own theory
+  treats as core breaking-change examples, verified via execution across all 4 cases including
+  confirming the ORIGINAL unmodified Challenge misclassifies a real type change as 'safe'. No
+  SUBTOPICS collision for bare `breaking-changes`. Advanced nav-group toggle needed no further
+  changes. Build passed clean. Hit a real, resolved tooling artifact: the nav accordion toggle
+  failed to expand for both this topic and the already-shipped api-security topic despite
+  preview_logs confirming a genuine fresh server-side recompile -- a hard
+  window.location.reload(true) fixed both immediately, confirming a stale in-browser bundle
+  instance in the already-open tab, not a server-side issue. Browser-verified after reload: all
+  six main-page fixes confirmed live via direct component-data inspection; nav accordion opens
+  with all 3 subtopic links (6 total alongside api-security's own, no regression); all 3 subtopic
+  pages checked individually -- zero console errors, correct h1/breadcrumb, 860px wrapper,
+  tailored sidebar content on the final subtopic. **API Design hub Phase 10: 18 of 19 topics
+  complete -- only `rate-limiting` remains.**
 - [ ] `/api-design/rate-limiting` — Rate Limiting
 
 #### Observability — 20 topic pages
