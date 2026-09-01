@@ -8414,7 +8414,35 @@ off here with a date.
   pages checked individually -- zero console errors, correct h1/breadcrumb, 860px wrapper,
   tailored sidebar content on the final subtopic. **API Design hub Phase 10: 18 of 19 topics
   complete -- only `rate-limiting` remains.**
-- [ ] `/api-design/rate-limiting` — Rate Limiting
+- [x] `/api-design/rate-limiting` — Rate Limiting (2026-09-01). LAST topic in the hub, completing
+  the entire Phase 10 rollout. Fixed a genuine, rigorously-verified bug in the main page's own
+  primary "Sliding Window (Redis)" codeTab: `zAdd` ran unconditionally, before the code decided
+  whether the request would be allowed or rejected -- verified via simulation that a burst of 10
+  requests against a limit of 5 left 10 entries in the sorted set (not 5), and that a client
+  retrying once per second after its first rejection -- exactly the "runaway client retry loop"
+  scenario the page's own theory names as rate limiting's primary reason to exist -- never gets an
+  allowed request again for 70+ seconds, a self-perpetuating permanent lockout. Fixed by moving
+  `zAdd` into a second pipeline that only runs once the request is confirmed allowed; verified the
+  fixed version recovers exactly 61 seconds after the burst. 3 subtopics: reproduces the exact bug
+  and fix via a plain-JS sorted-set simulation, both verified matching claimed output exactly;
+  builds the Redis Lua script the page's own QnA explains is needed for atomic distributed token
+  bucket but the codeTab never shows (a plain in-memory single-process class instead), verified via
+  execution including the atomicity guarantee a naive two-command version would lack; builds a
+  GraphQL query-complexity calculator and budget-tracking limiter the QnA describes in prose only,
+  verified via execution that a nested query (20 posts x 15 comments) costs 321 points vs 1 for a
+  flat query, with a Try It confirming a client well within a generous request-count budget can
+  still be denied by the complexity-based limiter. Real cross-hub SUBTOPICS collision handled
+  proactively: `rate-limiting` is also a bare route under the Redis hub -- hub-prefixed to
+  `api-rate-limiting`, and since ApiDesignNavComponent's Advanced loop calls
+  `subtopicsOf(item.path)` generically, added a small `subKey()` helper mapping just this one slug
+  without disturbing the two already-shipped entries in the same loop. Confirmed
+  `/redis/rate-limiting` renders unaffected. Build passed clean. Browser-verified with a hard
+  reload FIRST (avoiding the prior batch's stale-bundle incident) -- nav accordion opened with all
+  3 links on the first check; main-page fix confirmed rendering live; all 3 subtopic pages checked
+  individually -- zero console errors, correct h1/breadcrumb, 860px wrapper, tailored sidebar
+  content; cross-hub isolation check passed. **This completes the API Design hub's entire Phase 10
+  rollout -- all 19 topics now have deep-dive subtopic pages, 57 subtopic pages total across the
+  hub.**
 
 #### Observability — 20 topic pages
 

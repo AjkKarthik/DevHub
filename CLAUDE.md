@@ -6197,6 +6197,62 @@ Confirmed via direct file inspection before the pilot (`/api-design/rest-fundame
     tailored (not DEFAULT) sidebar content confirmed on the final subtopic. **This completes the
     entire API Design hub's Phase 10 rollout except for one remaining topic. API Design hub Phase 10:
     18 of 19 topics complete — only `rate-limiting` remains.**
+25. **The `rate-limiting` batch — the LAST topic in the hub, completing the entire Phase 10
+    rollout — found and fixed a genuine, rigorously-verified bug in the main page's own primary
+    "Sliding Window (Redis)" codeTab**: the pipeline ran <code>zAdd</code> (recording the current
+    request in the sorted set) UNCONDITIONALLY, before the code decided whether the request would
+    be allowed or rejected. Simulated directly against the exact pipeline order the codeTab uses (a
+    plain-JS sorted-set stand-in reproducing `zRemRangeByScore`/`zCard`/`zAdd` semantics): a burst
+    of 10 requests against a limit of 5 left 10 entries in the sorted set, not 5 — every rejected
+    request got added too. Compounded further and verified independently: a client that retries
+    once per second after its first rejection — exactly the "runaway clients... retry loops"
+    scenario the page's own theory section names as rate limiting's PRIMARY reason to exist —
+    NEVER gets an allowed request again for the full 70-second test window, since every retry
+    re-adds a fresh, un-aged entry to its own window; the rate limiter's own bug turns textbook,
+    well-behaved retry behavior into a self-perpetuating permanent lockout. Fixed by moving the
+    `zAdd` into a second pipeline that only runs once the request is confirmed allowed — verified
+    the fixed version recovers exactly 61 seconds after the burst (60s window + 1s), matching the
+    intended sliding-window property precisely; the fix trades one extra Redis round trip for a
+    narrow, explicitly-labeled TOCTOU race between truly concurrent requests, the same trade-off
+    the page's own QnA on token-bucket Lua scripts already discusses for a different algorithm.
+    Three subtopics, each verified via direct Node execution/simulation: (1) **fix-adjacent** —
+    reproduces the exact bug and fix via the sorted-set simulation, both versions verified matching
+    their claimed console output exactly, with a Try It on why all-identical-timestamp entries
+    evict together at precisely t > windowMs; (2) **gap-closing** — the page's own QnA explains
+    precisely WHY a distributed token bucket needs a Redis Lua script for atomicity, but the "Token
+    Bucket" codeTab is a plain in-memory single-process class (its own comment even admits
+    "simplified in-memory version"); built the Lua script plus a TS function computing exactly what
+    it would, verified via execution including a Try It confirming the atomicity guarantee a naive
+    two-command version would lack — two truly concurrent requests correctly serialize rather than
+    both reading the same stale token count; (3) **gap-closing** — the QnA describes GraphQL
+    complexity-based rate limiting in real structural detail (a points budget per window, simple
+    queries cost little, nested queries cost more) but no codeTab builds a calculator or limiter at
+    all; built both, verified via execution that a nested query fanning out under two list fields
+    (20 posts × 15 comments each) costs 321 points against 1 for a flat query, with a Try It
+    confirming a client comfortably within a generous REQUEST-COUNT budget (31 of 100 requests) can
+    still be denied by the complexity-based limiter — the real structural difference the QnA's own
+    opening point makes concrete. **A real, proactively-handled cross-hub `SUBTOPICS` collision,
+    requiring a genuine structural fix, not just a data-file key rename**: `rate-limiting` is also
+    a bare route segment under the Redis hub (`/redis/rate-limiting`) — `RedisNavComponent` has no
+    `subtopicsOf()` call today (no active collision), but the key was hub-prefixed to
+    `api-rate-limiting` anyway per the established preemptive-hub-prefix precedent. Since
+    `ApiDesignNavComponent`'s Advanced nav-group loop calls `subtopicsOf(item.path)` generically
+    (and `item.path` must stay the real URL segment `'rate-limiting'` for `routerLink` to keep
+    working), added a small `subKey(path)` helper mapping just this ONE slug to its prefixed
+    `SUBTOPICS` key everywhere else in the template — the two already-shipped entries in the same
+    loop (`api-security`, `breaking-changes`) pass through `subKey()` completely unchanged, no
+    regression. Confirmed via direct browser navigation that `/redis/rate-limiting` itself renders
+    correctly with zero console errors, fully unaffected by the change. Build passed clean
+    (foreground execution, explicit `EXITCODE:$?` capture, zero `ERROR` lines). Browser-verified
+    with a hard reload FIRST (per the lesson from the immediately-prior `breaking-changes` batch's
+    stale-in-browser-bundle incident) — the nav accordion opened with all 3 subtopic links on the
+    very first check this time, no repeat of that incident; the main-page fix confirmed rendering
+    live (`readPipeline`/`writePipeline` both present, the old unconditional-add comment fully
+    gone); all 3 subtopic pages checked individually — zero console errors, correct h1/breadcrumb,
+    860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the
+    final subtopic; the `/redis/rate-limiting` isolation check passed. **This completes the API
+    Design hub's entire Phase 10 rollout — all 19 topics now have deep-dive subtopic pages, 57
+    subtopic pages total across the hub, finished 2026-09-01.**
 
 ## Current state (update when it changes!)
 
@@ -7224,16 +7280,17 @@ Confirmed via direct file inspection before the pilot (`/api-design/rest-fundame
   All 21 cards `available: true` in `architecture/api-design/home/home.ts`. Progress: `apiTotal=19` in progress.service.ts.
   API Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ApiDesignNavComponent at `shared/api-design-nav/api-design-nav.ts`.
-  Phase 10: 18 of 19 topics have subtopics (`/api-design/rest-fundamentals`, pilot batch;
-  `/api-design/resource-url-design`; `/api-design/http-methods-status-codes`;
+  Phase 10: **COMPLETE — 19 of 19 topics have subtopics** (`/api-design/rest-fundamentals`, pilot
+  batch; `/api-design/resource-url-design`; `/api-design/http-methods-status-codes`;
   `/api-design/pagination-patterns` — Foundations nav group fully done; `/api-design/api-versioning`;
   `/api-design/error-response-design`; `/api-design/hateoas-hypermedia`; `/api-design/api-design-principles`;
   `/api-design/openapi-contracts` — REST Design nav group fully done; `/api-design/protocol-buffers`;
   `/api-design/grpc-service-patterns`; `/api-design/grpc-web-transcoding` — Protocols nav group
   fully done; `/api-design/graphql-fundamentals`; `/api-design/graphql-vs-rest`;
   `/api-design/websockets-sse-polling`; `/api-design/webhook-design` — GraphQL & Real-Time nav
-  group fully done; `/api-design/api-security`; `/api-design/breaking-changes` — Advanced nav
-  group, only `rate-limiting` remains, 2026-09-01) — see
+  group fully done; `/api-design/api-security`; `/api-design/breaking-changes`;
+  `/api-design/rate-limiting` — Advanced nav group fully done, finished 2026-09-01, 57 subtopic
+  pages total across the hub) — see
   "API Design hub subtopic wiring" section above
   for the `ApiDesignNavComponent` accordion structural fix and the generic `subtopicsOf(item.path)`
   toggle-gating pattern this hub's `@for`-looped nav template needed (a first for this hub, since
