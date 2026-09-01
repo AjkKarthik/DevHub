@@ -36087,6 +36087,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A dashboard is not a substitute for alerting — nobody is watching a dashboard 24/7, which is why alerting design matters independently.',
     ],
   },
+  'observability/grafana-dashboards/the-broken-nested-json-panel-link': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Testing the Loki Trace-ID Regex’s Real Limits', route: '/observability/grafana-dashboards/testing-the-loki-trace-id-regexs-real-limits' },
+      { label: 'Grafana Dashboards (overview)', route: '/observability/grafana-dashboards' },
+    ],
+    tip: 'Hand-escaping nested JSON inside a template literal is a common source of silently broken links — testing a URL\'s JSON payload in ISOLATION can look fine even when it fails once embedded in its real, full document context.',
+    gotchas: [
+      'JSON.stringify() + encodeURIComponent() sidesteps hand-escaping entirely and is what real dashboard-as-code tooling does — building the URL programmatically rather than as a hand-written string is the general fix.',
+    ],
+  },
+  'observability/grafana-dashboards/testing-the-loki-trace-id-regexs-real-limits': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The Broken Nested-JSON Panel Link', route: '/observability/grafana-dashboards/the-broken-nested-json-panel-link' },
+      { label: 'Automated Deployment-Correlation Detection', route: '/observability/grafana-dashboards/automated-deployment-correlation-detection' },
+    ],
+    tip: 'A derivedField matcherRegex has zero understanding of JSON structure — it matches the first occurrence of a literal substring pattern anywhere in the log line, decoy fields included, and \\w+ alone cannot span a hyphenated trace ID.',
+    gotchas: [
+      'A hyphenated trace ID (e.g. a UUID-shaped one) produces NO MATCH AT ALL under a \\w+-only regex — word-character classes never include hyphens.',
+    ],
+  },
+  'observability/grafana-dashboards/automated-deployment-correlation-detection': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Testing the Loki Trace-ID Regex’s Real Limits', route: '/observability/grafana-dashboards/testing-the-loki-trace-id-regexs-real-limits' },
+      { label: 'Grafana Dashboards (overview)', route: '/observability/grafana-dashboards' },
+    ],
+    tip: 'Correlating a metric spike with a deploy timestamp only ever establishes TEMPORAL correlation, not causation — a strong investigative lead, the same limited signal a human eyeballing a dashboard annotation gets.',
+    gotchas: [
+      'Picking the MOST RECENT deployment before a spike (not just the first match found) matters once a service has more than one deploy within the correlation window — array order is not a substitute for an explicit "most recent" rule.',
+    ],
+  },
   'observability/log-aggregation': {
     apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
     related: [

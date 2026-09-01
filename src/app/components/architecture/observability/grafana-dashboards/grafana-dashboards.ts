@@ -71,7 +71,7 @@ const theory: TheoryPoint[] = [
 const codeTabs: CodeTab[] = [
   {
     label: 'Dashboard JSON',
-    language: 'typescript',
+    language: 'bash',
     code: `// Grafana dashboard as code (JSON structure — store in Git)
 {
   "title": "Order Service — RED Dashboard",
@@ -143,7 +143,7 @@ const codeTabs: CodeTab[] = [
   },
   {
     label: 'Loki + Tempo Linking',
-    language: 'typescript',
+    language: 'bash',
     code: `# Grafana datasource config (grafana.ini / provisioning)
 # Link traceId in logs to Tempo traces
 
@@ -222,13 +222,22 @@ const mistakes: CommonMistake[] = [
 // No exemplars pointing to Tempo traces
 // Engineer opens separate Explore tab, re-enters the time range manually
 // Loses 10 minutes setting up the investigation`,
-    right: `// Panel data links in each panel:
-{
-  "links": [{
-    "title": "View logs in Loki",
-    "url": "/explore?left={\"datasource\":\"Loki\",\"queries\":[{\"expr\":\"{service=\\\"$service\\\"}\"}],\"range\":{\"from\":\"\${__from}\",\"to\":\"\${__to}\"}}"
-  }]
-}
+    right: `// Build the URL programmatically -- hand-escaping nested JSON in a
+// string is a common source of broken links (unescaped quotes silently
+// corrupt the URL). JSON.stringify() + encodeURIComponent() sidesteps
+// the whole problem and is what real dashboard-as-code tooling does.
+const lokiExploreState = {
+  datasource: 'Loki',
+  queries: [{ expr: '{service="\$service"}' }],
+  range: { from: '\${__from}', to: '\${__to}' },
+};
+
+const panelLink = {
+  links: [{
+    title: 'View logs in Loki',
+    url: '/explore?left=' + encodeURIComponent(JSON.stringify(lokiExploreState)),
+  }],
+};
 // Exemplars on histogram panels link directly to traces`,
     explanation: 'A dashboard that shows a problem but provides no path to investigate it slows incident response. Always add panel data links to related Loki/Tempo Explore views pre-filled with the time range and service filter. Enable exemplars on latency histogram panels — they provide one-click navigation from a metric spike to a representative trace.',
   },

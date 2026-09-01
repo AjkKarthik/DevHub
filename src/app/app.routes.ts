@@ -3499,7 +3499,12 @@ export const routes: Routes = [
         { path: 'the-histograms-missing-inf-bucket', loadComponent: () => import('./components/architecture/observability/prometheus-metrics/subtopics/the-histograms-missing-inf-bucket/the-histograms-missing-inf-bucket').then(m => m.TheHistogramsMissingInfBucketSubtopic) },
         { path: 'verifying-the-apdex-querys-non-obvious-algebra', loadComponent: () => import('./components/architecture/observability/prometheus-metrics/subtopics/verifying-the-apdex-querys-non-obvious-algebra/verifying-the-apdex-querys-non-obvious-algebra').then(m => m.VerifyingTheApdexQuerysNonObviousAlgebraSubtopic) },
       ] },
-    { path: 'grafana-dashboards',         loadComponent: () => import('./components/architecture/observability/grafana-dashboards/grafana-dashboards').then(m => m.ObsGrafanaDashboards) },
+    { path: 'grafana-dashboards', children: [
+        { path: '', loadComponent: () => import('./components/architecture/observability/grafana-dashboards/grafana-dashboards').then(m => m.ObsGrafanaDashboards) },
+        { path: 'the-broken-nested-json-panel-link', loadComponent: () => import('./components/architecture/observability/grafana-dashboards/subtopics/the-broken-nested-json-panel-link/the-broken-nested-json-panel-link').then(m => m.TheBrokenNestedJsonPanelLinkSubtopic) },
+        { path: 'testing-the-loki-trace-id-regexs-real-limits', loadComponent: () => import('./components/architecture/observability/grafana-dashboards/subtopics/testing-the-loki-trace-id-regexs-real-limits/testing-the-loki-trace-id-regexs-real-limits').then(m => m.TestingTheLokiTraceIdRegexsRealLimitsSubtopic) },
+        { path: 'automated-deployment-correlation-detection', loadComponent: () => import('./components/architecture/observability/grafana-dashboards/subtopics/automated-deployment-correlation-detection/automated-deployment-correlation-detection').then(m => m.AutomatedDeploymentCorrelationDetectionSubtopic) },
+      ] },
     { path: 'custom-app-metrics',         loadComponent: () => import('./components/architecture/observability/custom-app-metrics/custom-app-metrics').then(m => m.ObsCustomAppMetrics) },
     { path: 'infrastructure-metrics',     loadComponent: () => import('./components/architecture/observability/infrastructure-metrics/infrastructure-metrics').then(m => m.ObsInfrastructureMetrics) },
     { path: 'cloud-native-monitoring',    loadComponent: () => import('./components/architecture/observability/cloud-native-monitoring/cloud-native-monitoring').then(m => m.ObsCloudNativeMonitoring) },

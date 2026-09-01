@@ -3681,4 +3681,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Histogram’s Missing +Inf Bucket', route: '/observability/prometheus-metrics/the-histograms-missing-inf-bucket' },
     { label: 'Verifying the Apdex Query’s Non-Obvious Algebra', route: '/observability/prometheus-metrics/verifying-the-apdex-querys-non-obvious-algebra' },
   ],
+  'grafana-dashboards': [
+    { label: 'The Broken Nested-JSON Panel Link', route: '/observability/grafana-dashboards/the-broken-nested-json-panel-link' },
+    { label: 'Testing the Loki Trace-ID Regex’s Real Limits', route: '/observability/grafana-dashboards/testing-the-loki-trace-id-regexs-real-limits' },
+    { label: 'Automated Deployment-Correlation Detection', route: '/observability/grafana-dashboards/automated-deployment-correlation-detection' },
+  ],
 };

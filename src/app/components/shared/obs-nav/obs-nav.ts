@@ -95,7 +95,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
       </div>
     }
   }
-  <a routerLink="/observability/grafana-dashboards"        routerLinkActive="active"><span class="nl-text">Grafana Dashboards</span>@if(progress.isDone('obs-grafana-dashboards')){<span class="nl-done">✓</span>}</a>
+  <a routerLink="/observability/grafana-dashboards" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+    <span class="nl-text">Grafana Dashboards</span>
+    @if(progress.isDone('obs-grafana-dashboards')){<span class="nl-done">✓</span>}
+    @if (subtopicsOf('grafana-dashboards')) {
+      <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('grafana-dashboards')"
+              (click)="toggleSubtopics('grafana-dashboards', $event)" aria-label="Toggle subtopics">›</button>
+    }
+  </a>
+  @if (subtopicsOf('grafana-dashboards'); as gdSubs) {
+    @if (isSubtopicsExpanded('grafana-dashboards')) {
+      <div class="nav-subtopics">
+        @for (s of gdSubs; track s.route) {
+          <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+            <span class="nl-text">{{ s.label }}</span>
+          </a>
+        }
+      </div>
+    }
+  }
   <a routerLink="/observability/custom-app-metrics"        routerLinkActive="active"><span class="nl-text">Custom App Metrics</span>@if(progress.isDone('obs-custom-app-metrics')){<span class="nl-done">✓</span>}</a>
   <a routerLink="/observability/infrastructure-metrics"    routerLinkActive="active"><span class="nl-text">Infrastructure Metrics</span>@if(progress.isDone('obs-infrastructure-metrics')){<span class="nl-done">✓</span>}</a>
   <a routerLink="/observability/cloud-native-monitoring"   routerLinkActive="active"><span class="nl-text">Cloud-Native Monitoring</span>@if(progress.isDone('obs-cloud-native-monitoring')){<span class="nl-done">✓</span>}</a>
