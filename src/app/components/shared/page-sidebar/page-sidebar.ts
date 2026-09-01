@@ -35516,6 +35516,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Token bucket and sliding window are the two dominant rate-limiting algorithms, with different burst-tolerance characteristics worth choosing deliberately.',
     ],
   },
+  'api-design/rate-limiting/the-sliding-windows-rejected-request-lockout-bug': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'A Lua-Script Atomic Token Bucket', route: '/api-design/rate-limiting/a-lua-script-atomic-token-bucket' },
+      { label: 'Rate Limiting (overview)', route: '/api-design/rate-limiting' },
+    ],
+    tip: 'A rejected request still got permanently added to the sliding window it was denied entry to -- a retrying client (exactly the well-behaved retry pattern a 429 is supposed to encourage) could become permanently locked out.',
+    gotchas: [
+      'Verified via simulation: a client that retries once per second after a rejection never gets an allowed request again for 70+ seconds under the buggy version, while the fixed version recovers exactly 60 seconds after its last ALLOWED request.',
+    ],
+  },
+  'api-design/rate-limiting/a-lua-script-atomic-token-bucket': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'The Sliding Window’s Rejected-Request Lockout Bug', route: '/api-design/rate-limiting/the-sliding-windows-rejected-request-lockout-bug' },
+      { label: 'A GraphQL Query-Complexity Limiter', route: '/api-design/rate-limiting/a-graphql-query-complexity-limiter' },
+    ],
+    tip: 'A Redis Lua script executes as one atomic unit against Redis\'s single-threaded command processor -- no other client\'s command can interleave partway through it, unlike a plain pipeline, which only batches round trips.',
+    gotchas: [
+      'The page\'s own in-memory TokenBucket class works correctly for a single process only -- the same "not shared across instances" gap its own separate mistake block warns against for a different algorithm.',
+    ],
+  },
+  'api-design/rate-limiting/a-graphql-query-complexity-limiter': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'A Lua-Script Atomic Token Bucket', route: '/api-design/rate-limiting/a-lua-script-atomic-token-bucket' },
+      { label: 'Rate Limiting (overview)', route: '/api-design/rate-limiting' },
+    ],
+    tip: 'A client comfortably within a generous request-count budget can still be denied by a complexity-based limiter -- request count and actual server cost are only loosely correlated on a single GraphQL endpoint where queries can ask for wildly different amounts of work.',
+    gotchas: [
+      'A field returning a LIST fans its own children\'s cost out by however many items it\'s expected to return -- a small nested query under two list fields can carry a genuinely large complexity score.',
+    ],
+  },
   'api-design/api-security': {
     apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
     related: [

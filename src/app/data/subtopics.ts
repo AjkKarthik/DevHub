@@ -3646,4 +3646,16 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Implementing Expand-Contract, All Three Phases', route: '/api-design/breaking-changes/implementing-expand-contract-all-three-phases' },
     { label: 'The Challenge Never Detects a Type Change', route: '/api-design/breaking-changes/the-challenge-never-detects-a-type-change' },
   ],
+  // NOTE: hub-prefixed proactively -- 'rate-limiting' is also a bare route
+  // segment under the Redis hub (/redis/rate-limiting) and the ASP.NET hub
+  // (already resolved to 'aspnet-rate-limiting' earlier). RedisNavComponent
+  // has no subtopicsOf() call today (no active collision), but prefixed
+  // defensively regardless, matching the established precedent. See
+  // ApiDesignNavComponent's own subKey() helper, which maps this hub's
+  // Advanced-loop 'rate-limiting' item.path to this exact key.
+  'api-rate-limiting': [
+    { label: 'The Sliding Window’s Rejected-Request Lockout Bug', route: '/api-design/rate-limiting/the-sliding-windows-rejected-request-lockout-bug' },
+    { label: 'A Lua-Script Atomic Token Bucket', route: '/api-design/rate-limiting/a-lua-script-atomic-token-bucket' },
+    { label: 'A GraphQL Query-Complexity Limiter', route: '/api-design/rate-limiting/a-graphql-query-complexity-limiter' },
+  ],
 };

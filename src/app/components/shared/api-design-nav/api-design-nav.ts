@@ -150,13 +150,13 @@ const DIFF: Record<string, string> = {
           @if (progress.isDone(item.route)) { <span class="nl-done">✓</span> }
           <span class="nl-text">{{ item.label }}</span>
           @if (diff(item.route); as d) { <span class="nl-dot" [class]="d"></span> }
-          @if (subtopicsOf(item.path)) {
-            <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded(item.path)"
-                    (click)="toggleSubtopics(item.path, $event)" aria-label="Toggle subtopics">›</button>
+          @if (subtopicsOf(subKey(item.path))) {
+            <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded(subKey(item.path))"
+                    (click)="toggleSubtopics(subKey(item.path), $event)" aria-label="Toggle subtopics">›</button>
           }
         </a>
-        @if (subtopicsOf(item.path); as itemSubs) {
-          @if (isSubtopicsExpanded(item.path)) {
+        @if (subtopicsOf(subKey(item.path)); as itemSubs) {
+          @if (isSubtopicsExpanded(subKey(item.path))) {
             <div class="nav-subtopics">
               @for (s of itemSubs; track s.route) {
                 <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
@@ -185,6 +185,18 @@ export class ApiDesignNavComponent {
 
   subtopicsOf(routeSlug: string) {
     return SUBTOPICS[routeSlug] ?? null;
+  }
+
+  // 'rate-limiting' is a bare URL segment shared with the Redis hub's own
+  // /redis/rate-limiting topic -- the SUBTOPICS map key was proactively
+  // hub-prefixed to 'api-rate-limiting' to avoid a future leak once the
+  // Redis hub's own RedisNavComponent adds subtopics-accordion support
+  // (it has none today). This maps the Advanced loop's item.path (which
+  // must stay the real URL segment for routerLink) to the correct SUBTOPICS
+  // key everywhere else in the template -- every other slug passes through
+  // unchanged.
+  subKey(path: string): string {
+    return path === 'rate-limiting' ? 'api-rate-limiting' : path;
   }
 
   private expandedTopics = signal<Set<string>>(new Set());

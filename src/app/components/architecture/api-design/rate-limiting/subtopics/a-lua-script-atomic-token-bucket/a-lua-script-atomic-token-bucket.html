@@ -1,0 +1,27 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Rate Limiting" topicRoute="/api-design/rate-limiting"
+    subtopicLabel="A Lua-Script Atomic Token Bucket" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">A Lua-Script Atomic Token Bucket</h1>
+  <p class="page-subtitle">The QnA explains exactly why a distributed token bucket needs a Redis Lua script — the main page's own Token Bucket codeTab is single-process, in-memory only. This one closes the gap.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>The page's own QnA describes complexity-based rate limiting for GraphQL in real detail with zero code — the final subtopic builds a working query-complexity calculator and limiter.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Rate Limiting" topicRoute="/api-design/rate-limiting"
+    [prev]="{ label: 'The Sliding Window’s Rejected-Request Lockout Bug', route: '/api-design/rate-limiting/the-sliding-windows-rejected-request-lockout-bug' }"
+    [next]="{ label: 'A GraphQL Query-Complexity Limiter', route: '/api-design/rate-limiting/a-graphql-query-complexity-limiter' }" />
+</div>

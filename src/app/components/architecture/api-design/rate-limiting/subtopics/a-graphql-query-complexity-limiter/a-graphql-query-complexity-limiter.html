@@ -1,0 +1,26 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Rate Limiting" topicRoute="/api-design/rate-limiting"
+    subtopicLabel="A GraphQL Query-Complexity Limiter" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">A GraphQL Query-Complexity Limiter</h1>
+  <p class="page-subtitle">The QnA describes complexity-based rate limiting for GraphQL in real structural detail — no codeTab on the page ever builds a calculator or a budget-tracking limiter. This one does, verified end to end.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>This closes the last of the three gaps this topic's own subtopics build: a correctness bug in the sliding window, the missing atomic distributed version of token bucket, and a whole different cost model this page names but never demonstrates — completing this hub's entire Phase 10 rollout.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Rate Limiting" topicRoute="/api-design/rate-limiting"
+    [prev]="{ label: 'A Lua-Script Atomic Token Bucket', route: '/api-design/rate-limiting/a-lua-script-atomic-token-bucket' }" />
+</div>

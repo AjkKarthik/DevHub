@@ -3172,7 +3172,12 @@ export const routes: Routes = [
         { path: 'implementing-expand-contract-all-three-phases', loadComponent: () => import('./components/architecture/api-design/breaking-changes/subtopics/implementing-expand-contract-all-three-phases/implementing-expand-contract-all-three-phases').then(m => m.ImplementingExpandContractAllThreePhasesSubtopic) },
         { path: 'the-challenge-never-detects-a-type-change', loadComponent: () => import('./components/architecture/api-design/breaking-changes/subtopics/the-challenge-never-detects-a-type-change/the-challenge-never-detects-a-type-change').then(m => m.TheChallengeNeverDetectsATypeChangeSubtopic) },
       ] },
-    { path: 'rate-limiting',         loadComponent: () => import('./components/architecture/api-design/rate-limiting/rate-limiting').then(m => m.ApiRateLimiting) },
+    { path: 'rate-limiting', children: [
+        { path: '', loadComponent: () => import('./components/architecture/api-design/rate-limiting/rate-limiting').then(m => m.ApiRateLimiting) },
+        { path: 'the-sliding-windows-rejected-request-lockout-bug', loadComponent: () => import('./components/architecture/api-design/rate-limiting/subtopics/the-sliding-windows-rejected-request-lockout-bug/the-sliding-windows-rejected-request-lockout-bug').then(m => m.TheSlidingWindowsRejectedRequestLockoutBugSubtopic) },
+        { path: 'a-lua-script-atomic-token-bucket', loadComponent: () => import('./components/architecture/api-design/rate-limiting/subtopics/a-lua-script-atomic-token-bucket/a-lua-script-atomic-token-bucket').then(m => m.ALuaScriptAtomicTokenBucketSubtopic) },
+        { path: 'a-graphql-query-complexity-limiter', loadComponent: () => import('./components/architecture/api-design/rate-limiting/subtopics/a-graphql-query-complexity-limiter/a-graphql-query-complexity-limiter').then(m => m.AGraphqlQueryComplexityLimiterSubtopic) },
+      ] },
     { path: 'cheatsheet',            loadComponent: () => import('./components/architecture/api-design/cheatsheet/cheatsheet').then(m => m.ApiCheatsheet) },
     { path: 'interview-prep',        loadComponent: () => import('./components/architecture/api-design/interview-prep/interview-prep').then(m => m.ApiInterviewPrep) },
   ] },
