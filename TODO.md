@@ -8663,7 +8663,30 @@ off here with a date.
   first check; both main-page fixes confirmed rendering live; all 3 subtopic pages checked
   individually -- zero console errors, correct h1/breadcrumb, 860px wrapper, tailored sidebar
   content. **Observability hub Phase 10: 10 of 20 topics complete -- halfway through the hub.**
-- [ ] `/observability/log-best-practices` — Log Best Practices
+- [x] `/observability/log-best-practices` — Log Best Practices (2026-09-01). Third and final topic
+  in the Logging nav group. Found and fixed two genuine, independent bugs in the Log Testing
+  codeTab's own createTestLogger() helper, both verified against real pino: its Writable stream's
+  write(chunk) handler never called the required callback parameter -- Node's stream contract
+  requires it to signal readiness for the next write; without it, the stream stalls after the
+  first write and every subsequent logger call within the same test silently vanishes from
+  getLines() (verified: a two-call sequence only captured 1 of 2 lines). Its own assertions
+  (expect(orderLog!['level']).toBe('info')) expect a string, but pino's default level field is a
+  NUMBER (30 for info, 40 for warn) -- verified this exact assertion fails against real pino.
+  Fixed by adding callback() and a formatters.level option; re-verified both fixes together
+  produce 2/2 captured lines with correct string levels. 3 subtopics: reproduces both bugs side by
+  side against real pino, with a Try It on why the page's own second (single-call) test happened
+  to still pass; runs the page's own 13-event Log Contract through the Challenge's
+  classifyLogLevel() classifier, finding 3 real mismatches (ORDER_CANCELLED, DB_CONNECTION_LOST,
+  CACHE_UNAVAILABLE all classified as 'debug'), verified via execution -- a genuine limit of
+  keyword-guessing vs. an authoritative source already in the codebase; builds the correlation-ID
+  extraction-source logging the theory names but never codes, reusing the exact trace-ID
+  extraction technique already fixed on the sibling Structured Logging topic. No SUBTOPICS
+  collision. Build passed clean. Browser-verified with a hard reload first: nav accordion opened
+  with all 3 links on the first check (11 toggles total across the hub, confirming all 3
+  Logging-group topics now have subtopics); the main-page fix confirmed rendering live; all 3
+  subtopic pages checked individually -- zero console errors, correct h1/breadcrumb, 860px
+  wrapper, tailored sidebar content. **Observability hub Phase 10: 11 of 20 topics complete --
+  Logging nav group fully done.**
 - [ ] `/observability/distributed-tracing` — Distributed Tracing
 - [ ] `/observability/opentelemetry-tracing` — OTel Tracing Deep Dive
 - [ ] `/observability/performance-profiling` — Performance Profiling

@@ -6734,6 +6734,46 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
     individually — zero console errors, correct h1/breadcrumb, 860px wrapper via `getComputedStyle`,
     tailored (not DEFAULT) sidebar content confirmed on the final subtopic. **Observability hub
     Phase 10: 10 of 20 topics complete — halfway through the hub.**
+19. **The `log-best-practices` batch — the third and final topic in the Logging nav group — found
+    and fixed TWO genuine, independent bugs in the "Log Testing" codeTab's own `createTestLogger()`
+    helper, both verified against real pino**: (1) its `Writable` stream's `write(chunk)` handler
+    never called the required `callback` parameter — Node's Writable stream contract requires
+    calling it to signal readiness for the next write; without it, the stream stalls after the
+    FIRST write, and every subsequent logger call within the same test silently vanishes from
+    `getLines()`. Verified via direct execution: a realistic two-call sequence
+    (`logger.info(...)` then `logger.warn(...)`) only captured 1 of 2 expected lines. (2) The
+    codeTab's own assertions — `expect(orderLog![&#39;level&#39;]).toBe(&#39;info&#39;)` — expect a
+    STRING, but verified against real pino output that its default `level` field is a NUMBER (`30`
+    for info, `40` for warn) — the exact assertion pattern the codeTab presents as correct would
+    fail against real pino, every time, with no configuration change. Fixed by adding the
+    `callback()` call and a `formatters: { level: (label) => ({ level: label }) }` option; re-
+    verified both fixes together produce 2/2 captured lines with correctly string-typed levels.
+    Three subtopics: (1) **fix-adjacent** — reproduces both bugs side by side against real pino,
+    with a Try It on why the page's own SECOND test (a single logger call) happened to still pass
+    despite the callback bug — the bug only breaks capturing a SECOND write on the same stream
+    instance; (2) **gap-closing** — running the page's own 13-event "Log Contract" codeTab through
+    the Challenge's `classifyLogLevel()` keyword classifier via direct execution finds 3 real
+    mismatches (`ORDER_CANCELLED`, `DB_CONNECTION_LOST`, `CACHE_UNAVAILABLE` — all silently
+    classified as `'debug'` despite being configured as `info`/`error`/`warn`) — not a bug in
+    either section on its own, but a genuine, well-verified limitation of finite keyword-guessing
+    versus an authoritative source already present in the same codebase, with a Try It on the
+    hybrid fix (lookup first, keyword-fallback for uncatalogued messages); (3) **gap-closing** —
+    the theory section states the correlation-ID extraction rule precisely ("extract from headers
+    first, generate only if missing, log the extraction source") but no codeTab ever builds it;
+    built and verified `extractOrGenerateTraceId()`, reusing the EXACT trace-ID extraction
+    technique already fixed on the sibling Structured Logging topic's own `traceparent`-header-bug
+    subtopic, with a Try It on why a `'generated'` source structurally rules out finding the same
+    trace ID in an upstream service's logs. No `SUBTOPICS` collision for bare `log-best-practices`
+    (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed
+    collision-free, left bare). `ObsNavComponent`'s toggle for this topic used a single consistent
+    key across all five accordion-related calls, double-checked via grep after writing. Build
+    passed clean (foreground execution, explicit `EXITCODE:$?` capture, zero `ERROR` lines).
+    Browser-verified with a hard reload first: nav accordion opens with all 3 subtopic links on the
+    first check (11 toggles total across the hub, confirming all 3 Logging-group topics now have
+    subtopics); the main-page fix confirmed rendering live via `window.ng.getComponent()`; all 3
+    subtopic pages checked individually — zero console errors, correct h1/breadcrumb, 860px wrapper
+    via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the final subtopic.
+    **Observability hub Phase 10: 11 of 20 topics complete — Logging nav group fully done.**
 
 ## Current state (update when it changes!)
 
@@ -7792,13 +7832,13 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
   All 22 cards `available: true` in `architecture/observability/home/home.ts`. Progress: `obsTotal=20` in progress.service.ts.
   Observability pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ObsNavComponent at `shared/obs-nav/obs-nav.ts`.
-  Phase 10: 10 of 20 topics have subtopics (`/observability/observability-fundamentals`, pilot
+  Phase 10: 11 of 20 topics have subtopics (`/observability/observability-fundamentals`, pilot
   batch; `/observability/opentelemetry`; `/observability/sli-slo-sla` — Core Concepts nav group
   fully done; `/observability/prometheus-metrics`; `/observability/grafana-dashboards`;
   `/observability/custom-app-metrics`; `/observability/infrastructure-metrics`;
   `/observability/cloud-native-monitoring` — Metrics nav group fully done;
-  `/observability/structured-logging`; `/observability/log-aggregation` — 2 of the Logging nav
-  group's topics, 2026-09-01) —
+  `/observability/structured-logging`; `/observability/log-aggregation`;
+  `/observability/log-best-practices` — Logging nav group fully done, 2026-09-01) —
   see "Observability & SRE hub subtopic wiring" section above for the `ObsNavComponent` accordion
   structural fix, a real self-authored key-mismatch bug caught during browser verification (not a
   stale-server artifact), a cross-hub `opentelemetry` SUBTOPICS collision already resolved by
