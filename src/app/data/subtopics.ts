@@ -3691,4 +3691,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Callback Gauge That Forgets to Return Its Promise', route: '/observability/custom-app-metrics/the-callback-gauge-that-forgets-to-return-its-promise' },
     { label: 'The Domain-Event Pattern for Decoupled Metrics', route: '/observability/custom-app-metrics/the-domain-event-pattern-for-decoupled-metrics' },
   ],
+  'infrastructure-metrics': [
+    { label: 'The Missing rate() Wrapper on the CPU Limit Query', route: '/observability/infrastructure-metrics/the-missing-rate-wrapper-on-the-cpu-limit-query' },
+    { label: 'Building the Time-to-Exhaustion Capacity Projection', route: '/observability/infrastructure-metrics/building-the-time-to-exhaustion-capacity-projection' },
+    { label: 'Tracking a Sustained Condition Before Alerting', route: '/observability/infrastructure-metrics/tracking-a-sustained-condition-before-alerting' },
+  ],
 };

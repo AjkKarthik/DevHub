@@ -36019,6 +36019,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Container-level metrics can be misleading in a shared/oversubscribed environment — check what the underlying node is actually experiencing too.',
     ],
   },
+  'observability/infrastructure-metrics/the-missing-rate-wrapper-on-the-cpu-limit-query': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Building the Time-to-Exhaustion Capacity Projection', route: '/observability/infrastructure-metrics/building-the-time-to-exhaustion-capacity-projection' },
+      { label: 'Infrastructure Metrics (overview)', route: '/observability/infrastructure-metrics' },
+    ],
+    tip: 'A monotonic counter divided directly by a static limit, with no rate() wrapper, produces a value that grows without bound the longer a container has been running — completely independent of how busy it actually is.',
+    gotchas: [
+      'Gauges (like a deployment\'s replica counts) never need rate() — only counters do. Knowing which metric TYPE you\'re dividing is the whole rule.',
+    ],
+  },
+  'observability/infrastructure-metrics/building-the-time-to-exhaustion-capacity-projection': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The Missing rate() Wrapper on the CPU Limit Query', route: '/observability/infrastructure-metrics/the-missing-rate-wrapper-on-the-cpu-limit-query' },
+      { label: 'Tracking a Sustained Condition Before Alerting', route: '/observability/infrastructure-metrics/tracking-a-sustained-condition-before-alerting' },
+    ],
+    tip: 'The same percent-full reading can mean 2 weeks of headroom or 2 hours, depending entirely on the current growth rate — time-to-exhaustion accounts for rate, a flat percent-full threshold does not.',
+    gotchas: [
+      'A disk at only 50% full can still trigger a time-to-exhaustion alert sooner than one at 96% full, if its growth rate is high enough — percent-full alone cannot distinguish a controlled fill from a runaway one.',
+    ],
+  },
+  'observability/infrastructure-metrics/tracking-a-sustained-condition-before-alerting': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Building the Time-to-Exhaustion Capacity Projection', route: '/observability/infrastructure-metrics/building-the-time-to-exhaustion-capacity-projection' },
+      { label: 'Infrastructure Metrics (overview)', route: '/observability/infrastructure-metrics' },
+    ],
+    tip: 'A gauge only reports the CURRENT value at scrape time — distinguishing a momentary blip from a genuinely sustained problem (e.g. "waiting > 0 for 30+ seconds") requires explicitly tracking when the condition first became true.',
+    gotchas: [
+      'Even a single instant where the condition clears resets the sustained-duration clock entirely — a queue that keeps draining and refilling needs the FULL window to elapse again from scratch, it doesn\'t accumulate partial credit.',
+    ],
+  },
   'observability/custom-app-metrics': {
     apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
     related: [

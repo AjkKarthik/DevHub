@@ -43,7 +43,7 @@ const theory: TheoryPoint[] = [
     heading: 'Kubernetes Metrics',
     points: [
       'Pod health: `kube_pod_status_phase{phase="Running"}` — count of running pods. `kube_pod_container_status_restarts_total` — restart count; high restarts = crash loop.',
-      'Resource limits: `container_cpu_usage_seconds_total / kube_pod_container_resource_limits{resource="cpu"}` — CPU throttling ratio. If > 0.8 you are consistently hitting CPU limits.',
+      'Resource limits: `rate(container_cpu_usage_seconds_total[5m]) / kube_pod_container_resource_limits{resource="cpu"}` — CPU usage-to-limit ratio (not throttling — see the CPU throttling ratio query below for that). If sustained near 1.0 the container is consistently using its full CPU allocation. The rate() wrapper is required: `container_cpu_usage_seconds_total` is a raw cumulative counter, so dividing it by the limit directly produces a value that grows without bound the longer the container has been running, regardless of actual load.',
       'Deployment health: `kube_deployment_status_replicas_available / kube_deployment_spec_replicas` — availability ratio. < 1 means degraded deployment.',
       'OOM kills: `kube_pod_container_status_last_terminated_reason == "OOMKilled"` — containers killed for exceeding memory limits. Increase resource limits or fix memory leak.',
     ],
@@ -71,7 +71,7 @@ const theory: TheoryPoint[] = [
 const codeTabs: CodeTab[] = [
   {
     label: 'Key PromQL Queries',
-    language: 'typescript',
+    language: 'bash',
     code: `# ── HOST METRICS (node_exporter) ─────────────────────────────────
 
 # CPU utilisation (all cores, average)
@@ -120,7 +120,7 @@ kafka_consumer_group_lag{topic="orders", group="order-processor"}`,
   },
   {
     label: 'Alert Rules',
-    language: 'typescript',
+    language: 'bash',
     code: `groups:
   - name: infrastructure
     rules:

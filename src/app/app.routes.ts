@@ -3511,7 +3511,12 @@ export const routes: Routes = [
         { path: 'the-callback-gauge-that-forgets-to-return-its-promise', loadComponent: () => import('./components/architecture/observability/custom-app-metrics/subtopics/the-callback-gauge-that-forgets-to-return-its-promise/the-callback-gauge-that-forgets-to-return-its-promise').then(m => m.TheCallbackGaugeThatForgetsToReturnItsPromiseSubtopic) },
         { path: 'the-domain-event-pattern-for-decoupled-metrics', loadComponent: () => import('./components/architecture/observability/custom-app-metrics/subtopics/the-domain-event-pattern-for-decoupled-metrics/the-domain-event-pattern-for-decoupled-metrics').then(m => m.TheDomainEventPatternForDecoupledMetricsSubtopic) },
       ] },
-    { path: 'infrastructure-metrics',     loadComponent: () => import('./components/architecture/observability/infrastructure-metrics/infrastructure-metrics').then(m => m.ObsInfrastructureMetrics) },
+    { path: 'infrastructure-metrics', children: [
+        { path: '', loadComponent: () => import('./components/architecture/observability/infrastructure-metrics/infrastructure-metrics').then(m => m.ObsInfrastructureMetrics) },
+        { path: 'the-missing-rate-wrapper-on-the-cpu-limit-query', loadComponent: () => import('./components/architecture/observability/infrastructure-metrics/subtopics/the-missing-rate-wrapper-on-the-cpu-limit-query/the-missing-rate-wrapper-on-the-cpu-limit-query').then(m => m.TheMissingRateWrapperOnTheCpuLimitQuerySubtopic) },
+        { path: 'building-the-time-to-exhaustion-capacity-projection', loadComponent: () => import('./components/architecture/observability/infrastructure-metrics/subtopics/building-the-time-to-exhaustion-capacity-projection/building-the-time-to-exhaustion-capacity-projection').then(m => m.BuildingTheTimeToExhaustionCapacityProjectionSubtopic) },
+        { path: 'tracking-a-sustained-condition-before-alerting', loadComponent: () => import('./components/architecture/observability/infrastructure-metrics/subtopics/tracking-a-sustained-condition-before-alerting/tracking-a-sustained-condition-before-alerting').then(m => m.TrackingASustainedConditionBeforeAlertingSubtopic) },
+      ] },
     { path: 'cloud-native-monitoring',    loadComponent: () => import('./components/architecture/observability/cloud-native-monitoring/cloud-native-monitoring').then(m => m.ObsCloudNativeMonitoring) },
     { path: 'structured-logging',         loadComponent: () => import('./components/architecture/observability/structured-logging/structured-logging').then(m => m.ObsStructuredLogging) },
     { path: 'log-aggregation',            loadComponent: () => import('./components/architecture/observability/log-aggregation/log-aggregation').then(m => m.ObsLogAggregation) },

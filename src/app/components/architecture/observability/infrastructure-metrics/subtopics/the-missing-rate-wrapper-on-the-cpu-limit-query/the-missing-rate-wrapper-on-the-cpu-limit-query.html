@@ -1,0 +1,26 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Infrastructure Metrics" topicRoute="/observability/infrastructure-metrics"
+    subtopicLabel="The Missing rate() Wrapper on the CPU Limit Query" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">The Missing rate() Wrapper on the CPU Limit Query</h1>
+  <p class="page-subtitle">A raw cumulative counter divided directly by a static limit grows forever regardless of load — verified with concrete numbers, then fixed and correctly distinguished from the page's own separate throttling-ratio query.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic builds the "time-to-exhaustion" capacity projection the page's own QnA describes in prose but never shows in code.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Infrastructure Metrics" topicRoute="/observability/infrastructure-metrics"
+    [next]="{ label: 'Building the Time-to-Exhaustion Capacity Projection', route: '/observability/infrastructure-metrics/building-the-time-to-exhaustion-capacity-projection' }" />
+</div>

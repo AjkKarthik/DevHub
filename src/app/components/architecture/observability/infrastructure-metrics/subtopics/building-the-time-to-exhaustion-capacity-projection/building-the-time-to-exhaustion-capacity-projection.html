@@ -1,0 +1,27 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Infrastructure Metrics" topicRoute="/observability/infrastructure-metrics"
+    subtopicLabel="Building the Time-to-Exhaustion Capacity Projection" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">Building the Time-to-Exhaustion Capacity Projection</h1>
+  <p class="page-subtitle">The QnA calls this "the most useful capacity alert" and gives a precise worked example in prose — this subtopic turns it into a verified function, matching the page's own 2-weeks-vs-2-hours numbers.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic builds the actual sustained-duration logic behind the mistake block's own "alert when waiting count is non-zero for more than 30 seconds" advice.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Infrastructure Metrics" topicRoute="/observability/infrastructure-metrics"
+    [prev]="{ label: 'The Missing rate() Wrapper on the CPU Limit Query', route: '/observability/infrastructure-metrics/the-missing-rate-wrapper-on-the-cpu-limit-query' }"
+    [next]="{ label: 'Tracking a Sustained Condition Before Alerting', route: '/observability/infrastructure-metrics/tracking-a-sustained-condition-before-alerting' }" />
+</div>

@@ -133,7 +133,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
       </div>
     }
   }
-  <a routerLink="/observability/infrastructure-metrics"    routerLinkActive="active"><span class="nl-text">Infrastructure Metrics</span>@if(progress.isDone('obs-infrastructure-metrics')){<span class="nl-done">✓</span>}</a>
+  <a routerLink="/observability/infrastructure-metrics" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+    <span class="nl-text">Infrastructure Metrics</span>
+    @if(progress.isDone('obs-infrastructure-metrics')){<span class="nl-done">✓</span>}
+    @if (subtopicsOf('infrastructure-metrics')) {
+      <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('infrastructure-metrics')"
+              (click)="toggleSubtopics('infrastructure-metrics', $event)" aria-label="Toggle subtopics">›</button>
+    }
+  </a>
+  @if (subtopicsOf('infrastructure-metrics'); as imSubs) {
+    @if (isSubtopicsExpanded('infrastructure-metrics')) {
+      <div class="nav-subtopics">
+        @for (s of imSubs; track s.route) {
+          <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+            <span class="nl-text">{{ s.label }}</span>
+          </a>
+        }
+      </div>
+    }
+  }
   <a routerLink="/observability/cloud-native-monitoring"   routerLinkActive="active"><span class="nl-text">Cloud-Native Monitoring</span>@if(progress.isDone('obs-cloud-native-monitoring')){<span class="nl-done">✓</span>}</a>
 </div>
 
