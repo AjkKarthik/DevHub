@@ -6658,6 +6658,40 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
     console errors, correct h1/breadcrumb, 860px wrapper via `getComputedStyle`, tailored (not
     DEFAULT) sidebar content confirmed on the final subtopic. **Observability hub Phase 10: 8 of 20
     topics complete — Metrics nav group fully done.**
+17. **The `structured-logging` batch — the first topic in the Logging nav group — found and fixed
+    a genuine, well-verified bug in the "Pino Setup" codeTab's `loggingMiddleware`**: it read
+    `req.headers['traceparent']` directly and stored the ENTIRE raw header string as `traceId`.
+    Verified against the W3C Trace Context specification that a `traceparent` header is a compound
+    value with the format `version-trace_id-parent_id-trace_flags`, and that the spec's own
+    official example header's trace-id segment — `4bf92f3577b34da6a3ce929d0e0e4736` — is
+    byte-for-byte IDENTICAL to the SAME page's own "Log Schema" codeTab's `traceId` example,
+    confirming that codeTab's expected shape is a bare 32-hex-character trace-id, not the full
+    55-character compound header the middleware was actually storing. Fixed by extracting just the
+    trace-id segment (`traceparent?.split('-')[1]`, falling back to `crypto.randomUUID()` when no
+    header is present). Three subtopics: (1) **fix-adjacent** — reproduces the exact mismatch
+    against the W3C spec's own official example header via direct execution, with a Try It on the
+    fallback path when no `traceparent` header exists at all; (2) **gap-closing** — the quiz
+    explains head-based probabilistic sampling and its "statistical validity" property (estimating
+    a true count from a sampled one) in real depth, never coded anywhere; built and verified
+    `shouldSampleLog()`/`estimateTrueCount()` against the quiz's own exact rates (100% ERROR, 10%
+    WARN, 1% INFO) across 200,000 trials via direct execution, with a Try It on hash-based
+    consistent (per-user) sampling as a genuinely different alternative to pure random per-event
+    sampling; (3) **gap-closing** — the "Logging at DEBUG level in production" mistake block's own
+    fix code schedules an independent revert `setTimeout` on every admin call with no tracking at
+    all; verified via direct execution — with margins wide enough to avoid real `setTimeout` jitter
+    after an initial too-tight-timing attempt produced a flaky, misleading result, self-caught and
+    corrected before publishing — that a second call before the first timer fires lets the STALE
+    first timer silently override the second admin's intended level; built and verified the
+    `clearTimeout()`-tracking fix. No `SUBTOPICS` collision for bare `structured-logging` (checked
+    both `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed collision-free, left
+    bare). `ObsNavComponent`'s toggle for this topic used a single consistent key across all five
+    accordion-related calls, double-checked via grep after writing. Build passed clean (foreground
+    execution, explicit `EXITCODE:$?` capture, zero `ERROR` lines). Browser-verified with a hard
+    reload first: nav accordion opens with all 3 subtopic links on the first check; the
+    `traceparent` fix confirmed rendering live via `window.ng.getComponent()`; all 3 subtopic pages
+    checked individually — zero console errors, correct h1/breadcrumb, 860px wrapper via
+    `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the final subtopic.
+    **Observability hub Phase 10: 9 of 20 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -7716,11 +7750,12 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
   All 22 cards `available: true` in `architecture/observability/home/home.ts`. Progress: `obsTotal=20` in progress.service.ts.
   Observability pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ObsNavComponent at `shared/obs-nav/obs-nav.ts`.
-  Phase 10: 8 of 20 topics have subtopics (`/observability/observability-fundamentals`, pilot
+  Phase 10: 9 of 20 topics have subtopics (`/observability/observability-fundamentals`, pilot
   batch; `/observability/opentelemetry`; `/observability/sli-slo-sla` — Core Concepts nav group
   fully done; `/observability/prometheus-metrics`; `/observability/grafana-dashboards`;
   `/observability/custom-app-metrics`; `/observability/infrastructure-metrics`;
-  `/observability/cloud-native-monitoring` — Metrics nav group fully done, 2026-09-01) —
+  `/observability/cloud-native-monitoring` — Metrics nav group fully done;
+  `/observability/structured-logging` — first Logging nav group topic, 2026-09-01) —
   see "Observability & SRE hub subtopic wiring" section above for the `ObsNavComponent` accordion
   structural fix, a real self-authored key-mismatch bug caught during browser verification (not a
   stale-server artifact), a cross-hub `opentelemetry` SUBTOPICS collision already resolved by

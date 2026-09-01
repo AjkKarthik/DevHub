@@ -8622,7 +8622,27 @@ off here with a date.
   both main-page fixes confirmed rendering live; all 3 subtopic pages checked individually -- zero
   console errors, correct h1/breadcrumb, 860px wrapper, tailored sidebar content.
   **Observability hub Phase 10: 8 of 20 topics complete -- Metrics nav group fully done.**
-- [ ] `/observability/structured-logging` — Structured Logging
+- [x] `/observability/structured-logging` — Structured Logging (2026-09-01). First topic in the
+  Logging nav group. Found and fixed a genuine bug in the Pino Setup codeTab's loggingMiddleware:
+  it read req.headers['traceparent'] directly and stored the ENTIRE raw header string as traceId.
+  Verified against the W3C Trace Context spec that traceparent is a compound
+  version-trace_id-parent_id-trace_flags value, and that the spec's own official example header's
+  trace-id segment (4bf92f3577b34da6a3ce929d0e0e4736) is byte-for-byte identical to the SAME page's
+  own Log Schema codeTab's traceId example -- confirming the expected shape is a bare 32-hex
+  trace-id, not the full 55-character header. Fixed by extracting just the trace-id segment
+  (split on "-", take index 1). 3 subtopics: reproduces the exact mismatch against the W3C spec's
+  own example, with a Try It on the fallback path when no header is present; builds a log sampler
+  (shouldSampleLog/estimateTrueCount) verified against the quiz's own exact sample rates (100%
+  error, 10% warn, 1% info) across 200,000 trials, with a Try It on hash-based consistent sampling
+  as a distinct alternative; finds and fixes a real race condition in the DEBUG-level mistake
+  block's own fix code -- a second admin call before the first revert timer fires lets the stale
+  first timer silently override the newer intended level, verified via execution with margins wide
+  enough to avoid real setTimeout jitter (an initial too-tight-timing attempt produced a flaky,
+  misleading result and was self-caught and corrected before publishing). No SUBTOPICS collision.
+  Build passed clean. Browser-verified with a hard reload first: nav accordion opened with all 3
+  links on the first check; the traceparent fix confirmed rendering live; all 3 subtopic pages
+  checked individually -- zero console errors, correct h1/breadcrumb, 860px wrapper, tailored
+  sidebar content. **Observability hub Phase 10: 9 of 20 topics complete.**
 - [ ] `/observability/log-aggregation` — Log Aggregation
 - [ ] `/observability/log-best-practices` — Log Best Practices
 - [ ] `/observability/distributed-tracing` — Distributed Tracing
