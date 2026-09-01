@@ -6530,6 +6530,44 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
     `'bash'`); all 3 subtopic pages checked individually — zero console errors, correct
     h1/breadcrumb, 860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content
     confirmed on the final subtopic. **Observability hub Phase 10: 5 of 20 topics complete.**
+14. **The `custom-app-metrics` batch — the third topic in the Metrics nav group — found and fixed
+    TWO genuine, self-contained bugs on the main page's own codeTabs, both verified end-to-end
+    against the real `prom-client` package**: (1) the "Metric Abstraction Layer" codeTab's
+    `getOrCreateCounter()` hardcoded `labelNames: []` regardless of whatever labels a caller
+    actually passed, while the SAME class's `recordDuration()`/`setGauge()` correctly derive
+    `labelNames` from `Object.keys(labels)` — verified via direct execution that this breaks the
+    page's OWN literal usage comment (`metrics.incrementCounter('orders_placed_total', { type:
+    'subscription' })`) with `Added label "type" is not included in initial labelset: []`. Fixed
+    by passing `labels` into `getOrCreateCounter()` so it registers them on first creation,
+    matching the sibling methods' already-correct pattern. (2) The "Business Metrics" codeTab's
+    `pendingOrdersGauge` callback `collect()` fired an async `getPendingOrders().then(...)` chain
+    WITHOUT returning it — reading prom-client's own `Gauge.get()` source directly confirmed it
+    only awaits `collect()`'s result if that result IS a Promise (`if (v instanceof Promise) await
+    v`). Verified via a real `register.metrics()` scrape that the gauge serializes in its
+    just-`reset()` (empty) state every time, with the async update always landing too late. Fixed
+    by returning the promise chain. Three subtopics: (1) **fix-adjacent** — reproduces and
+    verifies both the broken and fixed `getOrCreateCounter()` against real prom-client, with a Try
+    It on a real, still-standing limitation: the label set only ever registers on a metric's
+    FIRST call, so a later call introducing a new label key on the same metric name still throws,
+    even after the fix; (2) **fix-adjacent** — reproduces the stale-scrape bug and fix via a real
+    `register.metrics()` call, with a Try It distinguishing this async-callback-gauge pattern from
+    the page's own directly-recorded `checkoutDuration` histogram, which has no async gap to
+    worry about at all; (3) **gap-closing** — the theory section names a second decoupling
+    technique ("domain event pattern: emit structured domain events... convert them to metrics in
+    an event listener") that neither codeTab ever demonstrates (both use the abstraction-layer
+    pattern instead); built and verified a real `EventEmitter`-based listener end-to-end, with a
+    Try It on the silent-failure cost unique to this pattern — a typo'd event name (`'OrderPlace'`
+    instead of `'OrderPlaced'`) produces zero errors anywhere, unlike a typo'd abstraction-layer
+    method name, which TypeScript catches at compile time. No `SUBTOPICS` collision for bare
+    `custom-app-metrics` (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly,
+    confirmed collision-free, left bare). `ObsNavComponent`'s toggle for this topic used a single
+    consistent key across all five accordion-related calls, double-checked via grep after writing.
+    Build passed clean (foreground execution, explicit `EXITCODE:$?` capture, zero `ERROR` lines).
+    Browser-verified with a hard reload first: nav accordion opens with all 3 subtopic links on the
+    first check; both main-page fixes confirmed rendering live via `window.ng.getComponent()`; all
+    3 subtopic pages checked individually — zero console errors, correct h1/breadcrumb, 860px
+    wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the final
+    subtopic. **Observability hub Phase 10: 6 of 20 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -7588,10 +7626,10 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
   All 22 cards `available: true` in `architecture/observability/home/home.ts`. Progress: `obsTotal=20` in progress.service.ts.
   Observability pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ObsNavComponent at `shared/obs-nav/obs-nav.ts`.
-  Phase 10: 5 of 20 topics have subtopics (`/observability/observability-fundamentals`, pilot
+  Phase 10: 6 of 20 topics have subtopics (`/observability/observability-fundamentals`, pilot
   batch; `/observability/opentelemetry`; `/observability/sli-slo-sla` — Core Concepts nav group
-  fully done; `/observability/prometheus-metrics`; `/observability/grafana-dashboards` — 2 of the
-  Metrics nav group's topics, 2026-09-01) —
+  fully done; `/observability/prometheus-metrics`; `/observability/grafana-dashboards`;
+  `/observability/custom-app-metrics` — 3 of the Metrics nav group's topics, 2026-09-01) —
   see "Observability & SRE hub subtopic wiring" section above for the `ObsNavComponent` accordion
   structural fix, a real self-authored key-mismatch bug caught during browser verification (not a
   stale-server artifact), a cross-hub `opentelemetry` SUBTOPICS collision already resolved by

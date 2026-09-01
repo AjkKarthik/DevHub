@@ -8553,7 +8553,28 @@ off here with a date.
   opened with all 3 links on the first check; all three main-page fixes confirmed rendering live;
   all 3 subtopic pages checked individually -- zero console errors, correct h1/breadcrumb, 860px
   wrapper, tailored sidebar content. **Observability hub Phase 10: 5 of 20 topics complete.**
-- [ ] `/observability/custom-app-metrics` — Custom App Metrics
+- [x] `/observability/custom-app-metrics` — Custom App Metrics (2026-09-01). Third topic in the
+  Metrics nav group. Found and fixed two genuine bugs on the main page's own codeTabs, both
+  verified end-to-end against real prom-client: the Metric Abstraction Layer's
+  getOrCreateCounter() hardcoded labelNames: [] regardless of what labels a caller passed, while
+  recordDuration()/setGauge() on the same class correctly derive labelNames from the labels --
+  verified this breaks the page's own literal usage comment
+  (metrics.incrementCounter('orders_placed_total', { type: 'subscription' })) with "Added label
+  \"type\" is not included in initial labelset: []"; fixed by passing labels into
+  getOrCreateCounter(). The Business Metrics codeTab's pendingOrdersGauge callback collect() fired
+  an async .then() chain without returning it -- prom-client's Gauge.get() only awaits collect()
+  if it returns a Promise, verified via a real register.metrics() scrape that the gauge always
+  serialized in its just-reset (empty) state; fixed by returning the promise chain. 3 subtopics:
+  reproduces and verifies both the broken/fixed getOrCreateCounter(), plus a Try It on the
+  remaining "label set locks in on first call" limitation; reproduces the stale-scrape bug/fix via
+  a real scrape, with a Try It distinguishing it from directly-recorded metrics with no async gap;
+  builds the domain-event pattern the theory names but never shows in code (an EventEmitter-based
+  listener), with a Try It on the silent-failure cost of a typo'd event name vs. a typo'd
+  abstraction-layer method name TypeScript would catch. No SUBTOPICS collision. Build passed
+  clean. Browser-verified with a hard reload first: nav accordion opened with all 3 links on the
+  first check; both main-page fixes confirmed rendering live; all 3 subtopic pages checked
+  individually -- zero console errors, correct h1/breadcrumb, 860px wrapper, tailored sidebar
+  content. **Observability hub Phase 10: 6 of 20 topics complete.**
 - [ ] `/observability/infrastructure-metrics` — Infrastructure Metrics
 - [ ] `/observability/cloud-native-monitoring` — Cloud-Native Monitoring
 - [ ] `/observability/structured-logging` — Structured Logging
