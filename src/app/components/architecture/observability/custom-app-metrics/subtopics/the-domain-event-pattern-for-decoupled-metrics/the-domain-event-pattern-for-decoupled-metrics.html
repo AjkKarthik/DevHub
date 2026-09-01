@@ -1,0 +1,26 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Custom App Metrics" topicRoute="/observability/custom-app-metrics"
+    subtopicLabel="The Domain-Event Pattern for Decoupled Metrics" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">The Domain-Event Pattern for Decoupled Metrics</h1>
+  <p class="page-subtitle">The theory section names a second decoupling technique the page's own codeTabs never build — business code that emits domain events, with a completely separate listener converting them to Prometheus metrics.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>This closes the last of the three gaps this topic's own subtopics build: two verified bugs in the main page's own codeTabs, and the second decoupling pattern the theory names but never demonstrates.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Custom App Metrics" topicRoute="/observability/custom-app-metrics"
+    [prev]="{ label: 'The Callback Gauge That Forgets to Return Its Promise', route: '/observability/custom-app-metrics/the-callback-gauge-that-forgets-to-return-its-promise' }" />
+</div>

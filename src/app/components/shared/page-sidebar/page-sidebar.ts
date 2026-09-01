@@ -36031,6 +36031,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'High-cardinality labels (like a raw user ID) on a metric can explode storage cost and query time in most time-series databases.',
     ],
   },
+  'observability/custom-app-metrics/the-abstraction-layers-hardcoded-empty-label-set': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The Callback Gauge That Forgets to Return Its Promise', route: '/observability/custom-app-metrics/the-callback-gauge-that-forgets-to-return-its-promise' },
+      { label: 'Custom App Metrics (overview)', route: '/observability/custom-app-metrics' },
+    ],
+    tip: 'prom-client validates every .inc(labels) call against the labelNames a metric was REGISTERED with — a factory method that hardcodes labelNames: [] breaks the moment any caller actually passes labels.',
+    gotchas: [
+      'The label set is only ever registered on a metric\'s FIRST call — a later call introducing a brand-new label key on the same metric name still throws, even after the fix.',
+    ],
+  },
+  'observability/custom-app-metrics/the-callback-gauge-that-forgets-to-return-its-promise': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The Abstraction Layer’s Hardcoded Empty Label Set', route: '/observability/custom-app-metrics/the-abstraction-layers-hardcoded-empty-label-set' },
+      { label: 'The Domain-Event Pattern for Decoupled Metrics', route: '/observability/custom-app-metrics/the-domain-event-pattern-for-decoupled-metrics' },
+    ],
+    tip: 'prom-client\'s Gauge.get() only awaits a callback collect() function if it returns a Promise — a collect() that fires an async .then() chain WITHOUT returning it lets the scrape serialize stale/empty data before the update ever lands.',
+    gotchas: [
+      'This bug is specific to the "poll external state at scrape time" pattern — a directly-recorded metric (a counter .inc()\'d inline in business code) has no async gap to worry about at all.',
+    ],
+  },
+  'observability/custom-app-metrics/the-domain-event-pattern-for-decoupled-metrics': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The Callback Gauge That Forgets to Return Its Promise', route: '/observability/custom-app-metrics/the-callback-gauge-that-forgets-to-return-its-promise' },
+      { label: 'Custom App Metrics (overview)', route: '/observability/custom-app-metrics' },
+    ],
+    tip: 'The domain-event pattern decouples business code from metrics entirely — an EventEmitter listener, not a directly-imported metrics module, is the only file that ever touches prom-client.',
+    gotchas: [
+      'A typo\'d event name (e.g. emitting "OrderPlace" instead of "OrderPlaced") produces zero errors anywhere — EventEmitter.emit() silently returns false when no listener matches, unlike a typo\'d method name on an abstraction-layer interface, which TypeScript would catch at compile time.',
+    ],
+  },
   'observability/prometheus-metrics': {
     apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
     related: [

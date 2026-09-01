@@ -3505,7 +3505,12 @@ export const routes: Routes = [
         { path: 'testing-the-loki-trace-id-regexs-real-limits', loadComponent: () => import('./components/architecture/observability/grafana-dashboards/subtopics/testing-the-loki-trace-id-regexs-real-limits/testing-the-loki-trace-id-regexs-real-limits').then(m => m.TestingTheLokiTraceIdRegexsRealLimitsSubtopic) },
         { path: 'automated-deployment-correlation-detection', loadComponent: () => import('./components/architecture/observability/grafana-dashboards/subtopics/automated-deployment-correlation-detection/automated-deployment-correlation-detection').then(m => m.AutomatedDeploymentCorrelationDetectionSubtopic) },
       ] },
-    { path: 'custom-app-metrics',         loadComponent: () => import('./components/architecture/observability/custom-app-metrics/custom-app-metrics').then(m => m.ObsCustomAppMetrics) },
+    { path: 'custom-app-metrics', children: [
+        { path: '', loadComponent: () => import('./components/architecture/observability/custom-app-metrics/custom-app-metrics').then(m => m.ObsCustomAppMetrics) },
+        { path: 'the-abstraction-layers-hardcoded-empty-label-set', loadComponent: () => import('./components/architecture/observability/custom-app-metrics/subtopics/the-abstraction-layers-hardcoded-empty-label-set/the-abstraction-layers-hardcoded-empty-label-set').then(m => m.TheAbstractionLayersHardcodedEmptyLabelSetSubtopic) },
+        { path: 'the-callback-gauge-that-forgets-to-return-its-promise', loadComponent: () => import('./components/architecture/observability/custom-app-metrics/subtopics/the-callback-gauge-that-forgets-to-return-its-promise/the-callback-gauge-that-forgets-to-return-its-promise').then(m => m.TheCallbackGaugeThatForgetsToReturnItsPromiseSubtopic) },
+        { path: 'the-domain-event-pattern-for-decoupled-metrics', loadComponent: () => import('./components/architecture/observability/custom-app-metrics/subtopics/the-domain-event-pattern-for-decoupled-metrics/the-domain-event-pattern-for-decoupled-metrics').then(m => m.TheDomainEventPatternForDecoupledMetricsSubtopic) },
+      ] },
     { path: 'infrastructure-metrics',     loadComponent: () => import('./components/architecture/observability/infrastructure-metrics/infrastructure-metrics').then(m => m.ObsInfrastructureMetrics) },
     { path: 'cloud-native-monitoring',    loadComponent: () => import('./components/architecture/observability/cloud-native-monitoring/cloud-native-monitoring').then(m => m.ObsCloudNativeMonitoring) },
     { path: 'structured-logging',         loadComponent: () => import('./components/architecture/observability/structured-logging/structured-logging').then(m => m.ObsStructuredLogging) },

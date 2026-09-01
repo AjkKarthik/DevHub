@@ -3686,4 +3686,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Testing the Loki Trace-ID Regex’s Real Limits', route: '/observability/grafana-dashboards/testing-the-loki-trace-id-regexs-real-limits' },
     { label: 'Automated Deployment-Correlation Detection', route: '/observability/grafana-dashboards/automated-deployment-correlation-detection' },
   ],
+  'custom-app-metrics': [
+    { label: 'The Abstraction Layer’s Hardcoded Empty Label Set', route: '/observability/custom-app-metrics/the-abstraction-layers-hardcoded-empty-label-set' },
+    { label: 'The Callback Gauge That Forgets to Return Its Promise', route: '/observability/custom-app-metrics/the-callback-gauge-that-forgets-to-return-its-promise' },
+    { label: 'The Domain-Event Pattern for Decoupled Metrics', route: '/observability/custom-app-metrics/the-domain-event-pattern-for-decoupled-metrics' },
+  ],
 };

@@ -104,7 +104,10 @@ const pendingOrdersGauge = new Gauge({
   collect() {
     // poll Redis/DB at scrape time, not on a fixed interval
     this.reset();
-    getPendingOrders().then(orders => {
+    // MUST return the promise -- prom-client only awaits collect() if it
+    // gets a Promise back. Without the return, the scrape serializes the
+    // just-reset (empty) gauge before this .then() ever runs.
+    return getPendingOrders().then(orders => {
       for (const [provider, count] of Object.entries(orders)) {
         this.labels(provider).set(count);
       }
@@ -150,15 +153,18 @@ class PrometheusMetrics implements IMetrics {
   private histograms = new Map<string, Histogram>();
   private gauges = new Map<string, Gauge>();
 
-  private getOrCreateCounter(name: string): Counter {
+  private getOrCreateCounter(name: string, labels: Record<string, string>): Counter {
     if (!this.counters.has(name)) {
-      this.counters.set(name, new Counter({ name, help: name, labelNames: [] }));
+      // Register the label set from the FIRST call -- a hardcoded
+      // labelNames: [] would make every call with labels throw
+      // "Added label ... is not included in initial labelset: []".
+      this.counters.set(name, new Counter({ name, help: name, labelNames: Object.keys(labels) }));
     }
     return this.counters.get(name)!;
   }
 
   incrementCounter(name: string, labels: Record<string, string> = {}): void {
-    this.getOrCreateCounter(name).inc(labels);
+    this.getOrCreateCounter(name, labels).inc(labels);
   }
 
   recordDuration(name: string, seconds: number, labels: Record<string, string> = {}): void {
