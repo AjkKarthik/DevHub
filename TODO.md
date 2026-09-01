@@ -8494,7 +8494,26 @@ off here with a date.
   rendering live; all 3 subtopic pages checked individually -- zero console errors, correct
   h1/breadcrumb, 860px wrapper, tailored sidebar content; /aspnet/opentelemetry isolation check
   passed. **Observability hub Phase 10: 2 of 20 topics complete.**
-- [ ] `/observability/sli-slo-sla` — SLIs, SLOs & SLAs
+- [x] `/observability/sli-slo-sla` — SLIs, SLOs & SLAs (2026-09-01). Completes the Core Concepts
+  nav group. Found and fixed 2 genuine, self-contained arithmetic bugs, both verified via direct
+  Node execution: the "SLO Calculations" codeTab claimed calculateSloStatus() returns { ...
+  consumedPercent: 50, burnRate: 1.5, status: 'healthy' } for an input where consumedRate and
+  burnRate are computed by the IDENTICAL formula (can never disagree) -- real output is
+  consumedPercent: 150, status: 'exhausted'. More consequentially, the Challenge's own
+  errorBudgetStatus() worked examples claimed two inputs return 'at-risk'/'critical' but both
+  actually return 'exhausted' -- fixed both starterCode and solution with corrected, independently
+  verified test values. Also fixed a mistagged codeTab (Prometheus Alerting is YAML, tagged
+  'typescript', fixed to 'bash'). 3 subtopics: reproduces both bugs verified via execution;
+  reconciles the page's own 3-state vs the Challenge's 4-state status models, verified via
+  execution, surfacing a real policy-tier boundary mismatch; builds the multi-window burn-rate
+  page/ticket decision logic the theory names but no codeTab demonstrates, verified via execution
+  across 3 realistic scenarios including a genuine false-positive case. No SUBTOPICS collision.
+  Build passed clean. Browser-verified with a hard reload first: nav accordion opened with all 3
+  links on the first check; all main-page fixes confirmed rendering live; all 3 subtopic pages
+  checked individually -- zero console errors, correct h1/breadcrumb, 860px wrapper, tailored
+  sidebar content. **This completes the Core Concepts nav group** (observability-fundamentals,
+  opentelemetry, sli-slo-sla -- all 3 of 3). **Observability hub Phase 10: 3 of 20 topics
+  complete.**
 - [ ] `/observability/prometheus-metrics` — Prometheus & Metrics
 - [ ] `/observability/grafana-dashboards` — Grafana Dashboards
 - [ ] `/observability/custom-app-metrics` — Custom App Metrics

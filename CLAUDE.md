@@ -6395,6 +6395,55 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
     correct h1/breadcrumb, 860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar
     content confirmed on the final subtopic; the `/aspnet/opentelemetry` cross-hub isolation check
     passed. **Observability hub Phase 10: 2 of 20 topics complete.**
+11. **The `sli-slo-sla` batch — completing the Core Concepts nav group — found and fixed TWO
+    genuine, self-contained arithmetic bugs, both verified via direct Node execution, the same
+    underlying mistake (an example input chosen without actually running the stated formula against
+    it) appearing in two separate codeTabs on the same page**: the "SLO Calculations" codeTab
+    claimed `calculateSloStatus({ target: 0.999, windowDays: 30 }, 0.9985)` returns
+    `{ remainingBudgetMinutes: 21.6, consumedPercent: 50, burnRate: 1.5, status: 'healthy' }` —
+    impossible on its face, since the function computes `consumedRate` and `burnRate` with the
+    IDENTICAL formula (`actualErrorRate / allowedErrorRate`), so they can never disagree (50% vs.
+    1.5×). Verified the real output: `{ remainingBudgetMinutes: 0, consumedPercent: 150, burnRate:
+    1.5, status: 'exhausted' }`. Separately, and more consequentially since it's the exercise a
+    learner directly attempts, the Challenge's own `errorBudgetStatus()` worked examples claimed
+    `errorBudgetStatus(0.999, 30, 0.9985)` returns `'at-risk'` and `errorBudgetStatus(0.999, 30,
+    0.9982)` returns `'critical'` — verified via execution of the Challenge's own solution function
+    that BOTH actually return `'exhausted'`. Fixed both `starterCode` and `solution` with corrected
+    test values (`0.9994`, `0.9991`), each independently verified via execution to genuinely
+    produce the claimed category. Also fixed a mistagged codeTab found during the same
+    read-through: "Prometheus Alerting" contains YAML content but was tagged `language:
+    'typescript'` — fixed to `'bash'`, matching the fix applied to this hub's own `opentelemetry`
+    batch immediately prior. Three subtopics, each verified via direct Node execution: (1)
+    **fix-adjacent** — reproduces both bugs with a single codeTab, verified matching the actual
+    outputs exactly, with a Try It computing whether a THIRD proposed example value would have
+    repeated the same mistake before ever adding it to the page (it would have, landing on
+    `'exhausted'` instead of the proposed `'at-risk'`); (2) **gap-closing** — `calculateSloStatus()`
+    uses 3 states, the Challenge's `errorBudgetStatus()` uses 4 — both classify the same underlying
+    ratio; built a reconciled 4-state version, verified via execution across all four
+    category-representative inputs, with a Try It mapping the reconciled categories onto the page's
+    own 3-tier error-budget policy and finding a genuine boundary mismatch (`'critical'` straddles
+    the policy's own middle-tier boundary, since its 80-100%-consumed range spans across the
+    policy's 90%-consumed tier edge); (3) **gap-closing** — the theory names exact page/ticket
+    thresholds (14× over 1h+5m; 1× over 6h+30m) and the Prometheus Alerting codeTab configures them
+    via PromQL, but no plain function ever shows the decision logic directly; built one, verified
+    via execution across three realistic scenarios including a true false-positive case (a 20×
+    five-minute spike correctly downgraded to ticket once diluted below 14× over the full hour) and
+    a genuinely realistic page-worthy case (a brand-new incident where both short windows exceed 14×
+    while both long windows, dominated by preceding healthy hours, stay near zero). No `SUBTOPICS`
+    collision for bare `sli-slo-sla` (checked both `subtopics.ts` forms and grepped
+    `app.routes.ts` directly, confirmed collision-free, left bare). `ObsNavComponent`'s toggle for
+    this topic used a single consistent key across all five accordion-related calls, double-checked
+    via grep immediately after writing (per the standing lesson from the `observability-fundamentals`
+    batch). Build passed clean (foreground execution, explicit `EXITCODE:$?` capture, zero `ERROR`
+    lines). Browser-verified with a hard reload first: nav accordion opens with all 3 subtopic links
+    on the first check; all main-page fixes confirmed rendering live via `window.ng.getComponent()`
+    on the code-block and challenge-block components (the corrected SLO Calculations comment, the
+    Prometheus Alerting tab's language, and both the Challenge's `starterCode` and `solution` using
+    the corrected `0.9994`/`0.9991` values); all 3 subtopic pages checked individually — zero
+    console errors, correct h1/breadcrumb, 860px wrapper via `getComputedStyle`, tailored (not
+    DEFAULT) sidebar content confirmed on the final subtopic. **This completes the Observability
+    hub's Core Concepts nav group** (`observability-fundamentals`, `opentelemetry`, `sli-slo-sla` —
+    all 3 of 3 topics now have subtopics). **Observability hub Phase 10: 3 of 20 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -7453,12 +7502,12 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
   All 22 cards `available: true` in `architecture/observability/home/home.ts`. Progress: `obsTotal=20` in progress.service.ts.
   Observability pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ObsNavComponent at `shared/obs-nav/obs-nav.ts`.
-  Phase 10: 2 of 20 topics have subtopics (`/observability/observability-fundamentals`, pilot
-  batch; `/observability/opentelemetry`, 2026-09-01) — see "Observability & SRE hub subtopic
-  wiring" section above for the `ObsNavComponent` accordion structural fix, a real self-authored
-  key-mismatch bug caught during browser verification (not a stale-server artifact), and a
-  cross-hub `opentelemetry` SUBTOPICS collision already resolved by the ASP.NET hub's own earlier
-  `aspnet-opentelemetry` prefix.
+  Phase 10: 3 of 20 topics have subtopics (`/observability/observability-fundamentals`, pilot
+  batch; `/observability/opentelemetry`; `/observability/sli-slo-sla` — Core Concepts nav group
+  fully done, 2026-09-01) — see "Observability & SRE hub subtopic wiring" section above for the
+  `ObsNavComponent` accordion structural fix, a real self-authored key-mismatch bug caught during
+  browser verification (not a stale-server artifact), and a cross-hub `opentelemetry` SUBTOPICS
+  collision already resolved by the ASP.NET hub's own earlier `aspnet-opentelemetry` prefix.
 - **Hub home**: Angular, C#, ASP.NET Core, SQL, TypeScript, React, JavaScript, CSS, HTML, Blazor, Go, Node.js, Python, DevOps, AWS, Azure, Linux, Redis, GraphQL, Messaging, Testing, DSA, AI/ML, Containers/K8s, Terraform/IaC, Service Mesh, System Design, Architecture Patterns, Design Patterns, Security, API Design, Observability, Web Performance, and MongoDB are all `available: true`. Everything else "Soon".
 - Progress totals: Angular 58, C# 50, ASP.NET Core 45, SQL 44, TypeScript 20, React 17, JavaScript 22, CSS 22, HTML 23, Web Performance 20, Blazor 20, Go 21, Node.js 23, Python 21, DevOps 21, AWS 21, Azure 22, Linux 19, Redis 21, GraphQL 20, Messaging 20, Testing 19, DSA 21, AI 19, Containers/K8s 22, Terraform 21, Service Mesh 19, System Design 24, Architecture Patterns 22, Design Patterns 36, Security 23, API Design 19, Observability 20, MongoDB 21 (`progress.service.ts`).
 - Hero stat: "933+ Live Pages" (corrected 2026-07-01 — hub-home.ts's Angular card was showing `topics: 63` instead of the actual 68, undercounting the site total by 5).
