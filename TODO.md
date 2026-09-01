@@ -8292,7 +8292,31 @@ off here with a date.
   toggles and Reveal Solution); nav accordion opens with all 3 labels; all 3 subtopic pages render
   with correct breadcrumb, 860px wrapper, zero console errors; sidebar showed tailored
   composite-key content. **API Design hub Phase 10: 15 of 19 topics complete.**
-- [ ] `/api-design/webhook-design` — Webhook Design
+- [x] `/api-design/webhook-design` — Webhook Design (2026-08-30). Fixed a genuine, verified
+  inaccuracy: the webhook sender codeTab's BullMQ config (attempts: 6, exponential delay: 60_000)
+  was commented "1m, 2m, 4m, 8m, 16m, 32m" (6 values) -- verified against BullMQ's own docs that
+  attempts is the TOTAL try count (6 = 1 initial + 5 retries = 5 delays, not 6) and that the
+  documented formula 2^(attemptNumber-1)*delay produces 2m, 4m, 8m, 16m, 32m (starting at 2m, not
+  1m), confirmed by reproducing BullMQ's own worked example via execution before trusting it.
+  Fixed the comment. 3 subtopics: implements and verifies BullMQ's exact formula against its own
+  documented example, then applies it to the corrected sequence; independent per-subscriber rate
+  limiters for webhook fan-out, verified via execution that one subscriber's limit never affects
+  another; dual-secret HMAC verification for rotation transition windows, verified via execution
+  across old/new/wrong secrets. Self-caught and fixed a real authoring bug during the standing
+  pre-build sweep: a missing `//` comment prefix on one line of a solution field (a documented
+  recurring mistake in this codebase), caught by re-reading the file. No SUBTOPICS collision.
+  GraphQL & Real-Time nav loop's accordion toggle needed no further changes. Hit a genuine session
+  interruption mid-batch (a backgrounded build reported failed/exit-4 with an incomplete log and
+  no live process; a second background retry also silently stalled) -- recovered by running the
+  build directly in the foreground for a trustworthy clean result; the dev server had also gone
+  stale and needed a full restart before browser verification. Build passed clean. Browser-verified:
+  main-page fix confirmed rendering live; nav accordion opens with all 3 labels including the
+  curly-quote possessive rendering correctly; all 3 subtopic pages render with correct breadcrumb,
+  860px wrapper, zero console errors; the self-caught fix confirmed rendering; sidebar showed
+  tailored composite-key content. This completes the GraphQL & Real-Time nav group entirely
+  (graphql-fundamentals, graphql-vs-rest, websockets-sse-polling, webhook-design -- all 4 of 4
+  topics now have subtopics). **API Design hub Phase 10: 16 of 19 topics complete -- GraphQL &
+  Real-Time nav group fully done.**
 - [x] `/api-design/api-design-principles` — API Design Principles (2026-08-30). Fixed a genuine,
   self-contained worked-example bug in the main page's own Challenge: `description` claimed input
   `date_joined: 1705312200` transforms to output `joinedAt: "2024-01-15T10:30:00Z"`, but running

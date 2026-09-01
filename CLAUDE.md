@@ -6035,6 +6035,66 @@ Confirmed via direct file inspection before the pilot (`/api-design/rest-fundame
     Code" toggle); nav accordion opens with all 3 labels; all 3 subtopic pages render with correct
     breadcrumb, 860px wrapper, zero console errors; sidebar showed tailored composite-key content on
     the final subtopic. **API Design hub Phase 10: 15 of 19 topics complete.**
+23. **The `webhook-design` batch — the fourth and final topic in the GraphQL & Real-Time nav
+    group — found and fixed a genuine, fully-verified inaccuracy where the main page’s own
+    worked BullMQ config was miscounted**: the webhook sender codeTab configures
+    `attempts: 6` with exponential `delay: 60_000`, originally commented "// 1m, 2m, 4m, 8m, 16m,
+    32m" — six delay values. Verified directly against BullMQ’s own documentation (fetched via
+    WebFetch, not assumed) that `attempts` configures the TOTAL number of tries including the
+    first — `attempts: 6` therefore produces only 5 retry delays, not 6 — and that BullMQ’s own
+    documented exponential formula is `2^(attemptNumber - 1) * delay` (confirmed by reproducing
+    BullMQ’s own worked example, "for the 7th attempt... 2^6 * 3000ms," via direct execution
+    before trusting it). Applying that exact formula to the page’s own config gives delays of 2m,
+    4m, 8m, 16m, 32m before attempts 2 through 6 — five values, starting at 2 minutes, not 1.
+    Fixed the comment to "6 total attempts -- 5 retry delays: 2m, 4m, 8m, 16m, 32m." Three
+    subtopics: (1) **fix-adjacent** — implements BullMQ’s own documented backoff formula as a
+    small function, verified via execution first against BullMQ’s own worked example (confirming
+    3.2 minutes for the 7th attempt at a 3000ms base, matching the docs exactly) before applying
+    it to the page’s own config and reproducing the corrected five-value sequence; a Try It asks
+    for the fully-corrected comment under a different `attempts` value, testing whether the reader
+    generalizes the counting rule correctly rather than just memorizing the one fixed example; (2)
+    **gap-closing** — the QnA names "rate-limiting per subscriber" during fan-out in one clause
+    with zero code; built independent per-subscriber `RateLimiter` instances keyed in a `Map`,
+    verified via execution that a rate-limited subscriber’s deferral has zero effect on any other
+    subscriber’s delivery in the same dispatch call — a Try It reasons through why a SHARED
+    limiter across subscribers would silently turn "per-subscriber" into a coarser global limit
+    instead; (3) **gap-closing** — the QnA names accepting both old and new secrets during a
+    rotation "transition window" in one clause with zero code; built
+    `verifyWithRotation()` trying every currently-valid secret in sequence, verified via execution
+    across an old-secret signature, a new-secret signature, and a wrong-secret signature (all
+    three correctly accepted/rejected) — a Try It reasons through why the old secret must be
+    actively REMOVED once the window ends, tying back to the very reason rotation exists (a
+    potentially-compromised secret staying valid forever defeats the purpose of rotating it at
+    all). **A real, self-authored bug caught and fixed during the standing pre-build sweep, not
+    the automated scripts**: one line inside the Secret Rotation subtopic’s own `solution` field
+    was missing its `//` comment prefix entirely (a mid-sentence line break that dropped the
+    prefix), exactly the documented recurring "missing comment prefix" mistake category already
+    seen once before in this hub’s own `saga` batch — caught by directly re-reading the file,
+    since the standing apostrophe/backtick/solution-contamination sweep scripts have no check for
+    this specific class of error. No `SUBTOPICS` collision for `webhook-design` (checked both
+    forms, confirmed collision-free, left bare) — the GraphQL & Real-Time nav loop’s accordion
+    toggle required ZERO further template changes for this fourth and final topic in the group.
+    **A genuine session interruption hit mid-batch**: the first backgrounded production build
+    reported `status: failed` with exit code 4 and a log that ended mid-warning-list with no
+    `EXITCODE` line at all — confirmed via `ps aux` that no build process was actually still
+    running (ruling out "still in progress"), then confirmed a SECOND backgrounded retry also
+    silently stalled at "Building..." with no process alive either, before a THIRD attempt run
+    directly in the FOREGROUND (bypassing backgrounding entirely) finally produced a trustworthy,
+    complete result — zero `ERROR` lines, clean exit code. The local `ng serve` dev server had
+    independently gone stale from the same interruption (`preview_list` returned zero running
+    servers) and needed a full `preview_stop`-equivalent restart via a fresh `preview_start`
+    before any browser verification could proceed, confirmed ready via a `curl`-polling background
+    task rather than a fixed sleep, matching established practice. Browser-verified: the
+    main-page fix confirmed rendering live (old six-value comment fully absent, corrected
+    five-value one present); nav accordion opens with all 3 labels, including the curly-quote
+    possessive ("BullMQ’s") rendering correctly across the nav, breadcrumb, and page `h1`; all 3
+    subtopic pages render with correct breadcrumb, 860px wrapper, zero console errors; the
+    self-caught missing-comment-prefix fix confirmed rendering correctly after expanding "Show
+    Solution"; sidebar showed tailored composite-key content on the final subtopic. **This
+    completes the GraphQL & Real-Time nav group entirely** (`graphql-fundamentals`,
+    `graphql-vs-rest`, `websockets-sse-polling`, `webhook-design` — all 4 of 4 topics now have
+    subtopics). **API Design hub Phase 10: 16 of 19 topics complete — GraphQL & Real-Time nav
+    group fully done.**
 
 ## Current state (update when it changes!)
 
@@ -7062,14 +7122,15 @@ Confirmed via direct file inspection before the pilot (`/api-design/rest-fundame
   All 21 cards `available: true` in `architecture/api-design/home/home.ts`. Progress: `apiTotal=19` in progress.service.ts.
   API Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ApiDesignNavComponent at `shared/api-design-nav/api-design-nav.ts`.
-  Phase 10: 15 of 19 topics have subtopics (`/api-design/rest-fundamentals`, pilot batch;
+  Phase 10: 16 of 19 topics have subtopics (`/api-design/rest-fundamentals`, pilot batch;
   `/api-design/resource-url-design`; `/api-design/http-methods-status-codes`;
   `/api-design/pagination-patterns` — Foundations nav group fully done; `/api-design/api-versioning`;
   `/api-design/error-response-design`; `/api-design/hateoas-hypermedia`; `/api-design/api-design-principles`;
   `/api-design/openapi-contracts` — REST Design nav group fully done; `/api-design/protocol-buffers`;
   `/api-design/grpc-service-patterns`; `/api-design/grpc-web-transcoding` — Protocols nav group
   fully done; `/api-design/graphql-fundamentals`; `/api-design/graphql-vs-rest`;
-  `/api-design/websockets-sse-polling` — GraphQL & Real-Time nav group, 2026-08-30) — see
+  `/api-design/websockets-sse-polling`; `/api-design/webhook-design` — GraphQL & Real-Time nav
+  group fully done, 2026-08-30) — see
   "API Design hub subtopic wiring" section above
   for the `ApiDesignNavComponent` accordion structural fix and the generic `subtopicsOf(item.path)`
   toggle-gating pattern this hub's `@for`-looped nav template needed (a first for this hub, since
