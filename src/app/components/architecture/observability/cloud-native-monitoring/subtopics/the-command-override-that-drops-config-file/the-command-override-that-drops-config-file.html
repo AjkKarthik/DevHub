@@ -1,0 +1,26 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Cloud-Native Monitoring" topicRoute="/observability/cloud-native-monitoring"
+    subtopicLabel="The command: Override That Drops --config.file" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">The command: Override That Drops --config.file</h1>
+  <p class="page-subtitle">docker-compose's command: replaces a container's default CMD entirely, not just appends to it — verified against the official Prometheus Dockerfile and its own flag defaults, then fixed with one missing line.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic builds the PodMonitor CRD the page's own Quick Reference names but never shows in code, contrasting its field names against the ServiceMonitor codeTab already on the page.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Cloud-Native Monitoring" topicRoute="/observability/cloud-native-monitoring"
+    [next]="{ label: 'PodMonitor Uses a Different Field Name Than ServiceMonitor', route: '/observability/cloud-native-monitoring/podmonitor-uses-a-different-field-name-than-servicemonitor' }" />
+</div>

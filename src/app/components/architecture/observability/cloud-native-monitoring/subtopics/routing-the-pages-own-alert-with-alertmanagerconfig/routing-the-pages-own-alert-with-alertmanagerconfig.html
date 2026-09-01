@@ -1,0 +1,26 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Cloud-Native Monitoring" topicRoute="/observability/cloud-native-monitoring"
+    subtopicLabel="Routing the Page’s Own Alert With AlertmanagerConfig" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">Routing the Page’s Own Alert With AlertmanagerConfig</h1>
+  <p class="page-subtitle">The Quick Reference names AlertmanagerConfig for Slack/PagerDuty routing by label, but never shows one — this subtopic routes the exact OrderServiceHighErrorRate alert already defined on the main page's own PrometheusRule codeTab.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>This closes the last of the three gaps this topic's own subtopics build: a genuinely broken docker-compose config, the PodMonitor field-name trap, and the AlertmanagerConfig routing layer that turns a defined alert into an actual Slack notification.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Cloud-Native Monitoring" topicRoute="/observability/cloud-native-monitoring"
+    [prev]="{ label: 'PodMonitor Uses a Different Field Name Than ServiceMonitor', route: '/observability/cloud-native-monitoring/podmonitor-uses-a-different-field-name-than-servicemonitor' }" />
+</div>

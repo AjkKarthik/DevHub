@@ -36382,6 +36382,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Cardinality explosion from per-pod labels (a new pod name on every restart/scale event) can overwhelm a metrics backend not designed for Kubernetes\'s churn.',
     ],
   },
+  'observability/cloud-native-monitoring/the-command-override-that-drops-config-file': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'PodMonitor Uses a Different Field Name Than ServiceMonitor', route: '/observability/cloud-native-monitoring/podmonitor-uses-a-different-field-name-than-servicemonitor' },
+      { label: 'Cloud-Native Monitoring (overview)', route: '/observability/cloud-native-monitoring' },
+    ],
+    tip: 'docker-compose\'s command: field replaces a container\'s default CMD entirely, not just appends to it — every flag the base image would normally pass, including --config.file, has to be re-listed explicitly or it\'s simply gone.',
+    gotchas: [
+      'Prometheus\'s own compiled-in default for --config.file is a RELATIVE path ("prometheus.yml"), resolved against the image\'s WORKDIR -- not the /etc/prometheus/prometheus.yml a volume mount might correctly place the file at.',
+    ],
+  },
+  'observability/cloud-native-monitoring/podmonitor-uses-a-different-field-name-than-servicemonitor': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The command: Override That Drops --config.file', route: '/observability/cloud-native-monitoring/the-command-override-that-drops-config-file' },
+      { label: 'Routing the Page’s Own Alert With AlertmanagerConfig', route: '/observability/cloud-native-monitoring/routing-the-pages-own-alert-with-alertmanagerconfig' },
+    ],
+    tip: 'ServiceMonitor uses endpoints:, but PodMonitor uses podMetricsEndpoints: — a genuinely different field name, confirmed against the Prometheus Operator\'s own API reference, not just a stylistic variant.',
+    gotchas: [
+      'A PodMonitor manifest that copies ServiceMonitor\'s endpoints: field verbatim is not a typo the API server necessarily rejects — the unrecognized field can be silently dropped, leaving the PodMonitor selecting pods but scraping nothing.',
+    ],
+  },
+  'observability/cloud-native-monitoring/routing-the-pages-own-alert-with-alertmanagerconfig': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'PodMonitor Uses a Different Field Name Than ServiceMonitor', route: '/observability/cloud-native-monitoring/podmonitor-uses-a-different-field-name-than-servicemonitor' },
+      { label: 'Cloud-Native Monitoring (overview)', route: '/observability/cloud-native-monitoring' },
+    ],
+    tip: 'AlertmanagerConfig\'s route.matchers matches on the exact same label keys a PrometheusRule\'s alert already carries — routing by label is a direct extension of an alert that already has that label, not a separate system.',
+    gotchas: [
+      'A Slack webhook URL is a credential, not something to inline as plaintext — reference it via apiURL.name/apiURL.key pointing at a Kubernetes Secret, especially since these manifests are typically stored in Git.',
+    ],
+  },
   'observability/ebpf-observability': {
     apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
     related: [

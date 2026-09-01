@@ -1,0 +1,27 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Cloud-Native Monitoring" topicRoute="/observability/cloud-native-monitoring"
+    subtopicLabel="PodMonitor Uses a Different Field Name Than ServiceMonitor" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">PodMonitor Uses a Different Field Name Than ServiceMonitor</h1>
+  <p class="page-subtitle">The Quick Reference names PodMonitor for DaemonSets and StatefulSets, but no codeTab ever builds one — verified against the Prometheus Operator's own API reference that its scrape-endpoint field is genuinely named differently from ServiceMonitor's.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic builds the AlertmanagerConfig CRD the Quick Reference also names but never shows — routing the exact alert from the page's own PrometheusRule codeTab to Slack.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Cloud-Native Monitoring" topicRoute="/observability/cloud-native-monitoring"
+    [prev]="{ label: 'The command: Override That Drops --config.file', route: '/observability/cloud-native-monitoring/the-command-override-that-drops-config-file' }"
+    [next]="{ label: 'Routing the Page’s Own Alert With AlertmanagerConfig', route: '/observability/cloud-native-monitoring/routing-the-pages-own-alert-with-alertmanagerconfig' }" />
+</div>

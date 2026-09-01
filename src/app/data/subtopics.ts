@@ -3696,4 +3696,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Building the Time-to-Exhaustion Capacity Projection', route: '/observability/infrastructure-metrics/building-the-time-to-exhaustion-capacity-projection' },
     { label: 'Tracking a Sustained Condition Before Alerting', route: '/observability/infrastructure-metrics/tracking-a-sustained-condition-before-alerting' },
   ],
+  'cloud-native-monitoring': [
+    { label: 'The command: Override That Drops --config.file', route: '/observability/cloud-native-monitoring/the-command-override-that-drops-config-file' },
+    { label: 'PodMonitor Uses a Different Field Name Than ServiceMonitor', route: '/observability/cloud-native-monitoring/podmonitor-uses-a-different-field-name-than-servicemonitor' },
+    { label: 'Routing the Page’s Own Alert With AlertmanagerConfig', route: '/observability/cloud-native-monitoring/routing-the-pages-own-alert-with-alertmanagerconfig' },
+  ],
 };
