@@ -2784,6 +2784,9 @@ const SECURITY_LABELS: Record<string, string> = {
 };
 
 const OBS_LABELS: Record<string, string> = {
+  'observability-fundamentals/lightsteps-end-of-life-verifying-a-tool-is-still-alive': 'Lightstep’s End-of-Life: Verifying a Tool Is Still Alive',
+  'observability-fundamentals/classifying-the-fourth-melt-signal-events': 'Classifying the Fourth MELT Signal: Events',
+  'observability-fundamentals/a-synthetic-monitoring-prober-with-slo-evaluation': 'A Synthetic Monitoring Prober With SLO Evaluation',
   'observability-fundamentals': 'Observability Fundamentals',
   'opentelemetry':              'OpenTelemetry',
   'sli-slo-sla':                'SLIs, SLOs & SLAs',

@@ -3658,4 +3658,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'A Lua-Script Atomic Token Bucket', route: '/api-design/rate-limiting/a-lua-script-atomic-token-bucket' },
     { label: 'A GraphQL Query-Complexity Limiter', route: '/api-design/rate-limiting/a-graphql-query-complexity-limiter' },
   ],
+  'observability-fundamentals': [
+    { label: 'Lightstep’s End-of-Life: Verifying a Tool Is Still Alive', route: '/observability/observability-fundamentals/lightsteps-end-of-life-verifying-a-tool-is-still-alive' },
+    { label: 'Classifying the Fourth MELT Signal: Events', route: '/observability/observability-fundamentals/classifying-the-fourth-melt-signal-events' },
+    { label: 'A Synthetic Monitoring Prober With SLO Evaluation', route: '/observability/observability-fundamentals/a-synthetic-monitoring-prober-with-slo-evaluation' },
+  ],
 };

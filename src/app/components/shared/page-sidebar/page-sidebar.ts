@@ -35962,6 +35962,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Collecting all three pillars without CORRELATION (shared trace/request IDs across them) leaves you with three separate haystacks instead of one connected picture.',
     ],
   },
+  'observability/observability-fundamentals/lightsteps-end-of-life-verifying-a-tool-is-still-alive': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Classifying the Fourth MELT Signal: Events', route: '/observability/observability-fundamentals/classifying-the-fourth-melt-signal-events' },
+      { label: 'Observability Fundamentals (overview)', route: '/observability/observability-fundamentals' },
+    ],
+    tip: 'A tool being ARCHIVED (maintainer stops developing it, software may keep running) and a tool reaching END-OF-LIFE (vendor shuts the hosted SERVICE down on a fixed date) are two genuinely different severities of "a tool went away" -- worth distinguishing before deciding how urgent a fix is.',
+    gotchas: [
+      'A vendor\'s EOL date is often "date X or your subscription end date, whichever is later" -- a blanket announcement is rarely a single flat deadline for every customer.',
+    ],
+  },
+  'observability/observability-fundamentals/classifying-the-fourth-melt-signal-events': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Lightstep’s End-of-Life: Verifying a Tool Is Still Alive', route: '/observability/observability-fundamentals/lightsteps-end-of-life-verifying-a-tool-is-still-alive' },
+      { label: 'A Synthetic Monitoring Prober With SLO Evaluation', route: '/observability/observability-fundamentals/a-synthetic-monitoring-prober-with-slo-evaluation' },
+    ],
+    tip: 'MELT names Events as a signal distinct from logs: a discrete, named occurrence with rich attributes but genuinely no severity level -- "order placed" isn\'t more or less severe than "order cancelled," it just happened.',
+    gotchas: [
+      'A field-presence-based classifier has a real, honest limit: a record deliberately combining traits from two categories (an event with an optional severity level) can fall through every check and land on \'unknown\'.',
+    ],
+  },
+  'observability/observability-fundamentals/a-synthetic-monitoring-prober-with-slo-evaluation': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Classifying the Fourth MELT Signal: Events', route: '/observability/observability-fundamentals/classifying-the-fourth-melt-signal-events' },
+      { label: 'Observability Fundamentals (overview)', route: '/observability/observability-fundamentals' },
+    ],
+    tip: 'Synthetic probing runs on its own fixed schedule regardless of real traffic -- this is precisely why it can catch an outage during a genuinely quiet period that passive observability (metrics/logs/traces from real requests) has no data for at all.',
+    gotchas: [
+      'A probe that technically "succeeded" but exceeded its timeout should still count as an SLO failure -- a slow success isn\'t a real success, and treating it as one hides a genuine latency breach behind a true boolean.',
+    ],
+  },
   'observability/observability-maturity': {
     apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
     related: [
