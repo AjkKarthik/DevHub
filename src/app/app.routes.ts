@@ -3523,7 +3523,12 @@ export const routes: Routes = [
         { path: 'podmonitor-uses-a-different-field-name-than-servicemonitor', loadComponent: () => import('./components/architecture/observability/cloud-native-monitoring/subtopics/podmonitor-uses-a-different-field-name-than-servicemonitor/podmonitor-uses-a-different-field-name-than-servicemonitor').then(m => m.PodmonitorUsesADifferentFieldNameThanServicemonitorSubtopic) },
         { path: 'routing-the-pages-own-alert-with-alertmanagerconfig', loadComponent: () => import('./components/architecture/observability/cloud-native-monitoring/subtopics/routing-the-pages-own-alert-with-alertmanagerconfig/routing-the-pages-own-alert-with-alertmanagerconfig').then(m => m.RoutingThePagesOwnAlertWithAlertmanagerconfigSubtopic) },
       ] },
-    { path: 'structured-logging',         loadComponent: () => import('./components/architecture/observability/structured-logging/structured-logging').then(m => m.ObsStructuredLogging) },
+    { path: 'structured-logging', children: [
+        { path: '', loadComponent: () => import('./components/architecture/observability/structured-logging/structured-logging').then(m => m.ObsStructuredLogging) },
+        { path: 'the-middlewares-raw-traceparent-header-bug', loadComponent: () => import('./components/architecture/observability/structured-logging/subtopics/the-middlewares-raw-traceparent-header-bug/the-middlewares-raw-traceparent-header-bug').then(m => m.TheMiddlewaresRawTraceparentHeaderBugSubtopic) },
+        { path: 'building-a-log-sampler-from-the-quizs-own-numbers', loadComponent: () => import('./components/architecture/observability/structured-logging/subtopics/building-a-log-sampler-from-the-quizs-own-numbers/building-a-log-sampler-from-the-quizs-own-numbers').then(m => m.BuildingALogSamplerFromTheQuizsOwnNumbersSubtopic) },
+        { path: 'the-log-level-endpoints-stale-timer-race-condition', loadComponent: () => import('./components/architecture/observability/structured-logging/subtopics/the-log-level-endpoints-stale-timer-race-condition/the-log-level-endpoints-stale-timer-race-condition').then(m => m.TheLogLevelEndpointsStaleTimerRaceConditionSubtopic) },
+      ] },
     { path: 'log-aggregation',            loadComponent: () => import('./components/architecture/observability/log-aggregation/log-aggregation').then(m => m.ObsLogAggregation) },
     { path: 'log-best-practices',         loadComponent: () => import('./components/architecture/observability/log-best-practices/log-best-practices').then(m => m.ObsLogBestPractices) },
     { path: 'distributed-tracing',        loadComponent: () => import('./components/architecture/observability/distributed-tracing/distributed-tracing').then(m => m.ObsDistributedTracing) },

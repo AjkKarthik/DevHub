@@ -1,0 +1,26 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Structured Logging" topicRoute="/observability/structured-logging"
+    subtopicLabel="The Middleware’s Raw traceparent Header Bug" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">The Middleware’s Raw traceparent Header Bug</h1>
+  <p class="page-subtitle">The Pino Setup codeTab stores the entire W3C traceparent header as traceId — verified against the official spec that this directly contradicts the page's own Log Schema codeTab, which expects a bare 32-hex trace-id.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic turns the quiz's own log-sampling explanation into a verified, runnable sampler function.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Structured Logging" topicRoute="/observability/structured-logging"
+    [next]="{ label: 'Building a Log Sampler From the Quiz’s Own Numbers', route: '/observability/structured-logging/building-a-log-sampler-from-the-quizs-own-numbers' }" />
+</div>

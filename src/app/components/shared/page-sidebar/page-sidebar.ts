@@ -36210,6 +36210,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Including a correlation/trace ID in every log line is what connects structured logs back to distributed traces for full request reconstruction.',
     ],
   },
+  'observability/structured-logging/the-middlewares-raw-traceparent-header-bug': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Building a Log Sampler From the Quiz’s Own Numbers', route: '/observability/structured-logging/building-a-log-sampler-from-the-quizs-own-numbers' },
+      { label: 'Structured Logging (overview)', route: '/observability/structured-logging' },
+    ],
+    tip: 'A W3C traceparent header is a compound value (version-trace_id-parent_id-trace_flags) -- storing the whole header as traceId puts three unrelated segments into every log line instead of the clean 32-hex trace ID.',
+    gotchas: [
+      'Split the header on "-" and take index 1 for the trace-id segment -- confirmed against the W3C Trace Context spec\'s own official example header.',
+    ],
+  },
+  'observability/structured-logging/building-a-log-sampler-from-the-quizs-own-numbers': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The Middleware’s Raw traceparent Header Bug', route: '/observability/structured-logging/the-middlewares-raw-traceparent-header-bug' },
+      { label: 'The Log-Level Endpoint’s Stale-Timer Race Condition', route: '/observability/structured-logging/the-log-level-endpoints-stale-timer-race-condition' },
+    ],
+    tip: 'Head-based probabilistic sampling (keep 100% of ERROR, 10% of WARN, 1% of INFO) preserves statistical validity -- a sampled count divided back by its rate gives a reasonable estimate of the true count, at the cost of losing any one specific dropped event.',
+    gotchas: [
+      'Consistent (hash-based) sampling on a field like userId trades "find one specific dropped request" for "reliably capture a sampled user\'s ENTIRE session" -- a genuinely different, sometimes more useful guarantee than pure random per-event sampling.',
+    ],
+  },
+  'observability/structured-logging/the-log-level-endpoints-stale-timer-race-condition': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Building a Log Sampler From the Quiz’s Own Numbers', route: '/observability/structured-logging/building-a-log-sampler-from-the-quizs-own-numbers' },
+      { label: 'Structured Logging (overview)', route: '/observability/structured-logging' },
+    ],
+    tip: 'Every call to a naive dynamic-log-level endpoint schedules its OWN independent revert timer -- a second call before the first timer fires does not cancel it, so an earlier, stale timer can silently override a newer admin\'s intended level.',
+    gotchas: [
+      'Track the pending timer in a variable and clearTimeout() it at the start of every new call, before scheduling a fresh one -- the same debounce-style pattern used anywhere a repeated action should supersede, not stack with, a previous pending one.',
+    ],
+  },
   'observability/log-best-practices': {
     apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
     related: [

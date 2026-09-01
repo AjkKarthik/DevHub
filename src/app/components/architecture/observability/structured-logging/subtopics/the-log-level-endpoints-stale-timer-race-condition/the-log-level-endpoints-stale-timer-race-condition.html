@@ -1,0 +1,26 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Structured Logging" topicRoute="/observability/structured-logging"
+    subtopicLabel="The Log-Level Endpoint’s Stale-Timer Race Condition" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">The Log-Level Endpoint’s Stale-Timer Race Condition</h1>
+  <p class="page-subtitle">The mistake block's own fix code schedules an independent revert timer on every call — a second call before the first timer fires lets the earlier, stale timer silently override the newer admin's intent. Verified, then fixed.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>This closes the last of the three gaps this topic's own subtopics build: a genuine traceId formatting bug, a verified log sampler the quiz names but never codes, and a real race condition in the mistake block's own fix.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Structured Logging" topicRoute="/observability/structured-logging"
+    [prev]="{ label: 'Building a Log Sampler From the Quiz’s Own Numbers', route: '/observability/structured-logging/building-a-log-sampler-from-the-quizs-own-numbers' }" />
+</div>

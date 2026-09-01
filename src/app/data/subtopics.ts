@@ -3701,4 +3701,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'PodMonitor Uses a Different Field Name Than ServiceMonitor', route: '/observability/cloud-native-monitoring/podmonitor-uses-a-different-field-name-than-servicemonitor' },
     { label: 'Routing the Page’s Own Alert With AlertmanagerConfig', route: '/observability/cloud-native-monitoring/routing-the-pages-own-alert-with-alertmanagerconfig' },
   ],
+  'structured-logging': [
+    { label: 'The Middleware’s Raw traceparent Header Bug', route: '/observability/structured-logging/the-middlewares-raw-traceparent-header-bug' },
+    { label: 'Building a Log Sampler From the Quiz’s Own Numbers', route: '/observability/structured-logging/building-a-log-sampler-from-the-quizs-own-numbers' },
+    { label: 'The Log-Level Endpoint’s Stale-Timer Race Condition', route: '/observability/structured-logging/the-log-level-endpoints-stale-timer-race-condition' },
+  ],
 };
