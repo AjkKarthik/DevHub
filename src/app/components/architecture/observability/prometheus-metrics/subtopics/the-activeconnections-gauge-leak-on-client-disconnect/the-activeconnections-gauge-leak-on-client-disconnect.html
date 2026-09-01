@@ -1,0 +1,26 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Prometheus &amp; Metrics" topicRoute="/observability/prometheus-metrics"
+    subtopicLabel="The activeConnections Gauge Leak on Client Disconnect" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">The activeConnections Gauge Leak on Client Disconnect</h1>
+  <p class="page-subtitle">The metrics middleware only listened for 'finish' — a client that disconnects mid-request never fires it, leaving the gauge permanently one higher forever.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>The Challenge's own SimpleHistogram passes its own given tests but has a real gap of its own — no +Inf bucket, meaning totalCount() silently undercounts. The next subtopic builds the fix, matching real Prometheus histogram semantics.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Prometheus &amp; Metrics" topicRoute="/observability/prometheus-metrics"
+    [next]="{ label: 'The Histogram’s Missing +Inf Bucket', route: '/observability/prometheus-metrics/the-histograms-missing-inf-bucket' }" />
+</div>

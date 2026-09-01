@@ -1,0 +1,26 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Prometheus &amp; Metrics" topicRoute="/observability/prometheus-metrics"
+    subtopicLabel="Verifying the Apdex Query’s Non-Obvious Algebra" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">Verifying the Apdex Query’s Non-Obvious Algebra</h1>
+  <p class="page-subtitle">The page's own Apdex PromQL query looks like it might be averaging two unrelated sums — verified with concrete data that it's actually a correct algebraic simplification of the textbook formula.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>This closes the last of the three gaps this topic's own subtopics build: a real gauge-leak bug in production-style middleware, a real undercounting gap in the Challenge's own histogram design, and a query the page states as fact but never proves correct.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Prometheus &amp; Metrics" topicRoute="/observability/prometheus-metrics"
+    [prev]="{ label: 'The Histogram’s Missing +Inf Bucket', route: '/observability/prometheus-metrics/the-histograms-missing-inf-bucket' }" />
+</div>

@@ -36043,6 +36043,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'PromQL rate() requires a counter metric type — applying it to a gauge produces meaningless results.',
     ],
   },
+  'observability/prometheus-metrics/the-activeconnections-gauge-leak-on-client-disconnect': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The Histogram’s Missing +Inf Bucket', route: '/observability/prometheus-metrics/the-histograms-missing-inf-bucket' },
+      { label: 'Prometheus & Metrics (overview)', route: '/observability/prometheus-metrics' },
+    ],
+    tip: 'A client-aborted request fires the response\'s "close" event, never "finish" -- a gauge that only decrements on "finish" leaks by exactly one for every request a client disconnects mid-flight.',
+    gotchas: [
+      '"close" ALSO fires after a normal completed response (after "finish" already ran) -- naively decrementing on every "close" would double-decrement every ordinary request, requiring an explicit idempotency guard.',
+    ],
+  },
+  'observability/prometheus-metrics/the-histograms-missing-inf-bucket': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The activeConnections Gauge Leak on Client Disconnect', route: '/observability/prometheus-metrics/the-activeconnections-gauge-leak-on-client-disconnect' },
+      { label: 'Verifying the Apdex Query’s Non-Obvious Algebra', route: '/observability/prometheus-metrics/verifying-the-apdex-querys-non-obvious-algebra' },
+    ],
+    tip: 'Real Prometheus histograms always have an implicit +Inf bucket that captures every observation no matter how large -- a hand-rolled histogram without one can silently undercount any value exceeding its largest configured boundary.',
+    gotchas: [
+      'Deriving a total observation count via Math.max of the finite buckets only works if every observation lands in at least one bucket -- an out-of-range value increments none of them.',
+    ],
+  },
+  'observability/prometheus-metrics/verifying-the-apdex-querys-non-obvious-algebra': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The Histogram’s Missing +Inf Bucket', route: '/observability/prometheus-metrics/the-histograms-missing-inf-bucket' },
+      { label: 'Prometheus & Metrics (overview)', route: '/observability/prometheus-metrics' },
+    ],
+    tip: 'Prometheus histogram bucket counts (le="X") are always CUMULATIVE -- le="0.4" already includes everything counted in le="0.1", which is exactly why the page\'s own Apdex query\'s "/2" isn\'t naively averaging two unrelated sums.',
+    gotchas: [
+      'A query that looks suspicious at a glance can still be provably correct -- re-deriving the same result independently from the textbook formula on concrete sample data is a general way to verify a cumulative-bucket-based query without needing a live Prometheus instance.',
+    ],
+  },
   'observability/grafana-dashboards': {
     apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
     related: [

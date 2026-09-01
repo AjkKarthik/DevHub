@@ -109,13 +109,23 @@ const activeConnections = new Gauge({
 function metricsMiddleware(req: express.Request, res: express.Response, next: express.NextFunction) {
   const end = httpDuration.startTimer();
   activeConnections.inc();
+  let requestFinished = false;
 
   res.on('finish', () => {
+    requestFinished = true;
     const route = req.route?.path ?? req.path; // use matched route, not exact path
     const labels = { method: req.method, route, status_code: res.statusCode.toString() };
     httpRequests.inc(labels);
     end(labels);
     activeConnections.dec();
+  });
+
+  // 'close' fires both on normal completion (after 'finish') AND on a
+  // client-aborted/disconnected connection, where 'finish' never fires at
+  // all. Only decrement here if 'finish' hasn't already -- otherwise every
+  // normal request would double-decrement the gauge.
+  res.on('close', () => {
+    if (!requestFinished) activeConnections.dec();
   });
   next();
 }
@@ -131,7 +141,7 @@ app.get('/metrics', async (_req, res) => {
   },
   {
     label: 'PromQL Queries',
-    language: 'typescript',
+    language: 'bash',
     code: `# ── GOLDEN SIGNAL QUERIES ─────────────────────────────────────────
 
 # Request rate (requests per second, 5-minute rolling)
@@ -179,7 +189,7 @@ topk(5,
   },
   {
     label: 'prometheus.yml',
-    language: 'typescript',
+    language: 'bash',
     code: `# prometheus.yml — scrape configuration
 global:
   scrape_interval: 15s      # How often to scrape targets

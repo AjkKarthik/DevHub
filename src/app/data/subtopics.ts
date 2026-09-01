@@ -3676,4 +3676,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Reconciling Two Different Status-Category Models', route: '/observability/sli-slo-sla/reconciling-two-different-status-category-models' },
     { label: 'The Multi-Window Burn-Rate Decision Logic', route: '/observability/sli-slo-sla/the-multi-window-burn-rate-decision-logic' },
   ],
+  'prometheus-metrics': [
+    { label: 'The activeConnections Gauge Leak on Client Disconnect', route: '/observability/prometheus-metrics/the-activeconnections-gauge-leak-on-client-disconnect' },
+    { label: 'The Histogram’s Missing +Inf Bucket', route: '/observability/prometheus-metrics/the-histograms-missing-inf-bucket' },
+    { label: 'Verifying the Apdex Query’s Non-Obvious Algebra', route: '/observability/prometheus-metrics/verifying-the-apdex-querys-non-obvious-algebra' },
+  ],
 };

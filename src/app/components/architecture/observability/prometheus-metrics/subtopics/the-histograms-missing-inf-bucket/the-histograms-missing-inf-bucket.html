@@ -1,0 +1,27 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Prometheus &amp; Metrics" topicRoute="/observability/prometheus-metrics"
+    subtopicLabel="The Histogram’s Missing +Inf Bucket" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">The Histogram’s Missing +Inf Bucket</h1>
+  <p class="page-subtitle">The Challenge's SimpleHistogram passes every one of its own given tests — but silently undercounts any observation exceeding its largest configured bucket. Real Prometheus histograms never have this problem.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>The theory's own Apdex query looks like it might be computing something wrong at first glance — averaging two cumulative bucket sums. The final subtopic verifies, with concrete data, why the query is actually correct.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Prometheus &amp; Metrics" topicRoute="/observability/prometheus-metrics"
+    [prev]="{ label: 'The activeConnections Gauge Leak on Client Disconnect', route: '/observability/prometheus-metrics/the-activeconnections-gauge-leak-on-client-disconnect' }"
+    [next]="{ label: 'Verifying the Apdex Query’s Non-Obvious Algebra', route: '/observability/prometheus-metrics/verifying-the-apdex-querys-non-obvious-algebra' }" />
+</div>
