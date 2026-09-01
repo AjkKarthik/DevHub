@@ -36198,6 +36198,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A log shipper falling behind or crashing can silently drop logs — monitor the shipping pipeline\'s own health, not just the application.',
     ],
   },
+  'observability/log-aggregation/promtails-drop-stage-has-no-sampling-rate': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The Dead Man’s Switch Query the QnA Names But Never Shows', route: '/observability/log-aggregation/the-dead-mans-switch-query-the-qna-names-but-never-shows' },
+      { label: 'Log Aggregation (overview)', route: '/observability/log-aggregation' },
+    ],
+    tip: 'Promtail\'s drop stage is purely deterministic (match or don\'t match) -- confirmed against Loki\'s own docs it has no percentage/probability field, so "sample X%" is not achievable at the shipper layer at all.',
+    gotchas: [
+      'True probabilistic log sampling has to happen in APPLICATION code, deciding whether to emit the log line at all -- by the time a log line reaches Promtail, the cost of generating and writing it has already been paid.',
+    ],
+  },
+  'observability/log-aggregation/the-dead-mans-switch-query-the-qna-names-but-never-shows': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Promtail’s Drop Stage Has No Sampling Rate', route: '/observability/log-aggregation/promtails-drop-stage-has-no-sampling-rate' },
+      { label: 'What Happens When the Parser Meets a Regex Selector', route: '/observability/log-aggregation/what-happens-when-the-parser-meets-a-regex-selector' },
+    ],
+    tip: 'absent_over_time() fires when a stream produces NO log lines at all in a window -- the opposite condition from every content-based alert (like an error-rate threshold), which can never detect a service that has gone completely silent.',
+    gotchas: [
+      'A service that crashes and stops logging entirely looks IDENTICAL to a healthy, quiet service under any rate()-based error alert -- rate() of zero logs is 0, and 0 never crosses a "> N" threshold.',
+    ],
+  },
+  'observability/log-aggregation/what-happens-when-the-parser-meets-a-regex-selector': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The Dead Man’s Switch Query the QnA Names But Never Shows', route: '/observability/log-aggregation/the-dead-mans-switch-query-the-qna-names-but-never-shows' },
+      { label: 'Log Aggregation (overview)', route: '/observability/log-aggregation' },
+    ],
+    tip: 'The Challenge\'s own parseStreamSelector() explicitly excludes regex (=~) selectors -- but a regex selector doesn\'t get cleanly rejected, it gets silently garbled into a plausible-looking but wrong result.',
+    gotchas: [
+      'indexOf(\'=\') finds the "=" INSIDE the "=~" operator, not a real key/value delimiter -- checking for the two-character "=~" sequence before parsing is what actually distinguishes a regex pair from an exact-match one.',
+    ],
+  },
   'observability/structured-logging': {
     apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
     related: [

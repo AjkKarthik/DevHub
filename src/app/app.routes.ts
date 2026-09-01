@@ -3529,7 +3529,12 @@ export const routes: Routes = [
         { path: 'building-a-log-sampler-from-the-quizs-own-numbers', loadComponent: () => import('./components/architecture/observability/structured-logging/subtopics/building-a-log-sampler-from-the-quizs-own-numbers/building-a-log-sampler-from-the-quizs-own-numbers').then(m => m.BuildingALogSamplerFromTheQuizsOwnNumbersSubtopic) },
         { path: 'the-log-level-endpoints-stale-timer-race-condition', loadComponent: () => import('./components/architecture/observability/structured-logging/subtopics/the-log-level-endpoints-stale-timer-race-condition/the-log-level-endpoints-stale-timer-race-condition').then(m => m.TheLogLevelEndpointsStaleTimerRaceConditionSubtopic) },
       ] },
-    { path: 'log-aggregation',            loadComponent: () => import('./components/architecture/observability/log-aggregation/log-aggregation').then(m => m.ObsLogAggregation) },
+    { path: 'log-aggregation', children: [
+        { path: '', loadComponent: () => import('./components/architecture/observability/log-aggregation/log-aggregation').then(m => m.ObsLogAggregation) },
+        { path: 'promtails-drop-stage-has-no-sampling-rate', loadComponent: () => import('./components/architecture/observability/log-aggregation/subtopics/promtails-drop-stage-has-no-sampling-rate/promtails-drop-stage-has-no-sampling-rate').then(m => m.PromtailsDropStageHasNoSamplingRateSubtopic) },
+        { path: 'the-dead-mans-switch-query-the-qna-names-but-never-shows', loadComponent: () => import('./components/architecture/observability/log-aggregation/subtopics/the-dead-mans-switch-query-the-qna-names-but-never-shows/the-dead-mans-switch-query-the-qna-names-but-never-shows').then(m => m.TheDeadMansSwitchQueryTheQnaNamesButNeverShowsSubtopic) },
+        { path: 'what-happens-when-the-parser-meets-a-regex-selector', loadComponent: () => import('./components/architecture/observability/log-aggregation/subtopics/what-happens-when-the-parser-meets-a-regex-selector/what-happens-when-the-parser-meets-a-regex-selector').then(m => m.WhatHappensWhenTheParserMeetsARegexSelectorSubtopic) },
+      ] },
     { path: 'log-best-practices',         loadComponent: () => import('./components/architecture/observability/log-best-practices/log-best-practices').then(m => m.ObsLogBestPractices) },
     { path: 'distributed-tracing',        loadComponent: () => import('./components/architecture/observability/distributed-tracing/distributed-tracing').then(m => m.ObsDistributedTracing) },
     { path: 'opentelemetry-tracing',      loadComponent: () => import('./components/architecture/observability/opentelemetry-tracing/opentelemetry-tracing').then(m => m.ObsOpentelemetryTracing) },

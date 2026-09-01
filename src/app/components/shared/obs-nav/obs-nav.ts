@@ -194,7 +194,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
       </div>
     }
   }
-  <a routerLink="/observability/log-aggregation"      routerLinkActive="active"><span class="nl-text">Log Aggregation</span>@if(progress.isDone('obs-log-aggregation')){<span class="nl-done">✓</span>}</a>
+  <a routerLink="/observability/log-aggregation" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+    <span class="nl-text">Log Aggregation</span>
+    @if(progress.isDone('obs-log-aggregation')){<span class="nl-done">✓</span>}
+    @if (subtopicsOf('log-aggregation')) {
+      <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('log-aggregation')"
+              (click)="toggleSubtopics('log-aggregation', $event)" aria-label="Toggle subtopics">›</button>
+    }
+  </a>
+  @if (subtopicsOf('log-aggregation'); as laSubs) {
+    @if (isSubtopicsExpanded('log-aggregation')) {
+      <div class="nav-subtopics">
+        @for (s of laSubs; track s.route) {
+          <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+            <span class="nl-text">{{ s.label }}</span>
+          </a>
+        }
+      </div>
+    }
+  }
   <a routerLink="/observability/log-best-practices"   routerLinkActive="active"><span class="nl-text">Log Best Practices</span>@if(progress.isDone('obs-log-best-practices')){<span class="nl-done">✓</span>}</a>
 </div>
 

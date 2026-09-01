@@ -3706,4 +3706,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Building a Log Sampler From the Quiz’s Own Numbers', route: '/observability/structured-logging/building-a-log-sampler-from-the-quizs-own-numbers' },
     { label: 'The Log-Level Endpoint’s Stale-Timer Race Condition', route: '/observability/structured-logging/the-log-level-endpoints-stale-timer-race-condition' },
   ],
+  'log-aggregation': [
+    { label: 'Promtail’s Drop Stage Has No Sampling Rate', route: '/observability/log-aggregation/promtails-drop-stage-has-no-sampling-rate' },
+    { label: 'The Dead Man’s Switch Query the QnA Names But Never Shows', route: '/observability/log-aggregation/the-dead-mans-switch-query-the-qna-names-but-never-shows' },
+    { label: 'What Happens When the Parser Meets a Regex Selector', route: '/observability/log-aggregation/what-happens-when-the-parser-meets-a-regex-selector' },
+  ],
 };
