@@ -132,11 +132,19 @@ import { Writable } from 'stream';
 function createTestLogger() {
   const lines: Record<string, unknown>[] = [];
   const stream = new Writable({
-    write(chunk) {
+    write(chunk, encoding, callback) {
       lines.push(JSON.parse(chunk.toString()));
+      callback(); // REQUIRED -- omitting this stalls the stream after the
+      // first write, silently dropping every logger call after it
     }
   });
-  const logger = pino({ level: 'debug' }, stream);
+  const logger = pino({
+    level: 'debug',
+    // pino's DEFAULT level field is a NUMBER (30 for info, 40 for warn),
+    // not the string 'info'/'warn' the assertions below expect -- this
+    // formatter serializes the level as its label string instead.
+    formatters: { level: (label) => ({ level: label }) },
+  }, stream);
   return { logger, getLines: () => lines };
 }
 

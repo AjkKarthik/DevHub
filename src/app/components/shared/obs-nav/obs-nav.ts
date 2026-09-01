@@ -213,7 +213,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
       </div>
     }
   }
-  <a routerLink="/observability/log-best-practices"   routerLinkActive="active"><span class="nl-text">Log Best Practices</span>@if(progress.isDone('obs-log-best-practices')){<span class="nl-done">✓</span>}</a>
+  <a routerLink="/observability/log-best-practices" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+    <span class="nl-text">Log Best Practices</span>
+    @if(progress.isDone('obs-log-best-practices')){<span class="nl-done">✓</span>}
+    @if (subtopicsOf('log-best-practices')) {
+      <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('log-best-practices')"
+              (click)="toggleSubtopics('log-best-practices', $event)" aria-label="Toggle subtopics">›</button>
+    }
+  </a>
+  @if (subtopicsOf('log-best-practices'); as lbpSubs) {
+    @if (isSubtopicsExpanded('log-best-practices')) {
+      <div class="nav-subtopics">
+        @for (s of lbpSubs; track s.route) {
+          <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+            <span class="nl-text">{{ s.label }}</span>
+          </a>
+        }
+      </div>
+    }
+  }
 </div>
 
 <div class="nav-group">

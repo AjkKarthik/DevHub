@@ -3535,7 +3535,12 @@ export const routes: Routes = [
         { path: 'the-dead-mans-switch-query-the-qna-names-but-never-shows', loadComponent: () => import('./components/architecture/observability/log-aggregation/subtopics/the-dead-mans-switch-query-the-qna-names-but-never-shows/the-dead-mans-switch-query-the-qna-names-but-never-shows').then(m => m.TheDeadMansSwitchQueryTheQnaNamesButNeverShowsSubtopic) },
         { path: 'what-happens-when-the-parser-meets-a-regex-selector', loadComponent: () => import('./components/architecture/observability/log-aggregation/subtopics/what-happens-when-the-parser-meets-a-regex-selector/what-happens-when-the-parser-meets-a-regex-selector').then(m => m.WhatHappensWhenTheParserMeetsARegexSelectorSubtopic) },
       ] },
-    { path: 'log-best-practices',         loadComponent: () => import('./components/architecture/observability/log-best-practices/log-best-practices').then(m => m.ObsLogBestPractices) },
+    { path: 'log-best-practices', children: [
+        { path: '', loadComponent: () => import('./components/architecture/observability/log-best-practices/log-best-practices').then(m => m.ObsLogBestPractices) },
+        { path: 'the-test-loggers-two-silent-bugs', loadComponent: () => import('./components/architecture/observability/log-best-practices/subtopics/the-test-loggers-two-silent-bugs/the-test-loggers-two-silent-bugs').then(m => m.TheTestLoggersTwoSilentBugsSubtopic) },
+        { path: 'the-classifier-that-misses-a-quarter-of-the-log-contract', loadComponent: () => import('./components/architecture/observability/log-best-practices/subtopics/the-classifier-that-misses-a-quarter-of-the-log-contract/the-classifier-that-misses-a-quarter-of-the-log-contract').then(m => m.TheClassifierThatMissesAQuarterOfTheLogContractSubtopic) },
+        { path: 'logging-which-path-correlation-id-extraction-took', loadComponent: () => import('./components/architecture/observability/log-best-practices/subtopics/logging-which-path-correlation-id-extraction-took/logging-which-path-correlation-id-extraction-took').then(m => m.LoggingWhichPathCorrelationIdExtractionTookSubtopic) },
+      ] },
     { path: 'distributed-tracing',        loadComponent: () => import('./components/architecture/observability/distributed-tracing/distributed-tracing').then(m => m.ObsDistributedTracing) },
     { path: 'opentelemetry-tracing',      loadComponent: () => import('./components/architecture/observability/opentelemetry-tracing/opentelemetry-tracing').then(m => m.ObsOpentelemetryTracing) },
     { path: 'performance-profiling',      loadComponent: () => import('./components/architecture/observability/performance-profiling/performance-profiling').then(m => m.ObsPerformanceProfiling) },

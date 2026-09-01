@@ -36287,6 +36287,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Log levels (DEBUG/INFO/WARN/ERROR) should be used consistently — logging routine events at ERROR trains responders to ignore alerts.',
     ],
   },
+  'observability/log-best-practices/the-test-loggers-two-silent-bugs': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The Classifier That Misses a Quarter of the Log Contract', route: '/observability/log-best-practices/the-classifier-that-misses-a-quarter-of-the-log-contract' },
+      { label: 'Log Best Practices (overview)', route: '/observability/log-best-practices' },
+    ],
+    tip: 'A Node.js Writable stream\'s write handler MUST call its callback parameter -- omitting it silently stalls the stream after the first write, dropping every subsequent write within the same test.',
+    gotchas: [
+      'pino\'s default level field is a NUMBER (30 for info, 40 for warn), not a string -- a test asserting .toBe(\'info\') needs the formatters.level option to serialize it as a label first.',
+    ],
+  },
+  'observability/log-best-practices/the-classifier-that-misses-a-quarter-of-the-log-contract': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The Test Logger’s Two Silent Bugs', route: '/observability/log-best-practices/the-test-loggers-two-silent-bugs' },
+      { label: 'Logging Which Path Correlation-ID Extraction Took', route: '/observability/log-best-practices/logging-which-path-correlation-id-extraction-took' },
+    ],
+    tip: 'A finite keyword-guessing classifier inevitably misses real event phrasing outside its vocabulary -- verified that 3 of the page\'s own 13 Log Contract events ("cancelled," "lost," "unavailable") get silently misclassified as debug.',
+    gotchas: [
+      'The most robust fix combines both approaches: look up the level directly for events already in the contract, and fall back to keyword-guessing only for messages that were never catalogued at all.',
+    ],
+  },
+  'observability/log-best-practices/logging-which-path-correlation-id-extraction-took': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The Classifier That Misses a Quarter of the Log Contract', route: '/observability/log-best-practices/the-classifier-that-misses-a-quarter-of-the-log-contract' },
+      { label: 'Log Best Practices (overview)', route: '/observability/log-best-practices' },
+    ],
+    tip: 'Recording WHETHER a trace ID was extracted from an inbound header or freshly generated tells you, after the fact, whether searching an upstream service\'s logs for that same ID could ever succeed.',
+    gotchas: [
+      'A "generated" source is expected and correct for the FIRST service in any chain (a public gateway, a scheduled job) -- it only becomes suspicious on a service that should only ever be called internally.',
+    ],
+  },
   'observability/distributed-tracing': {
     apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
     related: [

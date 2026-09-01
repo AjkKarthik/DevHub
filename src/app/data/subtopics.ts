@@ -3711,4 +3711,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Dead Man’s Switch Query the QnA Names But Never Shows', route: '/observability/log-aggregation/the-dead-mans-switch-query-the-qna-names-but-never-shows' },
     { label: 'What Happens When the Parser Meets a Regex Selector', route: '/observability/log-aggregation/what-happens-when-the-parser-meets-a-regex-selector' },
   ],
+  'log-best-practices': [
+    { label: 'The Test Logger’s Two Silent Bugs', route: '/observability/log-best-practices/the-test-loggers-two-silent-bugs' },
+    { label: 'The Classifier That Misses a Quarter of the Log Contract', route: '/observability/log-best-practices/the-classifier-that-misses-a-quarter-of-the-log-contract' },
+    { label: 'Logging Which Path Correlation-ID Extraction Took', route: '/observability/log-best-practices/logging-which-path-correlation-id-extraction-took' },
+  ],
 };

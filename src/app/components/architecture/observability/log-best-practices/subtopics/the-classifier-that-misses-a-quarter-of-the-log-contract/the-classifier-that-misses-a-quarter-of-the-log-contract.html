@@ -1,0 +1,27 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Log Best Practices" topicRoute="/observability/log-best-practices"
+    subtopicLabel="The Classifier That Misses a Quarter of the Log Contract" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">The Classifier That Misses a Quarter of the Log Contract</h1>
+  <p class="page-subtitle">Running the Log Contract codeTab's own 13 events through the Challenge's classifyLogLevel() classifier finds 3 real mismatches — a genuine limit of keyword-guessing versus having an authoritative source already in the same codebase.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic builds the correlation-ID extraction-source logging the theory section names, reusing the trace-ID extraction technique already fixed on the sibling Structured Logging topic.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Log Best Practices" topicRoute="/observability/log-best-practices"
+    [prev]="{ label: 'The Test Logger’s Two Silent Bugs', route: '/observability/log-best-practices/the-test-loggers-two-silent-bugs' }"
+    [next]="{ label: 'Logging Which Path Correlation-ID Extraction Took', route: '/observability/log-best-practices/logging-which-path-correlation-id-extraction-took' }" />
+</div>

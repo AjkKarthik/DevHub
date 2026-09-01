@@ -1,0 +1,26 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Log Best Practices" topicRoute="/observability/log-best-practices"
+    subtopicLabel="Logging Which Path Correlation-ID Extraction Took" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">Logging Which Path Correlation-ID Extraction Took</h1>
+  <p class="page-subtitle">The theory section names this rule precisely — extract from headers first, generate only if missing, log which path was taken — but no codeTab ever builds it. This subtopic does, reusing the verified traceparent fix from the sibling Structured Logging topic.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>This closes the last of the three gaps this topic's own subtopics build: two real bugs in the Log Testing codeTab's own test helper, a real gap between the Challenge's classifier and the Log Contract, and the correlation-ID extraction-source logging the theory names but never codes.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Log Best Practices" topicRoute="/observability/log-best-practices"
+    [prev]="{ label: 'The Classifier That Misses a Quarter of the Log Contract', route: '/observability/log-best-practices/the-classifier-that-misses-a-quarter-of-the-log-contract' }" />
+</div>
