@@ -6338,6 +6338,63 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
    subtopic pages checked individually — zero console errors, correct h1/breadcrumb, 860px wrapper
    via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the final subtopic.
    **Observability hub Phase 10: 1 of 20 topics complete.**
+10. **The `opentelemetry` batch found and fixed a genuine, two-part bug — a factually wrong claim
+    plus the real code bug it was hiding, discovered by cross-checking two sections of the same
+    page against each other before ever reaching for external verification**: the "Forgetting to
+    call span.end()" mistake block claimed `startActiveSpan()` with a callback "automatically calls
+    span.end() when the callback returns or throws." Confirmed FALSE via two independent sources on
+    OpenTelemetry's own JS API guidance: neither `startSpan()` nor `startActiveSpan()` ever
+    auto-ends a span in the JS/Node.js SDK — the developer is always responsible for calling
+    `span.end()` themselves, typically in a `finally` block, regardless of which of the two APIs is
+    used. The SAME page's own "Manual Spans" codeTab quietly proved this the hard way: the OUTER
+    span is correctly wrapped in `try/catch/finally`, but the INNER `paySpan` (created via the exact
+    same `startActiveSpan()` call) only ever calls `.end()` on the happy-path line, with no
+    protection at all. Verified via a plain-JS simulation reproducing the exact structure: if
+    `chargeCard()` throws, the outer span correctly ends (via its own `finally`) while `paySpan`
+    never does — a real, reproducible span leak, in the exact function the mistake block right
+    above it exists to warn against. Fixed by wrapping `paySpan`'s body in its own `try/finally`
+    (matching the outer span's already-correct pattern) and correcting the mistake block's
+    explanation to state the verified fact. Also fixed a mistagged codeTab found during the same
+    read-through: "Collector Config" contains YAML content but was tagged `language: 'typescript'`
+    — `CodeTab`'s actual language union has no `'yaml'` option (`'typescript' | 'html' | 'scss' |
+    'bash' | 'csharp' | 'sql' | 'css'` only, confirmed directly against `code-block.ts`); fixed to
+    `'bash'`, matching the established convention for YAML/JSON content elsewhere in this codebase
+    (Azure hub, API Design hub's `secrets-management` batch). Three subtopics, each verified via
+    direct Node.js execution: (1) **fix-adjacent** — reproduces the exact leak and fix via a
+    `FakeSpan` simulation, both buggy and fixed versions verified matching their claimed console
+    output exactly, with a Try It establishing that a span's leak risk depends on whether ITS OWN
+    callback is still executing when something throws, not on whether anything nested inside it
+    eventually throws; (2) **gap-closing** — the QnA describes exemplars (a trace ID attached to
+    one specific histogram observation, letting a reader jump from an aggregate metric bucket to a
+    concrete representative trace) in real detail with zero code; built a `HistogramWithExemplars`
+    class, verified via execution across four observations including one with no active trace
+    correctly getting no exemplar, with a Try It confirming multiple observations landing in the
+    same bucket each get their own exemplar (no per-bucket uniqueness rule in this simplified
+    version); (3) **gap-closing** — the Collector Config codeTab configures three named sampling
+    policies (`errors-policy`, `slow-policy`, `probabilistic`) but no codeTab shows the decision
+    logic that implements them; built a `TailSamplingBuffer` matching the page's own exact
+    threshold/percentage values (1000ms, 10%), verified via execution across all three policies
+    including a Try It confirming a CHILD span's error status (not just the root's) correctly
+    triggers `errors-policy` even when the root itself completed with status OK. **A real
+    cross-hub `SUBTOPICS` collision, already resolved by the colliding sibling rather than needing
+    a fresh fix**: `opentelemetry` is also a bare route segment under the ASP.NET hub — confirmed
+    via a direct `app.routes.ts` grep that ASP.NET's own `/aspnet/opentelemetry` topic had already
+    hub-prefixed itself to `aspnet-opentelemetry` (from an earlier session), leaving the bare key
+    free for this hub's own use with no further action needed; confirmed via direct browser
+    navigation that `/aspnet/opentelemetry` renders completely unaffected. `ObsNavComponent`'s
+    toggle markup for this topic used a single, consistent key (`'opentelemetry'`) across all five
+    accordion-related calls this time — deliberately double-checked via a targeted grep immediately
+    after writing the template, avoiding a repeat of the exact key-mismatch bug caught and fixed in
+    the immediately-prior `observability-fundamentals` batch. Build passed clean (foreground
+    execution, explicit `EXITCODE:$?` capture, zero `ERROR` lines). Browser-verified with a hard
+    reload first: nav accordion opens with all 3 subtopic links on the FIRST check this time (no
+    repeat of the prior batch's key-mismatch incident); all three main-page fixes confirmed
+    rendering live (the mistake-block explanation text, `paySpan`'s new `try/finally` in the Manual
+    Spans codeTab, and the Collector Config tab's corrected language via
+    `window.ng.getComponent()`); all 3 subtopic pages checked individually — zero console errors,
+    correct h1/breadcrumb, 860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar
+    content confirmed on the final subtopic; the `/aspnet/opentelemetry` cross-hub isolation check
+    passed. **Observability hub Phase 10: 2 of 20 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -7396,10 +7453,12 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
   All 22 cards `available: true` in `architecture/observability/home/home.ts`. Progress: `obsTotal=20` in progress.service.ts.
   Observability pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ObsNavComponent at `shared/obs-nav/obs-nav.ts`.
-  Phase 10: 1 of 20 topics have subtopics (`/observability/observability-fundamentals`, pilot
-  batch, 2026-09-01) — see "Observability & SRE hub subtopic wiring" section above for the
-  `ObsNavComponent` accordion structural fix and a real self-authored key-mismatch bug caught
-  during browser verification (not a stale-server artifact).
+  Phase 10: 2 of 20 topics have subtopics (`/observability/observability-fundamentals`, pilot
+  batch; `/observability/opentelemetry`, 2026-09-01) — see "Observability & SRE hub subtopic
+  wiring" section above for the `ObsNavComponent` accordion structural fix, a real self-authored
+  key-mismatch bug caught during browser verification (not a stale-server artifact), and a
+  cross-hub `opentelemetry` SUBTOPICS collision already resolved by the ASP.NET hub's own earlier
+  `aspnet-opentelemetry` prefix.
 - **Hub home**: Angular, C#, ASP.NET Core, SQL, TypeScript, React, JavaScript, CSS, HTML, Blazor, Go, Node.js, Python, DevOps, AWS, Azure, Linux, Redis, GraphQL, Messaging, Testing, DSA, AI/ML, Containers/K8s, Terraform/IaC, Service Mesh, System Design, Architecture Patterns, Design Patterns, Security, API Design, Observability, Web Performance, and MongoDB are all `available: true`. Everything else "Soon".
 - Progress totals: Angular 58, C# 50, ASP.NET Core 45, SQL 44, TypeScript 20, React 17, JavaScript 22, CSS 22, HTML 23, Web Performance 20, Blazor 20, Go 21, Node.js 23, Python 21, DevOps 21, AWS 21, Azure 22, Linux 19, Redis 21, GraphQL 20, Messaging 20, Testing 19, DSA 21, AI 19, Containers/K8s 22, Terraform 21, Service Mesh 19, System Design 24, Architecture Patterns 22, Design Patterns 36, Security 23, API Design 19, Observability 20, MongoDB 21 (`progress.service.ts`).
 - Hero stat: "933+ Live Pages" (corrected 2026-07-01 — hub-home.ts's Angular card was showing `topics: 63` instead of the actual 68, undercounting the site total by 5).

@@ -8470,7 +8470,30 @@ off here with a date.
   rendering live; all 3 subtopic pages checked individually -- zero console errors, correct
   h1/breadcrumb, 860px wrapper, tailored sidebar content. **Observability hub Phase 10: 1 of 20
   topics complete.**
-- [ ] `/observability/opentelemetry` — OpenTelemetry
+- [x] `/observability/opentelemetry` — OpenTelemetry (2026-09-01). Found and fixed a genuine,
+  two-part bug: the "Forgetting to call span.end()" mistake block claimed startActiveSpan()
+  "automatically calls span.end()" -- confirmed FALSE via two independent sources on OTel's own
+  JS API guidance (neither startSpan() nor startActiveSpan() ever auto-ends a span; the developer
+  is always responsible). The page's own "Manual Spans" codeTab proved this the hard way: the
+  outer span is correctly wrapped in try/catch/finally, but the inner paySpan (same
+  startActiveSpan() call) only calls .end() on the happy path with no protection -- verified via
+  simulation that if chargeCard() throws, paySpan leaks while the outer span correctly ends.
+  Fixed by wrapping paySpan in its own try/finally and correcting the mistake block's claim. Also
+  fixed a mistagged codeTab (Collector Config is YAML but tagged 'typescript' -- CodeTab has no
+  'yaml' option, fixed to 'bash'). 3 subtopics: reproduces the leak/fix via a FakeSpan simulation,
+  verified via execution; builds a HistogramWithExemplars class for the QnA's own exemplar
+  description (zero code on the page), verified via execution; builds a TailSamplingBuffer
+  matching the Collector Config's own exact threshold/percentage values, verified via execution
+  including that a child span's error status correctly triggers errors-policy even when the root
+  itself is OK. Real cross-hub SUBTOPICS collision already resolved by the colliding sibling:
+  'opentelemetry' is also a bare ASP.NET route, already hub-prefixed to 'aspnet-opentelemetry'
+  from an earlier session -- left free for this hub. ObsNavComponent's toggle used a single
+  consistent key across all five calls this time, double-checked via grep to avoid repeating the
+  prior batch's key-mismatch bug. Build passed clean. Browser-verified with a hard reload first:
+  nav accordion opened with all 3 links on the FIRST check; all three main-page fixes confirmed
+  rendering live; all 3 subtopic pages checked individually -- zero console errors, correct
+  h1/breadcrumb, 860px wrapper, tailored sidebar content; /aspnet/opentelemetry isolation check
+  passed. **Observability hub Phase 10: 2 of 20 topics complete.**
 - [ ] `/observability/sli-slo-sla` — SLIs, SLOs & SLAs
 - [ ] `/observability/prometheus-metrics` — Prometheus & Metrics
 - [ ] `/observability/grafana-dashboards` — Grafana Dashboards
