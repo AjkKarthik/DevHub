@@ -6494,6 +6494,42 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
     correct h1/breadcrumb, 860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar
     content confirmed on the final subtopic. **Observability hub Phase 10: 4 of 20 topics
     complete.**
+13. **The `grafana-dashboards` batch — the second topic in the Metrics nav group — found and fixed
+    a genuine broken-JSON bug in the main page's own "Dashboard has no links to logs or traces"
+    mistake block's `right` field**: the hand-escaped nested-JSON string (a Grafana panel link URL)
+    used inconsistent backslash-escaping — most inner quotes were single-escaped (`\"`, a no-op
+    inside a backtick template literal, collapsing to a bare `"`), while exactly one pair (around
+    `$service`) was correctly triple-escaped. Verified via direct execution that embedding the
+    broken `url` value as a JSON string field inside its real, full panel-link object context (not
+    tested in isolation) fails `JSON.parse()` with "Expected ',' or '}' after property value in
+    JSON at position 78." Fixed by rewriting to build the URL programmatically via
+    `JSON.stringify()` + `encodeURIComponent()`, matching what real dashboard-as-code tooling does
+    and sidestepping hand-escaping entirely. Also fixed two mistagged codeTabs ("Dashboard JSON"
+    and "Loki + Tempo Linking", both YAML/JSON content tagged `language: 'typescript'`) to the
+    established `'bash'` convention. Three subtopics: (1) **fix-adjacent** — reproduces and
+    verifies both the broken and fixed URL-building code in their true embedded context; a self-
+    caught mistake during authoring: an initial codeTab draft tested the URL's JSON portion in
+    ISOLATION (too lenient, incorrectly appeared to parse fine) — caught by recognizing this didn't
+    match the real bug context, rewritten to correctly reconstruct the full panel-link document and
+    re-verified via extracting the exact displayed code text and executing it standalone; (2)
+    **gap-closing** — demonstrates two real, verified limits of the page's own Loki `derivedField`
+    `matcherRegex: '"traceId":"(\w+)"'`: JSON-structure blindness (a decoy field literally named
+    `traceId` appearing earlier in a log line wins over the real field, verified via execution) and
+    `\w+`'s inability to span a hyphenated trace ID (verified: produces no match at all); (3)
+    **gap-closing** — builds `detectDeploymentCorrelation()`, turning the page's own "eyeball the
+    annotation timeline" mistake-block advice into a verified, testable function, with a Try It
+    confirming the "most recent, not first-found" attribution rule via a realistic rapid-hotfix
+    scenario. No `SUBTOPICS` collision for bare `grafana-dashboards` (checked both `subtopics.ts`
+    forms and grepped `app.routes.ts` directly, confirmed collision-free, left bare).
+    `ObsNavComponent`'s toggle for this topic used a single consistent key across all five
+    accordion-related calls, double-checked via grep after writing. Build passed clean (foreground
+    execution, explicit `EXITCODE:$?` capture, zero `ERROR` lines). Browser-verified with a hard
+    reload first: nav accordion opens with all 3 subtopic links on the first check; all three
+    main-page fixes confirmed rendering live via `window.ng.getComponent()` (the `right` field's
+    `JSON.stringify`/`encodeURIComponent` rewrite, and both mistagged codeTabs now correctly tagged
+    `'bash'`); all 3 subtopic pages checked individually — zero console errors, correct
+    h1/breadcrumb, 860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content
+    confirmed on the final subtopic. **Observability hub Phase 10: 5 of 20 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -7552,13 +7588,15 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
   All 22 cards `available: true` in `architecture/observability/home/home.ts`. Progress: `obsTotal=20` in progress.service.ts.
   Observability pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ObsNavComponent at `shared/obs-nav/obs-nav.ts`.
-  Phase 10: 4 of 20 topics have subtopics (`/observability/observability-fundamentals`, pilot
+  Phase 10: 5 of 20 topics have subtopics (`/observability/observability-fundamentals`, pilot
   batch; `/observability/opentelemetry`; `/observability/sli-slo-sla` — Core Concepts nav group
-  fully done; `/observability/prometheus-metrics` — first Metrics nav group topic, 2026-09-01) —
+  fully done; `/observability/prometheus-metrics`; `/observability/grafana-dashboards` — 2 of the
+  Metrics nav group's topics, 2026-09-01) —
   see "Observability & SRE hub subtopic wiring" section above for the `ObsNavComponent` accordion
   structural fix, a real self-authored key-mismatch bug caught during browser verification (not a
-  stale-server artifact), and a cross-hub `opentelemetry` SUBTOPICS collision already resolved by
-  the ASP.NET hub's own earlier `aspnet-opentelemetry` prefix.
+  stale-server artifact), a cross-hub `opentelemetry` SUBTOPICS collision already resolved by
+  the ASP.NET hub's own earlier `aspnet-opentelemetry` prefix, and a genuine broken-JSON bug found
+  and fixed in the `grafana-dashboards` main page's own mistake block.
 - **Hub home**: Angular, C#, ASP.NET Core, SQL, TypeScript, React, JavaScript, CSS, HTML, Blazor, Go, Node.js, Python, DevOps, AWS, Azure, Linux, Redis, GraphQL, Messaging, Testing, DSA, AI/ML, Containers/K8s, Terraform/IaC, Service Mesh, System Design, Architecture Patterns, Design Patterns, Security, API Design, Observability, Web Performance, and MongoDB are all `available: true`. Everything else "Soon".
 - Progress totals: Angular 58, C# 50, ASP.NET Core 45, SQL 44, TypeScript 20, React 17, JavaScript 22, CSS 22, HTML 23, Web Performance 20, Blazor 20, Go 21, Node.js 23, Python 21, DevOps 21, AWS 21, Azure 22, Linux 19, Redis 21, GraphQL 20, Messaging 20, Testing 19, DSA 21, AI 19, Containers/K8s 22, Terraform 21, Service Mesh 19, System Design 24, Architecture Patterns 22, Design Patterns 36, Security 23, API Design 19, Observability 20, MongoDB 21 (`progress.service.ts`).
 - Hero stat: "933+ Live Pages" (corrected 2026-07-01 — hub-home.ts's Angular card was showing `topics: 63` instead of the actual 68, undercounting the site total by 5).

@@ -8533,7 +8533,26 @@ off here with a date.
   fixes confirmed rendering live; all 3 subtopic pages checked individually -- zero console errors,
   correct h1/breadcrumb, 860px wrapper, tailored sidebar content. **Observability hub Phase 10: 4
   of 20 topics complete.**
-- [ ] `/observability/grafana-dashboards` — Grafana Dashboards
+- [x] `/observability/grafana-dashboards` — Grafana Dashboards (2026-09-01). Second topic in the
+  Metrics nav group. Found and fixed a genuine broken-JSON bug in the "Dashboard has no links to
+  logs or traces" mistake block's `right` field: hand-escaped nested JSON (a Grafana panel link
+  URL) used inconsistent backslash-escaping -- most inner quotes were single-escaped (a no-op
+  inside a backtick template literal, collapsing to a bare `"`), while one pair was correctly
+  triple-escaped. Verified via direct execution that embedding the broken value in its real, full
+  panel-link object context (not tested in isolation) fails JSON.parse with "Expected ',' or '}'
+  after property value". Fixed by rewriting to build the URL programmatically via
+  JSON.stringify() + encodeURIComponent(). Also fixed 2 mistagged codeTabs (Dashboard JSON, Loki +
+  Tempo Linking, both tagged 'typescript', fixed to 'bash'). 3 subtopics: reproduces and verifies
+  both the broken and fixed URL-building code in their true embedded context (a self-caught
+  mistake during authoring -- an initial codeTab draft tested the URL's JSON portion in isolation,
+  too leniently, and was rewritten before publishing); demonstrates two verified limits of the
+  page's own Loki derivedField matcherRegex (a decoy field named "traceId" wins over the real
+  field; \w+ can't span a hyphenated trace ID); builds detectDeploymentCorrelation(), turning the
+  page's own "eyeball the annotation timeline" advice into a verified, testable function. No
+  SUBTOPICS collision. Build passed clean. Browser-verified with a hard reload first: nav accordion
+  opened with all 3 links on the first check; all three main-page fixes confirmed rendering live;
+  all 3 subtopic pages checked individually -- zero console errors, correct h1/breadcrumb, 860px
+  wrapper, tailored sidebar content. **Observability hub Phase 10: 5 of 20 topics complete.**
 - [ ] `/observability/custom-app-metrics` — Custom App Metrics
 - [ ] `/observability/infrastructure-metrics` — Infrastructure Metrics
 - [ ] `/observability/cloud-native-monitoring` — Cloud-Native Monitoring
