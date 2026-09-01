@@ -6095,6 +6095,55 @@ Confirmed via direct file inspection before the pilot (`/api-design/rest-fundame
     `graphql-vs-rest`, `websockets-sse-polling`, `webhook-design` — all 4 of 4 topics now have
     subtopics). **API Design hub Phase 10: 16 of 19 topics complete — GraphQL & Real-Time nav
     group fully done.**
+23. **The `api-security` batch — the first topic in the Advanced nav group — found and fixed a
+    genuine, self-contained undeclared-reference bug in the main page's own "Input Validation"
+    codeTab**: it declared <code>const CreateOrderSchema = z.object({ items: ..., deliveryAddress:
+    ..., note: ... })</code> — a schema shaped for an orders endpoint — but the SAME codeTab's two
+    <code>/users</code> route handlers referenced <code>CreateUserSchema</code>, a name never
+    declared anywhere in the file at all: a plain TS2304, the same undeclared-reference category
+    this hub and several sibling hubs have hit repeatedly. Fixed by renaming the declared schema to
+    <code>CreateUserSchema</code> and reshaping its fields to match what the "GOOD" handler actually
+    destructures (<code>{ name, email }</code>), verified via direct Node execution against the
+    real `zod` package — a valid body is accepted, a mass-assignment attempt injecting
+    <code>isAdmin: true</code> is correctly rejected (isAdmin stays hardcoded `false`), and an
+    invalid email is correctly rejected with the expected Zod issue. Three subtopics: (1)
+    **fix-adjacent** — traces the exact bug and fix, with a Try It extending the schema with an
+    optional <code>bio</code> field and confirming mass-assignment protection still holds,
+    verified via execution; (2) **gap-closing** — the QnA distinguishing API1 (BOLA) from API3
+    (Broken Object Property Level Authorization) names the read-side leak risk in real detail
+    ("an internal admin-only 'creditLimit' field... returned to a regular user"), but every codeTab
+    on the page only ever protects the WRITE side — built a real output allowlist
+    (<code>serializeUser()</code>) as the missing, independent read-side half, verified via
+    execution that naive serialization leaks the full DB record (including
+    <code>passwordHash</code>/<code>creditLimit</code>) while the allowlisted version returns only
+    3 safe fields, and that a NEW field added to the stored record later is safe by default rather
+    than leaking; (3) **gap-closing** — the QnA names token bucket, Redis storage, and the exact
+    response headers (<code>RateLimit-Limit</code>/<code>Remaining</code>/<code>Reset</code>,
+    <code>Retry-After</code>) with zero codeTab implementing any of it — built a real
+    <code>TokenBucketLimiter</code> class, verified end-to-end via execution (a 5-token burst all
+    allowed, the 6th rejected with <code>retryAfterSec=1</code>; refill behavior confirmed correct
+    after +1s), with the Try It's own worked example (10-capacity, 2/sec refill, 10 instant
+    requests then +3s) separately verified via execution to produce exactly
+    <code>remaining=5</code> on the 11th request. **Structural fix**: `ApiDesignNavComponent`'s
+    "Advanced" nav-group loop had never had the subtopics-accordion toggle markup added at all
+    (unlike Foundations/REST Design/Protocols/GraphQL & Real-Time, each fixed in earlier batches
+    this session) — added the identical toggle-button-plus-nested-link-list block, confirmed
+    working via `window.ng.getComponent()` + `toggleSubtopics()` and a live DOM query showing all
+    3 subtopic links. **No `SUBTOPICS` collision for bare `api-security`** — confirmed via the
+    Security & Auth hub's own pre-existing `// NOTE:` comment in `subtopics.ts`, which had already
+    hub-prefixed ITS colliding `/security/api-security` topic to `sec-api-security` specifically
+    anticipating this exact moment; confirmed via direct browser navigation that
+    `/security/api-security` itself renders completely unaffected. Also added the previously-
+    missing BASE sidebar entry for `api-design/api-security` (was silently falling back to
+    DEFAULT before this batch — a real, worth-fixing gap, not just avoiding a new one, matching
+    the precedent already established for other hubs' own first-subtopic-set gaps). Build passed
+    clean (foreground execution with explicit `EXITCODE:$?` capture, zero `ERROR` lines).
+    Browser-verified: nav accordion toggle opens all 3 subtopic links in the Advanced group; the
+    main-page fix confirmed rendering live (Input Validation tab shows `CreateUserSchema`,
+    `CreateOrderSchema` fully gone); all 3 subtopic pages checked individually — zero console
+    errors, correct h1/breadcrumb, 860px wrapper via `getComputedStyle`, and tailored (not
+    DEFAULT) sidebar content confirmed on the final subtopic. **API Design hub Phase 10: 17 of 19
+    topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -7122,7 +7171,7 @@ Confirmed via direct file inspection before the pilot (`/api-design/rest-fundame
   All 21 cards `available: true` in `architecture/api-design/home/home.ts`. Progress: `apiTotal=19` in progress.service.ts.
   API Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ApiDesignNavComponent at `shared/api-design-nav/api-design-nav.ts`.
-  Phase 10: 16 of 19 topics have subtopics (`/api-design/rest-fundamentals`, pilot batch;
+  Phase 10: 17 of 19 topics have subtopics (`/api-design/rest-fundamentals`, pilot batch;
   `/api-design/resource-url-design`; `/api-design/http-methods-status-codes`;
   `/api-design/pagination-patterns` — Foundations nav group fully done; `/api-design/api-versioning`;
   `/api-design/error-response-design`; `/api-design/hateoas-hypermedia`; `/api-design/api-design-principles`;
@@ -7130,7 +7179,8 @@ Confirmed via direct file inspection before the pilot (`/api-design/rest-fundame
   `/api-design/grpc-service-patterns`; `/api-design/grpc-web-transcoding` — Protocols nav group
   fully done; `/api-design/graphql-fundamentals`; `/api-design/graphql-vs-rest`;
   `/api-design/websockets-sse-polling`; `/api-design/webhook-design` — GraphQL & Real-Time nav
-  group fully done, 2026-08-30) — see
+  group fully done; `/api-design/api-security` — first topic in the Advanced nav group,
+  2026-09-01) — see
   "API Design hub subtopic wiring" section above
   for the `ApiDesignNavComponent` accordion structural fix and the generic `subtopicsOf(item.path)`
   toggle-gating pattern this hub's `@for`-looped nav template needed (a first for this hub, since

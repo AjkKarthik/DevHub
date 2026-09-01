@@ -8359,7 +8359,32 @@ off here with a date.
   opens with all 3 labels; all 3 subtopic pages render with correct breadcrumb, 860px wrapper,
   zero console errors; sidebar showed tailored composite-key content. **API Design hub Phase 10:
   9 of 19 topics complete -- REST Design nav group fully done.**
-- [ ] `/api-design/api-security` — API Security
+- [x] `/api-design/api-security` — API Security (2026-09-01). First topic in the Advanced nav
+  group. Fixed a genuine, self-contained undeclared-reference bug in the main page's own "Input
+  Validation" codeTab: it declared `const CreateOrderSchema` (order-shaped fields) but the two
+  `/users` route handlers referenced `CreateUserSchema`, a name never declared anywhere in the
+  file (a plain TS2304). Fixed by renaming the declared schema to `CreateUserSchema` and reshaping
+  its fields to match what the handler actually destructures (`{ name, email }`), verified via
+  direct execution against the real `zod` package (valid body accepted; mass-assignment
+  `isAdmin: true` injection correctly rejected; invalid email correctly rejected). 3 subtopics:
+  traces the exact bug/fix with a Try It extending the schema and confirming mass-assignment
+  protection still holds; builds the missing OUTPUT-side field allowlist (API3's read-side half,
+  which the QnA names but no codeTab shows), verified via execution that naive serialization leaks
+  the full DB record while an allowlisted version returns only safe fields; builds a real
+  token-bucket rate limiter matching the QnA's named algorithm/headers exactly, verified end-to-end
+  via execution (5-token burst, 6th rejected, refill confirmed after +1s) including the Try It's
+  own worked example verified to produce exactly `remaining=5`. Structural fix: `ApiDesignNavComponent`'s
+  Advanced nav-group loop had never had the subtopics-accordion toggle markup added -- added it,
+  matching the identical fix applied to 3 other nav groups earlier this session. No SUBTOPICS
+  collision for bare `api-security` -- confirmed via the Security & Auth hub's own pre-existing
+  NOTE comment, which had already hub-prefixed its colliding `/security/api-security` topic to
+  `sec-api-security` anticipating this exact moment. Also added the previously-missing base
+  sidebar entry for `api-design/api-security` (was silently falling back to DEFAULT). Build passed
+  clean (foreground execution, explicit EXITCODE:$? capture, zero ERROR lines). Browser-verified:
+  nav accordion opens with all 3 labels in the Advanced group; main-page fix confirmed rendering
+  live; all 3 subtopic pages render with correct breadcrumb, 860px wrapper, zero console errors;
+  sidebar showed tailored composite-key content. **API Design hub Phase 10: 17 of 19 topics
+  complete.**
 - [ ] `/api-design/breaking-changes` — Breaking Changes
 - [ ] `/api-design/rate-limiting` — Rate Limiting
 
