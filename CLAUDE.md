@@ -6568,6 +6568,47 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
     3 subtopic pages checked individually — zero console errors, correct h1/breadcrumb, 860px
     wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the final
     subtopic. **Observability hub Phase 10: 6 of 20 topics complete.**
+15. **The `infrastructure-metrics` batch — the fourth topic in the Metrics nav group — found and
+    fixed a genuine, purely self-contained PromQL correctness bug in the "Kubernetes Metrics"
+    theory bullet**: it gave `container_cpu_usage_seconds_total / kube_pod_container_resource_limits
+    {resource="cpu"}` as the "CPU throttling ratio," reading "> 0.8" as "consistently hitting CPU
+    limits." `container_cpu_usage_seconds_total` is a monotonic COUNTER — dividing it directly by a
+    static limit, with no `rate()` wrapper, is the same class of mistake this hub's own Prometheus
+    & Metrics topic already warns against generally. Verified with concrete numbers via direct
+    execution: a container running at a genuinely healthy 10% average CPU usage the whole time
+    crosses the page's own "> 0.8" threshold within the FIRST MINUTE it's alive (6.0 after 1
+    minute, 30.0 after 5, 360.0 after an hour), climbing without bound regardless of actual load,
+    while the correctly `rate()`-wrapped version stays flat at the true 0.10. The formula was also
+    mislabeled — it's a usage-to-limit ratio, not throttling, which the page's own codeTabs already
+    correctly define elsewhere as `container_cpu_throttled_seconds_total /
+    container_cpu_usage_seconds_total`. Fixed by wrapping the counter in `rate(...[5m])` and
+    correcting the label to distinguish it from the real throttling metric. Also fixed two
+    mistagged codeTabs ("Key PromQL Queries" and "Alert Rules", both PromQL/YAML content tagged
+    `language: 'typescript'`) to the established `'bash'` convention. Three subtopics: (1)
+    **fix-adjacent** — reproduces the exact broken/fixed math via direct execution, with a Try It
+    on why the page's OWN unwrapped gauge-based "Deployment health" ratio right below it is
+    correctly safe without `rate()` — gauges report a current state and never need it, only
+    counters do; (2) **gap-closing** — the QnA names time-to-exhaustion capacity projection as "the
+    most useful capacity alert" with a precise 2-weeks-vs-2-hours worked example in prose, never
+    shown in code anywhere on the page; built and verified `projectExhaustion()` against those
+    exact numbers via direct execution, with a Try It showing a disk at only 50% full can still
+    alert sooner than one at 96% full if its growth rate is high enough; (3) **gap-closing** — the
+    connection-pool mistake block's own fix states "alert when waiting count is non-zero for more
+    than 30 seconds," but the gauge it builds has no notion of duration at all; built and verified
+    a `SustainedConditionTracker` via direct execution across three scenarios (a momentary blip
+    that correctly doesn't fire, a genuinely sustained condition that fires at the 30s mark, and a
+    Try It confirming a single instant where the condition clears resets the clock entirely rather
+    than accumulating partial credit). No `SUBTOPICS` collision for bare `infrastructure-metrics`
+    (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed
+    collision-free, left bare). `ObsNavComponent`'s toggle for this topic used a single consistent
+    key across all five accordion-related calls, double-checked via grep after writing. Build
+    passed clean (foreground execution, explicit `EXITCODE:$?` capture, zero `ERROR` lines).
+    Browser-verified with a hard reload first: nav accordion opens with all 3 subtopic links on the
+    first check; the theory-bullet fix and both codeTab language fixes confirmed rendering live via
+    `window.ng.getComponent()`; all 3 subtopic pages checked individually — zero console errors,
+    correct h1/breadcrumb, 860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar
+    content confirmed on the final subtopic. **Observability hub Phase 10: 7 of 20 topics
+    complete.**
 
 ## Current state (update when it changes!)
 
@@ -7626,10 +7667,11 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
   All 22 cards `available: true` in `architecture/observability/home/home.ts`. Progress: `obsTotal=20` in progress.service.ts.
   Observability pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ObsNavComponent at `shared/obs-nav/obs-nav.ts`.
-  Phase 10: 6 of 20 topics have subtopics (`/observability/observability-fundamentals`, pilot
+  Phase 10: 7 of 20 topics have subtopics (`/observability/observability-fundamentals`, pilot
   batch; `/observability/opentelemetry`; `/observability/sli-slo-sla` — Core Concepts nav group
   fully done; `/observability/prometheus-metrics`; `/observability/grafana-dashboards`;
-  `/observability/custom-app-metrics` — 3 of the Metrics nav group's topics, 2026-09-01) —
+  `/observability/custom-app-metrics`; `/observability/infrastructure-metrics` — 4 of the Metrics
+  nav group's topics, 2026-09-01) —
   see "Observability & SRE hub subtopic wiring" section above for the `ObsNavComponent` accordion
   structural fix, a real self-authored key-mismatch bug caught during browser verification (not a
   stale-server artifact), a cross-hub `opentelemetry` SUBTOPICS collision already resolved by

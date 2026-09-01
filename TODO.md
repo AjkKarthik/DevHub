@@ -8575,7 +8575,28 @@ off here with a date.
   first check; both main-page fixes confirmed rendering live; all 3 subtopic pages checked
   individually -- zero console errors, correct h1/breadcrumb, 860px wrapper, tailored sidebar
   content. **Observability hub Phase 10: 6 of 20 topics complete.**
-- [ ] `/observability/infrastructure-metrics` — Infrastructure Metrics
+- [x] `/observability/infrastructure-metrics` — Infrastructure Metrics (2026-09-01). Fourth topic
+  in the Metrics nav group. Found and fixed a genuine, purely self-contained PromQL correctness bug
+  in the Kubernetes Metrics theory bullet: it gave container_cpu_usage_seconds_total /
+  kube_pod_container_resource_limits{resource="cpu"} as the "CPU throttling ratio" (">0.8" =
+  hitting limits) -- container_cpu_usage_seconds_total is a monotonic counter, so dividing it
+  directly by a static limit with no rate() wrapper produces a value that grows without bound the
+  longer a container has run, regardless of load. Verified with concrete numbers: a container at a
+  genuinely healthy 10% average CPU usage crosses the page's own ">0.8" threshold within the first
+  minute (6.0 after 1min, 360.0 after an hour). Also mislabeled -- it's a usage-to-limit ratio, not
+  throttling, which the page's own codeTabs already correctly define elsewhere. Fixed by wrapping
+  in rate(...[5m]) and correcting the label. Also fixed 2 mistagged codeTabs (Key PromQL Queries,
+  Alert Rules, both tagged 'typescript', fixed to 'bash'). 3 subtopics: reproduces the exact
+  broken/fixed math, with a Try It on why the page's own unwrapped gauge-based Deployment health
+  ratio is correctly safe without rate(); builds the time-to-exhaustion capacity projection the QnA
+  names in prose ("the most useful capacity alert") but never codes, verified against its own
+  2-weeks-vs-2-hours worked numbers; builds a SustainedConditionTracker for the connection-pool
+  mistake block's own "alert when waiting > 0 for 30+ seconds" rule, which the gauge itself has no
+  duration tracking for. No SUBTOPICS collision. Build passed clean. Browser-verified with a hard
+  reload first: nav accordion opened with all 3 links on the first check; the theory-bullet fix and
+  both codeTab language fixes confirmed rendering live; all 3 subtopic pages checked individually --
+  zero console errors, correct h1/breadcrumb, 860px wrapper, tailored sidebar content.
+  **Observability hub Phase 10: 7 of 20 topics complete.**
 - [ ] `/observability/cloud-native-monitoring` — Cloud-Native Monitoring
 - [ ] `/observability/structured-logging` — Structured Logging
 - [ ] `/observability/log-aggregation` — Log Aggregation
