@@ -1,0 +1,26 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="API Security" topicRoute="/security/api-security"
+    subtopicLabel="The Fixed-Window Rate Limiter’s Burst Problem" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">The Fixed-Window Rate Limiter's Burst Problem</h1>
+  <p class="page-subtitle">The theory names the flaw in one sentence — and the main page's own rate-limiting codeTab is actually subject to it. Here's the burst, simulated and verified, plus the sliding-window fix.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>Together, these three subtopics extend the main page's own unbuilt BFLA distinction, unbuilt HMAC signing mechanism, and unconnected fixed-window flaw into working, verified code.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="API Security" topicRoute="/security/api-security"
+    [prev]="{ label: 'HMAC Request Signing, Implemented', route: '/security/api-security/hmac-request-signing-implemented' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="OpenAPI & Contracts" topicRoute="/api-design/openapi-contracts"
+    subtopicLabel="Discriminator-Based oneOf, Actually Parsed" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">Discriminator-Based oneOf, Actually Parsed</h1>
+  <p class="page-subtitle">The main page’s QnA writes out a full discriminator YAML block — here’s the runtime code that actually reads the discriminator field and routes to the right schema.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>The main page’s own Challenge builds a schema validator that only handles flat, top-level fields — but the main page’s OWN OpenAPI spec defines a nested array-of-objects shape (CreateOrderRequest.items) the Challenge’s validator can’t check at all. The next subtopic extends it.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="OpenAPI & Contracts" topicRoute="/api-design/openapi-contracts"
+    [next]="{ label: 'Extending the Validator for Nested Arrays', route: '/api-design/openapi-contracts/extending-the-validator-for-nested-arrays' }" />
+</div>

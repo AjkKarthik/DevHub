@@ -1,0 +1,26 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="API Security" topicRoute="/api-design/api-security"
+    subtopicLabel="The Undeclared CreateUserSchema Reference" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">The Undeclared CreateUserSchema Reference</h1>
+  <p class="page-subtitle">The main page’s own Input Validation codeTab declared an order-shaped schema under one name, then referenced a completely different, never-declared name two sections later.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>Input-side validation is only half of API3 (Broken Object Property Level Authorization) — the next subtopic builds the output-side half the QnA describes but no codeTab shows.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="API Security" topicRoute="/api-design/api-security"
+    [next]="{ label: 'Output-Side Field Allowlisting for API3', route: '/api-design/api-security/output-side-field-allowlisting-for-api3' }" />
+</div>

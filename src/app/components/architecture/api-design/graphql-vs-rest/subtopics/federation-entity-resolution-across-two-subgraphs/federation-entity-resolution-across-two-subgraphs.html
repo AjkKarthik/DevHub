@@ -1,0 +1,26 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="GraphQL vs REST" topicRoute="/api-design/graphql-vs-rest"
+    subtopicLabel="Federation Entity Resolution Across Two Subgraphs" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">Federation Entity Resolution Across Two Subgraphs</h1>
+  <p class="page-subtitle">The QnA names Apollo Federation’s type-extending mechanism in prose — here’s a minimal two-subgraph simulation showing the actual key-based reference resolution.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>A fixed rule-precedence bug, a real APQ hash flow, and a minimal federation simulation are three concrete implementations of ideas this topic names in prose but leaves as description. WebSockets vs SSE vs Polling is next.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="GraphQL vs REST" topicRoute="/api-design/graphql-vs-rest"
+    [prev]="{ label: 'Automatic Persisted Queries: The Hash Registration Flow', route: '/api-design/graphql-vs-rest/automatic-persisted-queries-the-hash-registration-flow' }" />
+</div>

@@ -1,0 +1,27 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Breaking Changes" topicRoute="/api-design/breaking-changes"
+    subtopicLabel="Implementing Expand-Contract, All Three Phases" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">Implementing Expand-Contract, All Three Phases</h1>
+  <p class="page-subtitle">The QnA describes the three phases in careful prose using its own userName-to-fullName example — no codeTab on the page ever implements it. This one does, verified end to end.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>The Challenge's own classifyChange() explicitly compares only top-level field names, per its own stated scope — but the page's theory claims field TYPE changes are always breaking too. The next subtopic extends the Challenge to actually catch that case, and shows exactly what the original misses.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Breaking Changes" topicRoute="/api-design/breaking-changes"
+    [prev]="{ label: 'Verifying a Recommended Tool Is Still Maintained', route: '/api-design/breaking-changes/verifying-a-recommended-tool-is-still-maintained' }"
+    [next]="{ label: 'The Challenge Never Detects a Type Change', route: '/api-design/breaking-changes/the-challenge-never-detects-a-type-change' }" />
+</div>

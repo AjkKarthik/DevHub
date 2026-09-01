@@ -7837,49 +7837,702 @@ off here with a date.
   across the hub); breadcrumb and 860px wrapper confirmed on every subtopic; no console errors on
   any of the 4 pages.
   **Security & Auth hub Phase 10: 9 of 23 topics complete.**
-- [ ] `/security/rbac-abac` — RBAC & ABAC
-- [ ] `/security/claims-identity` — Claims & Identity
-- [ ] `/security/api-security` — API Security
-- [ ] `/security/xss` — Cross-Site Scripting (XSS)
-- [ ] `/security/csrf-clickjacking` — CSRF & Clickjacking
-- [ ] `/security/injection` — Injection Attacks
-- [ ] `/security/security-headers` — Security Headers
-- [ ] `/security/tls-https` — TLS & HTTPS
-- [ ] `/security/secrets-management` — Secrets Management
-- [ ] `/security/container-security` — Container Security
-- [ ] `/security/symmetric-encryption` — Symmetric Encryption
-- [ ] `/security/asymmetric-cryptography` — Asymmetric Cryptography
-- [ ] `/security/hashing` — Hashing
-- [ ] `/security/supply-chain` — Supply Chain Security
+- [x] `/security/rbac-abac` — RBAC & ABAC (2026-08-30) — Phase 10: 3 subtopics added, all
+  gap-closing. ReBAC — a Zanzibar-Style Relationship Resolver (a real tuple store + recursive
+  resolver for nested group membership, verified via Node execution); Database-Level Row-Level
+  Security vs. a Forgotten WHERE (a vulnerable app-level endpoint + a PostgreSQL RLS policy that
+  protects it anyway, verified against real Postgres docs); Separation of Duties, Enforced at
+  Role Assignment (a mutually-exclusive-role check at grant time, verified via execution). No
+  `SUBTOPICS` collision, left bare. Build passed clean. Browser-verified: nav accordion opens
+  with all 3 labels (10 toggles total across the hub); breadcrumb and 860px wrapper confirmed on
+  every subtopic; no console errors on any of the 4 pages.
+  **Security & Auth hub Phase 10: 10 of 23 topics complete.**
+- [x] `/security/claims-identity` — Claims & Identity (2026-08-30) — Phase 10: 3 subtopics
+  added, all gap-closing. Claims Transformation — IdP Groups to App Roles (mapping table +
+  transformation step, verified via execution); The Audience Validation Attack, Demonstrated
+  (a vulnerable version + genuine token replay, plus a same-audience misconfiguration Try It);
+  DB-Verified Role Recheck vs. Freshness-Only (both side by side, tracing exactly which gap only
+  the DB check closes). Self-caught and fixed a missing `//` comment prefix in an illustrative
+  codeTab before the build. No `SUBTOPICS` collision, left bare. Build passed clean.
+  Browser-verified: nav accordion opens with all 3 labels (11 toggles total across the hub);
+  breadcrumb and 860px wrapper confirmed on every subtopic; no console errors on any of the 4
+  pages.
+  **Security & Auth hub Phase 10: 11 of 23 topics complete.**
+- [x] `/security/api-security` — API Security (2026-08-30) — Phase 10: 3 subtopics added, all
+  gap-closing. BFLA, Demonstrated and Fixed (every main-page codeTab shows BOLA only — built the
+  function-level counterpart); HMAC Request Signing, Implemented (AWS SigV4/Stripe-style signing,
+  verified end-to-end via Node execution, plus a real replay gap the shown implementation
+  doesn't close); The Fixed-Window Rate Limiter's Burst Problem (the main page's own
+  express-rate-limit codeTab is actually subject to the flaw its own theory names — verified via
+  direct simulation, including precise Try It timing math re-derived carefully after the MFA
+  batch's earlier near-miss). Found and proactively fixed a real cross-hub `SUBTOPICS` collision
+  risk with the API Design hub's own `/api-design/api-security` route (hub-prefixed to
+  `sec-api-security`; confirmed the API Design hub's page renders unaffected). Build passed
+  clean. Browser-verified: nav accordion opens with all 3 labels (12 toggles total across the
+  hub); breadcrumb and 860px wrapper confirmed on every subtopic; no console errors on any page
+  checked.
+  **Security & Auth hub Phase 10: 12 of 23 topics complete.**
+- [x] `/security/xss` — Cross-Site Scripting (XSS) (2026-08-30). 3 subtopics: What Angular's
+  [innerHTML] Sanitizer Actually Strips, SVG XSS: Why img Is Safe But Direct Navigation Isn't,
+  CSP Nonces: Why an Injected Script Tag Gets Blocked. Found and fixed FIVE genuine main-page
+  issues: (1) the theory bullet/mistake block/QnA all claimed Angular's [innerHTML] "does NOT
+  sanitize by default" — verified via WebSearch this is backwards (Angular strips <script> tags
+  and on* handlers automatically; the real danger is bypassSecurityTrustHtml()) — fixed all three
+  occurrences; (2) the SVG XSS QnA claimed displaying an SVG "as an image" executes its script —
+  verified via WebSearch that <img> suppresses SVG script execution entirely, only direct
+  navigation/object/embed/iframe execute it — rewrote the QnA; (3-5) THREE currently-live
+  rendering bugs caught only via direct `.innerHTML`/`.textContent` browser inspection (the build
+  stayed green): raw <script> tags inside theory.points backticks were silently vanishing since
+  the field binds via [innerHTML] (parsed as real inert elements, content lost) — including one I
+  introduced myself in my first-draft fix, caught by the same check before committing; and the
+  Output Encoding bullet's `&` → `&amp;` mapping was rendering as `&` → `&` due to Angular's
+  sanitizer double-decoding entities — fixed by rewording to avoid embedding live entity syntax
+  in an [innerHTML] field at all. Self-caught a straight-apostrophe-in-[prev]-label mistake before
+  the build. No SUBTOPICS collision (checked both forms + app.routes.ts). Build passed clean.
+  Browser-verified: no console errors on any of the 4 pages; nav accordion opens with all 3 labels
+  (13 toggles total across the hub); all previously-vanishing tag mentions confirmed rendering as
+  literal text; breadcrumb and 860px wrapper confirmed on every subtopic; sidebar showed tailored
+  composite-key content.
+  **Security & Auth hub Phase 10: 13 of 23 topics complete.**
+- [x] `/security/csrf-clickjacking` — CSRF & Clickjacking (2026-08-30). 3 subtopics: Migrating Off
+  csurf to csrf-csrf, Lax+POST: Why Explicit SameSite Beats the Default, Login CSRF: Defending a
+  Page With No Session Yet. Found and fixed FIVE main-page issues: (1) verified csurf is officially
+  deprecated (Express.js's own 2025 cleanup announcement) — added a deprecation note pointing to
+  csrf-csrf; (2) verified via Chromium's own docs that the "2-minute window (Chrome bug bounty
+  research)" QnA framing was wrong on two counts — it's the documented "Lax+POST" intervention, and
+  applies only to cookies with NO explicit SameSite attribute, not an explicitly-set SameSite=Lax
+  — corrected the QnA; (3-5) THREE more currently-live [innerHTML] rendering bugs (same class as
+  the XSS batch, caught by a proactive pre-build sweep this time) — raw <img>/<iframe> tags in
+  theory.points and revision.mustKnow silently vanishing — fixed by entity-escaping into <code>
+  tags, confirmed via live .textContent inspection. Self-caught a real authoring mistake during the
+  first build: an Edit accidentally dropped a `code:` field's opening backtick, breaking TS syntax
+  — the background task's exit-code-0 wrapper masked this initially (piped through `tail`); caught
+  by reading the log body for ERROR lines rather than trusting the reported exit code, fixed, and
+  re-verified with an explicit EXITCODE capture. No SUBTOPICS collision. Build passed clean.
+  Browser-verified: no real console errors (one unrelated external-resource timeout, confirmed via
+  read_network_requests showing every app request as 200); nav accordion opens with all 3 labels
+  (14 toggles total across the hub); all vanishing-tag fixes and the csurf deprecation note
+  confirmed rendering; breadcrumb and 860px wrapper confirmed on every subtopic; sidebar showed
+  tailored composite-key content.
+  **Security & Auth hub Phase 10: 14 of 23 topics complete.**
+- [x] `/security/injection` — Injection Attacks (2026-08-30). 3 subtopics: The Safe Query
+  Builder's Own Column-Name Gap, XXE in Node: From ENTITY to File Read, Second-Order SQL
+  Injection, Demonstrated. Found and fixed a genuine bug in the main page's own Challenge
+  reference solution — it correctly parameterizes every VALUE but concatenates the unvalidated
+  COLUMN names (Object.keys of filters) directly into the SQL string, verified via direct Node.js
+  execution that a malicious filter key produces an injectable query even with the table
+  allowlist passing — matching the gap the page's own separate QnA already names as a general
+  principle but the Challenge's own solution never applies to itself; added an in-place note.
+  Verified via WebSearch the exact libxmljs2 parse-option API (noent/dtdload/nonet) to build a
+  working XXE demo for a concept the quiz explains but never codes. Self-caught a straight-
+  apostrophe-in-[prev]-label mistake before the build. No SUBTOPICS collision. Build passed clean
+  (verified with explicit EXITCODE capture). Browser-verified: no real console errors; nav
+  accordion opens with all 3 labels (15 toggles total across the hub); the Challenge-solution fix
+  confirmed rendering; breadcrumb and 860px wrapper confirmed on every subtopic; sidebar showed
+  tailored composite-key content.
+  **Security & Auth hub Phase 10: 15 of 23 topics complete.**
+- [x] `/security/security-headers` — Security Headers (2026-08-30). 3 subtopics: The Helmet
+  Config's Own COEP + CDN Image Conflict, Wiring a Real CSP Violation-Report Endpoint, Security
+  Headers in CI: A Real Jest/Supertest Suite. Found a real, self-contained inconsistency in the
+  main page's own helmet config — it allowlists an external CDN in CSP's imgSrc while ALSO
+  enabling crossOriginEmbedderPolicy: true, verified via WebSearch that COEP require-corp blocks
+  exactly that kind of cross-origin image load unless the CDN separately sends a CORP header —
+  added an in-place note. Also fixed one more currently-live [innerHTML] vanishing-tag bug (a raw
+  <script> in theory.points). Self-caught TWO separate straight-apostrophe-in-[prev]-label
+  mistakes before the build. No SUBTOPICS collision. Build passed clean (explicit EXITCODE
+  capture). Browser-verified: no console errors; all 3 lazy chunks recompiled successfully on the
+  first check; nav accordion opens with all 3 labels (16 toggles total across the hub); the
+  main-page COEP note and vanishing-tag fix both confirmed rendering; breadcrumb and 860px
+  wrapper confirmed; sidebar showed tailored composite-key content.
+  **Security & Auth hub Phase 10: 16 of 23 topics complete.**
+- [x] `/security/tls-https` — TLS & HTTPS (2026-08-30). 3 subtopics, all gap-closing (clean main
+  page, no fixes needed): Certificate Pinning, Implemented (Public Key Hash); Authorizing by
+  Client Certificate CN, Not Just Authenticating; 0-RTT Replay Protection, Concretely. A real
+  self-correction during authoring: an early draft of the 0-RTT subtopic assumed a Node.js
+  socket.isEarlyData() API based on an unreliable web summary — verified directly against Node's
+  own official TLS docs via WebFetch that no such API exists; rewrote around the actual verified
+  architecture (nginx forwarding the RFC 8470 Early-Data: 1 header), confirming the header syntax
+  via a direct MDN fetch before publishing. All exercise logic verified via direct Node.js
+  execution. No SUBTOPICS collision. Build passed clean (explicit EXITCODE capture). Browser-
+  verified: no console errors; nav accordion opens with all 3 labels (17 toggles total across the
+  hub); breadcrumb and 860px wrapper confirmed; sidebar showed tailored composite-key content.
+  **Security & Auth hub Phase 10: 17 of 23 topics complete — Transport & Crypto nav group started.**
+- [x] `/security/secrets-management` — Secrets Management (2026-08-30, see entry below)
+- [x] `/security/container-security` — Container Security (2026-08-30, see entry below)
+- [x] `/security/symmetric-encryption` — Symmetric Encryption (2026-08-30). 3 subtopics, all
+  gap-closing (clean main page — double-checked the "2^32 messages" GCM IV-collision claim
+  against NIST SP 800-38D and confirmed it's correct, no fix needed): Field-Level Encryption You
+  Can Actually Search: Blind Indexing; Streaming AES-256-GCM Encryption for Large Files; Deriving
+  Multiple Keys From One Secret with HKDF. Each builds real code for something the QnA/quiz names
+  but never demonstrates — an HMAC-based blind index, a real Node.js stream pipeline verified
+  end-to-end via direct execution (round-trip encrypt/decrypt AND tamper detection, plus the
+  getAuthTag/setAuthTag timing rule confirmed by reproducing the wrong order and observing it
+  throw), and crypto.hkdfSync deriving multiple independent keys from one shared secret
+  (determinism and info-string independence both verified via execution). No SUBTOPICS collision.
+  Build passed clean (explicit EXITCODE capture). Browser-verified: no console errors; nav
+  accordion opens with all 3 labels (18 toggles total across the hub); breadcrumb and 860px
+  wrapper confirmed; sidebar showed tailored composite-key content.
+  **Security & Auth hub Phase 10: 18 of 23 topics complete.**
+- [x] `/security/asymmetric-cryptography` — Asymmetric Cryptography (2026-08-30). 3 subtopics: The
+  MITM Attack on Unauthenticated ECDH, Demonstrated; Key Wrapping and Unwrapping, End to End;
+  Sign-then-Encrypt vs Encrypt-then-Sign: The Attack, Demonstrated. Found and fixed a real
+  inaccuracy in the QnA's own RSA/ECC equivalence table — verified via WebSearch that Ed25519 is
+  a 128-bit-security curve (matching P-256/RSA-3072), not 112-bit (P-224) as the table originally
+  grouped it. Both attack subtopics verified end-to-end via direct Node.js execution — the ECDH
+  MITM subtopic confirmed real crypto.createECDH() calls produce the claimed shared-secret
+  mismatch, and the sign-then-encrypt subtopic caught a real bug in its own first draft (RSA-only
+  encryption of the bundle exceeded the OAEP payload limit and threw) before rewriting with
+  proper hybrid encryption and re-verifying the full forwarding attack. Proactively caught and
+  fixed a Windows MAX_PATH risk (243-char full path) for the third subtopic's fully-descriptive
+  slug before writing any files, using the established short-physical-folder fix while keeping
+  the descriptive slug in the route and every other wiring touchpoint — confirmed via a git add
+  dry run and direct browser navigation. No SUBTOPICS collision. Build passed clean (explicit
+  EXITCODE capture). Browser-verified: no console errors; nav accordion opens with all 3 labels
+  (19 toggles total across the hub); the corrected RSA/ECC table confirmed rendering; breadcrumb
+  and 860px wrapper confirmed; sidebar showed tailored composite-key content.
+  **Security & Auth hub Phase 10: 19 of 23 topics complete.**
+- [x] `/security/hashing` — Hashing (2026-08-30). 3 subtopics, all gap-closing (clean main page —
+  double-checked OWASP's current Argon2id parameter recommendation, confirmed correct): Hash
+  Algorithm Migration: Lazy Rehashing and the Double-Hash Wrapper; Benchmarking bcrypt/Argon2id
+  to Choose a Work Factor; Rainbow Tables vs Salting, Demonstrated. Each builds real code for
+  something the QnA/quiz names but never demonstrates — both migration strategies (with a Try It
+  surfacing a real bug when two migration strategies write different state values to the same
+  column without reconciling them); a benchmark loop arriving at the quiz's own named 100-300ms
+  target; and a small, working rainbow table verified via direct Node.js execution, defeated by
+  per-user salting. No SUBTOPICS collision. Build passed clean (explicit EXITCODE capture).
+  Browser-verified: no console errors; nav accordion opens with all 3 labels (20 toggles total
+  across the hub); breadcrumb and 860px wrapper confirmed; sidebar showed tailored composite-key
+  content. **This completes the Transport & Crypto nav group entirely** (tls-https,
+  symmetric-encryption, asymmetric-cryptography, hashing — all 4 topics now have subtopics).
+  **Security & Auth hub Phase 10: 20 of 23 topics complete.**
+- [x] `/security/secrets-management` — Secrets Management (2026-08-30). First topic in the new
+  "Infrastructure" nav group. Fixed a genuine scoping bug in the main page's own "AWS Secrets
+  Manager" codeTab: `pool` was declared `const` inside `main()`'s local scope while a separate
+  top-level `queryWithRetry()` function reads/reassigns it — hoisted to module-scope
+  `let pool: Pool;`. 3 subtopics, each verified against HashiCorp's own official Vault HTTP API
+  docs (WebFetch before writing code): Renewing a Vault Lease Before It Expires (real
+  `POST /v1/sys/leases/renew`, renew at 2/3 TTL, fallback to fresh credential fetch); Vault
+  Transit: Encryption as a Service, Implemented (real `POST /v1/transit/encrypt|decrypt/:name`,
+  `vault:v1:...` prefix enabling zero-code-change key rotation); The Vault Agent Injector Sidecar
+  Pattern in Kubernetes (real `vault.hashicorp.com/agent-inject-*` pod annotations, app container
+  reads a plain injected file with no Vault permissions of its own). Self-caught a CodeTab
+  language-tag mistake (YAML manifest tagged `'typescript'`, fixed to `'bash'` — no yaml/json
+  option exists in the `CodeTab` interface). No SUBTOPICS collision. Build passed clean (explicit
+  EXITCODE capture). Browser-verified: no console errors on any of the 4 pages; nav accordion
+  opens with all 3 labels (21 toggles total across the hub); the `pool` fix confirmed rendering
+  live; breadcrumb and 860px wrapper confirmed; sidebar showed tailored composite-key content.
+  **Security & Auth hub Phase 10: 21 of 23 topics complete.**
+- [x] `/security/container-security` — Container Security (2026-08-30). Fixed a genuine bug in
+  the main page's own "Kubernetes Security Context" codeTab: `image: ...api:sha256-abc123` used
+  a colon (a plain mutable TAG) where the page's own mistakes block, two sections later,
+  correctly uses `@sha256:...` (a real digest pin) — the comment claiming "pinned digest, not
+  tag" described the opposite of what the syntax did. Fixed to the real `@sha256:...` form. 3
+  subtopics: a reference parser distinguishing tag vs digest references (verified via direct
+  Node.js execution); a real Falco rule (verified against Falco's own official rules reference
+  via WebFetch) for the shell-detection scenario the QnA describes but no codeTab shows; a custom
+  Localhost-type seccomp profile JSON (verified against Kubernetes' own official seccomp
+  tutorial). Real SUBTOPICS collision: bare `container-security` already claimed by the
+  Containers/K8s hub — hub-prefixed to `sec-container-security`. Build passed clean (explicit
+  EXITCODE capture; MAX_PATH dry-run also clean). Browser-verified: no console errors on any of
+  the 4 pages; nav accordion opens with all 3 labels (22 toggles total across the hub); the
+  digest-pin fix confirmed rendering live; breadcrumb and 860px wrapper confirmed; sidebar showed
+  tailored composite-key content. **Security & Auth hub Phase 10: 22 of 23 topics complete —
+  only `supply-chain` remains to finish the entire hub.**
+- [x] `/security/supply-chain` — Supply Chain Security (2026-08-30). Fixed a genuine internal
+  contradiction in the main page's own "Dependency Audit in CI" codeTab: the page's own QnA says
+  "pin action versions by commit SHA, not by tag" but the codeTab used `actions/checkout@v4`,
+  `actions/setup-node@v4` (tags) and `snyk/actions/node@master` (a mutable BRANCH ref, worse than
+  a tag). Fixed to SHA-pinned references. 3 subtopics: a directly-executed Node.js simulation
+  proving a tag reassignment silently changes what an unmodified workflow resolves to; the real
+  `cosign sign`/`cosign verify` commands (verified against Sigstore's own official docs via
+  WebFetch) for the keyless-signing flow the QnA describes but never shows; a directly-executed
+  SBOM re-scan function closing the "static SBOM goes stale" gap the theory names but never
+  demonstrates. Self-caught a bare-`@word`-in-static-HTML-text gotcha in an h1 title, fixed with
+  the standard `&#64;` entity escape. No SUBTOPICS collision. Build passed clean (explicit
+  EXITCODE capture; MAX_PATH dry-run also clean). Browser-verified: no console errors on any of
+  the 4 pages; nav accordion opens with all 3 labels (23 toggles total — every topic in the hub
+  now has subtopics); the SHA-pin fix confirmed rendering live; the escaped h1 confirmed
+  rendering as correct literal text; breadcrumb and 860px wrapper confirmed; sidebar showed
+  tailored composite-key content. **This completes the Security & Auth hub's entire Phase 10
+  rollout — all 23 topics now have deep-dive subtopic pages, 69 subtopic pages total across the
+  hub, finished 2026-08-30.**
 
 #### API Design — 19 topic pages
 
-- [ ] `/api-design/rest-fundamentals` — REST Fundamentals
-- [ ] `/api-design/resource-url-design` — Resource & URL Design
-- [ ] `/api-design/http-methods-status-codes` — HTTP Methods & Status Codes
-- [ ] `/api-design/pagination-patterns` — Pagination Patterns
-- [ ] `/api-design/api-versioning` — API Versioning Strategies
-- [ ] `/api-design/error-response-design` — Error Response Design
-- [ ] `/api-design/hateoas-hypermedia` — HATEOAS & Hypermedia
-- [ ] `/api-design/protocol-buffers` — Protocol Buffers
-- [ ] `/api-design/grpc-service-patterns` — gRPC Service Patterns
-- [ ] `/api-design/grpc-web-transcoding` — gRPC-Web & Transcoding
-- [ ] `/api-design/graphql-fundamentals` — GraphQL Fundamentals
-- [ ] `/api-design/graphql-vs-rest` — GraphQL vs REST
-- [ ] `/api-design/websockets-sse-polling` — WebSockets vs SSE vs Polling
-- [ ] `/api-design/webhook-design` — Webhook Design
-- [ ] `/api-design/api-design-principles` — API Design Principles
-- [ ] `/api-design/openapi-contracts` — OpenAPI & Contracts
-- [ ] `/api-design/api-security` — API Security
-- [ ] `/api-design/breaking-changes` — Breaking Changes
-- [ ] `/api-design/rate-limiting` — Rate Limiting
+- [x] `/api-design/rest-fundamentals` — REST Fundamentals (2026-08-30). First Phase 10 pilot batch
+  for the API Design hub. Fixed `ApiDesignNavComponent`'s missing subtopics-accordion structural
+  support (14th `*NavComponent`-based hub in a row missing it at pilot time) — this hub's nav
+  template groups topics via `@for` loops per group rather than one hand-written `<a>` per topic,
+  so the toggle had to be gated with `@if (item.path === 'rest-fundamentals' && ...)` inside the
+  loop instead. Fixed a genuine spec/signature mismatch in the main page's own Challenge: the
+  description promised 3 checks but the original 2-parameter `validateRestRequest(method, path)`
+  signature had no way to represent "does this request have a body" at all — check #2 was
+  unimplementable, not just unimplemented (verified via direct Node.js execution). Added a
+  `hasBody: boolean` parameter and implemented the check. **A second, separate staleness caught
+  only during browser verification**: the Challenge's own `description` string still quoted the
+  OLD 2-parameter signature inline even after starterCode/solution were fixed — a live text
+  search after the first fix caught it, not a source re-read. Fixed the description too. 3
+  subtopics: a Before/After trace of the missing-parameter bug (both verified via direct Node.js
+  execution); a real HATEOAS response whose `_links` change with resource state, closing the gap
+  between the QnA's detailed prose and the main page's plain-REST codeTabs (verified via
+  execution); a real Express content-negotiation handler using `req.accepts()` (verified against
+  Express's own official docs via WebFetch) for the JSON-vs-CSV scenario the theory names but
+  never implements. No SUBTOPICS collision. Build passed clean TWICE (once before the
+  description-field fix was caught, once after). Browser-verified: no console errors on any of
+  the 4 pages; nav accordion opens with all 3 labels (1 toggle — this hub's first Phase 10
+  topic); both fixes confirmed rendering live; breadcrumb and 860px wrapper confirmed; sidebar
+  showed tailored composite-key content. **API Design hub Phase 10: 1 of 19 topics complete.**
+- [x] `/api-design/resource-url-design` — Resource & URL Design (2026-08-30). Fixed a genuine
+  bug in the main page's own Challenge: the verb check used `VERBS.includes(lower)` -- an EXACT
+  whole-segment match -- so real verb-in-URL violations (`getUserById`, `createOrder`) never
+  matched. Verified via direct execution that the original `/getUserById` test case was flagged
+  invalid for the WRONG reason (camelCase, not the verb check), and `/getusers` (all lowercase)
+  passed as fully valid. Fixed to a prefix-based check (`VERBS.some(v => lower.startsWith(v))`),
+  documenting the real tradeoff (a noun like `listings` becomes a false positive). Also
+  generalized `ApiDesignNavComponent`'s subtopics-accordion wiring from a hardcoded
+  `item.path === 'rest-fundamentals'` check (the pilot batch) to a generic
+  `subtopicsOf(item.path)` lookup -- needed once a SECOND topic in the same `@for`-looped nav
+  group got subtopics. 3 subtopics: a Before/After trace of the exact-match-vs-prefix bug
+  (verified via execution); a real `POST /orders/42/cancellations` sub-resource endpoint with
+  idempotency handling, named in the QnA but never built; real cursor-based pagination
+  (base64 encode/decode verified via execution matching the theory's own example byte-for-byte)
+  contrasted against offset pagination's documented instability under concurrent deletes. No
+  SUBTOPICS collision. Build passed clean, also confirming the nav generalization compiles for
+  two topics in the same group. Browser-verified: no console errors on any of the 4 pages; nav
+  accordion opens with all 3 labels (2 toggles total); the Challenge fix confirmed rendering
+  live; breadcrumb and 860px wrapper confirmed; sidebar showed tailored composite-key content.
+  **API Design hub Phase 10: 2 of 19 topics complete.**
+- [x] `/api-design/http-methods-status-codes` — HTTP Methods & Status Codes (2026-08-30). Fixed
+  a genuine internal contradiction: the 403 bullet said "Do NOT return 404 to hide existence" as
+  an absolute rule, contradicted by its own parenthetical, by the 404 bullet right below it, and
+  by the QnA -- all three correctly frame it as posture-dependent. Reworded to match. The generic
+  `subtopicsOf(item.path)` nav-toggle pattern from the prior batch needed ZERO template changes
+  for this THIRD topic in the same Foundations group (confirmed: `api-design-nav.ts` did not
+  appear in this batch's diff at all). 3 subtopics: the fixed 403-vs-404 decision as real code
+  (verified via execution); real idempotency-key middleware for the QnA's X-Idempotency-Key
+  mechanism (verified via execution, including the key-reused-with-different-body case); a real
+  JSON Patch (RFC 6902) `applyJsonPatch` (verified against the RFC via WebFetch and via execution
+  of both the normal and test-failure-aborts-the-patch cases). No SUBTOPICS collision. Build
+  passed clean. Browser-verified: no console errors on any of the 4 pages; nav accordion opens
+  with all 3 labels (3 toggles total); the theory fix confirmed rendering live; breadcrumb and
+  860px wrapper confirmed; sidebar showed tailored composite-key content. **API Design hub Phase
+  10: 3 of 19 topics complete.**
+- [x] `/api-design/pagination-patterns` — Pagination Patterns (2026-08-30). Fixed a genuine bug
+  in the main page's own Cursor Pagination codeTab: the `Cursor` interface and `encodeCursor`
+  encode both `id` and `createdAt`, but the `where` clause only ever compared on `createdAt: {
+  lt: ... }` -- never using `id` -- exactly the single-column instability the page's own Keyset
+  Pagination bullet warns against one section earlier. Verified via direct execution that two
+  rows sharing the cursor's own timestamp caused one to be silently DROPPED (not misordered --
+  genuinely missing). Fixed to compare on both fields with `id` as tiebreaker. 3 subtopics: a
+  reproduction of the exact skip with concrete data (verified via execution, both broken and
+  fixed); the deferred-join SQL trick for deep offset pages, named in the QnA but never shown
+  next to the naive version; a real Relay Connection GraphQL resolver (verified against the
+  Relay Cursor Connections spec via WebFetch). The generic `subtopicsOf(item.path)` nav-toggle
+  pattern again required ZERO template changes -- confirmed for a FOURTH topic in the same
+  Foundations group. No SUBTOPICS collision. Build passed clean. Browser-verified: no console
+  errors on any of the 4 pages; nav accordion opens with all 3 labels (4 toggles total); the
+  where-clause fix confirmed rendering live; breadcrumb and 860px wrapper confirmed; sidebar
+  showed tailored composite-key content. **API Design hub Phase 10: 4 of 19 topics complete --
+  Foundations nav group fully done.**
+- [x] `/api-design/api-versioning` — API Versioning Strategies (2026-08-30). First topic in the
+  REST Design nav group. Fixed a genuine ordering bug in the main page's own "Header Versioning"
+  codeTab: a warning middleware was registered AFTER the /users route handler, which never calls
+  next() -- since Express walks middleware in registration order and a non-next()-calling handler
+  ends the chain, the middleware was dead code. Verified via a direct simulation of Express's own
+  middleware-stack-walking behavior (both broken and fixed, matching claimed output exactly).
+  Fixed by reordering registration. Extended the generic `subtopicsOf(item.path)` accordion
+  pattern to the REST Design group's own separate `@for` loop (previously only wired for
+  Foundations) -- the shared class methods needed no changes. Real bare-SUBTOPICS-key REUSE, not
+  a fresh collision: the ASP.NET hub's own api-versioning topic was pre-emptively hub-prefixed to
+  `aspnet-api-versioning` in an earlier session anticipating this exact moment (confirmed via its
+  own inline NOTE comment); verified `/aspnet/api-versioning` renders unaffected. 3 subtopics: the
+  middleware-ordering bug traced via simulation (verified via execution); a real 410 Gone route
+  for a version past its sunset date, named in two QnAs but never built; a real expand-contract
+  field rename with usage-monitoring middleware. Build passed clean. Browser-verified: no console
+  errors on any of the 4 new pages or on /aspnet/api-versioning (cross-hub isolation check); nav
+  accordion opens with all 3 labels (5 toggles total); the middleware-order fix confirmed
+  rendering live; breadcrumb and 860px wrapper confirmed; sidebar showed tailored composite-key
+  content. **API Design hub Phase 10: 5 of 19 topics complete.**
+- [x] `/api-design/error-response-design` — Error Response Design (2026-08-30). Fixed a genuine
+  HTTP-caching inaccuracy in the main page's own 404-vs-410 QnA: it claimed "410 can be cached
+  indefinitely... 404 tells caches to retry" as a binary distinction. Verified against RFC 9111
+  via WebSearch: BOTH are on the heuristically-cacheable-by-default list -- the real distinction
+  is that 410 signals permanence, justifying a longer freshness lifetime, not whether caching is
+  allowed at all. Fixed the QnA. 3 subtopics: RFC 9111's own 10%-of-Last-Modified-age heuristic
+  formula (verified via execution matching the spec's own worked example exactly); a real
+  traceparent header parser/propagation flow (W3C Trace Context, verified via WebFetch and
+  execution); the correct Express app assembly showing the error handler registered LAST, tying
+  into the API Versioning topic's own middleware-ordering lesson. REST Design's own generic
+  toggle pattern needed zero further template changes for this second topic in the group. No
+  SUBTOPICS collision. Build passed clean. Browser-verified: no console errors on any of the 4
+  pages; nav accordion opens with all 3 labels (6 toggles total); the QnA fix confirmed rendering
+  live; breadcrumb and 860px wrapper confirmed; sidebar showed tailored composite-key content.
+  **API Design hub Phase 10: 6 of 19 topics complete.**
+- [x] `/api-design/hateoas-hypermedia` — HATEOAS & Hypermedia (2026-08-30). Fixed a genuine bug in
+  the main page's own mistakes block: the "correct" link-following example read `const root =
+  await fetch('...'); root._links.users.href` -- but fetch() resolves to a Response object, not
+  the parsed body, so this throws "Cannot read properties of undefined (reading 'users')"
+  immediately. Verified via direct execution against a Response-shaped stand-in. Fixed to `await
+  (await fetch(...)).json()`. 3 subtopics: reproduces the exact TypeError and fix (verified via
+  execution); a real JSON:API compound document (verified against the spec via WebFetch) -- named
+  in the QnA but every codeTab actually uses HAL instead; real Link-header (RFC 8288) build/parse
+  logic (verified against the RFC via WebFetch and via execution) -- named with a real GitHub
+  example in quiz Q5 but never built. REST Design's own generic toggle needed zero further
+  template changes for this third topic in the group. No SUBTOPICS collision. Build passed clean.
+  Browser-verified: no console errors on any of the 4 pages; nav accordion opens with all 3
+  labels (7 toggles total); the fix confirmed rendering live; breadcrumb and 860px wrapper
+  confirmed; sidebar showed tailored composite-key content. **API Design hub Phase 10: 7 of 19
+  topics complete.**
+- [x] `/api-design/protocol-buffers` — Protocol Buffers (2026-08-30). Clean main page -- no compile
+  bug found after a careful read (the Challenge's own worked example verified exactly via
+  execution; wire-compatibility claims in theory cross-checked against the well-known protobuf
+  compatibility rules and confirmed accurate). 3 gap-closing subtopics: A oneof Discriminated
+  Union, Actually Implemented -- the quiz describes oneof exclusivity in prose with no accessor
+  logic shown, built a Notification class whose setters enforce it structurally, verified via
+  execution; google.protobuf.Any: Real Polymorphic Pack/Unpack -- named in one sentence with zero
+  code, built a type-URL registry + pack/unpack pair verified via execution including an
+  unrecognized type URL case; FieldMask: Partial Updates by Explicit Field Path -- named in one
+  sentence, built a recursive applyFieldMask() honoring dotted nested paths, verified via
+  execution including confirming the original target is never mutated. Also fixed a genuine
+  structural gap in ApiDesignNavComponent itself: the Protocols nav group's own @for loop had
+  never had the subtopics-accordion toggle markup added at all (unlike Foundations/REST Design) --
+  added the identical toggle-plus-nested-link-list block, confirmed rendering all 3 links on the
+  first browser check via a live DOM query. No SUBTOPICS collision. Build passed clean.
+  Browser-verified: nav accordion opens with all 3 labels; all 3 subtopic pages render with
+  correct breadcrumb, 860px wrapper, zero console errors; sidebar showed tailored composite-key
+  content. **API Design hub Phase 10: 10 of 19 topics complete.**
+- [x] `/api-design/grpc-service-patterns` — gRPC Service Patterns (2026-08-30). Fixed a genuine bug
+  in the main page's own bidirectional-streaming chat() handler: labeled "broadcast to all other
+  connected clients" but call.write() only ever reached the SAME connection a message arrived on
+  (call is scoped to one connection) -- the original code correctly implemented an echo server,
+  just not the broadcast chat the comment claimed. Fixed with an activeChatCalls registry, added
+  on connect and removed on both 'end' and 'cancelled' (matching this page's own mistake block
+  about not leaking resources on disconnect). 3 subtopics: The Chat Handler That Never Actually
+  Broadcasts -- traces the exact bug via a MockCall registry simulation verified via execution;
+  A Real gRPC Interceptor Chain -- the quiz describes chaining in prose with zero code, built a
+  next()-based chain verified via execution including the concrete effect of interceptor ORDER on
+  what gets logged for a rejected call; RetryInfo-Aware Retry Instead of a Guessed Backoff -- the
+  QnA argues a retryable status code alone isn't enough, built a retry wrapper respecting a
+  server-specified delay and refusing to retry non-retryable codes, verified via execution. No
+  SUBTOPICS collision. Protocols nav loop's accordion toggle (added in the prior batch) needed no
+  further changes. Build passed clean. Browser-verified: main-page fix confirmed rendering live
+  (after expanding the codeTab's own collapsed View Code toggle); nav accordion opens with all 3
+  labels; all 3 subtopic pages render with correct breadcrumb, 860px wrapper, zero console errors;
+  sidebar showed tailored composite-key content. **API Design hub Phase 10: 11 of 19 topics
+  complete.**
+- [x] `/api-design/grpc-web-transcoding` — gRPC-Web & Transcoding (2026-08-30). Clean main page --
+  no compile bug found (the Challenge's own worked examples verified exactly via execution; a
+  Kubernetes 1.24+ gRPC-probe version claim verified via WebSearch and confirmed accurate). 3
+  gap-closing subtopics: A Real HTTP Transcoding Router -- the Challenge only parses one annotation
+  string, built a route matcher + nested field binder (user.id) verified via execution; Content
+  Negotiation on a Connect Server -- named in one sentence with zero code, built a decode/encode
+  pair that always responds in the client's requested format, verified via execution; Which
+  Streaming Patterns Actually Work in a Browser -- built a capability lookup REUSING the exact
+  identifyGrpcPattern() classifier from this hub's own gRPC Service Patterns topic, verified via
+  execution across all 8 transport x pattern combinations. No SUBTOPICS collision. Protocols nav
+  loop's accordion toggle needed no further changes. Build passed clean. Browser-verified: nav
+  accordion opens with all 3 labels; all 3 subtopic pages render with correct breadcrumb, 860px
+  wrapper, zero console errors; sidebar showed tailored composite-key content. **API Design hub
+  Phase 10: 12 of 19 topics complete -- Protocols nav group fully done.**
+- [x] `/api-design/graphql-fundamentals` — GraphQL Fundamentals (2026-08-30). Fixed a genuine,
+  self-contained inaccuracy: the third mistake block's inline comment claimed "field is User!
+  (non-null) so null would error anyway" but the page's own schema declares `user(id: ID!): User`
+  -- nullable, no `!`. Returning null from this field is perfectly valid execution with no error,
+  directly contradicting the comment (the underlying advice to throw explicit errors was always
+  correct and already matched the block's own explanation text -- only the comment's specific
+  justification was wrong). Fixed the comment. 3 subtopics: traces the null-propagation contrast
+  via a small executeField() simulation verified via execution; a MiniLoader demonstrating
+  DataLoader's real process.nextTick()-based batching mechanism, verified via execution that 3
+  synchronous .load() calls collapse into 1 batch call; a withAuth() higher-order function
+  achieving the same centralizing effect as a real @auth schema directive, verified via execution
+  across authenticated/wrong-role/unauthenticated cases. Also fixed a genuine structural gap in
+  ApiDesignNavComponent: the GraphQL & Real-Time nav group's own @for loop had never had the
+  subtopics-accordion toggle markup at all (first topic in this group to get subtopics) -- added
+  it. Caught and fixed two bare @auth mentions in plain .html prose during the standard pre-build
+  sweep (escaped as &#64;auth) before the build ever ran. No SUBTOPICS collision. Build passed
+  clean. Browser-verified: main-page fix confirmed rendering live; nav accordion opens with all 3
+  labels (confirmed via both component method calls and a direct DOM query since this was a
+  brand-new template addition); all 3 subtopic pages render with correct breadcrumb, 860px
+  wrapper, zero console errors; sidebar showed tailored composite-key content. **API Design hub
+  Phase 10: 13 of 19 topics complete.**
+- [x] `/api-design/graphql-vs-rest` — GraphQL vs REST (2026-08-30). Fixed a genuine precedence bug
+  in the main page's own Challenge (API Strategy Advisor): the description listed "caching true
+  AND multipleDataSources false -> REST" as a rule, but the solution never implemented that exact
+  condition as its own branch -- it fell through toward the client-count checks instead, which
+  coincidentally still produced REST for all three of the Challenge's own worked examples but
+  incorrectly returned GraphQL for an uncovered input ({ clients: 5, caching: true,
+  multipleDataSources: false }), verified via direct execution. Fixed by adding an explicit branch
+  before the client-count checks, and tightened the description to state rules are checked in
+  order plus added the 'Both' rule the hints mentioned but the description text never stated. 3
+  subtopics: traces the exact bug/fix with a broken-vs-fixed comparison verified via execution,
+  including why branch ORDER (not just presence) matters; a real SHA-256 Automatic Persisted
+  Queries hash registry + client/server flow, verified via execution across a cache miss and
+  cross-client cache hits; a minimal two-subgraph Apollo-Federation-style entity resolution
+  simulation (key-only reference resolver), verified via execution. No SUBTOPICS collision.
+  GraphQL & Real-Time nav loop's accordion toggle needed no further changes. Build passed clean.
+  Browser-verified: main-page fix confirmed rendering live (required expanding both the
+  starterCode's own View Code toggle and the separate Reveal Solution + its own View Code toggle);
+  nav accordion opens with all 3 labels; all 3 subtopic pages render with correct breadcrumb,
+  860px wrapper, zero console errors; sidebar showed tailored composite-key content. **API Design
+  hub Phase 10: 14 of 19 topics complete.**
+- [x] `/api-design/websockets-sse-polling` — WebSockets vs SSE vs Polling (2026-08-30). Fixed a
+  genuine "Simplify"-shortcut bug in the main page's own Challenge: the description listed a
+  browserOnly-based rule the simplified solution never implemented, silently dropping the
+  parameter entirely. Verified via execution that { bidirectional: false, standardProxy: false,
+  browserOnly: true } incorrectly returned 'SSE or WebSocket' instead of the stated 'SSE'. Fixed
+  by adding an explicit branch. 3 subtopics: traces the exact bug/fix via a broken-vs-fixed
+  comparison verified via execution, with a Try It contrasting this against the sibling
+  graphql-vs-rest precedence bug (this pair of rules is order-independent, unlike that one); a
+  Redis pub/sub-style WebSocket fanout simulation verified via execution that a client on an
+  unrelated server instance still receives a message; a bounded ring-buffer SSE event store with
+  explicit gap detection, verified via execution across a within-window resume, a real gap, and a
+  fully-caught-up client. No SUBTOPICS collision. GraphQL & Real-Time nav loop's accordion toggle
+  needed no further changes. Build passed clean. Browser-verified: main-page fix confirmed
+  rendering live (read via the Challenge block's own innerText after expanding both View Code
+  toggles and Reveal Solution); nav accordion opens with all 3 labels; all 3 subtopic pages render
+  with correct breadcrumb, 860px wrapper, zero console errors; sidebar showed tailored
+  composite-key content. **API Design hub Phase 10: 15 of 19 topics complete.**
+- [x] `/api-design/webhook-design` — Webhook Design (2026-08-30). Fixed a genuine, verified
+  inaccuracy: the webhook sender codeTab's BullMQ config (attempts: 6, exponential delay: 60_000)
+  was commented "1m, 2m, 4m, 8m, 16m, 32m" (6 values) -- verified against BullMQ's own docs that
+  attempts is the TOTAL try count (6 = 1 initial + 5 retries = 5 delays, not 6) and that the
+  documented formula 2^(attemptNumber-1)*delay produces 2m, 4m, 8m, 16m, 32m (starting at 2m, not
+  1m), confirmed by reproducing BullMQ's own worked example via execution before trusting it.
+  Fixed the comment. 3 subtopics: implements and verifies BullMQ's exact formula against its own
+  documented example, then applies it to the corrected sequence; independent per-subscriber rate
+  limiters for webhook fan-out, verified via execution that one subscriber's limit never affects
+  another; dual-secret HMAC verification for rotation transition windows, verified via execution
+  across old/new/wrong secrets. Self-caught and fixed a real authoring bug during the standing
+  pre-build sweep: a missing `//` comment prefix on one line of a solution field (a documented
+  recurring mistake in this codebase), caught by re-reading the file. No SUBTOPICS collision.
+  GraphQL & Real-Time nav loop's accordion toggle needed no further changes. Hit a genuine session
+  interruption mid-batch (a backgrounded build reported failed/exit-4 with an incomplete log and
+  no live process; a second background retry also silently stalled) -- recovered by running the
+  build directly in the foreground for a trustworthy clean result; the dev server had also gone
+  stale and needed a full restart before browser verification. Build passed clean. Browser-verified:
+  main-page fix confirmed rendering live; nav accordion opens with all 3 labels including the
+  curly-quote possessive rendering correctly; all 3 subtopic pages render with correct breadcrumb,
+  860px wrapper, zero console errors; the self-caught fix confirmed rendering; sidebar showed
+  tailored composite-key content. This completes the GraphQL & Real-Time nav group entirely
+  (graphql-fundamentals, graphql-vs-rest, websockets-sse-polling, webhook-design -- all 4 of 4
+  topics now have subtopics). **API Design hub Phase 10: 16 of 19 topics complete -- GraphQL &
+  Real-Time nav group fully done.**
+- [x] `/api-design/api-design-principles` — API Design Principles (2026-08-30). Fixed a genuine,
+  self-contained worked-example bug in the main page's own Challenge: `description` claimed input
+  `date_joined: 1705312200` transforms to output `joinedAt: "2024-01-15T10:30:00Z"`, but running
+  the Challenge's own correct conversion logic (`new Date(timestamp * 1000).toISOString()`) on that
+  input actually produces `"2024-01-15T09:50:00.000Z"` -- a 40-minute gap, verified via direct
+  Node.js execution. The code was always right; the worked example's own input/output pair simply
+  didn't describe the same instant. Found the correct input by working backwards
+  (`new Date(claimedOutput).getTime() / 1000` -> `1705314600`), verified it round-trips exactly,
+  and fixed all four occurrences (description, starterCode, solution). 3 subtopics: reproduces the
+  timestamp discrepancy via execution with a Try It on why one correct field says nothing about a
+  different, unrelated field; a real Idempotency-Key store (Map-based, 24h expiry) verified
+  end-to-end via execution -- within-window retry replays the cached response and 200, past-window
+  creates a genuinely new resource; the common falsy-fallback PATCH-merge bug
+  (`patch[key] || existing[key]` silently discarding explicit null/0/'') verified via execution
+  against the correct spread-based merge. No SUBTOPICS collision. Hit and correctly diagnosed a
+  double-backgrounding exit-code mask (a nested `&`-backgrounded subshell inside an already-
+  `run_in_background` Bash call reported the wrapper's trivial exit code, not the real build
+  result) plus a separate, genuine transient esbuild artifact and a session-interruption-stopped
+  background build -- all resolved by re-running with correct single-level backgrounding and
+  confirming via process/file-length checks before retrying. Build passed clean on the final
+  attempt. Browser-verified: nav accordion opens with all 3 labels; the main-page fix confirmed
+  live (old timestamp fully absent, corrected one present); all 3 subtopic pages render with
+  correct breadcrumb, 860px wrapper, zero console errors; sidebar showed tailored composite-key
+  content. **API Design hub Phase 10: 8 of 19 topics complete.**
+- [x] `/api-design/openapi-contracts` — OpenAPI & Contracts (2026-08-30). Clean main page -- no
+  compile bug or self-contained inconsistency found after a careful read (the Challenge's own
+  worked examples verified exactly via execution; a QnA's literal `\n`-inside-`<pre>` block,
+  initially suspected as the documented double-backslash gotcha, confirmed to be the SAFE
+  single-backslash case; an OpenAPI 3.1-vs-3.0 quiz claim verified accurate via WebFetch/WebSearch
+  against the OpenAPI blog and spec PRs). 3 gap-closing subtopics: Discriminator-Based oneOf,
+  Actually Parsed -- the QnA writes a full discriminator/mapping YAML block with zero code showing
+  what actually reads it and routes to the right schema, verified via execution; Extending the
+  Validator for Nested Arrays -- the Challenge's own validator only checks flat fields but the
+  page's own spec defines a nested array-of-objects CreateOrderRequest it can't check at all,
+  built a recursive extension verified via execution including a correctly-pathed nested error
+  message; A Minimal Breaking-Change Detector -- openapi-diff/Optic named in one sentence with no
+  code, built a minimal schema differ verified via execution against both a genuinely breaking and
+  a genuinely safe revision. No SUBTOPICS collision. REST Design nav loop's existing generic
+  toggle needed zero further template changes. Build passed clean. Browser-verified: nav accordion
+  opens with all 3 labels; all 3 subtopic pages render with correct breadcrumb, 860px wrapper,
+  zero console errors; sidebar showed tailored composite-key content. **API Design hub Phase 10:
+  9 of 19 topics complete -- REST Design nav group fully done.**
+- [x] `/api-design/api-security` — API Security (2026-09-01). First topic in the Advanced nav
+  group. Fixed a genuine, self-contained undeclared-reference bug in the main page's own "Input
+  Validation" codeTab: it declared `const CreateOrderSchema` (order-shaped fields) but the two
+  `/users` route handlers referenced `CreateUserSchema`, a name never declared anywhere in the
+  file (a plain TS2304). Fixed by renaming the declared schema to `CreateUserSchema` and reshaping
+  its fields to match what the handler actually destructures (`{ name, email }`), verified via
+  direct execution against the real `zod` package (valid body accepted; mass-assignment
+  `isAdmin: true` injection correctly rejected; invalid email correctly rejected). 3 subtopics:
+  traces the exact bug/fix with a Try It extending the schema and confirming mass-assignment
+  protection still holds; builds the missing OUTPUT-side field allowlist (API3's read-side half,
+  which the QnA names but no codeTab shows), verified via execution that naive serialization leaks
+  the full DB record while an allowlisted version returns only safe fields; builds a real
+  token-bucket rate limiter matching the QnA's named algorithm/headers exactly, verified end-to-end
+  via execution (5-token burst, 6th rejected, refill confirmed after +1s) including the Try It's
+  own worked example verified to produce exactly `remaining=5`. Structural fix: `ApiDesignNavComponent`'s
+  Advanced nav-group loop had never had the subtopics-accordion toggle markup added -- added it,
+  matching the identical fix applied to 3 other nav groups earlier this session. No SUBTOPICS
+  collision for bare `api-security` -- confirmed via the Security & Auth hub's own pre-existing
+  NOTE comment, which had already hub-prefixed its colliding `/security/api-security` topic to
+  `sec-api-security` anticipating this exact moment. Also added the previously-missing base
+  sidebar entry for `api-design/api-security` (was silently falling back to DEFAULT). Build passed
+  clean (foreground execution, explicit EXITCODE:$? capture, zero ERROR lines). Browser-verified:
+  nav accordion opens with all 3 labels in the Advanced group; main-page fix confirmed rendering
+  live; all 3 subtopic pages render with correct breadcrumb, 860px wrapper, zero console errors;
+  sidebar showed tailored composite-key content. **API Design hub Phase 10: 17 of 19 topics
+  complete.**
+- [x] `/api-design/breaking-changes` — Breaking Changes (2026-09-01). Fixed a genuine, well-
+  verified staleness issue: the main page named Optic as a still-current breaking-change tool in
+  6 separate places (theory, a mistake explanation, a quiz option+explanation, and two QnA
+  answers) -- confirmed directly against GitHub's own repo page that `opticdev/optic` was
+  archived by its own maintainer on January 12, 2026, following a 2024 Atlassian acquisition
+  that never shipped a promised integration; cross-checked against a second source confirming the
+  same date and naming `oasdiff` as the maintained replacement. Fixed all 6 occurrences (5 swap
+  Optic for openapi-diff/oasdiff; the theory bullet keeps a deliberate archival note). Also fixed
+  a related inaccuracy: a quiz question grouped Spectral as a "compares two spec versions" tool
+  when it's actually a single-spec linter with no diffing capability at all -- verified via
+  WebSearch. 3 subtopics: traces the archival finding with a tool-health-check function
+  distinguishing 'archived' from merely 'stale', verified via execution; implements all 3
+  Expand-Contract phases as real code (the QnA describes them in prose only), verified via
+  execution that old and new clients both work during Phase 1 and only the migrated client
+  survives Phase 3; extends the Challenge's classifyChange() (which explicitly scopes itself to
+  field-name comparison only) with a typeof check to catch the type changes the page's own theory
+  treats as core breaking-change examples, verified via execution across all 4 cases including
+  confirming the ORIGINAL unmodified Challenge misclassifies a real type change as 'safe'. No
+  SUBTOPICS collision for bare `breaking-changes`. Advanced nav-group toggle needed no further
+  changes. Build passed clean. Hit a real, resolved tooling artifact: the nav accordion toggle
+  failed to expand for both this topic and the already-shipped api-security topic despite
+  preview_logs confirming a genuine fresh server-side recompile -- a hard
+  window.location.reload(true) fixed both immediately, confirming a stale in-browser bundle
+  instance in the already-open tab, not a server-side issue. Browser-verified after reload: all
+  six main-page fixes confirmed live via direct component-data inspection; nav accordion opens
+  with all 3 subtopic links (6 total alongside api-security's own, no regression); all 3 subtopic
+  pages checked individually -- zero console errors, correct h1/breadcrumb, 860px wrapper,
+  tailored sidebar content on the final subtopic. **API Design hub Phase 10: 18 of 19 topics
+  complete -- only `rate-limiting` remains.**
+- [x] `/api-design/rate-limiting` — Rate Limiting (2026-09-01). LAST topic in the hub, completing
+  the entire Phase 10 rollout. Fixed a genuine, rigorously-verified bug in the main page's own
+  primary "Sliding Window (Redis)" codeTab: `zAdd` ran unconditionally, before the code decided
+  whether the request would be allowed or rejected -- verified via simulation that a burst of 10
+  requests against a limit of 5 left 10 entries in the sorted set (not 5), and that a client
+  retrying once per second after its first rejection -- exactly the "runaway client retry loop"
+  scenario the page's own theory names as rate limiting's primary reason to exist -- never gets an
+  allowed request again for 70+ seconds, a self-perpetuating permanent lockout. Fixed by moving
+  `zAdd` into a second pipeline that only runs once the request is confirmed allowed; verified the
+  fixed version recovers exactly 61 seconds after the burst. 3 subtopics: reproduces the exact bug
+  and fix via a plain-JS sorted-set simulation, both verified matching claimed output exactly;
+  builds the Redis Lua script the page's own QnA explains is needed for atomic distributed token
+  bucket but the codeTab never shows (a plain in-memory single-process class instead), verified via
+  execution including the atomicity guarantee a naive two-command version would lack; builds a
+  GraphQL query-complexity calculator and budget-tracking limiter the QnA describes in prose only,
+  verified via execution that a nested query (20 posts x 15 comments) costs 321 points vs 1 for a
+  flat query, with a Try It confirming a client well within a generous request-count budget can
+  still be denied by the complexity-based limiter. Real cross-hub SUBTOPICS collision handled
+  proactively: `rate-limiting` is also a bare route under the Redis hub -- hub-prefixed to
+  `api-rate-limiting`, and since ApiDesignNavComponent's Advanced loop calls
+  `subtopicsOf(item.path)` generically, added a small `subKey()` helper mapping just this one slug
+  without disturbing the two already-shipped entries in the same loop. Confirmed
+  `/redis/rate-limiting` renders unaffected. Build passed clean. Browser-verified with a hard
+  reload FIRST (avoiding the prior batch's stale-bundle incident) -- nav accordion opened with all
+  3 links on the first check; main-page fix confirmed rendering live; all 3 subtopic pages checked
+  individually -- zero console errors, correct h1/breadcrumb, 860px wrapper, tailored sidebar
+  content; cross-hub isolation check passed. **This completes the API Design hub's entire Phase 10
+  rollout -- all 19 topics now have deep-dive subtopic pages, 57 subtopic pages total across the
+  hub.**
 
 #### Observability — 20 topic pages
 
-- [ ] `/observability/observability-fundamentals` — Observability Fundamentals
-- [ ] `/observability/opentelemetry` — OpenTelemetry
-- [ ] `/observability/sli-slo-sla` — SLIs, SLOs & SLAs
-- [ ] `/observability/prometheus-metrics` — Prometheus & Metrics
+- [x] `/observability/observability-fundamentals` — Observability Fundamentals (2026-09-01).
+  Phase 10 pilot batch for this hub. Fixed ObsNavComponent's missing subtopics-accordion
+  structural gap (13th `*NavComponent` hub in a row missing it at pilot time). Fixed a genuine,
+  well-verified staleness issue in the main page's own quiz: it named Lightstep as a "modern
+  observability" tool -- confirmed directly against ServiceNow's own EOL notice that the service
+  reached end-of-life on March 1, 2026 (already past as of this session), with no replacement
+  offered at all. Swapped for Grafana Tempo, kept a short archival note. 3 subtopics: a tool-
+  lifecycle-status checker distinguishing end-of-life from merely stale, verified via execution;
+  extends the Challenge's classifySignal() to recognize Events as the QnA's own fourth MELT
+  signal type (distinct from logs -- no severity level), verified via execution that the original
+  function returns 'unknown' for a genuine business event; builds a SyntheticProber class with
+  SLO evaluation for the QnA's own active/synthetic monitoring description, verified via
+  execution. No SUBTOPICS collision for bare `observability-fundamentals`. Hit and fixed a real
+  self-authored bug during verification, NOT a stale-server artifact: isSubtopicsExpanded() calls
+  in the nav template still referenced the wrong progress-prefixed key while
+  toggleSubtopics()/subtopicsOf() correctly used the bare SUBTOPICS key -- confirmed via
+  window.ng.getComponent() that the underlying signal toggled correctly while the template never
+  reflected it, and that neither a hard reload nor a full dev-server restart fixed it (which is
+  what correctly pointed at a real key-mismatch bug rather than staleness). Fixed by aligning all
+  four accordion calls to the same key. Build passed clean both before and after the fix.
+  Browser-verified after the fix: nav accordion opens with all 3 links; main-page fix confirmed
+  rendering live; all 3 subtopic pages checked individually -- zero console errors, correct
+  h1/breadcrumb, 860px wrapper, tailored sidebar content. **Observability hub Phase 10: 1 of 20
+  topics complete.**
+- [x] `/observability/opentelemetry` — OpenTelemetry (2026-09-01). Found and fixed a genuine,
+  two-part bug: the "Forgetting to call span.end()" mistake block claimed startActiveSpan()
+  "automatically calls span.end()" -- confirmed FALSE via two independent sources on OTel's own
+  JS API guidance (neither startSpan() nor startActiveSpan() ever auto-ends a span; the developer
+  is always responsible). The page's own "Manual Spans" codeTab proved this the hard way: the
+  outer span is correctly wrapped in try/catch/finally, but the inner paySpan (same
+  startActiveSpan() call) only calls .end() on the happy path with no protection -- verified via
+  simulation that if chargeCard() throws, paySpan leaks while the outer span correctly ends.
+  Fixed by wrapping paySpan in its own try/finally and correcting the mistake block's claim. Also
+  fixed a mistagged codeTab (Collector Config is YAML but tagged 'typescript' -- CodeTab has no
+  'yaml' option, fixed to 'bash'). 3 subtopics: reproduces the leak/fix via a FakeSpan simulation,
+  verified via execution; builds a HistogramWithExemplars class for the QnA's own exemplar
+  description (zero code on the page), verified via execution; builds a TailSamplingBuffer
+  matching the Collector Config's own exact threshold/percentage values, verified via execution
+  including that a child span's error status correctly triggers errors-policy even when the root
+  itself is OK. Real cross-hub SUBTOPICS collision already resolved by the colliding sibling:
+  'opentelemetry' is also a bare ASP.NET route, already hub-prefixed to 'aspnet-opentelemetry'
+  from an earlier session -- left free for this hub. ObsNavComponent's toggle used a single
+  consistent key across all five calls this time, double-checked via grep to avoid repeating the
+  prior batch's key-mismatch bug. Build passed clean. Browser-verified with a hard reload first:
+  nav accordion opened with all 3 links on the FIRST check; all three main-page fixes confirmed
+  rendering live; all 3 subtopic pages checked individually -- zero console errors, correct
+  h1/breadcrumb, 860px wrapper, tailored sidebar content; /aspnet/opentelemetry isolation check
+  passed. **Observability hub Phase 10: 2 of 20 topics complete.**
+- [x] `/observability/sli-slo-sla` — SLIs, SLOs & SLAs (2026-09-01). Completes the Core Concepts
+  nav group. Found and fixed 2 genuine, self-contained arithmetic bugs, both verified via direct
+  Node execution: the "SLO Calculations" codeTab claimed calculateSloStatus() returns { ...
+  consumedPercent: 50, burnRate: 1.5, status: 'healthy' } for an input where consumedRate and
+  burnRate are computed by the IDENTICAL formula (can never disagree) -- real output is
+  consumedPercent: 150, status: 'exhausted'. More consequentially, the Challenge's own
+  errorBudgetStatus() worked examples claimed two inputs return 'at-risk'/'critical' but both
+  actually return 'exhausted' -- fixed both starterCode and solution with corrected, independently
+  verified test values. Also fixed a mistagged codeTab (Prometheus Alerting is YAML, tagged
+  'typescript', fixed to 'bash'). 3 subtopics: reproduces both bugs verified via execution;
+  reconciles the page's own 3-state vs the Challenge's 4-state status models, verified via
+  execution, surfacing a real policy-tier boundary mismatch; builds the multi-window burn-rate
+  page/ticket decision logic the theory names but no codeTab demonstrates, verified via execution
+  across 3 realistic scenarios including a genuine false-positive case. No SUBTOPICS collision.
+  Build passed clean. Browser-verified with a hard reload first: nav accordion opened with all 3
+  links on the first check; all main-page fixes confirmed rendering live; all 3 subtopic pages
+  checked individually -- zero console errors, correct h1/breadcrumb, 860px wrapper, tailored
+  sidebar content. **This completes the Core Concepts nav group** (observability-fundamentals,
+  opentelemetry, sli-slo-sla -- all 3 of 3). **Observability hub Phase 10: 3 of 20 topics
+  complete.**
+- [x] `/observability/prometheus-metrics` — Prometheus & Metrics (2026-09-01). First topic in the
+  Metrics nav group. Found and fixed a genuine correctness bug, researched against Node's own HTTP
+  response lifecycle first: metricsMiddleware only listened for res.on('finish') to decrement the
+  activeConnections gauge -- confirmed a client that disconnects mid-request never fires 'finish'
+  at all, only 'close', meaning every aborted request permanently leaked the gauge by +1. Verified
+  via an EventEmitter simulation. Fixed with an idempotency guard (requestFinished flag) since
+  'close' ALSO fires after normal completion and a naive fix would double-decrement -- verified
+  correct for both cases. Also fixed 2 mistagged codeTabs (PromQL Queries, prometheus.yml both
+  tagged 'typescript', fixed to 'bash'). 3 subtopics: reproduces the leak/fix via simulation,
+  verified via execution across 3 scenarios; builds the +Inf-bucket fix for the Challenge's own
+  SimpleHistogram, which passes all its own given tests but silently undercounts observations
+  exceeding every bucket boundary (verified via execution) -- left the Challenge itself unchanged
+  since it's a genuine gap, not a bug in its stated scope; verifies the theory's own Apdex PromQL
+  query is a correct algebraic simplification of the textbook formula using concrete simulated
+  data across two datasets. No SUBTOPICS collision. Build passed clean. Browser-verified with a
+  hard reload first: nav accordion opened with all 3 links on the first check; all three main-page
+  fixes confirmed rendering live; all 3 subtopic pages checked individually -- zero console errors,
+  correct h1/breadcrumb, 860px wrapper, tailored sidebar content. **Observability hub Phase 10: 4
+  of 20 topics complete.**
 - [ ] `/observability/grafana-dashboards` — Grafana Dashboards
 - [ ] `/observability/custom-app-metrics` — Custom App Metrics
 - [ ] `/observability/infrastructure-metrics` — Infrastructure Metrics

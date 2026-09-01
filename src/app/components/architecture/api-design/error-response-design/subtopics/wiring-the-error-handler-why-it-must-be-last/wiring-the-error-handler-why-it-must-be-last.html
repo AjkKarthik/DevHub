@@ -1,0 +1,26 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Error Response Design" topicRoute="/api-design/error-response-design"
+    subtopicLabel="Wiring the Error Handler: Why It Must Be Last" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">Wiring the Error Handler: Why It Must Be Last</h1>
+  <p class="page-subtitle">The main page’s two error-handling codeTabs are never actually assembled into one app. Here’s the correct registration order, and what specifically breaks when the error handler ends up in the wrong spot.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>A verified caching distinction, a real traceparent header, and a fully-wired error handler are three concrete implementations of ideas this topic names in prose but leaves as separate, unassembled pieces.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Error Response Design" topicRoute="/api-design/error-response-design"
+    [prev]="{ label: 'A Real traceparent Header (W3C Trace Context)', route: '/api-design/error-response-design/a-real-traceparent-header-w3c-trace-context' }" />
+</div>

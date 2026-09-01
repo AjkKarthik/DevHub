@@ -1,0 +1,26 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Observability Fundamentals" topicRoute="/observability/observability-fundamentals"
+    subtopicLabel="Lightstep’s End-of-Life: Verifying a Tool Is Still Alive" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">Lightstep’s End-of-Life: Verifying a Tool Is Still Alive</h1>
+  <p class="page-subtitle">A quiz named Lightstep as a "modern observability" tool — confirmed directly against ServiceNow's own notice that the service reached end-of-life on March 1, 2026, with no replacement offered.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>The page's own QnA on the MELT acronym names Events as a fourth signal type distinct from logs — but the page's own Challenge never classifies one. The next subtopic extends it, verified end to end.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Observability Fundamentals" topicRoute="/observability/observability-fundamentals"
+    [next]="{ label: 'Classifying the Fourth MELT Signal: Events', route: '/observability/observability-fundamentals/classifying-the-fourth-melt-signal-events' }" />
+</div>

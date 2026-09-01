@@ -110,6 +110,19 @@ v1.use((req, res, next) => {
     label: 'Header Versioning',
     language: 'typescript',
     code: `// Header-based versioning — URL stays the same
+
+// Middleware to warn on missing version header -- MUST be registered
+// BEFORE the route handler below. Express walks middleware/routes in
+// registration order; the /users handler never calls next(), so a
+// middleware registered AFTER it would simply never run for this
+// route at all -- dead code, not a warning anyone would ever see.
+app.use((req, res, next) => {
+  if (!req.headers['api-version']) {
+    res.header('Warning', '299 - "No API-Version header; defaulting to v1. Upgrade to v2."');
+  }
+  next();
+});
+
 app.get('/users', (req, res, next) => {
   const version = req.headers['api-version'] || '1';
 
@@ -117,14 +130,6 @@ app.get('/users', (req, res, next) => {
     return handleV2Users(req, res);
   }
   return handleV1Users(req, res);
-});
-
-// Middleware to warn on missing version header
-app.use((req, res, next) => {
-  if (!req.headers['api-version']) {
-    res.header('Warning', '299 - "No API-Version header; defaulting to v1. Upgrade to v2."');
-  }
-  next();
 });
 
 // Date-based versioning (Stripe / Cloudflare style)

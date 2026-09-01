@@ -1,0 +1,26 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Supply Chain Security" topicRoute="/security/supply-chain"
+    subtopicLabel="SHA-Pinned Actions: Why @v4 and @master Both Fail" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">SHA-Pinned Actions: Why &#64;v4 and &#64;master Both Fail</h1>
+  <p class="page-subtitle">The page’s own QnA says pin by commit SHA, not tag — its own CI codeTab originally did neither, using a tag AND a mutable branch reference. Here’s the exact attack SHA-pinning defends against.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>Pinning stops the CI pipeline itself from running swapped-in code — but the QnA also describes a completely different verification mechanism for the ARTIFACT the pipeline produces. The next subtopic builds the actual cosign commands.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Supply Chain Security" topicRoute="/security/supply-chain"
+    [next]="{ label: 'Cosign Keyless Signing: The Actual CLI Flow', route: '/security/supply-chain/cosign-keyless-signing-the-actual-cli-flow' }" />
+</div>

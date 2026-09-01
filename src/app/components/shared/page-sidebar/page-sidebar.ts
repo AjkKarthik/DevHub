@@ -34216,6 +34216,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Injection isn\'t limited to SQL — command injection, LDAP injection, and NoSQL injection follow the same root cause of untrusted input treated as executable structure.',
     ],
   },
+  'security/injection/safe-query-builders-own-column-name-gap': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'XXE in Node: From ENTITY to File Read', route: '/security/injection/xxe-in-node-from-entity-to-file-read' },
+      { label: 'Injection Attacks (overview)', route: '/security/injection' },
+    ],
+    tip: 'Parameterization only protects VALUES — there is no placeholder mechanism for identifiers like column or table names in any SQL dialect, so those need an allowlist instead.',
+    gotchas: [
+      'A column allowlist should be scoped PER TABLE, not one flat list shared across every table — a column valid on one table may not even exist on another.',
+    ],
+  },
+  'security/injection/xxe-in-node-from-entity-to-file-read': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'The Safe Query Builder’s Own Column-Name Gap', route: '/security/injection/safe-query-builders-own-column-name-gap' },
+      { label: 'Second-Order SQL Injection, Demonstrated', route: '/security/injection/second-order-sql-injection-demonstrated' },
+    ],
+    tip: 'libxmljs2 disables external entity substitution by default — the vulnerability requires a call site to explicitly opt in with noent: true, usually while enabling DTD validation.',
+    gotchas: [
+      'nonet blocks out-of-band/network-based XXE variants; noent: false is what stops a direct local file-read attack specifically — they protect against different variants, not the same one twice.',
+    ],
+  },
+  'security/injection/second-order-sql-injection-demonstrated': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'XXE in Node: From ENTITY to File Read', route: '/security/injection/xxe-in-node-from-entity-to-file-read' },
+      { label: 'Injection Attacks (overview)', route: '/security/injection' },
+    ],
+    tip: 'Parameterizing the query where tainted data first enters the system does nothing to protect a LATER query that reads that same data back out of the database and concatenates it.',
+    gotchas: [
+      'The vulnerability lives in the gap between two functions, not inside either one — reviewing the first function in isolation, however carefully, cannot reveal a bug that only exists in how a separate feature later consumes its stored output.',
+    ],
+  },
   'security/xss': {
     apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
     related: [
@@ -34226,6 +34259,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'A Content-Security-Policy header is a critical defense-in-depth layer — even a missed escaping bug can be mitigated if the CSP blocks inline script execution.',
       'DOM-based XSS (client-side JS reading and unsafely writing untrusted data) is not caught by server-side output encoding alone.',
+    ],
+  },
+  'security/xss/what-angulars-innerhtml-sanitizer-actually-strips': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'SVG XSS: Why img Is Safe But Direct Navigation Isn’t', route: '/security/xss/svg-xss-img-tag-safe-but-direct-navigation-isnt' },
+      { label: 'Cross-Site Scripting (overview)', route: '/security/xss' },
+    ],
+    tip: 'Angular\'s [innerHTML] binding is sanitized by default — the actual danger is DomSanitizer.bypassSecurityTrustHtml(), which exists specifically to disable that sanitization on content you have already verified is safe.',
+    gotchas: [
+      'The sanitizer strips event-handler attributes (onerror, onclick, onload) from every element it keeps, not just from <img> — the same rule applies uniformly across tags.',
+    ],
+  },
+  'security/xss/svg-xss-img-tag-safe-but-direct-navigation-isnt': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'What Angular’s [innerHTML] Sanitizer Actually Strips', route: '/security/xss/what-angulars-innerhtml-sanitizer-actually-strips' },
+      { label: 'CSP Nonces: Why an Injected Script Tag Gets Blocked', route: '/security/xss/csp-nonces-why-an-injected-script-tag-gets-blocked' },
+    ],
+    tip: 'Whether an uploaded SVG\'s embedded script executes depends on the rendering context, not the Content-Type header — <img> suppresses it; direct navigation, object, embed, and iframe do not.',
+    gotchas: [
+      'A safety guarantee scoped to today\'s one <img> usage does not extend to a future "view original" link or embed widget serving the same stored file — sanitize on upload as defense-in-depth regardless.',
+    ],
+  },
+  'security/xss/csp-nonces-why-an-injected-script-tag-gets-blocked': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'SVG XSS: Why img Is Safe But Direct Navigation Isn’t', route: '/security/xss/svg-xss-img-tag-safe-but-direct-navigation-isnt' },
+      { label: 'Cross-Site Scripting (overview)', route: '/security/xss' },
+    ],
+    tip: 'A CSP nonce is a per-response, not per-session, random value — an attacker cannot predict the next response\'s nonce, so their injected script tag has no way to acquire a matching attribute.',
+    gotchas: [
+      'script-src \'nonce-{value}\' \'unsafe-inline\' is a deliberate, spec-defined backward-compatibility pattern — modern browsers ignore unsafe-inline whenever a nonce is present in the same directive.',
     ],
   },
   'security/csrf-clickjacking': {
@@ -34240,6 +34306,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'CSRF only matters for state-changing requests using ambient credentials (cookies) — a pure token-in-header API is inherently less exposed to classic CSRF.',
     ],
   },
+  'security/csrf-clickjacking/migrating-off-csurf-to-csrf-csrf': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Lax+POST: Why Explicit SameSite Beats the Default', route: '/security/csrf-clickjacking/lax-post-why-explicit-samesite-beats-the-default' },
+      { label: 'CSRF & Clickjacking (overview)', route: '/security/csrf-clickjacking' },
+    ],
+    tip: 'csurf is officially deprecated — csrf-csrf\'s doubleCsrf() implements the same Double Submit Cookie pattern statelessly, with no server-side session storage needed at all.',
+    gotchas: [
+      'The __Host- cookie name prefix is a browser-enforced guarantee (Secure, Path=/, no Domain), not a csrf-csrf feature — it rules out subdomain-scoped cookie shadowing.',
+    ],
+  },
+  'security/csrf-clickjacking/lax-post-why-explicit-samesite-beats-the-default': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Migrating Off csurf to csrf-csrf', route: '/security/csrf-clickjacking/migrating-off-csurf-to-csrf-csrf' },
+      { label: 'Login CSRF: Defending a Page With No Session Yet', route: '/security/csrf-clickjacking/login-csrf-defending-a-page-with-no-session-yet' },
+    ],
+    tip: 'Chromium\'s "Lax+POST" 2-minute exception applies only to cookies with NO explicit SameSite attribute — a cookie with SameSite=Lax written out explicitly gets full protection, no exception window at all.',
+    gotchas: [
+      'Always set SameSite explicitly on every cookie you issue — relying on the browser default silently opts into an exception window that explicit configuration removes entirely.',
+    ],
+  },
+  'security/csrf-clickjacking/login-csrf-defending-a-page-with-no-session-yet': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Lax+POST: Why Explicit SameSite Beats the Default', route: '/security/csrf-clickjacking/lax-post-why-explicit-samesite-beats-the-default' },
+      { label: 'CSRF & Clickjacking (overview)', route: '/security/csrf-clickjacking' },
+    ],
+    tip: 'A pre-session CSRF token is tied to an anonymous, short-lived cookie issued on GET /login — there is no authenticated session yet to validate a standard token against at that point.',
+    gotchas: [
+      'Login CSRF logs the VICTIM into the ATTACKER\'s account, not the other way around — the risk is the victim unknowingly entering sensitive data into an attacker-controlled account.',
+    ],
+  },
   'security/tls-https': {
     apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
     related: [
@@ -34252,6 +34351,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Certificate expiry is one of the most common self-inflicted outages — automated renewal (like Let\'s Encrypt with ACME) avoids manual tracking failures.',
     ],
   },
+  'security/tls-https/certificate-pinning-implemented-public-key-hash': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Authorizing by Client Certificate CN, Not Just Authenticating', route: '/security/tls-https/authorizing-by-client-certificate-cn-not-just-authenticating' },
+      { label: 'TLS & HTTPS (overview)', route: '/security/tls-https' },
+    ],
+    tip: 'Pin the intermediate CA\'s public key, not the leaf\'s — the intermediate changes far less often than a leaf certificate renewed every 90 days, so routine renewal never breaks the pin.',
+    gotchas: [
+      'A pin check is an ADDITIONAL layer on top of standard chain/hostname validation, never a replacement for it — always run the default checkServerIdentity() first.',
+    ],
+  },
+  'security/tls-https/authorizing-by-client-certificate-cn-not-just-authenticating': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Certificate Pinning, Implemented (Public Key Hash)', route: '/security/tls-https/certificate-pinning-implemented-public-key-hash' },
+      { label: '0-RTT Replay Protection, Concretely', route: '/security/tls-https/zero-rtt-replay-protection-concretely' },
+    ],
+    tip: 'mTLS authenticates WHO is calling — every service with a valid certificate from the trusted client CA reaches every mTLS-protected route unless a separate authorization check keyed by the certificate\'s CN is also enforced.',
+    gotchas: [
+      'A service missing from the permission map should fail closed (zero permissions), not error or default to full access — the safe default for an unrecognized identity.',
+    ],
+  },
+  'security/tls-https/zero-rtt-replay-protection-concretely': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Authorizing by Client Certificate CN, Not Just Authenticating', route: '/security/tls-https/authorizing-by-client-certificate-cn-not-just-authenticating' },
+      { label: 'TLS & HTTPS (overview)', route: '/security/tls-https' },
+    ],
+    tip: 'Node.js exposes no built-in 0-RTT detection — the standard, RFC 8470-defined Early-Data: 1 header, forwarded by whatever actually terminates TLS (nginx, a CDN), is what an app-level check reads instead.',
+    gotchas: [
+      'A method-based check (GET/HEAD only) misses a GET route with a real side effect — the underlying fix is the same "GET must be idempotent" discipline as the CSRF topic, not a 0-RTT-specific patch.',
+    ],
+  },
   'security/security-headers': {
     apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
     related: [
@@ -34262,6 +34394,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'X-Content-Type-Options: nosniff prevents browsers from MIME-sniffing a response into an executable type it wasn\'t served as.',
       'securityheaders.com gives a quick external check of which headers are actually being sent in production.',
+    ],
+  },
+  'security/security-headers/coep-cdn-image-conflict-in-the-helmet-config': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Wiring a Real CSP Violation-Report Endpoint', route: '/security/security-headers/wiring-a-real-csp-violation-report-endpoint' },
+      { label: 'Security Headers (overview)', route: '/security/security-headers' },
+    ],
+    tip: 'CSP allowlisting a source in imgSrc says nothing about whether COEP will also let that same response through — the two checks are independent, and both have to pass.',
+    gotchas: [
+      'COEP: credentialless still enforces cross-origin isolation but strips credentials from no-cors cross-origin requests instead of requiring a third-party CORP header — the right fix depends on whether the resource needs cookies.',
+    ],
+  },
+  'security/security-headers/wiring-a-real-csp-violation-report-endpoint': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'The Helmet Config’s Own COEP + CDN Image Conflict', route: '/security/security-headers/coep-cdn-image-conflict-in-the-helmet-config' },
+      { label: 'Security Headers in CI: A Real Jest/Supertest Suite', route: '/security/security-headers/security-headers-in-ci-a-real-jest-supertest-suite' },
+    ],
+    tip: 'Browsers POST CSP violation reports as Content-Type: application/csp-report, not application/json — express.json() needs the explicit { type: \'application/csp-report\' } option to parse it at all.',
+    gotchas: [
+      'A single misconfigured directive can generate thousands of violation reports per second at real traffic — rate-limit this endpoint like any other public-facing route.',
+    ],
+  },
+  'security/security-headers/security-headers-in-ci-a-real-jest-supertest-suite': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Wiring a Real CSP Violation-Report Endpoint', route: '/security/security-headers/wiring-a-real-csp-violation-report-endpoint' },
+      { label: 'Security Headers (overview)', route: '/security/security-headers' },
+    ],
+    tip: 'Testing that a header is merely present is not the same as testing its VALUE — max-age=1 satisfies "HSTS is present" while shipping a real regression.',
+    gotchas: [
+      'A dependency or middleware upgrade can silently change default header values — a CI test suite catches this the next time it happens, a one-time manual audit does not.',
     ],
   },
   'security/password-security': {
@@ -34321,6 +34486,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Salting prevents precomputed rainbow-table attacks — a unique salt per password is required, not a single shared salt across all users.',
     ],
   },
+  'security/hashing/hash-algorithm-migration-lazy-rehashing-and-double-hash-wrapper': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Benchmarking bcrypt/Argon2id to Choose a Work Factor', route: '/security/hashing/benchmarking-bcrypt-argon2id-to-choose-a-work-factor' },
+      { label: 'Hashing & MACs (overview)', route: '/security/hashing' },
+    ],
+    tip: 'Lazy migration only upgrades users who actually log in again — an abandoned account stays on the old algorithm indefinitely unless a mandatory reset deadline forces the rest.',
+    gotchas: [
+      'Running two migration strategies against the same column without reconciling their own state values (e.g. "bcrypt" vs "md5-then-bcrypt") is a real, easy-to-miss gap — check what EVERY strategy writes, not just the one you\'re adding.',
+    ],
+  },
+  'security/hashing/benchmarking-bcrypt-argon2id-to-choose-a-work-factor': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Hash Algorithm Migration: Lazy Rehashing and the Double-Hash Wrapper', route: '/security/hashing/hash-algorithm-migration-lazy-rehashing-and-double-hash-wrapper' },
+      { label: 'Rainbow Tables vs Salting, Demonstrated', route: '/security/hashing/rainbow-tables-vs-salting-demonstrated' },
+    ],
+    tip: 'A bcrypt cost factor encodes a FIXED iteration count, not a fixed time — the same value takes different amounts of time on different hardware, which is why benchmarking must run on production hardware specifically.',
+    gotchas: [
+      'For Argon2id, raising memoryCost specifically is what resists parallel GPU/ASIC cracking — raising timeCost alone doesn\'t carry the same defense.',
+    ],
+  },
+  'security/hashing/rainbow-tables-vs-salting-demonstrated': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Benchmarking bcrypt/Argon2id to Choose a Work Factor', route: '/security/hashing/benchmarking-bcrypt-argon2id-to-choose-a-work-factor' },
+      { label: 'Hashing & MACs (overview)', route: '/security/hashing' },
+    ],
+    tip: 'Salting defeats PRECOMPUTED lookup tables, not raw guessing speed — a salted SHA-256 hash is still fast to brute-force per-user, which is why slow hashing (bcrypt/Argon2id) is a separate, additional requirement.',
+    gotchas: [
+      'Two users with the identical password get completely different salted hashes — an attacker with database access can\'t even tell they share a password, unlike with an unsalted hash database.',
+    ],
+  },
   'security/symmetric-encryption': {
     apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
     related: [
@@ -34333,6 +34531,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Symmetric encryption requires securely sharing the same key between parties — key distribution is the hard problem asymmetric cryptography solves differently.',
     ],
   },
+  'security/symmetric-encryption/field-level-encryption-you-can-actually-search-blind-indexing': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Streaming AES-256-GCM Encryption for Large Files', route: '/security/symmetric-encryption/streaming-aes-256-gcm-encryption-for-large-files' },
+      { label: 'Symmetric Encryption (overview)', route: '/security/symmetric-encryption' },
+    ],
+    tip: 'A blind index uses a SEPARATE key from the AES encryption key — a deterministic HMAC of the normalized plaintext, stored alongside the AEAD-encrypted value, enables equality lookups a non-deterministic ciphertext never could.',
+    gotchas: [
+      'Normalization (case, whitespace) must happen identically on both the storage path and the query path, or the same logical value produces two unrelated blind-index entries.',
+    ],
+  },
+  'security/symmetric-encryption/streaming-aes-256-gcm-encryption-for-large-files': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Field-Level Encryption You Can Actually Search: Blind Indexing', route: '/security/symmetric-encryption/field-level-encryption-you-can-actually-search-blind-indexing' },
+      { label: 'Deriving Multiple Keys From One Secret with HKDF', route: '/security/symmetric-encryption/deriving-multiple-keys-from-one-secret-with-hkdf' },
+    ],
+    tip: 'cipher.getAuthTag() only works AFTER the entire ciphertext stream has finished; decipher.setAuthTag() must be called BEFORE any ciphertext is piped through — the two timing rules run in opposite directions.',
+    gotchas: [
+      'The IV and auth tag need FIXED, known byte positions in the output file — streaming decrypt has to locate and read the tag (stored at the end) before it can even construct a working decipher for the ciphertext in the middle.',
+    ],
+  },
+  'security/symmetric-encryption/deriving-multiple-keys-from-one-secret-with-hkdf': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Streaming AES-256-GCM Encryption for Large Files', route: '/security/symmetric-encryption/streaming-aes-256-gcm-encryption-for-large-files' },
+      { label: 'Symmetric Encryption (overview)', route: '/security/symmetric-encryption' },
+    ],
+    tip: 'HKDF solves a different problem than PBKDF2/Argon2 — it\'s fast and assumes the input is already high-entropy (a shared secret), used to derive several independent keys from one secret, not to harden a low-entropy password.',
+    gotchas: [
+      'The info parameter is what makes two keys derived from the SAME secret independent — changing it while holding the secret constant produces a completely unrelated output.',
+    ],
+  },
   'security/asymmetric-cryptography': {
     apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
     related: [
@@ -34343,6 +34574,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Asymmetric operations are computationally much more expensive than symmetric ones — TLS uses asymmetric crypto only to establish a session, then switches to symmetric encryption for the bulk of data transfer.',
       'RS256 (RSA) vs ES256 (elliptic curve) JWT signing algorithms trade key size and performance differently — ES256 keys are much smaller for equivalent security.',
+    ],
+  },
+  'security/asymmetric-cryptography/the-mitm-attack-on-unauthenticated-ecdh-demonstrated': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Key Wrapping and Unwrapping, End to End', route: '/security/asymmetric-cryptography/key-wrapping-and-unwrapping-end-to-end' },
+      { label: 'Asymmetric Cryptography (overview)', route: '/security/asymmetric-cryptography' },
+    ],
+    tip: 'Plain ECDH only guarantees both sides compute the same shared secret — it proves nothing about WHO the other party is, which is exactly the gap TLS closes by signing the ephemeral ECDH public key with a certificate-backed private key.',
+    gotchas: [
+      'The computeSecret() calls never fail during a MITM attack — each party genuinely succeeds, just with the attacker instead of the intended party, with no error to signal anything went wrong.',
+    ],
+  },
+  'security/asymmetric-cryptography/key-wrapping-and-unwrapping-end-to-end': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'The MITM Attack on Unauthenticated ECDH, Demonstrated', route: '/security/asymmetric-cryptography/the-mitm-attack-on-unauthenticated-ecdh-demonstrated' },
+      { label: 'Sign-then-Encrypt vs Encrypt-then-Sign: The Attack, Demonstrated', route: '/security/asymmetric-cryptography/sign-then-encrypt-vs-encrypt-then-sign-the-attack-demonstrated' },
+    ],
+    tip: 'Key wrapping and envelope encryption (from the Symmetric Encryption topic) are the same idea — a KEK encrypts a DEK — just with a locally-held RSA key pair as the KEK instead of a KMS API call.',
+    gotchas: [
+      'Rotating the KEK does not retroactively re-wrap already-wrapped DEKs — those still need the OLD private key (or an explicit unwrap-then-rewrap migration step) to ever be recovered.',
+    ],
+  },
+  'security/asymmetric-cryptography/sign-then-encrypt-vs-encrypt-then-sign-the-attack-demonstrated': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Key Wrapping and Unwrapping, End to End', route: '/security/asymmetric-cryptography/key-wrapping-and-unwrapping-end-to-end' },
+      { label: 'Asymmetric Cryptography (overview)', route: '/security/asymmetric-cryptography' },
+    ],
+    tip: 'A signature over the plaintext proves WHO wrote a message, not WHO it was intended for — sign-then-encrypt lets a legitimate recipient re-encrypt the exact same signed content for a new party, who has no way to detect the forwarding.',
+    gotchas: [
+      'Encrypt-then-sign closes this specific gap because the signature covers the ciphertext (bound to one specific recipient\'s key), not the plaintext — a forwarder cannot forge a new valid signature without the original signer\'s private key.',
     ],
   },
   'security/jwt': {
@@ -34492,6 +34756,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Overloading claims with excessive personal data increases the token\'s exposure surface, since claims are typically readable without decryption.',
     ],
   },
+  'security/claims-identity/claims-transformation-idp-groups-to-app-roles': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Claims & Identity (overview)', route: '/security/claims-identity' },
+      { label: 'The Audience Validation Attack, Demonstrated', route: '/security/claims-identity/the-audience-validation-attack-demonstrated' },
+    ],
+    tip: 'Claims transformation runs on the application side, after signature verification — the IdP keeps sending whatever organisational groups it already manages, and the application maintains its own separate mapping table.',
+    gotchas: [
+      'Mapping multiple IdP groups to overlapping application roles needs de-duplication (a Set, not an array push) — a user in several groups that share a role should end up with that role once, not once per group.',
+    ],
+  },
+  'security/claims-identity/the-audience-validation-attack-demonstrated': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Claims Transformation — IdP Groups to App Roles', route: '/security/claims-identity/claims-transformation-idp-groups-to-app-roles' },
+      { label: 'DB-Verified Role Recheck vs. Freshness-Only', route: '/security/claims-identity/db-verified-role-recheck-vs-freshness-only' },
+    ],
+    tip: 'A replayed token is completely genuine — correct signature, correct issuer, unexpired — audience validation is the ONE check that catches a token being used against a service it was never intended for.',
+    gotchas: [
+      'Configuring two different services with the SAME audience value (a common copy-paste mistake) silently defeats the protection even when the check is technically present and running correctly.',
+    ],
+  },
+  'security/claims-identity/db-verified-role-recheck-vs-freshness-only': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'The Audience Validation Attack, Demonstrated', route: '/security/claims-identity/the-audience-validation-attack-demonstrated' },
+      { label: 'Claims & Identity (overview)', route: '/security/claims-identity' },
+    ],
+    tip: 'A freshness check only confirms WHEN a token was issued — it says nothing about whether the claims inside it are still true, which is exactly the gap a demotion happening after issuance but within the freshness window falls into.',
+    gotchas: [
+      'A DB-verified role recheck should be reserved for the highest-risk operations only — using it on every endpoint reintroduces the per-request database dependency claims-based identity exists to avoid.',
+    ],
+  },
   'security/rbac-abac': {
     apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
     related: [
@@ -34501,6 +34798,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'RBAC role explosion (creating a new role for every slightly different permission combination) is a common anti-pattern as systems grow.',
       'ABAC policies can become difficult to test exhaustively, since the number of possible attribute combinations grows combinatorially.',
+    ],
+  },
+  'security/rbac-abac/rebac-a-zanzibar-style-relationship-resolver': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'RBAC & ABAC (overview)', route: '/security/rbac-abac' },
+      { label: 'Database-Level Row-Level Security vs. a Forgotten WHERE', route: '/security/rbac-abac/database-level-row-level-security-vs-a-forgotten-where' },
+    ],
+    tip: 'Nested group membership resolves through the SAME recursive resolver function regardless of how many levels deep the chain goes — no restructuring needed as a permission graph grows, unlike RBAC roles or ABAC policies.',
+    gotchas: [
+      'A relationship graph without a cycle guard can recurse infinitely if group membership ever forms a loop — a real risk in data imported or edited across multiple systems.',
+    ],
+  },
+  'security/rbac-abac/database-level-row-level-security-vs-a-forgotten-where': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'ReBAC — a Zanzibar-Style Relationship Resolver', route: '/security/rbac-abac/rebac-a-zanzibar-style-relationship-resolver' },
+      { label: 'Separation of Duties, Enforced at Role Assignment', route: '/security/rbac-abac/separation-of-duties-enforced-at-role-assignment' },
+    ],
+    tip: 'Database-level RLS is enforced by the engine itself on EVERY query against the table — a forgotten WHERE clause in one application endpoint no longer matters once the policy is active.',
+    gotchas: [
+      'A query that never sets the RLS session variable at all still fails closed (an error or zero rows), not open — bypassing the application middleware alone does not leak other users\' data.',
+    ],
+  },
+  'security/rbac-abac/separation-of-duties-enforced-at-role-assignment': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Database-Level Row-Level Security vs. a Forgotten WHERE', route: '/security/rbac-abac/database-level-row-level-security-vs-a-forgotten-where' },
+      { label: 'RBAC & ABAC (overview)', route: '/security/rbac-abac' },
+    ],
+    tip: 'SoD constraints must be checked at role-GRANT time, not permission-check time — by the time a permission check runs, a conflicting pair of roles has already been assigned and the violation already happened.',
+    gotchas: [
+      'A grant-time SoD check only prevents NEW violations through that one code path — it does nothing to detect existing conflicting-role holders granted before the check existed or through a different path entirely.',
     ],
   },
   'security/mfa': {
@@ -34557,6 +34887,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'A dedicated secrets manager (Vault, Key Vault) with automatic rotation reduces the blast radius of a leaked secret versus a long-lived static credential in an env file.',
       'Environment variables are safer than hardcoded values but still visible to anyone with process/container inspection access — a genuine secrets manager provides stronger access control.',
+    ],
+  },
+  'security/secrets-management/renewing-a-vault-lease-before-it-expires': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Vault Transit: Encryption as a Service, Implemented', route: '/security/secrets-management/vault-transit-encryption-as-a-service-implemented' },
+      { label: 'Secrets Management (overview)', route: '/security/secrets-management' },
+    ],
+    tip: 'Renewing a lease extends the SAME credential\'s expiry — the username/password values never change. Fetching a new credential issues a completely different one with its own new lease_id.',
+    gotchas: [
+      'Vault mounts typically cap total lease lifetime (max_ttl) — renewal eventually starts failing as that ceiling approaches, which is why a renewal loop needs a fallback to fetch an entirely fresh credential.',
+    ],
+  },
+  'security/secrets-management/vault-transit-encryption-as-a-service-implemented': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Renewing a Vault Lease Before It Expires', route: '/security/secrets-management/renewing-a-vault-lease-before-it-expires' },
+      { label: 'The Vault Agent Injector Sidecar Pattern in Kubernetes', route: '/security/secrets-management/vault-agent-injector-sidecar-pattern' },
+    ],
+    tip: 'The ciphertext\'s own "vault:v1:..." prefix identifies which key version encrypted it — key rotation needs zero application code changes, since Vault routes decryption to the correct version automatically.',
+    gotchas: [
+      'Rotation creates a new key version without invalidating the old one — existing ciphertext keeps decrypting correctly indefinitely unless an explicit "rewrap" operation is run.',
+    ],
+  },
+  'security/secrets-management/vault-agent-injector-sidecar-pattern': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Vault Transit: Encryption as a Service, Implemented', route: '/security/secrets-management/vault-transit-encryption-as-a-service-implemented' },
+      { label: 'Secrets Management (overview)', route: '/security/secrets-management' },
+    ],
+    tip: 'The application container needs zero Vault-specific code in this pattern — it only reads a plain file from a shared volume; the injected sidecar handles all authentication and fetching.',
+    gotchas: [
+      'The application container\'s own service account needs no Vault permissions at all — it\'s the sidecar\'s identity, not the app container\'s, that Vault\'s policies authorize.',
     ],
   },
   'security/secure-coding': {
@@ -34616,6 +34979,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'API versioning and deprecation need a security lens too — an old, unmaintained API version left reachable is a common overlooked attack surface.',
     ],
   },
+  'security/api-security/bfla-demonstrated-and-fixed': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'API Security (overview)', route: '/security/api-security' },
+      { label: 'HMAC Request Signing, Implemented', route: '/security/api-security/hmac-request-signing-implemented' },
+    ],
+    tip: 'BFLA is a missing check on WHICH FUNCTION a caller can reach at all — a distinct failure from BOLA, which is a missing check on WHICH OBJECT within an otherwise-permitted function a caller can reach.',
+    gotchas: [
+      'requireAuth confirming a valid token says nothing about function-level permission — authentication and authorization answer two separate questions, and BFLA lives in the gap between them.',
+    ],
+  },
+  'security/api-security/hmac-request-signing-implemented': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'BFLA, Demonstrated and Fixed', route: '/security/api-security/bfla-demonstrated-and-fixed' },
+      { label: 'The Fixed-Window Rate Limiter’s Burst Problem', route: '/security/api-security/the-fixed-window-rate-limiters-burst-problem' },
+    ],
+    tip: 'An API key alone proves possession of a valid credential; HMAC signing additionally proves the specific request body was not altered in transit — two different guarantees, not two versions of the same one.',
+    gotchas: [
+      'Checking only timestamp age defends against an OLD replayed request, but not a repeated one — a genuinely fresh replay within the same window still passes unless a single-use nonce is also tracked.',
+    ],
+  },
+  'security/api-security/the-fixed-window-rate-limiters-burst-problem': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'HMAC Request Signing, Implemented', route: '/security/api-security/hmac-request-signing-implemented' },
+      { label: 'API Security (overview)', route: '/security/api-security' },
+    ],
+    tip: 'A fixed window resets completely at fixed clock boundaries, with no memory of the previous window — a client positioned right at the boundary can get up to 2x the stated limit through in a matter of milliseconds.',
+    gotchas: [
+      'The main page\'s own express-rate-limit configuration (windowMs/max) is the fixed-window algorithm by default — a well-maintained library doesn\'t change which algorithm it implements unless a different store/strategy is explicitly configured.',
+    ],
+  },
   'security/container-security': {
     apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
     related: [
@@ -34625,6 +35021,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'A minimal base image (distroless, Alpine) reduces the attack surface by carrying far fewer installed tools an attacker could exploit after compromise.',
       'Vulnerability scanning at build time catches known CVEs at that point, but new CVEs are disclosed continuously — already-deployed images need periodic re-scanning.',
+    ],
+  },
+  'security/container-security/sha256-tag-vs-true-image-digest-pin': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'A Real Falco Rule Detecting a Shell in a Container', route: '/security/container-security/falco-rule-detects-shell-in-container' },
+      { label: 'Container Security (overview)', route: '/security/container-security' },
+    ],
+    tip: 'A tag containing "sha256" in its name looks reassuring but carries zero cryptographic guarantee — only a reference using @sha256:<hex> (an at-sign, not a colon) is actually verified against the image\'s real content on pull.',
+    gotchas: [
+      'Docker/OCI image references only recognize two forms: name:tag or name@digest — anything after a colon is parsed as a tag no matter what characters it contains.',
+    ],
+  },
+  'security/container-security/falco-rule-detects-shell-in-container': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'A sha256 Tag vs. a True Image Digest Pin', route: '/security/container-security/sha256-tag-vs-true-image-digest-pin' },
+      { label: 'A Custom seccomp Profile, Beyond RuntimeDefault', route: '/security/container-security/custom-seccomp-profile-beyond-runtimedefault' },
+    ],
+    tip: 'Falco is a DETECTION tool, not a prevention tool — a matched rule emits an alert but does not itself stop the shell from running; blocking it in the first place is a separate concern (image scanning, admission control, minimal base images).',
+    gotchas: [
+      'The container.id != host clause is what scopes a rule to containers only — dropping it means the rule also fires for ordinary shells spawned directly on the node itself.',
+    ],
+  },
+  'security/container-security/custom-seccomp-profile-beyond-runtimedefault': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'A Real Falco Rule Detecting a Shell in a Container', route: '/security/container-security/falco-rule-detects-shell-in-container' },
+      { label: 'Container Security (overview)', route: '/security/container-security' },
+    ],
+    tip: 'A custom Localhost seccomp profile file must already exist on the NODE at /var/lib/kubelet/seccomp/profiles/ before a pod referencing it can schedule there — it is not bundled into the container image the way application code is.',
+    gotchas: [
+      'A hand-written allowlist is only as complete as the testing used to derive it — a syscall never exercised while building the profile fails at runtime, in production, once defaultAction is SCMP_ACT_ERRNO.',
     ],
   },
   'security/supply-chain': {
@@ -34637,6 +35066,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Software Bill of Materials (SBOM) generation gives visibility into exactly what is running in production, essential for quickly assessing exposure when a new CVE is disclosed.',
       'Signing and verifying artifacts (Cosign/Sigstore) addresses tampering risk that dependency scanning alone does not cover.',
+    ],
+  },
+  'security/supply-chain/sha-pinned-actions-why-v4-and-master-both-fail': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Cosign Keyless Signing: The Actual CLI Flow', route: '/security/supply-chain/cosign-keyless-signing-the-actual-cli-flow' },
+      { label: 'Supply Chain Security (overview)', route: '/security/supply-chain' },
+    ],
+    tip: 'A version tag is a mutable pointer the repository owner can reassign at any time — a commit SHA cannot be reassigned, by definition, since it always refers to the one fixed set of bytes that hash to it.',
+    gotchas: [
+      'A branch reference like @master is even riskier than a tag — it moves on every single commit pushed to it, with no release process or review checkpoint in between.',
+    ],
+  },
+  'security/supply-chain/cosign-keyless-signing-the-actual-cli-flow': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'SHA-Pinned Actions: Why @v4 and @master Both Fail', route: '/security/supply-chain/sha-pinned-actions-why-v4-and-master-both-fail' },
+      { label: 'Diffing Two SBOMs to Catch Newly-Vulnerable Dependencies', route: '/security/supply-chain/diffing-two-sboms-to-catch-newly-vulnerable-deps' },
+    ],
+    tip: 'A bare "cosign verify" with no --certificate-identity or --certificate-oidc-issuer flags only proves SOME valid Sigstore signature exists — not that it came from the specific pipeline you actually trust.',
+    gotchas: [
+      '"Keyless" means no long-lived key to protect, not "no cryptography involved" — an ephemeral keypair is still generated and used for every signature, then destroyed immediately after.',
+    ],
+  },
+  'security/supply-chain/diffing-two-sboms-to-catch-newly-vulnerable-deps': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Cosign Keyless Signing: The Actual CLI Flow', route: '/security/supply-chain/cosign-keyless-signing-the-actual-cli-flow' },
+      { label: 'Supply Chain Security (overview)', route: '/security/supply-chain' },
+    ],
+    tip: 'An SBOM carries zero vulnerability data of its own — it is a plain component inventory that only becomes a security signal once its listed purls are checked against a live, continuously-updated vulnerability feed.',
+    gotchas: [
+      'A component\'s version can stay completely unchanged for months while a brand-new CVE is disclosed against that exact version — re-scanning finds this even when nothing about the artifact itself was touched.',
     ],
   },
 
@@ -34653,6 +35115,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'API design decisions are far more expensive to change after external consumers depend on them — get the shape right before wide adoption, not after.',
     ],
   },
+  'api-design/api-design-principles/the-mismatched-timestamp-in-the-transform-challenge': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Implementing Idempotency-Key Deduplication', route: '/api-design/api-design-principles/implementing-idempotency-key-deduplication' },
+      { label: 'API Design Principles (overview)', route: '/api-design/api-design-principles' },
+    ],
+    tip: 'The Challenge\'s conversion logic (new Date(timestamp * 1000).toISOString()) was always correct -- the bug was that its own worked example paired an input number and a claimed output string that didn\'t describe the same instant.',
+    gotchas: [
+      'A worked example with several independently-computed output fields needs each field checked on its own -- one field being correct says nothing about a different, unrelated field.',
+    ],
+  },
+  'api-design/api-design-principles/implementing-idempotency-key-deduplication': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'The Mismatched Timestamp in the Transform Challenge', route: '/api-design/api-design-principles/the-mismatched-timestamp-in-the-transform-challenge' },
+      { label: 'Missing Field vs. Explicit Null in PATCH Requests', route: '/api-design/api-design-principles/missing-field-vs-explicit-null-in-patch-requests' },
+    ],
+    tip: 'The Idempotency-Key store must cache the ORIGINAL response body, not just a flag that the key was seen -- a retrying client needs back exactly what its first request would have returned.',
+    gotchas: [
+      'A replayed response should return 200 OK, not a second 201 Created -- nothing new was actually created on the retry.',
+    ],
+  },
+  'api-design/api-design-principles/missing-field-vs-explicit-null-in-patch-requests': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Implementing Idempotency-Key Deduplication', route: '/api-design/api-design-principles/implementing-idempotency-key-deduplication' },
+      { label: 'API Design Principles (overview)', route: '/api-design/api-design-principles' },
+    ],
+    tip: 'A falsy-fallback merge (patch[key] || existing[key]) silently discards a client\'s explicit attempt to clear a field to null, 0, or \'\' -- a plain object spread gets the missing-vs-null distinction right for free.',
+    gotchas: [
+      'Spread alone handles correct MERGING but not VALIDATION -- a field that must never be null still needs its own explicit \'field\' in patch check before the merge.',
+    ],
+  },
   'api-design/rest-fundamentals': {
     apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
     related: [
@@ -34663,6 +35158,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'True REST HATEOAS (hypermedia-driven navigation) is rarely fully implemented in practice — most "RESTful" APIs are really pragmatic HTTP+JSON APIs.',
       'Statelessness means each request must contain all information needed to process it — server-side session state stored between requests violates this constraint.',
+    ],
+  },
+  'api-design/rest-fundamentals/the-missing-hasbody-check-in-validaterestrequest': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'A Real HATEOAS Response, With Links', route: '/api-design/rest-fundamentals/a-real-hateoas-response-with-links' },
+      { label: 'REST Fundamentals (overview)', route: '/api-design/rest-fundamentals' },
+    ],
+    tip: 'A function can only validate information it actually receives as a parameter — a Challenge description promising a check the function\'s own signature has no way to represent is a real, catchable gap before writing any implementation at all.',
+    gotchas: [
+      'A global or environment variable "fix" for missing information turns a pure function into one with hidden state — a real parameter keeps the function\'s output fully determined by its own arguments.',
+    ],
+  },
+  'api-design/rest-fundamentals/a-real-hateoas-response-with-links': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'The Missing hasBody Check in validateRestRequest', route: '/api-design/rest-fundamentals/the-missing-hasbody-check-in-validaterestrequest' },
+      { label: 'Content Negotiation: the Same Resource, JSON or CSV', route: '/api-design/rest-fundamentals/content-negotiation-the-same-resource-json-or-csv' },
+    ],
+    tip: 'The set of links a HATEOAS response returns should change with the resource\'s own current state — a fixed link list on every response, regardless of state, is not really HATEOAS even if it happens to include a self link.',
+    gotchas: [
+      'A client that follows links dynamically needs zero code changes when a server-side business rule about what\'s currently allowed changes — a hard-coded client needs a redeploy for the exact same change.',
+    ],
+  },
+  'api-design/rest-fundamentals/content-negotiation-the-same-resource-json-or-csv': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'A Real HATEOAS Response, With Links', route: '/api-design/rest-fundamentals/a-real-hateoas-response-with-links' },
+      { label: 'REST Fundamentals (overview)', route: '/api-design/rest-fundamentals' },
+    ],
+    tip: 'A real Accept header can list multiple acceptable formats with quality values expressing relative preference — a plain substring check has no way to respect that ordering, unlike Express\'s own req.accepts().',
+    gotchas: [
+      'Silently falling back to a default format when a client requests one you don\'t support hides the mismatch — returning 406 Not Acceptable is the more honest response.',
     ],
   },
   'api-design/http-methods-status-codes': {
@@ -34677,6 +35205,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'GET requests should never have side effects — a GET that changes state breaks caching, prefetching, and retry-safety assumptions clients rely on.',
     ],
   },
+  'api-design/http-methods-status-codes/403-vs-404-a-security-posture-decision-not-a-rule': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Implementing Idempotency Keys for POST Requests', route: '/api-design/http-methods-status-codes/implementing-idempotency-keys-for-post-requests' },
+      { label: 'HTTP Methods & Status Codes (overview)', route: '/api-design/http-methods-status-codes' },
+    ],
+    tip: 'Making "exists but hidden" and "genuinely doesn\'t exist" produce the identical response is the entire point of hiding a resource behind 404 — it removes the oracle an attacker would otherwise use to enumerate real resource IDs.',
+    gotchas: [
+      'This is a per-resource-TYPE decision, not a universal rule — a public product listing can honestly return 403, while another user\'s private document should be hidden behind 404.',
+    ],
+  },
+  'api-design/http-methods-status-codes/implementing-idempotency-keys-for-post-requests': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: '403 vs. 404: a Security-Posture Decision, Not a Rule', route: '/api-design/http-methods-status-codes/403-vs-404-a-security-posture-decision-not-a-rule' },
+      { label: 'JSON Patch (RFC 6902), Applied', route: '/api-design/http-methods-status-codes/json-patch-rfc-6902-applied' },
+    ],
+    tip: 'An idempotency key must replay the EXACT original response, not just prevent a duplicate resource — a client retrying after a timeout needs to know which resource its request actually resulted in.',
+    gotchas: [
+      'A reused key with a genuinely different request body is a client bug, not a safe retry — comparing the request body hash, not just the key, is what catches this.',
+    ],
+  },
+  'api-design/http-methods-status-codes/json-patch-rfc-6902-applied': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Implementing Idempotency Keys for POST Requests', route: '/api-design/http-methods-status-codes/implementing-idempotency-keys-for-post-requests' },
+      { label: 'HTTP Methods & Status Codes (overview)', route: '/api-design/http-methods-status-codes' },
+    ],
+    tip: 'JSON Patch\'s remove operation deletes a field entirely, something field-replacement PATCH structurally cannot express — it can only ever say a field was not mentioned, never that it should be gone.',
+    gotchas: [
+      'A failing "test" operation aborts the ENTIRE patch, not just that one operation — this makes it a real optimistic-concurrency mechanism, not a debugging aid.',
+    ],
+  },
   'api-design/resource-url-design': {
     apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
     related: [
@@ -34687,6 +35248,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Deeply nested URLs (/users/1/orders/2/items/3/reviews/4) become unwieldy — consider whether a flatter, filterable structure serves consumers better.',
       'Consistent pluralization and casing conventions across every endpoint reduce cognitive load for API consumers integrating multiple endpoints.',
+    ],
+  },
+  'api-design/resource-url-design/verbs-as-prefixes-not-exact-matches-the-real-fix': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Sub-Resource Actions: A Real Cancellations Endpoint', route: '/api-design/resource-url-design/sub-resource-actions-a-real-cancellations-endpoint' },
+      { label: 'Resource & URL Design (overview)', route: '/api-design/resource-url-design' },
+    ],
+    tip: 'An exact-match verb check (VERBS.includes(segment)) never fires on a realistic verb-prefixed path like getUsers or createOrder — a prefix-based check (startsWith) catches the real anti-pattern, at the cost of occasionally flagging a genuine noun like listings.',
+    gotchas: [
+      'Testing a function only against the examples in its own comments can hide a real bug — the original code never included an all-lowercase verb-prefixed test case, which is exactly what exposed it.',
+    ],
+  },
+  'api-design/resource-url-design/sub-resource-actions-a-real-cancellations-endpoint': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Verbs as Prefixes, Not Exact Matches: the Real Fix', route: '/api-design/resource-url-design/verbs-as-prefixes-not-exact-matches-the-real-fix' },
+      { label: 'Cursor-Based Pagination, Actually Implemented', route: '/api-design/resource-url-design/cursor-based-pagination-actually-implemented' },
+    ],
+    tip: 'A sub-resource action (POST /orders/42/cancellations) creates a genuinely new, independently-addressable resource with its own record — unlike a status PATCH, it can preserve a full history if the action happens more than once.',
+    gotchas: [
+      'Unlike a status PATCH, a sub-resource POST is not automatically idempotent — a naive implementation would create a duplicate record on a repeated request, requiring an explicit guard.',
+    ],
+  },
+  'api-design/resource-url-design/cursor-based-pagination-actually-implemented': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Sub-Resource Actions: A Real Cancellations Endpoint', route: '/api-design/resource-url-design/sub-resource-actions-a-real-cancellations-endpoint' },
+      { label: 'Resource & URL Design (overview)', route: '/api-design/resource-url-design' },
+    ],
+    tip: 'A cursor encodes the identity of the last item seen, not a row count — deleting or inserting rows before the cursor position has zero effect on where the next page resumes from, unlike offset pagination.',
+    gotchas: [
+      'Sorting by a single field is not enough for a reliable cursor — two rows can share the same value, so a unique tiebreaker field (like id) must be included in both the sort order and the cursor comparison.',
     ],
   },
   'api-design/pagination-patterns': {
@@ -34700,6 +35294,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Returning the TOTAL count alongside paginated results can be expensive on large tables — consider whether consumers genuinely need it.',
     ],
   },
+  'api-design/pagination-patterns/the-missing-id-tiebreaker-in-cursor-pagination': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'The Deferred-Join Trick for Deep Offset Pages', route: '/api-design/pagination-patterns/the-deferred-join-trick-for-deep-offset-pages' },
+      { label: 'Pagination Patterns (overview)', route: '/api-design/pagination-patterns' },
+    ],
+    tip: 'A cursor field can be encoded into the token and still never actually be used in the query comparison — two rows sharing the exact same timestamp as the cursor boundary will be silently skipped without a real tiebreaker.',
+    gotchas: [
+      'This is a missing-ROW bug, not a wrong-ordering bug — the skipped item is not returned at all, not just returned out of order.',
+    ],
+  },
+  'api-design/pagination-patterns/the-deferred-join-trick-for-deep-offset-pages': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'The Missing id Tiebreaker in Cursor Pagination', route: '/api-design/pagination-patterns/the-missing-id-tiebreaker-in-cursor-pagination' },
+      { label: 'A Real Relay Connection GraphQL Resolver', route: '/api-design/pagination-patterns/a-real-relay-connection-graphql-resolver' },
+    ],
+    tip: 'A deferred join does not eliminate the O(offset) scan cost — it eliminates reading full row data for every skipped row by making the offset/limit operate on an index-only scan first.',
+    gotchas: [
+      'The benefit scales with row width — a table with small, narrow rows sees a smaller improvement than one with large JSON/text columns.',
+    ],
+  },
+  'api-design/pagination-patterns/a-real-relay-connection-graphql-resolver': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'The Deferred-Join Trick for Deep Offset Pages', route: '/api-design/pagination-patterns/the-deferred-join-trick-for-deep-offset-pages' },
+      { label: 'Pagination Patterns (overview)', route: '/api-design/pagination-patterns' },
+    ],
+    tip: 'An edge\'s own cursor field and a request\'s after/before argument are the same opaque token used in two roles — a client\'s next request literally reuses the cursor value it received on a previous edge.',
+    gotchas: [
+      'A Connection field can support forward pagination, backward pagination, or both on the same field — the resolver branches on which arguments were actually supplied.',
+    ],
+  },
   'api-design/error-response-design': {
     apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
     related: [
@@ -34711,6 +35338,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A machine-readable error CODE (not just a human-readable message) lets clients branch programmatically without fragile string matching.',
     ],
   },
+  'api-design/error-response-design/404-and-410-are-both-heuristically-cacheable': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'A Real traceparent Header (W3C Trace Context)', route: '/api-design/error-response-design/a-real-traceparent-header-w3c-trace-context' },
+      { label: 'Error Response Design (overview)', route: '/api-design/error-response-design' },
+    ],
+    tip: 'Both 404 and 410 are on RFC 9111\'s heuristically-cacheable-by-default list — the real distinction is that 410 signals permanence, which can justify a longer freshness lifetime, not a binary cacheable-vs-not split.',
+    gotchas: [
+      'RFC 9111\'s own 10%-of-Last-Modified-age heuristic formula applies identically to both status codes — it is not status-code-specific at all.',
+    ],
+  },
+  'api-design/error-response-design/a-real-traceparent-header-w3c-trace-context': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: '404 and 410 Are Both Heuristically Cacheable', route: '/api-design/error-response-design/404-and-410-are-both-heuristically-cacheable' },
+      { label: 'Wiring the Error Handler: Why It Must Be Last', route: '/api-design/error-response-design/wiring-the-error-handler-why-it-must-be-last' },
+    ],
+    tip: 'traceId stays identical across every service in a call chain, while parentId is regenerated fresh at each hop — a new traceId is only ever created once, at the very first service that receives no existing traceparent header.',
+    gotchas: [
+      'An error response\'s own correlation-ID field can and often should reuse the SAME traceId already flowing through the request, tying a support ticket back to every service the request touched.',
+    ],
+  },
+  'api-design/error-response-design/wiring-the-error-handler-why-it-must-be-last': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'A Real traceparent Header (W3C Trace Context)', route: '/api-design/error-response-design/a-real-traceparent-header-w3c-trace-context' },
+      { label: 'Error Response Design (overview)', route: '/api-design/error-response-design' },
+    ],
+    tip: 'A 4-parameter Express error handler can only catch errors from routes registered BEFORE it in the middleware stack — the same registration-order rule as ordinary middleware, just applied to error handling specifically.',
+    gotchas: [
+      'A misplaced error handler doesn\'t crash the app — Express\'s own built-in default handler catches what the custom one misses, producing a generic, unformatted response instead of the intended Problem Details shape.',
+    ],
+  },
   'api-design/api-versioning': {
     apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
     related: [
@@ -34720,6 +35380,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'A version that never gets deprecated accumulates indefinitely — a clear deprecation policy and timeline should exist from the FIRST version, not be an afterthought.',
       'Additive, backward-compatible changes (new optional fields) generally don\'t require a version bump — only breaking changes do.',
+    ],
+  },
+  'api-design/api-versioning/middleware-order-why-the-warning-header-never-fired': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Serving 410 Gone for a Sunset Endpoint', route: '/api-design/api-versioning/serving-410-gone-for-a-sunset-endpoint' },
+      { label: 'API Versioning (overview)', route: '/api-design/api-versioning' },
+    ],
+    tip: 'A middleware that never calls next() ends the request/response chain right there — anything registered after it in Express\'s stack simply never runs for that route, regardless of what it was meant to do.',
+    gotchas: [
+      'This same ordering mistake applied to something functionally important, like authentication or rate limiting, silently disables that middleware entirely for any route registered before it.',
+    ],
+  },
+  'api-design/api-versioning/serving-410-gone-for-a-sunset-endpoint': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Middleware Order: Why the Warning Header Never Fired', route: '/api-design/api-versioning/middleware-order-why-the-warning-header-never-fired' },
+      { label: 'The Expand-Contract Pattern, Implemented', route: '/api-design/api-versioning/the-expand-contract-pattern-implemented' },
+    ],
+    tip: '410 Gone tells a client the server KNOWS this resource existed and was deliberately removed — a stronger, more actionable signal than a plain 404, which could just as easily mean a typo.',
+    gotchas: [
+      'The intercepting middleware needs to run BEFORE the old route handlers, and must not call next() once the sunset date has passed, or the old handlers still run underneath it.',
+    ],
+  },
+  'api-design/api-versioning/the-expand-contract-pattern-implemented': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Serving 410 Gone for a Sunset Endpoint', route: '/api-design/api-versioning/serving-410-gone-for-a-sunset-endpoint' },
+      { label: 'API Versioning (overview)', route: '/api-design/api-versioning' },
+    ],
+    tip: 'Counting how many responses are served with an old field present only proves the server is still sending it — it says nothing about whether any client is actually reading it, which is what genuinely determines when it\'s safe to remove.',
+    gotchas: [
+      'Expand-contract deliberately avoids a version bump entirely — both the old and new field live on the SAME endpoint, at the SAME version, during the expand phase.',
     ],
   },
   'api-design/breaking-changes': {
@@ -34734,6 +35427,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Contract testing against consumer expectations catches breaking changes before they reach production, rather than discovering them from support tickets.',
     ],
   },
+  'api-design/breaking-changes/verifying-a-recommended-tool-is-still-maintained': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Implementing Expand-Contract, All Three Phases', route: '/api-design/breaking-changes/implementing-expand-contract-all-three-phases' },
+      { label: 'Breaking Changes (overview)', route: '/api-design/breaking-changes' },
+    ],
+    tip: 'Optic (opticdev/optic) was archived by its own maintainers on GitHub in January 2026 -- verify a named tool\'s current repo status directly before adopting it, the same way you\'d check any other dependency.',
+    gotchas: [
+      'Spectral only ever validates ONE spec against a style ruleset -- it has no mechanism to compare two spec versions and cannot detect breaking changes on its own, unlike openapi-diff/oasdiff.',
+    ],
+  },
+  'api-design/breaking-changes/implementing-expand-contract-all-three-phases': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Verifying a Recommended Tool Is Still Maintained', route: '/api-design/breaking-changes/verifying-a-recommended-tool-is-still-maintained' },
+      { label: 'The Challenge Never Detects a Type Change', route: '/api-design/breaking-changes/the-challenge-never-detects-a-type-change' },
+    ],
+    tip: 'Phase 1 (Expand) and Phase 3 (Contract) are each independently non-breaking for the client currently on the correct side of the migration -- the one client that breaks is an old, unmigrated one still reading the old field once Phase 3 ships.',
+    gotchas: [
+      'A response-field rename can\'t be tracked with the same server-side "deprecated-endpoint traffic" monitoring the main page describes elsewhere -- the server can observe which endpoint a request hit, not which of several already-returned fields the client\'s own code reads.',
+    ],
+  },
+  'api-design/breaking-changes/the-challenge-never-detects-a-type-change': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Implementing Expand-Contract, All Three Phases', route: '/api-design/breaking-changes/implementing-expand-contract-all-three-phases' },
+      { label: 'Breaking Changes (overview)', route: '/api-design/breaking-changes' },
+    ],
+    tip: 'The Challenge\'s classifyChange() is explicit about comparing only top-level field names -- it correctly does exactly that; type changes and enum-value changes are each separate categories it was never scoped to catch.',
+    gotchas: [
+      'Even a structural before/after comparison has a ceiling: an enum value changing while its type stays the same (\'pending\' to \'shipped\', both strings) is undetectable by any schema-diff tool, structural or automated -- it only breaks a consumer with exhaustive, no-default pattern matching.',
+    ],
+  },
   'api-design/openapi-contracts': {
     apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
     related: [
@@ -34744,6 +35470,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'A hand-written OpenAPI spec can drift from the actual implementation over time — generating it FROM code annotations (or validating it against real traffic) keeps it accurate.',
       'The spec describing an endpoint does not guarantee the implementation actually conforms — contract testing closes this verification gap.',
+    ],
+  },
+  'api-design/openapi-contracts/discriminator-based-oneof-actually-parsed': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Extending the Validator for Nested Arrays', route: '/api-design/openapi-contracts/extending-the-validator-for-nested-arrays' },
+      { label: 'OpenAPI & Contracts (overview)', route: '/api-design/openapi-contracts' },
+    ],
+    tip: 'The discriminator field is purely a ROUTING hint -- validation still comes entirely from the individual oneOf schemas; discriminator just tells a parser which single schema to check a payload against instead of trying every one.',
+    gotchas: [
+      'An unrecognized discriminator value usually means the client is sending a shape the spec does not know about yet, not a payload that merely fails validation for a known shape -- worth handling as its own case.',
+    ],
+  },
+  'api-design/openapi-contracts/extending-the-validator-for-nested-arrays': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Discriminator-Based oneOf, Actually Parsed', route: '/api-design/openapi-contracts/discriminator-based-oneof-actually-parsed' },
+      { label: 'A Minimal Breaking-Change Detector', route: '/api-design/openapi-contracts/a-minimal-breaking-change-detector' },
+    ],
+    tip: 'A schema validator that only checks one flat level of properties can validate a fraction of what a real OpenAPI spec describes -- real schemas nest arrays and objects constantly, which needs a recursive validator, not a wider flat one.',
+    gotchas: [
+      'The recursive validator tracks no depth counter at all -- each call only prepends its own field[index]. prefix onto whatever the deeper call already returned, which is what builds the full nested error path.',
+    ],
+  },
+  'api-design/openapi-contracts/a-minimal-breaking-change-detector': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Extending the Validator for Nested Arrays', route: '/api-design/openapi-contracts/extending-the-validator-for-nested-arrays' },
+      { label: 'OpenAPI & Contracts (overview)', route: '/api-design/openapi-contracts' },
+    ],
+    tip: 'Only three comparisons catch most breaking changes: a field removed, an existing field\'s type changed, or a field becoming required that was not required before -- a brand-new OPTIONAL field is always safe to add.',
+    gotchas: [
+      'A field moving from required to optional is not automatically safe to leave undetected -- whether it is depends on the server\'s actual runtime behavior, not just the schema text.',
     ],
   },
   'api-design/rate-limiting': {
@@ -34757,6 +35516,84 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Token bucket and sliding window are the two dominant rate-limiting algorithms, with different burst-tolerance characteristics worth choosing deliberately.',
     ],
   },
+  'api-design/rate-limiting/the-sliding-windows-rejected-request-lockout-bug': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'A Lua-Script Atomic Token Bucket', route: '/api-design/rate-limiting/a-lua-script-atomic-token-bucket' },
+      { label: 'Rate Limiting (overview)', route: '/api-design/rate-limiting' },
+    ],
+    tip: 'A rejected request still got permanently added to the sliding window it was denied entry to -- a retrying client (exactly the well-behaved retry pattern a 429 is supposed to encourage) could become permanently locked out.',
+    gotchas: [
+      'Verified via simulation: a client that retries once per second after a rejection never gets an allowed request again for 70+ seconds under the buggy version, while the fixed version recovers exactly 60 seconds after its last ALLOWED request.',
+    ],
+  },
+  'api-design/rate-limiting/a-lua-script-atomic-token-bucket': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'The Sliding Window’s Rejected-Request Lockout Bug', route: '/api-design/rate-limiting/the-sliding-windows-rejected-request-lockout-bug' },
+      { label: 'A GraphQL Query-Complexity Limiter', route: '/api-design/rate-limiting/a-graphql-query-complexity-limiter' },
+    ],
+    tip: 'A Redis Lua script executes as one atomic unit against Redis\'s single-threaded command processor -- no other client\'s command can interleave partway through it, unlike a plain pipeline, which only batches round trips.',
+    gotchas: [
+      'The page\'s own in-memory TokenBucket class works correctly for a single process only -- the same "not shared across instances" gap its own separate mistake block warns against for a different algorithm.',
+    ],
+  },
+  'api-design/rate-limiting/a-graphql-query-complexity-limiter': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'A Lua-Script Atomic Token Bucket', route: '/api-design/rate-limiting/a-lua-script-atomic-token-bucket' },
+      { label: 'Rate Limiting (overview)', route: '/api-design/rate-limiting' },
+    ],
+    tip: 'A client comfortably within a generous request-count budget can still be denied by a complexity-based limiter -- request count and actual server cost are only loosely correlated on a single GraphQL endpoint where queries can ask for wildly different amounts of work.',
+    gotchas: [
+      'A field returning a LIST fans its own children\'s cost out by however many items it\'s expected to return -- a small nested query under two list fields can carry a genuinely large complexity score.',
+    ],
+  },
+  'api-design/api-security': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Rate Limiting', route: '/api-design/rate-limiting' },
+      { label: 'Breaking Changes', route: '/api-design/breaking-changes' },
+    ],
+    tip: 'AuthN and AuthZ are checked on EVERY request, not just at login -- middleware should reject unauthenticated requests with 401 before business logic ever runs, and check permissions with 403 after identity is established.',
+    gotchas: [
+      'Never accept alg: none when verifying a JWT -- always pin the expected algorithm server-side, never let the token\'s own header decide how to verify it.',
+      '404 is for truly non-existent resources; 403 is for existing resources the authenticated caller lacks permission for -- conflating the two makes debugging permission bugs much harder.',
+    ],
+  },
+  'api-design/api-security/the-undeclared-createuserschema-reference': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Output-Side Field Allowlisting for API3', route: '/api-design/api-security/output-side-field-allowlisting-for-api3' },
+      { label: 'API Security (overview)', route: '/api-design/api-security' },
+    ],
+    tip: 'Mass-assignment protection comes from a handler only ever destructuring the fields its schema allows -- an extra key in the raw request body is simply never read into a variable, regardless of the schema\'s total field count.',
+    gotchas: [
+      'A codeTab whose every individual piece looks syntactically correct can still reference a name that was never declared under that name anywhere in the file -- always check every identifier a later line uses against what an earlier line actually declared.',
+    ],
+  },
+  'api-design/api-security/output-side-field-allowlisting-for-api3': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'The Undeclared CreateUserSchema Reference', route: '/api-design/api-security/the-undeclared-createuserschema-reference' },
+      { label: 'A Token-Bucket Rate Limiter With Real Headers', route: '/api-design/api-security/a-token-bucket-rate-limiter-with-real-headers' },
+    ],
+    tip: 'Input validation and output serialization are two INDEPENDENT allowlists -- fixing what a request can write says nothing about what a response can leak back out.',
+    gotchas: [
+      'An allowlist (name only the safe fields) is safe by default for new fields added later; a denylist (strip the bad fields) leaks new sensitive fields by default until someone remembers to add them to the strip list.',
+    ],
+  },
+  'api-design/api-security/a-token-bucket-rate-limiter-with-real-headers': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Output-Side Field Allowlisting for API3', route: '/api-design/api-security/output-side-field-allowlisting-for-api3' },
+      { label: 'API Security (overview)', route: '/api-design/api-security' },
+    ],
+    tip: 'A token bucket at 0 remaining tokens is not permanently exhausted -- it keeps refilling at its configured rate, so RateLimit-Remaining recovering over time is expected behavior, not a bug.',
+    gotchas: [
+      'The four standard rate-limit headers (RateLimit-Limit/Remaining/Reset, Retry-After) describe the caller-facing contract, not the internal algorithm -- a sliding-window or fixed-window limiter reports the identical four headers from its own different internal state.',
+    ],
+  },
   'api-design/webhook-design': {
     apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
     related: [
@@ -34766,6 +35603,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Signing webhook payloads (HMAC signature in a header) lets receivers verify the request genuinely came from the claimed sender, not a spoofed request.',
       'A receiver that takes too long to respond can cause the sender to time out and retry, potentially causing duplicate processing if the original request eventually also succeeds.',
+    ],
+  },
+  'api-design/webhook-design/bullmqs-exponential-backoff-computed-precisely': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Fan-Out With Per-Subscriber Rate Limiting', route: '/api-design/webhook-design/fan-out-with-per-subscriber-rate-limiting' },
+      { label: 'Webhook Design (overview)', route: '/api-design/webhook-design' },
+    ],
+    tip: 'BullMQ\'s "attempts" option configures the TOTAL number of tries, not the number of retries after the first -- 6 attempts means only 5 retry delays, verified against BullMQ\'s own documented 2^(attemptNumber-1)*delay formula.',
+    gotchas: [
+      'The first retry delay under exponential backoff starts at TWICE the base delay (2^1), not the bare base delay itself (2^0) -- a common off-by-one assumption.',
+    ],
+  },
+  'api-design/webhook-design/fan-out-with-per-subscriber-rate-limiting': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'BullMQ’s Exponential Backoff, Computed Precisely', route: '/api-design/webhook-design/bullmqs-exponential-backoff-computed-precisely' },
+      { label: 'Secret Rotation During a Transition Window', route: '/api-design/webhook-design/secret-rotation-during-a-transition-window' },
+    ],
+    tip: 'Rate-limiting PER subscriber means each subscriber gets its own independent budget -- a shared limiter across all subscribers would turn "per-subscriber" into a coarser global rate limit instead.',
+    gotchas: [
+      'A rate-limited delivery is a deferral, not a failure -- it never reached the network, so it shouldn\'t consume the same retry/backoff budget reserved for genuine consumer-side delivery failures.',
+    ],
+  },
+  'api-design/webhook-design/secret-rotation-during-a-transition-window': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Fan-Out With Per-Subscriber Rate Limiting', route: '/api-design/webhook-design/fan-out-with-per-subscriber-rate-limiting' },
+      { label: 'Webhook Design (overview)', route: '/api-design/webhook-design' },
+    ],
+    tip: 'Verification during rotation tries every currently-valid secret (new then old) until one matches -- each individual comparison still uses the same timing-safe check, so accepting multiple secrets doesn\'t weaken any single comparison\'s security.',
+    gotchas: [
+      'The old secret must be actively REMOVED once the transition window ends -- leaving both secrets valid forever defeats the security purpose of rotating a potentially-compromised secret in the first place.',
     ],
   },
   'api-design/hateoas-hypermedia': {
@@ -34779,6 +35649,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'When implemented, hypermedia links can reduce coupling between client and server URL structure, since clients follow links rather than constructing URLs from templates.',
     ],
   },
+  'api-design/hateoas-hypermedia/the-missing-json-parse-in-the-link-following-example': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'A Real JSON:API Response Shape', route: '/api-design/hateoas-hypermedia/a-real-jsonapi-response-shape' },
+      { label: 'HATEOAS & Hypermedia (overview)', route: '/api-design/hateoas-hypermedia' },
+    ],
+    tip: 'fetch() resolves to a Response object, not the parsed JSON body -- .json() must be called explicitly before any field from the response body, like _links, is actually reachable.',
+    gotchas: [
+      'A Response body can only be read once -- calling .json() a second time on the same Response object throws, which is part of why parsing it once, immediately, is the safer pattern.',
+    ],
+  },
+  'api-design/hateoas-hypermedia/a-real-jsonapi-response-shape': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'The Missing .json() Parse in the Link-Following Example', route: '/api-design/hateoas-hypermedia/the-missing-json-parse-in-the-link-following-example' },
+      { label: 'Pagination via the Link Header (RFC 8288)', route: '/api-design/hateoas-hypermedia/pagination-via-the-link-header-rfc-8288' },
+    ],
+    tip: 'A relationship\'s own "data" field is a bare type+id pointer, never the related resource\'s attributes -- the full data, if present, lives separately in the top-level "included" array, matched by that same pointer.',
+    gotchas: [
+      'The "included" array is a single, flat, top-level list shared across the whole document -- not scoped per relationship.',
+    ],
+  },
+  'api-design/hateoas-hypermedia/pagination-via-the-link-header-rfc-8288': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'A Real JSON:API Response Shape', route: '/api-design/hateoas-hypermedia/a-real-jsonapi-response-shape' },
+      { label: 'HATEOAS & Hypermedia (overview)', route: '/api-design/hateoas-hypermedia' },
+    ],
+    tip: 'The Link header and a HAL-style _links body can coexist on the same response -- a common middle ground uses Link headers for well-understood relations like pagination while keeping the JSON body itself plain.',
+    gotchas: [
+      'A client following Link-header URLs never needs to understand the API\'s own query-parameter conventions -- each relation resolves to a complete, ready-to-fetch URL.',
+    ],
+  },
   'api-design/graphql-fundamentals': {
     apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
     related: [
@@ -34788,6 +35691,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'A naive GraphQL resolver implementation is prone to the N+1 query problem — DataLoader-style batching is required to avoid one database query per resolved field.',
       'GraphQL\'s single endpoint makes traditional HTTP-level caching (which relies on distinct URLs per resource) much harder than with REST.',
+    ],
+  },
+  'api-design/graphql-fundamentals/query-user-is-nullable-not-user-the-comment-was-wrong': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'DataLoader Batching via Microtask Timing', route: '/api-design/graphql-fundamentals/dataloader-batching-via-microtask-timing' },
+      { label: 'GraphQL Fundamentals (overview)', route: '/api-design/graphql-fundamentals' },
+    ],
+    tip: 'Returning null from a NON-NULL field triggers an automatic GraphQL execution error -- but returning null from an already-nullable field (like this page\'s own Query.user) is perfectly valid execution, no error at all.',
+    gotchas: [
+      'An explicit thrown error still beats a bare null on a nullable field -- it lets clients distinguish "not found" from "permission denied" from "server error", which a bare null cannot.',
+    ],
+  },
+  'api-design/graphql-fundamentals/dataloader-batching-via-microtask-timing': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Query.user Is Nullable, Not User! — The Comment Was Wrong', route: '/api-design/graphql-fundamentals/query-user-is-nullable-not-user-the-comment-was-wrong' },
+      { label: 'A Directive-Style Auth Wrapper', route: '/api-design/graphql-fundamentals/a-directive-style-auth-wrapper' },
+    ],
+    tip: 'DataLoader batching relies on JS microtask timing (process.nextTick), not a fixed delay -- every synchronously-executing sibling resolver gets to queue its .load() call before the deferred batch dispatch fires.',
+    gotchas: [
+      'A real DataLoader also dedupes identical keys and caches results within a request -- the timing mechanism alone only explains the BATCHING, not those additional optimizations layered on top of it.',
+    ],
+  },
+  'api-design/graphql-fundamentals/a-directive-style-auth-wrapper': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'DataLoader Batching via Microtask Timing', route: '/api-design/graphql-fundamentals/dataloader-batching-via-microtask-timing' },
+      { label: 'GraphQL Fundamentals (overview)', route: '/api-design/graphql-fundamentals' },
+    ],
+    tip: 'A withAuth() wrapper and a real schema directive both centralize the SAME check into one reusable place -- the security outcome is identical to a correctly-written inline resolver check, only where the logic lives differs.',
+    gotchas: [
+      'Hiding an operation from introspection is not a security boundary -- a server still parses and executes any syntactically valid query text sent to the endpoint, regardless of what a client\'s tooling happened to show them.',
     ],
   },
   'api-design/graphql-vs-rest': {
@@ -34802,6 +35738,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Many production systems use both — REST for simple CRUD and public APIs, GraphQL for complex, client-driven aggregation needs.',
     ],
   },
+  'api-design/graphql-vs-rest/the-missing-precedence-rule-in-recommendapi': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Automatic Persisted Queries: The Hash Registration Flow', route: '/api-design/graphql-vs-rest/automatic-persisted-queries-the-hash-registration-flow' },
+      { label: 'GraphQL vs REST (overview)', route: '/api-design/graphql-vs-rest' },
+    ],
+    tip: 'A function passing all of its own worked examples says nothing about inputs those examples never cover -- the original Challenge solution had a real precedence bug only exposed by a client count of 5 combined with caching-without-aggregation.',
+    gotchas: [
+      'When a spec says rules are "checked in order," WHERE a new branch sits in the if-chain is part of correctness, not a stylistic choice -- the same condition fixes the bug in one position and does not in another.',
+    ],
+  },
+  'api-design/graphql-vs-rest/automatic-persisted-queries-the-hash-registration-flow': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'The Missing Precedence Rule in recommendApi', route: '/api-design/graphql-vs-rest/the-missing-precedence-rule-in-recommendapi' },
+      { label: 'Federation Entity Resolution Across Two Subgraphs', route: '/api-design/graphql-vs-rest/federation-entity-resolution-across-two-subgraphs' },
+    ],
+    tip: 'APQ registers a query the first time any client sends its full text, keyed by a server-recomputed SHA-256 hash -- every subsequent request for that same query, from ANY client, becomes a cache hit with no need to resend the full query.',
+    gotchas: [
+      'The server must recompute the hash itself rather than trust a client-supplied one -- otherwise a malicious client could register an arbitrary hash pointing at different content, hijacking what another client\'s cached hash actually resolves to.',
+    ],
+  },
+  'api-design/graphql-vs-rest/federation-entity-resolution-across-two-subgraphs': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Automatic Persisted Queries: The Hash Registration Flow', route: '/api-design/graphql-vs-rest/automatic-persisted-queries-the-hash-registration-flow' },
+      { label: 'GraphQL vs REST (overview)', route: '/api-design/graphql-vs-rest' },
+    ],
+    tip: 'An extending subgraph\'s reference resolver receives only the shared @key fields, never the full entity -- keeping subgraphs decoupled so each can evolve its own schema without rippling changes into services that never needed those fields.',
+    gotchas: [
+      'Federation has no single aggregating service the way a BFF does -- each subgraph independently owns a slice of the schema, and the gateway\'s merging logic is completely generic across every subgraph pair.',
+    ],
+  },
   'api-design/grpc-service-patterns': {
     apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
     related: [
@@ -34812,6 +35781,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Streaming RPCs (client, server, and bidirectional streaming) are a first-class gRPC feature with no clean REST equivalent.',
       'gRPC\'s strict typed contracts (via .proto files) catch integration mismatches at compile time that a loosely-typed REST/JSON contract would only surface at runtime.',
+    ],
+  },
+  'api-design/grpc-service-patterns/the-chat-handler-that-never-actually-broadcasts': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'A Real gRPC Interceptor Chain', route: '/api-design/grpc-service-patterns/a-real-grpc-interceptor-chain' },
+      { label: 'gRPC Service Patterns (overview)', route: '/api-design/grpc-service-patterns' },
+    ],
+    tip: 'call.write() can only ever reach the SAME connection a message arrived on -- broadcasting to other connected clients needs an explicit registry of every active call, added on connect and removed on both \'end\' and \'cancelled\'.',
+    gotchas: [
+      'The original, un-registry-backed handler was not broken in the sense of crashing -- it correctly implemented an echo server, just not the broadcast chat the comment claimed.',
+    ],
+  },
+  'api-design/grpc-service-patterns/a-real-grpc-interceptor-chain': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'The Chat Handler That Never Actually Broadcasts', route: '/api-design/grpc-service-patterns/the-chat-handler-that-never-actually-broadcasts' },
+      { label: 'RetryInfo-Aware Retry Instead of a Guessed Backoff', route: '/api-design/grpc-service-patterns/retryinfo-aware-retry-instead-of-a-guessed-backoff' },
+    ],
+    tip: 'Not calling next() is a normal, intentional way for an interceptor to short-circuit the chain -- an auth interceptor that rejects a call simply returns its own error instead, and nothing after it in the chain ever runs.',
+    gotchas: [
+      'Interceptor ORDER is a real design decision, not an implementation detail -- whether a rejected call still gets logged depends entirely on whether logging sits before or after the interceptor that rejected it.',
+    ],
+  },
+  'api-design/grpc-service-patterns/retryinfo-aware-retry-instead-of-a-guessed-backoff': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'A Real gRPC Interceptor Chain', route: '/api-design/grpc-service-patterns/a-real-grpc-interceptor-chain' },
+      { label: 'gRPC Service Patterns (overview)', route: '/api-design/grpc-service-patterns' },
+    ],
+    tip: 'A retryable status code alone does not say how long to wait -- RetryInfo lets the server specify the exact delay based on its own knowledge of the failure, which a fixed or client-guessed backoff has no way to replicate.',
+    gotchas: [
+      'Respecting the server-specified delay precisely can still recreate a thundering-herd overload if many clients received the identical delay and retry in lockstep -- client-side jitter on top of it is a real, separate mitigation.',
     ],
   },
   'api-design/protocol-buffers': {
@@ -34825,6 +35827,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Adding a new optional field is backward-compatible; removing or renumbering an existing field is not.',
     ],
   },
+  'api-design/protocol-buffers/a-oneof-discriminated-union-actually-implemented': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'google.protobuf.Any: Real Polymorphic Pack/Unpack', route: '/api-design/protocol-buffers/google-protobuf-any-real-polymorphic-pack-unpack' },
+      { label: 'Protocol Buffers (overview)', route: '/api-design/protocol-buffers' },
+    ],
+    tip: 'A oneof group\'s exclusivity is enforced by GENERATED CODE, not a convention -- every setter for a field in the group clears the others as a side effect, making the "only one at a time" rule structurally impossible to violate.',
+    gotchas: [
+      'A plain TS interface with three optional fields gives no such guarantee -- nothing stops a caller from setting more than one field at once; only the class-based accessor pattern enforces it.',
+    ],
+  },
+  'api-design/protocol-buffers/google-protobuf-any-real-polymorphic-pack-unpack': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'A oneof Discriminated Union, Actually Implemented', route: '/api-design/protocol-buffers/a-oneof-discriminated-union-actually-implemented' },
+      { label: 'FieldMask: Partial Updates by Explicit Field Path', route: '/api-design/protocol-buffers/fieldmask-partial-updates-by-explicit-field-path' },
+    ],
+    tip: 'Any is just a type_url string plus raw bytes -- it carries no decoding intelligence of its own; the actual polymorphism comes entirely from application code maintaining a registry mapping type URLs to decoders.',
+    gotchas: [
+      'An unrecognized type_url does not mean the payload is corrupted -- it usually means the receiver simply has not been updated to recognize a newer message type yet.',
+    ],
+  },
+  'api-design/protocol-buffers/fieldmask-partial-updates-by-explicit-field-path': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'google.protobuf.Any: Real Polymorphic Pack/Unpack', route: '/api-design/protocol-buffers/google-protobuf-any-real-polymorphic-pack-unpack' },
+      { label: 'Protocol Buffers (overview)', route: '/api-design/protocol-buffers' },
+    ],
+    tip: 'proto3 messages can never distinguish "field absent" from "field explicitly zero" the way a JS object can -- FieldMask solves this with an explicit, separate list of field paths the client intends to update, not by inspecting the message\'s own shape.',
+    gotchas: [
+      'A dotted path like address.city reaches precisely into a nested sub-message -- it does not replace the whole address object, and every other field on the record is left completely untouched.',
+    ],
+  },
   'api-design/grpc-web-transcoding': {
     apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
     related: [
@@ -34836,6 +35871,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'JSON transcoding (via a gateway like grpc-gateway) lets REST-only consumers use a gRPC-first backend without them needing any gRPC awareness at all.',
     ],
   },
+  'api-design/grpc-web-transcoding/a-real-http-transcoding-router': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Content Negotiation on a Connect Server', route: '/api-design/grpc-web-transcoding/content-negotiation-on-a-connect-server' },
+      { label: 'gRPC-Web & Transcoding (overview)', route: '/api-design/grpc-web-transcoding' },
+    ],
+    tip: 'Parsing one google.api.http annotation string is only the first step -- routing a REAL request means matching it against many registered routes and binding path parameters, including nested ones like user.id, into the right place on the outgoing request.',
+    gotchas: [
+      'A dotted path binding like user.id must merge into an existing nested object, not overwrite it -- a naive implementation can silently clobber sibling fields the request body already set.',
+    ],
+  },
+  'api-design/grpc-web-transcoding/content-negotiation-on-a-connect-server': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'A Real HTTP Transcoding Router', route: '/api-design/grpc-web-transcoding/a-real-http-transcoding-router' },
+      { label: 'Which Streaming Patterns Actually Work in a Browser', route: '/api-design/grpc-web-transcoding/which-streaming-patterns-actually-work-in-a-browser' },
+    ],
+    tip: 'A Connect server must decode the request AND encode the response using the SAME Content-Type the client specified -- silently switching formats between what was sent and what comes back would break any client that only knows how to parse its own requested format.',
+    gotchas: [
+      'An unrecognized Content-Type should fail explicitly, not silently fall back to a default encoding the client never asked for.',
+    ],
+  },
+  'api-design/grpc-web-transcoding/which-streaming-patterns-actually-work-in-a-browser': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Content Negotiation on a Connect Server', route: '/api-design/grpc-web-transcoding/content-negotiation-on-a-connect-server' },
+      { label: 'gRPC-Web & Transcoding (overview)', route: '/api-design/grpc-web-transcoding' },
+    ],
+    tip: 'Connect\'s streaming support is a strict superset of gRPC-Web\'s -- every pattern gRPC-Web supports, Connect also supports, plus Client and Bidirectional Streaming, which gRPC-Web cannot do at all.',
+    gotchas: [
+      '"Batch into a single unary call" fixes Client Streaming\'s incompatibility with gRPC-Web, but does not generalize to Bidirectional Streaming -- an ongoing, real-time exchange like chat has no natural single batch point.',
+    ],
+  },
   'api-design/websockets-sse-polling': {
     apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
     related: [
@@ -34845,6 +35913,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'SSE automatically reconnects on connection drop with built-in browser support — WebSockets require hand-rolled reconnection logic.',
       'WebSockets don\'t work transparently through all corporate proxies/firewalls the way plain HTTP-based SSE does, a real deployment consideration.',
+    ],
+  },
+  'api-design/websockets-sse-polling/the-silently-dropped-browseronly-rule': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Redis Pub/Sub Fanout Across Server Instances', route: '/api-design/websockets-sse-polling/redis-pub-sub-fanout-across-server-instances' },
+      { label: 'WebSockets vs SSE vs Polling (overview)', route: '/api-design/websockets-sse-polling' },
+    ],
+    tip: 'A "Simplify" shortcut in a Challenge description is a claim to verify, not trust by default -- the original solution silently dropped a browserOnly-based rule that was not actually redundant for one real input.',
+    gotchas: [
+      'A parameter accepted in a function\'s type signature but never referenced in its body is a real gap TypeScript cannot catch on its own -- only comparing the implementation against the stated spec catches it.',
+    ],
+  },
+  'api-design/websockets-sse-polling/redis-pub-sub-fanout-across-server-instances': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'The Silently Dropped browserOnly Rule', route: '/api-design/websockets-sse-polling/the-silently-dropped-browseronly-rule' },
+      { label: 'SSE Gap Recovery With a Ring Buffer', route: '/api-design/websockets-sse-polling/sse-gap-recovery-with-a-ring-buffer' },
+    ],
+    tip: 'Every server instance both publishes to AND subscribes from the same shared channel -- even a message originating locally travels through the pub/sub bus rather than taking a direct shortcut to that instance\'s own local clients.',
+    gotchas: [
+      'The actual WebSocket connections are never shared or moved between instances -- only the message data crosses the shared bus; a client\'s connection stays with whichever single instance it originally connected to.',
+    ],
+  },
+  'api-design/websockets-sse-polling/sse-gap-recovery-with-a-ring-buffer': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Redis Pub/Sub Fanout Across Server Instances', route: '/api-design/websockets-sse-polling/redis-pub-sub-fanout-across-server-instances' },
+      { label: 'WebSockets vs SSE vs Polling (overview)', route: '/api-design/websockets-sse-polling' },
+    ],
+    tip: 'A bounded ring buffer trades guaranteed recovery for bounded memory -- a client reconnecting after the buffer has evicted events it missed needs an explicit gap signal, not a silent "fully caught up" response.',
+    gotchas: [
+      'The event store tracks events globally with zero per-client state -- the client-provided Last-Event-ID header (sent automatically by EventSource on reconnect) is what lets one shared store correctly resume many different clients.',
     ],
   },
 
@@ -34859,6 +35960,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Observability is about being able to ask NEW questions of a system without shipping new code — monitoring alone (pre-defined dashboards) can\'t answer questions nobody thought to instrument in advance.',
       'Collecting all three pillars without CORRELATION (shared trace/request IDs across them) leaves you with three separate haystacks instead of one connected picture.',
+    ],
+  },
+  'observability/observability-fundamentals/lightsteps-end-of-life-verifying-a-tool-is-still-alive': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Classifying the Fourth MELT Signal: Events', route: '/observability/observability-fundamentals/classifying-the-fourth-melt-signal-events' },
+      { label: 'Observability Fundamentals (overview)', route: '/observability/observability-fundamentals' },
+    ],
+    tip: 'A tool being ARCHIVED (maintainer stops developing it, software may keep running) and a tool reaching END-OF-LIFE (vendor shuts the hosted SERVICE down on a fixed date) are two genuinely different severities of "a tool went away" -- worth distinguishing before deciding how urgent a fix is.',
+    gotchas: [
+      'A vendor\'s EOL date is often "date X or your subscription end date, whichever is later" -- a blanket announcement is rarely a single flat deadline for every customer.',
+    ],
+  },
+  'observability/observability-fundamentals/classifying-the-fourth-melt-signal-events': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Lightstep’s End-of-Life: Verifying a Tool Is Still Alive', route: '/observability/observability-fundamentals/lightsteps-end-of-life-verifying-a-tool-is-still-alive' },
+      { label: 'A Synthetic Monitoring Prober With SLO Evaluation', route: '/observability/observability-fundamentals/a-synthetic-monitoring-prober-with-slo-evaluation' },
+    ],
+    tip: 'MELT names Events as a signal distinct from logs: a discrete, named occurrence with rich attributes but genuinely no severity level -- "order placed" isn\'t more or less severe than "order cancelled," it just happened.',
+    gotchas: [
+      'A field-presence-based classifier has a real, honest limit: a record deliberately combining traits from two categories (an event with an optional severity level) can fall through every check and land on \'unknown\'.',
+    ],
+  },
+  'observability/observability-fundamentals/a-synthetic-monitoring-prober-with-slo-evaluation': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Classifying the Fourth MELT Signal: Events', route: '/observability/observability-fundamentals/classifying-the-fourth-melt-signal-events' },
+      { label: 'Observability Fundamentals (overview)', route: '/observability/observability-fundamentals' },
+    ],
+    tip: 'Synthetic probing runs on its own fixed schedule regardless of real traffic -- this is precisely why it can catch an outage during a genuinely quiet period that passive observability (metrics/logs/traces from real requests) has no data for at all.',
+    gotchas: [
+      'A probe that technically "succeeded" but exceeded its timeout should still count as an SLO failure -- a slow success isn\'t a real success, and treating it as one hides a genuine latency breach behind a true boolean.',
     ],
   },
   'observability/observability-maturity': {
@@ -34907,6 +36041,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'A short-lived batch job that finishes before the next scrape interval never gets scraped — the Pushgateway exists specifically to bridge this gap.',
       'PromQL rate() requires a counter metric type — applying it to a gauge produces meaningless results.',
+    ],
+  },
+  'observability/prometheus-metrics/the-activeconnections-gauge-leak-on-client-disconnect': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The Histogram’s Missing +Inf Bucket', route: '/observability/prometheus-metrics/the-histograms-missing-inf-bucket' },
+      { label: 'Prometheus & Metrics (overview)', route: '/observability/prometheus-metrics' },
+    ],
+    tip: 'A client-aborted request fires the response\'s "close" event, never "finish" -- a gauge that only decrements on "finish" leaks by exactly one for every request a client disconnects mid-flight.',
+    gotchas: [
+      '"close" ALSO fires after a normal completed response (after "finish" already ran) -- naively decrementing on every "close" would double-decrement every ordinary request, requiring an explicit idempotency guard.',
+    ],
+  },
+  'observability/prometheus-metrics/the-histograms-missing-inf-bucket': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The activeConnections Gauge Leak on Client Disconnect', route: '/observability/prometheus-metrics/the-activeconnections-gauge-leak-on-client-disconnect' },
+      { label: 'Verifying the Apdex Query’s Non-Obvious Algebra', route: '/observability/prometheus-metrics/verifying-the-apdex-querys-non-obvious-algebra' },
+    ],
+    tip: 'Real Prometheus histograms always have an implicit +Inf bucket that captures every observation no matter how large -- a hand-rolled histogram without one can silently undercount any value exceeding its largest configured boundary.',
+    gotchas: [
+      'Deriving a total observation count via Math.max of the finite buckets only works if every observation lands in at least one bucket -- an out-of-range value increments none of them.',
+    ],
+  },
+  'observability/prometheus-metrics/verifying-the-apdex-querys-non-obvious-algebra': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The Histogram’s Missing +Inf Bucket', route: '/observability/prometheus-metrics/the-histograms-missing-inf-bucket' },
+      { label: 'Prometheus & Metrics (overview)', route: '/observability/prometheus-metrics' },
+    ],
+    tip: 'Prometheus histogram bucket counts (le="X") are always CUMULATIVE -- le="0.4" already includes everything counted in le="0.1", which is exactly why the page\'s own Apdex query\'s "/2" isn\'t naively averaging two unrelated sums.',
+    gotchas: [
+      'A query that looks suspicious at a glance can still be provably correct -- re-deriving the same result independently from the textbook formula on concrete sample data is a general way to verify a cumulative-bucket-based query without needing a live Prometheus instance.',
     ],
   },
   'observability/grafana-dashboards': {
@@ -34979,6 +36146,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The OTel Collector (a separate process for receiving, processing, and exporting telemetry) decouples applications from any specific backend\'s ingestion format.',
     ],
   },
+  'observability/opentelemetry/the-payspan-leak-startactivespan-never-auto-ends': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Exemplars: Linking a Metric Observation to Its Trace', route: '/observability/opentelemetry/exemplars-linking-a-metric-observation-to-its-trace' },
+      { label: 'OpenTelemetry (overview)', route: '/observability/opentelemetry' },
+    ],
+    tip: 'Neither startSpan() nor startActiveSpan() auto-ends a span in the JS/Node.js SDK -- the developer is always responsible for calling span.end() themselves, ideally in a finally block, regardless of which API is used.',
+    gotchas: [
+      'A span nested inside another span\'s callback needs its OWN try/finally protection -- the outer span\'s finally block only ever ends the outer span, never anything created inside it.',
+    ],
+  },
+  'observability/opentelemetry/exemplars-linking-a-metric-observation-to-its-trace': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The paySpan Leak: startActiveSpan() Never Auto-Ends', route: '/observability/opentelemetry/the-payspan-leak-startactivespan-never-auto-ends' },
+      { label: 'A Tail-Sampling Decision Engine', route: '/observability/opentelemetry/a-tail-sampling-decision-engine' },
+    ],
+    tip: 'An exemplar attaches a sampled, representative trace ID to ONE specific metric observation within an aggregated bucket -- giving a reader a concrete "click here to see an actual slow request" starting point a bare aggregate count can\'t provide.',
+    gotchas: [
+      'Exemplar attachment only works because the histogram record() call happens WHILE a span is active for the current request -- context propagation is what makes the currently-active trace ID readable at that exact moment.',
+    ],
+  },
+  'observability/opentelemetry/a-tail-sampling-decision-engine': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Exemplars: Linking a Metric Observation to Its Trace', route: '/observability/opentelemetry/exemplars-linking-a-metric-observation-to-its-trace' },
+      { label: 'OpenTelemetry (overview)', route: '/observability/opentelemetry' },
+    ],
+    tip: 'Tail sampling can only decide once a trace is COMPLETE -- the buffer has to hold every span for a trace until its root span ends before it can know whether that trace had an error or was slow.',
+    gotchas: [
+      'Policy CHECK ORDER matters: checking errors and slow-latency policies before falling back to a probabilistic sample is what guarantees those two categories are never accidentally sampled out.',
+    ],
+  },
   'observability/opentelemetry-tracing': {
     apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
     related: [
@@ -35001,6 +36201,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'An SLO should be set slightly stricter than the SLA, so an SLO breach gives warning time to react BEFORE an SLA (and its financial/contractual consequences) is actually breached.',
       'Choosing the wrong SLI (measuring server-side success when users experience client-side failures) can show green dashboards during a real user-facing outage.',
+    ],
+  },
+  'observability/sli-slo-sla/the-challenges-impossible-worked-examples': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Reconciling Two Different Status-Category Models', route: '/observability/sli-slo-sla/reconciling-two-different-status-category-models' },
+      { label: 'SLIs, SLOs & SLAs (overview)', route: '/observability/sli-slo-sla' },
+    ],
+    tip: 'consumedRate and burnRate are computed by the identical formula in calculateSloStatus() -- they can never disagree, so any claimed output showing them as different values is a mathematical impossibility worth catching before trusting it.',
+    gotchas: [
+      'For a formula this sensitive (allowedErrorRate is often a very small number like 0.001), small differences in an input\'s later decimal places move the result across category boundaries -- always compute the actual value rather than eyeballing whether an example "looks right."',
+    ],
+  },
+  'observability/sli-slo-sla/reconciling-two-different-status-category-models': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The Challenge’s Impossible Worked Examples', route: '/observability/sli-slo-sla/the-challenges-impossible-worked-examples' },
+      { label: 'The Multi-Window Burn-Rate Decision Logic', route: '/observability/sli-slo-sla/the-multi-window-burn-rate-decision-logic' },
+    ],
+    tip: 'Two functions classifying the same underlying consumed-budget ratio into 3 vs. 4 named states are both individually valid design choices -- the real gap is that neither the page nor either function ever reconciles them against each other.',
+    gotchas: [
+      'Mapping a 4-category classifier onto a 3-tier policy isn\'t automatic -- the middle category can straddle a policy boundary, needing an explicit decision about which tier it belongs to.',
+    ],
+  },
+  'observability/sli-slo-sla/the-multi-window-burn-rate-decision-logic': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Reconciling Two Different Status-Category Models', route: '/observability/sli-slo-sla/reconciling-two-different-status-category-models' },
+      { label: 'SLIs, SLOs & SLAs (overview)', route: '/observability/sli-slo-sla' },
+    ],
+    tip: 'The page-level and ticket-level burn-rate conditions are two INDEPENDENT checks over completely different window pairs and thresholds -- one can fire without the other ever being true at all, in either direction.',
+    gotchas: [
+      'A brief 5-minute spike alone can look page-severity by eye, but the actual page condition also requires the 1-hour window to independently exceed the threshold -- a diluted 1h average correctly downgrades it to a ticket instead.',
     ],
   },
   'observability/error-budgets-toil': {

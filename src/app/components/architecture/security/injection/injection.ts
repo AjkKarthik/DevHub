@@ -240,7 +240,15 @@ const challenge: Challenge = {
 
 const q = buildSafeQuery('users', { email: 'a@b.com', active: 1 });
 console.log(q.sql);    // SELECT * FROM users WHERE email = $1 AND active = $2
-console.log(q.params); // ['a@b.com', 1]`,
+console.log(q.params); // ['a@b.com', 1]
+
+// NOTE: this only allowlists the TABLE name. The VALUES are safely
+// parameterized ($1, $2, ...), but the COLUMN names (Object.keys of
+// filters) are concatenated into the SQL string with no validation at
+// all -- exactly the gap the main page's own QnA on ORM raw queries
+// warns about ("dynamic column names... cannot be parameterized; use
+// an allowlist of valid column names instead"). See the "Safe Query
+// Builder's Own Column-Name Gap" subtopic for the exploit and fix.`,
 };
 
 const quiz: QuizQuestion[] = [

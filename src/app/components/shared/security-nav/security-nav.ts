@@ -202,32 +202,298 @@ const DIFF: Record<string, string> = Object.fromEntries(SEARCH_INDEX.map(e => [e
           </div>
         }
       }
-      <a routerLink="/security/rbac-abac" routerLinkActive="active"><span class="nl-text">RBAC &amp; ABAC</span>@if(progress.isDone('sec-rbac-abac')){<span class="nl-done">✓</span>}@if(d('sec-rbac-abac');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
-      <a routerLink="/security/claims-identity" routerLinkActive="active"><span class="nl-text">Claims &amp; Identity</span>@if(progress.isDone('sec-claims-identity')){<span class="nl-done">✓</span>}@if(d('sec-claims-identity');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
-      <a routerLink="/security/api-security" routerLinkActive="active"><span class="nl-text">API Security</span>@if(progress.isDone('sec-api-security')){<span class="nl-done">✓</span>}@if(d('sec-api-security');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+      <a routerLink="/security/rbac-abac" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">RBAC &amp; ABAC</span>
+        @if(progress.isDone('sec-rbac-abac')){<span class="nl-done">✓</span>}
+        @if(d('sec-rbac-abac');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}
+        @if (subtopicsOf('rbac-abac')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('rbac-abac')"
+                  (click)="toggleSubtopics('rbac-abac', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('rbac-abac'); as rbacSubs) {
+        @if (isSubtopicsExpanded('rbac-abac')) {
+          <div class="nav-subtopics">
+            @for (s of rbacSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/security/claims-identity" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Claims &amp; Identity</span>
+        @if(progress.isDone('sec-claims-identity')){<span class="nl-done">✓</span>}
+        @if(d('sec-claims-identity');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}
+        @if (subtopicsOf('claims-identity')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('claims-identity')"
+                  (click)="toggleSubtopics('claims-identity', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('claims-identity'); as claimsSubs) {
+        @if (isSubtopicsExpanded('claims-identity')) {
+          <div class="nav-subtopics">
+            @for (s of claimsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/security/api-security" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">API Security</span>
+        @if(progress.isDone('sec-api-security')){<span class="nl-done">✓</span>}
+        @if(d('sec-api-security');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}
+        @if (subtopicsOf('sec-api-security')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('sec-api-security')"
+                  (click)="toggleSubtopics('sec-api-security', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('sec-api-security'); as apiSecSubs) {
+        @if (isSubtopicsExpanded('sec-api-security')) {
+          <div class="nav-subtopics">
+            @for (s of apiSecSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Web Attacks</p>
-      <a routerLink="/security/xss" routerLinkActive="active"><span class="nl-text">Cross-Site Scripting</span>@if(progress.isDone('sec-xss')){<span class="nl-done">✓</span>}@if(d('sec-xss');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
-      <a routerLink="/security/csrf-clickjacking" routerLinkActive="active"><span class="nl-text">CSRF &amp; Clickjacking</span>@if(progress.isDone('sec-csrf-clickjacking')){<span class="nl-done">✓</span>}@if(d('sec-csrf-clickjacking');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
-      <a routerLink="/security/injection" routerLinkActive="active"><span class="nl-text">Injection Attacks</span>@if(progress.isDone('sec-injection')){<span class="nl-done">✓</span>}@if(d('sec-injection');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
-      <a routerLink="/security/security-headers" routerLinkActive="active"><span class="nl-text">Security Headers</span>@if(progress.isDone('sec-security-headers')){<span class="nl-done">✓</span>}@if(d('sec-security-headers');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+      <a routerLink="/security/xss" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Cross-Site Scripting</span>
+        @if(progress.isDone('sec-xss')){<span class="nl-done">✓</span>}
+        @if(d('sec-xss');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}
+        @if (subtopicsOf('xss')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('xss')"
+                  (click)="toggleSubtopics('xss', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('xss'); as xssSubs) {
+        @if (isSubtopicsExpanded('xss')) {
+          <div class="nav-subtopics">
+            @for (s of xssSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/security/csrf-clickjacking" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">CSRF &amp; Clickjacking</span>
+        @if(progress.isDone('sec-csrf-clickjacking')){<span class="nl-done">✓</span>}
+        @if(d('sec-csrf-clickjacking');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}
+        @if (subtopicsOf('csrf-clickjacking')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('csrf-clickjacking')"
+                  (click)="toggleSubtopics('csrf-clickjacking', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('csrf-clickjacking'); as csrfSubs) {
+        @if (isSubtopicsExpanded('csrf-clickjacking')) {
+          <div class="nav-subtopics">
+            @for (s of csrfSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/security/injection" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Injection Attacks</span>
+        @if(progress.isDone('sec-injection')){<span class="nl-done">✓</span>}
+        @if(d('sec-injection');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}
+        @if (subtopicsOf('injection')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('injection')"
+                  (click)="toggleSubtopics('injection', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('injection'); as injSubs) {
+        @if (isSubtopicsExpanded('injection')) {
+          <div class="nav-subtopics">
+            @for (s of injSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/security/security-headers" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Security Headers</span>
+        @if(progress.isDone('sec-security-headers')){<span class="nl-done">✓</span>}
+        @if(d('sec-security-headers');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}
+        @if (subtopicsOf('security-headers')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('security-headers')"
+                  (click)="toggleSubtopics('security-headers', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('security-headers'); as shSubs) {
+        @if (isSubtopicsExpanded('security-headers')) {
+          <div class="nav-subtopics">
+            @for (s of shSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Transport &amp; Crypto</p>
-      <a routerLink="/security/tls-https" routerLinkActive="active"><span class="nl-text">TLS &amp; HTTPS</span>@if(progress.isDone('sec-tls-https')){<span class="nl-done">✓</span>}@if(d('sec-tls-https');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
-      <a routerLink="/security/symmetric-encryption" routerLinkActive="active"><span class="nl-text">Symmetric Encryption</span>@if(progress.isDone('sec-symmetric-encryption')){<span class="nl-done">✓</span>}@if(d('sec-symmetric-encryption');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
-      <a routerLink="/security/asymmetric-cryptography" routerLinkActive="active"><span class="nl-text">Asymmetric Cryptography</span>@if(progress.isDone('sec-asymmetric-cryptography')){<span class="nl-done">✓</span>}@if(d('sec-asymmetric-cryptography');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
-      <a routerLink="/security/hashing" routerLinkActive="active"><span class="nl-text">Hashing &amp; MACs</span>@if(progress.isDone('sec-hashing')){<span class="nl-done">✓</span>}@if(d('sec-hashing');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+      <a routerLink="/security/tls-https" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">TLS &amp; HTTPS</span>
+        @if(progress.isDone('sec-tls-https')){<span class="nl-done">✓</span>}
+        @if(d('sec-tls-https');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}
+        @if (subtopicsOf('tls-https')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('tls-https')"
+                  (click)="toggleSubtopics('tls-https', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('tls-https'); as tlsSubs) {
+        @if (isSubtopicsExpanded('tls-https')) {
+          <div class="nav-subtopics">
+            @for (s of tlsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/security/symmetric-encryption" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Symmetric Encryption</span>
+        @if(progress.isDone('sec-symmetric-encryption')){<span class="nl-done">✓</span>}
+        @if(d('sec-symmetric-encryption');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}
+        @if (subtopicsOf('symmetric-encryption')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('symmetric-encryption')"
+                  (click)="toggleSubtopics('symmetric-encryption', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('symmetric-encryption'); as symSubs) {
+        @if (isSubtopicsExpanded('symmetric-encryption')) {
+          <div class="nav-subtopics">
+            @for (s of symSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/security/asymmetric-cryptography" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Asymmetric Cryptography</span>
+        @if(progress.isDone('sec-asymmetric-cryptography')){<span class="nl-done">✓</span>}
+        @if(d('sec-asymmetric-cryptography');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}
+        @if (subtopicsOf('asymmetric-cryptography')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('asymmetric-cryptography')"
+                  (click)="toggleSubtopics('asymmetric-cryptography', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('asymmetric-cryptography'); as asymSubs) {
+        @if (isSubtopicsExpanded('asymmetric-cryptography')) {
+          <div class="nav-subtopics">
+            @for (s of asymSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/security/hashing" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Hashing &amp; MACs</span>
+        @if(progress.isDone('sec-hashing')){<span class="nl-done">✓</span>}
+        @if(d('sec-hashing');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}
+        @if (subtopicsOf('hashing')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('hashing')"
+                  (click)="toggleSubtopics('hashing', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('hashing'); as hashSubs) {
+        @if (isSubtopicsExpanded('hashing')) {
+          <div class="nav-subtopics">
+            @for (s of hashSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Infrastructure</p>
-      <a routerLink="/security/secrets-management" routerLinkActive="active"><span class="nl-text">Secrets Management</span>@if(progress.isDone('sec-secrets-management')){<span class="nl-done">✓</span>}@if(d('sec-secrets-management');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
-      <a routerLink="/security/container-security" routerLinkActive="active"><span class="nl-text">Container Security</span>@if(progress.isDone('sec-container-security')){<span class="nl-done">✓</span>}@if(d('sec-container-security');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
-      <a routerLink="/security/supply-chain" routerLinkActive="active"><span class="nl-text">Supply Chain Security</span>@if(progress.isDone('sec-supply-chain')){<span class="nl-done">✓</span>}@if(d('sec-supply-chain');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+      <a routerLink="/security/secrets-management" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Secrets Management</span>
+        @if(progress.isDone('sec-secrets-management')){<span class="nl-done">✓</span>}
+        @if(d('sec-secrets-management');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}
+        @if (subtopicsOf('secrets-management')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('secrets-management')"
+                  (click)="toggleSubtopics('secrets-management', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('secrets-management'); as secmgmtSubs) {
+        @if (isSubtopicsExpanded('secrets-management')) {
+          <div class="nav-subtopics">
+            @for (s of secmgmtSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/security/container-security" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Container Security</span>
+        @if(progress.isDone('sec-container-security')){<span class="nl-done">✓</span>}
+        @if(d('sec-container-security');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}
+        @if (subtopicsOf('sec-container-security')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('sec-container-security')"
+                  (click)="toggleSubtopics('sec-container-security', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('sec-container-security'); as ctrsecSubs) {
+        @if (isSubtopicsExpanded('sec-container-security')) {
+          <div class="nav-subtopics">
+            @for (s of ctrsecSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/security/supply-chain" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Supply Chain Security</span>
+        @if(progress.isDone('sec-supply-chain')){<span class="nl-done">✓</span>}
+        @if(d('sec-supply-chain');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}
+        @if (subtopicsOf('supply-chain')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('supply-chain')"
+                  (click)="toggleSubtopics('supply-chain', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('supply-chain'); as supchainSubs) {
+        @if (isSubtopicsExpanded('supply-chain')) {
+          <div class="nav-subtopics">
+            @for (s of supchainSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

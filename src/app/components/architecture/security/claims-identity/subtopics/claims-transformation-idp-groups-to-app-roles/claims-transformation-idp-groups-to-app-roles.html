@@ -1,0 +1,26 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Claims & Identity" topicRoute="/security/claims-identity"
+    subtopicLabel="Claims Transformation — IdP Groups to App Roles" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">Claims Transformation — IdP Groups to App Roles</h1>
+  <p class="page-subtitle">The quiz describes mapping IdP groups to application roles in real detail. Here's the actual mapping table and transformation step, verified end-to-end.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>The next two subtopics build out attacks and mechanisms the quiz and QnA describe in real detail but never demonstrate in code: the audience-validation replay attack, and a DB-verified role recheck for destructive operations.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Claims & Identity" topicRoute="/security/claims-identity"
+    [next]="{ label: 'The Audience Validation Attack, Demonstrated', route: '/security/claims-identity/the-audience-validation-attack-demonstrated' }" />
+</div>

@@ -1,0 +1,27 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="SLIs, SLOs &amp; SLAs" topicRoute="/observability/sli-slo-sla"
+    subtopicLabel="Reconciling Two Different Status-Category Models" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">Reconciling Two Different Status-Category Models</h1>
+  <p class="page-subtitle">calculateSloStatus() uses three states, errorBudgetStatus() uses four — both classify the same underlying ratio. This subtopic reconciles them and surfaces a real boundary gap against the page's own policy tiers.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>The theory and QnA describe multi-window multi-burn-rate alerting in real detail, and the Prometheus Alerting codeTab configures it — but no plain function ever demonstrates the page/ticket decision logic directly. The final subtopic builds it.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="SLIs, SLOs &amp; SLAs" topicRoute="/observability/sli-slo-sla"
+    [prev]="{ label: 'The Challenge’s Impossible Worked Examples', route: '/observability/sli-slo-sla/the-challenges-impossible-worked-examples' }"
+    [next]="{ label: 'The Multi-Window Burn-Rate Decision Logic', route: '/observability/sli-slo-sla/the-multi-window-burn-rate-decision-logic' }" />
+</div>

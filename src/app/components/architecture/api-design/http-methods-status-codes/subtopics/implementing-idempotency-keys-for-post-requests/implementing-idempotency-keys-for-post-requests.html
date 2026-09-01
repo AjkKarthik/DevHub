@@ -1,0 +1,27 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="HTTP Methods & Status Codes" topicRoute="/api-design/http-methods-status-codes"
+    subtopicLabel="Implementing Idempotency Keys for POST Requests" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">Implementing Idempotency Keys for POST Requests</h1>
+  <p class="page-subtitle">The QnA describes the X-Idempotency-Key mechanism in precise detail — here’s the actual middleware, since no codeTab on the main page ever builds it.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>Quiz Q4 explains JSON Patch (RFC 6902) semantics in real technical detail as one of PATCH’s possible formats, but no codeTab shows the actual operation array. The next subtopic builds it.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="HTTP Methods & Status Codes" topicRoute="/api-design/http-methods-status-codes"
+    [prev]="{ label: '403 vs. 404: a Security-Posture Decision, Not a Rule', route: '/api-design/http-methods-status-codes/403-vs-404-a-security-posture-decision-not-a-rule' }"
+    [next]="{ label: 'JSON Patch (RFC 6902), Applied', route: '/api-design/http-methods-status-codes/json-patch-rfc-6902-applied' }" />
+</div>

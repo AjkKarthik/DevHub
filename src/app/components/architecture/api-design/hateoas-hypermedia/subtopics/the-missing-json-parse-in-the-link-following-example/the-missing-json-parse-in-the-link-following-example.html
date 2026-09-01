@@ -1,0 +1,26 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="HATEOAS & Hypermedia" topicRoute="/api-design/hateoas-hypermedia"
+    subtopicLabel="The Missing .json() Parse in the Link-Following Example" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">The Missing .json() Parse in the Link-Following Example</h1>
+  <p class="page-subtitle">The main page’s own “correct” link-following example threw the exact TypeError it was meant to prevent — fetch() resolves to a Response, not the parsed body.</p>
+  <app-page-meta [readingTime]="6" difficulty="beginner" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>The QnA names JSON:API’s data/included/links/meta structure in real detail, but no codeTab ever builds an actual JSON:API response. The next subtopic writes one.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="HATEOAS & Hypermedia" topicRoute="/api-design/hateoas-hypermedia"
+    [next]="{ label: 'A Real JSON:API Response Shape', route: '/api-design/hateoas-hypermedia/a-real-jsonapi-response-shape' }" />
+</div>

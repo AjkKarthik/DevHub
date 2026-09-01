@@ -93,9 +93,14 @@ async function getDbConfig(): Promise<DbConfig> {
 }
 
 // ── App startup ───────────────────────────────────────────────────────────────
+// pool is declared at module scope (not inside main()) specifically
+// because queryWithRetry() below needs to both READ and REASSIGN it --
+// a local const inside main() would be out of scope entirely there.
+let pool: Pool;
+
 async function main() {
   const config = await getDbConfig();
-  const pool = new Pool({ ...config }); // DB connection with fetched credentials
+  pool = new Pool({ ...config }); // DB connection with fetched credentials
   // ...
 }
 

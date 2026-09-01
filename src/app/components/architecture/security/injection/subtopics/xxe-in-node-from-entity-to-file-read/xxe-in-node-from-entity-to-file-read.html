@@ -1,0 +1,27 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Injection Attacks" topicRoute="/security/injection"
+    subtopicLabel="XXE in Node: From ENTITY to File Read" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">XXE in Node: From ENTITY to File Read</h1>
+  <p class="page-subtitle">The quiz explains XXE in real technical depth with zero code on the page — here's a working vulnerable Node.js XML parser and the exact option that fixes it.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>The quiz's own second-order SQL injection question describes a two-step attack in prose with no working code anywhere — the final subtopic builds it, reusing the parameterized-query patterns already established on the main page.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Injection Attacks" topicRoute="/security/injection"
+    [prev]="{ label: 'The Safe Query Builder’s Own Column-Name Gap', route: '/security/injection/safe-query-builders-own-column-name-gap' }"
+    [next]="{ label: 'Second-Order SQL Injection, Demonstrated', route: '/security/injection/second-order-sql-injection-demonstrated' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Security Headers" topicRoute="/security/security-headers"
+    subtopicLabel="Security Headers in CI: A Real Jest/Supertest Suite" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">Security Headers in CI: A Real Jest/Supertest Suite</h1>
+  <p class="page-subtitle">The QnA describes testing security headers in CI in prose only — here's the main page's own audit script turned into a real test suite that fails a build, not just a report a human might read.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>This completes the batch's three angles on the main page's own content — the helmet config's own COEP/CDN conflict, a real CSP report endpoint the QnA only describes, and now a CI test suite that actually enforces every header this whole page teaches.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Security Headers" topicRoute="/security/security-headers"
+    [prev]="{ label: 'Wiring a Real CSP Violation-Report Endpoint', route: '/security/security-headers/wiring-a-real-csp-violation-report-endpoint' }" />
+</div>

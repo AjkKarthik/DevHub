@@ -242,14 +242,13 @@ req.on('close', () => clearInterval(keepAlive));`,
 const challenge: Challenge = {
   title: 'Real-Time Transport Selector',
   language: 'typescript',
-  description: `Implement selectTransport(requirements: {bidirectional: boolean, highFrequency: boolean, standardProxy: boolean, browserOnly: boolean}): string:
-- bidirectional + highFrequency → 'WebSocket'
-- bidirectional (not high frequency) → 'WebSocket'
+  description: `Implement selectTransport(requirements: {bidirectional: boolean, highFrequency: boolean, standardProxy: boolean, browserOnly: boolean}): string, checking these rules IN ORDER (first match wins):
+- bidirectional (regardless of highFrequency) → 'WebSocket'
 - !bidirectional + standardProxy → 'SSE'
-- !bidirectional + !standardProxy → 'SSE or WebSocket'
-- browserOnly + !bidirectional → 'SSE'
-Simplify: if bidirectional is true → 'WebSocket'; else if standardProxy → 'SSE'; else → 'SSE or WebSocket'`,
-  hints: ['Check bidirectional first', 'SSE is preferred when proxies need to work'],
+- !bidirectional + !standardProxy + browserOnly → 'SSE'
+- !bidirectional + !standardProxy + !browserOnly → 'SSE or WebSocket'
+highFrequency never changes the answer on its own -- both bidirectional cases return 'WebSocket' regardless of its value.`,
+  hints: ['Check bidirectional first', 'SSE is preferred when proxies need to work', 'Check browserOnly before falling back to the ambiguous "SSE or WebSocket" answer'],
   starterCode: `function selectTransport(req: {bidirectional: boolean, highFrequency: boolean, standardProxy: boolean, browserOnly: boolean}): string {
   // TODO
   return '';
@@ -257,13 +256,16 @@ Simplify: if bidirectional is true → 'WebSocket'; else if standardProxy → 'S
   solution: `function selectTransport(req: {bidirectional: boolean, highFrequency: boolean, standardProxy: boolean, browserOnly: boolean}): string {
   if (req.bidirectional) return 'WebSocket';
   if (req.standardProxy) return 'SSE';
+  if (req.browserOnly) return 'SSE'; // browser-only clients: prefer SSE's simpler infra needs
   return 'SSE or WebSocket';
 }
 
 console.log(selectTransport({ bidirectional: true, highFrequency: true, standardProxy: false, browserOnly: false }));
 // WebSocket
 console.log(selectTransport({ bidirectional: false, highFrequency: false, standardProxy: true, browserOnly: true }));
-// SSE`,
+// SSE
+console.log(selectTransport({ bidirectional: false, highFrequency: false, standardProxy: false, browserOnly: true }));
+// SSE -- browserOnly is honored even without standardProxy`,
 };
 
 const quiz: QuizQuestion[] = [

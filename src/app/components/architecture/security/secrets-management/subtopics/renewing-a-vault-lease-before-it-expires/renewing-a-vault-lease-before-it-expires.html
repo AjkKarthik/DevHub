@@ -1,0 +1,26 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Secrets Management" topicRoute="/security/secrets-management"
+    subtopicLabel="Renewing a Vault Lease Before It Expires" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">Renewing a Vault Lease Before It Expires</h1>
+  <p class="page-subtitle">The quiz names the renew-before-expiry pattern precisely — here's the actual renewal loop, using Vault's real HTTP API, verified against the current docs.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>The quiz describes Vault's Transit engine as encryption-as-a-service in real detail with zero code — the next subtopic builds the actual encrypt/decrypt calls.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Secrets Management" topicRoute="/security/secrets-management"
+    [next]="{ label: 'Vault Transit: Encryption as a Service, Implemented', route: '/security/secrets-management/vault-transit-encryption-as-a-service-implemented' }" />
+</div>

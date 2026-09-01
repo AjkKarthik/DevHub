@@ -1,0 +1,27 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Observability Fundamentals" topicRoute="/observability/observability-fundamentals"
+    subtopicLabel="Classifying the Fourth MELT Signal: Events" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">Classifying the Fourth MELT Signal: Events</h1>
+  <p class="page-subtitle">The QnA names Events as a signal type genuinely distinct from logs — the Challenge's own classifier only recognizes three categories and never gets extended to cover it.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>The QnA on active vs. passive observability describes synthetic monitoring in real detail with zero code — the final subtopic builds a working synthetic prober tied to an actual SLO evaluation.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Observability Fundamentals" topicRoute="/observability/observability-fundamentals"
+    [prev]="{ label: 'Lightstep’s End-of-Life: Verifying a Tool Is Still Alive', route: '/observability/observability-fundamentals/lightsteps-end-of-life-verifying-a-tool-is-still-alive' }"
+    [next]="{ label: 'A Synthetic Monitoring Prober With SLO Evaluation', route: '/observability/observability-fundamentals/a-synthetic-monitoring-prober-with-slo-evaluation' }" />
+</div>

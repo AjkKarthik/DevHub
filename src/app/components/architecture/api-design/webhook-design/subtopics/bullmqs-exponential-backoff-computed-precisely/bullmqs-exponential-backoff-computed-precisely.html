@@ -1,0 +1,26 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Webhook Design" topicRoute="/api-design/webhook-design"
+    subtopicLabel="BullMQ’s Exponential Backoff, Computed Precisely" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">BullMQ’s Exponential Backoff, Computed Precisely</h1>
+  <p class="page-subtitle">The main page’s own webhook sender codeTab miscounted its own retry config — six delay values for a six-ATTEMPT (five-retry) setup, starting at the wrong number too.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>The QnA describes rate-limiting per subscriber during webhook fan-out in real depth, with no codeTab showing it running. The next subtopic builds it.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Webhook Design" topicRoute="/api-design/webhook-design"
+    [next]="{ label: 'Fan-Out With Per-Subscriber Rate Limiting', route: '/api-design/webhook-design/fan-out-with-per-subscriber-rate-limiting' }" />
+</div>

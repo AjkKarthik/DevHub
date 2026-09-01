@@ -1,0 +1,27 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="HATEOAS & Hypermedia" topicRoute="/api-design/hateoas-hypermedia"
+    subtopicLabel="A Real JSON:API Response Shape" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">A Real JSON:API Response Shape</h1>
+  <p class="page-subtitle">The QnA names data, included, links, and meta in real detail — here’s an actual compound document, verified against the JSON:API specification itself.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>Quiz Q5 names the Link HTTP header (RFC 8288) as a real GitHub-style pagination mechanism, but no codeTab ever builds it. The next subtopic implements it.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="HATEOAS & Hypermedia" topicRoute="/api-design/hateoas-hypermedia"
+    [prev]="{ label: 'The Missing .json() Parse in the Link-Following Example', route: '/api-design/hateoas-hypermedia/the-missing-json-parse-in-the-link-following-example' }"
+    [next]="{ label: 'Pagination via the Link Header (RFC 8288)', route: '/api-design/hateoas-hypermedia/pagination-via-the-link-header-rfc-8288' }" />
+</div>

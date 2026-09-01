@@ -225,7 +225,15 @@ Return all issues found, not just the first.`,
     const lower = seg.toLowerCase();
     // Skip path params like {id} or :id
     if (seg.startsWith('{') || seg.startsWith(':')) continue;
-    if (VERBS.includes(lower)) issues.push(\`Segment "\${seg}" is a verb — use a noun\`);
+    // startsWith, not an exact match -- a bare VERBS.includes(lower)
+    // check never fires on realistic verb-prefixed paths like
+    // "getUserById" or "createOrder" (the segment as a WHOLE never
+    // equals "get"/"create"); prefix matching catches the compound,
+    // real-world case, at the cost of occasionally flagging a
+    // genuine noun that happens to start with a verb word (e.g.
+    // "listings") -- a known, documented tradeoff of this simple
+    // heuristic.
+    if (VERBS.some(v => lower.startsWith(v))) issues.push(\`Segment "\${seg}" starts with a verb — use a noun\`);
     if (/[A-Z]/.test(seg)) issues.push(\`Segment "\${seg}" uses camelCase — use kebab-case\`);
   }
 
@@ -233,9 +241,10 @@ Return all issues found, not just the first.`,
 }
 
 console.log(validateApiPath('/users/42/orders'));           // valid
-console.log(validateApiPath('/getUserById'));               // invalid: verb
+console.log(validateApiPath('/getUserById'));               // invalid: verb + camelCase
 console.log(validateApiPath('/orderItems'));                // invalid: camelCase
-console.log(validateApiPath('/a/b/c/d/e'));                // invalid: too deep`,
+console.log(validateApiPath('/a/b/c/d/e'));                // invalid: too deep
+console.log(validateApiPath('/getusers'));                  // invalid: verb (all-lowercase, still caught)`,
 };
 
 const quiz: QuizQuestion[] = [

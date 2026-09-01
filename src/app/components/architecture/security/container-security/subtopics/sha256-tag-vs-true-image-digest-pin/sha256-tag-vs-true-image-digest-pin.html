@@ -1,0 +1,26 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Container Security" topicRoute="/security/container-security"
+    subtopicLabel="A sha256 Tag vs. a True Image Digest Pin" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">A sha256 Tag vs. a True Image Digest Pin</h1>
+  <p class="page-subtitle">The main page’s own Kubernetes Security Context sample used a colon where the mistakes block — two sections later — correctly used an at-sign. The difference is whether the image reference is actually immutable.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>Pinning correctly stops a swapped image from being pulled silently — but it says nothing about what happens once a shell gets spawned INSIDE a running container. The next subtopic builds a real Falco rule that detects exactly that.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Container Security" topicRoute="/security/container-security"
+    [next]="{ label: 'A Real Falco Rule Detecting a Shell in a Container', route: '/security/container-security/falco-rule-detects-shell-in-container' }" />
+</div>

@@ -1,7 +1,9 @@
-import { Component, inject } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Component, inject, signal } from '@angular/core';
+import { Router, NavigationEnd, RouterLink, RouterLinkActive } from '@angular/router';
+import { filter } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { ProgressService } from '../../../services/progress.service';
+import { SUBTOPICS } from '../../../data/subtopics';
 
 // Difficulty metadata
 const DIFF: Record<string, string> = {
@@ -38,22 +40,54 @@ const DIFF: Record<string, string> = {
     <div class="nav-group">
       <p class="nav-group-label">Foundations</p>
       @for (item of foundations; track item.route) {
-        <a [routerLink]="'/api-design/' + item.path" routerLinkActive="active" class="nav-link">
+        <a [routerLink]="'/api-design/' + item.path" routerLinkActive="active"
+           [routerLinkActiveOptions]="{exact:true}" class="nav-link">
           @if (progress.isDone(item.route)) { <span class="nl-done">✓</span> }
           <span class="nl-text">{{ item.label }}</span>
           @if (diff(item.route); as d) { <span class="nl-dot" [class]="d"></span> }
+          @if (subtopicsOf(item.path)) {
+            <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded(item.path)"
+                    (click)="toggleSubtopics(item.path, $event)" aria-label="Toggle subtopics">›</button>
+          }
         </a>
+        @if (subtopicsOf(item.path); as itemSubs) {
+          @if (isSubtopicsExpanded(item.path)) {
+            <div class="nav-subtopics">
+              @for (s of itemSubs; track s.route) {
+                <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                  <span class="nl-text">{{ s.label }}</span>
+                </a>
+              }
+            </div>
+          }
+        }
       }
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">REST Design</p>
       @for (item of restDesign; track item.route) {
-        <a [routerLink]="'/api-design/' + item.path" routerLinkActive="active" class="nav-link">
+        <a [routerLink]="'/api-design/' + item.path" routerLinkActive="active"
+           [routerLinkActiveOptions]="{exact:true}" class="nav-link">
           @if (progress.isDone(item.route)) { <span class="nl-done">✓</span> }
           <span class="nl-text">{{ item.label }}</span>
           @if (diff(item.route); as d) { <span class="nl-dot" [class]="d"></span> }
+          @if (subtopicsOf(item.path)) {
+            <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded(item.path)"
+                    (click)="toggleSubtopics(item.path, $event)" aria-label="Toggle subtopics">›</button>
+          }
         </a>
+        @if (subtopicsOf(item.path); as itemSubs) {
+          @if (isSubtopicsExpanded(item.path)) {
+            <div class="nav-subtopics">
+              @for (s of itemSubs; track s.route) {
+                <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                  <span class="nl-text">{{ s.label }}</span>
+                </a>
+              }
+            </div>
+          }
+        }
       }
     </div>
 
@@ -64,7 +98,22 @@ const DIFF: Record<string, string> = {
           @if (progress.isDone(item.route)) { <span class="nl-done">✓</span> }
           <span class="nl-text">{{ item.label }}</span>
           @if (diff(item.route); as d) { <span class="nl-dot" [class]="d"></span> }
+          @if (subtopicsOf(item.path)) {
+            <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded(item.path)"
+                    (click)="toggleSubtopics(item.path, $event)" aria-label="Toggle subtopics">›</button>
+          }
         </a>
+        @if (subtopicsOf(item.path); as itemSubs) {
+          @if (isSubtopicsExpanded(item.path)) {
+            <div class="nav-subtopics">
+              @for (s of itemSubs; track s.route) {
+                <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                  <span class="nl-text">{{ s.label }}</span>
+                </a>
+              }
+            </div>
+          }
+        }
       }
     </div>
 
@@ -75,7 +124,22 @@ const DIFF: Record<string, string> = {
           @if (progress.isDone(item.route)) { <span class="nl-done">✓</span> }
           <span class="nl-text">{{ item.label }}</span>
           @if (diff(item.route); as d) { <span class="nl-dot" [class]="d"></span> }
+          @if (subtopicsOf(item.path)) {
+            <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded(item.path)"
+                    (click)="toggleSubtopics(item.path, $event)" aria-label="Toggle subtopics">›</button>
+          }
         </a>
+        @if (subtopicsOf(item.path); as itemSubs) {
+          @if (isSubtopicsExpanded(item.path)) {
+            <div class="nav-subtopics">
+              @for (s of itemSubs; track s.route) {
+                <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                  <span class="nl-text">{{ s.label }}</span>
+                </a>
+              }
+            </div>
+          }
+        }
       }
     </div>
 
@@ -86,7 +150,22 @@ const DIFF: Record<string, string> = {
           @if (progress.isDone(item.route)) { <span class="nl-done">✓</span> }
           <span class="nl-text">{{ item.label }}</span>
           @if (diff(item.route); as d) { <span class="nl-dot" [class]="d"></span> }
+          @if (subtopicsOf(subKey(item.path))) {
+            <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded(subKey(item.path))"
+                    (click)="toggleSubtopics(subKey(item.path), $event)" aria-label="Toggle subtopics">›</button>
+          }
         </a>
+        @if (subtopicsOf(subKey(item.path)); as itemSubs) {
+          @if (isSubtopicsExpanded(subKey(item.path))) {
+            <div class="nav-subtopics">
+              @for (s of itemSubs; track s.route) {
+                <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                  <span class="nl-text">{{ s.label }}</span>
+                </a>
+              }
+            </div>
+          }
+        }
       }
     </div>
 
@@ -102,6 +181,53 @@ const DIFF: Record<string, string> = {
 })
 export class ApiDesignNavComponent {
   progress = inject(ProgressService);
+  private router = inject(Router);
+
+  subtopicsOf(routeSlug: string) {
+    return SUBTOPICS[routeSlug] ?? null;
+  }
+
+  // 'rate-limiting' is a bare URL segment shared with the Redis hub's own
+  // /redis/rate-limiting topic -- the SUBTOPICS map key was proactively
+  // hub-prefixed to 'api-rate-limiting' to avoid a future leak once the
+  // Redis hub's own RedisNavComponent adds subtopics-accordion support
+  // (it has none today). This maps the Advanced loop's item.path (which
+  // must stay the real URL segment for routerLink) to the correct SUBTOPICS
+  // key everywhere else in the template -- every other slug passes through
+  // unchanged.
+  subKey(path: string): string {
+    return path === 'rate-limiting' ? 'api-rate-limiting' : path;
+  }
+
+  private expandedTopics = signal<Set<string>>(new Set());
+
+  isSubtopicsExpanded(routeSlug: string): boolean {
+    return this.expandedTopics().has(routeSlug);
+  }
+
+  toggleSubtopics(routeSlug: string, event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+    const next = new Set(this.expandedTopics());
+    next.has(routeSlug) ? next.delete(routeSlug) : next.add(routeSlug);
+    this.expandedTopics.set(next);
+  }
+
+  constructor() {
+    this.router.events.pipe(filter(e => e instanceof NavigationEnd))
+      .subscribe(() => this.autoExpandForCurrentUrl());
+    this.autoExpandForCurrentUrl();
+  }
+
+  private autoExpandForCurrentUrl(): void {
+    const url = this.router.url.split('?')[0];
+    for (const [topicSlug, subs] of Object.entries(SUBTOPICS)) {
+      if (subs.some(s => s.route === url)) {
+        this.expandedTopics.update(set => new Set(set).add(topicSlug));
+        break;
+      }
+    }
+  }
 
   foundations = [
     { path: 'rest-fundamentals',        route: 'api-rest-fundamentals',        label: 'REST Fundamentals' },

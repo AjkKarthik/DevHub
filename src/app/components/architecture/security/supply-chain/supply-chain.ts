@@ -81,19 +81,24 @@ const codeTabs: CodeTab[] = [
 }
 
 # ── GitHub Actions: audit on every PR ────────────────────────────────────────
+# Pinned by commit SHA, not by tag or branch -- matching this page's own QnA
+# ("pin action versions by commit SHA, not by tag -- tags can be moved;
+# SHAs are immutable"). Replace these illustrative SHAs with each action's
+# own current release commit before using this in a real pipeline.
 name: Security Audit
 on: [pull_request]
 jobs:
   audit:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@a81bbbf8298c0fa03ea29cdc473d45769f953501 # v4 -- SHA, not @v4
+      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f  # v4 -- same principle
         with: { node-version: '20', cache: 'npm' }
       - run: npm ci                    # uses lockfile exactly
       - run: npm audit --audit-level=high  # fail on HIGH+ CVEs
-      # Optionally: run Snyk for deeper analysis
-      - uses: snyk/actions/node@master
+      # Optionally: run Snyk for deeper analysis -- NEVER pin to @master, a
+      # mutable branch ref, which is worse than even a floating tag.
+      - uses: snyk/actions/node@806182742461562b67788a64410098c9d9b96a5
         env: { SNYK_TOKEN: \${{ secrets.SNYK_TOKEN }} }
         with: { args: '--severity-threshold=high' }
 

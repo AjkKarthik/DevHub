@@ -1,0 +1,26 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="HTTP Methods & Status Codes" topicRoute="/api-design/http-methods-status-codes"
+    subtopicLabel="403 vs. 404: a Security-Posture Decision, Not a Rule" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">403 vs. 404: a Security-Posture Decision, Not a Rule</h1>
+  <p class="page-subtitle">The 403 bullet said “do NOT” use 404 to hide a resource — the 404 bullet right below it, and the QnA, both say the opposite. Here’s the fixed wording and the actual decision as code.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>The QnA names X-Idempotency-Key headers as the way to safely retry a POST request, but no codeTab ever implements the mechanism. The next subtopic builds the real middleware.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="HTTP Methods & Status Codes" topicRoute="/api-design/http-methods-status-codes"
+    [next]="{ label: 'Implementing Idempotency Keys for POST Requests', route: '/api-design/http-methods-status-codes/implementing-idempotency-keys-for-post-requests' }" />
+</div>

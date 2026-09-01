@@ -25,7 +25,7 @@ const theory: TheoryPoint[] = [
     heading: 'CSRF — How It Works',
     points: [
       'CSRF exploits the fact that browsers automatically attach cookies to cross-site requests. A victim visits evil.com while logged into bank.com.',
-      'evil.com contains `<img src="https://bank.com/transfer?to=attacker&amount=1000">`. The browser fires the request and attaches the bank.com session cookie.',
+      'evil.com contains <code>&lt;img src="https://bank.com/transfer?to=attacker&amp;amount=1000"&gt;</code>. The browser fires the request and attaches the bank.com session cookie.',
       'The bank server receives an authenticated request from the victim\'s browser — but the victim never intended to make it.',
       'State-changing endpoints (POST/PUT/DELETE) are the target. GET requests should never have side effects (idempotency principle).',
     ],
@@ -42,7 +42,7 @@ const theory: TheoryPoint[] = [
   {
     heading: 'Clickjacking — How It Works',
     points: [
-      'Attacker creates a malicious page with a transparent `<iframe>` showing your site, overlaid on a decoy button (e.g., "Win a prize!").',
+      'Attacker creates a malicious page with a transparent <code>&lt;iframe&gt;</code> showing your site, overlaid on a decoy button (e.g., "Win a prize!").',
       'The victim sees the decoy button and clicks — but their click actually lands on the hidden iframe (e.g., "Confirm Transfer" button on your bank site).',
       'The click executes as an authenticated action because the victim\'s session cookie is sent with the iframe request.',
       'Particularly dangerous for one-click operations: account deletion, wire transfers, follow/like, permission grants.',
@@ -72,7 +72,11 @@ const codeTabs: CodeTab[] = [
   {
     label: 'CSRF Protection (Express)',
     language: 'typescript',
-    code: `import csrf from 'csurf';
+    code: `// NOTE: 'csurf' is officially deprecated (Express.js's own 2025 cleanup
+// announcement) and unmaintained -- shown here for the shape of a
+// token-middleware approach. Use a maintained alternative like
+// 'csrf-csrf' for new code (see the "Migrating Off csurf" subtopic).
+import csrf from 'csurf';
 import cookieParser from 'cookie-parser';
 
 app.use(cookieParser());
@@ -271,7 +275,7 @@ const qna: QnaItem[] = [
   },
   {
     q: 'Can SameSite=Lax replace CSRF tokens entirely?',
-    a: 'For most applications, <code>SameSite=Lax</code> provides good CSRF protection. Lax sends the cookie on top-level navigation GETs (clicking a link) but not on cross-site POST/PUT/DELETE. Some edge cases remain: <ul><li>Navigational GETs with side effects (violates REST principles but happens)</li><li>Old browsers that do not support SameSite</li><li>Short-window attacks in the first 2 minutes after cookie issuance (Chrome bug bounty research)</li></ul>For high-security applications (banking, payment, admin), combine <code>SameSite=Strict</code> with CSRF tokens for defence in depth.',
+    a: 'For most applications, <code>SameSite=Lax</code> provides good CSRF protection. Lax sends the cookie on top-level navigation GETs (clicking a link) but not on cross-site POST/PUT/DELETE. Some edge cases remain: <ul><li>Navigational GETs with side effects (violates REST principles but happens)</li><li>Old browsers that do not support SameSite</li><li>Chromium\'s "Lax+POST" intervention: a cookie with NO explicit SameSite attribute (Chrome\'s implicit Lax-by-default, not an explicitly-set <code>SameSite=Lax</code>) is allowed on a cross-site top-level POST if it is under 2 minutes old — a documented compatibility measure for SSO flows, not a bug, and Chromium has stated it is temporary and being phased out. Always set SameSite explicitly rather than relying on the default.</li></ul>For high-security applications (banking, payment, admin), combine <code>SameSite=Strict</code> with CSRF tokens for defence in depth.',
   },
   { q: 'How do you implement CSRF protection in a Single Page Application (SPA)?', a: 'SPAs are less vulnerable to traditional CSRF because they use JavaScript to make requests and can include custom headers that browsers do not add to cross-site form submissions. Best practices for SPA CSRF protection: use JWT in Authorization headers instead of session cookies. Browsers do not automatically include Authorization headers in cross-site requests. If you must use cookies: set SameSite=Strict or SameSite=Lax and include a CSRF token in a JavaScript-readable cookie (not HttpOnly) that the SPA reads and sends as a request header. For APIs serving both browser clients and server-to-server: require the X-Requested-With header (browsers do not auto-include custom headers in cross-site requests). The preflight OPTIONS request for requests with custom headers provides additional protection.' },
   { q: 'What is the Referer header and why is it insufficient alone for CSRF protection?', a: 'The Referer header is sent by browsers indicating the URL of the page that initiated the request. Servers can validate Referer to confirm the request came from the expected page. Insufficient alone because: some browsers and privacy tools (extensions, proxies) strip or suppress the Referer header. Corporate proxies may remove Referer from all requests. Users with privacy settings set to no referrer make requests with no Referer header. If Referer validation requires the header to be present and a legitimate user sends no Referer (privacy mode), they are incorrectly blocked. If Referer validation falls back to allowing missing Referer, attackers can suppress it. Referer validation is an additional defense signal, not a primary CSRF control. Use CSRF tokens or SameSite cookies as the primary defense.' },
@@ -285,7 +289,7 @@ const revision: RevisionSummary = {
     'CSRF: cross-site request carries victim\'s session cookie automatically — no user interaction needed',
     'SameSite=Strict: primary CSRF defense — cookie not sent on any cross-site request',
     'CSRF token: server-issued secret verified on every mutating request — defence in depth',
-    'GET endpoints must never have side effects — CSRF trivially triggered via <img src="">',
+    'GET endpoints must never have side effects — CSRF trivially triggered via <code>&lt;img src=""&gt;</code>',
     'Clickjacking: invisible iframe overlay tricks user into clicking hidden buttons',
     'X-Frame-Options: DENY or CSP frame-ancestors \'none\' prevents iframe embedding',
   ],

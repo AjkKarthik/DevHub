@@ -1,0 +1,27 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="GraphQL vs REST" topicRoute="/api-design/graphql-vs-rest"
+    subtopicLabel="Automatic Persisted Queries: The Hash Registration Flow" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">Automatic Persisted Queries: The Hash Registration Flow</h1>
+  <p class="page-subtitle">A quiz explanation describes exactly how APQ recovers GET-based caching for GraphQL — here’s the hash-first, register-on-miss flow actually running.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>The QnA names Apollo Federation’s type-extending mechanism in prose ("services can extend each other’s types") with no code showing how a subgraph actually contributes a field. The next subtopic builds it.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="GraphQL vs REST" topicRoute="/api-design/graphql-vs-rest"
+    [prev]="{ label: 'The Missing Precedence Rule in recommendApi', route: '/api-design/graphql-vs-rest/the-missing-precedence-rule-in-recommendapi' }"
+    [next]="{ label: 'Federation Entity Resolution Across Two Subgraphs', route: '/api-design/graphql-vs-rest/federation-entity-resolution-across-two-subgraphs' }" />
+</div>

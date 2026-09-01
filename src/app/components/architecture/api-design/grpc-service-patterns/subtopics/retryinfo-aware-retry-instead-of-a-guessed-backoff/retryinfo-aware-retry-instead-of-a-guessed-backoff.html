@@ -1,0 +1,26 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="gRPC Service Patterns" topicRoute="/api-design/grpc-service-patterns"
+    subtopicLabel="RetryInfo-Aware Retry Instead of a Guessed Backoff" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">RetryInfo-Aware Retry Instead of a Guessed Backoff</h1>
+  <p class="page-subtitle">The main page’s QnA argues a retryable status code alone isn’t enough — here’s a retry function that actually respects the server’s own specified delay instead of guessing one.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>A registry-based broadcast fix, a real interceptor chain, and a RetryInfo-aware retry function are three concrete implementations of ideas this topic names in prose but leaves as description. gRPC-Web & Transcoding is next in the Protocols nav group.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="gRPC Service Patterns" topicRoute="/api-design/grpc-service-patterns"
+    [prev]="{ label: 'A Real gRPC Interceptor Chain', route: '/api-design/grpc-service-patterns/a-real-grpc-interceptor-chain' }" />
+</div>

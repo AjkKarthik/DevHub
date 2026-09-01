@@ -1,0 +1,26 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Observability Fundamentals" topicRoute="/observability/observability-fundamentals"
+    subtopicLabel="A Synthetic Monitoring Prober With SLO Evaluation" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">A Synthetic Monitoring Prober With SLO Evaluation</h1>
+  <p class="page-subtitle">The QnA describes active/synthetic monitoring in real detail — no codeTab on the page builds a prober or ties its results to an actual SLO target. This one does, verified end to end.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>This closes the last of the three gaps this topic's own subtopics build: a stale tool recommendation, a signal type named but never classified, and an entire observability mode described but never demonstrated — the same "verify before trusting, close the gap in code" discipline that runs through this hub's Phase 10 pilot.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Observability Fundamentals" topicRoute="/observability/observability-fundamentals"
+    [prev]="{ label: 'Classifying the Fourth MELT Signal: Events', route: '/observability/observability-fundamentals/classifying-the-fourth-melt-signal-events' }" />
+</div>

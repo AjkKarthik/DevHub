@@ -1,0 +1,26 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Resource & URL Design" topicRoute="/api-design/resource-url-design"
+    subtopicLabel="Cursor-Based Pagination, Actually Implemented" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">Cursor-Based Pagination, Actually Implemented</h1>
+  <p class="page-subtitle">The theory names cursor-based pagination and its own concurrent-edit safety property directly — here’s the real endpoint, and a traced example of exactly the failure it avoids.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>A stricter verb check, a real sub-resource action endpoint, and cursor-based pagination are three concrete implementations of ideas this topic’s own theory names but leaves as prose.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Resource & URL Design" topicRoute="/api-design/resource-url-design"
+    [prev]="{ label: 'Sub-Resource Actions: A Real Cancellations Endpoint', route: '/api-design/resource-url-design/sub-resource-actions-a-real-cancellations-endpoint' }" />
+</div>

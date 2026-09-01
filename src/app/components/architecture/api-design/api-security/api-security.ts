@@ -135,17 +135,9 @@ app.get('/admin/users', authenticate, requireRole('admin'), (req, res) => {
     code: `import { z } from 'zod';
 
 // Define schema for every endpoint — validated at the boundary, not inside business logic
-const CreateOrderSchema = z.object({
-  items: z.array(z.object({
-    productId: z.string().uuid(),
-    quantity: z.number().int().min(1).max(100),
-  })).min(1).max(50),
-  deliveryAddress: z.object({
-    street: z.string().min(1).max(200),
-    city:   z.string().min(1).max(100),
-    zip:    z.string().regex(/^\\d{5}(-\\d{4})?$/, 'Invalid US zip code'),
-  }),
-  note: z.string().max(500).optional(),
+const CreateUserSchema = z.object({
+  name:  z.string().min(1).max(100),
+  email: z.string().email(),
 });
 
 // Express middleware using Zod

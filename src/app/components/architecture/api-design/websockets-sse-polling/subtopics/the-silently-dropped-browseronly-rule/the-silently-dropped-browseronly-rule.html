@@ -1,0 +1,26 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="WebSockets vs SSE vs Polling" topicRoute="/api-design/websockets-sse-polling"
+    subtopicLabel="The Silently Dropped browserOnly Rule" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">The Silently Dropped browserOnly Rule</h1>
+  <p class="page-subtitle">The main page’s own Challenge listed a browserOnly-based rule its "Simplify" shortcut never actually implemented — one real input silently got the wrong answer.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>The QnA describes Redis pub/sub-based WebSocket fanout across server instances in real depth, with no codeTab showing it running. The next subtopic builds it.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="WebSockets vs SSE vs Polling" topicRoute="/api-design/websockets-sse-polling"
+    [next]="{ label: 'Redis Pub/Sub Fanout Across Server Instances', route: '/api-design/websockets-sse-polling/redis-pub-sub-fanout-across-server-instances' }" />
+</div>

@@ -133,13 +133,19 @@ async function processOrder(orderId: string, items: CartItem[]) {
       // Child spans are created automatically for DB calls (auto-instrumented)
       const validated = await validateInventory(items);
 
-      // Nested manual span for a complex sub-operation
+      // Nested manual span for a complex sub-operation.
+      // startActiveSpan() never auto-ends the span -- try/finally is
+      // required here too, exactly like the outer span below, or a
+      // thrown error from chargeCard() leaks this span forever.
       const payment = await tracer.startActiveSpan('order.payment', async (paySpan) => {
-        paySpan.setAttribute('payment.provider', 'stripe');
-        const result = await chargeCard(orderId);
-        paySpan.setAttribute('payment.charge_id', result.chargeId);
-        paySpan.end();
-        return result;
+        try {
+          paySpan.setAttribute('payment.provider', 'stripe');
+          const result = await chargeCard(orderId);
+          paySpan.setAttribute('payment.charge_id', result.chargeId);
+          return result;
+        } finally {
+          paySpan.end();
+        }
       });
 
       span.setStatus({ code: SpanStatusCode.OK });
@@ -157,7 +163,7 @@ async function processOrder(orderId: string, items: CartItem[]) {
   },
   {
     label: 'Collector Config',
-    language: 'typescript',
+    language: 'bash',
     code: `# otel-collector-config.yaml
 receivers:
   otlp:
@@ -229,7 +235,7 @@ try {
 } finally {
   span.end(); // always in finally — runs even if doWork() throws
 }`,
-    explanation: 'A span that is never ended leaks memory and is never exported to the backend. Use a try/finally block or prefer startActiveSpan() with a callback — it automatically calls span.end() when the callback returns or throws.',
+    explanation: 'A span that is never ended leaks memory and is never exported to the backend. Neither startSpan() nor startActiveSpan() auto-ends a span in the JS/Node.js SDK -- confirmed against OpenTelemetry\'s own JS API guidance: the developer is always responsible for calling span.end(), typically in a finally block, regardless of which of the two you use. Always wrap the span\'s lifetime in try/finally, even inside a startActiveSpan() callback.',
   },
   {
     title: 'Using console.log instead of OTel-aware logger',

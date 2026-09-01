@@ -112,15 +112,18 @@ const result = calculateSloStatus(
 );
 console.log(result);
 // {
-//   remainingBudgetMinutes: 21.6,    ← 21 mins left of 43.2 min budget
-//   consumedPercent: 50,             ← burned 50% of budget
+//   remainingBudgetMinutes: 0,       ← budget fully spent (consumedRate hit 1.0 and was clamped)
+//   consumedPercent: 150,            ← burned 150% of the 43.2 min budget
 //   burnRate: 1.5,                   ← consuming 1.5× expected rate
-//   status: 'healthy'
-// }`,
+//   status: 'exhausted'
+// }
+// consumedRate and burnRate are the SAME formula (actualErrorRate /
+// allowedErrorRate) -- they always match. At 1.5x sustained burn, the
+// 30-day budget is fully consumed well before the window ends.`,
   },
   {
     label: 'Prometheus Alerting',
-    language: 'typescript',
+    language: 'bash',
     code: `# Prometheus SLO alerting rules — multi-window burn rate
 # Target: 99.9% availability SLO over 30 days
 
@@ -242,8 +245,8 @@ Budget consumed = (1 - currentSuccessRate) / (1 - sloTarget)`,
 }
 
 console.log(errorBudgetStatus(0.999, 30, 0.9997)); // healthy
-console.log(errorBudgetStatus(0.999, 30, 0.9985)); // at-risk
-console.log(errorBudgetStatus(0.999, 30, 0.9982)); // critical
+console.log(errorBudgetStatus(0.999, 30, 0.9994)); // at-risk
+console.log(errorBudgetStatus(0.999, 30, 0.9991)); // critical
 console.log(errorBudgetStatus(0.999, 30, 0.998));  // exhausted`,
   solution: `function errorBudgetStatus(
   sloTarget: number,
@@ -261,8 +264,8 @@ console.log(errorBudgetStatus(0.999, 30, 0.998));  // exhausted`,
 }
 
 console.log(errorBudgetStatus(0.999, 30, 0.9997));
-console.log(errorBudgetStatus(0.999, 30, 0.9985));
-console.log(errorBudgetStatus(0.999, 30, 0.9982));
+console.log(errorBudgetStatus(0.999, 30, 0.9994));
+console.log(errorBudgetStatus(0.999, 30, 0.9991));
 console.log(errorBudgetStatus(0.999, 30, 0.998));`,
 };
 

@@ -1,6 +1,8 @@
-import { Component, inject } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Component, inject, signal } from '@angular/core';
+import { Router, NavigationEnd, RouterLink, RouterLinkActive } from '@angular/router';
+import { filter } from 'rxjs';
 import { ProgressService } from '../../../services/progress.service';
+import { SUBTOPICS } from '../../../data/subtopics';
 
 @Component({
   selector: 'app-obs-nav',
@@ -13,14 +15,86 @@ import { ProgressService } from '../../../services/progress.service';
 
 <div class="nav-group">
   <p class="nav-group-label">Core Concepts</p>
-  <a routerLink="/observability/observability-fundamentals" routerLinkActive="active"><span class="nl-text">Observability Fundamentals</span>@if(progress.isDone('obs-observability-fundamentals')){<span class="nl-done">✓</span>}</a>
-  <a routerLink="/observability/opentelemetry"              routerLinkActive="active"><span class="nl-text">OpenTelemetry</span>@if(progress.isDone('obs-opentelemetry')){<span class="nl-done">✓</span>}</a>
-  <a routerLink="/observability/sli-slo-sla"                routerLinkActive="active"><span class="nl-text">SLIs, SLOs &amp; SLAs</span>@if(progress.isDone('obs-sli-slo-sla')){<span class="nl-done">✓</span>}</a>
+  <a routerLink="/observability/observability-fundamentals" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+    <span class="nl-text">Observability Fundamentals</span>
+    @if(progress.isDone('obs-observability-fundamentals')){<span class="nl-done">✓</span>}
+    @if (subtopicsOf('observability-fundamentals')) {
+      <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('observability-fundamentals')"
+              (click)="toggleSubtopics('observability-fundamentals', $event)" aria-label="Toggle subtopics">›</button>
+    }
+  </a>
+  @if (subtopicsOf('observability-fundamentals'); as fundSubs) {
+    @if (isSubtopicsExpanded('observability-fundamentals')) {
+      <div class="nav-subtopics">
+        @for (s of fundSubs; track s.route) {
+          <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+            <span class="nl-text">{{ s.label }}</span>
+          </a>
+        }
+      </div>
+    }
+  }
+  <a routerLink="/observability/opentelemetry" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+    <span class="nl-text">OpenTelemetry</span>
+    @if(progress.isDone('obs-opentelemetry')){<span class="nl-done">✓</span>}
+    @if (subtopicsOf('opentelemetry')) {
+      <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('opentelemetry')"
+              (click)="toggleSubtopics('opentelemetry', $event)" aria-label="Toggle subtopics">›</button>
+    }
+  </a>
+  @if (subtopicsOf('opentelemetry'); as otelSubs) {
+    @if (isSubtopicsExpanded('opentelemetry')) {
+      <div class="nav-subtopics">
+        @for (s of otelSubs; track s.route) {
+          <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+            <span class="nl-text">{{ s.label }}</span>
+          </a>
+        }
+      </div>
+    }
+  }
+  <a routerLink="/observability/sli-slo-sla" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+    <span class="nl-text">SLIs, SLOs &amp; SLAs</span>
+    @if(progress.isDone('obs-sli-slo-sla')){<span class="nl-done">✓</span>}
+    @if (subtopicsOf('sli-slo-sla')) {
+      <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('sli-slo-sla')"
+              (click)="toggleSubtopics('sli-slo-sla', $event)" aria-label="Toggle subtopics">›</button>
+    }
+  </a>
+  @if (subtopicsOf('sli-slo-sla'); as sloSubs) {
+    @if (isSubtopicsExpanded('sli-slo-sla')) {
+      <div class="nav-subtopics">
+        @for (s of sloSubs; track s.route) {
+          <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+            <span class="nl-text">{{ s.label }}</span>
+          </a>
+        }
+      </div>
+    }
+  }
 </div>
 
 <div class="nav-group">
   <p class="nav-group-label">Metrics</p>
-  <a routerLink="/observability/prometheus-metrics"        routerLinkActive="active"><span class="nl-text">Prometheus &amp; Metrics</span>@if(progress.isDone('obs-prometheus-metrics')){<span class="nl-done">✓</span>}</a>
+  <a routerLink="/observability/prometheus-metrics" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+    <span class="nl-text">Prometheus &amp; Metrics</span>
+    @if(progress.isDone('obs-prometheus-metrics')){<span class="nl-done">✓</span>}
+    @if (subtopicsOf('prometheus-metrics')) {
+      <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('prometheus-metrics')"
+              (click)="toggleSubtopics('prometheus-metrics', $event)" aria-label="Toggle subtopics">›</button>
+    }
+  </a>
+  @if (subtopicsOf('prometheus-metrics'); as promSubs) {
+    @if (isSubtopicsExpanded('prometheus-metrics')) {
+      <div class="nav-subtopics">
+        @for (s of promSubs; track s.route) {
+          <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+            <span class="nl-text">{{ s.label }}</span>
+          </a>
+        }
+      </div>
+    }
+  }
   <a routerLink="/observability/grafana-dashboards"        routerLinkActive="active"><span class="nl-text">Grafana Dashboards</span>@if(progress.isDone('obs-grafana-dashboards')){<span class="nl-done">✓</span>}</a>
   <a routerLink="/observability/custom-app-metrics"        routerLinkActive="active"><span class="nl-text">Custom App Metrics</span>@if(progress.isDone('obs-custom-app-metrics')){<span class="nl-done">✓</span>}</a>
   <a routerLink="/observability/infrastructure-metrics"    routerLinkActive="active"><span class="nl-text">Infrastructure Metrics</span>@if(progress.isDone('obs-infrastructure-metrics')){<span class="nl-done">✓</span>}</a>
@@ -64,4 +138,39 @@ import { ProgressService } from '../../../services/progress.service';
 })
 export class ObsNavComponent {
   progress = inject(ProgressService);
+  private router = inject(Router);
+
+  subtopicsOf(routeSlug: string) {
+    return SUBTOPICS[routeSlug] ?? null;
+  }
+
+  private expandedTopics = signal<Set<string>>(new Set());
+
+  isSubtopicsExpanded(routeSlug: string): boolean {
+    return this.expandedTopics().has(routeSlug);
+  }
+
+  toggleSubtopics(routeSlug: string, event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+    const next = new Set(this.expandedTopics());
+    next.has(routeSlug) ? next.delete(routeSlug) : next.add(routeSlug);
+    this.expandedTopics.set(next);
+  }
+
+  constructor() {
+    this.router.events.pipe(filter(e => e instanceof NavigationEnd))
+      .subscribe(() => this.autoExpandForCurrentUrl());
+    this.autoExpandForCurrentUrl();
+  }
+
+  private autoExpandForCurrentUrl(): void {
+    const url = this.router.url.split('?')[0];
+    for (const [topicSlug, subs] of Object.entries(SUBTOPICS)) {
+      if (subs.some(s => s.route === url)) {
+        this.expandedTopics.update(set => new Set(set).add(topicSlug));
+        break;
+      }
+    }
+  }
 }

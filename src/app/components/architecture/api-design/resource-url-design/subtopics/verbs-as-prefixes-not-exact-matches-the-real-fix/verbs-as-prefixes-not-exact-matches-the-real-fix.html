@@ -1,0 +1,26 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Resource & URL Design" topicRoute="/api-design/resource-url-design"
+    subtopicLabel="Verbs as Prefixes, Not Exact Matches: the Real Fix" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">Verbs as Prefixes, Not Exact Matches: the Real Fix</h1>
+  <p class="page-subtitle">The main page’s own Challenge checked for an EXACT verb match, which never fires on a realistic verb-prefixed path like getUsers. Here’s the bug, the fix, and the tradeoff it introduces.</p>
+  <app-page-meta [readingTime]="7" difficulty="beginner" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>The QnA names sub-resource actions (POST /orders/42/cancellations) as a real option for non-CRUD state changes, but no codeTab ever builds one. The next subtopic implements the actual endpoint.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Resource & URL Design" topicRoute="/api-design/resource-url-design"
+    [next]="{ label: 'Sub-Resource Actions: A Real Cancellations Endpoint', route: '/api-design/resource-url-design/sub-resource-actions-a-real-cancellations-endpoint' }" />
+</div>

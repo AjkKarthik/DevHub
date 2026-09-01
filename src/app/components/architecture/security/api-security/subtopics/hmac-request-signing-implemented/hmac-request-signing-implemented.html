@@ -1,0 +1,27 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="API Security" topicRoute="/security/api-security"
+    subtopicLabel="HMAC Request Signing, Implemented" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">HMAC Request Signing, Implemented</h1>
+  <p class="page-subtitle">The quiz explains AWS SigV4 and Stripe-style request signing at real depth. Here's the actual signing and verification pair — verified end-to-end, including a real replay gap.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic builds the fixed-window rate limiter's own named burst problem — verified via direct simulation before publishing.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="API Security" topicRoute="/security/api-security"
+    [prev]="{ label: 'BFLA, Demonstrated and Fixed', route: '/security/api-security/bfla-demonstrated-and-fixed' }"
+    [next]="{ label: 'The Fixed-Window Rate Limiter’s Burst Problem', route: '/security/api-security/the-fixed-window-rate-limiters-burst-problem' }" />
+</div>

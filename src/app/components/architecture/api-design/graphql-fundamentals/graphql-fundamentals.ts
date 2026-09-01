@@ -249,7 +249,9 @@ const server = new ApolloServer({
   user: async (_, { id }) => {
     const user = await db.users.findById(id);
     if (!user) throw new GraphQLError('User not found', { extensions: { code: 'NOT_FOUND' } });
-    return user; // field is User! (non-null) so null would error anyway
+    return user; // Query.user is nullable (User, not User!) in this schema --
+                 // an explicit error still beats a bare null here, since it
+                 // lets clients distinguish "not found" from other failures.
   }
 }`,
     explanation: 'Returning null for a non-null field (User!) causes a GraphQL execution error that bubbles up. For nullable fields, explicit errors with error codes are more useful to clients than null — clients can distinguish "not found" from "permission denied" from "server error".',

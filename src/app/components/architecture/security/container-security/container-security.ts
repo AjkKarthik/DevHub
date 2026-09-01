@@ -128,7 +128,7 @@ spec:
 
       containers:
       - name: api
-        image: gcr.io/myproject/api:sha256-abc123  # pinned digest, not tag
+        image: gcr.io/myproject/api@sha256:abc123def456...  # pinned digest, not tag
         securityContext:
           allowPrivilegeEscalation: false  # cannot gain more privileges
           readOnlyRootFilesystem:    true  # no writing to /

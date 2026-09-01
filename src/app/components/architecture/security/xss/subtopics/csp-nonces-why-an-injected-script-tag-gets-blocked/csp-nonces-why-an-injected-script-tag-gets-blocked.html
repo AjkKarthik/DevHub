@@ -1,0 +1,26 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Cross-Site Scripting" topicRoute="/security/xss"
+    subtopicLabel="CSP Nonces: Why an Injected Script Tag Gets Blocked" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">CSP Nonces: Why an Injected Script Tag Gets Blocked</h1>
+  <p class="page-subtitle">The quiz names the nonce mechanism precisely but never traces it through a real request — here's exactly why an attacker's script tag fails even after it reaches the page's HTML.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the three defenses the main page names side by side — sanitized <code>[innerHTML]</code>, rendering-context-dependent SVG execution, and now CSP nonces — all limiting what an attacker can actually do even when a script tag makes it into the page.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Cross-Site Scripting" topicRoute="/security/xss"
+    [prev]="{ label: 'SVG XSS: Why img Is Safe But Direct Navigation Isn’t', route: '/security/xss/svg-xss-img-tag-safe-but-direct-navigation-isnt' }" />
+</div>

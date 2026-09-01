@@ -59,7 +59,7 @@ const theory: TheoryPoint[] = [
     heading: 'Content Security Policy in Depth',
     points: [
       'Content-Security-Policy (CSP) is the most powerful security header, letting a server declare exactly which sources of scripts, styles, images, and other resources the browser should trust — dramatically reducing the impact of an XSS vulnerability by preventing injected scripts from executing even if injection succeeds.',
-      'A strict CSP (script-src \'self\' with no unsafe-inline or unsafe-eval) blocks inline scripts and eval-based code execution entirely — this requires moving any inline <script> tags to external files, which is a real migration effort for legacy codebases but a significant security improvement.',
+      'A strict CSP (script-src \'self\' with no unsafe-inline or unsafe-eval) blocks inline scripts and eval-based code execution entirely — this requires moving any inline <code>&lt;script&gt;</code> tags to external files, which is a real migration effort for legacy codebases but a significant security improvement.',
       'CSP supports a report-only mode (Content-Security-Policy-Report-Only) that logs violations without actually blocking them — essential for safely rolling out a new or stricter policy in production, since you can observe what would have been blocked before enforcing it and potentially breaking legitimate functionality.',
       'Nonce-based or hash-based CSP (allowing a specific inline script via a cryptographic nonce or hash of its exact content) lets you keep a strict policy while still permitting a small number of genuinely necessary inline scripts, without falling back to the broad and dangerous unsafe-inline directive.',
     ],
@@ -114,6 +114,11 @@ app.use(helmet({
   referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
 
   // ── Cross-Origin policies ──────────────────────────────────────────────────
+  // NOTE: crossOriginEmbedderPolicy: true sets Cross-Origin-Embedder-Policy:
+  // require-corp -- this BLOCKS the imgSrc CDN entry above
+  // (https://cdn.example.com) unless that CDN also serves
+  // Cross-Origin-Resource-Policy: cross-origin on its responses. See the
+  // "Helmet Config's Own COEP + CDN Image Conflict" subtopic.
   crossOriginEmbedderPolicy: true,
   crossOriginOpenerPolicy:   { policy: 'same-origin' },
   crossOriginResourcePolicy: { policy: 'same-origin' },

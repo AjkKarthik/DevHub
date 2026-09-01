@@ -200,24 +200,26 @@ res.status(201).header('Location', '/users/' + newUser.id).json(newUser);`,
 const challenge: Challenge = {
   title: 'REST Request Validator',
   language: 'typescript',
-  description: `Implement validateRestRequest(method: string, path: string): { valid: boolean; issues: string[] } that checks:
+  description: `Implement validateRestRequest(method: string, path: string, hasBody: boolean): { valid: boolean; issues: string[] } that checks:
 1. Path uses nouns not verbs (reject paths containing: /get, /create, /delete, /update, /fetch)
-2. GET/DELETE/HEAD do not have a request body (params are passed in the URL)
+2. GET/DELETE/HEAD do not have a request body — the caller passes hasBody explicitly
 3. PUT/POST/PATCH paths must not contain query verbs either
 Return { valid: true, issues: [] } if valid, else { valid: false, issues: ['...'] }`,
   hints: [
     'Check the path string for verb patterns case-insensitively',
+    'hasBody only matters when method is GET, DELETE, or HEAD',
     'Build an issues array and return valid = issues.length === 0',
   ],
-  starterCode: `function validateRestRequest(method: string, path: string): { valid: boolean; issues: string[] } {
+  starterCode: `function validateRestRequest(method: string, path: string, hasBody: boolean): { valid: boolean; issues: string[] } {
   const issues: string[] = [];
   // TODO: validate
   return { valid: issues.length === 0, issues };
 }`,
-  solution: `function validateRestRequest(method: string, path: string): { valid: boolean; issues: string[] } {
+  solution: `function validateRestRequest(method: string, path: string, hasBody: boolean): { valid: boolean; issues: string[] } {
   const issues: string[] = [];
   const VERBS = ['/get', '/create', '/delete', '/update', '/fetch'];
   const lowerPath = path.toLowerCase();
+  const upperMethod = method.toUpperCase();
 
   for (const verb of VERBS) {
     if (lowerPath.includes(verb)) {
@@ -225,12 +227,17 @@ Return { valid: true, issues: [] } if valid, else { valid: false, issues: ['...'
     }
   }
 
+  if (['GET', 'DELETE', 'HEAD'].includes(upperMethod) && hasBody) {
+    issues.push(\`\${upperMethod} requests should not carry a request body — pass parameters in the URL instead\`);
+  }
+
   return { valid: issues.length === 0, issues };
 }
 
-console.log(validateRestRequest('GET', '/users/42'));          // valid
-console.log(validateRestRequest('POST', '/createOrder'));      // invalid: /create
-console.log(validateRestRequest('DELETE', '/deleteUser/42')); // invalid: /delete`,
+console.log(validateRestRequest('GET', '/users/42', false));          // valid
+console.log(validateRestRequest('POST', '/createOrder', false));      // invalid: /create
+console.log(validateRestRequest('DELETE', '/deleteUser/42', false)); // invalid: /delete
+console.log(validateRestRequest('GET', '/users/42', true));          // invalid: GET with body`,
 };
 
 const quiz: QuizQuestion[] = [

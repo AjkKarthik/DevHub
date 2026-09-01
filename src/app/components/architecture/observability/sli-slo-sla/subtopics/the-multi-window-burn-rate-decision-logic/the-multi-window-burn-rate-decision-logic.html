@@ -1,0 +1,26 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="SLIs, SLOs &amp; SLAs" topicRoute="/observability/sli-slo-sla"
+    subtopicLabel="The Multi-Window Burn-Rate Decision Logic" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">The Multi-Window Burn-Rate Decision Logic</h1>
+  <p class="page-subtitle">The theory names the exact page/ticket thresholds and the codeTab configures them via PromQL — no plain function ever shows the decision logic directly. This one does, verified against three realistic scenarios.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>This closes the last of the three gaps this topic's own subtopics build: two genuine, self-contained arithmetic bugs across two codeTabs, a status-category reconciliation surfacing a real policy-boundary gap, and a decision-logic implementation the page names in theory but never demonstrates.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="SLIs, SLOs &amp; SLAs" topicRoute="/observability/sli-slo-sla"
+    [prev]="{ label: 'Reconciling Two Different Status-Category Models', route: '/observability/sli-slo-sla/reconciling-two-different-status-category-models' }" />
+</div>

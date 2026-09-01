@@ -1,0 +1,26 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Breaking Changes" topicRoute="/api-design/breaking-changes"
+    subtopicLabel="Verifying a Recommended Tool Is Still Maintained" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">Verifying a Recommended Tool Is Still Maintained</h1>
+  <p class="page-subtitle">The main page named Optic as a current breaking-change tool in six places — it was archived by its own maintainers on GitHub in January 2026.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>The Expand-Contract QnA describes all three phases in careful prose but no codeTab on the page ever implements them — the next subtopic builds all three, verified end to end.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Breaking Changes" topicRoute="/api-design/breaking-changes"
+    [next]="{ label: 'Implementing Expand-Contract, All Three Phases', route: '/api-design/breaking-changes/implementing-expand-contract-all-three-phases' }" />
+</div>

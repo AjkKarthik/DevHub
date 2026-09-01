@@ -1,0 +1,26 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Pagination Patterns" topicRoute="/api-design/pagination-patterns"
+    subtopicLabel="The Missing id Tiebreaker in Cursor Pagination" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">The Missing id Tiebreaker in Cursor Pagination</h1>
+  <p class="page-subtitle">The cursor codeTab encoded both id and createdAt — but the actual query only ever compared on createdAt, silently skipping any row tied with the cursor’s own timestamp.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>The QnA names the “deferred join” trick for deep offset pages in real SQL detail, but no codeTab ever builds it. The next subtopic writes out the actual query pair.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Pagination Patterns" topicRoute="/api-design/pagination-patterns"
+    [next]="{ label: 'The Deferred-Join Trick for Deep Offset Pages', route: '/api-design/pagination-patterns/the-deferred-join-trick-for-deep-offset-pages' }" />
+</div>

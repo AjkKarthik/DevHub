@@ -1,0 +1,26 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="gRPC-Web & Transcoding" topicRoute="/api-design/grpc-web-transcoding"
+    subtopicLabel="Which Streaming Patterns Actually Work in a Browser" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">Which Streaming Patterns Actually Work in a Browser</h1>
+  <p class="page-subtitle">The main page states the gRPC-Web/Connect capability split in prose — here’s a lookup that checks it directly, reusing the pattern classifier this hub’s own gRPC Service Patterns topic already built.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>A real transcoding router, content-negotiation logic, and a browser-capability checker are three concrete implementations of ideas this topic names in prose but leaves as description — this completes the Protocols nav group. GraphQL Fundamentals is next.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="gRPC-Web & Transcoding" topicRoute="/api-design/grpc-web-transcoding"
+    [prev]="{ label: 'Content Negotiation on a Connect Server', route: '/api-design/grpc-web-transcoding/content-negotiation-on-a-connect-server' }" />
+</div>

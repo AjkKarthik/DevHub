@@ -1,0 +1,27 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="REST Fundamentals" topicRoute="/api-design/rest-fundamentals"
+    subtopicLabel="A Real HATEOAS Response, With Links" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">A Real HATEOAS Response, With Links</h1>
+  <p class="page-subtitle">The QnA describes cancel/payment links embedded in an order response in real detail — here’s the actual response shape, where the link set changes with the resource’s own state.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>The theory names content negotiation — the same resource returned as JSON or CSV depending on the Accept header — but no codeTab ever implements it. The next subtopic builds the actual handler.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="REST Fundamentals" topicRoute="/api-design/rest-fundamentals"
+    [prev]="{ label: 'The Missing hasBody Check in validateRestRequest', route: '/api-design/rest-fundamentals/the-missing-hasbody-check-in-validaterestrequest' }"
+    [next]="{ label: 'Content Negotiation: the Same Resource, JSON or CSV', route: '/api-design/rest-fundamentals/content-negotiation-the-same-resource-json-or-csv' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="HTTP Methods & Status Codes" topicRoute="/api-design/http-methods-status-codes"
+    subtopicLabel="JSON Patch (RFC 6902), Applied" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">JSON Patch (RFC 6902), Applied</h1>
+  <p class="page-subtitle">The quiz names JSON Patch as a real alternative to field-replacement PATCH — here’s an actual applyJsonPatch implementation, verified against RFC 6902 itself.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>A clarified 403-vs-404 decision, real idempotency-key handling, and real JSON Patch semantics are three concrete implementations of ideas this topic names in prose but leaves unbuilt in code.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="HTTP Methods & Status Codes" topicRoute="/api-design/http-methods-status-codes"
+    [prev]="{ label: 'Implementing Idempotency Keys for POST Requests', route: '/api-design/http-methods-status-codes/implementing-idempotency-keys-for-post-requests' }" />
+</div>

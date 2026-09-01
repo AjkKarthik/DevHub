@@ -91,15 +91,20 @@ function rateLimiter(config: RateLimitConfig) {
     const windowStart = now - config.windowSeconds * 1000;
 
     // Sliding window using Redis Sorted Set
-    // Score = timestamp; remove entries outside the window, then count remaining
-    const pipeline = redis.multi();
-    pipeline.zRemRangeByScore(key, '-inf', windowStart.toString());
-    pipeline.zCard(key);
-    pipeline.zAdd(key, [{ score: now, value: \`\${now}-\${Math.random()}\` }]);
-    pipeline.expire(key, config.windowSeconds);
-    const results = await pipeline.exec();
-
-    const requestCount = results[1] as number;
+    // Score = timestamp; remove entries outside the window, then count remaining.
+    // IMPORTANT: only add THIS request's own entry if it's going to be allowed --
+    // adding it unconditionally (before checking) means a REJECTED request still
+    // occupies a slot in the window, so a client that retries after a 429 keeps
+    // re-polluting its own window and can become permanently locked out. This
+    // check-then-conditionally-add is two round trips (a narrow race window
+    // between concurrent requests, the same TOCTOU trade-off this page's own
+    // QnA on token-bucket Lua scripts describes) -- a Lua script would close it
+    // entirely, at the cost of the simplicity shown here.
+    const readPipeline = redis.multi();
+    readPipeline.zRemRangeByScore(key, '-inf', windowStart.toString());
+    readPipeline.zCard(key);
+    const readResults = await readPipeline.exec();
+    const requestCount = readResults[1] as number;
 
     // Set rate limit headers on EVERY response
     res.setHeader('X-RateLimit-Limit', config.maxRequests);
@@ -116,6 +121,12 @@ function rateLimiter(config: RateLimitConfig) {
         },
       });
     }
+
+    // Only reaching here means the request is ALLOWED -- record it now.
+    const writePipeline = redis.multi();
+    writePipeline.zAdd(key, [{ score: now, value: \`\${now}-\${Math.random()}\` }]);
+    writePipeline.expire(key, config.windowSeconds);
+    await writePipeline.exec();
 
     next();
   };

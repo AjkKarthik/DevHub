@@ -52,7 +52,7 @@ const theory: TheoryPoint[] = [
     points: [
       '400 Bad Request: the request is malformed — missing required fields, invalid JSON, type mismatches. Include an error body explaining what is wrong.',
       '401 Unauthorized: authentication failed or missing. The client should re-authenticate. Despite the name, this is about authentication, not authorization.',
-      '403 Forbidden: authenticated but not permitted. The user\'s identity is known but they lack the required permission. Do NOT return 404 to hide existence of a resource from unauthorized users (that would be 403 or 404 based on your security posture).',
+      '403 Forbidden: authenticated but not permitted. The user\'s identity is known but they lack the required permission. Whether to reveal the resource\'s existence with 403 or hide it behind 404 is a deliberate security-posture decision, not a fixed rule — see the 404 bullet below.',
       '404 Not Found: the resource does not exist. Also use when hiding an unauthorized resource for security (so attackers can\'t enumerate valid IDs).',
       '409 Conflict: the request conflicts with current state — e.g., trying to create a resource that already exists, or concurrent update conflicts (ETag mismatch).',
       '422 Unprocessable Entity: the request body is syntactically valid JSON but fails semantic validation — e.g., end date before start date, insufficient balance. Prefer 422 over 400 for business rule violations.',

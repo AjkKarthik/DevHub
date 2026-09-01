@@ -1,0 +1,27 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="API Design Principles" topicRoute="/api-design/api-design-principles"
+    subtopicLabel="Implementing Idempotency-Key Deduplication" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">Implementing Idempotency-Key Deduplication</h1>
+  <p class="page-subtitle">The main page names the Idempotency-Key pattern in real detail — here’s the server-side store, expiry window, and replay logic that actually makes it work.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>The main page’s QnA distinguishes a missing field from an explicit null in PATCH requests in one sentence, with no code demonstrating either side. The next subtopic builds a real handler that gets this right — and shows the common bug that gets it wrong.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="API Design Principles" topicRoute="/api-design/api-design-principles"
+    [prev]="{ label: 'The Mismatched Timestamp in the Transform Challenge', route: '/api-design/api-design-principles/the-mismatched-timestamp-in-the-transform-challenge' }"
+    [next]="{ label: 'Missing Field vs. Explicit Null in PATCH Requests', route: '/api-design/api-design-principles/missing-field-vs-explicit-null-in-patch-requests' }" />
+</div>

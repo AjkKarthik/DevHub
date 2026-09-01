@@ -1,0 +1,26 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="RBAC & ABAC" topicRoute="/security/rbac-abac"
+    subtopicLabel="Separation of Duties, Enforced at Role Assignment" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">Separation of Duties, Enforced at Role Assignment</h1>
+  <p class="page-subtitle">The QnA explains SoD's requestor-vs-approver rule in real detail — including exactly WHEN it must be enforced. Here's a mutually-exclusive-role check applied at that exact moment.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>Together, these three subtopics extend the main page's own named-but-unbuilt ReBAC model, row-level security tradeoff, and separation-of-duties rule into working, verified code.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="RBAC & ABAC" topicRoute="/security/rbac-abac"
+    [prev]="{ label: 'Database-Level Row-Level Security vs. a Forgotten WHERE', route: '/security/rbac-abac/database-level-row-level-security-vs-a-forgotten-where' }" />
+</div>

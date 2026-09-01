@@ -1,0 +1,26 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="API Versioning" topicRoute="/api-design/api-versioning"
+    subtopicLabel="The Expand-Contract Pattern, Implemented" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">The Expand-Contract Pattern, Implemented</h1>
+  <p class="page-subtitle">The QnA describes renaming customer_name to customerName without a version bump — here’s the actual expand and contract phases, plus the usage-monitoring gap a naive count leaves open.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>A fixed middleware order, a real sunset response, and a real expand-contract migration are three concrete implementations of ideas this topic names in prose but leaves as description.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="API Versioning" topicRoute="/api-design/api-versioning"
+    [prev]="{ label: 'Serving 410 Gone for a Sunset Endpoint', route: '/api-design/api-versioning/serving-410-gone-for-a-sunset-endpoint' }" />
+</div>

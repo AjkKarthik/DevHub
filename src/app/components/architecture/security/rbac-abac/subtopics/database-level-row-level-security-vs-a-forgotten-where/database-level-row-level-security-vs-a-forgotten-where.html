@@ -1,0 +1,27 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="RBAC & ABAC" topicRoute="/security/rbac-abac"
+    subtopicLabel="Database-Level Row-Level Security vs. a Forgotten WHERE" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">Database-Level Row-Level Security vs. a Forgotten WHERE</h1>
+  <p class="page-subtitle">The QnA names the exact risk and its database-level fix — here's both, side by side, including what happens when a query bypasses the app layer entirely.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic builds separation-of-duties, enforced at role-assignment time — the QnA's own static-SoD constraint, applied where role changes actually happen.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="RBAC & ABAC" topicRoute="/security/rbac-abac"
+    [prev]="{ label: 'ReBAC — a Zanzibar-Style Relationship Resolver', route: '/security/rbac-abac/rebac-a-zanzibar-style-relationship-resolver' }"
+    [next]="{ label: 'Separation of Duties, Enforced at Role Assignment', route: '/security/rbac-abac/separation-of-duties-enforced-at-role-assignment' }" />
+</div>

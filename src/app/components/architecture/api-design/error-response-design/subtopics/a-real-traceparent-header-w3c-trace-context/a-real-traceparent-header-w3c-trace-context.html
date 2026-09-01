@@ -1,0 +1,27 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Error Response Design" topicRoute="/api-design/error-response-design"
+    subtopicLabel="A Real traceparent Header (W3C Trace Context)" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">A Real traceparent Header (W3C Trace Context)</h1>
+  <p class="page-subtitle">The QnA names W3C Trace Context as the standardized correlation-ID format — here’s the actual header structure and propagation logic, verified against the W3C spec itself.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>The main page’s own two error-handling codeTabs (the Problem Details middleware and the Zod validation route) are never actually wired together into one app. The next subtopic shows the correct assembly and why order matters.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Error Response Design" topicRoute="/api-design/error-response-design"
+    [prev]="{ label: '404 and 410 Are Both Heuristically Cacheable', route: '/api-design/error-response-design/404-and-410-are-both-heuristically-cacheable' }"
+    [next]="{ label: 'Wiring the Error Handler: Why It Must Be Last', route: '/api-design/error-response-design/wiring-the-error-handler-why-it-must-be-last' }" />
+</div>

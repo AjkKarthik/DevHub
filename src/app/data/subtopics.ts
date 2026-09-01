@@ -3472,4 +3472,213 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Multi-Tenant SSO — Domain Resolution and Isolation', route: '/security/sso/multi-tenant-sso-domain-resolution-and-isolation' },
     { label: 'SCIM Deprovisioning — the JIT Gap SCIM Closes', route: '/security/sso/scim-deprovisioning-the-jit-gap-scim-closes' },
   ],
+  'rbac-abac': [
+    { label: 'ReBAC — a Zanzibar-Style Relationship Resolver', route: '/security/rbac-abac/rebac-a-zanzibar-style-relationship-resolver' },
+    { label: 'Database-Level Row-Level Security vs. a Forgotten WHERE', route: '/security/rbac-abac/database-level-row-level-security-vs-a-forgotten-where' },
+    { label: 'Separation of Duties, Enforced at Role Assignment', route: '/security/rbac-abac/separation-of-duties-enforced-at-role-assignment' },
+  ],
+  'claims-identity': [
+    { label: 'Claims Transformation — IdP Groups to App Roles', route: '/security/claims-identity/claims-transformation-idp-groups-to-app-roles' },
+    { label: 'The Audience Validation Attack, Demonstrated', route: '/security/claims-identity/the-audience-validation-attack-demonstrated' },
+    { label: 'DB-Verified Role Recheck vs. Freshness-Only', route: '/security/claims-identity/db-verified-role-recheck-vs-freshness-only' },
+  ],
+  // NOTE: hub-prefixed proactively -- the API Design hub's own route also
+  // uses the bare 'api-security' slug (different parent path,
+  // /api-design/api-security), matching the cross-hub duplicate-slug
+  // pattern already hit once (Design Patterns' clean-architecture batch).
+  // No active collision today (ApiDesignNavComponent has no subtopics
+  // accordion support yet), but prefixed defensively regardless.
+  'sec-api-security': [
+    { label: 'BFLA, Demonstrated and Fixed', route: '/security/api-security/bfla-demonstrated-and-fixed' },
+    { label: 'HMAC Request Signing, Implemented', route: '/security/api-security/hmac-request-signing-implemented' },
+    { label: 'The Fixed-Window Rate Limiter’s Burst Problem', route: '/security/api-security/the-fixed-window-rate-limiters-burst-problem' },
+  ],
+  xss: [
+    { label: 'What Angular’s [innerHTML] Sanitizer Actually Strips', route: '/security/xss/what-angulars-innerhtml-sanitizer-actually-strips' },
+    { label: 'SVG XSS: Why img Is Safe But Direct Navigation Isn’t', route: '/security/xss/svg-xss-img-tag-safe-but-direct-navigation-isnt' },
+    { label: 'CSP Nonces: Why an Injected Script Tag Gets Blocked', route: '/security/xss/csp-nonces-why-an-injected-script-tag-gets-blocked' },
+  ],
+  'csrf-clickjacking': [
+    { label: 'Migrating Off csurf to csrf-csrf', route: '/security/csrf-clickjacking/migrating-off-csurf-to-csrf-csrf' },
+    { label: 'Lax+POST: Why Explicit SameSite Beats the Default', route: '/security/csrf-clickjacking/lax-post-why-explicit-samesite-beats-the-default' },
+    { label: 'Login CSRF: Defending a Page With No Session Yet', route: '/security/csrf-clickjacking/login-csrf-defending-a-page-with-no-session-yet' },
+  ],
+  injection: [
+    { label: 'The Safe Query Builder’s Own Column-Name Gap', route: '/security/injection/safe-query-builders-own-column-name-gap' },
+    { label: 'XXE in Node: From ENTITY to File Read', route: '/security/injection/xxe-in-node-from-entity-to-file-read' },
+    { label: 'Second-Order SQL Injection, Demonstrated', route: '/security/injection/second-order-sql-injection-demonstrated' },
+  ],
+  'security-headers': [
+    { label: 'The Helmet Config’s Own COEP + CDN Image Conflict', route: '/security/security-headers/coep-cdn-image-conflict-in-the-helmet-config' },
+    { label: 'Wiring a Real CSP Violation-Report Endpoint', route: '/security/security-headers/wiring-a-real-csp-violation-report-endpoint' },
+    { label: 'Security Headers in CI: A Real Jest/Supertest Suite', route: '/security/security-headers/security-headers-in-ci-a-real-jest-supertest-suite' },
+  ],
+  'tls-https': [
+    { label: 'Certificate Pinning, Implemented (Public Key Hash)', route: '/security/tls-https/certificate-pinning-implemented-public-key-hash' },
+    { label: 'Authorizing by Client Certificate CN, Not Just Authenticating', route: '/security/tls-https/authorizing-by-client-certificate-cn-not-just-authenticating' },
+    { label: '0-RTT Replay Protection, Concretely', route: '/security/tls-https/zero-rtt-replay-protection-concretely' },
+  ],
+  'symmetric-encryption': [
+    { label: 'Field-Level Encryption You Can Actually Search: Blind Indexing', route: '/security/symmetric-encryption/field-level-encryption-you-can-actually-search-blind-indexing' },
+    { label: 'Streaming AES-256-GCM Encryption for Large Files', route: '/security/symmetric-encryption/streaming-aes-256-gcm-encryption-for-large-files' },
+    { label: 'Deriving Multiple Keys From One Secret with HKDF', route: '/security/symmetric-encryption/deriving-multiple-keys-from-one-secret-with-hkdf' },
+  ],
+  'asymmetric-cryptography': [
+    { label: 'The MITM Attack on Unauthenticated ECDH, Demonstrated', route: '/security/asymmetric-cryptography/the-mitm-attack-on-unauthenticated-ecdh-demonstrated' },
+    { label: 'Key Wrapping and Unwrapping, End to End', route: '/security/asymmetric-cryptography/key-wrapping-and-unwrapping-end-to-end' },
+    { label: 'Sign-then-Encrypt vs Encrypt-then-Sign: The Attack, Demonstrated', route: '/security/asymmetric-cryptography/sign-then-encrypt-vs-encrypt-then-sign-the-attack-demonstrated' },
+  ],
+  hashing: [
+    { label: 'Hash Algorithm Migration: Lazy Rehashing and the Double-Hash Wrapper', route: '/security/hashing/hash-algorithm-migration-lazy-rehashing-and-double-hash-wrapper' },
+    { label: 'Benchmarking bcrypt/Argon2id to Choose a Work Factor', route: '/security/hashing/benchmarking-bcrypt-argon2id-to-choose-a-work-factor' },
+    { label: 'Rainbow Tables vs Salting, Demonstrated', route: '/security/hashing/rainbow-tables-vs-salting-demonstrated' },
+  ],
+  'secrets-management': [
+    { label: 'Renewing a Vault Lease Before It Expires', route: '/security/secrets-management/renewing-a-vault-lease-before-it-expires' },
+    { label: 'Vault Transit: Encryption as a Service, Implemented', route: '/security/secrets-management/vault-transit-encryption-as-a-service-implemented' },
+    { label: 'The Vault Agent Injector Sidecar Pattern in Kubernetes', route: '/security/secrets-management/vault-agent-injector-sidecar-pattern' },
+  ],
+  // NOTE: hub-prefixed -- bare 'container-security' is already claimed by the
+  // Containers/K8s hub's own /containers/container-security topic.
+  'sec-container-security': [
+    { label: 'A sha256 Tag vs. a True Image Digest Pin', route: '/security/container-security/sha256-tag-vs-true-image-digest-pin' },
+    { label: 'A Real Falco Rule Detecting a Shell in a Container', route: '/security/container-security/falco-rule-detects-shell-in-container' },
+    { label: 'A Custom seccomp Profile, Beyond RuntimeDefault', route: '/security/container-security/custom-seccomp-profile-beyond-runtimedefault' },
+  ],
+  'supply-chain': [
+    { label: 'SHA-Pinned Actions: Why @v4 and @master Both Fail', route: '/security/supply-chain/sha-pinned-actions-why-v4-and-master-both-fail' },
+    { label: 'Cosign Keyless Signing: The Actual CLI Flow', route: '/security/supply-chain/cosign-keyless-signing-the-actual-cli-flow' },
+    { label: 'Diffing Two SBOMs to Catch Newly-Vulnerable Dependencies', route: '/security/supply-chain/diffing-two-sboms-to-catch-newly-vulnerable-deps' },
+  ],
+  'rest-fundamentals': [
+    { label: 'The Missing hasBody Check in validateRestRequest', route: '/api-design/rest-fundamentals/the-missing-hasbody-check-in-validaterestrequest' },
+    { label: 'A Real HATEOAS Response, With Links', route: '/api-design/rest-fundamentals/a-real-hateoas-response-with-links' },
+    { label: 'Content Negotiation: the Same Resource, JSON or CSV', route: '/api-design/rest-fundamentals/content-negotiation-the-same-resource-json-or-csv' },
+  ],
+  'resource-url-design': [
+    { label: 'Verbs as Prefixes, Not Exact Matches: the Real Fix', route: '/api-design/resource-url-design/verbs-as-prefixes-not-exact-matches-the-real-fix' },
+    { label: 'Sub-Resource Actions: A Real Cancellations Endpoint', route: '/api-design/resource-url-design/sub-resource-actions-a-real-cancellations-endpoint' },
+    { label: 'Cursor-Based Pagination, Actually Implemented', route: '/api-design/resource-url-design/cursor-based-pagination-actually-implemented' },
+  ],
+  'http-methods-status-codes': [
+    { label: '403 vs. 404: a Security-Posture Decision, Not a Rule', route: '/api-design/http-methods-status-codes/403-vs-404-a-security-posture-decision-not-a-rule' },
+    { label: 'Implementing Idempotency Keys for POST Requests', route: '/api-design/http-methods-status-codes/implementing-idempotency-keys-for-post-requests' },
+    { label: 'JSON Patch (RFC 6902), Applied', route: '/api-design/http-methods-status-codes/json-patch-rfc-6902-applied' },
+  ],
+  'pagination-patterns': [
+    { label: 'The Missing id Tiebreaker in Cursor Pagination', route: '/api-design/pagination-patterns/the-missing-id-tiebreaker-in-cursor-pagination' },
+    { label: 'The Deferred-Join Trick for Deep Offset Pages', route: '/api-design/pagination-patterns/the-deferred-join-trick-for-deep-offset-pages' },
+    { label: 'A Real Relay Connection GraphQL Resolver', route: '/api-design/pagination-patterns/a-real-relay-connection-graphql-resolver' },
+  ],
+  // NOTE: bare 'api-versioning' is free -- the ASP.NET hub's own topic at
+  // this same slug was pre-emptively hub-prefixed to 'aspnet-api-versioning'
+  // in anticipation of this exact moment (see the NOTE next to that entry).
+  'api-versioning': [
+    { label: 'Middleware Order: Why the Warning Header Never Fired', route: '/api-design/api-versioning/middleware-order-why-the-warning-header-never-fired' },
+    { label: 'Serving 410 Gone for a Sunset Endpoint', route: '/api-design/api-versioning/serving-410-gone-for-a-sunset-endpoint' },
+    { label: 'The Expand-Contract Pattern, Implemented', route: '/api-design/api-versioning/the-expand-contract-pattern-implemented' },
+  ],
+  'error-response-design': [
+    { label: '404 and 410 Are Both Heuristically Cacheable', route: '/api-design/error-response-design/404-and-410-are-both-heuristically-cacheable' },
+    { label: 'A Real traceparent Header (W3C Trace Context)', route: '/api-design/error-response-design/a-real-traceparent-header-w3c-trace-context' },
+    { label: 'Wiring the Error Handler: Why It Must Be Last', route: '/api-design/error-response-design/wiring-the-error-handler-why-it-must-be-last' },
+  ],
+  'hateoas-hypermedia': [
+    { label: 'The Missing .json() Parse in the Link-Following Example', route: '/api-design/hateoas-hypermedia/the-missing-json-parse-in-the-link-following-example' },
+    { label: 'A Real JSON:API Response Shape', route: '/api-design/hateoas-hypermedia/a-real-jsonapi-response-shape' },
+    { label: 'Pagination via the Link Header (RFC 8288)', route: '/api-design/hateoas-hypermedia/pagination-via-the-link-header-rfc-8288' },
+  ],
+  'api-design-principles': [
+    { label: 'The Mismatched Timestamp in the Transform Challenge', route: '/api-design/api-design-principles/the-mismatched-timestamp-in-the-transform-challenge' },
+    { label: 'Implementing Idempotency-Key Deduplication', route: '/api-design/api-design-principles/implementing-idempotency-key-deduplication' },
+    { label: 'Missing Field vs. Explicit Null in PATCH Requests', route: '/api-design/api-design-principles/missing-field-vs-explicit-null-in-patch-requests' },
+  ],
+  'openapi-contracts': [
+    { label: 'Discriminator-Based oneOf, Actually Parsed', route: '/api-design/openapi-contracts/discriminator-based-oneof-actually-parsed' },
+    { label: 'Extending the Validator for Nested Arrays', route: '/api-design/openapi-contracts/extending-the-validator-for-nested-arrays' },
+    { label: 'A Minimal Breaking-Change Detector', route: '/api-design/openapi-contracts/a-minimal-breaking-change-detector' },
+  ],
+  'protocol-buffers': [
+    { label: 'A oneof Discriminated Union, Actually Implemented', route: '/api-design/protocol-buffers/a-oneof-discriminated-union-actually-implemented' },
+    { label: 'google.protobuf.Any: Real Polymorphic Pack/Unpack', route: '/api-design/protocol-buffers/google-protobuf-any-real-polymorphic-pack-unpack' },
+    { label: 'FieldMask: Partial Updates by Explicit Field Path', route: '/api-design/protocol-buffers/fieldmask-partial-updates-by-explicit-field-path' },
+  ],
+  'grpc-service-patterns': [
+    { label: 'The Chat Handler That Never Actually Broadcasts', route: '/api-design/grpc-service-patterns/the-chat-handler-that-never-actually-broadcasts' },
+    { label: 'A Real gRPC Interceptor Chain', route: '/api-design/grpc-service-patterns/a-real-grpc-interceptor-chain' },
+    { label: 'RetryInfo-Aware Retry Instead of a Guessed Backoff', route: '/api-design/grpc-service-patterns/retryinfo-aware-retry-instead-of-a-guessed-backoff' },
+  ],
+  'grpc-web-transcoding': [
+    { label: 'A Real HTTP Transcoding Router', route: '/api-design/grpc-web-transcoding/a-real-http-transcoding-router' },
+    { label: 'Content Negotiation on a Connect Server', route: '/api-design/grpc-web-transcoding/content-negotiation-on-a-connect-server' },
+    { label: 'Which Streaming Patterns Actually Work in a Browser', route: '/api-design/grpc-web-transcoding/which-streaming-patterns-actually-work-in-a-browser' },
+  ],
+  'graphql-fundamentals': [
+    { label: 'Query.user Is Nullable, Not User! — The Comment Was Wrong', route: '/api-design/graphql-fundamentals/query-user-is-nullable-not-user-the-comment-was-wrong' },
+    { label: 'DataLoader Batching via Microtask Timing', route: '/api-design/graphql-fundamentals/dataloader-batching-via-microtask-timing' },
+    { label: 'A Directive-Style Auth Wrapper', route: '/api-design/graphql-fundamentals/a-directive-style-auth-wrapper' },
+  ],
+  'graphql-vs-rest': [
+    { label: 'The Missing Precedence Rule in recommendApi', route: '/api-design/graphql-vs-rest/the-missing-precedence-rule-in-recommendapi' },
+    { label: 'Automatic Persisted Queries: The Hash Registration Flow', route: '/api-design/graphql-vs-rest/automatic-persisted-queries-the-hash-registration-flow' },
+    { label: 'Federation Entity Resolution Across Two Subgraphs', route: '/api-design/graphql-vs-rest/federation-entity-resolution-across-two-subgraphs' },
+  ],
+  'websockets-sse-polling': [
+    { label: 'The Silently Dropped browserOnly Rule', route: '/api-design/websockets-sse-polling/the-silently-dropped-browseronly-rule' },
+    { label: 'Redis Pub/Sub Fanout Across Server Instances', route: '/api-design/websockets-sse-polling/redis-pub-sub-fanout-across-server-instances' },
+    { label: 'SSE Gap Recovery With a Ring Buffer', route: '/api-design/websockets-sse-polling/sse-gap-recovery-with-a-ring-buffer' },
+  ],
+  'webhook-design': [
+    { label: 'BullMQ’s Exponential Backoff, Computed Precisely', route: '/api-design/webhook-design/bullmqs-exponential-backoff-computed-precisely' },
+    { label: 'Fan-Out With Per-Subscriber Rate Limiting', route: '/api-design/webhook-design/fan-out-with-per-subscriber-rate-limiting' },
+    { label: 'Secret Rotation During a Transition Window', route: '/api-design/webhook-design/secret-rotation-during-a-transition-window' },
+  ],
+  // NOTE: bare 'api-security' left free for THIS hub's own topic -- the
+  // Security & Auth hub's own /security/api-security topic was proactively
+  // hub-prefixed to 'sec-api-security' anticipating this exact moment.
+  'api-security': [
+    { label: 'The Undeclared CreateUserSchema Reference', route: '/api-design/api-security/the-undeclared-createuserschema-reference' },
+    { label: 'Output-Side Field Allowlisting for API3', route: '/api-design/api-security/output-side-field-allowlisting-for-api3' },
+    { label: 'A Token-Bucket Rate Limiter With Real Headers', route: '/api-design/api-security/a-token-bucket-rate-limiter-with-real-headers' },
+  ],
+  'breaking-changes': [
+    { label: 'Verifying a Recommended Tool Is Still Maintained', route: '/api-design/breaking-changes/verifying-a-recommended-tool-is-still-maintained' },
+    { label: 'Implementing Expand-Contract, All Three Phases', route: '/api-design/breaking-changes/implementing-expand-contract-all-three-phases' },
+    { label: 'The Challenge Never Detects a Type Change', route: '/api-design/breaking-changes/the-challenge-never-detects-a-type-change' },
+  ],
+  // NOTE: hub-prefixed proactively -- 'rate-limiting' is also a bare route
+  // segment under the Redis hub (/redis/rate-limiting) and the ASP.NET hub
+  // (already resolved to 'aspnet-rate-limiting' earlier). RedisNavComponent
+  // has no subtopicsOf() call today (no active collision), but prefixed
+  // defensively regardless, matching the established precedent. See
+  // ApiDesignNavComponent's own subKey() helper, which maps this hub's
+  // Advanced-loop 'rate-limiting' item.path to this exact key.
+  'api-rate-limiting': [
+    { label: 'The Sliding Window’s Rejected-Request Lockout Bug', route: '/api-design/rate-limiting/the-sliding-windows-rejected-request-lockout-bug' },
+    { label: 'A Lua-Script Atomic Token Bucket', route: '/api-design/rate-limiting/a-lua-script-atomic-token-bucket' },
+    { label: 'A GraphQL Query-Complexity Limiter', route: '/api-design/rate-limiting/a-graphql-query-complexity-limiter' },
+  ],
+  'observability-fundamentals': [
+    { label: 'Lightstep’s End-of-Life: Verifying a Tool Is Still Alive', route: '/observability/observability-fundamentals/lightsteps-end-of-life-verifying-a-tool-is-still-alive' },
+    { label: 'Classifying the Fourth MELT Signal: Events', route: '/observability/observability-fundamentals/classifying-the-fourth-melt-signal-events' },
+    { label: 'A Synthetic Monitoring Prober With SLO Evaluation', route: '/observability/observability-fundamentals/a-synthetic-monitoring-prober-with-slo-evaluation' },
+  ],
+  // NOTE: bare 'opentelemetry' left free for THIS hub's own topic -- the
+  // ASP.NET hub's own /aspnet/opentelemetry topic already resolved this
+  // exact collision by hub-prefixing to 'aspnet-opentelemetry'.
+  'opentelemetry': [
+    { label: 'The paySpan Leak: startActiveSpan() Never Auto-Ends', route: '/observability/opentelemetry/the-payspan-leak-startactivespan-never-auto-ends' },
+    { label: 'Exemplars: Linking a Metric Observation to Its Trace', route: '/observability/opentelemetry/exemplars-linking-a-metric-observation-to-its-trace' },
+    { label: 'A Tail-Sampling Decision Engine', route: '/observability/opentelemetry/a-tail-sampling-decision-engine' },
+  ],
+  'sli-slo-sla': [
+    { label: 'The Challenge’s Impossible Worked Examples', route: '/observability/sli-slo-sla/the-challenges-impossible-worked-examples' },
+    { label: 'Reconciling Two Different Status-Category Models', route: '/observability/sli-slo-sla/reconciling-two-different-status-category-models' },
+    { label: 'The Multi-Window Burn-Rate Decision Logic', route: '/observability/sli-slo-sla/the-multi-window-burn-rate-decision-logic' },
+  ],
+  'prometheus-metrics': [
+    { label: 'The activeConnections Gauge Leak on Client Disconnect', route: '/observability/prometheus-metrics/the-activeconnections-gauge-leak-on-client-disconnect' },
+    { label: 'The Histogram’s Missing +Inf Bucket', route: '/observability/prometheus-metrics/the-histograms-missing-inf-bucket' },
+    { label: 'Verifying the Apdex Query’s Non-Obvious Algebra', route: '/observability/prometheus-metrics/verifying-the-apdex-querys-non-obvious-algebra' },
+  ],
 };

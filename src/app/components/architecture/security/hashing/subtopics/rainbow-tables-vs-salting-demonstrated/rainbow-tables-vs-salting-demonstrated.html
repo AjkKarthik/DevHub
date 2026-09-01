@@ -1,0 +1,26 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Hashing &amp; MACs" topicRoute="/security/hashing"
+    subtopicLabel="Rainbow Tables vs Salting, Demonstrated" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">Rainbow Tables vs Salting, Demonstrated</h1>
+  <p class="page-subtitle">The quiz explains rainbow tables and salting precisely in prose — here's a small, working precomputed lookup table, and the exact moment salting defeats it.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>This completes the batch's three angles on the main page's own content — both migration strategies the QnA names, the benchmark loop behind the quiz's own work-factor target, and now a working rainbow table showing exactly what salting defeats.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Hashing &amp; MACs" topicRoute="/security/hashing"
+    [prev]="{ label: 'Benchmarking bcrypt/Argon2id to Choose a Work Factor', route: '/security/hashing/benchmarking-bcrypt-argon2id-to-choose-a-work-factor' }" />
+</div>

@@ -118,8 +118,18 @@ app.get('/feed', async (req, res) => {
   const limit  = Math.min(50, parseInt(req.query.limit as string) || 20);
   const cursor = req.query.cursor as string | undefined;
 
-  const where = cursor
-    ? { createdAt: { lt: decodeCursor(cursor).createdAt } }  // items before the cursor
+  // Compare on BOTH createdAt and id -- createdAt alone is not a
+  // unique tiebreaker (two posts can share the same timestamp), so
+  // a plain "createdAt < cursor.createdAt" silently skips any row
+  // that ties the cursor's own timestamp exactly. Matches the same
+  // multi-column pattern the theory above already names for keyset
+  // pagination: WHERE (createdAt, id) > (:lastCreatedAt, :lastId).
+  const decoded = cursor ? decodeCursor(cursor) : null;
+  const where = decoded
+    ? { OR: [
+        { createdAt: { lt: decoded.createdAt } },
+        { createdAt: decoded.createdAt, id: { lt: decoded.id } },
+      ] }
     : {};
 
   // Fetch limit+1 to detect hasNextPage without COUNT(*)

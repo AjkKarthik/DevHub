@@ -1,0 +1,26 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Asymmetric Cryptography" topicRoute="/security/asymmetric-cryptography"
+    subtopicLabel="The MITM Attack on Unauthenticated ECDH, Demonstrated" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">The MITM Attack on Unauthenticated ECDH, Demonstrated</h1>
+  <p class="page-subtitle">The QnA explains why unauthenticated Diffie-Hellman is vulnerable to MITM in real detail — here's the main page's own ECDH codeTab, extended with an attacker actually in the middle.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>The main page's own mistake block shows RSA-OAEP wrapping a key in one line — the next subtopic builds the complete wrap-and-unwrap round trip, since only half of it currently appears anywhere.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Asymmetric Cryptography" topicRoute="/security/asymmetric-cryptography"
+    [next]="{ label: 'Key Wrapping and Unwrapping, End to End', route: '/security/asymmetric-cryptography/key-wrapping-and-unwrapping-end-to-end' }" />
+</div>

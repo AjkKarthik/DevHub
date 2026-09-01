@@ -250,7 +250,7 @@ const quiz: QuizQuestion[] = [
 const qna: QnaItem[] = [
   {
     q: 'What is the difference between RSA and ECC for the same security level?',
-    a: 'ECC achieves equivalent security to RSA with much smaller keys: <table><tr><th>RSA</th><th>ECC equivalent</th><th>Security bits</th></tr><tr><td>2048</td><td>P-224 / Ed25519</td><td>112</td></tr><tr><td>3072</td><td>P-256</td><td>128</td></tr><tr><td>7680</td><td>P-384</td><td>192</td></tr></table>Smaller keys mean: faster operations (especially on mobile/embedded), smaller TLS handshakes, less storage. The trade-off: ECC implementation correctness is harder (timing attacks, nonce management in ECDSA). Use Ed25519 for new signing systems — it is simpler to implement correctly.',
+    a: 'ECC achieves equivalent security to RSA with much smaller keys: <table><tr><th>RSA</th><th>ECC equivalent</th><th>Security bits</th></tr><tr><td>2048</td><td>P-224</td><td>112</td></tr><tr><td>3072</td><td>P-256 / Ed25519</td><td>128</td></tr><tr><td>7680</td><td>P-384</td><td>192</td></tr></table>Smaller keys mean: faster operations (especially on mobile/embedded), smaller TLS handshakes, less storage. The trade-off: ECC implementation correctness is harder (timing attacks, nonce management in ECDSA). Use Ed25519 for new signing systems — it is simpler to implement correctly.',
   },
   {
     q: 'Why is Diffie-Hellman key exchange vulnerable to a man-in-the-middle attack unless combined with authentication?',

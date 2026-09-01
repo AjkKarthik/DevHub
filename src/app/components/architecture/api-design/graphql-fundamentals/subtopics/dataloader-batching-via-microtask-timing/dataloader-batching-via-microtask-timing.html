@@ -1,0 +1,27 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="GraphQL Fundamentals" topicRoute="/api-design/graphql-fundamentals"
+    subtopicLabel="DataLoader Batching via Microtask Timing" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">DataLoader Batching via Microtask Timing</h1>
+  <p class="page-subtitle">A quiz explanation describes exactly why DataLoader batching works — here’s a minimal loader that actually demonstrates the process.nextTick() mechanism in action.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>The QnA on authorization names schema-level &#64;auth directives in one sentence, with no code showing what a custom directive implementation actually does. The next subtopic builds the equivalent effect.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="GraphQL Fundamentals" topicRoute="/api-design/graphql-fundamentals"
+    [prev]="{ label: 'Query.user Is Nullable, Not User! — The Comment Was Wrong', route: '/api-design/graphql-fundamentals/query-user-is-nullable-not-user-the-comment-was-wrong' }"
+    [next]="{ label: 'A Directive-Style Auth Wrapper', route: '/api-design/graphql-fundamentals/a-directive-style-auth-wrapper' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="API Security" topicRoute="/api-design/api-security"
+    subtopicLabel="A Token-Bucket Rate Limiter With Real Headers" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">A Token-Bucket Rate Limiter With Real Headers</h1>
+  <p class="page-subtitle">The QnA names the algorithm, the storage layer, and the exact response headers — but no codeTab on the main page ever builds one. This one does, and verifies it request by request.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>This closes the last of the three gaps this topic's own subtopics build: input allowlisting, output allowlisting, and now abuse prevention — the three layers the page's own "Defense in Depth" theory names as complementary, never sufficient alone.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="API Security" topicRoute="/api-design/api-security"
+    [prev]="{ label: 'Output-Side Field Allowlisting for API3', route: '/api-design/api-security/output-side-field-allowlisting-for-api3' }" />
+</div>

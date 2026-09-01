@@ -1,0 +1,26 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Protocol Buffers" topicRoute="/api-design/protocol-buffers"
+    subtopicLabel="FieldMask: Partial Updates by Explicit Field Path" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">FieldMask: Partial Updates by Explicit Field Path</h1>
+  <p class="page-subtitle">The main page’s QnA names FieldMask for partial updates in one sentence — here’s a real implementation, and why it solves the missing-vs-explicit-value problem differently than JSON’s own spread-based fix.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>Enforced oneof exclusivity, a real Any pack/unpack registry, and FieldMask-based partial updates are three concrete implementations of well-known-type mechanisms this topic names in prose but leaves as description. gRPC Service Patterns is next in the Protocols nav group.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Protocol Buffers" topicRoute="/api-design/protocol-buffers"
+    [prev]="{ label: 'google.protobuf.Any: Real Polymorphic Pack/Unpack', route: '/api-design/protocol-buffers/google-protobuf-any-real-polymorphic-pack-unpack' }" />
+</div>

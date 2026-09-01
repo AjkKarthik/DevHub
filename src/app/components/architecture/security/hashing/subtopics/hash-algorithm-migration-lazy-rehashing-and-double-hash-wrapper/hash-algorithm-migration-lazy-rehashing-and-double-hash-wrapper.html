@@ -1,0 +1,26 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Hashing &amp; MACs" topicRoute="/security/hashing"
+    subtopicLabel="Hash Algorithm Migration: Lazy Rehashing and the Double-Hash Wrapper" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">Hash Algorithm Migration: Lazy Rehashing and the Double-Hash Wrapper</h1>
+  <p class="page-subtitle">The QnA names two real migration strategies precisely — here's both actually built, plus a real bug when a team runs both without reconciling their own state values.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>The quiz names a specific benchmark target (100-300ms per hash) for choosing a work factor — the next subtopic builds the actual benchmark loop that arrives at that number.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Hashing &amp; MACs" topicRoute="/security/hashing"
+    [next]="{ label: 'Benchmarking bcrypt/Argon2id to Choose a Work Factor', route: '/security/hashing/benchmarking-bcrypt-argon2id-to-choose-a-work-factor' }" />
+</div>

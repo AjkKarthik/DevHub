@@ -1,0 +1,27 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Resource & URL Design" topicRoute="/api-design/resource-url-design"
+    subtopicLabel="Sub-Resource Actions: A Real Cancellations Endpoint" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">Sub-Resource Actions: A Real Cancellations Endpoint</h1>
+  <p class="page-subtitle">The QnA names “model the action as a sub-resource” as one of three options for non-CRUD actions — here’s the actual POST /orders/42/cancellations endpoint, since no codeTab on the main page ever builds it.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>The theory names cursor-based pagination as an alternative to offset-based, but the only codeTab on the page implements offset pagination. The next subtopic builds the actual cursor-based version.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Resource & URL Design" topicRoute="/api-design/resource-url-design"
+    [prev]="{ label: 'Verbs as Prefixes, Not Exact Matches: the Real Fix', route: '/api-design/resource-url-design/verbs-as-prefixes-not-exact-matches-the-real-fix' }"
+    [next]="{ label: 'Cursor-Based Pagination, Actually Implemented', route: '/api-design/resource-url-design/cursor-based-pagination-actually-implemented' }" />
+</div>

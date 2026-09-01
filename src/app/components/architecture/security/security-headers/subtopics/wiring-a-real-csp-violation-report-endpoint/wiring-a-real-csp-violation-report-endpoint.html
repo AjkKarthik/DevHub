@@ -1,0 +1,27 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Security Headers" topicRoute="/security/security-headers"
+    subtopicLabel="Wiring a Real CSP Violation-Report Endpoint" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">Wiring a Real CSP Violation-Report Endpoint</h1>
+  <p class="page-subtitle">The QnA's own CSP rollout recipe names report-uri and stops there — here's the actual endpoint that receives, parses, and logs what browsers send.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>A separate QnA describes testing security headers in CI in prose only — the final subtopic extends the main page's own audit codeTab into an actual Jest/Supertest suite.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Security Headers" topicRoute="/security/security-headers"
+    [prev]="{ label: 'The Helmet Config’s Own COEP + CDN Image Conflict', route: '/security/security-headers/coep-cdn-image-conflict-in-the-helmet-config' }"
+    [next]="{ label: 'Security Headers in CI: A Real Jest/Supertest Suite', route: '/security/security-headers/security-headers-in-ci-a-real-jest-supertest-suite' }" />
+</div>

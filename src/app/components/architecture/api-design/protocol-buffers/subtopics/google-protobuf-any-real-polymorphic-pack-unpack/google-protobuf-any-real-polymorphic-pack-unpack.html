@@ -1,0 +1,27 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Protocol Buffers" topicRoute="/api-design/protocol-buffers"
+    subtopicLabel="google.protobuf.Any: Real Polymorphic Pack/Unpack" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">google.protobuf.Any: Real Polymorphic Pack/Unpack</h1>
+  <p class="page-subtitle">The main page’s QnA names Any as "any proto message, tagged with its type URL" in one sentence — here’s the type-URL registry that actually makes decoding it possible.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>The main page’s QnA names google.protobuf.FieldMask for partial updates in one sentence, with no code showing what applying one actually does. The next subtopic builds it, connecting back to this hub’s own PATCH-merge subtopic on API Design Principles.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Protocol Buffers" topicRoute="/api-design/protocol-buffers"
+    [prev]="{ label: 'A oneof Discriminated Union, Actually Implemented', route: '/api-design/protocol-buffers/a-oneof-discriminated-union-actually-implemented' }"
+    [next]="{ label: 'FieldMask: Partial Updates by Explicit Field Path', route: '/api-design/protocol-buffers/fieldmask-partial-updates-by-explicit-field-path' }" />
+</div>

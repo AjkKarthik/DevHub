@@ -1,0 +1,26 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="TLS &amp; HTTPS" topicRoute="/security/tls-https"
+    subtopicLabel="0-RTT Replay Protection, Concretely" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">0-RTT Replay Protection, Concretely</h1>
+  <p class="page-subtitle">The QnA names 0-RTT replay protection in one sentence — here's the real architecture (nginx forwarding the standard Early-Data header) and the app-level check that acts on it.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>This completes the batch's three angles on the main page's own content — public-key pinning at the intermediate CA level, per-service authorization on top of mTLS authentication, and now the real, RFC-defined mechanism for rejecting replayed 0-RTT data.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="TLS &amp; HTTPS" topicRoute="/security/tls-https"
+    [prev]="{ label: 'Authorizing by Client Certificate CN, Not Just Authenticating', route: '/security/tls-https/authorizing-by-client-certificate-cn-not-just-authenticating' }" />
+</div>

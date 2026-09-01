@@ -1,0 +1,26 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="gRPC-Web & Transcoding" topicRoute="/api-design/grpc-web-transcoding"
+    subtopicLabel="A Real HTTP Transcoding Router" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">A Real HTTP Transcoding Router</h1>
+  <p class="page-subtitle">The main page’s own Challenge parses a single annotation string — here’s what grpc-gateway actually does: matching a real request against many routes and binding nested path parameters.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>The main page’s own QnA names Connect’s JSON/proto content negotiation in one sentence, with no code showing a server actually branching on Content-Type. The next subtopic builds it.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="gRPC-Web & Transcoding" topicRoute="/api-design/grpc-web-transcoding"
+    [next]="{ label: 'Content Negotiation on a Connect Server', route: '/api-design/grpc-web-transcoding/content-negotiation-on-a-connect-server' }" />
+</div>

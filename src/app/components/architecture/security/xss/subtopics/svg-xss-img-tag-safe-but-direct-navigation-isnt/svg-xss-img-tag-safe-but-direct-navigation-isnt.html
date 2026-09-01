@@ -1,0 +1,27 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Cross-Site Scripting" topicRoute="/security/xss"
+    subtopicLabel="SVG XSS: Why img Is Safe But Direct Navigation Isn't" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">SVG XSS: Why img Is Safe But Direct Navigation Isn't</h1>
+  <p class="page-subtitle">The main page's own SVG QnA conflated "displays it as an image" with script execution — the actual deciding factor is the rendering context, not the Content-Type header.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>The quiz's own explanation of CSP nonces sketches the generation-and-check mechanism in prose — the final subtopic traces it through one concrete request, tracing exactly why an attacker's injected script tag gets blocked even after it makes it into the HTML.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Cross-Site Scripting" topicRoute="/security/xss"
+    [prev]="{ label: 'What Angular’s [innerHTML] Sanitizer Actually Strips', route: '/security/xss/what-angulars-innerhtml-sanitizer-actually-strips' }"
+    [next]="{ label: 'CSP Nonces: Why an Injected Script Tag Gets Blocked', route: '/security/xss/csp-nonces-why-an-injected-script-tag-gets-blocked' }" />
+</div>

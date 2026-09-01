@@ -1,0 +1,26 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CSRF &amp; Clickjacking" topicRoute="/security/csrf-clickjacking"
+    subtopicLabel="Login CSRF: Defending a Page With No Session Yet" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">Login CSRF: Defending a Page With No Session Yet</h1>
+  <p class="page-subtitle">The main page's own QnA names login CSRF precisely — the one case where the standard session-backed CSRF token pattern has nothing to validate against.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>This completes the three defenses this batch builds out — a maintained token library replacing csurf, the exact scope of Chromium's SameSite exception, and now the one endpoint (login) where the standard token pattern needs its own dedicated variant.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CSRF &amp; Clickjacking" topicRoute="/security/csrf-clickjacking"
+    [prev]="{ label: 'Lax+POST: Why Explicit SameSite Beats the Default', route: '/security/csrf-clickjacking/lax-post-why-explicit-samesite-beats-the-default' }" />
+</div>
