@@ -1,0 +1,27 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="API Security" topicRoute="/api-design/api-security"
+    subtopicLabel="Output-Side Field Allowlisting for API3" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">Output-Side Field Allowlisting for API3</h1>
+  <p class="page-subtitle">Input validation protects what a request can write — it does nothing for what a response can leak. API3 needs a second, independent allowlist for the read path.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>The QnA on rate limiting names the exact algorithm and response headers a real limiter needs — the next subtopic builds one and verifies its behavior request by request.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="API Security" topicRoute="/api-design/api-security"
+    [prev]="{ label: 'The Undeclared CreateUserSchema Reference', route: '/api-design/api-security/the-undeclared-createuserschema-reference' }"
+    [next]="{ label: 'A Token-Bucket Rate Limiter With Real Headers', route: '/api-design/api-security/a-token-bucket-rate-limiter-with-real-headers' }" />
+</div>

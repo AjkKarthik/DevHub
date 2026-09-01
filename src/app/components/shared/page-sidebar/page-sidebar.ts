@@ -35483,6 +35483,51 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Token bucket and sliding window are the two dominant rate-limiting algorithms, with different burst-tolerance characteristics worth choosing deliberately.',
     ],
   },
+  'api-design/api-security': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Rate Limiting', route: '/api-design/rate-limiting' },
+      { label: 'Breaking Changes', route: '/api-design/breaking-changes' },
+    ],
+    tip: 'AuthN and AuthZ are checked on EVERY request, not just at login -- middleware should reject unauthenticated requests with 401 before business logic ever runs, and check permissions with 403 after identity is established.',
+    gotchas: [
+      'Never accept alg: none when verifying a JWT -- always pin the expected algorithm server-side, never let the token\'s own header decide how to verify it.',
+      '404 is for truly non-existent resources; 403 is for existing resources the authenticated caller lacks permission for -- conflating the two makes debugging permission bugs much harder.',
+    ],
+  },
+  'api-design/api-security/the-undeclared-createuserschema-reference': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Output-Side Field Allowlisting for API3', route: '/api-design/api-security/output-side-field-allowlisting-for-api3' },
+      { label: 'API Security (overview)', route: '/api-design/api-security' },
+    ],
+    tip: 'Mass-assignment protection comes from a handler only ever destructuring the fields its schema allows -- an extra key in the raw request body is simply never read into a variable, regardless of the schema\'s total field count.',
+    gotchas: [
+      'A codeTab whose every individual piece looks syntactically correct can still reference a name that was never declared under that name anywhere in the file -- always check every identifier a later line uses against what an earlier line actually declared.',
+    ],
+  },
+  'api-design/api-security/output-side-field-allowlisting-for-api3': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'The Undeclared CreateUserSchema Reference', route: '/api-design/api-security/the-undeclared-createuserschema-reference' },
+      { label: 'A Token-Bucket Rate Limiter With Real Headers', route: '/api-design/api-security/a-token-bucket-rate-limiter-with-real-headers' },
+    ],
+    tip: 'Input validation and output serialization are two INDEPENDENT allowlists -- fixing what a request can write says nothing about what a response can leak back out.',
+    gotchas: [
+      'An allowlist (name only the safe fields) is safe by default for new fields added later; a denylist (strip the bad fields) leaks new sensitive fields by default until someone remembers to add them to the strip list.',
+    ],
+  },
+  'api-design/api-security/a-token-bucket-rate-limiter-with-real-headers': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Output-Side Field Allowlisting for API3', route: '/api-design/api-security/output-side-field-allowlisting-for-api3' },
+      { label: 'API Security (overview)', route: '/api-design/api-security' },
+    ],
+    tip: 'A token bucket at 0 remaining tokens is not permanently exhausted -- it keeps refilling at its configured rate, so RateLimit-Remaining recovering over time is expected behavior, not a bug.',
+    gotchas: [
+      'The four standard rate-limit headers (RateLimit-Limit/Remaining/Reset, Retry-After) describe the caller-facing contract, not the internal algorithm -- a sliding-window or fixed-window limiter reports the identical four headers from its own different internal state.',
+    ],
+  },
   'api-design/webhook-design': {
     apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
     related: [

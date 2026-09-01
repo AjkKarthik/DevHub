@@ -3633,4 +3633,12 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Fan-Out With Per-Subscriber Rate Limiting', route: '/api-design/webhook-design/fan-out-with-per-subscriber-rate-limiting' },
     { label: 'Secret Rotation During a Transition Window', route: '/api-design/webhook-design/secret-rotation-during-a-transition-window' },
   ],
+  // NOTE: bare 'api-security' left free for THIS hub's own topic -- the
+  // Security & Auth hub's own /security/api-security topic was proactively
+  // hub-prefixed to 'sec-api-security' anticipating this exact moment.
+  'api-security': [
+    { label: 'The Undeclared CreateUserSchema Reference', route: '/api-design/api-security/the-undeclared-createuserschema-reference' },
+    { label: 'Output-Side Field Allowlisting for API3', route: '/api-design/api-security/output-side-field-allowlisting-for-api3' },
+    { label: 'A Token-Bucket Rate Limiter With Real Headers', route: '/api-design/api-security/a-token-bucket-rate-limiter-with-real-headers' },
+  ],
 };

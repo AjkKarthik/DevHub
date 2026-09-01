@@ -3160,7 +3160,12 @@ export const routes: Routes = [
         { path: 'extending-the-validator-for-nested-arrays', loadComponent: () => import('./components/architecture/api-design/openapi-contracts/subtopics/extending-the-validator-for-nested-arrays/extending-the-validator-for-nested-arrays').then(m => m.ExtendingTheValidatorForNestedArraysSubtopic) },
         { path: 'a-minimal-breaking-change-detector', loadComponent: () => import('./components/architecture/api-design/openapi-contracts/subtopics/a-minimal-breaking-change-detector/a-minimal-breaking-change-detector').then(m => m.AMinimalBreakingChangeDetectorSubtopic) },
       ] },
-    { path: 'api-security',          loadComponent: () => import('./components/architecture/api-design/api-security/api-security').then(m => m.ApiApiSecurity) },
+    { path: 'api-security', children: [
+        { path: '', loadComponent: () => import('./components/architecture/api-design/api-security/api-security').then(m => m.ApiApiSecurity) },
+        { path: 'the-undeclared-createuserschema-reference', loadComponent: () => import('./components/architecture/api-design/api-security/subtopics/the-undeclared-createuserschema-reference/the-undeclared-createuserschema-reference').then(m => m.TheUndeclaredCreateuserschemaReferenceSubtopic) },
+        { path: 'output-side-field-allowlisting-for-api3', loadComponent: () => import('./components/architecture/api-design/api-security/subtopics/output-side-field-allowlisting-for-api3/output-side-field-allowlisting-for-api3').then(m => m.OutputSideFieldAllowlistingForApi3Subtopic) },
+        { path: 'a-token-bucket-rate-limiter-with-real-headers', loadComponent: () => import('./components/architecture/api-design/api-security/subtopics/a-token-bucket-rate-limiter-with-real-headers/a-token-bucket-rate-limiter-with-real-headers').then(m => m.ATokenBucketRateLimiterWithRealHeadersSubtopic) },
+      ] },
     { path: 'breaking-changes',      loadComponent: () => import('./components/architecture/api-design/breaking-changes/breaking-changes').then(m => m.ApiBreakingChanges) },
     { path: 'rate-limiting',         loadComponent: () => import('./components/architecture/api-design/rate-limiting/rate-limiting').then(m => m.ApiRateLimiting) },
     { path: 'cheatsheet',            loadComponent: () => import('./components/architecture/api-design/cheatsheet/cheatsheet').then(m => m.ApiCheatsheet) },
