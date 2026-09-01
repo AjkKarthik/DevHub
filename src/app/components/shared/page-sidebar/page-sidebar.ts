@@ -35427,6 +35427,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Contract testing against consumer expectations catches breaking changes before they reach production, rather than discovering them from support tickets.',
     ],
   },
+  'api-design/breaking-changes/verifying-a-recommended-tool-is-still-maintained': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Implementing Expand-Contract, All Three Phases', route: '/api-design/breaking-changes/implementing-expand-contract-all-three-phases' },
+      { label: 'Breaking Changes (overview)', route: '/api-design/breaking-changes' },
+    ],
+    tip: 'Optic (opticdev/optic) was archived by its own maintainers on GitHub in January 2026 -- verify a named tool\'s current repo status directly before adopting it, the same way you\'d check any other dependency.',
+    gotchas: [
+      'Spectral only ever validates ONE spec against a style ruleset -- it has no mechanism to compare two spec versions and cannot detect breaking changes on its own, unlike openapi-diff/oasdiff.',
+    ],
+  },
+  'api-design/breaking-changes/implementing-expand-contract-all-three-phases': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Verifying a Recommended Tool Is Still Maintained', route: '/api-design/breaking-changes/verifying-a-recommended-tool-is-still-maintained' },
+      { label: 'The Challenge Never Detects a Type Change', route: '/api-design/breaking-changes/the-challenge-never-detects-a-type-change' },
+    ],
+    tip: 'Phase 1 (Expand) and Phase 3 (Contract) are each independently non-breaking for the client currently on the correct side of the migration -- the one client that breaks is an old, unmigrated one still reading the old field once Phase 3 ships.',
+    gotchas: [
+      'A response-field rename can\'t be tracked with the same server-side "deprecated-endpoint traffic" monitoring the main page describes elsewhere -- the server can observe which endpoint a request hit, not which of several already-returned fields the client\'s own code reads.',
+    ],
+  },
+  'api-design/breaking-changes/the-challenge-never-detects-a-type-change': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Implementing Expand-Contract, All Three Phases', route: '/api-design/breaking-changes/implementing-expand-contract-all-three-phases' },
+      { label: 'Breaking Changes (overview)', route: '/api-design/breaking-changes' },
+    ],
+    tip: 'The Challenge\'s classifyChange() is explicit about comparing only top-level field names -- it correctly does exactly that; type changes and enum-value changes are each separate categories it was never scoped to catch.',
+    gotchas: [
+      'Even a structural before/after comparison has a ceiling: an enum value changing while its type stays the same (\'pending\' to \'shipped\', both strings) is undetectable by any schema-diff tool, structural or automated -- it only breaks a consumer with exhaustive, no-default pattern matching.',
+    ],
+  },
   'api-design/openapi-contracts': {
     apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
     related: [

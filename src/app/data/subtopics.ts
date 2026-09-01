@@ -3641,4 +3641,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Output-Side Field Allowlisting for API3', route: '/api-design/api-security/output-side-field-allowlisting-for-api3' },
     { label: 'A Token-Bucket Rate Limiter With Real Headers', route: '/api-design/api-security/a-token-bucket-rate-limiter-with-real-headers' },
   ],
+  'breaking-changes': [
+    { label: 'Verifying a Recommended Tool Is Still Maintained', route: '/api-design/breaking-changes/verifying-a-recommended-tool-is-still-maintained' },
+    { label: 'Implementing Expand-Contract, All Three Phases', route: '/api-design/breaking-changes/implementing-expand-contract-all-three-phases' },
+    { label: 'The Challenge Never Detects a Type Change', route: '/api-design/breaking-changes/the-challenge-never-detects-a-type-change' },
+  ],
 };

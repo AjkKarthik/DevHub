@@ -3166,7 +3166,12 @@ export const routes: Routes = [
         { path: 'output-side-field-allowlisting-for-api3', loadComponent: () => import('./components/architecture/api-design/api-security/subtopics/output-side-field-allowlisting-for-api3/output-side-field-allowlisting-for-api3').then(m => m.OutputSideFieldAllowlistingForApi3Subtopic) },
         { path: 'a-token-bucket-rate-limiter-with-real-headers', loadComponent: () => import('./components/architecture/api-design/api-security/subtopics/a-token-bucket-rate-limiter-with-real-headers/a-token-bucket-rate-limiter-with-real-headers').then(m => m.ATokenBucketRateLimiterWithRealHeadersSubtopic) },
       ] },
-    { path: 'breaking-changes',      loadComponent: () => import('./components/architecture/api-design/breaking-changes/breaking-changes').then(m => m.ApiBreakingChanges) },
+    { path: 'breaking-changes', children: [
+        { path: '', loadComponent: () => import('./components/architecture/api-design/breaking-changes/breaking-changes').then(m => m.ApiBreakingChanges) },
+        { path: 'verifying-a-recommended-tool-is-still-maintained', loadComponent: () => import('./components/architecture/api-design/breaking-changes/subtopics/verifying-a-recommended-tool-is-still-maintained/verifying-a-recommended-tool-is-still-maintained').then(m => m.VerifyingARecommendedToolIsStillMaintainedSubtopic) },
+        { path: 'implementing-expand-contract-all-three-phases', loadComponent: () => import('./components/architecture/api-design/breaking-changes/subtopics/implementing-expand-contract-all-three-phases/implementing-expand-contract-all-three-phases').then(m => m.ImplementingExpandContractAllThreePhasesSubtopic) },
+        { path: 'the-challenge-never-detects-a-type-change', loadComponent: () => import('./components/architecture/api-design/breaking-changes/subtopics/the-challenge-never-detects-a-type-change/the-challenge-never-detects-a-type-change').then(m => m.TheChallengeNeverDetectsATypeChangeSubtopic) },
+      ] },
     { path: 'rate-limiting',         loadComponent: () => import('./components/architecture/api-design/rate-limiting/rate-limiting').then(m => m.ApiRateLimiting) },
     { path: 'cheatsheet',            loadComponent: () => import('./components/architecture/api-design/cheatsheet/cheatsheet').then(m => m.ApiCheatsheet) },
     { path: 'interview-prep',        loadComponent: () => import('./components/architecture/api-design/interview-prep/interview-prep').then(m => m.ApiInterviewPrep) },

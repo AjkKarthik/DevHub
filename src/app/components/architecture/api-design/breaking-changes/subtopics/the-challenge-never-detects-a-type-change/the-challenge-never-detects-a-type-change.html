@@ -1,0 +1,26 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Breaking Changes" topicRoute="/api-design/breaking-changes"
+    subtopicLabel="The Challenge Never Detects a Type Change" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">The Challenge Never Detects a Type Change</h1>
+  <p class="page-subtitle">The Challenge does exactly what its own stated scope promises — but the page's own theory and codeTab treat field type changes as a core breaking-change example it was never built to catch.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>Even a structural type check has a real ceiling — semantic/behavioral changes (the page's own "breaking change vs. behavior change" QnA) are undetectable by any schema-comparison tool, structural or automated, closing the loop this topic's three subtopics build toward.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Breaking Changes" topicRoute="/api-design/breaking-changes"
+    [prev]="{ label: 'Implementing Expand-Contract, All Three Phases', route: '/api-design/breaking-changes/implementing-expand-contract-all-three-phases' }" />
+</div>
