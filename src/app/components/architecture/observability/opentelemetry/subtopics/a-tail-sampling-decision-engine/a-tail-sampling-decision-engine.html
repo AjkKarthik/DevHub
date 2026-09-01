@@ -1,0 +1,26 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="OpenTelemetry" topicRoute="/observability/opentelemetry"
+    subtopicLabel="A Tail-Sampling Decision Engine" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">A Tail-Sampling Decision Engine</h1>
+  <p class="page-subtitle">The Collector Config names three sampling policies but never shows the decision logic that implements them. This one builds it, verified end to end against the page's own exact values.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>This closes the last of the three gaps this topic's own subtopics build: a real span-leak bug plus a wrong claim about the API, a metric-to-trace correlation mechanism named but never shown, and a sampling engine described in prose but never implemented.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="OpenTelemetry" topicRoute="/observability/opentelemetry"
+    [prev]="{ label: 'Exemplars: Linking a Metric Observation to Its Trace', route: '/observability/opentelemetry/exemplars-linking-a-metric-observation-to-its-trace' }" />
+</div>

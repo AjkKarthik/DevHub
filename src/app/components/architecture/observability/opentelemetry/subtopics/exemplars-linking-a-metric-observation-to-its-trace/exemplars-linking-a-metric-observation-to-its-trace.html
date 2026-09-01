@@ -1,0 +1,27 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="OpenTelemetry" topicRoute="/observability/opentelemetry"
+    subtopicLabel="Exemplars: Linking a Metric Observation to Its Trace" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">Exemplars: Linking a Metric Observation to Its Trace</h1>
+  <p class="page-subtitle">The QnA describes exemplars linking a histogram observation to a trace in real detail — no codeTab on the page ever records one. This one does, verified end to end.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>The Collector Config codeTab configures a tail_sampling processor with three named policies but never shows the decision logic that implements them — the final subtopic builds it.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="OpenTelemetry" topicRoute="/observability/opentelemetry"
+    [prev]="{ label: 'The paySpan Leak: startActiveSpan() Never Auto-Ends', route: '/observability/opentelemetry/the-payspan-leak-startactivespan-never-auto-ends' }"
+    [next]="{ label: 'A Tail-Sampling Decision Engine', route: '/observability/opentelemetry/a-tail-sampling-decision-engine' }" />
+</div>

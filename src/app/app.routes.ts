@@ -3481,7 +3481,12 @@ export const routes: Routes = [
         { path: 'classifying-the-fourth-melt-signal-events', loadComponent: () => import('./components/architecture/observability/observability-fundamentals/subtopics/classifying-the-fourth-melt-signal-events/classifying-the-fourth-melt-signal-events').then(m => m.ClassifyingTheFourthMeltSignalEventsSubtopic) },
         { path: 'a-synthetic-monitoring-prober-with-slo-evaluation', loadComponent: () => import('./components/architecture/observability/observability-fundamentals/subtopics/a-synthetic-monitoring-prober-with-slo-evaluation/a-synthetic-monitoring-prober-with-slo-evaluation').then(m => m.ASyntheticMonitoringProberWithSloEvaluationSubtopic) },
       ] },
-    { path: 'opentelemetry',              loadComponent: () => import('./components/architecture/observability/opentelemetry/opentelemetry').then(m => m.ObsOpentelemetry) },
+    { path: 'opentelemetry', children: [
+        { path: '', loadComponent: () => import('./components/architecture/observability/opentelemetry/opentelemetry').then(m => m.ObsOpentelemetry) },
+        { path: 'the-payspan-leak-startactivespan-never-auto-ends', loadComponent: () => import('./components/architecture/observability/opentelemetry/subtopics/the-payspan-leak-startactivespan-never-auto-ends/the-payspan-leak-startactivespan-never-auto-ends').then(m => m.ThePayspanLeakStartactivespanNeverAutoEndsSubtopic) },
+        { path: 'exemplars-linking-a-metric-observation-to-its-trace', loadComponent: () => import('./components/architecture/observability/opentelemetry/subtopics/exemplars-linking-a-metric-observation-to-its-trace/exemplars-linking-a-metric-observation-to-its-trace').then(m => m.ExemplarsLinkingAMetricObservationToItsTraceSubtopic) },
+        { path: 'a-tail-sampling-decision-engine', loadComponent: () => import('./components/architecture/observability/opentelemetry/subtopics/a-tail-sampling-decision-engine/a-tail-sampling-decision-engine').then(m => m.ATailSamplingDecisionEngineSubtopic) },
+      ] },
     { path: 'sli-slo-sla',               loadComponent: () => import('./components/architecture/observability/sli-slo-sla/sli-slo-sla').then(m => m.ObsSliSloSla) },
     { path: 'prometheus-metrics',         loadComponent: () => import('./components/architecture/observability/prometheus-metrics/prometheus-metrics').then(m => m.ObsPrometheusMetrics) },
     { path: 'grafana-dashboards',         loadComponent: () => import('./components/architecture/observability/grafana-dashboards/grafana-dashboards').then(m => m.ObsGrafanaDashboards) },

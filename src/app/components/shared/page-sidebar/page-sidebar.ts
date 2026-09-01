@@ -36113,6 +36113,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The OTel Collector (a separate process for receiving, processing, and exporting telemetry) decouples applications from any specific backend\'s ingestion format.',
     ],
   },
+  'observability/opentelemetry/the-payspan-leak-startactivespan-never-auto-ends': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Exemplars: Linking a Metric Observation to Its Trace', route: '/observability/opentelemetry/exemplars-linking-a-metric-observation-to-its-trace' },
+      { label: 'OpenTelemetry (overview)', route: '/observability/opentelemetry' },
+    ],
+    tip: 'Neither startSpan() nor startActiveSpan() auto-ends a span in the JS/Node.js SDK -- the developer is always responsible for calling span.end() themselves, ideally in a finally block, regardless of which API is used.',
+    gotchas: [
+      'A span nested inside another span\'s callback needs its OWN try/finally protection -- the outer span\'s finally block only ever ends the outer span, never anything created inside it.',
+    ],
+  },
+  'observability/opentelemetry/exemplars-linking-a-metric-observation-to-its-trace': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The paySpan Leak: startActiveSpan() Never Auto-Ends', route: '/observability/opentelemetry/the-payspan-leak-startactivespan-never-auto-ends' },
+      { label: 'A Tail-Sampling Decision Engine', route: '/observability/opentelemetry/a-tail-sampling-decision-engine' },
+    ],
+    tip: 'An exemplar attaches a sampled, representative trace ID to ONE specific metric observation within an aggregated bucket -- giving a reader a concrete "click here to see an actual slow request" starting point a bare aggregate count can\'t provide.',
+    gotchas: [
+      'Exemplar attachment only works because the histogram record() call happens WHILE a span is active for the current request -- context propagation is what makes the currently-active trace ID readable at that exact moment.',
+    ],
+  },
+  'observability/opentelemetry/a-tail-sampling-decision-engine': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Exemplars: Linking a Metric Observation to Its Trace', route: '/observability/opentelemetry/exemplars-linking-a-metric-observation-to-its-trace' },
+      { label: 'OpenTelemetry (overview)', route: '/observability/opentelemetry' },
+    ],
+    tip: 'Tail sampling can only decide once a trace is COMPLETE -- the buffer has to hold every span for a trace until its root span ends before it can know whether that trace had an error or was slow.',
+    gotchas: [
+      'Policy CHECK ORDER matters: checking errors and slow-latency policies before falling back to a probabilistic sample is what guarantees those two categories are never accidentally sampled out.',
+    ],
+  },
   'observability/opentelemetry-tracing': {
     apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
     related: [

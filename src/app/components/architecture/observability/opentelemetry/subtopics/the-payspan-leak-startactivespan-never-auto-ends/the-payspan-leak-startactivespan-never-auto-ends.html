@@ -1,0 +1,26 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="OpenTelemetry" topicRoute="/observability/opentelemetry"
+    subtopicLabel="The paySpan Leak: startActiveSpan() Never Auto-Ends" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">The paySpan Leak: startActiveSpan() Never Auto-Ends</h1>
+  <p class="page-subtitle">A mistake block claimed startActiveSpan() auto-ends spans — false, confirmed against OTel's own guidance — and the page's own codeTab quietly proved it by leaking its own inner span.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>The QnA describes metric exemplars linking a histogram observation to its trace in real detail with zero code — the next subtopic builds one, verified end to end.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="OpenTelemetry" topicRoute="/observability/opentelemetry"
+    [next]="{ label: 'Exemplars: Linking a Metric Observation to Its Trace', route: '/observability/opentelemetry/exemplars-linking-a-metric-observation-to-its-trace' }" />
+</div>

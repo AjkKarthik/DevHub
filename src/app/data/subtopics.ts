@@ -3663,4 +3663,12 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Classifying the Fourth MELT Signal: Events', route: '/observability/observability-fundamentals/classifying-the-fourth-melt-signal-events' },
     { label: 'A Synthetic Monitoring Prober With SLO Evaluation', route: '/observability/observability-fundamentals/a-synthetic-monitoring-prober-with-slo-evaluation' },
   ],
+  // NOTE: bare 'opentelemetry' left free for THIS hub's own topic -- the
+  // ASP.NET hub's own /aspnet/opentelemetry topic already resolved this
+  // exact collision by hub-prefixing to 'aspnet-opentelemetry'.
+  'opentelemetry': [
+    { label: 'The paySpan Leak: startActiveSpan() Never Auto-Ends', route: '/observability/opentelemetry/the-payspan-leak-startactivespan-never-auto-ends' },
+    { label: 'Exemplars: Linking a Metric Observation to Its Trace', route: '/observability/opentelemetry/exemplars-linking-a-metric-observation-to-its-trace' },
+    { label: 'A Tail-Sampling Decision Engine', route: '/observability/opentelemetry/a-tail-sampling-decision-engine' },
+  ],
 };
