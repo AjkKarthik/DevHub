@@ -6254,6 +6254,91 @@ Confirmed via direct file inspection before the pilot (`/api-design/rest-fundame
     Design hub's entire Phase 10 rollout — all 19 topics now have deep-dive subtopic pages, 57
     subtopic pages total across the hub, finished 2026-09-01.**
 
+### Observability & SRE hub subtopic wiring — first pilot; the 13th `*NavComponent` in a row
+missing the subtopics-accordion structural fix, plus a real self-authored key-mismatch bug
+
+Confirmed via direct file inspection before the pilot (`/observability/observability-fundamentals`,
+2026-09-01) — do this same check before any other new hub's first subtopic set:
+
+1. **`ObsNavComponent` (`shared/obs-nav/obs-nav.ts`) had ZERO subtopics-accordion support** — the
+   same structural gap already hit and fixed on every `*NavComponent`-based hub's own pilot before
+   it (Go, DevOps, Containers, AWS, Azure, Linux, Terraform, Service Mesh, System Design,
+   Architecture Patterns, Design Patterns, Security, API Design — this is the 13th in a row). Fixed
+   identically: added `signal`, `Router`, `NavigationEnd`, `filter` (rxjs), and `SUBTOPICS` (from
+   `../../../data/subtopics`) to the imports, then the same three methods
+   (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`) and constructor-level router
+   subscription, copied directly from `SecurityNavComponent`'s own implementation (read directly,
+   not reconstructed from memory, per the established copy-fidelity discipline).
+2. **No `SUBTOPICS` map bare-key collision for `observability-fundamentals`** (checked both
+   quoted and unquoted forms in `subtopics.ts`, and grepped `app.routes.ts` directly, confirmed
+   collision-free — the compound slug is distinctive enough that no other hub's own topic shares
+   it) — left as a bare key.
+3. **`OBS_LABELS` breadcrumb map uses bare keys** (`'observability-fundamentals'`), matching the
+   generic pattern every hub's own dedicated labels map shares — composite subtopic keys there are
+   bare too (`'observability-fundamentals/<slug>'`).
+4. **`SIDEBAR_MAP` keys are FULL-PATH PREFIXED** (`'observability/observability-fundamentals'`,
+   confirmed the base entry — and its own `OBS_DEFAULT` constant — already existed) — subtopic
+   composite keys follow suit: `'observability/observability-fundamentals/<slug>'`.
+5. **Progress/search keys are `obs-` PREFIXED** (`obs-observability-fundamentals`), confirmed via
+   existing nav markup — `search.ts`'s own `url()` already has a dedicated `obs-` → `/observability/`
+   prefix-strip rule, confirmed handling this hub's composite subtopic routes correctly with no
+   special-casing needed.
+6. **`.obs-page` wrapper rule is NOT global** (confirmed absent from `src/styles.scss`) — every
+   subtopic `.scss` needs the full `.obs-page { max-width: 860px; margin: 0 auto; }` rule.
+   `$accent: #059669`, `$tint: #ecfdf5`, icon `📊`, `tech="javascript"`.
+7. **No live playground** — observability tooling (Prometheus, structured logging, distributed
+   tracing) has no in-browser runtime to demonstrate — every code tab uses plain `<app-code-block>`,
+   matching the established non-JS-runtime-specific hub pattern.
+8. **The `observability-fundamentals` batch found and fixed a genuine, well-verified staleness
+   issue in the main page's own quiz**: it named Lightstep alongside Honeycomb and Jaeger as an
+   example of "modern observability" tooling. Confirmed directly against ServiceNow's own official
+   end-of-life notice (Lightstep was acquired by ServiceNow in 2021, rebranded to "ServiceNow Cloud
+   Observability" in 2023) that the service reached end-of-life on March 1, 2026 — already past as
+   of this session's own date (2026-09-01) — with ServiceNow explicitly stating "no replacement for
+   this product" and "no direct migration" path. Fixed by swapping Lightstep for Grafana Tempo (a
+   genuinely current, actively-maintained alternative), keeping a short explanatory note in place
+   rather than silently erasing it, matching the precedent the sibling API Design hub's own Optic
+   fix already established. Three subtopics: (1) **fix-adjacent** — traces the EOL finding with a
+   tool-lifecycle-status checker distinguishing `'end-of-life'` (a hard vendor cutover date) from
+   `'eol-scheduled'` and `'supported'`, verified via execution; a Try It on the "date X or your
+   subscription end date, whichever is later" nuance a single flat `eolDate` can't represent; (2)
+   **gap-closing** — the page's own QnA on the MELT acronym describes Events as a signal type
+   genuinely distinct from logs (a discrete, named occurrence with rich attributes but no severity
+   level), but the Challenge's own `classifySignal()` only recognizes
+   `metric`/`log`/`trace`/`unknown` — verified via execution that the original function returns
+   `'unknown'` for a genuine business event; built `classifySignalV2()` adding the event category,
+   verified across all five cases including a Try It exposing a real, honest limit (a hybrid record
+   combining event and log traits falls through both checks); (3) **gap-closing** — the QnA
+   describes active/synthetic monitoring in real detail with zero code; built a `SyntheticProber`
+   class plus SLO evaluation, verified via execution (97/100 genuine successes correctly fails a
+   99.5% target, since a "successful but timed-out" probe doesn't count) with a Try It confirming a
+   tightened timeout can only ever hold or lower a measured success rate, never raise it.
+9. **A real, self-authored bug caught during browser verification, distinct from every prior
+   stale-dev-server-artifact incident this file has documented — this one wasn't staleness at
+   all**: the nav toggle's `isSubtopicsExpanded()` calls still referenced the WRONG, progress-
+   prefixed key (`'obs-observability-fundamentals'`) while `toggleSubtopics()`/`subtopicsOf()`
+   correctly used the bare `SUBTOPICS` key (`'observability-fundamentals'`) — the click handler
+   correctly toggled a `Set` entry the READ-side check never looked at, so the toggle always
+   rendered closed no matter how many times it was clicked. A hard browser reload didn't fix it; a
+   full `preview_stop`/`preview_start` server restart didn't fix it either — and it was exactly
+   this double failure to fix it via the standard staleness remedies that correctly pointed at a
+   real source bug instead of an artifact. Confirmed via `window.ng.getComponent()` that the
+   underlying signal DID flip correctly on each click (verification calls using the CORRECT bare
+   key showed `true`/`false` toggling as expected) even while the template rendered nothing — the
+   mismatch was only between which key the WRITE side vs. the READ side of the accordion used.
+   Fixed by aligning all four accordion-related calls to the same bare key. **Lesson for any future
+   pilot batch: when a fresh build + hard reload + full server restart all fail to fix an accordion
+   that won't expand, stop assuming staleness and re-read the nav component's own template for a
+   key-name mismatch between the write call (`toggleSubtopics`) and the read calls
+   (`isSubtopicsExpanded`, `[class.open]`) — a targeted find-and-replace on one call site during a
+   multi-call edit is an easy way to leave the others on a stale key.** Build passed clean (both
+   before and after the fix, foreground execution, explicit `EXITCODE:$?` capture, zero `ERROR`
+   lines). Browser-verified after the fix: nav accordion opens with all 3 subtopic links; the
+   main-page fix confirmed rendering live via `window.ng.getComponent()` on the quiz block; all 3
+   subtopic pages checked individually — zero console errors, correct h1/breadcrumb, 860px wrapper
+   via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the final subtopic.
+   **Observability hub Phase 10: 1 of 20 topics complete.**
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
@@ -7305,10 +7390,16 @@ Confirmed via direct file inspection before the pilot (`/api-design/rest-fundame
 - **Observability & SRE hub**: 20 trackable topic pages + 2 reference (22 cards total). Feature-complete.
   Emerald theme `$accent: #059669`, `$tint: #ecfdf5`, dark `#34d399`. Search prefix `obs-`. Route: `/observability`.
   CSS classes: `.obs-page`, `.obs-icon`, `.obs-section`. Icon content: `📊` at `font-size: 1.8rem`. `tech="javascript"`.
-  Nav groups: Foundations, Metrics, Logging, Tracing, SLO & Alerting, Incident Management, Reference.
+  Nav groups (corrected 2026-09-01 — previously misdocumented as "Foundations, Metrics, Logging,
+  Tracing, SLO & Alerting, Incident Management, Reference"; confirmed against the real
+  `obs-nav.ts`): Core Concepts, Metrics, Logging, Tracing, Alerting & SRE, Advanced, Reference.
   All 22 cards `available: true` in `architecture/observability/home/home.ts`. Progress: `obsTotal=20` in progress.service.ts.
   Observability pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ObsNavComponent at `shared/obs-nav/obs-nav.ts`.
+  Phase 10: 1 of 20 topics have subtopics (`/observability/observability-fundamentals`, pilot
+  batch, 2026-09-01) — see "Observability & SRE hub subtopic wiring" section above for the
+  `ObsNavComponent` accordion structural fix and a real self-authored key-mismatch bug caught
+  during browser verification (not a stale-server artifact).
 - **Hub home**: Angular, C#, ASP.NET Core, SQL, TypeScript, React, JavaScript, CSS, HTML, Blazor, Go, Node.js, Python, DevOps, AWS, Azure, Linux, Redis, GraphQL, Messaging, Testing, DSA, AI/ML, Containers/K8s, Terraform/IaC, Service Mesh, System Design, Architecture Patterns, Design Patterns, Security, API Design, Observability, Web Performance, and MongoDB are all `available: true`. Everything else "Soon".
 - Progress totals: Angular 58, C# 50, ASP.NET Core 45, SQL 44, TypeScript 20, React 17, JavaScript 22, CSS 22, HTML 23, Web Performance 20, Blazor 20, Go 21, Node.js 23, Python 21, DevOps 21, AWS 21, Azure 22, Linux 19, Redis 21, GraphQL 20, Messaging 20, Testing 19, DSA 21, AI 19, Containers/K8s 22, Terraform 21, Service Mesh 19, System Design 24, Architecture Patterns 22, Design Patterns 36, Security 23, API Design 19, Observability 20, MongoDB 21 (`progress.service.ts`).
 - Hero stat: "933+ Live Pages" (corrected 2026-07-01 — hub-home.ts's Angular card was showing `topics: 63` instead of the actual 68, undercounting the site total by 5).

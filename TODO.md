@@ -8446,7 +8446,30 @@ off here with a date.
 
 #### Observability — 20 topic pages
 
-- [ ] `/observability/observability-fundamentals` — Observability Fundamentals
+- [x] `/observability/observability-fundamentals` — Observability Fundamentals (2026-09-01).
+  Phase 10 pilot batch for this hub. Fixed ObsNavComponent's missing subtopics-accordion
+  structural gap (13th `*NavComponent` hub in a row missing it at pilot time). Fixed a genuine,
+  well-verified staleness issue in the main page's own quiz: it named Lightstep as a "modern
+  observability" tool -- confirmed directly against ServiceNow's own EOL notice that the service
+  reached end-of-life on March 1, 2026 (already past as of this session), with no replacement
+  offered at all. Swapped for Grafana Tempo, kept a short archival note. 3 subtopics: a tool-
+  lifecycle-status checker distinguishing end-of-life from merely stale, verified via execution;
+  extends the Challenge's classifySignal() to recognize Events as the QnA's own fourth MELT
+  signal type (distinct from logs -- no severity level), verified via execution that the original
+  function returns 'unknown' for a genuine business event; builds a SyntheticProber class with
+  SLO evaluation for the QnA's own active/synthetic monitoring description, verified via
+  execution. No SUBTOPICS collision for bare `observability-fundamentals`. Hit and fixed a real
+  self-authored bug during verification, NOT a stale-server artifact: isSubtopicsExpanded() calls
+  in the nav template still referenced the wrong progress-prefixed key while
+  toggleSubtopics()/subtopicsOf() correctly used the bare SUBTOPICS key -- confirmed via
+  window.ng.getComponent() that the underlying signal toggled correctly while the template never
+  reflected it, and that neither a hard reload nor a full dev-server restart fixed it (which is
+  what correctly pointed at a real key-mismatch bug rather than staleness). Fixed by aligning all
+  four accordion calls to the same key. Build passed clean both before and after the fix.
+  Browser-verified after the fix: nav accordion opens with all 3 links; main-page fix confirmed
+  rendering live; all 3 subtopic pages checked individually -- zero console errors, correct
+  h1/breadcrumb, 860px wrapper, tailored sidebar content. **Observability hub Phase 10: 1 of 20
+  topics complete.**
 - [ ] `/observability/opentelemetry` — OpenTelemetry
 - [ ] `/observability/sli-slo-sla` — SLIs, SLOs & SLAs
 - [ ] `/observability/prometheus-metrics` — Prometheus & Metrics
