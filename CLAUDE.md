@@ -6444,6 +6444,56 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
     DEFAULT) sidebar content confirmed on the final subtopic. **This completes the Observability
     hub's Core Concepts nav group** (`observability-fundamentals`, `opentelemetry`, `sli-slo-sla` —
     all 3 of 3 topics now have subtopics). **Observability hub Phase 10: 3 of 20 topics complete.**
+12. **The `prometheus-metrics` batch — the first topic in the Metrics nav group — found and fixed a
+    genuine, well-verified correctness bug in the main page's own "Node.js prom-client" codeTab,
+    researched against Node's own HTTP response lifecycle before fixing**: the `metricsMiddleware`
+    only listened for `res.on('finish')` to decrement the `activeConnections` gauge. Confirmed via
+    research that a client that disconnects or aborts a request mid-flight never fires `'finish'` at
+    all — only `'close'` fires in that case — meaning every aborted request permanently leaked the
+    gauge by +1, forever. Verified the leak directly via an `EventEmitter` simulation of the exact
+    event sequence. The fix isn't a naive "also decrement on close," though — `'close'` ALSO fires
+    after a normal completed response (after `'finish'`), so a bare addition would double-decrement
+    every ordinary request. Fixed with an idempotency guard (a `requestFinished` flag), verified
+    correct for both the aborted-request case (decrements once via the close fallback) and the
+    normal-completion case (decrements once via finish, close is a no-op afterward). Also fixed two
+    mistagged codeTabs found during the same read-through: "PromQL Queries" and "prometheus.yml"
+    both contain non-TypeScript content (PromQL expressions and YAML respectively) but were tagged
+    `language: 'typescript'` — fixed both to `'bash'`, matching the fix applied to this hub's own
+    `opentelemetry` and `sli-slo-sla` batches immediately prior. Three subtopics, each verified via
+    direct Node execution: (1) **fix-adjacent** — reproduces the exact leak and fix via an
+    `EventEmitter` simulation, both buggy and fixed versions verified matching claimed output exactly
+    across three scenarios (aborted request, normal completion, and a Try It establishing the fix
+    generalizes to ANY early-disconnect cause — a proxy timeout, a network partition — not just
+    client aborts, since the middleware never distinguishes WHY the connection closed early, only
+    WHETHER `'finish'` already ran); (2) **gap-closing** — the Challenge's own `SimpleHistogram`
+    passes every one of its own given tests (verified via execution) but its `totalCount()` derives
+    the total via `Math.max` of finite buckets, silently undercounting any observation exceeding
+    every configured boundary (verified: a 5.0s observation with buckets topping at 1.0 is invisible
+    to every `getCount()` call, undercounting `totalCount()` by exactly the number of such
+    out-of-range observations); built the fix matching real Prometheus histogram semantics — an
+    implicit `+Inf` bucket that always captures every observation, the same mechanism behind
+    Prometheus's own auto-generated `_count` suffix — verified via execution; deliberately left the
+    Challenge itself unchanged on the main page, since it never claims to handle out-of-range values
+    and its own given tests don't exercise this case (a genuine gap, not a bug in scope); (3)
+    **gap-closing** — the theory's own Apdex PromQL query, `(le=0.1_bucket + le=0.4_bucket) / 2 /
+    total`, looks at first glance like it might be averaging two unrelated cumulative sums; verified
+    via concrete simulated data that it's actually a correct algebraic simplification of the
+    textbook Apdex formula (`Satisfied + Tolerating/2) / Total`) once Prometheus's own cumulative
+    bucket semantics are substituted in — both formulas independently computed and confirmed to
+    match exactly across two different datasets, including a degenerate zero-tolerating-requests
+    case where `le=0.4_bucket` collapses to equal `le=0.1_bucket` exactly. No `SUBTOPICS` collision
+    for bare `prometheus-metrics` (checked both `subtopics.ts` forms and grepped `app.routes.ts`
+    directly, confirmed collision-free, left bare). `ObsNavComponent`'s toggle for this topic (first
+    in the Metrics nav group) used a single consistent key across all five accordion-related calls,
+    double-checked via grep after writing. Build passed clean (foreground execution, explicit
+    `EXITCODE:$?` capture, zero `ERROR` lines). Browser-verified with a hard reload first: nav
+    accordion opens with all 3 subtopic links on the first check; all three main-page fixes
+    confirmed rendering live via `window.ng.getComponent()` on the code-block component (the
+    close-handler/`requestFinished` flag in the Node.js codeTab, and both mistagged codeTabs now
+    correctly tagged `'bash'`); all 3 subtopic pages checked individually — zero console errors,
+    correct h1/breadcrumb, 860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar
+    content confirmed on the final subtopic. **Observability hub Phase 10: 4 of 20 topics
+    complete.**
 
 ## Current state (update when it changes!)
 
@@ -7502,12 +7552,13 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
   All 22 cards `available: true` in `architecture/observability/home/home.ts`. Progress: `obsTotal=20` in progress.service.ts.
   Observability pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ObsNavComponent at `shared/obs-nav/obs-nav.ts`.
-  Phase 10: 3 of 20 topics have subtopics (`/observability/observability-fundamentals`, pilot
+  Phase 10: 4 of 20 topics have subtopics (`/observability/observability-fundamentals`, pilot
   batch; `/observability/opentelemetry`; `/observability/sli-slo-sla` — Core Concepts nav group
-  fully done, 2026-09-01) — see "Observability & SRE hub subtopic wiring" section above for the
-  `ObsNavComponent` accordion structural fix, a real self-authored key-mismatch bug caught during
-  browser verification (not a stale-server artifact), and a cross-hub `opentelemetry` SUBTOPICS
-  collision already resolved by the ASP.NET hub's own earlier `aspnet-opentelemetry` prefix.
+  fully done; `/observability/prometheus-metrics` — first Metrics nav group topic, 2026-09-01) —
+  see "Observability & SRE hub subtopic wiring" section above for the `ObsNavComponent` accordion
+  structural fix, a real self-authored key-mismatch bug caught during browser verification (not a
+  stale-server artifact), and a cross-hub `opentelemetry` SUBTOPICS collision already resolved by
+  the ASP.NET hub's own earlier `aspnet-opentelemetry` prefix.
 - **Hub home**: Angular, C#, ASP.NET Core, SQL, TypeScript, React, JavaScript, CSS, HTML, Blazor, Go, Node.js, Python, DevOps, AWS, Azure, Linux, Redis, GraphQL, Messaging, Testing, DSA, AI/ML, Containers/K8s, Terraform/IaC, Service Mesh, System Design, Architecture Patterns, Design Patterns, Security, API Design, Observability, Web Performance, and MongoDB are all `available: true`. Everything else "Soon".
 - Progress totals: Angular 58, C# 50, ASP.NET Core 45, SQL 44, TypeScript 20, React 17, JavaScript 22, CSS 22, HTML 23, Web Performance 20, Blazor 20, Go 21, Node.js 23, Python 21, DevOps 21, AWS 21, Azure 22, Linux 19, Redis 21, GraphQL 20, Messaging 20, Testing 19, DSA 21, AI 19, Containers/K8s 22, Terraform 21, Service Mesh 19, System Design 24, Architecture Patterns 22, Design Patterns 36, Security 23, API Design 19, Observability 20, MongoDB 21 (`progress.service.ts`).
 - Hero stat: "933+ Live Pages" (corrected 2026-07-01 — hub-home.ts's Angular card was showing `topics: 63` instead of the actual 68, undercounting the site total by 5).

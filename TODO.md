@@ -8514,7 +8514,25 @@ off here with a date.
   sidebar content. **This completes the Core Concepts nav group** (observability-fundamentals,
   opentelemetry, sli-slo-sla -- all 3 of 3). **Observability hub Phase 10: 3 of 20 topics
   complete.**
-- [ ] `/observability/prometheus-metrics` — Prometheus & Metrics
+- [x] `/observability/prometheus-metrics` — Prometheus & Metrics (2026-09-01). First topic in the
+  Metrics nav group. Found and fixed a genuine correctness bug, researched against Node's own HTTP
+  response lifecycle first: metricsMiddleware only listened for res.on('finish') to decrement the
+  activeConnections gauge -- confirmed a client that disconnects mid-request never fires 'finish'
+  at all, only 'close', meaning every aborted request permanently leaked the gauge by +1. Verified
+  via an EventEmitter simulation. Fixed with an idempotency guard (requestFinished flag) since
+  'close' ALSO fires after normal completion and a naive fix would double-decrement -- verified
+  correct for both cases. Also fixed 2 mistagged codeTabs (PromQL Queries, prometheus.yml both
+  tagged 'typescript', fixed to 'bash'). 3 subtopics: reproduces the leak/fix via simulation,
+  verified via execution across 3 scenarios; builds the +Inf-bucket fix for the Challenge's own
+  SimpleHistogram, which passes all its own given tests but silently undercounts observations
+  exceeding every bucket boundary (verified via execution) -- left the Challenge itself unchanged
+  since it's a genuine gap, not a bug in its stated scope; verifies the theory's own Apdex PromQL
+  query is a correct algebraic simplification of the textbook formula using concrete simulated
+  data across two datasets. No SUBTOPICS collision. Build passed clean. Browser-verified with a
+  hard reload first: nav accordion opened with all 3 links on the first check; all three main-page
+  fixes confirmed rendering live; all 3 subtopic pages checked individually -- zero console errors,
+  correct h1/breadcrumb, 860px wrapper, tailored sidebar content. **Observability hub Phase 10: 4
+  of 20 topics complete.**
 - [ ] `/observability/grafana-dashboards` — Grafana Dashboards
 - [ ] `/observability/custom-app-metrics` — Custom App Metrics
 - [ ] `/observability/infrastructure-metrics` — Infrastructure Metrics
