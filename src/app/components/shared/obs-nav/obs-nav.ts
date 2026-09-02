@@ -236,7 +236,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
 
 <div class="nav-group">
   <p class="nav-group-label">Tracing</p>
-  <a routerLink="/observability/distributed-tracing"    routerLinkActive="active"><span class="nl-text">Distributed Tracing</span>@if(progress.isDone('obs-distributed-tracing')){<span class="nl-done">✓</span>}</a>
+  <a routerLink="/observability/distributed-tracing" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+    <span class="nl-text">Distributed Tracing</span>
+    @if(progress.isDone('obs-distributed-tracing')){<span class="nl-done">✓</span>}
+    @if (subtopicsOf('obs-distributed-tracing')) {
+      <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('obs-distributed-tracing')"
+              (click)="toggleSubtopics('obs-distributed-tracing', $event)" aria-label="Toggle subtopics">›</button>
+    }
+  </a>
+  @if (subtopicsOf('obs-distributed-tracing'); as dtSubs) {
+    @if (isSubtopicsExpanded('obs-distributed-tracing')) {
+      <div class="nav-subtopics">
+        @for (s of dtSubs; track s.route) {
+          <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+            <span class="nl-text">{{ s.label }}</span>
+          </a>
+        }
+      </div>
+    }
+  }
   <a routerLink="/observability/opentelemetry-tracing"  routerLinkActive="active"><span class="nl-text">OTel Tracing Deep Dive</span>@if(progress.isDone('obs-opentelemetry-tracing')){<span class="nl-done">✓</span>}</a>
   <a routerLink="/observability/performance-profiling"  routerLinkActive="active"><span class="nl-text">Performance Profiling</span>@if(progress.isDone('obs-performance-profiling')){<span class="nl-done">✓</span>}</a>
 </div>

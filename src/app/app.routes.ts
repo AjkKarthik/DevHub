@@ -3541,7 +3541,12 @@ export const routes: Routes = [
         { path: 'the-classifier-that-misses-a-quarter-of-the-log-contract', loadComponent: () => import('./components/architecture/observability/log-best-practices/subtopics/the-classifier-that-misses-a-quarter-of-the-log-contract/the-classifier-that-misses-a-quarter-of-the-log-contract').then(m => m.TheClassifierThatMissesAQuarterOfTheLogContractSubtopic) },
         { path: 'logging-which-path-correlation-id-extraction-took', loadComponent: () => import('./components/architecture/observability/log-best-practices/subtopics/logging-which-path-correlation-id-extraction-took/logging-which-path-correlation-id-extraction-took').then(m => m.LoggingWhichPathCorrelationIdExtractionTookSubtopic) },
       ] },
-    { path: 'distributed-tracing',        loadComponent: () => import('./components/architecture/observability/distributed-tracing/distributed-tracing').then(m => m.ObsDistributedTracing) },
+    { path: 'distributed-tracing', children: [
+        { path: '', loadComponent: () => import('./components/architecture/observability/distributed-tracing/distributed-tracing').then(m => m.ObsDistributedTracing) },
+        { path: 'baggage-doesnt-automatically-reach-the-tracing-backend', loadComponent: () => import('./components/architecture/observability/distributed-tracing/subtopics/baggage-doesnt-automatically-reach-the-tracing-backend/baggage-doesnt-automatically-reach-the-tracing-backend').then(m => m.BaggageDoesntAutomaticallyReachTheTracingBackendSubtopic) },
+        { path: 'a-real-kafka-trace-context-propagation-verified', loadComponent: () => import('./components/architecture/observability/distributed-tracing/subtopics/a-real-kafka-trace-context-propagation-verified/a-real-kafka-trace-context-propagation-verified').then(m => m.ARealKafkaTraceContextPropagationVerifiedSubtopic) },
+        { path: 'building-an-n-plus-one-detector-from-the-span-tree', loadComponent: () => import('./components/architecture/observability/distributed-tracing/subtopics/building-an-n-plus-one-detector-from-the-span-tree/building-an-n-plus-one-detector-from-the-span-tree').then(m => m.BuildingAnNPlusOneDetectorFromTheSpanTreeSubtopic) },
+      ] },
     { path: 'opentelemetry-tracing',      loadComponent: () => import('./components/architecture/observability/opentelemetry-tracing/opentelemetry-tracing').then(m => m.ObsOpentelemetryTracing) },
     { path: 'performance-profiling',      loadComponent: () => import('./components/architecture/observability/performance-profiling/performance-profiling').then(m => m.ObsPerformanceProfiling) },
     { path: 'alerting-design',            loadComponent: () => import('./components/architecture/observability/alerting-design/alerting-design').then(m => m.ObsAlertingDesign) },

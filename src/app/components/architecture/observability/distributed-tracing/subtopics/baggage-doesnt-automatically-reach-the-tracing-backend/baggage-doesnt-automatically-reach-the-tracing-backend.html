@@ -1,0 +1,26 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Distributed Tracing" topicRoute="/observability/distributed-tracing"
+    subtopicLabel="Baggage Doesn’t Automatically Reach the Tracing Backend" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">Baggage Doesn’t Automatically Reach the Tracing Backend</h1>
+  <p class="page-subtitle">The quiz's own explanation implied baggage becomes searchable in Jaeger/Tempo automatically — verified against a real OTel SDK that a span's attributes stay completely empty unless something explicitly promotes baggage onto it.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic builds the actual Kafka producer/consumer trace-context propagation the QnA describes in prose, verified end-to-end against a real OTel SDK.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Distributed Tracing" topicRoute="/observability/distributed-tracing"
+    [next]="{ label: 'A Real Kafka Trace-Context Propagation, Verified', route: '/observability/distributed-tracing/a-real-kafka-trace-context-propagation-verified' }" />
+</div>

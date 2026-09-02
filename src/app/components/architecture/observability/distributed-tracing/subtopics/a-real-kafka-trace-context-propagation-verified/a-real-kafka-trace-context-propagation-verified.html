@@ -1,0 +1,27 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Distributed Tracing" topicRoute="/observability/distributed-tracing"
+    subtopicLabel="A Real Kafka Trace-Context Propagation, Verified" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">A Real Kafka Trace-Context Propagation, Verified</h1>
+  <p class="page-subtitle">The QnA describes the inject()/extract() pattern for Kafka in prose — this subtopic runs it end-to-end against a real OTel SDK, confirming the producer and consumer spans genuinely share one traceId and a real parent-child link.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic builds an N+1 detector on top of the Challenge's own span-tree data structure, verified against both a genuine N+1 pattern and a legitimate parallel fan-out that could otherwise be mistaken for one.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Distributed Tracing" topicRoute="/observability/distributed-tracing"
+    [prev]="{ label: 'Baggage Doesn’t Automatically Reach the Tracing Backend', route: '/observability/distributed-tracing/baggage-doesnt-automatically-reach-the-tracing-backend' }"
+    [next]="{ label: 'Building an N+1 Detector From the Span Tree', route: '/observability/distributed-tracing/building-an-n-plus-one-detector-from-the-span-tree' }" />
+</div>

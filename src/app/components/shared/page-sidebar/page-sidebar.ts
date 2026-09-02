@@ -36332,6 +36332,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Sampling (recording only a percentage of traces) is often necessary at scale — but sampling out the rare, slow, or erroring requests defeats the purpose of tracing them at all.',
     ],
   },
+  'observability/distributed-tracing/baggage-doesnt-automatically-reach-the-tracing-backend': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'A Real Kafka Trace-Context Propagation, Verified', route: '/observability/distributed-tracing/a-real-kafka-trace-context-propagation-verified' },
+      { label: 'Distributed Tracing (overview)', route: '/observability/distributed-tracing' },
+    ],
+    tip: 'W3C Baggage propagates as context to application code and as HTTP headers across services -- but it does NOT automatically become a span attribute, verified against a real OTel SDK showing an empty attributes object by default.',
+    gotchas: [
+      'Reaching the tracing backend needs an explicit extra step -- either manual span.setAttribute() calls, or registering the separate, opt-in BaggageSpanProcessor component.',
+    ],
+  },
+  'observability/distributed-tracing/a-real-kafka-trace-context-propagation-verified': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Baggage Doesn’t Automatically Reach the Tracing Backend', route: '/observability/distributed-tracing/baggage-doesnt-automatically-reach-the-tracing-backend' },
+      { label: 'Building an N+1 Detector From the Span Tree', route: '/observability/distributed-tracing/building-an-n-plus-one-detector-from-the-span-tree' },
+    ],
+    tip: 'propagation.inject()/extract() correctly reconstruct the same traceId and a real parent-child link across two entirely separate function calls -- verified end-to-end against a real OTel SDK, not just described in prose.',
+    gotchas: [
+      'A producer and consumer span link through the traceId carried in message headers, not through sharing a tracer instance -- two genuinely separate services with their own tracer providers link this same way.',
+    ],
+  },
+  'observability/distributed-tracing/building-an-n-plus-one-detector-from-the-span-tree': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'A Real Kafka Trace-Context Propagation, Verified', route: '/observability/distributed-tracing/a-real-kafka-trace-context-propagation-verified' },
+      { label: 'Distributed Tracing (overview)', route: '/observability/distributed-tracing' },
+    ],
+    tip: 'Grouping sibling spans by parentSpanId + operation name and checking whether they run sequentially (not overlapping) reliably distinguishes a genuine N+1 pattern from a legitimate parallel fan-out that would otherwise look identical.',
+    gotchas: [
+      'A single overlapping pair flips the whole group\'s sequential flag to false and it never resets -- a group that\'s mostly sequential with one coincidental overlap gets reported as NOT likely N+1.',
+    ],
+  },
   'observability/opentelemetry': {
     apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
     related: [

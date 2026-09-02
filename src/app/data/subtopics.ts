@@ -3716,4 +3716,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Classifier That Misses a Quarter of the Log Contract', route: '/observability/log-best-practices/the-classifier-that-misses-a-quarter-of-the-log-contract' },
     { label: 'Logging Which Path Correlation-ID Extraction Took', route: '/observability/log-best-practices/logging-which-path-correlation-id-extraction-took' },
   ],
+  // NOTE: bare 'distributed-tracing' is already claimed by the System Design hub's
+  // own /system-design/distributed-tracing topic -- hub-prefixed here.
+  'obs-distributed-tracing': [
+    { label: 'Baggage Doesn’t Automatically Reach the Tracing Backend', route: '/observability/distributed-tracing/baggage-doesnt-automatically-reach-the-tracing-backend' },
+    { label: 'A Real Kafka Trace-Context Propagation, Verified', route: '/observability/distributed-tracing/a-real-kafka-trace-context-propagation-verified' },
+    { label: 'Building an N+1 Detector From the Span Tree', route: '/observability/distributed-tracing/building-an-n-plus-one-detector-from-the-span-tree' },
+  ],
 };
