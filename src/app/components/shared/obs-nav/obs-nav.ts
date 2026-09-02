@@ -274,7 +274,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
       </div>
     }
   }
-  <a routerLink="/observability/performance-profiling"  routerLinkActive="active"><span class="nl-text">Performance Profiling</span>@if(progress.isDone('obs-performance-profiling')){<span class="nl-done">✓</span>}</a>
+  <a routerLink="/observability/performance-profiling" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+    <span class="nl-text">Performance Profiling</span>
+    @if(progress.isDone('obs-performance-profiling')){<span class="nl-done">✓</span>}
+    @if (subtopicsOf('performance-profiling')) {
+      <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('performance-profiling')"
+              (click)="toggleSubtopics('performance-profiling', $event)" aria-label="Toggle subtopics">›</button>
+    }
+  </a>
+  @if (subtopicsOf('performance-profiling'); as ppSubs) {
+    @if (isSubtopicsExpanded('performance-profiling')) {
+      <div class="nav-subtopics">
+        @for (s of ppSubs; track s.route) {
+          <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+            <span class="nl-text">{{ s.label }}</span>
+          </a>
+        }
+      </div>
+    }
+  }
 </div>
 
 <div class="nav-group">

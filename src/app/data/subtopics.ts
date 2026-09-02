@@ -3728,4 +3728,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Span Links for Fan-In Batch Processing', route: '/observability/opentelemetry-tracing/span-links-for-fan-in-batch-processing' },
     { label: 'context.bind() Rescues a Queued Legacy Callback', route: '/observability/opentelemetry-tracing/context-bind-rescues-a-queued-legacy-callback' },
   ],
+  'performance-profiling': [
+    { label: 'The lru-cache Default Import Is v6-Era Syntax', route: '/observability/performance-profiling/import-lru-from-lru-cache-is-v6-era-syntax' },
+    { label: 'Offloading Blocking Work to worker_threads, Measured', route: '/observability/performance-profiling/offloading-blocking-work-to-worker-threads-measured' },
+    { label: 'Tracking a Leaked Resource With async_hooks', route: '/observability/performance-profiling/tracking-a-leaked-resource-with-async-hooks' },
+  ],
 };

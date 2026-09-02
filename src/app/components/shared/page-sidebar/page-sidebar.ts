@@ -36603,6 +36603,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Profiling overhead, even when described as "low," is not zero — validate it doesn\'t materially affect the exact latency numbers you\'re trying to measure.',
     ],
   },
+  'observability/performance-profiling/import-lru-from-lru-cache-is-v6-era-syntax': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Performance Profiling (overview)', route: '/observability/performance-profiling' },
+      { label: 'Offloading Work to worker_threads', route: '/observability/performance-profiling/offloading-blocking-work-to-worker-threads-measured' },
+    ],
+    tip: 'Verified directly against the real, currently-installed lru-cache package (v11): `require(\'lru-cache\')` returns a plain object with a named LRUCache export -- there is no default export at all, so `import LRU from \'lru-cache\'` followed by `new LRU(...)` throws "LRU is not a constructor" every time.',
+    gotchas: [
+      'This changed at lru-cache v7 -- code copied from an older tutorial or a pre-2022 Stack Overflow answer very often still uses the old default-import syntax.',
+    ],
+  },
+  'observability/performance-profiling/offloading-blocking-work-to-worker-threads-measured': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The lru-cache Import Fix', route: '/observability/performance-profiling/import-lru-from-lru-cache-is-v6-era-syntax' },
+      { label: 'Tracking a Leaked Resource With async_hooks', route: '/observability/performance-profiling/tracking-a-leaked-resource-with-async-hooks' },
+    ],
+    tip: 'The main page\'s own theory names worker_threads as the fix for event-loop-blocking CPU work but never demonstrates it -- verified directly with a real timer running throughout: the SAME heavy computation blocks a scheduled tick to zero when run synchronously, and lets over 30 ticks through when moved to a worker.',
+    gotchas: [
+      'A worker thread has its own separate V8 heap and event loop -- data passed via postMessage() is structured-cloned, not shared by reference, unless you deliberately use a SharedArrayBuffer.',
+    ],
+  },
+  'observability/performance-profiling/tracking-a-leaked-resource-with-async-hooks': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Offloading Work to worker_threads', route: '/observability/performance-profiling/offloading-blocking-work-to-worker-threads-measured' },
+      { label: 'Performance Profiling (overview)', route: '/observability/performance-profiling' },
+    ],
+    tip: 'Verified directly: watching every built-in PROMISE resource via async_hooks is genuinely noisy (Node keeps several of its own internal promise resources alive) -- tagging your OWN AsyncResource type instead, the technique real APM leak trackers actually use, cleanly isolates just the leaked resource.',
+    gotchas: [
+      'A custom AsyncResource subclass\'s init hook fires from INSIDE super(), before the subclass constructor body has set any of its own fields -- reading a just-constructed resource\'s custom property inside init() sees undefined every time.',
+    ],
+  },
   'observability/chaos-engineering': {
     apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
     related: [

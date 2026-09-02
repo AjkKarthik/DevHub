@@ -178,8 +178,8 @@ function expensiveOp(key: string) {
 }
 
 // ✅ Fix: use LRU cache with max size
-import LRU from 'lru-cache';
-const cache2 = new LRU<string, object>({ max: 1000, ttl: 1000 * 60 * 5 }); // 5 min TTL
+import { LRUCache } from 'lru-cache'; // v7+ named export -- NOT a default export
+const cache2 = new LRUCache<string, object>({ max: 1000, ttl: 1000 * 60 * 5 }); // 5 min TTL
 
 // ── HEAP COMPARISON SCRIPT ────────────────────────────────────────
 // 1. Run service under load for 30 min

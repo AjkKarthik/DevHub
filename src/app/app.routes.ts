@@ -3553,7 +3553,12 @@ export const routes: Routes = [
         { path: 'span-links-for-fan-in-batch-processing', loadComponent: () => import('./components/architecture/observability/opentelemetry-tracing/subtopics/span-links-for-fan-in-batch-processing/span-links-for-fan-in-batch-processing').then(m => m.SpanLinksForFanInBatchProcessingSubtopic) },
         { path: 'context-bind-rescues-a-queued-legacy-callback', loadComponent: () => import('./components/architecture/observability/opentelemetry-tracing/subtopics/context-bind-rescues-a-queued-legacy-callback/context-bind-rescues-a-queued-legacy-callback').then(m => m.ContextBindRescuesAQueuedLegacyCallbackSubtopic) },
       ] },
-    { path: 'performance-profiling',      loadComponent: () => import('./components/architecture/observability/performance-profiling/performance-profiling').then(m => m.ObsPerformanceProfiling) },
+    { path: 'performance-profiling', children: [
+        { path: '', loadComponent: () => import('./components/architecture/observability/performance-profiling/performance-profiling').then(m => m.ObsPerformanceProfiling) },
+        { path: 'import-lru-from-lru-cache-is-v6-era-syntax', loadComponent: () => import('./components/architecture/observability/performance-profiling/subtopics/import-lru-from-lru-cache-is-v6-era-syntax/import-lru-from-lru-cache-is-v6-era-syntax').then(m => m.ImportLruFromLruCacheIsV6EraSyntaxSubtopic) },
+        { path: 'offloading-blocking-work-to-worker-threads-measured', loadComponent: () => import('./components/architecture/observability/performance-profiling/subtopics/offloading-blocking-work-to-worker-threads-measured/offloading-blocking-work-to-worker-threads-measured').then(m => m.OffloadingBlockingWorkToWorkerThreadsMeasuredSubtopic) },
+        { path: 'tracking-a-leaked-resource-with-async-hooks', loadComponent: () => import('./components/architecture/observability/performance-profiling/subtopics/tracking-a-leaked-resource-with-async-hooks/tracking-a-leaked-resource-with-async-hooks').then(m => m.TrackingALeakedResourceWithAsyncHooksSubtopic) },
+      ] },
     { path: 'alerting-design',            loadComponent: () => import('./components/architecture/observability/alerting-design/alerting-design').then(m => m.ObsAlertingDesign) },
     { path: 'on-call-incidents',          loadComponent: () => import('./components/architecture/observability/on-call-incidents/on-call-incidents').then(m => m.ObsOnCallIncidents) },
     { path: 'error-budgets-toil',         loadComponent: () => import('./components/architecture/observability/error-budgets-toil/error-budgets-toil').then(m => m.ObsErrorBudgetsToil) },

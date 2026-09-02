@@ -1,0 +1,26 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Performance Profiling" topicRoute="/observability/performance-profiling"
+    subtopicLabel="Tracking a Leaked Resource With async_hooks" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">Tracking a Leaked Resource With async_hooks</h1>
+  <p class="page-subtitle">The page's own QnA names async_hooks as the way to find resource leaks in one sentence — this subtopic builds a working tracker, and shows why watching every built-in promise resource is too noisy to use directly.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>Together these three subtopics fix the page's own broken cache-import example, verify the worker_threads fix the theory promises, and build the async_hooks-based detection technique the QnA names — covering the whole diagnose-and-fix loop this topic's own content only describes in prose.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Performance Profiling" topicRoute="/observability/performance-profiling"
+    [prev]="{ label: 'Offloading Blocking Work to worker_threads, Measured', route: '/observability/performance-profiling/offloading-blocking-work-to-worker-threads-measured' }" />
+</div>
