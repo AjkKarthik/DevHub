@@ -8687,7 +8687,32 @@ off here with a date.
   subtopic pages checked individually -- zero console errors, correct h1/breadcrumb, 860px
   wrapper, tailored sidebar content. **Observability hub Phase 10: 11 of 20 topics complete --
   Logging nav group fully done.**
-- [ ] `/observability/distributed-tracing` — Distributed Tracing
+- [x] `/observability/distributed-tracing` — Distributed Tracing (2026-09-02). First topic in the
+  Tracing nav group. Found and fixed a genuine inaccuracy in the baggage-propagation quiz
+  explanation, verified against a real @opentelemetry/api SDK: it claimed baggage "is additional
+  context attached to the trace for filtering and correlation in the tracing backend," implying
+  setting userId at the entry point makes it automatically searchable downstream. Verified via
+  direct execution that setting baggage and starting a span inside that context produces a span
+  whose attributes object is completely EMPTY -- baggage never automatically becomes a span
+  attribute; the bridge is a separate opt-in component (BaggageSpanProcessor, confirmed via
+  OpenTelemetry's own contrib docs) or a manual span.setAttribute() call. Fixed the explanation.
+  Also fixed 2 mistagged codeTabs -- verified via a real tsc compile that "Trace Flow Example" is
+  not even valid TypeScript at all (a sequence of bare {...} blocks at the top level parses as
+  labeled block statements, not object literals) -- both fixed to 'bash'. 3 subtopics: reproduces
+  the verified baggage finding against a real OTel SDK, with a Try It on the security cost of
+  registering BaggageSpanProcessor unconditionally; runs the QnA's own Kafka
+  propagation.inject()/extract() flow end-to-end against a real OTel SDK, confirming the producer
+  and consumer spans genuinely share one traceId and a real parent-child link; builds an N+1
+  detector on the Challenge's own Span interface, with a sequential-vs-parallel timing check
+  correctly distinguishing a genuine N+1 from a legitimate concurrent fan-out. Real SUBTOPICS
+  collision: bare distributed-tracing was already claimed by the System Design hub's own topic --
+  hub-prefixed to obs-distributed-tracing, matching this hub's own established progress/search key
+  prefix; confirmed /system-design/distributed-tracing renders unaffected. Build passed clean (no
+  duplicate-key error). Browser-verified with a hard reload first (after restarting the dev server,
+  which had died during a session interruption): nav accordion opened with all 3 links on the first
+  check; both main-page fixes confirmed rendering live; all 3 subtopic pages checked individually --
+  zero console errors, correct h1/breadcrumb, 860px wrapper, tailored sidebar content; cross-hub
+  isolation confirmed. **Observability hub Phase 10: 12 of 20 topics complete.**
 - [ ] `/observability/opentelemetry-tracing` — OTel Tracing Deep Dive
 - [ ] `/observability/performance-profiling` — Performance Profiling
 - [ ] `/observability/alerting-design` — Alerting Design

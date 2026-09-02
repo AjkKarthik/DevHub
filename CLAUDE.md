@@ -6774,6 +6774,55 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
     subtopic pages checked individually — zero console errors, correct h1/breadcrumb, 860px wrapper
     via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the final subtopic.
     **Observability hub Phase 10: 11 of 20 topics complete — Logging nav group fully done.**
+20. **The `distributed-tracing` batch — the first topic in the Tracing nav group — found and fixed
+    a genuine inaccuracy in the baggage-propagation quiz explanation, verified against a real
+    `@opentelemetry/api` SDK rather than assumed**: it stated baggage "is additional context
+    attached to the trace for filtering and correlation in the tracing backend," implying setting
+    `userId` at the entry point makes it automatically searchable downstream. Verified via direct
+    execution that setting baggage and starting a span inside that context produces a span whose
+    `attributes` object is completely EMPTY — baggage never automatically becomes a span attribute.
+    Confirmed via OpenTelemetry's own contrib package documentation that the bridge from
+    propagated context to a searchable span attribute is a SEPARATE, opt-in component,
+    `BaggageSpanProcessor` ("reads entries stored in Baggage from the parent context and adds the
+    baggage entries' keys and values to the span as attributes on span start") — without it, only a
+    manual `span.setAttribute()` call gets baggage onto a span at all. Fixed the explanation to
+    state this precisely. Also fixed two codeTabs ("Trace Flow Example" and "Trace Search Queries")
+    mistagged as `language: 'typescript'` — verified via a real `tsc` compile that "Trace Flow
+    Example" is not even valid TypeScript at all (a sequence of bare `{...}` object-literal-shaped
+    blocks at the TOP LEVEL of a script parses as labeled block statements, not object literals,
+    producing a cascade of `TS1005`/`TS1109` errors) — both fixed to `'bash'`. Three subtopics: (1)
+    **fix-adjacent** — reproduces the verified finding against a real OTel SDK (an empty
+    `attributes: {}` object, confirmed), with a Try It on the real security cost of registering
+    `BaggageSpanProcessor` unconditionally rather than with an explicit key allowlist; (2)
+    **gap-closing** — the QnA describes `propagation.inject()`/`propagation.extract()` for Kafka in
+    prose with zero code executed; ran the full producer-to-consumer flow against a real OTel SDK
+    (`NodeTracerProvider` + `InMemorySpanExporter`), confirming the two spans — created in two
+    genuinely separate function calls with no shared execution context — end up sharing one
+    `traceId` and a real parent-child link, purely through the header-carrier round trip; (3)
+    **gap-closing** — the quiz calls N+1 query patterns "visually obvious" in a flamegraph but never
+    builds a detector; built and verified `detectNPlusOne()` on the Challenge's own `Span`
+    interface, including a sequential-vs-parallel timing check that correctly distinguishes a
+    genuine N+1 (flagged) from a legitimate concurrent fan-out (correctly not flagged) — with a Try
+    It surfacing a real, honest limitation: a single overlapping pair flips the whole group's
+    `sequential` flag and it never resets, so a group that's mostly sequential with one incidental
+    overlap gets reported as not-likely-N+1. **A real, proactively-checked `SUBTOPICS` collision**:
+    bare `distributed-tracing` was already claimed by the System Design hub's own topic (confirmed
+    by grepping `subtopics.ts` directly, not just `app.routes.ts`) — hub-prefixed to
+    `obs-distributed-tracing`, matching this hub's own established `obs-` progress/search key
+    prefix; all five `ObsNavComponent` accordion calls use the prefixed key consistently, while
+    `breadcrumb.ts`/`page-sidebar.ts` composite keys stay bare/full-path per each map's own
+    per-hub-scoped convention (no collision risk there). Confirmed via direct browser navigation
+    that `/system-design/distributed-tracing` renders completely unaffected. Build passed clean
+    (foreground execution, explicit `EXITCODE:$?` capture, zero `ERROR` lines — also confirming no
+    duplicate-key error from the collision resolution). Browser-verified with a hard reload first
+    (after restarting the dev server, which had died during a session interruption — confirmed via
+    `preview_list` returning an empty array, then a full cold-start `preview_start` + polling until
+    the server responded): nav accordion opens with all 3 subtopic links on the first check; both
+    main-page fixes confirmed rendering live via `window.ng.getComponent()`; all 3 subtopic pages
+    checked individually — zero console errors, correct h1/breadcrumb, 860px wrapper via
+    `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the final subtopic; the
+    `/system-design/distributed-tracing` cross-hub isolation check passed. **Observability hub
+    Phase 10: 12 of 20 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -7832,13 +7881,15 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
   All 22 cards `available: true` in `architecture/observability/home/home.ts`. Progress: `obsTotal=20` in progress.service.ts.
   Observability pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ObsNavComponent at `shared/obs-nav/obs-nav.ts`.
-  Phase 10: 11 of 20 topics have subtopics (`/observability/observability-fundamentals`, pilot
+  Phase 10: 12 of 20 topics have subtopics (`/observability/observability-fundamentals`, pilot
   batch; `/observability/opentelemetry`; `/observability/sli-slo-sla` — Core Concepts nav group
   fully done; `/observability/prometheus-metrics`; `/observability/grafana-dashboards`;
   `/observability/custom-app-metrics`; `/observability/infrastructure-metrics`;
   `/observability/cloud-native-monitoring` — Metrics nav group fully done;
   `/observability/structured-logging`; `/observability/log-aggregation`;
-  `/observability/log-best-practices` — Logging nav group fully done, 2026-09-01) —
+  `/observability/log-best-practices` — Logging nav group fully done;
+  `/observability/distributed-tracing` — first Tracing nav group topic (SUBTOPICS map key
+  hub-prefixed to `obs-distributed-tracing`), 2026-09-02) —
   see "Observability & SRE hub subtopic wiring" section above for the `ObsNavComponent` accordion
   structural fix, a real self-authored key-mismatch bug caught during browser verification (not a
   stale-server artifact), a cross-hub `opentelemetry` SUBTOPICS collision already resolved by
