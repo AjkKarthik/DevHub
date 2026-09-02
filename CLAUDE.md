@@ -7017,6 +7017,48 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
     rendering correctly in the live component data (not the DOM alone, which would have masked a
     still-broken escape), tailored (not DEFAULT) sidebar content confirmed on the final subtopic.
     **Observability hub Phase 10: 16 of 20 topics complete.**
+25. **The `error-budgets-toil` batch — the third and final topic in the Alerting & SRE nav group —
+    found and fixed a genuine arithmetic error by running the page's own `computeToilRoi()`
+    function directly against its own three real toil-inventory items**: the trailing comment
+    claimed "Deployment gate: 6.7h/month, payback 6 months ← automate first!" — but the function's
+    own formula (`automationEffortDays / (monthlyHours / 8)`) evaluates to 9.6 months for that exact
+    input, not 6. The monthly-hours figure (6.7h) was correct, and the CONCLUSION ("automate first!")
+    was also still correct by coincidence — 9.6 months is still the shortest payback of the three
+    items (13.3 and 36.4 months for the other two) — which is exactly what made the wrong number
+    easy to miss: the comment read as internally consistent and pointed at the right decision, it
+    just stated the wrong magnitude for one of the three numbers backing that decision. Fixed all
+    three comment lines to the verified values. Also fixed the "Error Budget Tracking" codeTab
+    mistagged `language: 'typescript'` despite containing PromQL/pseudo-config content — fixed to
+    `'bash'`. Three subtopics: (1) **fix-adjacent** — reproduces the exact computation against all
+    three inventory items, with a Try It attempting to isolate which specific arithmetic step was
+    most likely miscalculated by hand while drafting the original comment; (2) **gap-closing** —
+    the page's own theory is explicit about multi-window burn rate ("combine a short window... and a
+    long window... both windows must exceed the threshold before firing") and its own PromQL alert
+    implements exactly this, but the page's own Challenge only ever asks for a SINGLE-value
+    `computeBurnRate()` function — nothing on the page runs the multi-window check end-to-end as
+    working code. Built directly on top of the page's own unmodified `computeBurnRate()`, verified
+    that a transient spike (short window pushed past threshold, long window diluted by surrounding
+    healthy traffic) correctly does NOT fire, while a genuinely sustained incident (both windows
+    elevated) correctly does; (3) **gap-closing** — the page's own exhaustion-time formula
+    (`time_remaining_hours = budget_remaining / (burn_rate * error_budget_per_hour)`) appears ONLY
+    as a trailing comment, never as real code, and the worked example ("budget exhausted in 30d / 14
+    = 2.14 days") implicitly assumes the ENTIRE budget is still fresh. Turned the comment into a
+    real, runnable function, verified the page's own "2.14 days" figure exactly, then extended it
+    with a `budgetRemainingFraction` parameter — a budget already 90% consumed hitting the same 14×
+    burn rate is exhausted in roughly 5 hours, not 2.14 days, a real and substantial difference the
+    fresh-budget-only formula has no way to express. No `SUBTOPICS` collision for `error-budgets-toil`
+    (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed collision-
+    free, left bare). Build passed clean (foreground, explicit exit-code capture, zero `ERROR`
+    lines). **Proactively restarted the dev server before verification this time** (rather than
+    waiting to discover a stale bundle), matching this session's now-established pattern — the fresh
+    restart correctly served the new bundle on the very first check, with no repeat of the
+    stale-bundle incident hit on several prior batches in this same stretch. Browser-verified: nav
+    accordion opens with all 3 subtopic links; all three main-page fixes confirmed live via direct
+    component data inspection; all 3 subtopic pages checked individually — zero console errors,
+    correct h1/breadcrumb, 860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar
+    content confirmed on the final subtopic. **This completes the Observability hub's Alerting & SRE
+    nav group** (`alerting-design`, `on-call-incidents`, `error-budgets-toil` — all 3 of 3 topics
+    now have subtopics). **Observability hub Phase 10: 17 of 20 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -8075,7 +8117,7 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
   All 22 cards `available: true` in `architecture/observability/home/home.ts`. Progress: `obsTotal=20` in progress.service.ts.
   Observability pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ObsNavComponent at `shared/obs-nav/obs-nav.ts`.
-  Phase 10: 16 of 20 topics have subtopics (`/observability/observability-fundamentals`, pilot
+  Phase 10: 17 of 20 topics have subtopics (`/observability/observability-fundamentals`, pilot
   batch; `/observability/opentelemetry`; `/observability/sli-slo-sla` — Core Concepts nav group
   fully done; `/observability/prometheus-metrics`; `/observability/grafana-dashboards`;
   `/observability/custom-app-metrics`; `/observability/infrastructure-metrics`;
@@ -8085,8 +8127,8 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
   `/observability/distributed-tracing` (SUBTOPICS map key hub-prefixed to
   `obs-distributed-tracing`); `/observability/opentelemetry-tracing`;
   `/observability/performance-profiling` — Tracing nav group fully done;
-  `/observability/alerting-design`; `/observability/on-call-incidents` — 2 of 3 Alerting & SRE
-  nav group topics done, 2026-09-02) —
+  `/observability/alerting-design`; `/observability/on-call-incidents`;
+  `/observability/error-budgets-toil` — Alerting & SRE nav group fully done, 2026-09-02) —
   see "Observability & SRE hub subtopic wiring" section above for the `ObsNavComponent` accordion
   structural fix, a real self-authored key-mismatch bug caught during browser verification (not a
   stale-server artifact), a cross-hub `opentelemetry` SUBTOPICS collision already resolved by

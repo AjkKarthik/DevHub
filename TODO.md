@@ -8796,7 +8796,27 @@ off here with a date.
   with all 3 links; all main-page fixes confirmed live via direct component data inspection; all
   3 subtopic pages checked individually -- zero console errors, correct h1/breadcrumb, 860px
   wrapper, tailored sidebar content. **Observability hub Phase 10: 16 of 20 topics complete.**
-- [ ] `/observability/error-budgets-toil` — Error Budgets & Toil
+- [x] `/observability/error-budgets-toil` — Error Budgets & Toil (2026-09-02). Phase 10: 3
+  subtopics. Ran the page's own computeToilRoi() function against its own three real toil items and
+  found a genuine arithmetic error -- the "Deployment gate" comment claims a 6-month payback, but
+  the function's own formula actually produces 9.6 months for that exact input. The conclusion
+  ("automate first!") was still correct by coincidence (still the best ROI of the three), which is
+  exactly what made the wrong number easy to miss. Fixed all three comment lines to the verified
+  values. Also fixed a codeTab mistagged 'typescript' (PromQL content) -- fixed to 'bash'.
+  Subtopics: (1) fix-adjacent, reproduces the exact computation against all three inventory items;
+  (2) gap-closing, a real multi-window burn rate check (short window AND long window, named in
+  theory and its own PromQL alert, never combined into one testable function) built on the page's
+  own unmodified computeBurnRate() -- verified a transient spike correctly doesn't fire while a
+  sustained incident does; (3) gap-closing, the page's own exhaustion-time formula (comment-only,
+  fresh-budget-only) turned into real code and extended for a partially-consumed budget -- 90%
+  already spent cuts the same 14x-burn exhaustion window to ~5 hours, not 2.14 days. No SUBTOPICS
+  collision, left bare. Build passed clean. Proactively restarted the dev server before
+  verification this time, matching the established pattern -- fresh on the first check. Browser-
+  verified: nav accordion opens with all 3 links; all main-page fixes confirmed live; all 3
+  subtopic pages checked individually -- zero console errors, correct h1/breadcrumb, 860px wrapper,
+  tailored sidebar content. This completes the Alerting & SRE nav group (alerting-design,
+  on-call-incidents, error-budgets-toil -- all 3 of 3 topics now have subtopics).
+  **Observability hub Phase 10: 17 of 20 topics complete.**
 - [ ] `/observability/chaos-engineering` — Chaos Engineering
 - [ ] `/observability/ebpf-observability` — eBPF Observability
 - [ ] `/observability/observability-maturity` — Observability Maturity
