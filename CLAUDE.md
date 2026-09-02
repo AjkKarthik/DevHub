@@ -6921,6 +6921,55 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
     **This completes the Observability hub's Tracing nav group** (`distributed-tracing`,
     `opentelemetry-tracing`, `performance-profiling` — all 3 of 3 topics now have subtopics).
     **Observability hub Phase 10: 14 of 20 topics complete.**
+23. **The `alerting-design` batch — the first topic in the Alerting & SRE nav group — found and
+    fixed a genuine, self-contained tension between the main page's own theory and its own quiz**:
+    the theory bullet on dead man's switches named a plain PromQL `absent()` rule as "the"
+    mechanism, with no mention of WHERE it needs to run — read in isolation, a natural conclusion
+    is "add this as another rule in the same Prometheus." The page's own quiz, on a completely
+    separate question, states the actual constraint forcefully: an external heartbeat service is
+    required precisely because "a full failure of that pipeline... would silently disable the
+    watchdog itself at the same time" if the check ran on the same stack. Verified directly via a
+    `FakePrometheus`/`ExternalHeartbeatService` simulation that a self-referential check running on
+    the same instance it protects genuinely cannot detect that instance's own total outage — once
+    it's dead, the check itself never evaluates either, only an independent system pinging in
+    (or being pinged by) the primary stack can. Tightened the theory bullet to state the constraint
+    explicitly, matching what the page's own "Alertmanager Config" code tab already implements
+    correctly (a Dead Man's Snitch webhook). Also fixed two codeTabs ("Alert Rules", "Alertmanager
+    Config") mistagged `language: 'typescript'` despite containing YAML — fixed to `'bash'`,
+    matching the established convention for non-TS content elsewhere in this hub. Three subtopics:
+    (1) **fix-adjacent** — reproduces the exact finding via the same simulation, with a Try It
+    distinguishing the CHECK itself (must run independently of what it protects) from the
+    NOTIFICATION channel (a separate, related but distinct concern — changing only the pager
+    integration doesn't fix a check that still can't evaluate once the primary process is dead);
+    (2) **gap-closing** — the QnA describes a complete 3-tier escalation policy (primary →
+    secondary → team lead, with 15-minute and 10-minute timeouts) in prose with zero code
+    anywhere on the page; built and verified a real state-machine function across all three
+    genuine outcomes (an on-time acknowledgement, a late one caught by the next tier, and total
+    silence exhausting the whole policy), with a Try It on why the total worst-case time is the
+    SUM of every tier's own timeout (35 minutes for three tiers of 15/10/10), not the longest
+    single tier; (3) **gap-closing** — the QnA's one-line dynamic-threshold example ("3 standard
+    deviations above the same hour from the previous week") had zero code demonstrating it;
+    verified against synthetic weekly-seasonal data that a flat static threshold is stuck between
+    two failure modes at once — false-positiving on a completely normal, expected weekly batch-job
+    spike, or false-negativing on a genuine multiple-times-normal degradation during an otherwise-
+    quiet hour — while a per-hour dynamic baseline (mean + N·stddev of that SAME hour's own
+    history) correctly distinguishes both. **A real, self-caught over-escaping mistake, caught by
+    the standing pre-build sweep before the build ever ran**: an early draft of the first
+    subtopic's own `theory.points` field used `\"` around a quoted PromQL fragment inside an
+    already SINGLE-quoted TS string — double quotes never need escaping inside a single-quoted
+    string at all, and the stray backslashes would have rendered as literal, visible characters;
+    fixed by removing the unnecessary escaping. No `SUBTOPICS` collision for `alerting-design`
+    (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed
+    collision-free, left bare). Build passed clean (foreground, explicit exit-code capture, zero
+    `ERROR` lines). **A third stale/dead dev-server incident in this same stretch, though this
+    time the server had died outright** (`preview_list` returned an empty array) rather than
+    merely serving a stale bundle — a fresh `preview_start` plus polling for a 200 response
+    resolved it cleanly. Browser-verified: nav accordion opens with all 3 subtopic links; all
+    three main-page fixes (the theory bullet, both codeTab languages) confirmed live via direct
+    component inspection; all 3 subtopic pages checked individually — zero console errors,
+    correct h1/breadcrumb, 860px wrapper via `getComputedStyle`, no stray backslash artifacts
+    from the escaping fix, tailored (not DEFAULT) sidebar content confirmed on the final
+    subtopic. **Observability hub Phase 10: 15 of 20 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -7979,7 +8028,7 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
   All 22 cards `available: true` in `architecture/observability/home/home.ts`. Progress: `obsTotal=20` in progress.service.ts.
   Observability pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ObsNavComponent at `shared/obs-nav/obs-nav.ts`.
-  Phase 10: 14 of 20 topics have subtopics (`/observability/observability-fundamentals`, pilot
+  Phase 10: 15 of 20 topics have subtopics (`/observability/observability-fundamentals`, pilot
   batch; `/observability/opentelemetry`; `/observability/sli-slo-sla` — Core Concepts nav group
   fully done; `/observability/prometheus-metrics`; `/observability/grafana-dashboards`;
   `/observability/custom-app-metrics`; `/observability/infrastructure-metrics`;
@@ -7988,7 +8037,8 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
   `/observability/log-best-practices` — Logging nav group fully done;
   `/observability/distributed-tracing` (SUBTOPICS map key hub-prefixed to
   `obs-distributed-tracing`); `/observability/opentelemetry-tracing`;
-  `/observability/performance-profiling` — Tracing nav group fully done, 2026-09-02) —
+  `/observability/performance-profiling` — Tracing nav group fully done;
+  `/observability/alerting-design` — first Alerting & SRE nav group topic, 2026-09-02) —
   see "Observability & SRE hub subtopic wiring" section above for the `ObsNavComponent` accordion
   structural fix, a real self-authored key-mismatch bug caught during browser verification (not a
   stale-server artifact), a cross-hub `opentelemetry` SUBTOPICS collision already resolved by

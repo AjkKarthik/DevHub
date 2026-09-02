@@ -8757,7 +8757,27 @@ off here with a date.
   console errors, correct h1/breadcrumb, 860px wrapper, tailored sidebar content. This completes
   the Tracing nav group (distributed-tracing, opentelemetry-tracing, performance-profiling -- all 3
   of 3 topics now have subtopics). **Observability hub Phase 10: 14 of 20 topics complete.**
-- [ ] `/observability/alerting-design` — Alerting Design
+- [x] `/observability/alerting-design` — Alerting Design (2026-09-02). Phase 10: 3 subtopics.
+  Fixed a real tension between the main page's own theory and its own quiz -- theory named a plain
+  PromQL absent() rule as the dead man's switch mechanism with no mention of where it needs to run,
+  while the quiz's own explanation states the exact constraint that makes it work (an external
+  heartbeat service, since a check on the same instance it protects can't detect that instance's
+  own total outage). Verified via a FakePrometheus/ExternalHeartbeatService simulation, then
+  tightened the theory bullet. Also fixed two codeTabs mistagged 'typescript' when they contain
+  YAML -- fixed to 'bash'. Subtopics: (1) fix-adjacent, reproduces the finding via simulation,
+  distinguishing the check itself from the notification channel; (2) gap-closing, a real 3-tier
+  escalation-policy state machine (named in the QnA, never shown) verified across on-time ack, late
+  ack, and total silence; (3) gap-closing, a dynamic (z-score) vs. static threshold comparison
+  against synthetic weekly-seasonal data, verified that a static threshold either false-positives
+  on a normal batch-job spike or false-negatives on a genuine quiet-hour degradation, while a
+  per-hour dynamic baseline catches both correctly. Self-caught and fixed a real over-escaping
+  mistake (\" inside a single-quoted string, which never needs escaping) via the standing pre-build
+  sweep. No SUBTOPICS collision, left bare. Hit a THIRD dev-server incident in this stretch -- this
+  time the server had died outright, not just gone stale -- resolved with a fresh preview_start.
+  Build passed clean. Browser-verified: nav accordion opens with all 3 links; all three main-page
+  fixes confirmed live; all 3 subtopic pages checked individually -- zero console errors, correct
+  h1/breadcrumb, 860px wrapper, tailored sidebar content. **Observability hub Phase 10: 15 of 20
+  topics complete.**
 - [ ] `/observability/on-call-incidents` — On-Call & Incidents
 - [ ] `/observability/error-budgets-toil` — Error Budgets & Toil
 - [ ] `/observability/chaos-engineering` — Chaos Engineering
