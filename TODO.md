@@ -8778,7 +8778,24 @@ off here with a date.
   fixes confirmed live; all 3 subtopic pages checked individually -- zero console errors, correct
   h1/breadcrumb, 860px wrapper, tailored sidebar content. **Observability hub Phase 10: 15 of 20
   topics complete.**
-- [ ] `/observability/on-call-incidents` — On-Call & Incidents
+- [x] `/observability/on-call-incidents` — On-Call & Incidents (2026-09-02). Phase 10: 3
+  subtopics. Applied the page's own computeIncidentMetrics() Challenge function to the real
+  timeline in the "Postmortem Template" tab -- canonical MTTD/MTTR (deploy-to-alert,
+  alert-to-full-recovery) gives 8 min / 39 min, while the "What Went Well" narrative implicitly
+  uses different reference points (error-onset, baseline-return) giving 5 min / 16 min, with no
+  label distinguishing which. Also fixed a "< 6 minutes" claim that's actually exactly 6 minutes
+  when computed from the timeline, and two codeTabs mistagged 'typescript' -- fixed to 'bash'.
+  Subtopics: (1) fix-adjacent, reproduces both reference-point choices side by side; (2)
+  gap-closing, chains the postmortem's own root cause + contributing factors into an actual Five
+  Whys sequence (named in theory, never demonstrated), verified the nested-apostrophe escaping by
+  evaluating the exact backtick span as real JS; (3) gap-closing, a real action-item completion
+  classifier against the postmortem's own 4-item table (named in theory/QnA, never shown) --
+  correctly flags one of two same-due-date items as OVERDUE. No SUBTOPICS collision, left bare.
+  Build passed clean. Hit a fourth stale-dev-server incident (full restart fix) and a transient
+  git push network failure (succeeded on immediate retry). Browser-verified: nav accordion opens
+  with all 3 links; all main-page fixes confirmed live via direct component data inspection; all
+  3 subtopic pages checked individually -- zero console errors, correct h1/breadcrumb, 860px
+  wrapper, tailored sidebar content. **Observability hub Phase 10: 16 of 20 topics complete.**
 - [ ] `/observability/error-budgets-toil` — Error Budgets & Toil
 - [ ] `/observability/chaos-engineering` — Chaos Engineering
 - [ ] `/observability/ebpf-observability` — eBPF Observability

@@ -6970,6 +6970,53 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
     correct h1/breadcrumb, 860px wrapper via `getComputedStyle`, no stray backslash artifacts
     from the escaping fix, tailored (not DEFAULT) sidebar content confirmed on the final
     subtopic. **Observability hub Phase 10: 15 of 20 topics complete.**
+24. **The `on-call-incidents` batch — the second topic in the Alerting & SRE nav group — found and
+    fixed a real gap between what the main page's own quickRef defines and what its own worked
+    example actually computes**: the quickRef defines MTTD as "average time from incident start to
+    first alert fire" and MTTR as "average time from detection to service restoration," and the
+    page's own "Postmortem Template" code tab gives a complete, real timeline with exact
+    timestamps — but nothing on the page ever applies either formula to it. Applying the page's OWN
+    `computeIncidentMetrics` Challenge function to the canonical reference points (deployment as
+    incident start, full-recovery confirmation as restoration) gives MTTD = 8 minutes and MTTR = 39
+    minutes — while the "What Went Well" narrative bullets implicitly use DIFFERENT reference
+    points (error-rate-onset as start, baseline-return — a mitigation signal, not a resolution — as
+    restoration), giving 5 minutes and 16 minutes instead, with no label anywhere distinguishing
+    which pair of numbers is being reported. A second, smaller precision issue found in the same
+    sweep: "Rollback took < 6 minutes" is computed directly from the same timeline (14:41 to 14:47)
+    to be exactly 6 minutes, not less than — fixed the wording. Also fixed two codeTabs ("Incident
+    Runbook Template", "Postmortem Template") mistagged `language: 'typescript'` despite containing
+    plain shell/markdown content — fixed to `'bash'`. Three subtopics: (1) **fix-adjacent** —
+    reproduces both reference-point choices side by side via the page's own Challenge function, with
+    a Try It on why the canonical 39-minute figure is more useful for the question MTTR is meant to
+    answer, without declaring the narrative's own 16-minute figure illegitimate — the actual problem
+    is mixing both, unlabeled, in the same document; (2) **gap-closing** — the theory names the Five
+    Whys technique directly ("ask 'why did this happen?' five times... the fifth answer is usually a
+    systemic or process failure") but the postmortem template only ever lists a flat root cause plus
+    three contributing factors, never chained into the actual sequential questions; built the real
+    five-step chain from the postmortem's own facts, landing on the same systemic testing-process gap
+    the contributing factors already point at — verified the nested-apostrophe escaping in the
+    displayed code (a doubled-backslash `\\'` surviving the outer template literal to produce a
+    correctly-escaped `\'` in the DISPLAYED inner TS string) by extracting and evaluating the exact
+    backtick span as real JavaScript before trusting it, per the established verification technique;
+    (3) **gap-closing** — the theory and QnA both name "not tracking action item completion" as a
+    real postmortem failure mode with zero code anywhere; built and verified a classifier against the
+    postmortem's own real four-item action table — two items share the identical due date
+    (2024-01-22), and with only one of the two marked complete against a simulated "today," the
+    classifier correctly flags the other as OVERDUE while the other two items remain on track. No
+    `SUBTOPICS` collision for `on-call-incidents` (checked both `subtopics.ts` forms and grepped
+    `app.routes.ts` directly, confirmed collision-free, left bare). Build passed clean (foreground,
+    explicit exit-code capture, zero `ERROR` lines). **A fourth stale-dev-server incident in this
+    same stretch**, resolved with the now-established fix (full `preview_stop`/`preview_start`
+    restart, not just a hard reload). **A transient git push failure** (`fatal: unable to access...
+    Failed to connect to github.com port 443`) on the first attempt, unrelated to any content —
+    resolved cleanly on an immediate retry with zero files touched, confirming the commit itself had
+    already succeeded locally and only the network hop needed a second try. Browser-verified: nav
+    accordion opens with all 3 subtopic links; all three main-page fixes confirmed live via direct
+    component data inspection; all 3 subtopic pages checked individually — zero console errors,
+    correct h1/breadcrumb, 860px wrapper via `getComputedStyle`, the escaped apostrophe confirmed
+    rendering correctly in the live component data (not the DOM alone, which would have masked a
+    still-broken escape), tailored (not DEFAULT) sidebar content confirmed on the final subtopic.
+    **Observability hub Phase 10: 16 of 20 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -8028,7 +8075,7 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
   All 22 cards `available: true` in `architecture/observability/home/home.ts`. Progress: `obsTotal=20` in progress.service.ts.
   Observability pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ObsNavComponent at `shared/obs-nav/obs-nav.ts`.
-  Phase 10: 15 of 20 topics have subtopics (`/observability/observability-fundamentals`, pilot
+  Phase 10: 16 of 20 topics have subtopics (`/observability/observability-fundamentals`, pilot
   batch; `/observability/opentelemetry`; `/observability/sli-slo-sla` — Core Concepts nav group
   fully done; `/observability/prometheus-metrics`; `/observability/grafana-dashboards`;
   `/observability/custom-app-metrics`; `/observability/infrastructure-metrics`;
@@ -8038,7 +8085,8 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
   `/observability/distributed-tracing` (SUBTOPICS map key hub-prefixed to
   `obs-distributed-tracing`); `/observability/opentelemetry-tracing`;
   `/observability/performance-profiling` — Tracing nav group fully done;
-  `/observability/alerting-design` — first Alerting & SRE nav group topic, 2026-09-02) —
+  `/observability/alerting-design`; `/observability/on-call-incidents` — 2 of 3 Alerting & SRE
+  nav group topics done, 2026-09-02) —
   see "Observability & SRE hub subtopic wiring" section above for the `ObsNavComponent` accordion
   structural fix, a real self-authored key-mismatch bug caught during browser verification (not a
   stale-server artifact), a cross-hub `opentelemetry` SUBTOPICS collision already resolved by
