@@ -8817,7 +8817,24 @@ off here with a date.
   tailored sidebar content. This completes the Alerting & SRE nav group (alerting-design,
   on-call-incidents, error-budgets-toil -- all 3 of 3 topics now have subtopics).
   **Observability hub Phase 10: 17 of 20 topics complete.**
-- [ ] `/observability/chaos-engineering` — Chaos Engineering
+- [x] `/observability/chaos-engineering` — Chaos Engineering (2026-09-02). Phase 10: 3
+  subtopics. Found and fixed a real issue in the main page's own "Custom Fault Injection" tab --
+  FaultInjectionMiddleware is decorated with Angular's @Injectable({ providedIn: 'root' }), but
+  every member the class uses is static, and every call site calls it as
+  FaultInjectionMiddleware.injectFault(), a plain static reference -- Angular's DI container never
+  constructs an instance anywhere. Verified with/without-decorator comparison produces identical
+  behavior; removed both the decorator and its @angular/core import. Also fixed a codeTab mistagged
+  'typescript' (YAML content) -- fixed to 'bash'. Subtopics: (1) fix-adjacent, reproduces the
+  comparison directly; (2) gap-closing, a real abort mechanism (health-polling scheduler) for the
+  page's own Challenge scheduler, which the mistakes block calls mandatory but never implements --
+  verified a healthy run completes fully while an unhealthy one aborts within one poll interval;
+  (3) gap-closing, statistical verification (20,000 trials) that the fault injector's configured
+  errorRate and latencyMs actually match observed behavior. No SUBTOPICS collision, left bare.
+  Build passed clean. Browser-verified after a proactive dev-server restart: nav accordion opens
+  with all 3 links, including the literal "@Injectable" mention rendering correctly; both
+  main-page fixes confirmed live; all 3 subtopic pages checked individually -- zero console
+  errors, correct h1/breadcrumb, 860px wrapper, tailored sidebar content.
+  **Observability hub Phase 10: 18 of 20 topics complete.**
 - [ ] `/observability/ebpf-observability` — eBPF Observability
 - [ ] `/observability/observability-maturity` — Observability Maturity
 

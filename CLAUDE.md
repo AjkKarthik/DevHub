@@ -7059,6 +7059,52 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
     content confirmed on the final subtopic. **This completes the Observability hub's Alerting & SRE
     nav group** (`alerting-design`, `on-call-incidents`, `error-budgets-toil` — all 3 of 3 topics
     now have subtopics). **Observability hub Phase 10: 17 of 20 topics complete.**
+26. **The `chaos-engineering` batch — the first topic in the Advanced nav group — found and fixed a
+    genuine, self-contained issue in the main page's own "Custom Fault Injection" code tab**:
+    `FaultInjectionMiddleware` is decorated with Angular's `@Injectable({ providedIn: 'root' })`
+    (imported from `@angular/core`) — Angular's DI-container registration decorator, meant for
+    classes that get CONSTRUCTED and injected elsewhere. Every member the class actually uses —
+    `injectFault()`, and the config it reads — is declared `static`, and every call site calls it
+    as `FaultInjectionMiddleware.injectFault()`, a plain static reference. Angular's DI container
+    never constructs an instance anywhere in the shown code, because nothing ever asks it to.
+    Verified directly: wrapping the class in a no-op decorator (standing in for what `@Injectable`
+    actually does) and calling the same static method produces byte-identical behavior to calling
+    it with no decorator at all — the decorator and its import genuinely do nothing for this
+    specific class as written. Removed both. Also fixed the "Chaos Mesh Experiment" codeTab
+    mistagged `language: 'typescript'` despite containing YAML — fixed to `'bash'`. Three
+    subtopics: (1) **fix-adjacent** — reproduces the with/without-decorator comparison directly,
+    with a Try It on what would ALSO need to change (every call site, not just the decorator) if
+    the class later gained real instance state — a subtle point, since adding instance state alone
+    without rewriting call sites to actually inject an instance would just be a second, unrelated
+    bug; (2) **gap-closing** — the page's own mistakes block calls an abort mechanism mandatory in
+    the strongest possible terms ("An experiment without an abort is an uncontrolled failure"), and
+    a QnA repeats it ("Set automatic stop conditions... stop automatically") — but the page's own
+    Challenge scheduler, `scheduleExperiment()`, has no such mechanism at all, just a fixed wait
+    with no metric check anywhere. Built and verified `scheduleExperimentWithAbort()`, polling a
+    health-check function throughout the wait: a genuinely healthy run completes the full
+    configured duration, while a run that turns unhealthy partway through aborts within roughly one
+    poll interval, well before the fixed duration would otherwise have elapsed; (3) **gap-closing**
+    — the page's own fault injector configures `errorRate` and `latencyMs` as plain numbers via
+    `Math.random() < faultConfig.errorRate`, with nothing on the page ever checking these values
+    against actual observed behavior. Verified statistically over 20,000 trials that the observed
+    failure rate (0.0998) lands within a tenth of a percentage point of the configured 0.1, and
+    separately confirmed a configured 50ms latency is genuinely applied end-to-end (measured 55ms),
+    not just recorded in config and ignored — with a Try It distinguishing why the probabilistic
+    claim needed thousands of trials to verify while the deterministic latency claim only needed
+    one measurement. **A first for this stretch of the hub**: the h1/eyebrow title itself contains a
+    literal `@Injectable` mention as bare `.html` static text, requiring the standard `&#64;`
+    entity-escape — confirmed the SAME string is safe UNESCAPED when it instead appears inside a
+    `[prev]`/`[next]` bound-attribute expression (`{ label: 'The @Injectable Decorator...' }`),
+    matching the established "bound attributes never trip this, only bare text nodes do" rule
+    exactly. No `SUBTOPICS` collision for `chaos-engineering` (checked both `subtopics.ts` forms
+    and grepped `app.routes.ts` directly, confirmed collision-free, left bare). Build passed clean
+    (foreground, explicit exit-code capture, zero `ERROR` lines). Browser-verified after a
+    proactive dev-server restart (fresh on the first check): nav accordion opens with all 3
+    subtopic links, including the literal "@Injectable" mention rendering correctly as text on
+    every page it appears; both main-page fixes confirmed live via direct component data
+    inspection; all 3 subtopic pages checked individually — zero console errors, correct
+    h1/breadcrumb, 860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content
+    confirmed on the final subtopic. **Observability hub Phase 10: 18 of 20 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -8117,7 +8163,7 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
   All 22 cards `available: true` in `architecture/observability/home/home.ts`. Progress: `obsTotal=20` in progress.service.ts.
   Observability pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ObsNavComponent at `shared/obs-nav/obs-nav.ts`.
-  Phase 10: 17 of 20 topics have subtopics (`/observability/observability-fundamentals`, pilot
+  Phase 10: 18 of 20 topics have subtopics (`/observability/observability-fundamentals`, pilot
   batch; `/observability/opentelemetry`; `/observability/sli-slo-sla` — Core Concepts nav group
   fully done; `/observability/prometheus-metrics`; `/observability/grafana-dashboards`;
   `/observability/custom-app-metrics`; `/observability/infrastructure-metrics`;
@@ -8128,7 +8174,8 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
   `obs-distributed-tracing`); `/observability/opentelemetry-tracing`;
   `/observability/performance-profiling` — Tracing nav group fully done;
   `/observability/alerting-design`; `/observability/on-call-incidents`;
-  `/observability/error-budgets-toil` — Alerting & SRE nav group fully done, 2026-09-02) —
+  `/observability/error-budgets-toil` — Alerting & SRE nav group fully done;
+  `/observability/chaos-engineering` — first Advanced nav group topic, 2026-09-02) —
   see "Observability & SRE hub subtopic wiring" section above for the `ObsNavComponent` accordion
   structural fix, a real self-authored key-mismatch bug caught during browser verification (not a
   stale-server artifact), a cross-hub `opentelemetry` SUBTOPICS collision already resolved by
