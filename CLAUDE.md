@@ -6874,6 +6874,53 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
     inspection; all 3 subtopic pages checked individually — zero console errors, correct
     h1/breadcrumb, 860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content
     confirmed on the final subtopic. **Observability hub Phase 10: 13 of 20 topics complete.**
+22. **The `performance-profiling` batch — the third and final topic in the Tracing nav group —
+    found and fixed a genuine, verified break in the main page's own "Memory Leak Detection" code
+    tab**: `import LRU from 'lru-cache'; const cache2 = new LRU&lt;string, object&gt;(...)` is
+    v6-era default-export syntax. Verified directly against the real, currently-published
+    `lru-cache` package (v11): `require('lru-cache')` returns a plain object whose only useful
+    member is a NAMED export, `LRUCache` — there is no default export at all. Confirmed via a real
+    Node.js reproduction that `new LRU(...)` throws `TypeError: LRU is not a constructor` under the
+    CJS-interop binding a default import resolves to for a module with no true default. Fixed to
+    `import { LRUCache } from 'lru-cache'; new LRUCache(...)`. Three subtopics, each independently
+    verified via real code execution: (1) **fix-adjacent** — reproduces the exact break/fix against
+    the real installed package, with a Try It on a namespace-import alternative (`import * as LRU`)
+    that would also technically work but loses the readability the named-import form provides; (2)
+    **gap-closing** — the page's own theory names `worker_threads` as the fix for event-loop
+    blocking in one sentence, never demonstrated; verified with a live 10ms timer running
+    throughout that the identical heavy computation produces zero ticks when run synchronously on
+    the main thread, and lets 30+ ticks through when moved to a real `Worker`; (3) **gap-closing**
+    — the page's own QnA names `async_hooks` for finding resource leaks in one sentence, never
+    shown. First verified the NAIVE approach (watching every built-in `PROMISE` resource) is
+    genuinely too noisy — Node keeps several of its own internal promise resources alive, producing
+    6 "active" entries for a script that leaked exactly 1. Built and verified the real fix: a custom
+    `AsyncResource` subclass tagging only the business-relevant operation, cleanly isolating the
+    leaked entry with an exact count of 1 — including catching a genuine ordering gotcha along the
+    way (a custom `AsyncResource` subclass's `init()` hook fires from INSIDE `super()`, before the
+    subclass constructor body has set any of its own fields, so reading a just-constructed
+    resource's custom property inside `init()` sees `undefined` every time — the tracker has to
+    store the resource REFERENCE at init time and read fields later). **Retitled the first subtopic
+    to avoid literal quote marks around "lru-cache" in its own title** — a subtopic's title gets
+    embedded verbatim as a `[prev]`/`[next]` label on sibling pages, and the original title
+    (`import LRU from 'lru-cache' Is v6-Era Syntax`) would have collided with the label string's own
+    single-quote delimiters the moment another page referenced it; caught and fixed BEFORE any
+    sibling page ever referenced it, per the established "check a subtopic's own title for a bare
+    `'`/`"` before creating any cross-page reference to it" discipline. No `SUBTOPICS` collision for
+    `performance-profiling` (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly,
+    confirmed collision-free, left bare). Build passed clean (foreground, explicit exit-code
+    capture, zero `ERROR` lines). **A second stale dev-server incident in a row, resolved with the
+    same established fix**: the running server (restarted fresh at the start of the immediately-
+    prior `opentelemetry-tracing` batch) was ALREADY stale again by the time this batch's new files
+    were written — `subtopicsOf('performance-profiling')` returned `null` despite a clean build — a
+    full `preview_stop`/`preview_start` restart resolved it immediately, confirming this is a
+    per-batch risk in this session's dev-server setup, not a one-off from the earlier incident.
+    Browser-verified after the restart: nav accordion opens with all 3 subtopic links; the
+    main-page `LRUCache` fix confirmed live via direct component inspection; all 3 subtopic pages
+    checked individually — zero console errors, correct h1/breadcrumb, 860px wrapper via
+    `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the final subtopic.
+    **This completes the Observability hub's Tracing nav group** (`distributed-tracing`,
+    `opentelemetry-tracing`, `performance-profiling` — all 3 of 3 topics now have subtopics).
+    **Observability hub Phase 10: 14 of 20 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -7932,7 +7979,7 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
   All 22 cards `available: true` in `architecture/observability/home/home.ts`. Progress: `obsTotal=20` in progress.service.ts.
   Observability pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ObsNavComponent at `shared/obs-nav/obs-nav.ts`.
-  Phase 10: 13 of 20 topics have subtopics (`/observability/observability-fundamentals`, pilot
+  Phase 10: 14 of 20 topics have subtopics (`/observability/observability-fundamentals`, pilot
   batch; `/observability/opentelemetry`; `/observability/sli-slo-sla` — Core Concepts nav group
   fully done; `/observability/prometheus-metrics`; `/observability/grafana-dashboards`;
   `/observability/custom-app-metrics`; `/observability/infrastructure-metrics`;
@@ -7940,8 +7987,8 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
   `/observability/structured-logging`; `/observability/log-aggregation`;
   `/observability/log-best-practices` — Logging nav group fully done;
   `/observability/distributed-tracing` (SUBTOPICS map key hub-prefixed to
-  `obs-distributed-tracing`); `/observability/opentelemetry-tracing` — 2 of 3 Tracing nav group
-  topics done, 2026-09-02) —
+  `obs-distributed-tracing`); `/observability/opentelemetry-tracing`;
+  `/observability/performance-profiling` — Tracing nav group fully done, 2026-09-02) —
   see "Observability & SRE hub subtopic wiring" section above for the `ObsNavComponent` accordion
   structural fix, a real self-authored key-mismatch bug caught during browser verification (not a
   stale-server artifact), a cross-hub `opentelemetry` SUBTOPICS collision already resolved by

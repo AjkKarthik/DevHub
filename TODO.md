@@ -8734,7 +8734,29 @@ off here with a date.
   confirmed live; all 3 subtopic pages checked individually -- zero console errors, correct
   h1/breadcrumb, 860px wrapper, tailored sidebar content. **Observability hub Phase 10: 13 of 20
   topics complete.**
-- [ ] `/observability/performance-profiling` — Performance Profiling
+- [x] `/observability/performance-profiling` — Performance Profiling (2026-09-02). Phase 10: 3
+  subtopics. Fixed a real break in the main page's own "Memory Leak Detection" tab -- `import LRU
+  from 'lru-cache'; new LRU(...)` is v6-era default-export syntax. Verified against the real,
+  currently-published lru-cache package (v11): require('lru-cache') returns a plain object whose
+  only useful member is a named export, LRUCache -- there is no default export. Confirmed via a
+  real Node.js reproduction that `new LRU(...)` throws "LRU is not a constructor." Fixed to `import
+  { LRUCache } from 'lru-cache'; new LRUCache(...)`. Subtopics: (1) fix-adjacent, reproduces the
+  break/fix against the real package; (2) gap-closing, worker_threads offload (named in theory,
+  never shown) -- verified with a live 10ms timer that the identical heavy computation produces
+  zero ticks synchronously vs. 30+ ticks when moved to a real Worker; (3) gap-closing, an
+  async_hooks-based leak tracker (named in the QnA, never shown) -- first verified the naive
+  approach (watching every built-in PROMISE resource) is too noisy (6 "active" entries for exactly
+  1 real leak, due to Node's own internal promise resources), then built and verified the real fix:
+  a custom AsyncResource subclass tagging only the business-relevant operation, cleanly isolating
+  the leak with an exact count of 1, including catching a genuine ordering gotcha (init() fires
+  from inside super(), before the subclass constructor sets its own fields). Retitled the first
+  subtopic to avoid literal quote marks that would have collided with a [prev]/[next] label's own
+  delimiters. No SUBTOPICS collision, left bare. Hit and resolved a SECOND stale dev-server incident
+  in a row (same fix -- full restart). Build passed clean. Browser-verified: nav accordion opens
+  with all 3 links; main-page fix confirmed live; all 3 subtopic pages checked individually -- zero
+  console errors, correct h1/breadcrumb, 860px wrapper, tailored sidebar content. This completes
+  the Tracing nav group (distributed-tracing, opentelemetry-tracing, performance-profiling -- all 3
+  of 3 topics now have subtopics). **Observability hub Phase 10: 14 of 20 topics complete.**
 - [ ] `/observability/alerting-design` — Alerting Design
 - [ ] `/observability/on-call-incidents` — On-Call & Incidents
 - [ ] `/observability/error-budgets-toil` — Error Budgets & Toil
