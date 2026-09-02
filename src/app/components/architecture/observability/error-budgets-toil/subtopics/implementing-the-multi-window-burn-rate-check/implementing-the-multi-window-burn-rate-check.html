@@ -1,0 +1,27 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Error Budgets &amp; Toil" topicRoute="/observability/error-budgets-toil"
+    subtopicLabel="Implementing the Multi-Window Burn Rate Check" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">Implementing the Multi-Window Burn Rate Check</h1>
+  <p class="page-subtitle">The page's own Challenge only computes a single burn rate value — this subtopic builds the real short-window-AND-long-window check its own theory and PromQL example describe.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic turns the page's own comment-only exhaustion-time formula into real code, then extends it to handle a budget that isn't starting fresh — the realistic case once an incident has already burned through part of it.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Error Budgets &amp; Toil" topicRoute="/observability/error-budgets-toil"
+    [prev]="{ label: 'The Payback-Months Comment Was Off By 60%', route: '/observability/error-budgets-toil/the-payback-months-comment-was-off-by-60-percent' }"
+    [next]="{ label: 'Budget Exhaustion Time for a Partially-Spent Budget', route: '/observability/error-budgets-toil/budget-exhaustion-time-for-a-partially-spent-budget' }" />
+</div>

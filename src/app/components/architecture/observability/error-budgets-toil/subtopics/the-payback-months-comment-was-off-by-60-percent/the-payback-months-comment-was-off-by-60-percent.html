@@ -1,0 +1,26 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Error Budgets &amp; Toil" topicRoute="/observability/error-budgets-toil"
+    subtopicLabel="The Payback-Months Comment Was Off By 60%" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">The Payback-Months Comment Was Off By 60%</h1>
+  <p class="page-subtitle">The page's own "Toil Tracking" code tab claims a 6-month payback for automating the deployment gate — running its own function against its own inputs gives 9.6 months instead.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic extends the page's own single-value burn rate Challenge into the real multi-window check the theory and its code tab describe, then the final subtopic makes the exhaustion-time comment's formula real and extends it for an already-spent budget.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Error Budgets &amp; Toil" topicRoute="/observability/error-budgets-toil"
+    [next]="{ label: 'Implementing the Multi-Window Burn Rate Check', route: '/observability/error-budgets-toil/implementing-the-multi-window-burn-rate-check' }" />
+</div>

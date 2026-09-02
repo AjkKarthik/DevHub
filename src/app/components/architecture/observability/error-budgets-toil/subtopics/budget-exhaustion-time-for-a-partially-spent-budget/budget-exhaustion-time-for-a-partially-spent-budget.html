@@ -1,0 +1,26 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Error Budgets &amp; Toil" topicRoute="/observability/error-budgets-toil"
+    subtopicLabel="Budget Exhaustion Time for a Partially-Spent Budget" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">Budget Exhaustion Time for a Partially-Spent Budget</h1>
+  <p class="page-subtitle">The page's own exhaustion-time formula only ever appears as a comment, and only for a fresh budget — this subtopic makes it real code and extends it for the realistic case where some budget is already spent.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>Together these three subtopics run every real formula and worked example on this page's own code tabs through direct execution — catching a genuine arithmetic error, filling in the multi-window check the theory describes but never runs, and making the exhaustion-time comment real and generalized.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Error Budgets &amp; Toil" topicRoute="/observability/error-budgets-toil"
+    [prev]="{ label: 'Implementing the Multi-Window Burn Rate Check', route: '/observability/error-budgets-toil/implementing-the-multi-window-burn-rate-check' }" />
+</div>

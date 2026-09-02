@@ -3743,4 +3743,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Walking the Five Whys to the Real Root Cause', route: '/observability/on-call-incidents/walking-the-five-whys-to-the-real-root-cause' },
     { label: 'Tracking Postmortem Action Items to Completion', route: '/observability/on-call-incidents/tracking-postmortem-action-items-to-completion' },
   ],
+  'error-budgets-toil': [
+    { label: 'The Payback-Months Comment Was Off By 60%', route: '/observability/error-budgets-toil/the-payback-months-comment-was-off-by-60-percent' },
+    { label: 'Implementing the Multi-Window Burn Rate Check', route: '/observability/error-budgets-toil/implementing-the-multi-window-burn-rate-check' },
+    { label: 'Budget Exhaustion Time for a Partially-Spent Budget', route: '/observability/error-budgets-toil/budget-exhaustion-time-for-a-partially-spent-budget' },
+  ],
 };

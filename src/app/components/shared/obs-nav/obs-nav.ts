@@ -335,7 +335,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
       </div>
     }
   }
-  <a routerLink="/observability/error-budgets-toil"   routerLinkActive="active"><span class="nl-text">Error Budgets &amp; Toil</span>@if(progress.isDone('obs-error-budgets-toil')){<span class="nl-done">✓</span>}</a>
+  <a routerLink="/observability/error-budgets-toil" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+    <span class="nl-text">Error Budgets &amp; Toil</span>
+    @if(progress.isDone('obs-error-budgets-toil')){<span class="nl-done">✓</span>}
+    @if (subtopicsOf('error-budgets-toil')) {
+      <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('error-budgets-toil')"
+              (click)="toggleSubtopics('error-budgets-toil', $event)" aria-label="Toggle subtopics">›</button>
+    }
+  </a>
+  @if (subtopicsOf('error-budgets-toil'); as ebtSubs) {
+    @if (isSubtopicsExpanded('error-budgets-toil')) {
+      <div class="nav-subtopics">
+        @for (s of ebtSubs; track s.route) {
+          <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+            <span class="nl-text">{{ s.label }}</span>
+          </a>
+        }
+      </div>
+    }
+  }
 </div>
 
 <div class="nav-group">

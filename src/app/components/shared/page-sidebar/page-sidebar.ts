@@ -36512,6 +36512,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'An error budget policy only works if it has real teeth — a budget that gets "overridden" every time it\'s exhausted provides no actual behavioral incentive.',
     ],
   },
+  'observability/error-budgets-toil/the-payback-months-comment-was-off-by-60-percent': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Error Budgets & Toil (overview)', route: '/observability/error-budgets-toil' },
+      { label: 'Multi-Window Burn Rate Check', route: '/observability/error-budgets-toil/implementing-the-multi-window-burn-rate-check' },
+    ],
+    tip: 'Verified by running the page\'s own computeToilRoi() function directly: the "Deployment gate" comment claims a 6-month payback, but the code\'s own formula actually produces 9.6 months for that exact input -- still the best ROI of the three items, just not the number stated.',
+    gotchas: [
+      'A wrong number can point at the right conclusion by coincidence -- "automate first" was still correct advice here, which is exactly what makes a payback-months error easy to miss on a casual read.',
+    ],
+  },
+  'observability/error-budgets-toil/implementing-the-multi-window-burn-rate-check': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The Payback-Months Comment', route: '/observability/error-budgets-toil/the-payback-months-comment-was-off-by-60-percent' },
+      { label: 'Budget Exhaustion for a Spent Budget', route: '/observability/error-budgets-toil/budget-exhaustion-time-for-a-partially-spent-budget' },
+    ],
+    tip: 'The page\'s own Challenge only computes a SINGLE burn rate value -- built and verified a real multi-window check (combining the page\'s own computeBurnRate() with a short AND long window comparison) that correctly stays silent on a transient spike while still firing on a genuinely sustained incident.',
+    gotchas: [
+      'A transient spike can push a SHORT window\'s burn rate well past the threshold while the LONG window stays low -- checking only one window, whichever one, misses either fast detection or false-positive resistance.',
+    ],
+  },
+  'observability/error-budgets-toil/budget-exhaustion-time-for-a-partially-spent-budget': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Multi-Window Burn Rate Check', route: '/observability/error-budgets-toil/implementing-the-multi-window-burn-rate-check' },
+      { label: 'Error Budgets & Toil (overview)', route: '/observability/error-budgets-toil' },
+    ],
+    tip: 'The page\'s own "budget exhausted in 30d / 14 = 2.14 days" formula is stated only as a comment, and only for a FRESH (100%) budget -- extended and verified for a partially-spent budget, e.g. 90% already consumed cuts the same 14x-burn-rate exhaustion window down to about 5 hours, not 2.14 days.',
+    gotchas: [
+      'A team checking only the fresh-budget formula against a budget that\'s already partially consumed will consistently overestimate how much runway is actually left.',
+    ],
+  },
   'observability/alerting-design': {
     apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
     related: [

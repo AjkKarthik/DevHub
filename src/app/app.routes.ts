@@ -3571,7 +3571,12 @@ export const routes: Routes = [
         { path: 'walking-the-five-whys-to-the-real-root-cause', loadComponent: () => import('./components/architecture/observability/on-call-incidents/subtopics/walking-the-five-whys-to-the-real-root-cause/walking-the-five-whys-to-the-real-root-cause').then(m => m.WalkingTheFiveWhysToTheRealRootCauseSubtopic) },
         { path: 'tracking-postmortem-action-items-to-completion', loadComponent: () => import('./components/architecture/observability/on-call-incidents/subtopics/tracking-postmortem-action-items-to-completion/tracking-postmortem-action-items-to-completion').then(m => m.TrackingPostmortemActionItemsToCompletionSubtopic) },
       ] },
-    { path: 'error-budgets-toil',         loadComponent: () => import('./components/architecture/observability/error-budgets-toil/error-budgets-toil').then(m => m.ObsErrorBudgetsToil) },
+    { path: 'error-budgets-toil', children: [
+        { path: '', loadComponent: () => import('./components/architecture/observability/error-budgets-toil/error-budgets-toil').then(m => m.ObsErrorBudgetsToil) },
+        { path: 'the-payback-months-comment-was-off-by-60-percent', loadComponent: () => import('./components/architecture/observability/error-budgets-toil/subtopics/the-payback-months-comment-was-off-by-60-percent/the-payback-months-comment-was-off-by-60-percent').then(m => m.ThePaybackMonthsCommentWasOffBy60PercentSubtopic) },
+        { path: 'implementing-the-multi-window-burn-rate-check', loadComponent: () => import('./components/architecture/observability/error-budgets-toil/subtopics/implementing-the-multi-window-burn-rate-check/implementing-the-multi-window-burn-rate-check').then(m => m.ImplementingTheMultiWindowBurnRateCheckSubtopic) },
+        { path: 'budget-exhaustion-time-for-a-partially-spent-budget', loadComponent: () => import('./components/architecture/observability/error-budgets-toil/subtopics/budget-exhaustion-time-for-a-partially-spent-budget/budget-exhaustion-time-for-a-partially-spent-budget').then(m => m.BudgetExhaustionTimeForAPartiallySpentBudgetSubtopic) },
+      ] },
     { path: 'chaos-engineering',          loadComponent: () => import('./components/architecture/observability/chaos-engineering/chaos-engineering').then(m => m.ObsChaosEngineering) },
     { path: 'ebpf-observability',         loadComponent: () => import('./components/architecture/observability/ebpf-observability/ebpf-observability').then(m => m.ObsEbpfObservability) },
     { path: 'observability-maturity',     loadComponent: () => import('./components/architecture/observability/observability-maturity/observability-maturity').then(m => m.ObsObservabilityMaturity) },
