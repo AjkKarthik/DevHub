@@ -183,14 +183,17 @@ async function publishOrderEvent(orderId: string) {
       const headers: Record<string, string> = {};
       propagation.inject(context.active(), headers);
 
-      await kafka.producer().send({
-        topic: 'orders.created',
-        messages: [{
-          value: JSON.stringify({ orderId }),
-          headers,  // ← trace context travels in headers
-        }],
-      });
-      span.end();
+      try {
+        await kafka.producer().send({
+          topic: 'orders.created',
+          messages: [{
+            value: JSON.stringify({ orderId }),
+            headers,  // ← trace context travels in headers
+          }],
+        });
+      } finally {
+        span.end(); // finally — a broker/network failure must still end the span
+      }
     }
   );
 }

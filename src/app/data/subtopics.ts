@@ -3723,4 +3723,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'A Real Kafka Trace-Context Propagation, Verified', route: '/observability/distributed-tracing/a-real-kafka-trace-context-propagation-verified' },
     { label: 'Building an N+1 Detector From the Span Tree', route: '/observability/distributed-tracing/building-an-n-plus-one-detector-from-the-span-tree' },
   ],
+  'opentelemetry-tracing': [
+    { label: 'The Kafka Producer Span That Leaks When send() Throws', route: '/observability/opentelemetry-tracing/the-kafka-producer-span-that-leaks-when-send-throws' },
+    { label: 'Span Links for Fan-In Batch Processing', route: '/observability/opentelemetry-tracing/span-links-for-fan-in-batch-processing' },
+    { label: 'context.bind() Rescues a Queued Legacy Callback', route: '/observability/opentelemetry-tracing/context-bind-rescues-a-queued-legacy-callback' },
+  ],
 };

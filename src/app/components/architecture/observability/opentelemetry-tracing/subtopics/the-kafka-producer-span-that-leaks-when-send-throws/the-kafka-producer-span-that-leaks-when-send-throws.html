@@ -1,0 +1,26 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="OTel Tracing Deep Dive" topicRoute="/observability/opentelemetry-tracing"
+    subtopicLabel="The Kafka Producer Span That Leaks When send() Throws" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">The Kafka Producer Span That Leaks When send() Throws</h1>
+  <p class="page-subtitle">The page's own "Advanced Manual Tracing" tab wraps every span in try/finally — its "Kafka Context Propagation" tab doesn't, on the one span most likely to hit a real failure.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic covers a span shape the page never demonstrates at all — Links, for a batch-processing span with no single parent — then the final subtopic verifies the exact async-context-loss failure mode the QnA on legacy callback code describes.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="OTel Tracing Deep Dive" topicRoute="/observability/opentelemetry-tracing"
+    [next]="{ label: 'Span Links for Fan-In Batch Processing', route: '/observability/opentelemetry-tracing/span-links-for-fan-in-batch-processing' }" />
+</div>

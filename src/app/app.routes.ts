@@ -3547,7 +3547,12 @@ export const routes: Routes = [
         { path: 'a-real-kafka-trace-context-propagation-verified', loadComponent: () => import('./components/architecture/observability/distributed-tracing/subtopics/a-real-kafka-trace-context-propagation-verified/a-real-kafka-trace-context-propagation-verified').then(m => m.ARealKafkaTraceContextPropagationVerifiedSubtopic) },
         { path: 'building-an-n-plus-one-detector-from-the-span-tree', loadComponent: () => import('./components/architecture/observability/distributed-tracing/subtopics/building-an-n-plus-one-detector-from-the-span-tree/building-an-n-plus-one-detector-from-the-span-tree').then(m => m.BuildingAnNPlusOneDetectorFromTheSpanTreeSubtopic) },
       ] },
-    { path: 'opentelemetry-tracing',      loadComponent: () => import('./components/architecture/observability/opentelemetry-tracing/opentelemetry-tracing').then(m => m.ObsOpentelemetryTracing) },
+    { path: 'opentelemetry-tracing', children: [
+        { path: '', loadComponent: () => import('./components/architecture/observability/opentelemetry-tracing/opentelemetry-tracing').then(m => m.ObsOpentelemetryTracing) },
+        { path: 'the-kafka-producer-span-that-leaks-when-send-throws', loadComponent: () => import('./components/architecture/observability/opentelemetry-tracing/subtopics/the-kafka-producer-span-that-leaks-when-send-throws/the-kafka-producer-span-that-leaks-when-send-throws').then(m => m.TheKafkaProducerSpanThatLeaksWhenSendThrowsSubtopic) },
+        { path: 'span-links-for-fan-in-batch-processing', loadComponent: () => import('./components/architecture/observability/opentelemetry-tracing/subtopics/span-links-for-fan-in-batch-processing/span-links-for-fan-in-batch-processing').then(m => m.SpanLinksForFanInBatchProcessingSubtopic) },
+        { path: 'context-bind-rescues-a-queued-legacy-callback', loadComponent: () => import('./components/architecture/observability/opentelemetry-tracing/subtopics/context-bind-rescues-a-queued-legacy-callback/context-bind-rescues-a-queued-legacy-callback').then(m => m.ContextBindRescuesAQueuedLegacyCallbackSubtopic) },
+      ] },
     { path: 'performance-profiling',      loadComponent: () => import('./components/architecture/observability/performance-profiling/performance-profiling').then(m => m.ObsPerformanceProfiling) },
     { path: 'alerting-design',            loadComponent: () => import('./components/architecture/observability/alerting-design/alerting-design').then(m => m.ObsAlertingDesign) },
     { path: 'on-call-incidents',          loadComponent: () => import('./components/architecture/observability/on-call-incidents/on-call-incidents').then(m => m.ObsOnCallIncidents) },

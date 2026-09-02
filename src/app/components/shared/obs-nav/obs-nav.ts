@@ -255,7 +255,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
       </div>
     }
   }
-  <a routerLink="/observability/opentelemetry-tracing"  routerLinkActive="active"><span class="nl-text">OTel Tracing Deep Dive</span>@if(progress.isDone('obs-opentelemetry-tracing')){<span class="nl-done">✓</span>}</a>
+  <a routerLink="/observability/opentelemetry-tracing" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+    <span class="nl-text">OTel Tracing Deep Dive</span>
+    @if(progress.isDone('obs-opentelemetry-tracing')){<span class="nl-done">✓</span>}
+    @if (subtopicsOf('opentelemetry-tracing')) {
+      <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('opentelemetry-tracing')"
+              (click)="toggleSubtopics('opentelemetry-tracing', $event)" aria-label="Toggle subtopics">›</button>
+    }
+  </a>
+  @if (subtopicsOf('opentelemetry-tracing'); as otSubs) {
+    @if (isSubtopicsExpanded('opentelemetry-tracing')) {
+      <div class="nav-subtopics">
+        @for (s of otSubs; track s.route) {
+          <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+            <span class="nl-text">{{ s.label }}</span>
+          </a>
+        }
+      </div>
+    }
+  }
   <a routerLink="/observability/performance-profiling"  routerLinkActive="active"><span class="nl-text">Performance Profiling</span>@if(progress.isDone('obs-performance-profiling')){<span class="nl-done">✓</span>}</a>
 </div>
 

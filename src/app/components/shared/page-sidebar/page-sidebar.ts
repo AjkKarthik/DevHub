@@ -36422,6 +36422,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Context propagation must be correctly wired through async/await boundaries and thread pools, or child spans silently detach from their parent trace.',
     ],
   },
+  'observability/opentelemetry-tracing/the-kafka-producer-span-that-leaks-when-send-throws': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'OTel Tracing Deep Dive (overview)', route: '/observability/opentelemetry-tracing' },
+      { label: 'Span Links for Fan-In Batch Processing', route: '/observability/opentelemetry-tracing/span-links-for-fan-in-batch-processing' },
+    ],
+    tip: 'startActiveSpan() never auto-ends a span -- verified with a real Node simulation that a producer span left outside a try/finally simply never calls span.end() when the underlying send() call throws.',
+    gotchas: [
+      'The happy path (a successful send()) hides the bug completely -- span.end() only fails to run on the exact failure path a broker outage would trigger.',
+    ],
+  },
+  'observability/opentelemetry-tracing/span-links-for-fan-in-batch-processing': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The Kafka Producer Span Leak', route: '/observability/opentelemetry-tracing/the-kafka-producer-span-that-leaks-when-send-throws' },
+      { label: 'context.bind() Rescues a Queued Callback', route: '/observability/opentelemetry-tracing/context-bind-rescues-a-queued-legacy-callback' },
+    ],
+    tip: 'A batch span processing messages from several independent traces has no single parent -- verified via a real OTel SDK export that Links (not a parent-child edge) is the mechanism that connects a fan-in span back to every origin trace.',
+    gotchas: [
+      'Links are set at span-creation time via startSpan()\'s own options, not added after the fact the way attributes and events are.',
+    ],
+  },
+  'observability/opentelemetry-tracing/context-bind-rescues-a-queued-legacy-callback': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Span Links for Fan-In Batch Processing', route: '/observability/opentelemetry-tracing/span-links-for-fan-in-batch-processing' },
+      { label: 'OTel Tracing Deep Dive (overview)', route: '/observability/opentelemetry-tracing' },
+    ],
+    tip: 'Verified with a real OTel SDK: a callback queued by a legacy driver and invoked later from an unrelated background interval loses its trace context entirely -- a completely new, unrelated trace ID -- unless explicitly rescued with context.bind().',
+    gotchas: [
+      'AsyncLocalStorage propagates automatically across await/Promise.then() and across async work SCHEDULED synchronously within an active context -- it does not automatically follow a callback stored and invoked later by code outside that context.',
+    ],
+  },
   'observability/sli-slo-sla': {
     apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
     related: [
