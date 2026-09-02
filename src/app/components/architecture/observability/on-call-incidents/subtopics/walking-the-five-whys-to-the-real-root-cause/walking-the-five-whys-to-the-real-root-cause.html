@@ -1,0 +1,27 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="On-Call & Incidents" topicRoute="/observability/on-call-incidents"
+    subtopicLabel="Walking the Five Whys to the Real Root Cause" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">Walking the Five Whys to the Real Root Cause</h1>
+  <p class="page-subtitle">The page's own theory names the Five Whys technique — this subtopic chains the postmortem's own root cause and contributing factors into the actual five sequential questions.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic closes the loop from root cause to prevention by tracking the postmortem's own action items table against a simulated "today," catching the one the theory warns falls through the cracks when nobody tracks completion.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="On-Call & Incidents" topicRoute="/observability/on-call-incidents"
+    [prev]="{ label: 'Computing the Postmortem’s Own MTTD and MTTR', route: '/observability/on-call-incidents/computing-the-postmortems-own-mttd-and-mttr' }"
+    [next]="{ label: 'Tracking Postmortem Action Items to Completion', route: '/observability/on-call-incidents/tracking-postmortem-action-items-to-completion' }" />
+</div>

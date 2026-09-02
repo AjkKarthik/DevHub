@@ -3565,7 +3565,12 @@ export const routes: Routes = [
         { path: 'building-a-real-escalation-policy-state-machine', loadComponent: () => import('./components/architecture/observability/alerting-design/subtopics/building-a-real-escalation-policy-state-machine/building-a-real-escalation-policy-state-machine').then(m => m.BuildingARealEscalationPolicyStateMachineSubtopic) },
         { path: 'dynamic-thresholds-catch-what-a-static-one-misses', loadComponent: () => import('./components/architecture/observability/alerting-design/subtopics/dynamic-thresholds-catch-what-a-static-one-misses/dynamic-thresholds-catch-what-a-static-one-misses').then(m => m.DynamicThresholdsCatchWhatAStaticOneMissesSubtopic) },
       ] },
-    { path: 'on-call-incidents',          loadComponent: () => import('./components/architecture/observability/on-call-incidents/on-call-incidents').then(m => m.ObsOnCallIncidents) },
+    { path: 'on-call-incidents', children: [
+        { path: '', loadComponent: () => import('./components/architecture/observability/on-call-incidents/on-call-incidents').then(m => m.ObsOnCallIncidents) },
+        { path: 'computing-the-postmortems-own-mttd-and-mttr', loadComponent: () => import('./components/architecture/observability/on-call-incidents/subtopics/computing-the-postmortems-own-mttd-and-mttr/computing-the-postmortems-own-mttd-and-mttr').then(m => m.ComputingThePostmortemsOwnMttdAndMttrSubtopic) },
+        { path: 'walking-the-five-whys-to-the-real-root-cause', loadComponent: () => import('./components/architecture/observability/on-call-incidents/subtopics/walking-the-five-whys-to-the-real-root-cause/walking-the-five-whys-to-the-real-root-cause').then(m => m.WalkingTheFiveWhysToTheRealRootCauseSubtopic) },
+        { path: 'tracking-postmortem-action-items-to-completion', loadComponent: () => import('./components/architecture/observability/on-call-incidents/subtopics/tracking-postmortem-action-items-to-completion/tracking-postmortem-action-items-to-completion').then(m => m.TrackingPostmortemActionItemsToCompletionSubtopic) },
+      ] },
     { path: 'error-budgets-toil',         loadComponent: () => import('./components/architecture/observability/error-budgets-toil/error-budgets-toil').then(m => m.ObsErrorBudgetsToil) },
     { path: 'chaos-engineering',          loadComponent: () => import('./components/architecture/observability/chaos-engineering/chaos-engineering').then(m => m.ObsChaosEngineering) },
     { path: 'ebpf-observability',         loadComponent: () => import('./components/architecture/observability/ebpf-observability/ebpf-observability').then(m => m.ObsEbpfObservability) },

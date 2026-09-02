@@ -3738,4 +3738,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Building a Real Escalation-Policy State Machine', route: '/observability/alerting-design/building-a-real-escalation-policy-state-machine' },
     { label: 'Dynamic Thresholds Catch What a Static One Misses', route: '/observability/alerting-design/dynamic-thresholds-catch-what-a-static-one-misses' },
   ],
+  'on-call-incidents': [
+    { label: 'Computing the Postmortem’s Own MTTD and MTTR', route: '/observability/on-call-incidents/computing-the-postmortems-own-mttd-and-mttr' },
+    { label: 'Walking the Five Whys to the Real Root Cause', route: '/observability/on-call-incidents/walking-the-five-whys-to-the-real-root-cause' },
+    { label: 'Tracking Postmortem Action Items to Completion', route: '/observability/on-call-incidents/tracking-postmortem-action-items-to-completion' },
+  ],
 };

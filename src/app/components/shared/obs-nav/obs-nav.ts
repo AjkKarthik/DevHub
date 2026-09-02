@@ -316,7 +316,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
       </div>
     }
   }
-  <a routerLink="/observability/on-call-incidents"    routerLinkActive="active"><span class="nl-text">On-Call &amp; Incidents</span>@if(progress.isDone('obs-on-call-incidents')){<span class="nl-done">✓</span>}</a>
+  <a routerLink="/observability/on-call-incidents" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+    <span class="nl-text">On-Call &amp; Incidents</span>
+    @if(progress.isDone('obs-on-call-incidents')){<span class="nl-done">✓</span>}
+    @if (subtopicsOf('on-call-incidents')) {
+      <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('on-call-incidents')"
+              (click)="toggleSubtopics('on-call-incidents', $event)" aria-label="Toggle subtopics">›</button>
+    }
+  </a>
+  @if (subtopicsOf('on-call-incidents'); as ociSubs) {
+    @if (isSubtopicsExpanded('on-call-incidents')) {
+      <div class="nav-subtopics">
+        @for (s of ociSubs; track s.route) {
+          <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+            <span class="nl-text">{{ s.label }}</span>
+          </a>
+        }
+      </div>
+    }
+  }
   <a routerLink="/observability/error-budgets-toil"   routerLinkActive="active"><span class="nl-text">Error Budgets &amp; Toil</span>@if(progress.isDone('obs-error-budgets-toil')){<span class="nl-done">✓</span>}</a>
 </div>
 

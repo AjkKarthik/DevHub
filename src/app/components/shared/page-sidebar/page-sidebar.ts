@@ -36569,6 +36569,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Declaring an incident resolved as soon as symptoms disappear (without confirming the root cause) risks a recurrence from the same underlying issue shortly after.',
     ],
   },
+  'observability/on-call-incidents/computing-the-postmortems-own-mttd-and-mttr': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'On-Call & Incidents (overview)', route: '/observability/on-call-incidents' },
+      { label: 'Walking the Five Whys', route: '/observability/on-call-incidents/walking-the-five-whys-to-the-real-root-cause' },
+    ],
+    tip: 'Applying the page\'s own computeIncidentMetrics() Challenge function to the postmortem template\'s real timeline gives MTTD 8 min / MTTR 39 min using the canonical deploy-to-alert / alert-to-full-recovery reference points -- noticeably different from the "What Went Well" bullets\' own 5-minute figure, which uses error-rate-onset instead of deploy time as its own start point.',
+    gotchas: [
+      'MTTD and MTTR depend entirely on WHICH timestamp counts as "start" and "restoration" -- a postmortem that mixes reference points across its own sections produces numbers that look precise but aren\'t directly comparable to each other.',
+    ],
+  },
+  'observability/on-call-incidents/walking-the-five-whys-to-the-real-root-cause': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Computing MTTD and MTTR', route: '/observability/on-call-incidents/computing-the-postmortems-own-mttd-and-mttr' },
+      { label: 'Tracking Action Items', route: '/observability/on-call-incidents/tracking-postmortem-action-items-to-completion' },
+    ],
+    tip: 'The page\'s own theory names the Five Whys technique but the postmortem template only ever lists a flat root cause plus three contributing factors -- this subtopic walks the actual five sequential "why" questions from the visible symptom down to the same systemic testing-process gap the template\'s own contributing factors already point at.',
+    gotchas: [
+      'The fifth "why" should land on something the team can actually change (a process, a test, a review checklist) -- stopping at "the retry loop had a bug" is stopping one or two whys too early.',
+    ],
+  },
+  'observability/on-call-incidents/tracking-postmortem-action-items-to-completion': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Walking the Five Whys', route: '/observability/on-call-incidents/walking-the-five-whys-to-the-real-root-cause' },
+      { label: 'On-Call & Incidents (overview)', route: '/observability/on-call-incidents' },
+    ],
+    tip: 'The theory and QnA both name "not tracking action item completion" as a real postmortem failure mode -- built and verified a small classifier against the postmortem template\'s own real action items table, correctly flagging one item as OVERDUE relative to a simulated "today" while the other three are on track or completed.',
+    gotchas: [
+      'A postmortem action item with no owner or no due date can never be classified as overdue at all -- it just silently never comes up, which is functionally the same as nobody tracking it.',
+    ],
+  },
   'observability/cloud-native-monitoring': {
     apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
     related: [

@@ -71,7 +71,7 @@ const theory: TheoryPoint[] = [
 const codeTabs: CodeTab[] = [
   {
     label: 'Incident Runbook Template',
-    language: 'typescript',
+    language: 'bash',
     code: `# Runbook: Payment Service Degradation
 # Alert: PaymentErrorRateHigh (error rate > 2%)
 # Severity: SEV1 if > 10%, SEV2 if 2-10%
@@ -117,7 +117,7 @@ const codeTabs: CodeTab[] = [
   },
   {
     label: 'Postmortem Template',
-    language: 'typescript',
+    language: 'bash',
     code: `# Incident Postmortem
 # Date: 2024-01-15  |  Duration: 47 minutes  |  Severity: SEV2
 # Author: @alice  |  Reviewers: @bob, @charlie
@@ -156,7 +156,7 @@ load, retries amplified Stripe's rate limiting, causing cascading failures.
 
 ## What Went Well
 - SLO alert fired 5 minutes after error rate began (good MTTD)
-- Rollback took < 6 minutes (good rollback tooling)
+- Rollback took 6 minutes, initiated to visible recovery (good rollback tooling)
 - Incident bridge communication was clear and efficient
 
 ## Action Items

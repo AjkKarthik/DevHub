@@ -1,0 +1,26 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="On-Call & Incidents" topicRoute="/observability/on-call-incidents"
+    subtopicLabel="Tracking Postmortem Action Items to Completion" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">Tracking Postmortem Action Items to Completion</h1>
+  <p class="page-subtitle">The theory and QnA both name "not tracking action item completion" as a real failure mode — this subtopic builds and verifies a classifier against the postmortem's own real action items table.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>Together these three subtopics follow the postmortem's own real incident all the way through: measuring how fast it was actually detected and resolved, tracing its root cause down to a systemic gap, and tracking whether the fix for that gap actually gets done.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="On-Call & Incidents" topicRoute="/observability/on-call-incidents"
+    [prev]="{ label: 'Walking the Five Whys to the Real Root Cause', route: '/observability/on-call-incidents/walking-the-five-whys-to-the-real-root-cause' }" />
+</div>

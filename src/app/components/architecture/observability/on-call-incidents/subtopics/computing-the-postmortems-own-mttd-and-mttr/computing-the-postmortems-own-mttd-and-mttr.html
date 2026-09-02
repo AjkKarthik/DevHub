@@ -1,0 +1,26 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="On-Call & Incidents" topicRoute="/observability/on-call-incidents"
+    subtopicLabel="Computing the Postmortem’s Own MTTD and MTTR" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">Computing the Postmortem’s Own MTTD and MTTR</h1>
+  <p class="page-subtitle">The page's own Postmortem Template gives a real timeline but never applies its own MTTD/MTTR formulas to it — the "What Went Well" narrative silently uses different reference points instead.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic walks the same incident's own root cause through the theory's own named Five Whys technique, then the final subtopic tracks the postmortem's real action items table to completion.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="On-Call & Incidents" topicRoute="/observability/on-call-incidents"
+    [next]="{ label: 'Walking the Five Whys to the Real Root Cause', route: '/observability/on-call-incidents/walking-the-five-whys-to-the-real-root-cause' }" />
+</div>
