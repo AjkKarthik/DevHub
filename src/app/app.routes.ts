@@ -3577,7 +3577,12 @@ export const routes: Routes = [
         { path: 'implementing-the-multi-window-burn-rate-check', loadComponent: () => import('./components/architecture/observability/error-budgets-toil/subtopics/implementing-the-multi-window-burn-rate-check/implementing-the-multi-window-burn-rate-check').then(m => m.ImplementingTheMultiWindowBurnRateCheckSubtopic) },
         { path: 'budget-exhaustion-time-for-a-partially-spent-budget', loadComponent: () => import('./components/architecture/observability/error-budgets-toil/subtopics/budget-exhaustion-time-for-a-partially-spent-budget/budget-exhaustion-time-for-a-partially-spent-budget').then(m => m.BudgetExhaustionTimeForAPartiallySpentBudgetSubtopic) },
       ] },
-    { path: 'chaos-engineering',          loadComponent: () => import('./components/architecture/observability/chaos-engineering/chaos-engineering').then(m => m.ObsChaosEngineering) },
+    { path: 'chaos-engineering', children: [
+        { path: '', loadComponent: () => import('./components/architecture/observability/chaos-engineering/chaos-engineering').then(m => m.ObsChaosEngineering) },
+        { path: 'the-injectable-decorator-thats-never-actually-injected', loadComponent: () => import('./components/architecture/observability/chaos-engineering/subtopics/the-injectable-decorator-thats-never-actually-injected/the-injectable-decorator-thats-never-actually-injected').then(m => m.TheInjectableDecoratorThatsNeverActuallyInjectedSubtopic) },
+        { path: 'adding-a-real-abort-mechanism-to-the-scheduler', loadComponent: () => import('./components/architecture/observability/chaos-engineering/subtopics/adding-a-real-abort-mechanism-to-the-scheduler/adding-a-real-abort-mechanism-to-the-scheduler').then(m => m.AddingARealAbortMechanismToTheSchedulerSubtopic) },
+        { path: 'verifying-the-fault-injectors-rate-and-latency', loadComponent: () => import('./components/architecture/observability/chaos-engineering/subtopics/verifying-the-fault-injectors-rate-and-latency/verifying-the-fault-injectors-rate-and-latency').then(m => m.VerifyingTheFaultInjectorsRateAndLatencySubtopic) },
+      ] },
     { path: 'ebpf-observability',         loadComponent: () => import('./components/architecture/observability/ebpf-observability/ebpf-observability').then(m => m.ObsEbpfObservability) },
     { path: 'observability-maturity',     loadComponent: () => import('./components/architecture/observability/observability-maturity/observability-maturity').then(m => m.ObsObservabilityMaturity) },
     { path: 'cheatsheet',                 loadComponent: () => import('./components/architecture/observability/cheatsheet/cheatsheet').then(m => m.ObsCheatsheet) },

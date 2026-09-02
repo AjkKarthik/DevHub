@@ -1,0 +1,26 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Chaos Engineering" topicRoute="/observability/chaos-engineering"
+    subtopicLabel="The &#64;Injectable Decorator That's Never Actually Injected" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">The &#64;Injectable Decorator That's Never Actually Injected</h1>
+  <p class="page-subtitle">The page's own "Custom Fault Injection" code tab decorates a class for Angular's DI container — but every member is static, and the decorator never actually does anything.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic extends the page's own Challenge scheduler with the abort mechanism the theory and mistakes block insist is required but the Challenge itself never implements, then the final subtopic statistically verifies the fault injector's own configured rate and latency actually hold up.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Chaos Engineering" topicRoute="/observability/chaos-engineering"
+    [next]="{ label: 'Adding a Real Abort Mechanism to the Scheduler', route: '/observability/chaos-engineering/adding-a-real-abort-mechanism-to-the-scheduler' }" />
+</div>

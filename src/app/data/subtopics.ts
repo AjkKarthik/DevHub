@@ -3748,4 +3748,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Implementing the Multi-Window Burn Rate Check', route: '/observability/error-budgets-toil/implementing-the-multi-window-burn-rate-check' },
     { label: 'Budget Exhaustion Time for a Partially-Spent Budget', route: '/observability/error-budgets-toil/budget-exhaustion-time-for-a-partially-spent-budget' },
   ],
+  'chaos-engineering': [
+    { label: 'The @Injectable Decorator That’s Never Actually Injected', route: '/observability/chaos-engineering/the-injectable-decorator-thats-never-actually-injected' },
+    { label: 'Adding a Real Abort Mechanism to the Scheduler', route: '/observability/chaos-engineering/adding-a-real-abort-mechanism-to-the-scheduler' },
+    { label: 'Verifying the Fault Injector’s Rate and Latency', route: '/observability/chaos-engineering/verifying-the-fault-injectors-rate-and-latency' },
+  ],
 };

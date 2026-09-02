@@ -1,0 +1,26 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Chaos Engineering" topicRoute="/observability/chaos-engineering"
+    subtopicLabel="Verifying the Fault Injector's Rate and Latency" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">Verifying the Fault Injector's Rate and Latency</h1>
+  <p class="page-subtitle">The page's own fault injector's configured errorRate and latencyMs are never checked against actual behavior — this subtopic verifies both statistically, over thousands of trials.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>Together these three subtopics cover the whole "Custom Fault Injection" code tab and the page's own Challenge scheduler — clearing up a misleading Angular decorator, adding the abort mechanism the page insists on but never builds, and proving the fault injector's own numbers actually hold up under real execution.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Chaos Engineering" topicRoute="/observability/chaos-engineering"
+    [prev]="{ label: 'Adding a Real Abort Mechanism to the Scheduler', route: '/observability/chaos-engineering/adding-a-real-abort-mechanism-to-the-scheduler' }" />
+</div>

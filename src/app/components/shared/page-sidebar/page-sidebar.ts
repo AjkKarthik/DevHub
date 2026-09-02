@@ -36746,6 +36746,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The value of chaos engineering is in the LEARNING and subsequent fixes, not in the experiment itself — a chaos day that finds no issues and prompts no follow-up work has produced little value.',
     ],
   },
+  'observability/chaos-engineering/the-injectable-decorator-thats-never-actually-injected': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Chaos Engineering (overview)', route: '/observability/chaos-engineering' },
+      { label: 'Adding a Real Abort Mechanism', route: '/observability/chaos-engineering/adding-a-real-abort-mechanism-to-the-scheduler' },
+    ],
+    tip: 'Verified directly: the page\'s own FaultInjectionMiddleware class is used entirely via static method calls, so Angular\'s @Injectable({ providedIn: \'root\' }) decorator and its @angular/core import never actually do anything -- confirmed by running identical static-method calls with and without the decorator and getting identical behavior.',
+    gotchas: [
+      'A class annotated for dependency injection but only ever accessed through static members is a real, easy-to-miss signal that the class was adapted from different boilerplate than the code around it actually needs.',
+    ],
+  },
+  'observability/chaos-engineering/adding-a-real-abort-mechanism-to-the-scheduler': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The @Injectable Decorator', route: '/observability/chaos-engineering/the-injectable-decorator-thats-never-actually-injected' },
+      { label: 'Verifying the Fault Injector', route: '/observability/chaos-engineering/verifying-the-fault-injectors-rate-and-latency' },
+    ],
+    tip: 'The page\'s own mistakes block and theory both insist an abort mechanism is REQUIRED before running any chaos experiment -- but the page\'s own Challenge scheduler has no such mechanism at all, just a fixed wait. Built and verified a real health-polling version that correctly runs the full duration when healthy and aborts within one poll interval once a health check fails.',
+    gotchas: [
+      'An abort mechanism that only checks health ONCE, at the start, provides no real protection -- the whole point is polling repeatedly throughout the experiment\'s duration, not just validating preconditions before it begins.',
+    ],
+  },
+  'observability/chaos-engineering/verifying-the-fault-injectors-rate-and-latency': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Adding a Real Abort Mechanism', route: '/observability/chaos-engineering/adding-a-real-abort-mechanism-to-the-scheduler' },
+      { label: 'Chaos Engineering (overview)', route: '/observability/chaos-engineering' },
+    ],
+    tip: 'Verified statistically over 20,000 trials that the page\'s own Math.random()-based fault injector\'s observed failure rate matches its configured errorRate within a fraction of a percentage point, and separately confirmed the configured latencyMs is genuinely applied end-to-end, not just declared in config.',
+    gotchas: [
+      'A single trial or a handful of manual test runs cannot confirm a probabilistic fault injector is calibrated correctly -- the configured rate is a statistical property that only becomes visible over many trials.',
+    ],
+  },
 
   // ── Redis: per-page entries ─────────────────────────────────────────────────
   'redis/fundamentals': {
