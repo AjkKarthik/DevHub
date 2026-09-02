@@ -3583,7 +3583,12 @@ export const routes: Routes = [
         { path: 'adding-a-real-abort-mechanism-to-the-scheduler', loadComponent: () => import('./components/architecture/observability/chaos-engineering/subtopics/adding-a-real-abort-mechanism-to-the-scheduler/adding-a-real-abort-mechanism-to-the-scheduler').then(m => m.AddingARealAbortMechanismToTheSchedulerSubtopic) },
         { path: 'verifying-the-fault-injectors-rate-and-latency', loadComponent: () => import('./components/architecture/observability/chaos-engineering/subtopics/verifying-the-fault-injectors-rate-and-latency/verifying-the-fault-injectors-rate-and-latency').then(m => m.VerifyingTheFaultInjectorsRateAndLatencySubtopic) },
       ] },
-    { path: 'ebpf-observability',         loadComponent: () => import('./components/architecture/observability/ebpf-observability/ebpf-observability').then(m => m.ObsEbpfObservability) },
+    { path: 'ebpf-observability', children: [
+        { path: '', loadComponent: () => import('./components/architecture/observability/ebpf-observability/ebpf-observability').then(m => m.ObsEbpfObservability) },
+        { path: 'why-a-go-service-needs-a-different-uprobe-than-openssl', loadComponent: () => import('./components/architecture/observability/ebpf-observability/subtopics/why-a-go-service-needs-a-different-uprobe-than-openssl/why-a-go-service-needs-a-different-uprobe-than-openssl').then(m => m.WhyAGoServiceNeedsADifferentUprobeThanOpensslSubtopic) },
+        { path: 'aggregating-events-by-process-and-syscall', loadComponent: () => import('./components/architecture/observability/ebpf-observability/subtopics/aggregating-events-by-process-and-syscall/aggregating-events-by-process-and-syscall').then(m => m.AggregatingEventsByProcessAndSyscallSubtopic) },
+        { path: 'measuring-why-aggregate-only-capture-is-cheaper', loadComponent: () => import('./components/architecture/observability/ebpf-observability/subtopics/measuring-why-aggregate-only-capture-is-cheaper/measuring-why-aggregate-only-capture-is-cheaper').then(m => m.MeasuringWhyAggregateOnlyCaptureIsCheaperSubtopic) },
+      ] },
     { path: 'observability-maturity',     loadComponent: () => import('./components/architecture/observability/observability-maturity/observability-maturity').then(m => m.ObsObservabilityMaturity) },
     { path: 'cheatsheet',                 loadComponent: () => import('./components/architecture/observability/cheatsheet/cheatsheet').then(m => m.ObsCheatsheet) },
     { path: 'interview-prep',             loadComponent: () => import('./components/architecture/observability/interview-prep/interview-prep').then(m => m.ObsInterviewPrep) },

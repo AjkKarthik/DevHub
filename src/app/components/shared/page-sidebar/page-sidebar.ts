@@ -36690,6 +36690,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'eBPF requires a sufficiently modern kernel version — not every production environment can adopt it immediately.',
     ],
   },
+  'observability/ebpf-observability/why-a-go-service-needs-a-different-uprobe-than-openssl': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'eBPF Observability (overview)', route: '/observability/ebpf-observability' },
+      { label: 'Aggregating Events by Process AND Syscall', route: '/observability/ebpf-observability/aggregating-events-by-process-and-syscall' },
+    ],
+    tip: 'Verified via research: the page\'s own OpenSSL SSL_read/SSL_write uprobe technique for TLS visibility does not work at all for Go services, since Go\'s standard crypto/tls is a pure-Go implementation that never calls OpenSSL -- confirmed against Pixie\'s and Brendan Gregg\'s own published eBPF research.',
+    gotchas: [
+      'Go\'s growable, moving goroutine stacks make RETURN probes (uretprobes) genuinely crash Go programs in some cases -- tools targeting Go TLS have to locate RET instructions by disassembly instead of using a plain return probe.',
+    ],
+  },
+  'observability/ebpf-observability/aggregating-events-by-process-and-syscall': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Why a Go Service Needs a Different Uprobe', route: '/observability/ebpf-observability/why-a-go-service-needs-a-different-uprobe-than-openssl' },
+      { label: 'Measuring Aggregate-Only Capture', route: '/observability/ebpf-observability/measuring-why-aggregate-only-capture-is-cheaper' },
+    ],
+    tip: 'The page\'s own bpftrace code tab aggregates by BOTH process name and syscall type (`@[comm, probe] = count()`), but the page\'s own Challenge only ever aggregates by process name alone -- extended and verified the richer two-level aggregation the bpftrace example already demonstrates.',
+    gotchas: [
+      'A two-level Map key (like `process::syscall`) needs a delimiter that can never appear inside either component -- a process or syscall name containing the chosen delimiter would silently collide two distinct keys into one.',
+    ],
+  },
+  'observability/ebpf-observability/measuring-why-aggregate-only-capture-is-cheaper': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Aggregating Events by Process AND Syscall', route: '/observability/ebpf-observability/aggregating-events-by-process-and-syscall' },
+      { label: 'eBPF Observability (overview)', route: '/observability/ebpf-observability' },
+    ],
+    tip: 'The page\'s own mistakes block states "eBPF overhead is proportional to event frequency × work per event" as a bare principle -- measured directly with a 200,000-event simulation that aggregate-only counting is roughly 23x cheaper than per-event stack/payload capture, making the abstract claim concrete.',
+    gotchas: [
+      'This is a simulation of the RELATIVE COST SHAPE in userspace JavaScript, not a literal kernel eBPF benchmark -- the actual in-kernel multiplier depends on the specific probe type, verifier-imposed constraints, and hardware, but the underlying principle (aggregate work is O(1) per event; payload capture work scales with payload size) transfers directly.',
+    ],
+  },
   'observability/performance-profiling': {
     apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
     related: [

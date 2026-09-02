@@ -53,7 +53,7 @@ const theory: TheoryPoint[] = [
     points: [
       'Kernel version requirement: modern eBPF features require Linux kernel 4.9+ (basic) to 5.8+ (advanced features like ring buffers). Most production Kubernetes clusters meet this requirement, but check before deploying.',
       'Privilege requirement: loading eBPF programs requires `CAP_BPF` (kernel 5.8+) or `CAP_SYS_ADMIN` (older). In Kubernetes, this means privileged DaemonSet pods — a security consideration.',
-      'TLS visibility: eBPF intercepts traffic at the socket layer, after TLS decryption. If your service uses application-level TLS (mutual TLS between services), eBPF can see the plaintext. But network-layer interception (packet capture) cannot.',
+      'TLS visibility: eBPF can see application-level TLS plaintext via uprobes on the SSL library’s read/write functions — but the default technique targets OpenSSL specifically. A service that doesn’t link OpenSSL for TLS (notably Go\'s standard `crypto/tls`, a pure-Go implementation with no OpenSSL dependency at all) is invisible to a generic OpenSSL-uprobe tool and needs a separate, language-specific hook. Network-layer interception (packet capture) never sees plaintext either way.',
       'Debugging eBPF programs is complex: errors appear in `/sys/kernel/debug/tracing/trace_pipe` and are often cryptic. Use high-level tools (Pixie, Cilium) rather than writing raw eBPF for production observability.',
     ],
   },
@@ -71,7 +71,7 @@ const theory: TheoryPoint[] = [
 const codeTabs: CodeTab[] = [
   {
     label: 'bpftrace one-liners',
-    language: 'typescript',
+    language: 'bash',
     code: `# bpftrace — kernel-level observability one-liners
 # (run as root on Linux; requires bpftrace installed)
 
@@ -111,7 +111,7 @@ bpftrace -e 'profile:hz:99 /comm == "node"/ { @[ustack] = count(); }
   },
   {
     label: 'Cilium / Hubble',
-    language: 'typescript',
+    language: 'bash',
     code: `# Cilium Hubble — eBPF service flow observability
 
 # Install Cilium with Hubble enabled
@@ -311,7 +311,7 @@ const qna: QnaItem[] = [
   },
   {
     q: 'Can eBPF observe encrypted (TLS) traffic?',
-    a: 'It depends on where eBPF is attached: <ul><li><strong>After TLS decryption (yes)</strong>: eBPF can intercept at the socket layer (after the TLS stack has decrypted the data). Pixie and other tools use uprobes on OpenSSL `SSL_read`/`SSL_write` to capture plaintext data AFTER decryption, before it enters the application. This works for any service using system-level TLS.</li><li><strong>Network packet level (no)</strong>: tools capturing raw network packets (tcpdump, packet-level eBPF) see only encrypted bytes at the network layer — cannot read the plaintext.</li><li><strong>Kernel TLS (KTLS) (yes)</strong>: if the service uses Kernel TLS (offloads TLS to the kernel), eBPF can intercept at the kernel TLS receive/send path and see plaintext.</li></ul>Practical implication: most modern eBPF observability tools (Pixie) can observe HTTPS traffic content by hooking OpenSSL at the user-space level. This is both the power (full visibility) and the concern (tools collecting TLS-decrypted traffic must handle PII carefully). Ensure your eBPF tools filter or mask sensitive fields before storing captured payload data.',
+    a: 'It depends on where eBPF is attached, and critically, on which TLS library the target actually uses: <ul><li><strong>After TLS decryption via OpenSSL (yes, for OpenSSL-linked services)</strong>: Pixie and similar tools use uprobes on OpenSSL `SSL_read`/`SSL_write` to capture plaintext data AFTER decryption, before it enters the application. This only works for services that actually link OpenSSL for TLS.</li><li><strong>Go\'s standard `crypto/tls` (no — needs a separate hook)</strong>: Go\'s built-in TLS implementation is written entirely in Go and never calls OpenSSL, so a generic OpenSSL uprobe sees nothing for a Go service. Observing Go TLS traffic needs a language-specific technique — hooking `crypto/tls.(*Conn).Read`/`Write` directly (tools like eCapture implement this, with extra complexity since Go\'s ABI makes return-probing harder than for C-based libraries).</li><li><strong>Network packet level (no)</strong>: tools capturing raw network packets (tcpdump, packet-level eBPF) see only encrypted bytes at the network layer — cannot read the plaintext.</li><li><strong>Kernel TLS (KTLS) (yes)</strong>: if the service uses Kernel TLS (offloads TLS to the kernel), eBPF can intercept at the kernel TLS receive/send path and see plaintext.</li></ul>Practical implication: a Kubernetes cluster mixing Go microservices (common, and notably the language Cilium and Pixie\'s own control planes are written in) with OpenSSL-linked services needs to confirm which TLS-visibility technique actually applies per service, not assume one OpenSSL-based tool covers everything. Either way, tools collecting TLS-decrypted traffic must handle PII carefully — filter or mask sensitive fields before storing captured payload data.',
   },
   { q: 'What are the main use cases for eBPF in production observability?', a: 'Network observability: Cilium Hubble captures all network flows between pods with zero application changes. Latency between services, packet drops, DNS errors. No tcpdump overhead for always-on visibility. Application performance monitoring: Pixie auto-instruments HTTP, gRPC, MySQL, PostgreSQL, Redis, and Kafka calls using eBPF uprobes. Captures full request/response including SQL queries without ORM instrumentation. Security monitoring: Falco uses eBPF to detect unexpected system calls, file accesses, network connections, and privilege escalations in real time. CPU profiling: Parca and Polar Signals Cloud use eBPF for low-overhead continuous profiling. Visualize flame graphs showing which functions consume CPU. File system and I/O: BCC tools (biolatency, ext4slower, opensnoop) analyze disk I/O patterns and slow file system operations. System call tracing: bpftrace and BCC tools trace any syscall across all processes without instrumenting the processes.' },
   { q: 'What is BTF (BPF Type Format) and why is it important for eBPF portability?', a: 'BTF: a debugging information format embedded in the Linux kernel that describes the types of all kernel data structures, functions, and their arguments. Historically: eBPF programs were compiled against specific kernel headers. If the kernel version changed, the eBPF program needed recompilation. With BTF and CO-RE (Compile Once, Run Everywhere): eBPF programs are compiled once with references to kernel data structure offsets. At load time, the BPF loader reads BTF to adjust field offsets for the actual running kernel version. Result: one compiled eBPF binary can run on many different kernel versions without modification. Critical for: distributing eBPF-based tools as pre-compiled binaries. Cloud and enterprise environments with heterogeneous kernel versions. Cilium, Falco, and other tools use CO-RE to distribute universal binaries.' },

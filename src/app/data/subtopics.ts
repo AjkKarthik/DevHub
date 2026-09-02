@@ -3753,4 +3753,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Adding a Real Abort Mechanism to the Scheduler', route: '/observability/chaos-engineering/adding-a-real-abort-mechanism-to-the-scheduler' },
     { label: 'Verifying the Fault Injector’s Rate and Latency', route: '/observability/chaos-engineering/verifying-the-fault-injectors-rate-and-latency' },
   ],
+  'ebpf-observability': [
+    { label: 'Why a Go Service Needs a Different Uprobe Than OpenSSL’s', route: '/observability/ebpf-observability/why-a-go-service-needs-a-different-uprobe-than-openssl' },
+    { label: 'Aggregating Events by Process AND Syscall', route: '/observability/ebpf-observability/aggregating-events-by-process-and-syscall' },
+    { label: 'Measuring Why Aggregate-Only Capture Is Cheaper', route: '/observability/ebpf-observability/measuring-why-aggregate-only-capture-is-cheaper' },
+  ],
 };

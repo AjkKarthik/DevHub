@@ -377,7 +377,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
       </div>
     }
   }
-  <a routerLink="/observability/ebpf-observability"     routerLinkActive="active"><span class="nl-text">eBPF Observability</span>@if(progress.isDone('obs-ebpf-observability')){<span class="nl-done">✓</span>}</a>
+  <a routerLink="/observability/ebpf-observability" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+    <span class="nl-text">eBPF Observability</span>
+    @if(progress.isDone('obs-ebpf-observability')){<span class="nl-done">✓</span>}
+    @if (subtopicsOf('ebpf-observability')) {
+      <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('ebpf-observability')"
+              (click)="toggleSubtopics('ebpf-observability', $event)" aria-label="Toggle subtopics">›</button>
+    }
+  </a>
+  @if (subtopicsOf('ebpf-observability'); as eoSubs) {
+    @if (isSubtopicsExpanded('ebpf-observability')) {
+      <div class="nav-subtopics">
+        @for (s of eoSubs; track s.route) {
+          <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+            <span class="nl-text">{{ s.label }}</span>
+          </a>
+        }
+      </div>
+    }
+  }
   <a routerLink="/observability/observability-maturity" routerLinkActive="active"><span class="nl-text">Observability Maturity</span>@if(progress.isDone('obs-observability-maturity')){<span class="nl-done">✓</span>}</a>
 </div>
 
