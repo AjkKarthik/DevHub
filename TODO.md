@@ -8835,7 +8835,23 @@ off here with a date.
   main-page fixes confirmed live; all 3 subtopic pages checked individually -- zero console
   errors, correct h1/breadcrumb, 860px wrapper, tailored sidebar content.
   **Observability hub Phase 10: 18 of 20 topics complete.**
-- [ ] `/observability/ebpf-observability` — eBPF Observability
+- [x] `/observability/ebpf-observability` — eBPF Observability (2026-09-02). Phase 10: 3
+  subtopics. Verified via research (Pixie's own eBPF blog, Brendan Gregg's Golang bcc/BPF work)
+  that the main page's own TLS-visibility claim was overgeneralized -- OpenSSL SSL_read/SSL_write
+  uprobes only work for services actually linking OpenSSL; Go's standard crypto/tls never calls
+  OpenSSL at all and needs a genuinely different technique (hooking crypto/tls.(*Conn).Read
+  directly), with growable/moving goroutine stacks making return probes risk crashing Go programs
+  entirely (needing a disassembly-based workaround). Tightened the theory bullet and QnA. Also
+  fixed two codeTabs mistagged 'typescript' (shell/YAML content) -- fixed to 'bash'. Subtopics:
+  (1) fix-adjacent, the verified finding with real bpftrace syntax contrasting both uprobe
+  targets; (2) gap-closing, a two-level (process AND syscall) aggregation matching the page's own
+  bpftrace example, extending the page's own single-level Challenge; (3) gap-closing, a measured
+  200,000-event simulation showing aggregate-only counting is ~23x cheaper than per-event capture,
+  making the page's own unmeasured overhead principle concrete. No SUBTOPICS collision, left bare.
+  Build passed clean. Browser-verified after a proactive dev-server restart: nav accordion opens
+  with all 3 links; all main-page fixes confirmed live; all 3 subtopic pages checked individually
+  -- zero console errors, correct h1/breadcrumb, 860px wrapper, tailored sidebar content.
+  **Observability hub Phase 10: 19 of 20 topics complete — only observability-maturity remains.**
 - [ ] `/observability/observability-maturity` — Observability Maturity
 
 #### MongoDB — 21 topic pages

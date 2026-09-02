@@ -7105,6 +7105,53 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
     inspection; all 3 subtopic pages checked individually — zero console errors, correct
     h1/breadcrumb, 860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content
     confirmed on the final subtopic. **Observability hub Phase 10: 18 of 20 topics complete.**
+27. **The `ebpf-observability` batch — the second topic in the Advanced nav group — found and
+    fixed a genuine overgeneralization, verified via research (WebSearch/WebFetch against Pixie's
+    own published eBPF blog and Brendan Gregg's own bcc/BPF Golang function-tracing research)**:
+    the theory bullet stated "If your service uses application-level TLS... eBPF can see the
+    plaintext," and the QnA attributed this specifically to OpenSSL `SSL_read`/`SSL_write` uprobes,
+    describing the technique as working for "any service using system-level TLS." Confirmed this
+    does not hold for Go services: Go's standard `crypto/tls` is a pure-Go implementation that
+    never calls OpenSSL at all, so a generic OpenSSL uprobe observes nothing for a Go process
+    regardless of how much TLS traffic it handles — a genuinely different technique (hooking
+    `crypto/tls.(*Conn).Read`/`writeRecordLocked` directly) is required instead. Tightened both the
+    theory bullet and the QnA to state this precisely, including a further-verified wrinkle: Go's
+    growable, moving goroutine stacks make return probes (uretprobes) risk crashing Go programs —
+    confirmed independently by both Pixie's own research (naming the exact alternate symbols) and
+    Brendan Gregg's own early exploratory findings (documenting the SAME crash risk from a
+    completely different angle) — requiring a disassembly-based workaround (locating a function's
+    own `RET` instruction offsets and placing plain, non-return uprobes there) instead of a plain
+    uretprobe. Also fixed two codeTabs ("bpftrace one-liners", "Cilium / Hubble") mistagged
+    `language: 'typescript'` despite containing shell/YAML content — fixed to `'bash'`. Three
+    subtopics, verified via research and direct code execution: (1) **fix-adjacent** — the
+    verified finding, with real bpftrace syntax contrasting the OpenSSL and Go-specific uprobe
+    targets, and a Try It on why a Node.js service (also not written in C) IS visible to the
+    OpenSSL uprobe (Node bundles and genuinely calls into OpenSSL for its own crypto module) while
+    a Go service isn't — the deciding factor is whether the process calls into `libssl`, not
+    whether it's a compiled language; (2) **gap-closing** — the page's own bpftrace example
+    aggregates by BOTH process and syscall in one pass (`@[comm, probe] = count()`), but the page's
+    own Challenge only ever aggregates by process, deliberately discarding the syscall dimension.
+    Built and verified the two-level aggregation the bpftrace example already demonstrates working,
+    with a Try It on the delimiter-collision risk of joining composite Map keys with a plain string
+    separator (and the nested-Map alternative that sidesteps it entirely); (3) **gap-closing** —
+    the page's own mistakes block states "eBPF overhead is proportional to event frequency × work
+    per event" as a bare, unmeasured principle. Measured directly with a 200,000-event simulation
+    that aggregate-only counting is roughly 23x cheaper than per-event stack/payload capture,
+    explicitly framed as a simulation of the RELATIVE cost shape in userspace JavaScript rather
+    than a literal in-kernel eBPF benchmark, since the actual kernel-side multiplier depends on
+    probe type, verifier constraints, and hardware. No `SUBTOPICS` collision for
+    `ebpf-observability` (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly,
+    confirmed collision-free, left bare). All nested-template-literal escaping (a doubled-backslash
+    `\\n` inside bpftrace `printf` strings, and a doubled-backslash `\\'` inside a nested
+    single-quoted JS string) verified correct by extracting and evaluating the exact backtick spans
+    as real JavaScript before trusting them, per the established verification technique. Build
+    passed clean (foreground, explicit exit-code capture, zero `ERROR` lines). Browser-verified
+    after a proactive dev-server restart (fresh on the first check): nav accordion opens with all 3
+    subtopic links; all main-page fixes confirmed live via direct component data inspection; all 3
+    subtopic pages checked individually — zero console errors, correct h1/breadcrumb, 860px wrapper
+    via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the final subtopic.
+    **Observability hub Phase 10: 19 of 20 topics complete — only `observability-maturity`
+    remains to finish the entire hub.**
 
 ## Current state (update when it changes!)
 
@@ -8163,7 +8210,7 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
   All 22 cards `available: true` in `architecture/observability/home/home.ts`. Progress: `obsTotal=20` in progress.service.ts.
   Observability pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ObsNavComponent at `shared/obs-nav/obs-nav.ts`.
-  Phase 10: 18 of 20 topics have subtopics (`/observability/observability-fundamentals`, pilot
+  Phase 10: 19 of 20 topics have subtopics (`/observability/observability-fundamentals`, pilot
   batch; `/observability/opentelemetry`; `/observability/sli-slo-sla` — Core Concepts nav group
   fully done; `/observability/prometheus-metrics`; `/observability/grafana-dashboards`;
   `/observability/custom-app-metrics`; `/observability/infrastructure-metrics`;
@@ -8175,7 +8222,8 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
   `/observability/performance-profiling` — Tracing nav group fully done;
   `/observability/alerting-design`; `/observability/on-call-incidents`;
   `/observability/error-budgets-toil` — Alerting & SRE nav group fully done;
-  `/observability/chaos-engineering` — first Advanced nav group topic, 2026-09-02) —
+  `/observability/chaos-engineering`; `/observability/ebpf-observability` — 2 of 3 Advanced
+  nav group topics done, 2026-09-02) —
   see "Observability & SRE hub subtopic wiring" section above for the `ObsNavComponent` accordion
   structural fix, a real self-authored key-mismatch bug caught during browser verification (not a
   stale-server artifact), a cross-hub `opentelemetry` SUBTOPICS collision already resolved by
