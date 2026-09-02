@@ -36524,6 +36524,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Alert thresholds copied from another team\'s system without adjusting for actual traffic patterns often produce constant false positives or miss real issues entirely.',
     ],
   },
+  'observability/alerting-design/the-watchdog-rule-needs-a-separate-monitoring-stack': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Alerting Design (overview)', route: '/observability/alerting-design' },
+      { label: 'Building an Escalation-Policy State Machine', route: '/observability/alerting-design/building-a-real-escalation-policy-state-machine' },
+    ],
+    tip: 'Verified via a direct simulation: a monitoring rule checking its OWN absence, running on the SAME Prometheus instance it is meant to protect, cannot detect a full outage of that instance -- once it is dead, that rule never evaluates either. An external heartbeat service, which pages when it STOPS receiving pings, is what actually catches the failure the page\'s own code tab implements via Dead Man\'s Snitch.',
+    gotchas: [
+      'A meta-monitoring Prometheus watching the primary stack works too -- the constraint is genuine independence from whatever it is protecting against, not "must be a third-party SaaS product."',
+    ],
+  },
+  'observability/alerting-design/building-a-real-escalation-policy-state-machine': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The Watchdog Rule Needs a Separate Stack', route: '/observability/alerting-design/the-watchdog-rule-needs-a-separate-monitoring-stack' },
+      { label: 'Dynamic Thresholds', route: '/observability/alerting-design/dynamic-thresholds-catch-what-a-static-one-misses' },
+    ],
+    tip: 'The page\'s own QnA describes a 3-tier escalation policy (primary -> secondary -> team lead, with 15-minute and 10-minute timeouts) in prose -- verified with a real state-machine implementation across all three outcomes: primary acks in time, primary never acks but secondary does, and nobody ever acks at all.',
+    gotchas: [
+      'Each tier\'s timeout is relative to when THAT tier was paged, not relative to when the alert originally fired -- a policy with three 10-minute tiers can take 30 minutes to fully exhaust, not 10.',
+    ],
+  },
+  'observability/alerting-design/dynamic-thresholds-catch-what-a-static-one-misses': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Building an Escalation-Policy State Machine', route: '/observability/alerting-design/building-a-real-escalation-policy-state-machine' },
+      { label: 'Alerting Design (overview)', route: '/observability/alerting-design' },
+    ],
+    tip: 'Verified with synthetic weekly-seasonal data: a flat static threshold either false-positives during a normal, expected weekly batch-job spike, or false-negatives on a genuine 7x-normal degradation during an otherwise-quiet hour -- a z-score-based dynamic threshold (compare against that SAME hour\'s own historical baseline) correctly handles both.',
+    gotchas: [
+      'Dynamic thresholds need real historical data for the SAME time-of-week/time-of-day slot before they are trustworthy -- a newly-deployed service has no seasonal baseline to compare against yet.',
+    ],
+  },
   'observability/on-call-incidents': {
     apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
     related: [

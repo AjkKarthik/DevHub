@@ -3559,7 +3559,12 @@ export const routes: Routes = [
         { path: 'offloading-blocking-work-to-worker-threads-measured', loadComponent: () => import('./components/architecture/observability/performance-profiling/subtopics/offloading-blocking-work-to-worker-threads-measured/offloading-blocking-work-to-worker-threads-measured').then(m => m.OffloadingBlockingWorkToWorkerThreadsMeasuredSubtopic) },
         { path: 'tracking-a-leaked-resource-with-async-hooks', loadComponent: () => import('./components/architecture/observability/performance-profiling/subtopics/tracking-a-leaked-resource-with-async-hooks/tracking-a-leaked-resource-with-async-hooks').then(m => m.TrackingALeakedResourceWithAsyncHooksSubtopic) },
       ] },
-    { path: 'alerting-design',            loadComponent: () => import('./components/architecture/observability/alerting-design/alerting-design').then(m => m.ObsAlertingDesign) },
+    { path: 'alerting-design', children: [
+        { path: '', loadComponent: () => import('./components/architecture/observability/alerting-design/alerting-design').then(m => m.ObsAlertingDesign) },
+        { path: 'the-watchdog-rule-needs-a-separate-monitoring-stack', loadComponent: () => import('./components/architecture/observability/alerting-design/subtopics/the-watchdog-rule-needs-a-separate-monitoring-stack/the-watchdog-rule-needs-a-separate-monitoring-stack').then(m => m.TheWatchdogRuleNeedsASeparateMonitoringStackSubtopic) },
+        { path: 'building-a-real-escalation-policy-state-machine', loadComponent: () => import('./components/architecture/observability/alerting-design/subtopics/building-a-real-escalation-policy-state-machine/building-a-real-escalation-policy-state-machine').then(m => m.BuildingARealEscalationPolicyStateMachineSubtopic) },
+        { path: 'dynamic-thresholds-catch-what-a-static-one-misses', loadComponent: () => import('./components/architecture/observability/alerting-design/subtopics/dynamic-thresholds-catch-what-a-static-one-misses/dynamic-thresholds-catch-what-a-static-one-misses').then(m => m.DynamicThresholdsCatchWhatAStaticOneMissesSubtopic) },
+      ] },
     { path: 'on-call-incidents',          loadComponent: () => import('./components/architecture/observability/on-call-incidents/on-call-incidents').then(m => m.ObsOnCallIncidents) },
     { path: 'error-budgets-toil',         loadComponent: () => import('./components/architecture/observability/error-budgets-toil/error-budgets-toil').then(m => m.ObsErrorBudgetsToil) },
     { path: 'chaos-engineering',          loadComponent: () => import('./components/architecture/observability/chaos-engineering/chaos-engineering').then(m => m.ObsChaosEngineering) },

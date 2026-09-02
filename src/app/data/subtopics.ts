@@ -3733,4 +3733,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Offloading Blocking Work to worker_threads, Measured', route: '/observability/performance-profiling/offloading-blocking-work-to-worker-threads-measured' },
     { label: 'Tracking a Leaked Resource With async_hooks', route: '/observability/performance-profiling/tracking-a-leaked-resource-with-async-hooks' },
   ],
+  'alerting-design': [
+    { label: 'The Watchdog Rule Needs a Separate Monitoring Stack', route: '/observability/alerting-design/the-watchdog-rule-needs-a-separate-monitoring-stack' },
+    { label: 'Building a Real Escalation-Policy State Machine', route: '/observability/alerting-design/building-a-real-escalation-policy-state-machine' },
+    { label: 'Dynamic Thresholds Catch What a Static One Misses', route: '/observability/alerting-design/dynamic-thresholds-catch-what-a-static-one-misses' },
+  ],
 };
