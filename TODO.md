@@ -8713,7 +8713,27 @@ off here with a date.
   check; both main-page fixes confirmed rendering live; all 3 subtopic pages checked individually --
   zero console errors, correct h1/breadcrumb, 860px wrapper, tailored sidebar content; cross-hub
   isolation confirmed. **Observability hub Phase 10: 12 of 20 topics complete.**
-- [ ] `/observability/opentelemetry-tracing` — OTel Tracing Deep Dive
+- [x] `/observability/opentelemetry-tracing` — OTel Tracing Deep Dive (2026-09-02). Phase 10: 3
+  subtopics. Fixed a real span leak in the main page's own "Kafka Context Propagation" tab --
+  publishOrderEvent()'s producer span called span.end() as a bare statement after `await
+  kafka.producer().send(...)`, with no try/finally, unlike every other span on the page's own
+  sibling "Advanced Manual Tracing" tab. Verified via direct simulation: buggy version calls
+  span.end() zero times when send() throws, once when it succeeds -- the happy path hides the bug.
+  Fixed with try/finally. Subtopics: (1) fix-adjacent, reproduces the leak/fix via simulation; (2)
+  gap-closing, Span Links for fan-in batch processing (named in a quiz explanation, never shown),
+  verified against a REAL @opentelemetry/api + sdk-trace-node SDK that a batch span from 3 unrelated
+  traces has no single parent while its links array carries all 3 origin trace IDs; (3) gap-closing,
+  context.bind() rescuing a queued legacy callback (named in the QnA, never shown) -- verified with
+  the same real SDK that a callback QUEUED by a simulated legacy driver and invoked later from an
+  independent background timer genuinely loses its trace context (a brand-new traceId) unless
+  wrapped with context.bind(), including catching a first-draft test that accidentally proved the
+  opposite (setImmediate scheduled synchronously inside an active context does NOT lose it). No
+  SUBTOPICS collision, left bare. Hit and resolved a real stale dev-server incident (a full restart
+  was needed, not just a hard reload -- subtopicsOf() was returning null despite a clean build).
+  Build passed clean. Browser-verified: nav accordion opens with all 3 links; main-page fix
+  confirmed live; all 3 subtopic pages checked individually -- zero console errors, correct
+  h1/breadcrumb, 860px wrapper, tailored sidebar content. **Observability hub Phase 10: 13 of 20
+  topics complete.**
 - [ ] `/observability/performance-profiling` — Performance Profiling
 - [ ] `/observability/alerting-design` — Alerting Design
 - [ ] `/observability/on-call-incidents` — On-Call & Incidents

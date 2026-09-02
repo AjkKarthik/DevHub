@@ -6823,6 +6823,57 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
     `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the final subtopic; the
     `/system-design/distributed-tracing` cross-hub isolation check passed. **Observability hub
     Phase 10: 12 of 20 topics complete.**
+21. **The `opentelemetry-tracing` batch — the second topic in the Tracing nav group — found and
+    fixed a genuine span leak in the main page's own "Kafka Context Propagation" code tab, caught
+    purely by comparing it against the page's own SIBLING code tab**: the "Advanced Manual Tracing"
+    tab wraps every single span in `try/finally`, with an explicit comment on its very first one —
+    `// always end — startActiveSpan does NOT auto-end`. The "Kafka Context Propagation" tab right
+    below it breaks its own neighbor's rule: `publishOrderEvent()`'s producer span calls
+    `span.end()` as a bare, unconditional statement AFTER `await kafka.producer().send(...)`, with
+    no `try/finally` at all. Verified directly via a minimal simulation reproducing the exact shape
+    (not just reasoned about): the buggy version calls `span.end()` zero times when the awaited
+    call throws (a realistic broker outage, timeout, or network partition), exactly once when it
+    succeeds — the happy-path behavior is identical between buggy and fixed, which is precisely why
+    this kind of bug survives casual review. Fixed by wrapping the `send()` call in `try/finally`.
+    Three subtopics: (1) **fix-adjacent** — reproduces the exact leak/fix via the same minimal
+    simulation, with a Try It on why a typical unit test (mocking `send()` to always resolve) never
+    exercises the failing branch, and what a dedicated rejection-mock test would need to assert
+    instead; (2) **gap-closing** — one of the page's own quiz explanations lists `links (references
+    to other traces)` as part of the span data model, alongside attributes and events, but neither
+    code tab nor any mistake block ever creates one; built and verified against a REAL
+    `@opentelemetry/api` + `@opentelemetry/sdk-trace-node` SDK (with an `InMemorySpanExporter`) that
+    a batch-processing span fanning in from 3 unrelated origin traces correctly exports with NO
+    single parent while its own `links` array carries all 3 origin trace IDs intact — the canonical
+    case a plain parent-child edge structurally can't express; (3) **gap-closing** — the page's own
+    QnA on instrumenting legacy callback-based code names `context.bind(context.active(),
+    callbackFn)` as the fix, explaining AsyncLocalStorage "propagates automatically across await/
+    Promise.then(), but NOT across plain callbacks unless you explicitly bind" — with zero code
+    demonstrating either the failure or the fix. Getting a GENUINE failure to reproduce took more
+    care than "any callback": a callback registered synchronously and invoked shortly after via
+    `setImmediate` still correctly inherits context automatically in Node.js, since scheduling that
+    async work happens while the original context is still active — confirmed by a first draft of
+    this exact test accidentally proving the OPPOSITE of what was intended, caught before writing
+    any subtopic content. The genuine failure needs the callback STORED and invoked LATER by a
+    background async chain that was created independently of any request context (the realistic
+    shape of a legacy connection-pool driver draining a queue on its own timer) — verified via the
+    same real OTel SDK that an unbound callback queued this way comes back with a completely
+    different, unrelated `traceId` (a brand-new root trace, not merely a missing parent field),
+    while the `context.bind()`-wrapped version correctly reproduces the original trace and parent
+    link. No `SUBTOPICS` collision for `opentelemetry-tracing` (checked both `subtopics.ts` forms
+    and grepped `app.routes.ts` directly, confirmed collision-free, left bare). All apostrophes in
+    `[innerHTML]`-bound fields used the typographic curly quote consistently; `exercise.solution`
+    fields (plain interpolation) swept clean of `<code>`/entity contamination. **A real stale
+    dev-server incident, resolved with the established fix**: the running `ng serve` process was
+    serving a bundle from well before this batch — `subtopicsOf('opentelemetry-tracing')` returned
+    `null` and the nav toggle button was entirely absent from the DOM despite a clean production
+    build — a full `preview_stop`/`preview_start` restart (not just a hard reload, which alone did
+    not fix it) resolved it; confirmed via a fresh `subtopicsOf()` call returning the correct data
+    immediately after the cold-start compile finished. Build passed clean (foreground, explicit
+    exit-code capture, zero `ERROR` lines). Browser-verified after the restart: nav accordion opens
+    with all 3 subtopic links; the main-page `try/finally` fix confirmed live via direct component
+    inspection; all 3 subtopic pages checked individually — zero console errors, correct
+    h1/breadcrumb, 860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content
+    confirmed on the final subtopic. **Observability hub Phase 10: 13 of 20 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -7881,15 +7932,16 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
   All 22 cards `available: true` in `architecture/observability/home/home.ts`. Progress: `obsTotal=20` in progress.service.ts.
   Observability pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ObsNavComponent at `shared/obs-nav/obs-nav.ts`.
-  Phase 10: 12 of 20 topics have subtopics (`/observability/observability-fundamentals`, pilot
+  Phase 10: 13 of 20 topics have subtopics (`/observability/observability-fundamentals`, pilot
   batch; `/observability/opentelemetry`; `/observability/sli-slo-sla` — Core Concepts nav group
   fully done; `/observability/prometheus-metrics`; `/observability/grafana-dashboards`;
   `/observability/custom-app-metrics`; `/observability/infrastructure-metrics`;
   `/observability/cloud-native-monitoring` — Metrics nav group fully done;
   `/observability/structured-logging`; `/observability/log-aggregation`;
   `/observability/log-best-practices` — Logging nav group fully done;
-  `/observability/distributed-tracing` — first Tracing nav group topic (SUBTOPICS map key
-  hub-prefixed to `obs-distributed-tracing`), 2026-09-02) —
+  `/observability/distributed-tracing` (SUBTOPICS map key hub-prefixed to
+  `obs-distributed-tracing`); `/observability/opentelemetry-tracing` — 2 of 3 Tracing nav group
+  topics done, 2026-09-02) —
   see "Observability & SRE hub subtopic wiring" section above for the `ObsNavComponent` accordion
   structural fix, a real self-authored key-mismatch bug caught during browser verification (not a
   stale-server artifact), a cross-hub `opentelemetry` SUBTOPICS collision already resolved by
