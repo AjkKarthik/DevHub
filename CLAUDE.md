@@ -7457,6 +7457,39 @@ this same check before any other new hub's first subtopic set:
     individually — no console errors, correct h1/breadcrumb, 860px wrapper via `getComputedStyle`,
     tailored (not DEFAULT) sidebar content confirmed on the final subtopic. **MongoDB hub Phase 10:
     6 of 21 topics complete.**
+15. **The `projections-sorting` batch found and fixed a genuine, self-contained internal
+    contradiction — the same fact stated wrong in FOUR places and correctly in a fifth**: the main
+    page stated the in-memory sort memory limit as "32 MB" in a theory bullet, a dedicated QnA
+    (titled "What is the 32 MB sort memory limit?"), a mustKnow bullet, and an interviewFocus
+    bullet — while a fifth QnA on the same page, about sort performance without an index, correctly
+    stated "the in-memory sort limit is 100MB per query." Verified via WebSearch against MongoDB's
+    own documented error behavior that `QueryExceededMemoryLimitNoDiskUseAllowed` reports the exact
+    limit as 104857600 bytes — precisely 100 MiB, confirming the single correct QnA over the four
+    incorrect mentions (repetition is not the same as verification). Also found and fixed the
+    identical stale figure in this page's own `page-sidebar.ts` tip text — a sixth occurrence.
+    Fixed all six to state 100 MB. 3 subtopics, each verified via direct Node.js execution or
+    research: (1) **fix-adjacent** — the four-vs-one contradiction itself, with a document-count
+    Try It showing the wrong 32MB figure would have understated real capacity by roughly 3× (16384
+    vs. the correct 51200 documents at 2KB each); (2) **gap-closing** — a real covered query, built
+    from the main page's own theory requirements (every filter/sort/projection field must be
+    indexed, `_id` must be explicitly excluded unless also indexed), verified with a
+    coverage-checking function across a correct case, a missing `_id: 0` case, and a projection
+    referencing a non-indexed field; (3) **gap-closing** — sorting by a computed field via
+    `$addFields` + `$sort`, the exact pattern the page's own QnA describes for sorting by
+    description length, verified against real seed data, including a Try It on the silent (no
+    error) failure mode of trying the same thing directly in `find().sort()` with no aggregation
+    stage at all. No `SUBTOPICS` collision for `projections-sorting` (checked both `subtopics.ts`
+    forms and grepped `app.routes.ts` directly, confirmed collision-free, left bare). All three
+    `exercise.solution` fields swept clean of `<code>`/entity contamination; the standing
+    apostrophe-after-letter sweep found nothing unescaped; nested backtick/`${...}` escaping in two
+    of the three codeTabs (a template-literal log statement and a `$strLenCP`/`$size` aggregation
+    pipeline) verified correct by extracting and evaluating the exact backtick spans as real
+    JavaScript. Build passed clean (foreground execution, explicit `EXITCODE:$?` capture, zero
+    `ERROR` lines). Browser-verified: nav accordion opens with all 3 subtopic links (fresh on the
+    first check, toggle count 7 as expected); all five main-page fix occurrences confirmed live via
+    direct component inspection; all 3 subtopic pages checked individually — no console errors,
+    correct h1/breadcrumb, 860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar
+    content confirmed on the final subtopic. **MongoDB hub Phase 10: 7 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -8544,9 +8577,10 @@ this same check before any other new hub's first subtopic set:
   Progress: `mongoTotal=21` in progress.service.ts. MongoDB pages use `app-common-mistakes` AND
   `app-revision-card`. Reference pages (cheatsheet, interview-prep) have no PageComplete.
   Challenge.language: `'typescript'`. MongoNavComponent at `shared/mongo-nav/mongo-nav.ts`.
-  Phase 10: 6 of 21 topics have subtopics (`/mongodb/fundamentals`, pilot batch;
+  Phase 10: 7 of 21 topics have subtopics (`/mongodb/fundamentals`, pilot batch;
   `/mongodb/installation-setup`; `/mongodb/crud-operations`; `/mongodb/update-operators`;
-  `/mongodb/query-operators`; `/mongodb/array-queries`, 2026-09-03) — see
+  `/mongodb/query-operators`; `/mongodb/array-queries`; `/mongodb/projections-sorting`,
+  2026-09-03) — see
   "MongoDB hub subtopic wiring" section above for the `MongoNavComponent` accordion structural fix
   (15th `*NavComponent`-based hub in a row missing it at pilot time), the `mongo-fundamentals`/
   `mongo-installation-setup` SUBTOPICS-map collision resolutions (the former collided with the

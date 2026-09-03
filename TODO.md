@@ -8944,7 +8944,17 @@ off here with a date.
   case; sorting by an array field uses min/max (not average), verified with a document that sorts
   first in BOTH directions. Build clean, browser-verified (nav accordion fresh on first check,
   main-page fix, 3 subtopic pages, breadcrumb, sidebar).
-- [ ] `/mongodb/projections-sorting` — Projections & Sorting
+- [x] `/mongodb/projections-sorting` — Projections & Sorting (2026-09-03) — extended
+  `MongoNavComponent`'s toggle to a seventh topic (bare key, no collision). Found a genuine
+  self-contained inconsistency: the sort-memory-limit figure was stated as "32 MB" in FOUR places
+  (theory, a QnA, mustKnow, interviewFocus) plus the sidebar tip, while a fifth QnA correctly said
+  "100MB" — verified via WebSearch that the real limit is 100 MB (the error message itself reports
+  104857600 bytes). Fixed all six occurrences. 3 subtopics: the four-vs-one contradiction with a
+  document-count Try It (16384 vs the correct 51200 documents); a real covered query built from the
+  page's own theory requirements, verified with a coverage-checking function; sorting by a computed
+  field via `$addFields`+`$sort` (the QnA describes it, no codeTab shows it), with a Try It on
+  find().sort()'s silent failure mode. Build clean, browser-verified (nav accordion fresh on first
+  check, all five main-page fix occurrences, 3 subtopic pages, breadcrumb, sidebar).
 - [ ] `/mongodb/aggregation-pipeline` — Aggregation Pipeline
 - [ ] `/mongodb/lookup-joins` — $lookup & Joins
 - [ ] `/mongodb/aggregation-expressions` — Aggregation Expressions
