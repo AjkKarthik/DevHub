@@ -1,0 +1,26 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="MongoDB Fundamentals" topicRoute="/mongodb/fundamentals"
+    subtopicLabel="Chunking and Reassembling a File With GridFS" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">Chunking and Reassembling a File With GridFS</h1>
+  <p class="page-subtitle">The main page's own QnA names GridFS's 255 KB chunking scheme in one sentence — this subtopic builds and verifies the actual chunk/reassemble mechanism behind it, including its exact boundary behavior.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>GridFS exists specifically to work around the 16MB document size limit the main page's own QnA on that limit already explains — this subtopic is the concrete mechanism behind the alternative that same QnA names as the fix.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="MongoDB Fundamentals" topicRoute="/mongodb/fundamentals"
+    [prev]="{ label: 'Implementing Optimistic Concurrency With a Version Field', route: '/mongodb/fundamentals/implementing-optimistic-concurrency-with-a-version-field' }" />
+</div>

@@ -1,0 +1,27 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="MongoDB Fundamentals" topicRoute="/mongodb/fundamentals"
+    subtopicLabel="Implementing Optimistic Concurrency With a Version Field" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">Implementing Optimistic Concurrency With a Version Field</h1>
+  <p class="page-subtitle">The main page's own QnA describes the version-field pattern for concurrent writes in one sentence of prose — this subtopic builds and verifies a real, working implementation of it.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>This pattern gives one document the same "only commit if nothing changed underneath you" guarantee a full multi-document transaction provides across several — worth reaching for first, since it needs no replica set and no session object at all, unlike the Transactions topic covered elsewhere in this hub.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="MongoDB Fundamentals" topicRoute="/mongodb/fundamentals"
+    [prev]="{ label: 'The 100 Cap Belongs to the Driver, Not the Server', route: '/mongodb/fundamentals/the-100-cap-is-the-drivers-not-the-servers-limit' }"
+    [next]="{ label: 'Chunking and Reassembling a File With GridFS', route: '/mongodb/fundamentals/chunking-and-reassembling-a-file-with-gridfs' }" />
+</div>

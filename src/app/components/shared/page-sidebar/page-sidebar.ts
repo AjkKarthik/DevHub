@@ -33837,6 +33837,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Documents are limited to 16MB — a document approaching this limit is usually a modeling smell (embedding too much unbounded data).',
     ],
   },
+  'mongodb/fundamentals/the-100-cap-is-the-drivers-not-the-servers-limit': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'MongoDB Fundamentals', route: '/mongodb/fundamentals' },
+      { label: 'MongoDB with Node.js', route: '/mongodb/mongodb-nodejs' },
+    ],
+    tip: 'maxPoolSize is a per-MongoClient setting the driver enforces locally — it has no way to know or coordinate with the server\'s own actual connection ceiling at all.',
+    gotchas: [
+      'Raising maxPoolSize on one client does nothing to protect against OTHER leaked clients each opening their own separate pool.',
+    ],
+  },
+  'mongodb/fundamentals/implementing-optimistic-concurrency-with-a-version-field': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'MongoDB Fundamentals', route: '/mongodb/fundamentals' },
+      { label: 'Transactions',         route: '/mongodb/transactions' },
+    ],
+    tip: 'findOneAndUpdate\'s filter-plus-update is atomic — a version-matched filter is a lightweight alternative to a full multi-document transaction when only ONE document\'s consistency is at stake.',
+    gotchas: [
+      'A failed optimistic-lock write returns null, not an error — the caller must explicitly check for it and retry, or the "someone else won the race" case silently does nothing.',
+    ],
+  },
+  'mongodb/fundamentals/chunking-and-reassembling-a-file-with-gridfs': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'MongoDB Fundamentals', route: '/mongodb/fundamentals' },
+      { label: 'Data Modelling',       route: '/mongodb/data-modelling' },
+    ],
+    tip: 'GridFS\'s 255 KiB default chunk size is a configurable constructor option, not a fixed constant — a bucket handling many small files can raise it to reduce the fs.chunks document count per file.',
+    gotchas: [
+      'GridFS reads are NOT automatically atomic against concurrent writes to the same file — deleting a file mid-download can produce a partial read.',
+    ],
+  },
   'mongodb/installation-setup': {
     apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
     related: [

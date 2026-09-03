@@ -2595,7 +2595,12 @@ export const routes: Routes = [
   // ── Data Hubs ─────────────────────────────────────────────────────────────
   { path: 'mongodb', children: [
     { path: '', loadComponent: () => import('./components/data/mongodb/home/home').then(m => m.MongodbHome) },
-    { path: 'fundamentals',          loadComponent: () => import('./components/data/mongodb/fundamentals/fundamentals').then(m => m.MongoFundamentals) },
+    { path: 'fundamentals', children: [
+      { path: '', loadComponent: () => import('./components/data/mongodb/fundamentals/fundamentals').then(m => m.MongoFundamentals) },
+      { path: 'the-100-cap-is-the-drivers-not-the-servers-limit', loadComponent: () => import('./components/data/mongodb/fundamentals/subtopics/the-100-cap-is-the-drivers-not-the-servers-limit/the-100-cap-is-the-drivers-not-the-servers-limit').then(m => m.The100CapIsTheDriversNotTheServersLimitSubtopic) },
+      { path: 'implementing-optimistic-concurrency-with-a-version-field', loadComponent: () => import('./components/data/mongodb/fundamentals/subtopics/implementing-optimistic-concurrency-with-a-version-field/implementing-optimistic-concurrency-with-a-version-field').then(m => m.ImplementingOptimisticConcurrencyWithAVersionFieldSubtopic) },
+      { path: 'chunking-and-reassembling-a-file-with-gridfs', loadComponent: () => import('./components/data/mongodb/fundamentals/subtopics/chunking-and-reassembling-a-file-with-gridfs/chunking-and-reassembling-a-file-with-gridfs').then(m => m.ChunkingAndReassemblingAFileWithGridfsSubtopic) },
+    ] },
     { path: 'installation-setup',    loadComponent: () => import('./components/data/mongodb/installation-setup/installation-setup').then(m => m.MongoInstallationSetup) },
     { path: 'crud-operations',       loadComponent: () => import('./components/data/mongodb/crud-operations/crud-operations').then(m => m.MongoCrudOperations) },
     { path: 'update-operators',      loadComponent: () => import('./components/data/mongodb/update-operators/update-operators').then(m => m.MongoUpdateOperators) },

@@ -2870,6 +2870,9 @@ const OBS_LABELS: Record<string, string> = {
 
 const MONGO_LABELS: Record<string, string> = {
   'fundamentals':            'MongoDB Fundamentals',
+  'fundamentals/the-100-cap-is-the-drivers-not-the-servers-limit': 'The 100 Cap Belongs to the Driver, Not the Server',
+  'fundamentals/implementing-optimistic-concurrency-with-a-version-field': 'Implementing Optimistic Concurrency With a Version Field',
+  'fundamentals/chunking-and-reassembling-a-file-with-gridfs': 'Chunking and Reassembling a File With GridFS',
   'installation-setup':      'Installation & Setup',
   'crud-operations':         'CRUD Operations',
   'update-operators':        'Update Operators',
