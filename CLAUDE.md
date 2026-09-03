@@ -7566,6 +7566,70 @@ this same check before any other new hub's first subtopic set:
     correct h1/breadcrumb, 860px wrapper via `getComputedStyle`, `$$`-prefixed pipeline variables
     confirmed rendering as literal text (not vanished), tailored (not DEFAULT) sidebar content
     confirmed on the final subtopic. **MongoDB hub Phase 10: 9 of 21 topics complete.**
+17. **The `aggregation-expressions` batch found and fixed a genuine, severe, well-verified logic
+    bug in the main page's own "Date Expressions" codeTab, discovered by cross-referencing the
+    page's own Challenge solution against a different codeTab on the same page**: the codeTab
+    computed <code>expiresAt</code> and <code>isExpired: { $lt: ['$expiresAt', '$$NOW'] }</code> in
+    the SAME <code>$addFields</code> stage object. Verified directly against MongoDB's own
+    <code>$addFields</code> documentation (including its own worked example, which deliberately
+    splits a dependent computation into a SEPARATE, later stage) that every field expression in one
+    $addFields stage is evaluated against the document as it was BEFORE that stage ran — never
+    against a sibling field being computed in the same object. Verified further against MongoDB's
+    own official BSON comparison-order docs that a missing field compares as null, and null sorts
+    BEFORE every Date — meaning the bug was not merely "uncomputable" but actively, silently WRONG:
+    verified via a precise pure-JS model (mirroring the exact BSON `$lt` semantics) that `isExpired`
+    evaluated to `true` for EVERY document, always, regardless of whether the order was genuinely
+    expired or not. This exact chaining pattern (splitting a dependent field into a later stage) is
+    already correctly used by the page's own Challenge solution for `subtotal` → `tax`/`grandTotal`
+    — the Date Expressions codeTab simply never followed its own page's established convention.
+    Fixed by splitting into two $addFields stages. **A real, separately-checked false lead avoided
+    before publishing**: initially suspected the QnA's "$divide returns null when the divisor is
+    zero — it does not throw an error" claim was wrong (a MongoDB JIRA ticket, SERVER-6144, closed
+    in ancient version 2.3.2, suggested "error handling" was added for divide-by-zero) — but a
+    real MongoDB Community Forums thread ("Why the $divide returns null?", 2023) and a second
+    independent source both directly confirmed current behavior genuinely still returns null, no
+    error — the page's original claim was correct all along, and no "fix" was applied. Three
+    subtopics: (1) **fix-adjacent** — reproduces the exact bug/fix via a precise pure-JS model
+    matching MongoDB's own documented BSON comparison semantics, verified across a genuinely-expired
+    and a genuinely-fresh order (both incorrectly `true` in the buggy version; correctly `true`/
+    `false` in the fixed version), with a Try It distinguishing this from the page's own "Arithmetic
+    & String" codeTab, which computes several independent NEW fields side by side in one stage with
+    zero bug risk, since none of them reference each other by name; (2) **gap-closing** — the
+    page's own quiz explains `$let` in real detail ("declares local variables... to avoid redundant
+    computation") with zero codeTab building one; built a margin-computation example (with vs.
+    without `$let`), verified matching output via direct execution — and, before publishing an
+    initial WRONG guess about `$let`'s own `vars`-block evaluation order, verified directly against
+    MongoDB's own `$let` documentation (including its own worked `{ low: 1, high: "$$low" }`
+    example) that variables in the SAME `vars` block CANNOT reference each other at all — a
+    `$$`-prefixed reference inside `vars` always resolves to an OUTER variable, matching (not
+    contradicting) the sibling subtopic's own $addFields finding, just enforced as an invalid
+    reference rather than a silent missing/null; (3) **gap-closing** — the page's own QnA names
+    `$dateTrunc` in one clause with zero code anywhere, while the page's own "Group by month"
+    example instead uses separate `$year`+`$month` extraction; built a day/hour bucketing example,
+    verified truncation math via direct execution, plus verified via MongoDB's own $dateTrunc
+    reference (not assumed) that bin edges for every unit except "week" are anchored to a FIXED
+    reference date (2000-01-01T00:00:00Z), not to midnight of the current day as an initial draft of
+    the misconception field incorrectly assumed before being corrected. **A real, self-caught
+    apostrophe-collision gotcha caught proactively, before it could break any sibling page**: the
+    first subtopic's own working title ("A Single $addFields Stage Can't See Its Own New Fields")
+    contained a straight apostrophe — since a subtopic's title gets embedded verbatim in sibling
+    pages' `[prev]`/`[next]` labels (a single-quoted JS object literal string inside a double-quoted
+    Angular attribute), reworded to "Cannot" instead of "Can't" to sidestep the collision entirely,
+    per the established precedent (no safe entity-escape exists for this specific case). No
+    `SUBTOPICS` collision for `aggregation-expressions` (checked both `subtopics.ts` forms and
+    grepped `app.routes.ts` directly, confirmed collision-free, left bare). All three
+    `exercise.solution` fields swept clean of `<code>`/entity contamination; the standing
+    apostrophe-after-letter sweep and the `[prev]`/`[next]`-label straight-apostrophe sweep both
+    found nothing unescaped; bracket-balance and backtick-parity scripts confirmed clean on all
+    three files, including correctly-escaped nested template literals (`\`...\``) inside the $let
+    codeTab's own JS-equivalent functions. Build passed clean (foreground execution, explicit
+    `EXITCODE:$?` capture, zero `ERROR` lines). Browser-verified with a proactive dev-server restart
+    before checking (fresh on the first check, toggle count 10 as expected): no console errors on
+    any of the 4 pages; nav accordion opens with all 3 subtopic links; the main-page fix confirmed
+    rendering live after switching the code-block's own tab selector to "Date Expressions"
+    specifically; all 3 subtopic pages checked individually — correct h1/breadcrumb, 860px wrapper
+    via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the final subtopic.
+    **MongoDB hub Phase 10: 10 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -8653,10 +8717,11 @@ this same check before any other new hub's first subtopic set:
   Progress: `mongoTotal=21` in progress.service.ts. MongoDB pages use `app-common-mistakes` AND
   `app-revision-card`. Reference pages (cheatsheet, interview-prep) have no PageComplete.
   Challenge.language: `'typescript'`. MongoNavComponent at `shared/mongo-nav/mongo-nav.ts`.
-  Phase 10: 9 of 21 topics have subtopics (`/mongodb/fundamentals`, pilot batch;
+  Phase 10: 10 of 21 topics have subtopics (`/mongodb/fundamentals`, pilot batch;
   `/mongodb/installation-setup`; `/mongodb/crud-operations`; `/mongodb/update-operators`;
   `/mongodb/query-operators`; `/mongodb/array-queries`; `/mongodb/projections-sorting`;
-  `/mongodb/aggregation-pipeline`; `/mongodb/lookup-joins`, 2026-09-03) — see
+  `/mongodb/aggregation-pipeline`; `/mongodb/lookup-joins`; `/mongodb/aggregation-expressions`,
+  2026-09-03) — see
   "MongoDB hub subtopic wiring" section above for the `MongoNavComponent` accordion structural fix
   (15th `*NavComponent`-based hub in a row missing it at pilot time), the `mongo-fundamentals`/
   `mongo-installation-setup` SUBTOPICS-map collision resolutions (the former collided with the

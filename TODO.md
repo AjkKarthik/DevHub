@@ -8978,7 +8978,22 @@ off here with a date.
   names but never builds, verified null-managerId produces an empty array not an error. Build
   clean, browser-verified (nav accordion fresh on first check, toggle count 9, both main-page
   fixes rendering live, 3 subtopic pages, breadcrumb, sidebar).
-- [ ] `/mongodb/aggregation-expressions` — Aggregation Expressions
+- [x] `/mongodb/aggregation-expressions` — Aggregation Expressions (2026-09-03) — extended
+  `MongoNavComponent`'s toggle to a tenth topic (bare key, no collision). Found and fixed a
+  genuine, severe logic bug: the "Date Expressions" codeTab computed `expiresAt` and
+  `isExpired: { $lt: ['$expiresAt', '$$NOW'] }` in the SAME $addFields stage — verified against
+  MongoDB's own docs (a sibling field is invisible mid-stage) and BSON comparison order (missing
+  compares as null, null sorts before every Date) that `isExpired` was silently `true` for EVERY
+  document, always. Fixed by chaining a second $addFields stage, matching the page's own Challenge
+  solution's already-correct pattern. Checked and correctly did NOT "fix" a false lead (the QnA's
+  "$divide returns null on zero, no error" claim, verified accurate via a real MongoDB forum
+  thread). 3 subtopics: the addFields self-reference bug reproduced via a precise BSON-comparison
+  model; `$let` for reusing a sub-expression (with a self-caught wrong assumption about vars-block
+  evaluation order, corrected against MongoDB's own docs before publishing); `$dateTrunc` bucketing
+  by day/hour, verified truncation math and bin-anchor reference date via direct research. Reworded
+  a subtopic title (apostrophe → "Cannot") before any sibling page could reference it. Build clean,
+  browser-verified (nav accordion fresh on first check, toggle count 10, main-page fix rendering
+  live, 3 subtopic pages, breadcrumb, sidebar).
 - [ ] `/mongodb/schema-design-patterns` — Schema Design Patterns
 - [ ] `/mongodb/data-modelling` — Data Modelling
 - [ ] `/mongodb/time-series` — Time Series Collections
