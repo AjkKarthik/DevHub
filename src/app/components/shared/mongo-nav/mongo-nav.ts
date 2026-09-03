@@ -76,7 +76,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/mongodb/update-operators" routerLinkActive="active"><span class="nl-text">Update Operators</span>@if(p.isDone('mongo-update-operators')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/mongodb/update-operators" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Update Operators</span>
+        @if(p.isDone('mongo-update-operators')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('update-operators')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('update-operators')"
+                  (click)="toggleSubtopics('update-operators', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('update-operators'); as updSubs) {
+        @if (isSubtopicsExpanded('update-operators')) {
+          <div class="nav-subtopics">
+            @for (s of updSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

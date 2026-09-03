@@ -2613,7 +2613,12 @@ export const routes: Routes = [
       { path: 'mixing-operations-in-a-real-bulkwrite-call', loadComponent: () => import('./components/data/mongodb/crud-operations/subtopics/mixing-operations-in-a-real-bulkwrite-call/mixing-operations-in-a-real-bulkwrite-call').then(m => m.MixingOperationsInARealBulkwriteCallSubtopic) },
       { path: 'session-based-causal-consistency-for-read-your-writes', loadComponent: () => import('./components/data/mongodb/crud-operations/subtopics/session-based-causal-consistency-for-read-your-writes/session-based-causal-consistency-for-read-your-writes').then(m => m.SessionBasedCausalConsistencyForReadYourWritesSubtopic) },
     ] },
-    { path: 'update-operators',      loadComponent: () => import('./components/data/mongodb/update-operators/update-operators').then(m => m.MongoUpdateOperators) },
+    { path: 'update-operators', children: [
+      { path: '', loadComponent: () => import('./components/data/mongodb/update-operators/update-operators').then(m => m.MongoUpdateOperators) },
+      { path: 'sorting-a-real-top-n-with-push-sort-slice-together', loadComponent: () => import('./components/data/mongodb/update-operators/subtopics/sorting-a-real-top-n-with-push-sort-slice-together/sorting-a-real-top-n-with-push-sort-slice-together').then(m => m.SortingARealTopNWithPushSortSliceTogetherSubtopic) },
+      { path: 'removing-an-array-element-by-index-unset-then-pull', loadComponent: () => import('./components/data/mongodb/update-operators/subtopics/removing-an-array-element-by-index-unset-then-pull/removing-an-array-element-by-index-unset-then-pull').then(m => m.RemovingAnArrayElementByIndexUnsetThenPullSubtopic) },
+      { path: 'optimistic-locking-scoped-to-one-array-element', loadComponent: () => import('./components/data/mongodb/update-operators/subtopics/optimistic-locking-scoped-to-one-array-element/optimistic-locking-scoped-to-one-array-element').then(m => m.OptimisticLockingScopedToOneArrayElementSubtopic) },
+    ] },
     { path: 'query-operators',       loadComponent: () => import('./components/data/mongodb/query-operators/query-operators').then(m => m.MongoQueryOperators) },
     { path: 'array-queries',         loadComponent: () => import('./components/data/mongodb/array-queries/array-queries').then(m => m.MongoArrayQueries) },
     { path: 'projections-sorting',   loadComponent: () => import('./components/data/mongodb/projections-sorting/projections-sorting').then(m => m.MongoProjectionsSorting) },

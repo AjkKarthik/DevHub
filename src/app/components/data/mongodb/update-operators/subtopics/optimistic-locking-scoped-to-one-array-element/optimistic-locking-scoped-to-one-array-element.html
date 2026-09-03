@@ -1,0 +1,26 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Update Operators" topicRoute="/mongodb/update-operators"
+    subtopicLabel="Optimistic Locking Scoped to One Array Element" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">Optimistic Locking Scoped to One Array Element</h1>
+  <p class="page-subtitle">The main page's own QnA describes optimistic locking on ONE array element in one sentence — this subtopic builds it and traces exactly how it differs from the whole-document version-field pattern.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>This is a narrower-scoped sibling to the whole-document version-field pattern already built in the Fundamentals topic's own subtopic — same underlying findOneAndUpdate-filter trick, applied to one array slot instead of an entire document.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Update Operators" topicRoute="/mongodb/update-operators"
+    [prev]="{ label: 'Removing an Array Element by Index: $unset Then $pull', route: '/mongodb/update-operators/removing-an-array-element-by-index-unset-then-pull' }" />
+</div>

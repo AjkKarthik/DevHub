@@ -1,0 +1,26 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Update Operators" topicRoute="/mongodb/update-operators"
+    subtopicLabel="Sorting a Real Top-N List With $push, $sort, and $slice Together" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">Sorting a Real Top-N List With $push, $sort, and $slice Together</h1>
+  <p class="page-subtitle">$sort is named twice on the main page as a $push modifier — but no code tab, not even the page's own Leaderboard Challenge, ever combines it with $each and $slice.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>The main page's own Challenge is literally titled "Leaderboard with Bounded History" — its scoreHistory array is bounded, but never sorted by score, only by recency. This subtopic builds the genuinely sorted version the title implies.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Update Operators" topicRoute="/mongodb/update-operators"
+    [next]="{ label: 'Removing an Array Element by Index: $unset Then $pull', route: '/mongodb/update-operators/removing-an-array-element-by-index-unset-then-pull' }" />
+</div>

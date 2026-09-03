@@ -33982,6 +33982,38 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'upsert:true creates a new document if no match is found — a typo in the filter can silently create unwanted duplicate documents instead of updating the intended one.',
     ],
   },
+  'mongodb/update-operators/sorting-a-real-top-n-with-push-sort-slice-together': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Update Operators', route: '/mongodb/update-operators' },
+    ],
+    tip: '$push applies its modifiers in a fixed order — $each, then $sort, then $slice — so the array is fully sorted BEFORE it gets trimmed, never the other way around.',
+    gotchas: [
+      'Without $sort, $slice keeps the array bounded by INSERTION order, not by value — a genuinely high-scoring entry can still get trimmed away if it was pushed early.',
+    ],
+  },
+  'mongodb/update-operators/removing-an-array-element-by-index-unset-then-pull': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Update Operators', route: '/mongodb/update-operators' },
+      { label: 'CRUD Operations',  route: '/mongodb/crud-operations' },
+    ],
+    tip: '$unset on an array index sets that slot to null without shifting the array — the array\'s own length is unchanged until a following $pull actually compacts it.',
+    gotchas: [
+      'If the array can legitimately contain a real null value elsewhere, $pull: { arr: null } would remove that too — this two-step pattern only works safely when null is otherwise never a valid array element.',
+    ],
+  },
+  'mongodb/update-operators/optimistic-locking-scoped-to-one-array-element': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Update Operators', route: '/mongodb/update-operators' },
+      { label: 'MongoDB Fundamentals', route: '/mongodb/fundamentals' },
+    ],
+    tip: 'This lock is scoped to ONE array element\'s current value, not a whole-document version counter — two concurrent writes to two DIFFERENT elements of the same document never conflict with each other at all.',
+    gotchas: [
+      'A hardcoded array index (items.2.qty) is brittle if the array can reorder — pairing this pattern with a stable per-item id field is safer than a bare numeric index in production.',
+    ],
+  },
   'mongodb/array-queries': {
     apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
     related: [

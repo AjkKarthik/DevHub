@@ -1558,6 +1558,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Mixing Operations in a Real bulkWrite Call', route: '/mongodb/crud-operations/mixing-operations-in-a-real-bulkwrite-call' },
     { label: 'Session-Based Causal Consistency for Read-Your-Writes', route: '/mongodb/crud-operations/session-based-causal-consistency-for-read-your-writes' },
   ],
+  'update-operators': [
+    { label: 'Sorting a Real Top-N List With $push, $sort, and $slice Together', route: '/mongodb/update-operators/sorting-a-real-top-n-with-push-sort-slice-together' },
+    { label: 'Removing an Array Element by Index: $unset Then $pull', route: '/mongodb/update-operators/removing-an-array-element-by-index-unset-then-pull' },
+    { label: 'Optimistic Locking Scoped to One Array Element', route: '/mongodb/update-operators/optimistic-locking-scoped-to-one-array-element' },
+  ],
   closures: [
     { label: 'var Shares One Binding, let Creates One Per Iteration', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
     { label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },

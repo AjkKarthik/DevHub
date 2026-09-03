@@ -1,0 +1,27 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Update Operators" topicRoute="/mongodb/update-operators"
+    subtopicLabel="Removing an Array Element by Index: $unset Then $pull" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">Removing an Array Element by Index: $unset Then $pull</h1>
+  <p class="page-subtitle">The main page's own QnA describes this two-step idiom in prose with zero code — this subtopic builds and verifies it, including exactly why a single $unset call alone leaves a gap instead of removing the element.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>This is the array-element version of the exact null-vs-missing distinction the Fundamentals topic's own mistake block covers for whole documents — here it's deliberately EXPLOITED as the mechanism, not avoided.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Update Operators" topicRoute="/mongodb/update-operators"
+    [prev]="{ label: 'Sorting a Real Top-N List With $push, $sort, and $slice Together', route: '/mongodb/update-operators/sorting-a-real-top-n-with-push-sort-slice-together' }"
+    [next]="{ label: 'Optimistic Locking Scoped to One Array Element', route: '/mongodb/update-operators/optimistic-locking-scoped-to-one-array-element' }" />
+</div>
