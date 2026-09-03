@@ -34204,6 +34204,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The pipeline variant of $lookup (with a nested pipeline) enables more complex join conditions than the simple localField/foreignField form.',
     ],
   },
+  'mongodb/lookup-joins/lookup-is-actually-supported-inside-facet-sub-pipelines': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: '$lookup & Joins',      route: '/mongodb/lookup-joins' },
+      { label: 'Aggregation Pipeline', route: '/mongodb/aggregation-pipeline' },
+    ],
+    tip: 'Only ten named stages are excluded from a $facet sub-pipeline — $collStats, $facet, $geoNear, $indexStats, $out, $merge, $planCacheStats, $search, $searchMeta, and $vectorSearch. $lookup was never one of them.',
+    gotchas: [
+      'A single $facet stage can run two or more independent $lookup-using branches over the same shared filtered input in one round trip — a real way to avoid extra queries in a reporting pipeline.',
+    ],
+  },
+  'mongodb/lookup-joins/correlated-vs-uncorrelated-lookup-subqueries': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: '$lookup & Joins',      route: '/mongodb/lookup-joins' },
+      { label: 'Aggregation Pipeline', route: '/mongodb/aggregation-pipeline' },
+    ],
+    tip: 'A pipeline $lookup sub-pipeline is correlated only if it actually REFERENCES a let-bound $$variable somewhere — merely declaring an unused let binding does not make an otherwise-static sub-pipeline correlated.',
+    gotchas: [
+      'MongoDB\'s own terminology is the opposite of what "uncorrelated $lookup" might sound like — uncorrelated means the sub-pipeline result is the SAME for every input document, not that it varies.',
+    ],
+  },
+  'mongodb/lookup-joins/a-real-self-join-one-level-org-chart': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: '$lookup & Joins', route: '/mongodb/lookup-joins' },
+      { label: 'Aggregation Pipeline', route: '/mongodb/aggregation-pipeline' },
+    ],
+    tip: 'A self-join is nothing more than an ordinary $lookup where "from" happens to name the same collection the pipeline is already running against — there is no dedicated self-join syntax.',
+    gotchas: [
+      'A one-level self-join only resolves an immediate parent/manager reference — an arbitrary-depth chain (grandparent, great-grandparent) needs either multiple chained $lookup stages or $graphLookup.',
+    ],
+  },
   'mongodb/data-modelling': {
     apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
     related: [

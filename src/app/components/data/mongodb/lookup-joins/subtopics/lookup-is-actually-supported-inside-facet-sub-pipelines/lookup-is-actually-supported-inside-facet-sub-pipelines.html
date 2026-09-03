@@ -1,0 +1,26 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="$lookup &amp; Joins" topicRoute="/mongodb/lookup-joins"
+    subtopicLabel="$lookup Is Actually Supported Inside $facet Sub-Pipelines" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">$lookup Is Actually Supported Inside $facet Sub-Pipelines</h1>
+  <p class="page-subtitle">The main page's own QnA on $lookup limits originally claimed $lookup could not run inside a $facet sub-pipeline — verified against MongoDB's own documented exceptions list that this is wrong, and $lookup works fine inside $facet.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>Correcting this claim matters for real report/dashboard queries — a single $facet call can now confidently combine multiple independently-joined, independently-filtered views of the same data in one round trip, instead of assuming a separate query is required for every branch that needs a $lookup.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="$lookup &amp; Joins" topicRoute="/mongodb/lookup-joins"
+    [next]="{ label: 'Correlated vs. Uncorrelated $lookup Subqueries', route: '/mongodb/lookup-joins/correlated-vs-uncorrelated-lookup-subqueries' }" />
+</div>

@@ -1583,6 +1583,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Bucketing Prices With $bucket and $bucketAuto', route: '/mongodb/aggregation-pipeline/bucketing-prices-with-bucket-and-bucketauto' },
     { label: 'Paginating With $facet: Data Plus Total Count', route: '/mongodb/aggregation-pipeline/paginating-with-facet-data-plus-total-count' },
   ],
+  'lookup-joins': [
+    { label: '$lookup Is Actually Supported Inside $facet Sub-Pipelines', route: '/mongodb/lookup-joins/lookup-is-actually-supported-inside-facet-sub-pipelines' },
+    { label: 'Correlated vs. Uncorrelated $lookup Subqueries', route: '/mongodb/lookup-joins/correlated-vs-uncorrelated-lookup-subqueries' },
+    { label: 'A Real Self-Join: One-Level Org Chart', route: '/mongodb/lookup-joins/a-real-self-join-one-level-org-chart' },
+  ],
   closures: [
     { label: 'var Shares One Binding, let Creates One Per Iteration', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
     { label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },

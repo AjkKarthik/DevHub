@@ -2643,7 +2643,12 @@ export const routes: Routes = [
       { path: 'bucketing-prices-with-bucket-and-bucketauto', loadComponent: () => import('./components/data/mongodb/aggregation-pipeline/subtopics/bucketing-prices-with-bucket-and-bucketauto/bucketing-prices-with-bucket-and-bucketauto').then(m => m.BucketingPricesWithBucketAndBucketautoSubtopic) },
       { path: 'paginating-with-facet-data-plus-total-count', loadComponent: () => import('./components/data/mongodb/aggregation-pipeline/subtopics/paginating-with-facet-data-plus-total-count/paginating-with-facet-data-plus-total-count').then(m => m.PaginatingWithFacetDataPlusTotalCountSubtopic) },
     ] },
-    { path: 'lookup-joins',          loadComponent: () => import('./components/data/mongodb/lookup-joins/lookup-joins').then(m => m.MongoLookupJoins) },
+    { path: 'lookup-joins', children: [
+      { path: '', loadComponent: () => import('./components/data/mongodb/lookup-joins/lookup-joins').then(m => m.MongoLookupJoins) },
+      { path: 'lookup-is-actually-supported-inside-facet-sub-pipelines', loadComponent: () => import('./components/data/mongodb/lookup-joins/subtopics/lookup-is-actually-supported-inside-facet-sub-pipelines/lookup-is-actually-supported-inside-facet-sub-pipelines').then(m => m.LookupIsActuallySupportedInsideFacetSubPipelinesSubtopic) },
+      { path: 'correlated-vs-uncorrelated-lookup-subqueries', loadComponent: () => import('./components/data/mongodb/lookup-joins/subtopics/correlated-vs-uncorrelated-lookup-subqueries/correlated-vs-uncorrelated-lookup-subqueries').then(m => m.CorrelatedVsUncorrelatedLookupSubqueriesSubtopic) },
+      { path: 'a-real-self-join-one-level-org-chart', loadComponent: () => import('./components/data/mongodb/lookup-joins/subtopics/a-real-self-join-one-level-org-chart/a-real-self-join-one-level-org-chart').then(m => m.ARealSelfJoinOneLevelOrgChartSubtopic) },
+    ] },
     { path: 'aggregation-expressions', loadComponent: () => import('./components/data/mongodb/aggregation-expressions/aggregation-expressions').then(m => m.MongoAggregationExpressions) },
     { path: 'schema-design-patterns', loadComponent: () => import('./components/data/mongodb/schema-design-patterns/schema-design-patterns').then(m => m.MongoSchemaDesignPatterns) },
     { path: 'data-modelling',        loadComponent: () => import('./components/data/mongodb/data-modelling/data-modelling').then(m => m.MongoDataModelling) },
