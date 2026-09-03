@@ -8922,7 +8922,17 @@ off here with a date.
   locking scoped to a single array element's value, contrasted with the Fundamentals topic's own
   whole-document version-field pattern. Build clean, browser-verified (nav accordion fresh on
   first check, 3 subtopic pages, breadcrumb, sidebar).
-- [ ] `/mongodb/query-operators` — Query Operators
+- [x] `/mongodb/query-operators` — Query Operators (2026-09-03) — extended `MongoNavComponent`'s
+  toggle to a fifth topic (bare key, no collision). Found and fixed a genuine inaccuracy in the
+  array-size QnA: it claimed `{ "tags.1": { $exists: true } }` "can use a multikey index on tags,"
+  but verified via WebSearch that a multikey index (per-VALUE) and a position-specific index like
+  `createIndex({ "tags.1": 1 })` (per-DOCUMENT, non-multikey) are two entirely different index
+  structures. Also double-checked the BSON type comparison order theory bullet against official
+  docs and confirmed it accurate. 3 subtopics: the multikey-vs-position-index fix traced with the
+  correct createIndex calls; a verified `$bitsAllSet`/`$bitsAnySet` permission-bitmask example (the
+  quiz names it, no codeTab shows it); a real `2dsphere`/`$near` geospatial query (the QnA covers it
+  at length, zero code). Build clean, browser-verified (nav accordion fresh on first check, main-page
+  fix, 3 subtopic pages, breadcrumb, sidebar).
 - [ ] `/mongodb/array-queries` — Array Queries
 - [ ] `/mongodb/projections-sorting` — Projections & Sorting
 - [ ] `/mongodb/aggregation-pipeline` — Aggregation Pipeline

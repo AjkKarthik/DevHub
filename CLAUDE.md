@@ -7398,6 +7398,35 @@ this same check before any other new hub's first subtopic set:
     console errors, correct h1/breadcrumb, 860px wrapper via `getComputedStyle`, tailored (not
     DEFAULT) sidebar content confirmed on the final subtopic. **MongoDB hub Phase 10: 4 of 21
     topics complete.**
+13. **The `query-operators` batch found and fixed a genuine, well-verified inaccuracy in the main
+    page's own QnA on array-size queries**: it claimed a position-based query like
+    `{ "tags.1": { $exists: true } }` "can use a multikey index on tags." Verified via WebSearch
+    against MongoDB's own documented indexing rules that this is backwards — a multikey index on
+    the bare array field stores one entry per array VALUE and has no notion of position at all;
+    querying a specific array position instead requires its own separate index built directly on
+    that dotted path (`createIndex({ "tags.1": 1 })`), explicitly documented as a distinct,
+    NON-multikey index (one entry per document, not per array element). Fixed the QnA to state the
+    real distinction. Also verified the page's own BSON type comparison order theory bullet against
+    MongoDB's official docs and confirmed it accurate — not every specific, checkable claim on this
+    page turned out wrong. 3 subtopics: (1) **fix-adjacent** — traces the multikey-vs-position-index
+    distinction with the correct `createIndex` calls for each access pattern, with a Try It on the
+    COLLSCAN fallback when no position-specific index exists at all; (2) **gap-closing** — turns the
+    quiz's own bitwise permission example (READ/WRITE/ADMIN bitmask, `$bitsAllSet`/`$bitsAnySet`)
+    into a verified working example, matching a direct execution check across four seed users; (3)
+    **gap-closing** — builds the `2dsphere` index and `$near` query the page's own geospatial QnA
+    describes in real depth but never shows in code, verified against the exact documented syntax
+    (GeoJSON `[longitude, latitude]` order, `$maxDistance`/`$minDistance` in meters). No `SUBTOPICS`
+    collision for `query-operators` (checked both `subtopics.ts` forms and grepped `app.routes.ts`
+    directly, confirmed collision-free, left bare). All three `exercise.solution` fields swept
+    clean of `<code>`/entity contamination; the standing apostrophe-after-letter sweep found nothing
+    unescaped; `\$`-prefixed operator names inside every codeTab verified correct by extracting and
+    evaluating the exact backtick spans as real JavaScript. Build passed clean (foreground
+    execution, explicit `EXITCODE:$?` capture, zero `ERROR` lines). Browser-verified: nav accordion
+    opens with all 3 subtopic links (fresh on the first check, toggle count 5 as expected); the
+    main-page fix confirmed rendering live via direct component data inspection; all 3 subtopic
+    pages checked individually — no console errors, correct h1/breadcrumb, 860px wrapper via
+    `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the final subtopic.
+    **MongoDB hub Phase 10: 5 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -8485,9 +8514,9 @@ this same check before any other new hub's first subtopic set:
   Progress: `mongoTotal=21` in progress.service.ts. MongoDB pages use `app-common-mistakes` AND
   `app-revision-card`. Reference pages (cheatsheet, interview-prep) have no PageComplete.
   Challenge.language: `'typescript'`. MongoNavComponent at `shared/mongo-nav/mongo-nav.ts`.
-  Phase 10: 4 of 21 topics have subtopics (`/mongodb/fundamentals`, pilot batch;
-  `/mongodb/installation-setup`; `/mongodb/crud-operations`; `/mongodb/update-operators`,
-  2026-09-03) — see
+  Phase 10: 5 of 21 topics have subtopics (`/mongodb/fundamentals`, pilot batch;
+  `/mongodb/installation-setup`; `/mongodb/crud-operations`; `/mongodb/update-operators`;
+  `/mongodb/query-operators`, 2026-09-03) — see
   "MongoDB hub subtopic wiring" section above for the `MongoNavComponent` accordion structural fix
   (15th `*NavComponent`-based hub in a row missing it at pilot time), the `mongo-fundamentals`/
   `mongo-installation-setup` SUBTOPICS-map collision resolutions (the former collided with the
