@@ -7369,6 +7369,35 @@ this same check before any other new hub's first subtopic set:
     inspection; all 3 subtopic pages checked individually — correct h1/breadcrumb, 860px wrapper
     via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the final
     subtopic. **MongoDB hub Phase 10: 3 of 21 topics complete.**
+12. **The `update-operators` batch was the cleanest main page found so far in this hub — a
+    careful read of every theory bullet, codeTab, mistake, quiz question, and QnA found no
+    self-contained bug or cross-section contradiction worth fixing.** All 3 subtopics are
+    gap-closing instead, each building real, Node-verified code for something the page names in
+    prose but never demonstrates: (1) `$sort` is named twice as a `$push` modifier (a theory
+    bullet and a quiz explanation) but no codeTab — not even the page's own "Leaderboard with
+    Bounded History" Challenge — ever combines it with `$each` and `$slice`; verified via direct
+    execution that the Challenge's own `scoreHistory` pattern (`$each` + `$slice`, no `$sort`)
+    keeps the 10 MOST RECENT scores, not the 10 HIGHEST, a genuinely different array illustrated
+    with a concrete high-score-pushed-out-by-later-mediocre-scores example; (2) the QnA's own
+    two-step `$unset`-then-`$pull` idiom for removing an array element by index, verified step by
+    step (unset leaves a `null` placeholder without shortening the array; pull is what actually
+    compacts it), with a Try It on why the pattern is unsafe on an array that can legitimately
+    contain real `null` values; (3) optimistic locking scoped to a single array element's own
+    current value (from a one-sentence QnA description), verified via a simulation and explicitly
+    contrasted with the whole-document version-field pattern already built in the Fundamentals
+    topic's own subtopic — two different conflict scopes, not the same technique applied to a
+    different field. No `SUBTOPICS` collision for `update-operators` (checked both `subtopics.ts`
+    forms and grepped `app.routes.ts` directly, confirmed collision-free, left bare). All three
+    `exercise.solution` fields swept clean of `<code>`/entity contamination; the standing
+    apostrophe-after-letter sweep found nothing unescaped; nested template-literal escaping in two
+    of the three codeTabs (a `${arrayField}.${index}` dynamic key, and a `${itemIndex}` filter
+    key) verified correct by extracting and evaluating the exact backtick spans as real
+    JavaScript. Build passed clean (foreground execution, explicit `EXITCODE:$?` capture, zero
+    `ERROR` lines). Browser-verified: nav accordion opens with all 3 subtopic links (fresh on the
+    first check, toggle count 4 as expected); all 3 subtopic pages checked individually — no
+    console errors, correct h1/breadcrumb, 860px wrapper via `getComputedStyle`, tailored (not
+    DEFAULT) sidebar content confirmed on the final subtopic. **MongoDB hub Phase 10: 4 of 21
+    topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -8456,8 +8485,9 @@ this same check before any other new hub's first subtopic set:
   Progress: `mongoTotal=21` in progress.service.ts. MongoDB pages use `app-common-mistakes` AND
   `app-revision-card`. Reference pages (cheatsheet, interview-prep) have no PageComplete.
   Challenge.language: `'typescript'`. MongoNavComponent at `shared/mongo-nav/mongo-nav.ts`.
-  Phase 10: 3 of 21 topics have subtopics (`/mongodb/fundamentals`, pilot batch;
-  `/mongodb/installation-setup`; `/mongodb/crud-operations`, 2026-09-03) — see
+  Phase 10: 4 of 21 topics have subtopics (`/mongodb/fundamentals`, pilot batch;
+  `/mongodb/installation-setup`; `/mongodb/crud-operations`; `/mongodb/update-operators`,
+  2026-09-03) — see
   "MongoDB hub subtopic wiring" section above for the `MongoNavComponent` accordion structural fix
   (15th `*NavComponent`-based hub in a row missing it at pilot time), the `mongo-fundamentals`/
   `mongo-installation-setup` SUBTOPICS-map collision resolutions (the former collided with the

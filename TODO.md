@@ -8913,7 +8913,15 @@ off here with a date.
   code). Self-caught two bare-brace-in-prose gotchas in the new subtopics' own page-subtitles
   before the build. Build clean, browser-verified (nav accordion opened fresh on the first check,
   main-page fix, 3 subtopic pages, breadcrumb, sidebar).
-- [ ] `/mongodb/update-operators` — Update Operators
+- [x] `/mongodb/update-operators` — Update Operators (2026-09-03) — extended
+  `MongoNavComponent`'s toggle to a fourth topic (bare key, no collision). This was the cleanest
+  main page found so far in the hub — no self-contained bug found, so all 3 subtopics are
+  gap-closing: a real `$each`+`$sort`+`$slice` top-N leaderboard (the page names `$sort` twice but
+  never demonstrates it — even its own "Leaderboard" Challenge only bounds by recency, not score);
+  the two-step `$unset`-then-`$pull` remove-by-index idiom, verified step by step; and optimistic
+  locking scoped to a single array element's value, contrasted with the Fundamentals topic's own
+  whole-document version-field pattern. Build clean, browser-verified (nav accordion fresh on
+  first check, 3 subtopic pages, breadcrumb, sidebar).
 - [ ] `/mongodb/query-operators` — Query Operators
 - [ ] `/mongodb/array-queries` — Array Queries
 - [ ] `/mongodb/projections-sorting` — Projections & Sorting
