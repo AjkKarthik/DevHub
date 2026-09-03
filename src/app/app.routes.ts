@@ -2655,7 +2655,12 @@ export const routes: Routes = [
       { path: 'let-for-reusing-a-sub-expression-without-recomputing-it', loadComponent: () => import('./components/data/mongodb/aggregation-expressions/subtopics/let-for-reusing-a-sub-expression-without-recomputing-it/let-for-reusing-a-sub-expression-without-recomputing-it').then(m => m.LetForReusingASubExpressionWithoutRecomputingItSubtopic) },
       { path: 'datetrunc-for-grouping-events-by-day-and-hour', loadComponent: () => import('./components/data/mongodb/aggregation-expressions/subtopics/datetrunc-for-grouping-events-by-day-and-hour/datetrunc-for-grouping-events-by-day-and-hour').then(m => m.DatetruncForGroupingEventsByDayAndHourSubtopic) },
     ] },
-    { path: 'schema-design-patterns', loadComponent: () => import('./components/data/mongodb/schema-design-patterns/schema-design-patterns').then(m => m.MongoSchemaDesignPatterns) },
+    { path: 'schema-design-patterns', children: [
+      { path: '', loadComponent: () => import('./components/data/mongodb/schema-design-patterns/schema-design-patterns').then(m => m.MongoSchemaDesignPatterns) },
+      { path: 'one-atomic-update-pipeline-call-instead-of-two-racy-writes', loadComponent: () => import('./components/data/mongodb/schema-design-patterns/subtopics/one-atomic-update-pipeline-call-instead-of-two-racy-writes/one-atomic-update-pipeline-call-instead-of-two-racy-writes').then(m => m.OneAtomicUpdatePipelineCallInsteadOfTwoRacyWritesSubtopic) },
+      { path: 'attribute-pattern-needs-elemmatch-to-avoid-false-positives', loadComponent: () => import('./components/data/mongodb/schema-design-patterns/subtopics/attribute-pattern-needs-elemmatch-to-avoid-false-positives/attribute-pattern-needs-elemmatch-to-avoid-false-positives').then(m => m.AttributePatternNeedsElemmatchToAvoidFalsePositivesSubtopic) },
+      { path: 'materialised-path-ancestors-and-descendants-with-regex', loadComponent: () => import('./components/data/mongodb/schema-design-patterns/subtopics/materialised-path-ancestors-and-descendants-with-regex/materialised-path-ancestors-and-descendants-with-regex').then(m => m.MaterialisedPathAncestorsAndDescendantsWithRegexSubtopic) },
+    ] },
     { path: 'data-modelling',        loadComponent: () => import('./components/data/mongodb/data-modelling/data-modelling').then(m => m.MongoDataModelling) },
     { path: 'time-series',           loadComponent: () => import('./components/data/mongodb/time-series/time-series').then(m => m.MongoTimeSeries) },
     { path: 'indexes',               loadComponent: () => import('./components/data/mongodb/indexes/indexes').then(m => m.MongoIndexes) },

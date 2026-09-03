@@ -1,0 +1,26 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Schema Design Patterns" topicRoute="/mongodb/schema-design-patterns"
+    subtopicLabel="Materialised Path: Ancestors and Descendants With $regex" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">Materialised Path: Ancestors and Descendants With $regex</h1>
+  <p class="page-subtitle">One of the main page's own QnAs names all four tree-structure patterns in one dense paragraph with zero code for any of them — this subtopic builds Materialised Path specifically, the one the QnA calls out as easiest for ancestor/descendant queries.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>Materialised Path trades write cost (moving a subtree means updating every descendant's own path string) for read simplicity — a tradeoff worth weighing against the main page's own Parent Reference pattern, which is cheap to update but needs multiple queries to walk down a subtree.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Schema Design Patterns" topicRoute="/mongodb/schema-design-patterns"
+    [prev]="{ label: 'The Attribute Pattern Needs $elemMatch to Avoid False Positives', route: '/mongodb/schema-design-patterns/attribute-pattern-needs-elemmatch-to-avoid-false-positives' }" />
+</div>

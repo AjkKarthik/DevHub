@@ -1593,6 +1593,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: '$let for Reusing a Sub-Expression Without Recomputing It', route: '/mongodb/aggregation-expressions/let-for-reusing-a-sub-expression-without-recomputing-it' },
     { label: '$dateTrunc for Grouping Events by Day and Hour', route: '/mongodb/aggregation-expressions/datetrunc-for-grouping-events-by-day-and-hour' },
   ],
+  'schema-design-patterns': [
+    { label: 'One Atomic Update-Pipeline Call Instead of Two Racy Writes', route: '/mongodb/schema-design-patterns/one-atomic-update-pipeline-call-instead-of-two-racy-writes' },
+    { label: 'The Attribute Pattern Needs $elemMatch to Avoid False Positives', route: '/mongodb/schema-design-patterns/attribute-pattern-needs-elemmatch-to-avoid-false-positives' },
+    { label: 'Materialised Path: Ancestors and Descendants With $regex', route: '/mongodb/schema-design-patterns/materialised-path-ancestors-and-descendants-with-regex' },
+  ],
   closures: [
     { label: 'var Shares One Binding, let Creates One Per Iteration', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
     { label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },

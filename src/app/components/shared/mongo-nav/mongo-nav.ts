@@ -221,7 +221,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
 
     <div class="nav-group">
       <p class="nav-group-label">Schema Design</p>
-      <a routerLink="/mongodb/schema-design-patterns" routerLinkActive="active"><span class="nl-text">Schema Design Patterns</span>@if(p.isDone('mongo-schema-design-patterns')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/mongodb/schema-design-patterns" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Schema Design Patterns</span>
+        @if(p.isDone('mongo-schema-design-patterns')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('schema-design-patterns')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('schema-design-patterns')"
+                  (click)="toggleSubtopics('schema-design-patterns', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('schema-design-patterns'); as sdpSubs) {
+        @if (isSubtopicsExpanded('schema-design-patterns')) {
+          <div class="nav-subtopics">
+            @for (s of sdpSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/mongodb/data-modelling" routerLinkActive="active"><span class="nl-text">Data Modelling</span>@if(p.isDone('mongo-data-modelling')){<span class="nl-done">✓</span>}</a>
       <a routerLink="/mongodb/time-series" routerLinkActive="active"><span class="nl-text">Time Series Collections</span>@if(p.isDone('mongo-time-series')){<span class="nl-done">✓</span>}</a>
     </div>

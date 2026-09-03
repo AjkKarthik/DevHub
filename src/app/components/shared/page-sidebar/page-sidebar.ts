@@ -34293,6 +34293,38 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Applying a design pattern without matching the actual read/write access pattern of the application often makes performance worse, not better.',
     ],
   },
+  'mongodb/schema-design-patterns/one-atomic-update-pipeline-call-instead-of-two-racy-writes': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Schema Design Patterns', route: '/mongodb/schema-design-patterns' },
+      { label: 'Aggregation Expressions', route: '/mongodb/aggregation-expressions' },
+    ],
+    tip: 'Passing an ARRAY of $set stages to updateOne (instead of a plain update document) makes a later stage able to reference a field set by an earlier stage in the SAME array — atomic, in one call, no transaction needed for single-document consistency.',
+    gotchas: [
+      'Classic update operators ($push, $inc, $pull) cannot be mixed into an update-pipeline array — use $add, $concatArrays + $sortArray + $slice as their aggregation-expression equivalents instead.',
+    ],
+  },
+  'mongodb/schema-design-patterns/attribute-pattern-needs-elemmatch-to-avoid-false-positives': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Schema Design Patterns', route: '/mongodb/schema-design-patterns' },
+      { label: 'Query Operators',        route: '/mongodb/query-operators' },
+    ],
+    tip: 'A plain query on specs.k and specs.v (no $elemMatch) matches if EITHER condition is satisfied by ANY array element — not necessarily the SAME element — a real false-positive risk for the Attribute Pattern\'s own {k,v} array shape.',
+    gotchas: [
+      'The same compound index on specs.k + specs.v is used by both the plain and $elemMatch query forms — the index affects performance, $elemMatch affects correctness.',
+    ],
+  },
+  'mongodb/schema-design-patterns/materialised-path-ancestors-and-descendants-with-regex': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Schema Design Patterns', route: '/mongodb/schema-design-patterns' },
+    ],
+    tip: 'MongoDB\'s own documented materialised-path convention puts the delimiter at BOTH the start and end of the path string, not just between segments — this is what keeps a $regex descendants query from matching a longer name that merely starts with the target segment.',
+    gotchas: [
+      'Finding ancestors is not a simple regex the way finding descendants is — it needs the target node\'s own path split into every possible prefix, then matched with $in.',
+    ],
+  },
   'mongodb/indexes': {
     apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
     related: [

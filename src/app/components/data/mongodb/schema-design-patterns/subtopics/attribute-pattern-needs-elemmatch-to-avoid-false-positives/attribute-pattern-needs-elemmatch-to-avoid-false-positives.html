@@ -1,0 +1,27 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Schema Design Patterns" topicRoute="/mongodb/schema-design-patterns"
+    subtopicLabel="The Attribute Pattern Needs $elemMatch to Avoid False Positives" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">The Attribute Pattern Needs $elemMatch to Avoid False Positives</h1>
+  <p class="page-subtitle">One of the main page's own quiz questions explains the Attribute Pattern's specs array and its $elemMatch query in real depth — but no codeTab on the page ever builds one, or shows why $elemMatch actually matters.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>The Attribute Pattern is a genuinely different tool from the Polymorphic Pattern the main page already covers in a codeTab — polymorphism handles different DOCUMENT SHAPES in one collection, while the Attribute Pattern handles different SEARCHABLE FIELDS within otherwise similar documents, and the two are commonly combined (a polymorphic products collection where each type's own extra fields live in its own specs array).</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Schema Design Patterns" topicRoute="/mongodb/schema-design-patterns"
+    [prev]="{ label: 'One Atomic Update-Pipeline Call Instead of Two Racy Writes', route: '/mongodb/schema-design-patterns/one-atomic-update-pipeline-call-instead-of-two-racy-writes' }"
+    [next]="{ label: 'Materialised Path: Ancestors and Descendants With $regex', route: '/mongodb/schema-design-patterns/materialised-path-ancestors-and-descendants-with-regex' }" />
+</div>
