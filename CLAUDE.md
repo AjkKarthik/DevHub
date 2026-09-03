@@ -7427,6 +7427,36 @@ this same check before any other new hub's first subtopic set:
     pages checked individually — no console errors, correct h1/breadcrumb, 860px wrapper via
     `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the final subtopic.
     **MongoDB hub Phase 10: 5 of 21 topics complete.**
+14. **The `array-queries` batch found and fixed a genuine internal inconsistency in the main
+    page's own "Multikey Indexes" theory bullet**: it said a compound index cannot have two
+    multikey fields "from arrays of different sizes," implying two same-sized arrays might be
+    fine. Verified via WebSearch against MongoDB's own docs that the restriction is unconditional
+    — "each indexed document can have at most one indexed field whose value is an array," with
+    array length never a factor. The SAME page's own mistake block and codeTab already stated the
+    restriction correctly with no size qualifier at all ("cannot create compound multikey index on
+    two array fields") — only the theory bullet had introduced the incorrect exception. Fixed it
+    to match. 3 subtopics, each verified via direct Node.js execution: (1) **fix-adjacent** — the
+    unconditional restriction traced with a same-length-arrays example that still fails, plus a
+    Try It on what happens when only one document out of thousands violates it (the whole
+    `createIndex()` call fails outright, no partial index gets built); (2) **gap-closing** — all
+    three forms of the `$slice` projection operator (positive N, negative N, `[skip, limit]`),
+    which the page's own QnA describes in real detail but no codeTab demonstrates, including the
+    edge case where `[10, 5]` on a 12-element array returns only 2 elements, and skipping past the
+    end returns an empty array; (3) **gap-closing** — sorting by an array field uses the
+    document's own min (ascending) or max (descending) value, verified with a concrete example
+    where the SAME document (widest min/max spread) sorts FIRST in both directions — a result
+    structurally impossible for a scalar field. No `SUBTOPICS` collision for `array-queries`
+    (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed
+    collision-free, left bare). All three `exercise.solution` fields swept clean of `<code>`/entity
+    contamination; the standing apostrophe-after-letter sweep found nothing unescaped; `\$`-prefixed
+    operator names inside every codeTab verified correct by extracting and evaluating the exact
+    backtick spans as real JavaScript. Build passed clean (foreground execution, explicit
+    `EXITCODE:$?` capture, zero `ERROR` lines). Browser-verified: nav accordion opens with all 3
+    subtopic links (fresh on the first check, toggle count 6 as expected); the main-page fix
+    confirmed rendering live via direct component data inspection; all 3 subtopic pages checked
+    individually — no console errors, correct h1/breadcrumb, 860px wrapper via `getComputedStyle`,
+    tailored (not DEFAULT) sidebar content confirmed on the final subtopic. **MongoDB hub Phase 10:
+    6 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -8514,9 +8544,9 @@ this same check before any other new hub's first subtopic set:
   Progress: `mongoTotal=21` in progress.service.ts. MongoDB pages use `app-common-mistakes` AND
   `app-revision-card`. Reference pages (cheatsheet, interview-prep) have no PageComplete.
   Challenge.language: `'typescript'`. MongoNavComponent at `shared/mongo-nav/mongo-nav.ts`.
-  Phase 10: 5 of 21 topics have subtopics (`/mongodb/fundamentals`, pilot batch;
+  Phase 10: 6 of 21 topics have subtopics (`/mongodb/fundamentals`, pilot batch;
   `/mongodb/installation-setup`; `/mongodb/crud-operations`; `/mongodb/update-operators`;
-  `/mongodb/query-operators`, 2026-09-03) — see
+  `/mongodb/query-operators`; `/mongodb/array-queries`, 2026-09-03) — see
   "MongoDB hub subtopic wiring" section above for the `MongoNavComponent` accordion structural fix
   (15th `*NavComponent`-based hub in a row missing it at pilot time), the `mongo-fundamentals`/
   `mongo-installation-setup` SUBTOPICS-map collision resolutions (the former collided with the

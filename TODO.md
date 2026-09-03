@@ -8933,7 +8933,17 @@ off here with a date.
   quiz names it, no codeTab shows it); a real `2dsphere`/`$near` geospatial query (the QnA covers it
   at length, zero code). Build clean, browser-verified (nav accordion fresh on first check, main-page
   fix, 3 subtopic pages, breadcrumb, sidebar).
-- [ ] `/mongodb/array-queries` — Array Queries
+- [x] `/mongodb/array-queries` — Array Queries (2026-09-03) — extended `MongoNavComponent`'s
+  toggle to a sixth topic (bare key, no collision). Found and fixed a genuine inconsistency: the
+  "Multikey Indexes" theory bullet said the compound-index restriction applies to arrays "of
+  different sizes," but verified via WebSearch that it's unconditional (at most one array field
+  per document, regardless of length) — the page's own mistake block and codeTab already had it
+  right, only the theory bullet was wrong. 3 subtopics: the unconditional restriction traced with a
+  same-length-arrays example that still fails; all three `$slice` projection forms (the QnA
+  describes them, no codeTab shows them), verified including the [10,5]-on-a-12-element-array edge
+  case; sorting by an array field uses min/max (not average), verified with a document that sorts
+  first in BOTH directions. Build clean, browser-verified (nav accordion fresh on first check,
+  main-page fix, 3 subtopic pages, breadcrumb, sidebar).
 - [ ] `/mongodb/projections-sorting` — Projections & Sorting
 - [ ] `/mongodb/aggregation-pipeline` — Aggregation Pipeline
 - [ ] `/mongodb/lookup-joins` — $lookup & Joins
