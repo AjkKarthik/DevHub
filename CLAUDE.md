@@ -7152,6 +7152,49 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
     via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the final subtopic.
     **Observability hub Phase 10: 19 of 20 topics complete — only `observability-maturity`
     remains to finish the entire hub.**
+28. **The `observability-maturity` batch — the 23rd and FINAL topic — found and fixed a genuine, self-
+    contained internal contradiction in the main page's own quiz**: one question introduced a
+    completely different 4-level maturity model (Reactive/Proactive/Predictive/Optimized, levels 1-4)
+    than the 5-level (0-4) model used consistently EVERYWHERE else on the page — the quickRef (six
+    entries literally named "Maturity Level 0" through "Level 4"), the theory's own five headings
+    ("Level 0 → Level 1", "Level 1 → Level 2", etc.), the Challenge's own `LEVELS` array
+    (`['Level 0', 'Level 1', 'Level 2', 'Level 3', 'Level 4']`), and the revision summary. The quiz's
+    own "Level 2" included SLOs (which the page's own model reserves for Level 3); the quiz's own
+    "Level 3" included chaos engineering (which the page's own model reserves for Level 4). Caught
+    purely by comparing the page's own sections against each other — zero external research needed,
+    the same self-contained-contradiction pattern this hub has caught many times before, just in its
+    strongest form yet (a rival numbering scheme, not just a wrong fact). Rewrote the quiz question
+    and explanation to match the page's own established 0-4 model precisely. Also fixed the "Roadmap
+    Template" codeTab mistagged `language: 'typescript'` despite containing plain markdown/shell
+    content — fixed to `'bash'`. Three subtopics: (1) **fix-adjacent** — reproduces both models side
+    by side via direct comparison, with a Try It confirming "observability as code" (part of the
+    quiz's old, now-removed Level 4) doesn't appear anywhere in the page's own established Level 4
+    criteria at all; (2) **gap-closing** — the page's own Challenge only returns an anonymous overall
+    score; the page's own separate "Maturity Assessment" codeTab names weakest areas but never
+    computes an overall level. Built and verified `assessMaturity()`, reusing the Challenge's own
+    `getMaturityLevel()` completely unmodified while surfacing named weakest areas with their own
+    `nextStep` guidance attached; (3) **gap-closing** — the page's own AIOps QnA describes anomaly
+    detection in real prose detail ("ML models learn the normal behavior of each metric... alert when
+    a metric deviates significantly") with zero code anywhere. Built and verified a real z-score
+    detector against 8 weeks of simulated MTTR data — correctly staying silent on a moderately
+    elevated week (46 min against a 41.5 baseline) and firing on a genuine regression (120 min),
+    demonstrating exactly the "reduces false positives from misconfigured static thresholds" benefit
+    the QnA describes. No `SUBTOPICS` collision for `observability-maturity` (checked both
+    `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed collision-free, left bare).
+    Nested template-literal interpolation (a single-backslash `\${w.area}` needing to survive as REAL,
+    working interpolation syntax in the displayed code, not literal escaped text) verified correct by
+    extracting and evaluating the exact backtick span as real JavaScript before trusting it. Build
+    passed clean (foreground, explicit exit-code capture, zero `ERROR` lines). **A fresh dev-server
+    start was needed** (the server had died outright during a session interruption, `preview_list`
+    returned an empty array) — resolved with a clean `preview_start` plus polling for a 200 response,
+    fresh on the first check afterward. Browser-verified: nav accordion opens with all 3 subtopic
+    links; both main-page fixes confirmed live via direct component data inspection; all 3 subtopic
+    pages checked individually — zero console errors, correct h1/breadcrumb, 860px wrapper via
+    `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the final subtopic; **a
+    final hub-wide check confirmed all 20 of 20 topic nav toggles now render** across the entire
+    Observability & SRE hub, one per topic. **This completes the Observability & SRE hub's entire
+    Phase 10 rollout — all 20 topics now have deep-dive subtopic pages, 60 subtopic pages total
+    across the hub, finished 2026-09-02.**
 
 ## Current state (update when it changes!)
 
@@ -8210,9 +8253,9 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
   All 22 cards `available: true` in `architecture/observability/home/home.ts`. Progress: `obsTotal=20` in progress.service.ts.
   Observability pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ObsNavComponent at `shared/obs-nav/obs-nav.ts`.
-  Phase 10: 19 of 20 topics have subtopics (`/observability/observability-fundamentals`, pilot
-  batch; `/observability/opentelemetry`; `/observability/sli-slo-sla` — Core Concepts nav group
-  fully done; `/observability/prometheus-metrics`; `/observability/grafana-dashboards`;
+  Phase 10: **COMPLETE — 20 of 20 topics have subtopics** (`/observability/observability-fundamentals`,
+  pilot batch; `/observability/opentelemetry`; `/observability/sli-slo-sla` — Core Concepts nav
+  group fully done; `/observability/prometheus-metrics`; `/observability/grafana-dashboards`;
   `/observability/custom-app-metrics`; `/observability/infrastructure-metrics`;
   `/observability/cloud-native-monitoring` — Metrics nav group fully done;
   `/observability/structured-logging`; `/observability/log-aggregation`;
@@ -8222,8 +8265,9 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
   `/observability/performance-profiling` — Tracing nav group fully done;
   `/observability/alerting-design`; `/observability/on-call-incidents`;
   `/observability/error-budgets-toil` — Alerting & SRE nav group fully done;
-  `/observability/chaos-engineering`; `/observability/ebpf-observability` — 2 of 3 Advanced
-  nav group topics done, 2026-09-02) —
+  `/observability/chaos-engineering`; `/observability/ebpf-observability`;
+  `/observability/observability-maturity` — Advanced nav group fully done, finished 2026-09-02,
+  60 subtopic pages total across the hub) —
   see "Observability & SRE hub subtopic wiring" section above for the `ObsNavComponent` accordion
   structural fix, a real self-authored key-mismatch bug caught during browser verification (not a
   stale-server artifact), a cross-hub `opentelemetry` SUBTOPICS collision already resolved by

@@ -8852,7 +8852,25 @@ off here with a date.
   with all 3 links; all main-page fixes confirmed live; all 3 subtopic pages checked individually
   -- zero console errors, correct h1/breadcrumb, 860px wrapper, tailored sidebar content.
   **Observability hub Phase 10: 19 of 20 topics complete — only observability-maturity remains.**
-- [ ] `/observability/observability-maturity` — Observability Maturity
+- [x] `/observability/observability-maturity` — Observability Maturity (2026-09-02). Phase 10: 3
+  subtopics. Found and fixed a genuine internal contradiction -- one quiz question introduced a
+  completely different 4-level maturity model (Reactive/Proactive/Predictive/Optimized, levels
+  1-4) than the 5-level (0-4) model used everywhere else on the page (quickRef, theory headings,
+  the Challenge's own LEVELS array, revision). The quiz's own "Level 2" included SLOs (reserved
+  for Level 3 in the page's own model); the quiz's own "Level 3" included chaos engineering
+  (reserved for Level 4). Caught purely by comparing the page's own sections against each other.
+  Rewrote the quiz to match the page's own established model. Also fixed a codeTab mistagged
+  'typescript' (plain markdown content) -- fixed to 'bash'. Subtopics: (1) fix-adjacent,
+  reproduces both models side by side; (2) gap-closing, a combined assessMaturity() function
+  merging the Challenge's own overall-score logic with the separate codeTab's own named
+  weakest-areas logic; (3) gap-closing, a real z-score anomaly detector making the AIOps QnA's
+  prose-only claim concrete, verified against simulated MTTR data. No SUBTOPICS collision, left
+  bare. Build passed clean. Needed a fresh dev-server start (died during a session interruption).
+  Browser-verified: nav accordion opens with all 3 links; both main-page fixes confirmed live;
+  all 3 subtopic pages checked individually -- zero console errors, correct h1/breadcrumb, 860px
+  wrapper, tailored sidebar content; confirmed all 20 of 20 topic nav toggles now render
+  hub-wide. **This completes the Observability & SRE hub's entire Phase 10 rollout — all 20
+  topics now have deep-dive subtopic pages, 60 subtopic pages total across the hub.**
 
 #### MongoDB — 21 topic pages
 
