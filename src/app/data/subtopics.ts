@@ -1578,6 +1578,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Building a Real Covered Query', route: '/mongodb/projections-sorting/building-a-real-covered-query' },
     { label: 'Sorting by a Computed Field With $addFields', route: '/mongodb/projections-sorting/sorting-by-a-computed-field-with-addfields' },
   ],
+  'aggregation-pipeline': [
+    { label: 'A Real $lookup Example, Simple and Pipeline Form', route: '/mongodb/aggregation-pipeline/a-real-lookup-example-simple-and-pipeline-form' },
+    { label: 'Bucketing Prices With $bucket and $bucketAuto', route: '/mongodb/aggregation-pipeline/bucketing-prices-with-bucket-and-bucketauto' },
+    { label: 'Paginating With $facet: Data Plus Total Count', route: '/mongodb/aggregation-pipeline/paginating-with-facet-data-plus-total-count' },
+  ],
   closures: [
     { label: 'var Shares One Binding, let Creates One Per Iteration', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
     { label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },

@@ -2637,7 +2637,12 @@ export const routes: Routes = [
       { path: 'building-a-real-covered-query', loadComponent: () => import('./components/data/mongodb/projections-sorting/subtopics/building-a-real-covered-query/building-a-real-covered-query').then(m => m.BuildingARealCoveredQuerySubtopic) },
       { path: 'sorting-by-a-computed-field-with-addfields', loadComponent: () => import('./components/data/mongodb/projections-sorting/subtopics/sorting-by-a-computed-field-with-addfields/sorting-by-a-computed-field-with-addfields').then(m => m.SortingByAComputedFieldWithAddfieldsSubtopic) },
     ] },
-    { path: 'aggregation-pipeline',  loadComponent: () => import('./components/data/mongodb/aggregation-pipeline/aggregation-pipeline').then(m => m.MongoAggregationPipeline) },
+    { path: 'aggregation-pipeline', children: [
+      { path: '', loadComponent: () => import('./components/data/mongodb/aggregation-pipeline/aggregation-pipeline').then(m => m.MongoAggregationPipeline) },
+      { path: 'a-real-lookup-example-simple-and-pipeline-form', loadComponent: () => import('./components/data/mongodb/aggregation-pipeline/subtopics/a-real-lookup-example-simple-and-pipeline-form/a-real-lookup-example-simple-and-pipeline-form').then(m => m.ARealLookupExampleSimpleAndPipelineFormSubtopic) },
+      { path: 'bucketing-prices-with-bucket-and-bucketauto', loadComponent: () => import('./components/data/mongodb/aggregation-pipeline/subtopics/bucketing-prices-with-bucket-and-bucketauto/bucketing-prices-with-bucket-and-bucketauto').then(m => m.BucketingPricesWithBucketAndBucketautoSubtopic) },
+      { path: 'paginating-with-facet-data-plus-total-count', loadComponent: () => import('./components/data/mongodb/aggregation-pipeline/subtopics/paginating-with-facet-data-plus-total-count/paginating-with-facet-data-plus-total-count').then(m => m.PaginatingWithFacetDataPlusTotalCountSubtopic) },
+    ] },
     { path: 'lookup-joins',          loadComponent: () => import('./components/data/mongodb/lookup-joins/lookup-joins').then(m => m.MongoLookupJoins) },
     { path: 'aggregation-expressions', loadComponent: () => import('./components/data/mongodb/aggregation-expressions/aggregation-expressions').then(m => m.MongoAggregationExpressions) },
     { path: 'schema-design-patterns', loadComponent: () => import('./components/data/mongodb/schema-design-patterns/schema-design-patterns').then(m => m.MongoSchemaDesignPatterns) },

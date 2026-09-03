@@ -1,0 +1,26 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Aggregation Pipeline" topicRoute="/mongodb/aggregation-pipeline"
+    subtopicLabel="A Real $lookup Example, Simple and Pipeline Form" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">A Real $lookup Example, Simple and Pipeline Form</h1>
+  <p class="page-subtitle">$lookup is a QuickRef entry and gets a full quiz question with real syntax in its explanation — but no code tab on this page ever demonstrates it, in either form.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic closes the gap on THIS page specifically — the hub's own dedicated Lookup & Joins topic covers $lookup in much greater depth for anyone who needs the fuller picture.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Aggregation Pipeline" topicRoute="/mongodb/aggregation-pipeline"
+    [next]="{ label: 'Bucketing Prices With $bucket and $bucketAuto', route: '/mongodb/aggregation-pipeline/bucketing-prices-with-bucket-and-bucketauto' }" />
+</div>

@@ -160,7 +160,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
 
     <div class="nav-group">
       <p class="nav-group-label">Aggregation</p>
-      <a routerLink="/mongodb/aggregation-pipeline" routerLinkActive="active"><span class="nl-text">Aggregation Pipeline</span>@if(p.isDone('mongo-aggregation-pipeline')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/mongodb/aggregation-pipeline" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Aggregation Pipeline</span>
+        @if(p.isDone('mongo-aggregation-pipeline')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('aggregation-pipeline')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('aggregation-pipeline')"
+                  (click)="toggleSubtopics('aggregation-pipeline', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('aggregation-pipeline'); as apSubs) {
+        @if (isSubtopicsExpanded('aggregation-pipeline')) {
+          <div class="nav-subtopics">
+            @for (s of apSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/mongodb/lookup-joins" routerLinkActive="active"><span class="nl-text">$lookup &amp; Joins</span>@if(p.isDone('mongo-lookup-joins')){<span class="nl-done">✓</span>}</a>
       <a routerLink="/mongodb/aggregation-expressions" routerLinkActive="active"><span class="nl-text">Aggregation Expressions</span>@if(p.isDone('mongo-aggregation-expressions')){<span class="nl-done">✓</span>}</a>
     </div>

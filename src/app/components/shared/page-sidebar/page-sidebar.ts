@@ -34149,6 +34149,38 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Each pipeline stage receives the OUTPUT of the previous stage, not the original collection — field names from an early $project affect what later stages can reference.',
     ],
   },
+  'mongodb/aggregation-pipeline/a-real-lookup-example-simple-and-pipeline-form': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Aggregation Pipeline', route: '/mongodb/aggregation-pipeline' },
+      { label: 'Lookup & Joins',       route: '/mongodb/lookup-joins' },
+    ],
+    tip: '$lookup joins never use an index on the LOCAL collection — only an index on the foreignField of the joined (from) collection speeds up the match, the same way any other join\'s indexing strategy works.',
+    gotchas: [
+      'The pipeline form of $lookup needs its own $match with $expr to compare the let-bound variable against a foreign field — a plain equality filter object cannot reference a $$-prefixed variable.',
+    ],
+  },
+  'mongodb/aggregation-pipeline/bucketing-prices-with-bucket-and-bucketauto': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Aggregation Pipeline', route: '/mongodb/aggregation-pipeline' },
+    ],
+    tip: 'A $bucket boundary is lower-bound inclusive and upper-bound exclusive — a value exactly equal to a boundary always falls into the HIGHER bucket, never the lower one.',
+    gotchas: [
+      'A value outside every defined boundary is silently dropped from the results entirely unless a default bucket is specified — there is no implicit catch-all.',
+    ],
+  },
+  'mongodb/aggregation-pipeline/paginating-with-facet-data-plus-total-count': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Aggregation Pipeline', route: '/mongodb/aggregation-pipeline' },
+      { label: 'Projections & Sorting', route: '/mongodb/projections-sorting' },
+    ],
+    tip: 'Both sub-pipelines inside a $facet see the SAME filtered input — the count sub-pipeline reflects every matching document, not just the ones that made it onto the current page.',
+    gotchas: [
+      'A $skip/$limit sub-pipeline that comes AFTER an expensive stage inside the same $facet branch still pays that stage\'s full cost for every document, not just the page being returned.',
+    ],
+  },
   'mongodb/aggregation-expressions': {
     apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
     related: [

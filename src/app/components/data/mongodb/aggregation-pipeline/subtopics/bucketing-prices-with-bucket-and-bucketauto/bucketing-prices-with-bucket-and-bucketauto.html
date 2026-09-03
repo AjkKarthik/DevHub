@@ -1,0 +1,27 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Aggregation Pipeline" topicRoute="/mongodb/aggregation-pipeline"
+    subtopicLabel="Bucketing Prices With $bucket and $bucketAuto" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">Bucketing Prices With $bucket and $bucketAuto</h1>
+  <p class="page-subtitle">The main page's own QnA gives the exact syntax for both $bucket and $bucketAuto — this subtopic verifies the boundary math precisely, including the edge cases at each price point.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>$bucket and $group are both grouping mechanisms, but $bucket answers a genuinely different question — "which range does this value fall into" — that $group's exact-value grouping can't express directly.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Aggregation Pipeline" topicRoute="/mongodb/aggregation-pipeline"
+    [prev]="{ label: 'A Real $lookup Example, Simple and Pipeline Form', route: '/mongodb/aggregation-pipeline/a-real-lookup-example-simple-and-pipeline-form' }"
+    [next]="{ label: 'Paginating With $facet: Data Plus Total Count', route: '/mongodb/aggregation-pipeline/paginating-with-facet-data-plus-total-count' }" />
+</div>
