@@ -8964,7 +8964,20 @@ off here with a date.
   that `$count` emits nothing at all on empty input. Self-caught a bare-brace-in-prose gotcha in
   the third subtopic's page-subtitle before the build. Build clean, browser-verified (nav accordion
   fresh on first check, 3 subtopic pages, breadcrumb, sidebar, escaped braces render correctly).
-- [ ] `/mongodb/lookup-joins` — $lookup & Joins
+- [x] `/mongodb/lookup-joins` — $lookup & Joins (2026-09-03) — extended `MongoNavComponent`'s
+  toggle to a ninth topic (bare key, no collision). Found and fixed TWO genuine inaccuracies,
+  both externally verified: (1) a QnA claimed `$lookup` is not supported inside `$facet`
+  sub-pipelines — verified via MongoDB's own `$facet` docs this is false (only $collStats,
+  $facet, $geoNear, $indexStats, $out, $merge, $planCacheStats, $search, $searchMeta,
+  $vectorSearch are excluded; $lookup isn't on the list); (2) a theory bullet called the
+  let/pipeline form of $lookup "uncorrelated" — verified via MongoDB's own terminology this is
+  backwards, the let/pipeline form referencing `$$` bindings is what MongoDB calls CORRELATED.
+  3 subtopics: two facet branches each with their own $lookup over shared input; correlated vs.
+  uncorrelated pipelines side by side (global top-3 vs. per-category top-2, verified varying/
+  identical via direct execution); a one-level self-join (employee→manager) the page's own QnA
+  names but never builds, verified null-managerId produces an empty array not an error. Build
+  clean, browser-verified (nav accordion fresh on first check, toggle count 9, both main-page
+  fixes rendering live, 3 subtopic pages, breadcrumb, sidebar).
 - [ ] `/mongodb/aggregation-expressions` — Aggregation Expressions
 - [ ] `/mongodb/schema-design-patterns` — Schema Design Patterns
 - [ ] `/mongodb/data-modelling` — Data Modelling

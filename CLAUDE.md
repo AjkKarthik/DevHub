@@ -7518,6 +7518,54 @@ this same check before any other new hub's first subtopic set:
     console errors, correct h1/breadcrumb, 860px wrapper via `getComputedStyle`, entity-escaped
     braces rendering as literal text, tailored (not DEFAULT) sidebar content confirmed on the final
     subtopic. **MongoDB hub Phase 10: 8 of 21 topics complete.**
+16. **The `lookup-joins` batch found and fixed TWO genuine, well-verified inaccuracies, both
+    checked directly against MongoDB's own official documentation rather than assumed**: the
+    "What are the limits of $lookup" QnA claimed "$lookup in $facet: not supported inside $facet
+    sub-pipelines" — verified via WebFetch against MongoDB's own `$facet` reference page that this
+    is false; the documented exceptions list ($collStats, $facet, $geoNear, $indexStats, $out,
+    $merge, $planCacheStats, $search, $searchMeta, $vectorSearch) never includes $lookup at all,
+    meaning $lookup has always been fully supported inside $facet sub-pipelines. Separately, the
+    "$lookup Performance and Alternatives" theory bullet called the let/pipeline form of $lookup
+    "the uncorrelated $lookup syntax" — verified via WebSearch against MongoDB's own terminology
+    (and a real oneuptime.com writeup citing it directly) that this is backwards: a pipeline
+    $lookup that binds outer-document fields with `let` and references them via `$$` in the
+    sub-pipeline is precisely what MongoDB calls a CORRELATED subquery (result varies per input
+    document); "uncorrelated" describes a sub-pipeline that never references a let binding at all
+    and therefore returns the identical result for every input document, letting MongoDB's planner
+    legitimately cache and reuse it. Fixed both. Three subtopics, each verified via direct Node.js
+    execution: (1) **fix-adjacent** — reproduces two independent $facet branches, each running its
+    own $lookup against the same shared filtered input, verified matching claimed output exactly,
+    with a Try It naming the actual shared reasoning behind every genuinely-excluded stage ($out/
+    $merge write outside the pipeline; $geoNear/$search/$vectorSearch must be the first stage) —
+    contrasted against why $lookup triggers neither constraint; (2) **fix-adjacent** — builds an
+    uncorrelated pipeline $lookup (a global top-3-most-expensive-products sub-pipeline returning
+    the identical array on every order) side by side with a correlated one (a per-category
+    top-2-products sub-pipeline using `let`/`$$category`), verified via direct execution that the
+    uncorrelated version is genuinely identical across 3 different orders while the correlated one
+    varies by category — with a Try It on the easy-to-miss case where a let binding is DECLARED but
+    never referenced, which is still uncorrelated despite superficially "having" the pipeline
+    syntax; (3) **gap-closing** — the QnA names the self-join pattern ("join a collection with
+    itself... useful for graph queries before $graphLookup") in one sentence with zero code
+    anywhere; built a one-level employee→manager self-join, verified via direct execution
+    (including the top-of-chart employee with a null managerId correctly producing an EMPTY manager
+    array, not an error), with a Try It establishing the genuine boundary where a one-level
+    self-join stops being enough (reaching a manager's-manager needs either a second chained
+    $lookup or $graphLookup, tying back to the page's own $graphLookup QnA). No `SUBTOPICS`
+    collision for `lookup-joins` (checked both `subtopics.ts` forms and grepped `app.routes.ts`
+    directly, confirmed collision-free, left bare). All three `exercise.solution` fields swept
+    clean of `<code>`/entity contamination; the standing apostrophe-after-letter sweep found
+    nothing unescaped; `\$`-prefixed operator/variable names (including `$$`-prefixed pipeline
+    variables) inside every codeTab verified correct via a bracket-balance and backtick-parity
+    script before the build. Build passed clean (foreground execution, explicit `EXITCODE:$?`
+    capture, zero `ERROR` lines). Browser-verified with a proactive dev-server restart before
+    checking (fresh on the first check, toggle count 9 as expected): no console errors on any of
+    the 4 pages; nav accordion opens with all 3 subtopic links; both main-page fixes (the QnA
+    correction, requiring expanding both the QnA section's own outer toggle and the specific
+    question's own row, and the theory-bullet correction, rendering directly since theory blocks
+    are not collapsed) confirmed rendering live; all 3 subtopic pages checked individually —
+    correct h1/breadcrumb, 860px wrapper via `getComputedStyle`, `$$`-prefixed pipeline variables
+    confirmed rendering as literal text (not vanished), tailored (not DEFAULT) sidebar content
+    confirmed on the final subtopic. **MongoDB hub Phase 10: 9 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -8605,10 +8653,10 @@ this same check before any other new hub's first subtopic set:
   Progress: `mongoTotal=21` in progress.service.ts. MongoDB pages use `app-common-mistakes` AND
   `app-revision-card`. Reference pages (cheatsheet, interview-prep) have no PageComplete.
   Challenge.language: `'typescript'`. MongoNavComponent at `shared/mongo-nav/mongo-nav.ts`.
-  Phase 10: 8 of 21 topics have subtopics (`/mongodb/fundamentals`, pilot batch;
+  Phase 10: 9 of 21 topics have subtopics (`/mongodb/fundamentals`, pilot batch;
   `/mongodb/installation-setup`; `/mongodb/crud-operations`; `/mongodb/update-operators`;
   `/mongodb/query-operators`; `/mongodb/array-queries`; `/mongodb/projections-sorting`;
-  `/mongodb/aggregation-pipeline`, 2026-09-03) — see
+  `/mongodb/aggregation-pipeline`; `/mongodb/lookup-joins`, 2026-09-03) — see
   "MongoDB hub subtopic wiring" section above for the `MongoNavComponent` accordion structural fix
   (15th `*NavComponent`-based hub in a row missing it at pilot time), the `mongo-fundamentals`/
   `mongo-installation-setup` SUBTOPICS-map collision resolutions (the former collided with the
