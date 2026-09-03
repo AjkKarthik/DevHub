@@ -1,0 +1,26 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Projections & Sorting" topicRoute="/mongodb/projections-sorting"
+    subtopicLabel="The Real Sort Memory Limit Is 100 MB, Not 32" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">The Real Sort Memory Limit Is 100 MB, Not 32</h1>
+  <p class="page-subtitle">The main page stated "32 MB" in four separate places (theory, a QnA, mustKnow, and interviewFocus), while a fifth QnA on the same page correctly said 100 MB — verified, the correct figure is 100 MB.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>This is the same limit the main page's own "Covered Queries" section is trying to help you avoid entirely — a covered query never sorts in memory at all, sidestepping this limit rather than needing to stay under it.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Projections & Sorting" topicRoute="/mongodb/projections-sorting"
+    [next]="{ label: 'Building a Real Covered Query', route: '/mongodb/projections-sorting/building-a-real-covered-query' }" />
+</div>

@@ -34097,10 +34097,44 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       { label: 'Query Operators', route: '/mongodb/query-operators' },
       { label: 'Indexes',         route: '/mongodb/indexes' },
     ],
-    tip: 'A sort without a supporting index requires an in-memory sort with a 32MB working-set limit by default — sorting large result sets without the right index can silently fail or fall back to disk with a real performance cliff.',
+    tip: 'A sort without a supporting index requires an in-memory sort with a 100MB working-set limit by default — sorting large result sets without the right index can silently fail or fall back to disk with a real performance cliff.',
     gotchas: [
       'Projections reduce network transfer but do NOT reduce the work MongoDB does to find matching documents — an inefficient query stays inefficient regardless of the projection.',
       'Excluding _id explicitly (_id: 0) is required, since it is included by default even when other fields are excluded.',
+    ],
+  },
+  'mongodb/projections-sorting/the-real-sort-memory-limit-is-100mb-not-32': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Projections & Sorting', route: '/mongodb/projections-sorting' },
+      { label: 'Indexes',               route: '/mongodb/indexes' },
+    ],
+    tip: 'The QueryExceededMemoryLimitNoDiskUseAllowed error message itself reports the exact byte count (104857600) — a fast way to confirm the real limit directly from the error, without needing to trust any documentation or blog post\'s stated figure.',
+    gotchas: [
+      'allowDiskUse:true is an aggregation-pipeline option — plain find().sort() has no equivalent escape hatch and must rely entirely on an index to avoid the limit.',
+    ],
+  },
+  'mongodb/projections-sorting/building-a-real-covered-query': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Projections & Sorting', route: '/mongodb/projections-sorting' },
+      { label: 'Indexes',               route: '/mongodb/indexes' },
+      { label: 'Query Performance',     route: '/mongodb/query-performance' },
+    ],
+    tip: '_id is included by default even in an inclusion projection — forgetting to explicitly exclude it (_id: 0) is the single most common reason an otherwise-perfect covered-query setup silently falls back to fetching full documents.',
+    gotchas: [
+      'A covering index only stays covering for queries whose filter, sort, AND projection fields are ALL a subset of the indexed fields — adding one new projected field breaks coverage for every query using it.',
+    ],
+  },
+  'mongodb/projections-sorting/sorting-by-a-computed-field-with-addfields': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Projections & Sorting', route: '/mongodb/projections-sorting' },
+      { label: 'Aggregation Pipeline',  route: '/mongodb/aggregation-pipeline' },
+    ],
+    tip: 'find().sort() only ever accepts a document field name — there is no way to sort by an expression in find() at all, which is exactly why this pattern requires switching to the aggregate() API entirely, not just adding an extra option.',
+    gotchas: [
+      'A computed sort field via $addFields has no supporting index by definition — this pattern is inherently an in-memory (or allowDiskUse) sort, never an indexed one.',
     ],
   },
   'mongodb/aggregation-pipeline': {

@@ -137,7 +137,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/mongodb/projections-sorting" routerLinkActive="active"><span class="nl-text">Projections &amp; Sorting</span>@if(p.isDone('mongo-projections-sorting')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/mongodb/projections-sorting" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Projections &amp; Sorting</span>
+        @if(p.isDone('mongo-projections-sorting')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('projections-sorting')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('projections-sorting')"
+                  (click)="toggleSubtopics('projections-sorting', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('projections-sorting'); as psSubs) {
+        @if (isSubtopicsExpanded('projections-sorting')) {
+          <div class="nav-subtopics">
+            @for (s of psSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

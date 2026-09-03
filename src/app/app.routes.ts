@@ -2631,7 +2631,12 @@ export const routes: Routes = [
       { path: 'slicing-arrays-with-the-slice-projection-operator', loadComponent: () => import('./components/data/mongodb/array-queries/subtopics/slicing-arrays-with-the-slice-projection-operator/slicing-arrays-with-the-slice-projection-operator').then(m => m.SlicingArraysWithTheSliceProjectionOperatorSubtopic) },
       { path: 'sorting-by-an-array-field-uses-min-or-max', loadComponent: () => import('./components/data/mongodb/array-queries/subtopics/sorting-by-an-array-field-uses-min-or-max/sorting-by-an-array-field-uses-min-or-max').then(m => m.SortingByAnArrayFieldUsesMinOrMaxSubtopic) },
     ] },
-    { path: 'projections-sorting',   loadComponent: () => import('./components/data/mongodb/projections-sorting/projections-sorting').then(m => m.MongoProjectionsSorting) },
+    { path: 'projections-sorting', children: [
+      { path: '', loadComponent: () => import('./components/data/mongodb/projections-sorting/projections-sorting').then(m => m.MongoProjectionsSorting) },
+      { path: 'the-real-sort-memory-limit-is-100mb-not-32', loadComponent: () => import('./components/data/mongodb/projections-sorting/subtopics/the-real-sort-memory-limit-is-100mb-not-32/the-real-sort-memory-limit-is-100mb-not-32').then(m => m.TheRealSortMemoryLimitIs100mbNot32Subtopic) },
+      { path: 'building-a-real-covered-query', loadComponent: () => import('./components/data/mongodb/projections-sorting/subtopics/building-a-real-covered-query/building-a-real-covered-query').then(m => m.BuildingARealCoveredQuerySubtopic) },
+      { path: 'sorting-by-a-computed-field-with-addfields', loadComponent: () => import('./components/data/mongodb/projections-sorting/subtopics/sorting-by-a-computed-field-with-addfields/sorting-by-a-computed-field-with-addfields').then(m => m.SortingByAComputedFieldWithAddfieldsSubtopic) },
+    ] },
     { path: 'aggregation-pipeline',  loadComponent: () => import('./components/data/mongodb/aggregation-pipeline/aggregation-pipeline').then(m => m.MongoAggregationPipeline) },
     { path: 'lookup-joins',          loadComponent: () => import('./components/data/mongodb/lookup-joins/lookup-joins').then(m => m.MongoLookupJoins) },
     { path: 'aggregation-expressions', loadComponent: () => import('./components/data/mongodb/aggregation-expressions/aggregation-expressions').then(m => m.MongoAggregationExpressions) },

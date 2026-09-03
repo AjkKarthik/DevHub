@@ -1573,6 +1573,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Slicing Arrays With the $slice Projection Operator', route: '/mongodb/array-queries/slicing-arrays-with-the-slice-projection-operator' },
     { label: 'Sorting by an Array Field Uses Min or Max, Not Average', route: '/mongodb/array-queries/sorting-by-an-array-field-uses-min-or-max' },
   ],
+  'projections-sorting': [
+    { label: 'The Real Sort Memory Limit Is 100 MB, Not 32', route: '/mongodb/projections-sorting/the-real-sort-memory-limit-is-100mb-not-32' },
+    { label: 'Building a Real Covered Query', route: '/mongodb/projections-sorting/building-a-real-covered-query' },
+    { label: 'Sorting by a Computed Field With $addFields', route: '/mongodb/projections-sorting/sorting-by-a-computed-field-with-addfields' },
+  ],
   closures: [
     { label: 'var Shares One Binding, let Creates One Per Iteration', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
     { label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },

@@ -1,0 +1,26 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Projections & Sorting" topicRoute="/mongodb/projections-sorting"
+    subtopicLabel="Sorting by a Computed Field With $addFields" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">Sorting by a Computed Field With $addFields</h1>
+  <p class="page-subtitle">The main page's own QnA gives the exact $strLenCP example for sorting by description length — this subtopic builds and verifies it, and confirms find().sort() genuinely cannot do this at all.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>Like the covered-query subtopic before this one, this pattern moves entirely into the aggregation pipeline — the plain find()/sort() API this whole topic otherwise covers simply has no equivalent capability.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Projections & Sorting" topicRoute="/mongodb/projections-sorting"
+    [prev]="{ label: 'Building a Real Covered Query', route: '/mongodb/projections-sorting/building-a-real-covered-query' }" />
+</div>
