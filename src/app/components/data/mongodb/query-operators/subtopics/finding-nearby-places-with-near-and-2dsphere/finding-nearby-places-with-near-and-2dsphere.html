@@ -1,0 +1,26 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Query Operators" topicRoute="/mongodb/query-operators"
+    subtopicLabel="Finding Nearby Places With $near and a 2dsphere Index" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">Finding Nearby Places With $near and a 2dsphere Index</h1>
+  <p class="page-subtitle">The main page's own QnA covers geospatial operators in real depth — this subtopic builds the verified 2dsphere index and $near query it describes, extending its own restaurant example.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>Geospatial querying is the last major operator family the main page discusses in prose without any accompanying code — completing the QuickRef/theory/QnA-to-codeTab gap this batch of subtopics has closed for bitwise operators and position-based array indexes too.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Query Operators" topicRoute="/mongodb/query-operators"
+    [prev]="{ label: 'Querying Permission Bitmasks With $bitsAllSet and $bitsAnySet', route: '/mongodb/query-operators/querying-permission-bitmasks-with-bitsallset' }" />
+</div>

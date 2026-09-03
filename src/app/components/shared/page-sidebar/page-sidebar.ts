@@ -33971,6 +33971,38 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       '$or queries generally cannot use a single compound index as efficiently as an equivalent $and — check explain() output before assuming an index is used.',
     ],
   },
+  'mongodb/query-operators/why-tags-1-needs-its-own-index-not-the-multikey-one': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Query Operators', route: '/mongodb/query-operators' },
+      { label: 'Indexes',         route: '/mongodb/indexes' },
+    ],
+    tip: 'A multikey index (built on the bare array field) stores one entry per array VALUE — an index built on a specific dotted position path like tags.1 is a completely separate, non-multikey index instead.',
+    gotchas: [
+      'A position-specific index only ever helps queries on that EXACT position — checking tags.4 needs its own separate index, not a variation of the tags.1 one.',
+    ],
+  },
+  'mongodb/query-operators/querying-permission-bitmasks-with-bitsallset': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Query Operators', route: '/mongodb/query-operators' },
+    ],
+    tip: 'Bitwise query operators take bit POSITIONS (0-indexed), not the flag VALUES themselves — checking for READ (value 1) means passing position 0, not the number 1.',
+    gotchas: [
+      '$bitsAllSet requires every listed bit to be set; $bitsAnySet requires only one — mixing them up silently changes an AND check into an OR check.',
+    ],
+  },
+  'mongodb/query-operators/finding-nearby-places-with-near-and-2dsphere': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Query Operators', route: '/mongodb/query-operators' },
+      { label: 'Indexes',         route: '/mongodb/indexes' },
+    ],
+    tip: 'GeoJSON coordinates are always [longitude, latitude] — the opposite of the common [lat, lng] convention — swapping them silently queries the wrong hemisphere instead of throwing an error.',
+    gotchas: [
+      '$near requires a 2dsphere (or 2d) index to exist on the queried field at all — without one, the query fails outright rather than falling back to a full scan.',
+    ],
+  },
   'mongodb/update-operators': {
     apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
     related: [

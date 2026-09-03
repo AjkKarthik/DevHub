@@ -1,0 +1,27 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Query Operators" topicRoute="/mongodb/query-operators"
+    subtopicLabel="Querying Permission Bitmasks With $bitsAllSet and $bitsAnySet" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">Querying Permission Bitmasks With $bitsAllSet and $bitsAnySet</h1>
+  <p class="page-subtitle">The main page's own quiz explanation builds a full READ/WRITE/ADMIN bitmask example in prose — this subtopic verifies it against a real bit-check implementation and runs it against concrete permission values.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>This is a distinct family of operators from every other query operator on the main page — the main page's own QuickRef never lists $bitsAllSet/$bitsAnySet at all, despite the quiz devoting a full explanation to them.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Query Operators" topicRoute="/mongodb/query-operators"
+    [prev]="{ label: 'Why tags.1 Needs Its Own Index, Not the Multikey One', route: '/mongodb/query-operators/why-tags-1-needs-its-own-index-not-the-multikey-one' }"
+    [next]="{ label: 'Finding Nearby Places With $near and a 2dsphere Index', route: '/mongodb/query-operators/finding-nearby-places-with-near-and-2dsphere' }" />
+</div>

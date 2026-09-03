@@ -99,7 +99,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
 
     <div class="nav-group">
       <p class="nav-group-label">Querying</p>
-      <a routerLink="/mongodb/query-operators" routerLinkActive="active"><span class="nl-text">Query Operators</span>@if(p.isDone('mongo-query-operators')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/mongodb/query-operators" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Query Operators</span>
+        @if(p.isDone('mongo-query-operators')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('query-operators')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('query-operators')"
+                  (click)="toggleSubtopics('query-operators', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('query-operators'); as qoSubs) {
+        @if (isSubtopicsExpanded('query-operators')) {
+          <div class="nav-subtopics">
+            @for (s of qoSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/mongodb/array-queries" routerLinkActive="active"><span class="nl-text">Array Queries</span>@if(p.isDone('mongo-array-queries')){<span class="nl-done">✓</span>}</a>
       <a routerLink="/mongodb/projections-sorting" routerLinkActive="active"><span class="nl-text">Projections &amp; Sorting</span>@if(p.isDone('mongo-projections-sorting')){<span class="nl-done">✓</span>}</a>
     </div>

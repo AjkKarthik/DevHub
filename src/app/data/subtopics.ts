@@ -1563,6 +1563,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Removing an Array Element by Index: $unset Then $pull', route: '/mongodb/update-operators/removing-an-array-element-by-index-unset-then-pull' },
     { label: 'Optimistic Locking Scoped to One Array Element', route: '/mongodb/update-operators/optimistic-locking-scoped-to-one-array-element' },
   ],
+  'query-operators': [
+    { label: 'Why tags.1 Needs Its Own Index, Not the Multikey One', route: '/mongodb/query-operators/why-tags-1-needs-its-own-index-not-the-multikey-one' },
+    { label: 'Querying Permission Bitmasks With $bitsAllSet and $bitsAnySet', route: '/mongodb/query-operators/querying-permission-bitmasks-with-bitsallset' },
+    { label: 'Finding Nearby Places With $near and a 2dsphere Index', route: '/mongodb/query-operators/finding-nearby-places-with-near-and-2dsphere' },
+  ],
   closures: [
     { label: 'var Shares One Binding, let Creates One Per Iteration', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
     { label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },

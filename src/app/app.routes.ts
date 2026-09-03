@@ -2619,7 +2619,12 @@ export const routes: Routes = [
       { path: 'removing-an-array-element-by-index-unset-then-pull', loadComponent: () => import('./components/data/mongodb/update-operators/subtopics/removing-an-array-element-by-index-unset-then-pull/removing-an-array-element-by-index-unset-then-pull').then(m => m.RemovingAnArrayElementByIndexUnsetThenPullSubtopic) },
       { path: 'optimistic-locking-scoped-to-one-array-element', loadComponent: () => import('./components/data/mongodb/update-operators/subtopics/optimistic-locking-scoped-to-one-array-element/optimistic-locking-scoped-to-one-array-element').then(m => m.OptimisticLockingScopedToOneArrayElementSubtopic) },
     ] },
-    { path: 'query-operators',       loadComponent: () => import('./components/data/mongodb/query-operators/query-operators').then(m => m.MongoQueryOperators) },
+    { path: 'query-operators', children: [
+      { path: '', loadComponent: () => import('./components/data/mongodb/query-operators/query-operators').then(m => m.MongoQueryOperators) },
+      { path: 'why-tags-1-needs-its-own-index-not-the-multikey-one', loadComponent: () => import('./components/data/mongodb/query-operators/subtopics/why-tags-1-needs-its-own-index-not-the-multikey-one/why-tags-1-needs-its-own-index-not-the-multikey-one').then(m => m.WhyTags1NeedsItsOwnIndexNotTheMultikeyOneSubtopic) },
+      { path: 'querying-permission-bitmasks-with-bitsallset', loadComponent: () => import('./components/data/mongodb/query-operators/subtopics/querying-permission-bitmasks-with-bitsallset/querying-permission-bitmasks-with-bitsallset').then(m => m.QueryingPermissionBitmasksWithBitsallsetSubtopic) },
+      { path: 'finding-nearby-places-with-near-and-2dsphere', loadComponent: () => import('./components/data/mongodb/query-operators/subtopics/finding-nearby-places-with-near-and-2dsphere/finding-nearby-places-with-near-and-2dsphere').then(m => m.FindingNearbyPlacesWithNearAnd2dsphereSubtopic) },
+    ] },
     { path: 'array-queries',         loadComponent: () => import('./components/data/mongodb/array-queries/array-queries').then(m => m.MongoArrayQueries) },
     { path: 'projections-sorting',   loadComponent: () => import('./components/data/mongodb/projections-sorting/projections-sorting').then(m => m.MongoProjectionsSorting) },
     { path: 'aggregation-pipeline',  loadComponent: () => import('./components/data/mongodb/aggregation-pipeline/aggregation-pipeline').then(m => m.MongoAggregationPipeline) },
