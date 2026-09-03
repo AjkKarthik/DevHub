@@ -8994,7 +8994,21 @@ off here with a date.
   a subtopic title (apostrophe → "Cannot") before any sibling page could reference it. Build clean,
   browser-verified (nav accordion fresh on first check, toggle count 10, main-page fix rendering
   live, 3 subtopic pages, breadcrumb, sidebar).
-- [ ] `/mongodb/schema-design-patterns` — Schema Design Patterns
+- [x] `/mongodb/schema-design-patterns` — Schema Design Patterns (2026-09-03) — extended
+  `MongoNavComponent`'s toggle to an eleventh topic (bare key, no collision). Found and fixed a
+  genuine race condition in the Challenge solution's `addReview`, caught by cross-referencing it
+  against the page's own earlier Computed Pattern codeTab (which correctly uses a transaction):
+  the Challenge split an atomic increment and a separate avgRating recompute into two un-
+  transacted writes — verified via a concurrency model that a concurrent call can silently
+  overwrite the correct average with a stale one (avgRating: 5 instead of 4). Fixed with ONE
+  atomic update-pipeline call (an array of $set stages), verified against MongoDB's own docs that
+  a later stage CAN reference a field set by an earlier stage in the SAME array (opposite of a
+  single $addFields stage's siblings) — no transaction needed since it's all one document. 3
+  subtopics: the race-condition fix reproduced via a concurrency model; the Attribute Pattern
+  (quiz-named, never built) with a verified $elemMatch false-positive demo; Materialised Path
+  ancestor/descendant queries verified against MongoDB's own tutorial. Build clean,
+  browser-verified (nav accordion fresh on first check, toggle count 11, main-page fix rendering
+  live, 3 subtopic pages, breadcrumb all 4 levels, sidebar).
 - [ ] `/mongodb/data-modelling` — Data Modelling
 - [ ] `/mongodb/time-series` — Time Series Collections
 - [ ] `/mongodb/indexes` — Indexes

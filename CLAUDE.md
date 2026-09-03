@@ -7630,6 +7630,54 @@ this same check before any other new hub's first subtopic set:
     specifically; all 3 subtopic pages checked individually — correct h1/breadcrumb, 860px wrapper
     via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the final subtopic.
     **MongoDB hub Phase 10: 10 of 21 topics complete.**
+18. **The `schema-design-patterns` batch found and fixed a genuine race condition in the main
+    page's own Challenge solution, discovered by cross-referencing it against the page's OWN
+    earlier "Computed Pattern" codeTab**: the Challenge's `addReview` function performed the
+    stats increment ($inc reviewCount/ratingSum + $push recentReviews) as one atomic
+    `findOneAndUpdate`, then made a SEPARATE, later `updateOne` to compute and store `avgRating`
+    from a snapshot captured by the first call — with no transaction wrapping the two, unlike the
+    page's own earlier Computed Pattern codeTab, which correctly wraps its own two writes in a
+    real MongoDB transaction. Verified via a precise concurrency model that if two `addReview`
+    calls for the same product genuinely interleave, the first call's own "recompute avgRating"
+    step can run AFTER a second call's full increment has already landed, silently overwriting the
+    correct average with one computed from stale data (verified: `avgRating: 5` instead of the
+    correct `4`). Fixed by combining everything into ONE atomic call using MongoDB's own
+    update-with-aggregation-pipeline (an array of `$set` stages passed to `updateOne` instead of a
+    plain update document) — verified directly against MongoDB's own documentation (including its
+    own worked example) that, unlike a single `$addFields` stage's siblings, a LATER `$set` stage
+    in this array CAN reference a field set by an EARLIER stage in the SAME array, letting
+    `avgRating` be computed from the freshly-incremented `reviewCount`/`ratingSum` atomically, with
+    no transaction needed since everything lives on one document. Also verified the exact syntax
+    needed to replicate `$push`/`$each`/`$slice`/`$sort` inside a pipeline update (`$concatArrays`
+    + `$sortArray` + `$slice`, since classic update operators cannot be mixed into a pipeline
+    array) before applying it. Three subtopics: (1) **fix-adjacent** — reproduces the exact race
+    via a precise concurrency model, both buggy and fixed versions verified matching claimed
+    output exactly, with a Try It on why a $jsonSchema validator (a different codeTab on the same
+    page) does nothing to prevent this class of bug; (2) **gap-closing** — the page's own quiz
+    explains the Attribute Pattern (`specs: [{k,v}]` + one compound index) in real depth but no
+    codeTab builds one; built it, verified via direct execution that a PLAIN query (no
+    `$elemMatch`) produces a genuine false positive — a movie where "director" and "Nolan" appear
+    on two DIFFERENT array elements (Nolan is actually the producer) incorrectly matches a
+    director=Nolan search, while `$elemMatch` correctly excludes it; (3) **gap-closing** — the
+    page's own QnA names all four tree-structure patterns in one dense paragraph with zero code;
+    built Materialised Path specifically (the one the QnA calls out as easiest for $regex
+    ancestor/descendant queries), verified via MongoDB's own official tutorial that the delimiter
+    convention is comma-bounded on BOTH sides of the path string, plus an independently-verified
+    ancestors query (build every path prefix, then match with `$in`) that MongoDB's own tutorial
+    doesn't show directly. No `SUBTOPICS` collision for `schema-design-patterns` (checked both
+    `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed collision-free, left
+    bare). All three `exercise.solution` fields swept clean of `<code>`/entity contamination; the
+    standing apostrophe-after-letter sweep and the `[prev]`/`[next]`-label straight-apostrophe
+    sweep both found nothing unescaped; bracket-balance and backtick-parity scripts confirmed
+    clean on all three files. Build passed clean (foreground execution, explicit `EXITCODE:$?`
+    capture, zero `ERROR` lines). Browser-verified with a proactive dev-server restart before
+    checking (fresh on the first check, toggle count 11 as expected): no console errors on any of
+    the 4 pages; nav accordion opens with all 3 subtopic links; the main-page fix confirmed
+    rendering live after Reveal Solution + View Code (the update-pipeline comment and
+    `$sortArray`/`$concatArrays` usage present, the old separate "Recompute avgRating" step gone);
+    all 3 subtopic pages checked individually — correct h1/breadcrumb (all 4 levels confirmed),
+    860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the
+    final subtopic. **MongoDB hub Phase 10: 11 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -8717,11 +8765,11 @@ this same check before any other new hub's first subtopic set:
   Progress: `mongoTotal=21` in progress.service.ts. MongoDB pages use `app-common-mistakes` AND
   `app-revision-card`. Reference pages (cheatsheet, interview-prep) have no PageComplete.
   Challenge.language: `'typescript'`. MongoNavComponent at `shared/mongo-nav/mongo-nav.ts`.
-  Phase 10: 10 of 21 topics have subtopics (`/mongodb/fundamentals`, pilot batch;
+  Phase 10: 11 of 21 topics have subtopics (`/mongodb/fundamentals`, pilot batch;
   `/mongodb/installation-setup`; `/mongodb/crud-operations`; `/mongodb/update-operators`;
   `/mongodb/query-operators`; `/mongodb/array-queries`; `/mongodb/projections-sorting`;
-  `/mongodb/aggregation-pipeline`; `/mongodb/lookup-joins`; `/mongodb/aggregation-expressions`,
-  2026-09-03) — see
+  `/mongodb/aggregation-pipeline`; `/mongodb/lookup-joins`; `/mongodb/aggregation-expressions`;
+  `/mongodb/schema-design-patterns`, 2026-09-03) — see
   "MongoDB hub subtopic wiring" section above for the `MongoNavComponent` accordion structural fix
   (15th `*NavComponent`-based hub in a row missing it at pilot time), the `mongo-fundamentals`/
   `mongo-installation-setup` SUBTOPICS-map collision resolutions (the former collided with the
