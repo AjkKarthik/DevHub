@@ -1588,6 +1588,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Correlated vs. Uncorrelated $lookup Subqueries', route: '/mongodb/lookup-joins/correlated-vs-uncorrelated-lookup-subqueries' },
     { label: 'A Real Self-Join: One-Level Org Chart', route: '/mongodb/lookup-joins/a-real-self-join-one-level-org-chart' },
   ],
+  'aggregation-expressions': [
+    { label: 'A Single $addFields Stage Cannot See Its Own New Fields', route: '/mongodb/aggregation-expressions/a-single-addfields-stage-cant-see-its-own-new-fields' },
+    { label: '$let for Reusing a Sub-Expression Without Recomputing It', route: '/mongodb/aggregation-expressions/let-for-reusing-a-sub-expression-without-recomputing-it' },
+    { label: '$dateTrunc for Grouping Events by Day and Hour', route: '/mongodb/aggregation-expressions/datetrunc-for-grouping-events-by-day-and-hour' },
+  ],
   closures: [
     { label: 'var Shares One Binding, let Creates One Per Iteration', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
     { label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },

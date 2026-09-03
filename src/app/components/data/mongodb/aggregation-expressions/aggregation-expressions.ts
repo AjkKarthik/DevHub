@@ -148,8 +148,14 @@ await orders.aggregate([
 
     // Add/subtract duration
     expiresAt: { $dateAdd: { startDate: '$createdAt', unit: 'month', amount: 12 } },
-
-    // Is it expired?
+  }},
+  // A SEPARATE, later $addFields stage -- expressions in one $addFields
+  // object only ever see the document as it was BEFORE that stage, so
+  // isExpired can't reference expiresAt from the SAME stage above (it
+  // would see $expiresAt as missing, which compares as null -- and
+  // null sorts before every Date in BSON order, so $lt would silently
+  // evaluate to true for every document, always).
+  { $addFields: {
     isExpired: { $lt: ['$expiresAt', '$$NOW'] },
   }},
   // Group by month

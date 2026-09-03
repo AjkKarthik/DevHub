@@ -34192,6 +34192,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       '$dateToString and similar date operators require the field to actually be a BSON Date type, not a string that merely looks like a date.',
     ],
   },
+  'mongodb/aggregation-expressions/a-single-addfields-stage-cant-see-its-own-new-fields': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Aggregation Expressions', route: '/mongodb/aggregation-expressions' },
+      { label: 'Aggregation Pipeline',    route: '/mongodb/aggregation-pipeline' },
+    ],
+    tip: 'A missing field compares as null in BSON, and null sorts BEFORE every Date — a $lt comparison against a sibling field that does not exist yet silently evaluates to true for every document, not an error.',
+    gotchas: [
+      'Fix by chaining a SEPARATE, later $addFields stage for any field whose expression needs to reference a sibling field newly computed in the current stage.',
+    ],
+  },
+  'mongodb/aggregation-expressions/let-for-reusing-a-sub-expression-without-recomputing-it': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Aggregation Expressions', route: '/mongodb/aggregation-expressions' },
+      { label: 'Aggregation Pipeline',    route: '/mongodb/aggregation-pipeline' },
+    ],
+    tip: 'Variables declared inside the same $let vars block cannot reference one another — a $$-prefixed reference inside vars always resolves to an OUTER variable, never a sibling being defined right next to it.',
+    gotchas: [
+      'To build one $let-bound variable on top of another, nest a second $let inside the first one\'s own "in" expression.',
+    ],
+  },
+  'mongodb/aggregation-expressions/datetrunc-for-grouping-events-by-day-and-hour': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Aggregation Expressions', route: '/mongodb/aggregation-expressions' },
+      { label: 'Aggregation Pipeline',    route: '/mongodb/aggregation-pipeline' },
+    ],
+    tip: '$dateTrunc always rounds DOWN to the start of the containing unit, and for every unit except "week" its bin edges are anchored to a fixed reference date (2000-01-01T00:00:00Z), not to midnight of the current day.',
+    gotchas: [
+      'startOfWeek only has any effect when unit is "week" — it is silently ignored for every other unit.',
+    ],
+  },
   'mongodb/lookup-joins': {
     apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
     related: [

@@ -1,0 +1,26 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Aggregation Expressions" topicRoute="/mongodb/aggregation-expressions"
+    subtopicLabel="A Single $addFields Stage Cannot See Its Own New Fields" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">A Single $addFields Stage Cannot See Its Own New Fields</h1>
+  <p class="page-subtitle">The main page's own "Date Expressions" codeTab computed isExpired by referencing expiresAt from the SAME $addFields stage — verified against MongoDB's own docs and BSON comparison rules that this silently flags every document as expired.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>This is exactly the chaining pattern the main page's own Challenge solution already uses correctly (subtotal in one stage, tax and grandTotal referencing it in a later one) — recognizing WHEN that chaining is required, not just copying the pattern by habit, is the actual skill this subtopic builds.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Aggregation Expressions" topicRoute="/mongodb/aggregation-expressions"
+    [next]="{ label: 'let for Reusing a Sub-Expression Without Recomputing It', route: '/mongodb/aggregation-expressions/let-for-reusing-a-sub-expression-without-recomputing-it' }" />
+</div>

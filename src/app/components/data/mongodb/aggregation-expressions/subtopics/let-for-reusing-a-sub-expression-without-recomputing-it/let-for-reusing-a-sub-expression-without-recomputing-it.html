@@ -1,0 +1,27 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Aggregation Expressions" topicRoute="/mongodb/aggregation-expressions"
+    subtopicLabel="$let for Reusing a Sub-Expression Without Recomputing It" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">$let for Reusing a Sub-Expression Without Recomputing It</h1>
+  <p class="page-subtitle">One of the main page's own quiz questions explains $let in real detail — declaring local variables to avoid redundant computation — but no codeTab anywhere on the page actually builds one.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>$let's own vars-block restriction turns out to reinforce the sibling subtopic's $addFields finding rather than contradict it — in both cases, something being defined "nearby" is not automatically visible to another thing being defined right next to it, just enforced through a different mechanism (invalid reference vs. silent missing/null).</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Aggregation Expressions" topicRoute="/mongodb/aggregation-expressions"
+    [prev]="{ label: 'A Single $addFields Stage Cannot See Its Own New Fields', route: '/mongodb/aggregation-expressions/a-single-addfields-stage-cant-see-its-own-new-fields' }"
+    [next]="{ label: 'dateTrunc for Grouping Events by Day and Hour', route: '/mongodb/aggregation-expressions/datetrunc-for-grouping-events-by-day-and-hour' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Aggregation Expressions" topicRoute="/mongodb/aggregation-expressions"
+    subtopicLabel="dateTrunc for Grouping Events by Day and Hour" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">$dateTrunc for Grouping Events by Day and Hour</h1>
+  <p class="page-subtitle">One of the main page's own QnAs names $dateTrunc in one clause with zero code anywhere — the page's own "Group by month" example instead uses $year + $month extraction, never $dateTrunc.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="MongoDB 5.0+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>$dateTrunc and the year+month grouping the main page already shows are two genuinely different tools for adjacent jobs — reaching for the right one depends on whether the downstream code needs a real, sortable Date or a specific cross-year calendar-month grouping.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Aggregation Expressions" topicRoute="/mongodb/aggregation-expressions"
+    [prev]="{ label: 'let for Reusing a Sub-Expression Without Recomputing It', route: '/mongodb/aggregation-expressions/let-for-reusing-a-sub-expression-without-recomputing-it' }" />
+</div>
