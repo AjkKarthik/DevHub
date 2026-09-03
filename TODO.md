@@ -8900,7 +8900,19 @@ off here with a date.
   localhost, no restart needed). 3 subtopics, one per fix. Build clean, hit and resolved the
   established stale-dev-server-artifact (needed a full server restart, not just a hard reload),
   browser-verified (nav accordion, all 3 main-page fixes, 3 subtopic pages, breadcrumb, sidebar).
-- [ ] `/mongodb/crud-operations` — CRUD Operations
+- [x] `/mongodb/crud-operations` — CRUD Operations (2026-09-03) — extended `MongoNavComponent`'s
+  toggle to a third topic (bare key, no collision). Found and fixed a genuine inaccuracy in the
+  soft-delete theory bullet: it paired a `{ deletedAt: null }` query with a partial index built on
+  `{ deletedAt: { $exists: true } }` — verified via MongoDB's own partial-index eligibility rule
+  and a direct simulation that these two filters cover entirely different documents (the broken
+  index includes the deleted doc, excludes an active-but-missing-field one). Fixed the index to
+  match the query's own filter. 3 subtopics: the verified filter-mismatch simulation; a real
+  `bulkWrite()` call mixing insertOne/updateOne/deleteOne/updateMany (the page names bulkWrite at
+  length but never shows the actual syntax); session-based causal consistency
+  (`client.startSession()`/`{ session }`, turning the page's own shopping-cart QnA prose into real
+  code). Self-caught two bare-brace-in-prose gotchas in the new subtopics' own page-subtitles
+  before the build. Build clean, browser-verified (nav accordion opened fresh on the first check,
+  main-page fix, 3 subtopic pages, breadcrumb, sidebar).
 - [ ] `/mongodb/update-operators` — Update Operators
 - [ ] `/mongodb/query-operators` — Query Operators
 - [ ] `/mongodb/array-queries` — Array Queries

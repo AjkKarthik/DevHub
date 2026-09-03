@@ -7330,6 +7330,45 @@ this same check before any other new hub's first subtopic set:
     inspection; all 3 subtopic pages checked individually — correct h1/breadcrumb, 860px wrapper
     via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the final
     subtopic. **MongoDB hub Phase 10: 2 of 21 topics complete.**
+11. **The `crud-operations` batch found and fixed a genuine, self-contained inaccuracy in the main
+    page's own soft-delete theory bullet**: it paired a `{ deletedAt: null }` query with a partial
+    index built on `partialFilterExpression: { deletedAt: { $exists: true } }`. Verified via
+    MongoDB's own documented partial-index eligibility rule (a query can only use a partial index
+    when its own filter matches the index's filter expression) and a direct simulation across
+    three representative documents — active-explicit-null, deleted, active-missing-field — that
+    these two filters cover entirely different document sets: the broken index includes the
+    DELETED document (it has the field, just non-null) and excludes the active-but-missing-field
+    one, while the query does the exact opposite. Fixed the index to use the SAME filter as the
+    query, `{ deletedAt: null }`, confirmed both syntactically valid (a plain equality expression
+    is one of the documented allowed partial-index filter forms) and semantically correct. 3
+    subtopics, each verified via direct Node.js execution: (1) **fix-adjacent** — the exact
+    simulation reproducing the mismatch, with a Try It confirming `$exists: true` is STILL wrong
+    even after a hypothetical migration eliminates the missing-field case entirely (it still
+    covers the deleted document, which the query never wants); (2) **gap-closing** — `bulkWrite()`
+    gets a QuickRef entry, an entire theory section, and two QnAs, but zero actual `bulkWrite()`
+    syntax appears in any of the page's four codeTabs; built a real mixed-operation call
+    (`insertOne`/`updateOne`/`deleteOne`/`updateMany` in one array) with `writeErrors` inspection,
+    turning the page's own ordered-bulkWrite-failure QnA prose into working result-checking code;
+    (3) **gap-closing** — the causal-consistency QnA describes the exact shopping-cart
+    write-then-read-on-secondary scenario in real detail, naming `client.startSession()` and
+    `afterClusterTime` by name, but never shows the actual session code; built it, with a Try It
+    on why an UNRELATED call with no `{ session }` gets no guarantee at all regardless of how
+    recently a different session's own write happened. **Self-caught and fixed two bare-single-
+    brace-in-prose gotchas during the standing pre-build sweep** — both new subtopics' own
+    page-subtitle text contained literal `{ deletedAt: null }` / `{ session }` as static `.html`
+    text (Angular's AOT template compiler treats a bare `{` as a potential ICU-expansion start
+    regardless of a later matching `}`), entity-escaped to `&#123;`/`&#125;` before the build ever
+    ran — confirmed via a live browser check afterward that both render as literal brace
+    characters, not raw entity codes. No `SUBTOPICS` collision for `crud-operations` (checked
+    both `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed collision-free, left
+    bare). Build passed clean (foreground execution, explicit `EXITCODE:$?` capture, zero `ERROR`
+    lines). Browser-verified with a proactive dev-server restart before checking (fresh on the
+    first check — the toggle count correctly read 3 immediately, no repeat of the prior batch's
+    stale-server incident): no console errors on any of the 4 pages; nav accordion opens with all
+    3 subtopic links; the main-page fix confirmed rendering live via direct component data
+    inspection; all 3 subtopic pages checked individually — correct h1/breadcrumb, 860px wrapper
+    via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the final
+    subtopic. **MongoDB hub Phase 10: 3 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -8417,8 +8456,8 @@ this same check before any other new hub's first subtopic set:
   Progress: `mongoTotal=21` in progress.service.ts. MongoDB pages use `app-common-mistakes` AND
   `app-revision-card`. Reference pages (cheatsheet, interview-prep) have no PageComplete.
   Challenge.language: `'typescript'`. MongoNavComponent at `shared/mongo-nav/mongo-nav.ts`.
-  Phase 10: 2 of 21 topics have subtopics (`/mongodb/fundamentals`, pilot batch;
-  `/mongodb/installation-setup`, 2026-09-03) — see
+  Phase 10: 3 of 21 topics have subtopics (`/mongodb/fundamentals`, pilot batch;
+  `/mongodb/installation-setup`; `/mongodb/crud-operations`, 2026-09-03) — see
   "MongoDB hub subtopic wiring" section above for the `MongoNavComponent` accordion structural fix
   (15th `*NavComponent`-based hub in a row missing it at pilot time), the `mongo-fundamentals`/
   `mongo-installation-setup` SUBTOPICS-map collision resolutions (the former collided with the
