@@ -8874,7 +8874,19 @@ off here with a date.
 
 #### MongoDB — 21 topic pages
 
-- [ ] `/mongodb/fundamentals` — MongoDB Fundamentals
+- [x] `/mongodb/fundamentals` — MongoDB Fundamentals (2026-09-03) — first MongoDB hub pilot batch.
+  Fixed `MongoNavComponent`'s missing subtopics-accordion structural gap (15th `*NavComponent` hub
+  in a row missing it at pilot time), hub-prefixed the `SUBTOPICS` key to `mongo-fundamentals`
+  (bare `fundamentals` already claimed by the JavaScript hub). Found and fixed a genuine
+  dual-source-verified inaccuracy in the main page's own "Not closing the MongoClient" mistake
+  block: it attributed 100 to "the server's connection limit," when 100 is actually the Node.js
+  driver's own per-client `maxPoolSize` default — the real server ceiling
+  (`net.maxIncomingConnections`) defaults to 65536, a completely different, much larger number.
+  3 subtopics: the verified driver-vs-server crossover point (656 leaked clients); a real
+  optimistic-concurrency `findOneAndUpdate`-with-version-filter implementation (the QnA's own
+  one-sentence description, turned into verified working code); a GridFS chunk/reassemble
+  round-trip verified against the real 255 KiB (261,120-byte) default chunk size. Build clean,
+  browser-verified (nav accordion, main-page fix, 3 subtopic pages, breadcrumb, sidebar).
 - [ ] `/mongodb/installation-setup` — Installation & Setup
 - [ ] `/mongodb/crud-operations` — CRUD Operations
 - [ ] `/mongodb/update-operators` — Update Operators

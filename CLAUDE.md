@@ -7196,6 +7196,95 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
     Phase 10 rollout — all 20 topics now have deep-dive subtopic pages, 60 subtopic pages total
     across the hub, finished 2026-09-02.**
 
+### MongoDB hub subtopic wiring — first pilot; the 15th `*NavComponent` in a row missing the
+subtopics-accordion structural fix
+
+Confirmed via direct file inspection before the pilot (`/mongodb/fundamentals`, 2026-09-03) — do
+this same check before any other new hub's first subtopic set:
+
+1. **`MongoNavComponent` (`shared/mongo-nav/mongo-nav.ts`) had ZERO subtopics-accordion support** —
+   the same structural gap already hit and fixed on every `*NavComponent`-based hub's own pilot
+   before it (Go, DevOps, Containers, AWS, Azure, Linux, Terraform, Service Mesh, System Design,
+   Architecture Patterns, Design Patterns, Security, API Design, Observability — this is the 15th
+   in a row). Fixed identically: added `signal`, `Router`, `NavigationEnd`, `filter` (rxjs), and
+   `SUBTOPICS` (from `../../../data/subtopics`) to the imports, then the same three methods
+   (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`) and constructor-level router
+   subscription, copied directly from `ObsNavComponent`'s own implementation (read directly, not
+   reconstructed from memory, per the established copy-fidelity discipline). Worked correctly on
+   the first browser check — no stale-chunk incident, verified via both `window.ng.getComponent()`
+   direct calls and a live DOM query for `.nav-subtopic-link` elements.
+2. **Real `SUBTOPICS` map bare-key collision**: `fundamentals` was already claimed by the
+   JavaScript hub's own `/javascript/fundamentals` topic (checked both quoted and unquoted forms,
+   per the standing collision-detection discipline). Hub-prefixed to `mongo-fundamentals` —
+   matching this hub's own established progress/search key prefix (`mongo-`, confirmed via the
+   pre-existing `p.isDone('mongo-fundamentals')` nav markup) — with the usual `// NOTE:` comment.
+   The `MongoNavComponent` accordion helper calls (`subtopicsOf`/`isSubtopicsExpanded`/
+   `toggleSubtopics`) all use the prefixed `'mongo-fundamentals'` key consistently.
+3. **`SIDEBAR_MAP` keys are FULL-PATH PREFIXED** (`'mongodb/fundamentals'`, confirmed the base
+   entry — and its own `MONGO_DEFAULT` constant — already existed) — subtopic composite keys
+   follow suit: `'mongodb/fundamentals/<slug>'`.
+4. **`MONGO_LABELS` breadcrumb map uses bare keys** (`'fundamentals'`), matching the generic
+   pattern every hub's own dedicated labels map shares — composite subtopic keys there are bare
+   too (`'fundamentals/<slug>'`).
+5. **Progress/search keys are `mongo-` PREFIXED** (`mongo-fundamentals`), confirmed via existing
+   nav markup and `search.ts`'s own dedicated `mongo-` → `/mongodb/` prefix-strip rule, which
+   already handles composite subtopic routes (`mongo-fundamentals/<slug>` → `/mongodb/fundamentals/
+   <slug>`) correctly with no special-casing needed.
+6. **A stale "Current state" figure corrected**: this file's own MongoDB summary previously stated
+   the accent color as `#00ed64` — direct inspection of the real `fundamentals.scss` shows the
+   actual values are `$accent: #13aa52`, `$tint: #e8fef4` — corrected below, matching the same
+   verify-before-recommend discipline already applied to the earlier Python and Architecture
+   Patterns hub corrections in this file.
+7. **`.mongo-page` wrapper rule is NOT global** (confirmed absent from `src/styles.scss`, despite
+   being fully baked into the topic page's OWN component `.scss` with `max-width`/`padding`
+   together) — every subtopic `.scss` needs the standard standalone
+   `.mongo-page { max-width: 860px; margin: 0 auto; }` rule, with `.subtopic-page`'s own padding
+   declared separately, matching the majority non-global-wrapper convention.
+8. **No live playground** — MongoDB shell/driver content has no in-browser runtime, following the
+   same `<app-code-block>`-only pattern as every other non-JS-runtime-specific hub — every code tab
+   uses plain TypeScript driver-shaped snippets, matching the main page's own `codeTabs` style
+   exactly. Icon content: `🍃` (light tint fill), `tech="javascript"` in `app-page-meta`.
+9. **The `fundamentals` pilot batch found and fixed a genuine, dual-source-verified inaccuracy in
+   the main page's own "Not closing the MongoClient" mistake block**: it attributed the number 100
+   to "the server's connection limit (default 100 per mongod)." Verified via WebSearch against both
+   sides of that claim independently: the Node.js driver's own `maxPoolSize` option — the actual
+   source of "100" — defaults to 100, but caps only ONE `MongoClient` instance's own pool; the
+   mongod SERVER's own real ceiling, `net.maxIncomingConnections`, defaults to 65536 — over 650×
+   larger, a completely different setting on a completely different side of the connection. Fixed
+   the explanation to state the real mechanism: leaking many clients (each up to 100 connections)
+   is what can climb toward the server's own much larger ceiling, not any single client on its own.
+   Three subtopics: (1) **fix-adjacent** — a direct simulation (verified via Node execution)
+   pinpointing the exact crossover point: 655 leaked clients stays under the server's 65536 ceiling,
+   656 crosses it — with a Try It computing the same crossover for a lowered `maxPoolSize` of 20
+   (verified: 3277 clients, roughly 5× more than the default-100 case, since a smaller per-client
+   cap makes any one leak less dangerous without fixing the underlying bug); (2) **gap-closing** —
+   the QnA's own "read the version, update only if it matches, increment it" optimistic-concurrency
+   sentence had zero code anywhere; built and verified (via a direct Node simulation of
+   `findOneAndUpdate`'s atomic filter-then-update semantics) a real version-field implementation,
+   confirming a stale-version write returns `null` rather than throwing, and that a retry after
+   re-reading the current version succeeds; (3) **gap-closing** — the document-size-limit QnA names
+   GridFS's real "255 KB chunks... fs.files / fs.chunks" mechanism in one sentence with zero code;
+   verified GridFS's exact default chunk size via WebSearch (255 KiB = 261,120 bytes, not a round
+   255,000) and built a chunk/reassemble round-trip verified via direct execution on a 20 MB buffer
+   (81 chunks: 80 full + one 81,920-byte remainder, reassembling byte-for-byte identical to the
+   original) plus a Try It confirming the exact-multiple-file boundary case (522,240 bytes produces
+   exactly 2 full chunks, no trailing empty third chunk). No further `SUBTOPICS` collision beyond
+   the `fundamentals` hub-prefix resolved above. All three `exercise.solution` fields swept clean of
+   `<code>`/entity contamination (plain-interpolation rule); the standing apostrophe-after-letter
+   sweep found nothing unescaped across all three `.ts` files; the nested backtick/`${...}`
+   escaping inside subtopic 1's own codeTab was verified correct by extracting and evaluating the
+   exact backtick span as real JavaScript before trusting it (confirmed rendering literal backticks
+   and live interpolation syntax, not stray backslashes), per the established verification
+   technique. Build passed clean (foreground execution, explicit `EXITCODE:$?` capture, zero
+   `ERROR` lines). Browser-verified with a proactive dev-server restart before checking (matching
+   this session's own established practice): no console errors on any of the 4 pages; nav accordion
+   opens with all 3 subtopic links, confirmed via both `window.ng.getComponent()` direct calls and
+   a live DOM query; the main-page fix confirmed rendering live via direct component data
+   inspection; all 3 subtopic pages checked individually — correct h1, 860px wrapper via
+   `getComputedStyle`, breadcrumb showing all 4 levels on the first subtopic; tailored (not
+   DEFAULT) sidebar content confirmed on the final subtopic. **MongoDB hub Phase 10: 1 of 21
+   topics complete.**
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
@@ -8273,6 +8362,21 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
   stale-server artifact), a cross-hub `opentelemetry` SUBTOPICS collision already resolved by
   the ASP.NET hub's own earlier `aspnet-opentelemetry` prefix, and a genuine broken-JSON bug found
   and fixed in the `grafana-dashboards` main page's own mistake block.
+- **MongoDB hub**: 21 trackable topic pages + 2 reference (23 cards total). Feature-complete.
+  Green theme `$accent: #13aa52`, `$tint: #e8fef4` (corrected 2026-09-03 — previously misdocumented
+  as `#00ed64`; confirmed against the real `fundamentals.scss`). Search prefix `mongo-`. Route: `/mongodb`.
+  CSS classes: `.mongo-page`, `.mongo-icon`, `.mongo-section`. Icon content: `🍃` at `font-size: 1.8rem`. `tech="javascript"`.
+  Nav groups: Foundations, CRUD, Querying, Aggregation, Schema Design, Performance, Transactions &
+  Streaming, Advanced, Reference. All 23 cards `available: true` in `data/mongodb/home/home.ts`.
+  Progress: `mongoTotal=21` in progress.service.ts. MongoDB pages use `app-common-mistakes` AND
+  `app-revision-card`. Reference pages (cheatsheet, interview-prep) have no PageComplete.
+  Challenge.language: `'typescript'`. MongoNavComponent at `shared/mongo-nav/mongo-nav.ts`.
+  Phase 10: 1 of 21 topics have subtopics (`/mongodb/fundamentals`, pilot batch, 2026-09-03) — see
+  "MongoDB hub subtopic wiring" section above for the `MongoNavComponent` accordion structural fix
+  (15th `*NavComponent`-based hub in a row missing it at pilot time), the `mongo-fundamentals`
+  SUBTOPICS-map collision resolution (collided with the JavaScript hub's own bare `fundamentals`
+  topic key), and the genuine driver-vs-server connection-limit inaccuracy found and fixed in the
+  main page's own "Not closing the MongoClient" mistake block.
 - **Hub home**: Angular, C#, ASP.NET Core, SQL, TypeScript, React, JavaScript, CSS, HTML, Blazor, Go, Node.js, Python, DevOps, AWS, Azure, Linux, Redis, GraphQL, Messaging, Testing, DSA, AI/ML, Containers/K8s, Terraform/IaC, Service Mesh, System Design, Architecture Patterns, Design Patterns, Security, API Design, Observability, Web Performance, and MongoDB are all `available: true`. Everything else "Soon".
 - Progress totals: Angular 58, C# 50, ASP.NET Core 45, SQL 44, TypeScript 20, React 17, JavaScript 22, CSS 22, HTML 23, Web Performance 20, Blazor 20, Go 21, Node.js 23, Python 21, DevOps 21, AWS 21, Azure 22, Linux 19, Redis 21, GraphQL 20, Messaging 20, Testing 19, DSA 21, AI 19, Containers/K8s 22, Terraform 21, Service Mesh 19, System Design 24, Architecture Patterns 22, Design Patterns 36, Security 23, API Design 19, Observability 20, MongoDB 21 (`progress.service.ts`).
 - Hero stat: "933+ Live Pages" (corrected 2026-07-01 — hub-home.ts's Angular card was showing `topics: 63` instead of the actual 68, undercounting the site total by 5).
