@@ -34,7 +34,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/mongodb/installation-setup" routerLinkActive="active"><span class="nl-text">Installation &amp; Setup</span>@if(p.isDone('mongo-installation-setup')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/mongodb/installation-setup" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Installation &amp; Setup</span>
+        @if(p.isDone('mongo-installation-setup')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('mongo-installation-setup')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('mongo-installation-setup')"
+                  (click)="toggleSubtopics('mongo-installation-setup', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('mongo-installation-setup'); as instSubs) {
+        @if (isSubtopicsExpanded('mongo-installation-setup')) {
+          <div class="nav-subtopics">
+            @for (s of instSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

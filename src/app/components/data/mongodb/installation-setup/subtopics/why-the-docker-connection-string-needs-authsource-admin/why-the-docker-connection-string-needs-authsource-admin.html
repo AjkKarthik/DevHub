@@ -1,0 +1,26 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Installation & Setup" topicRoute="/mongodb/installation-setup"
+    subtopicLabel="Why the Docker Connection String Needs authSource=admin" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">Why the Docker Connection String Needs authSource=admin</h1>
+  <p class="page-subtitle">The main page's own "Docker Quick-start" theory bullet gave a connection string missing authSource=admin — verified against the driver's real fallback rule, that omission means the connection would fail to authenticate.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>This same authSource confusion is exactly what the next subtopic's own localhost exception depends on getting right — the first user is deliberately created IN the admin database, which is the whole reason every later connection using that user needs authSource=admin explicitly stated.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Installation & Setup" topicRoute="/mongodb/installation-setup"
+    [next]="{ label: 'The Real Path to Enabling Auth: the Localhost Exception', route: '/mongodb/installation-setup/the-real-path-to-enabling-auth-the-localhost-exception' }" />
+</div>

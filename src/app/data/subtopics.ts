@@ -1542,6 +1542,17 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Implementing Optimistic Concurrency With a Version Field', route: '/mongodb/fundamentals/implementing-optimistic-concurrency-with-a-version-field' },
     { label: 'Chunking and Reassembling a File With GridFS', route: '/mongodb/fundamentals/chunking-and-reassembling-a-file-with-gridfs' },
   ],
+  // NOTE: keyed 'mongo-installation-setup' — proactively hub-prefixed even
+  // though no ACTIVE collision exists today, since the Redis hub also has
+  // its own bare 'installation-setup' route and no subtopics-accordion
+  // support in RedisNavComponent yet; matches the established proactive
+  // hub-prefix precedent (Design Patterns' clean-architecture, Security's
+  // sec-api-security).
+  'mongo-installation-setup': [
+    { label: 'Why the Docker Connection String Needs authSource=admin', route: '/mongodb/installation-setup/why-the-docker-connection-string-needs-authsource-admin' },
+    { label: 'The Real Path to Enabling Auth: the Localhost Exception', route: '/mongodb/installation-setup/the-real-path-to-enabling-auth-the-localhost-exception' },
+    { label: 'The Real maxIncomingConnections Default Is 65536', route: '/mongodb/installation-setup/the-real-maxincomingconnections-default-is-65536' },
+  ],
   closures: [
     { label: 'var Shares One Binding, let Creates One Per Iteration', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
     { label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },

@@ -1,0 +1,27 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Installation & Setup" topicRoute="/mongodb/installation-setup"
+    subtopicLabel="The Real Path to Enabling Auth: the Localhost Exception" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">The Real Path to Enabling Auth: the Localhost Exception</h1>
+  <p class="page-subtitle">The main page's own QnA claimed the admin user must be created BEFORE enabling authorization, with a restart-without-auth as the only way around it — verified against MongoDB's own docs, that gets the real, documented mechanism backwards.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>The user this exception creates lives in the admin database by design — which is exactly why the previous subtopic's own authSource=admin fix matters for every connection that uses it afterward.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Installation & Setup" topicRoute="/mongodb/installation-setup"
+    [prev]="{ label: 'Why the Docker Connection String Needs authSource=admin', route: '/mongodb/installation-setup/why-the-docker-connection-string-needs-authsource-admin' }"
+    [next]="{ label: 'The Real maxIncomingConnections Default Is 65536', route: '/mongodb/installation-setup/the-real-maxincomingconnections-default-is-65536' }" />
+</div>

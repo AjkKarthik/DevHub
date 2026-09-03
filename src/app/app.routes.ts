@@ -2601,7 +2601,12 @@ export const routes: Routes = [
       { path: 'implementing-optimistic-concurrency-with-a-version-field', loadComponent: () => import('./components/data/mongodb/fundamentals/subtopics/implementing-optimistic-concurrency-with-a-version-field/implementing-optimistic-concurrency-with-a-version-field').then(m => m.ImplementingOptimisticConcurrencyWithAVersionFieldSubtopic) },
       { path: 'chunking-and-reassembling-a-file-with-gridfs', loadComponent: () => import('./components/data/mongodb/fundamentals/subtopics/chunking-and-reassembling-a-file-with-gridfs/chunking-and-reassembling-a-file-with-gridfs').then(m => m.ChunkingAndReassemblingAFileWithGridfsSubtopic) },
     ] },
-    { path: 'installation-setup',    loadComponent: () => import('./components/data/mongodb/installation-setup/installation-setup').then(m => m.MongoInstallationSetup) },
+    { path: 'installation-setup', children: [
+      { path: '', loadComponent: () => import('./components/data/mongodb/installation-setup/installation-setup').then(m => m.MongoInstallationSetup) },
+      { path: 'why-the-docker-connection-string-needs-authsource-admin', loadComponent: () => import('./components/data/mongodb/installation-setup/subtopics/why-the-docker-connection-string-needs-authsource-admin/why-the-docker-connection-string-needs-authsource-admin').then(m => m.WhyTheDockerConnectionStringNeedsAuthsourceAdminSubtopic) },
+      { path: 'the-real-path-to-enabling-auth-the-localhost-exception', loadComponent: () => import('./components/data/mongodb/installation-setup/subtopics/the-real-path-to-enabling-auth-the-localhost-exception/the-real-path-to-enabling-auth-the-localhost-exception').then(m => m.TheRealPathToEnablingAuthTheLocalhostExceptionSubtopic) },
+      { path: 'the-real-maxincomingconnections-default-is-65536', loadComponent: () => import('./components/data/mongodb/installation-setup/subtopics/the-real-maxincomingconnections-default-is-65536/the-real-maxincomingconnections-default-is-65536').then(m => m.TheRealMaxincomingconnectionsDefaultIs65536Subtopic) },
+    ] },
     { path: 'crud-operations',       loadComponent: () => import('./components/data/mongodb/crud-operations/crud-operations').then(m => m.MongoCrudOperations) },
     { path: 'update-operators',      loadComponent: () => import('./components/data/mongodb/update-operators/update-operators').then(m => m.MongoUpdateOperators) },
     { path: 'query-operators',       loadComponent: () => import('./components/data/mongodb/query-operators/query-operators').then(m => m.MongoQueryOperators) },

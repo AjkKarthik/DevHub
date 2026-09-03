@@ -33882,6 +33882,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Connection string format differences (srv vs standard) trip up many developers moving between Atlas and self-hosted setups.',
     ],
   },
+  'mongodb/installation-setup/why-the-docker-connection-string-needs-authsource-admin': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Installation & Setup', route: '/mongodb/installation-setup' },
+      { label: 'Security & Auth',      route: '/mongodb/security' },
+    ],
+    tip: 'authSource silently falls back to whatever database is in the connection string\'s own path segment — it does NOT default to "admin" unless the path segment is also empty.',
+    gotchas: [
+      'A missing authSource fails with a generic authentication error, not a message naming the wrong database it actually tried.',
+    ],
+  },
+  'mongodb/installation-setup/the-real-path-to-enabling-auth-the-localhost-exception': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Installation & Setup', route: '/mongodb/installation-setup' },
+      { label: 'Security & Auth',      route: '/mongodb/security' },
+    ],
+    tip: 'The localhost exception grants create-the-first-user access only — it never grants ongoing unauthenticated access, and it closes itself permanently the instant that first user exists.',
+    gotchas: [
+      'The localhost exception only applies to connections actually originating from localhost — a container reaching mongod over the Docker network is not localhost from mongod\'s own point of view.',
+    ],
+  },
+  'mongodb/installation-setup/the-real-maxincomingconnections-default-is-65536': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Installation & Setup', route: '/mongodb/installation-setup' },
+      { label: 'MongoDB Fundamentals', route: '/mongodb/fundamentals' },
+    ],
+    tip: 'net.maxIncomingConnections is itself automatically capped by the OS\'s own file-descriptor limit — raising the config value alone does nothing without also raising ulimit -n.',
+    gotchas: [
+      'This is the SAME distinction the Fundamentals topic\'s own subtopic on maxPoolSize covers — a driver-side per-client cap versus this server-side total cap are two entirely different numbers.',
+    ],
+  },
   'mongodb/crud-operations': {
     apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
     related: [
