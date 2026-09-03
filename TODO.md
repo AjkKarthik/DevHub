@@ -8887,7 +8887,19 @@ off here with a date.
   one-sentence description, turned into verified working code); a GridFS chunk/reassemble
   round-trip verified against the real 255 KiB (261,120-byte) default chunk size. Build clean,
   browser-verified (nav accordion, main-page fix, 3 subtopic pages, breadcrumb, sidebar).
-- [ ] `/mongodb/installation-setup` — Installation & Setup
+- [x] `/mongodb/installation-setup` — Installation & Setup (2026-09-03) — extended
+  `MongoNavComponent`'s toggle to a second topic, hub-prefixed proactively to
+  `mongo-installation-setup` (Redis hub also has a bare `installation-setup` route). Found and
+  fixed THREE genuine inaccuracies: the Docker Quick-start theory bullet's own connection string
+  was missing `authSource=admin` (verified against the driver's real 3-tier fallback rule — it
+  resolves to the path database, not always "admin"); a QnA's "maxIncomingConnections default
+  1,000,000" claim (verified via WebSearch: the real default is 65536, further capped by the OS's
+  file-descriptor limit); and a QnA claiming the admin user must be created before enabling
+  authorization with a restart as the only fix (verified against MongoDB's own docs: the real,
+  standard mechanism is the "localhost exception" — enable auth first, then bootstrap via
+  localhost, no restart needed). 3 subtopics, one per fix. Build clean, hit and resolved the
+  established stale-dev-server-artifact (needed a full server restart, not just a hard reload),
+  browser-verified (nav accordion, all 3 main-page fixes, 3 subtopic pages, breadcrumb, sidebar).
 - [ ] `/mongodb/crud-operations` — CRUD Operations
 - [ ] `/mongodb/update-operators` — Update Operators
 - [ ] `/mongodb/query-operators` — Query Operators

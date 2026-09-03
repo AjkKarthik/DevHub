@@ -7284,6 +7284,52 @@ this same check before any other new hub's first subtopic set:
    `getComputedStyle`, breadcrumb showing all 4 levels on the first subtopic; tailored (not
    DEFAULT) sidebar content confirmed on the final subtopic. **MongoDB hub Phase 10: 1 of 21
    topics complete.**
+10. **The `installation-setup` batch found and fixed THREE genuine issues, extending
+    `MongoNavComponent`'s toggle to a second topic and hub-prefixing its own `SUBTOPICS` key
+    proactively (`mongo-installation-setup`) since the Redis hub also has its own bare
+    `installation-setup` route, with no active collision today only because `RedisNavComponent`
+    has no subtopics-accordion support yet — matching the established preemptive collision-fix
+    precedent (Design Patterns' `clean-architecture`, Security's `sec-api-security`)**: (1) the
+    "Docker Quick-start" theory bullet's own connect-from-another-container example —
+    `mongodb://admin:secret@mongo:27017/myapp` — omitted `authSource=admin`. Verified via
+    WebSearch against the driver's own documented 3-tier fallback (explicit param → the connection
+    string's own path database → `admin` only as a last resort, confirmed via a direct execution
+    of the exact resolution logic) that since the admin user in this scenario lives in the `admin`
+    database (per the page's own preceding `MONGO_INITDB_ROOT_*` bullet), the example as written
+    resolves `authSource` to `myapp` instead and fails to authenticate — caught by comparing this
+    example against the SAME page's own Docker Compose codeTab, which already correctly includes
+    `?authSource=admin`; (2) a QnA on connection pooling claimed the server's own
+    `maxIncomingConnections` limit "default 1,000,000." Verified via WebSearch — the same source
+    already used to fix an analogous claim on the sibling Fundamentals topic's own pilot batch —
+    that the real default is 65536, itself further capped by the OS's own file-descriptor limit
+    via the documented `(RLIMIT_NOFILE / 2) * 0.8` formula, verified via direct execution across
+    several `ulimit -n` values including the exact threshold (163840) where the OS-derived cap and
+    the configured default land on the identical number; (3) a QnA claimed the admin user must be
+    created BEFORE enabling authorization, with a mongod restart as the only way around it.
+    Verified against MongoDB's own official docs (the "localhost exception," fetched via
+    WebSearch) that the real, standard, documented order is the OPPOSITE — enable authorization
+    FIRST, then connect via localhost, which is still permitted to create exactly one first user
+    with zero restarts, closing itself permanently the instant that user exists; the
+    restart-without-auth approach is explicitly acknowledged as a fallback for when the exception
+    itself is unreachable (an unusual `bindIp`, a proxy in front of mongod), not the standard path.
+    3 subtopics, one per fix, each independently verified. No further `SUBTOPICS` collision beyond
+    the proactive Redis-hub prefix resolved above. All three `exercise.solution` fields swept clean
+    of `<code>`/entity contamination; the standing apostrophe-after-letter sweep found nothing
+    unescaped; nested backtick/`${...}` escaping in subtopic 3's own codeTab verified correct by
+    extracting and evaluating the exact backtick span as real JavaScript. Build passed clean
+    (foreground execution, explicit `EXITCODE:$?` capture, zero `ERROR` lines). **Hit the
+    established stale-dev-server-artifact family again — a hard `window.location.reload(true)`
+    was insufficient this time; the second nav toggle (`mongo-installation-setup`) only rendered
+    after a full `preview_stop`/`preview_start` restart**, confirmed via a direct DOM toggle-count
+    check (1 before the restart, 2 after) rather than assuming the fix worked from the underlying
+    signal state alone (which was already correct even while the DOM under-rendered — the same
+    "verify the DOM, not just the component data" lesson this file has documented before).
+    Browser-verified after the restart: no console errors on any of the 4 pages; nav accordion
+    opens with all 3 subtopic links, confirmed via both `window.ng.getComponent()` and a live DOM
+    query; all three main-page fixes confirmed rendering live via direct component data
+    inspection; all 3 subtopic pages checked individually — correct h1/breadcrumb, 860px wrapper
+    via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the final
+    subtopic. **MongoDB hub Phase 10: 2 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -8371,12 +8417,17 @@ this same check before any other new hub's first subtopic set:
   Progress: `mongoTotal=21` in progress.service.ts. MongoDB pages use `app-common-mistakes` AND
   `app-revision-card`. Reference pages (cheatsheet, interview-prep) have no PageComplete.
   Challenge.language: `'typescript'`. MongoNavComponent at `shared/mongo-nav/mongo-nav.ts`.
-  Phase 10: 1 of 21 topics have subtopics (`/mongodb/fundamentals`, pilot batch, 2026-09-03) — see
+  Phase 10: 2 of 21 topics have subtopics (`/mongodb/fundamentals`, pilot batch;
+  `/mongodb/installation-setup`, 2026-09-03) — see
   "MongoDB hub subtopic wiring" section above for the `MongoNavComponent` accordion structural fix
-  (15th `*NavComponent`-based hub in a row missing it at pilot time), the `mongo-fundamentals`
-  SUBTOPICS-map collision resolution (collided with the JavaScript hub's own bare `fundamentals`
-  topic key), and the genuine driver-vs-server connection-limit inaccuracy found and fixed in the
-  main page's own "Not closing the MongoClient" mistake block.
+  (15th `*NavComponent`-based hub in a row missing it at pilot time), the `mongo-fundamentals`/
+  `mongo-installation-setup` SUBTOPICS-map collision resolutions (the former collided with the
+  JavaScript hub's own bare `fundamentals` topic key; the latter was proactively hub-prefixed
+  against the Redis hub's own bare `installation-setup` route), the genuine driver-vs-server
+  connection-limit inaccuracy found and fixed in the Fundamentals page's own "Not closing the
+  MongoClient" mistake block, and the three genuine inaccuracies (a missing authSource=admin, a
+  wrong maxIncomingConnections default, and a backwards auth-bootstrap ordering) found and fixed
+  on the Installation & Setup page.
 - **Hub home**: Angular, C#, ASP.NET Core, SQL, TypeScript, React, JavaScript, CSS, HTML, Blazor, Go, Node.js, Python, DevOps, AWS, Azure, Linux, Redis, GraphQL, Messaging, Testing, DSA, AI/ML, Containers/K8s, Terraform/IaC, Service Mesh, System Design, Architecture Patterns, Design Patterns, Security, API Design, Observability, Web Performance, and MongoDB are all `available: true`. Everything else "Soon".
 - Progress totals: Angular 58, C# 50, ASP.NET Core 45, SQL 44, TypeScript 20, React 17, JavaScript 22, CSS 22, HTML 23, Web Performance 20, Blazor 20, Go 21, Node.js 23, Python 21, DevOps 21, AWS 21, Azure 22, Linux 19, Redis 21, GraphQL 20, Messaging 20, Testing 19, DSA 21, AI 19, Containers/K8s 22, Terraform 21, Service Mesh 19, System Design 24, Architecture Patterns 22, Design Patterns 36, Security 23, API Design 19, Observability 20, MongoDB 21 (`progress.service.ts`).
 - Hero stat: "933+ Live Pages" (corrected 2026-07-01 — hub-home.ts's Angular card was showing `topics: 63` instead of the actual 68, undercounting the site total by 5).
