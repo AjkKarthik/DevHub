@@ -1553,6 +1553,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Real Path to Enabling Auth: the Localhost Exception', route: '/mongodb/installation-setup/the-real-path-to-enabling-auth-the-localhost-exception' },
     { label: 'The Real maxIncomingConnections Default Is 65536', route: '/mongodb/installation-setup/the-real-maxincomingconnections-default-is-65536' },
   ],
+  'crud-operations': [
+    { label: 'Why the Soft-Delete Index Needs deletedAt: null, Not $exists', route: '/mongodb/crud-operations/why-the-soft-delete-index-needs-deletedat-null-not-exists' },
+    { label: 'Mixing Operations in a Real bulkWrite Call', route: '/mongodb/crud-operations/mixing-operations-in-a-real-bulkwrite-call' },
+    { label: 'Session-Based Causal Consistency for Read-Your-Writes', route: '/mongodb/crud-operations/session-based-causal-consistency-for-read-your-writes' },
+  ],
   closures: [
     { label: 'var Shares One Binding, let Creates One Per Iteration', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
     { label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },

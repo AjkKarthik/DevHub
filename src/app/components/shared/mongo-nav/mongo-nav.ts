@@ -57,7 +57,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
 
     <div class="nav-group">
       <p class="nav-group-label">CRUD</p>
-      <a routerLink="/mongodb/crud-operations" routerLinkActive="active"><span class="nl-text">CRUD Operations</span>@if(p.isDone('mongo-crud-operations')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/mongodb/crud-operations" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">CRUD Operations</span>
+        @if(p.isDone('mongo-crud-operations')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('crud-operations')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('crud-operations')"
+                  (click)="toggleSubtopics('crud-operations', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('crud-operations'); as crudSubs) {
+        @if (isSubtopicsExpanded('crud-operations')) {
+          <div class="nav-subtopics">
+            @for (s of crudSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/mongodb/update-operators" routerLinkActive="active"><span class="nl-text">Update Operators</span>@if(p.isDone('mongo-update-operators')){<span class="nl-done">✓</span>}</a>
     </div>
 

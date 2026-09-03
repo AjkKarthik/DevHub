@@ -33927,6 +33927,38 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'deleteMany with an empty filter {} deletes EVERY document in the collection — a classic production incident waiting to happen.',
     ],
   },
+  'mongodb/crud-operations/why-the-soft-delete-index-needs-deletedat-null-not-exists': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'CRUD Operations', route: '/mongodb/crud-operations' },
+      { label: 'Indexes',         route: '/mongodb/indexes' },
+    ],
+    tip: 'A partial index is only ever consulted when the query\'s own filter matches its partialFilterExpression exactly — a near-miss filter falls back to a full collection scan with no warning.',
+    gotchas: [
+      'This same missing-field-vs-explicit-null distinction is exactly what the Fundamentals topic\'s own $exists mistake block already warns about, just applied here to index eligibility instead of query results.',
+    ],
+  },
+  'mongodb/crud-operations/mixing-operations-in-a-real-bulkwrite-call': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'CRUD Operations', route: '/mongodb/crud-operations' },
+    ],
+    tip: 'bulkWrite\'s array of operation objects each wraps its intent in its own key (insertOne, updateOne, deleteOne, ...) — a common structural mistake is passing a bare CRUD call shape instead of this wrapped form.',
+    gotchas: [
+      'With ordered:false, a bulkWrite\'s own result can report both successes and failures for the SAME call — always check writeErrors, never assume a resolved promise means everything succeeded.',
+    ],
+  },
+  'mongodb/crud-operations/session-based-causal-consistency-for-read-your-writes': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'CRUD Operations',       route: '/mongodb/crud-operations' },
+      { label: 'Replication & Sharding', route: '/mongodb/replication-sharding' },
+    ],
+    tip: 'A session\'s causal-consistency guarantee only covers operations run THROUGH that session — a query that forgets to pass { session } silently loses the guarantee with no error at all.',
+    gotchas: [
+      'Causal consistency has a real latency cost (a secondary may have to wait to catch up) — reach for readPreference: primary instead when every read genuinely needs the absolute latest data.',
+    ],
+  },
   'mongodb/query-operators': {
     apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
     related: [

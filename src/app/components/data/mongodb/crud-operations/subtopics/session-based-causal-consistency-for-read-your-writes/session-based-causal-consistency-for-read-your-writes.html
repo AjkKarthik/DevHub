@@ -1,0 +1,26 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CRUD Operations" topicRoute="/mongodb/crud-operations"
+    subtopicLabel="Session-Based Causal Consistency for Read-Your-Writes" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">Session-Based Causal Consistency for Read-Your-Writes</h1>
+  <p class="page-subtitle">The main page's own QnA describes the exact shopping-cart scenario a session fixes, in real detail — but never shows the actual startSession() and &#123; session &#125; code the fix requires.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>This session mechanism is also the foundation multi-document transactions build on — every transaction runs inside a ClientSession, which is why the Transactions topic elsewhere in this hub requires a replica set for the exact same reason causal consistency does: both depend on the oplog.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CRUD Operations" topicRoute="/mongodb/crud-operations"
+    [prev]="{ label: 'Mixing Operations in a Real bulkWrite Call', route: '/mongodb/crud-operations/mixing-operations-in-a-real-bulkwrite-call' }" />
+</div>

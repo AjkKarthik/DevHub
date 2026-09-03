@@ -2607,7 +2607,12 @@ export const routes: Routes = [
       { path: 'the-real-path-to-enabling-auth-the-localhost-exception', loadComponent: () => import('./components/data/mongodb/installation-setup/subtopics/the-real-path-to-enabling-auth-the-localhost-exception/the-real-path-to-enabling-auth-the-localhost-exception').then(m => m.TheRealPathToEnablingAuthTheLocalhostExceptionSubtopic) },
       { path: 'the-real-maxincomingconnections-default-is-65536', loadComponent: () => import('./components/data/mongodb/installation-setup/subtopics/the-real-maxincomingconnections-default-is-65536/the-real-maxincomingconnections-default-is-65536').then(m => m.TheRealMaxincomingconnectionsDefaultIs65536Subtopic) },
     ] },
-    { path: 'crud-operations',       loadComponent: () => import('./components/data/mongodb/crud-operations/crud-operations').then(m => m.MongoCrudOperations) },
+    { path: 'crud-operations', children: [
+      { path: '', loadComponent: () => import('./components/data/mongodb/crud-operations/crud-operations').then(m => m.MongoCrudOperations) },
+      { path: 'why-the-soft-delete-index-needs-deletedat-null-not-exists', loadComponent: () => import('./components/data/mongodb/crud-operations/subtopics/why-the-soft-delete-index-needs-deletedat-null-not-exists/why-the-soft-delete-index-needs-deletedat-null-not-exists').then(m => m.WhyTheSoftDeleteIndexNeedsDeletedatNullNotExistsSubtopic) },
+      { path: 'mixing-operations-in-a-real-bulkwrite-call', loadComponent: () => import('./components/data/mongodb/crud-operations/subtopics/mixing-operations-in-a-real-bulkwrite-call/mixing-operations-in-a-real-bulkwrite-call').then(m => m.MixingOperationsInARealBulkwriteCallSubtopic) },
+      { path: 'session-based-causal-consistency-for-read-your-writes', loadComponent: () => import('./components/data/mongodb/crud-operations/subtopics/session-based-causal-consistency-for-read-your-writes/session-based-causal-consistency-for-read-your-writes').then(m => m.SessionBasedCausalConsistencyForReadYourWritesSubtopic) },
+    ] },
     { path: 'update-operators',      loadComponent: () => import('./components/data/mongodb/update-operators/update-operators').then(m => m.MongoUpdateOperators) },
     { path: 'query-operators',       loadComponent: () => import('./components/data/mongodb/query-operators/query-operators').then(m => m.MongoQueryOperators) },
     { path: 'array-queries',         loadComponent: () => import('./components/data/mongodb/array-queries/array-queries').then(m => m.MongoArrayQueries) },
