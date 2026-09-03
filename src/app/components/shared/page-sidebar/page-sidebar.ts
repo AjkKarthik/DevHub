@@ -36007,6 +36007,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A maturity model is a roadmap, not a checklist to rush through — each stage builds genuine organizational habits the next stage depends on.',
     ],
   },
+  'observability/observability-maturity/the-quizs-own-rival-maturity-model': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Observability Maturity (overview)', route: '/observability/observability-maturity' },
+      { label: 'Combining Overall Score With Weakest Areas', route: '/observability/observability-maturity/combining-overall-score-with-named-weakest-areas' },
+    ],
+    tip: 'Verified by comparing the page\'s own quiz against its own theory/quickRef/Challenge: the quiz introduced a completely different 4-level model (Reactive/Proactive/Predictive/Optimized) where "Level 2" and "Level 3" mean different things than the SAME level numbers mean everywhere else on the page.',
+    gotchas: [
+      'Two internally-consistent groups of sections (theory+quickRef+Challenge+revision vs. one quiz question) contradicting each other is a real, catchable signal -- worth cross-checking even when both "sides" individually read as coherent and well-written.',
+    ],
+  },
+  'observability/observability-maturity/combining-overall-score-with-named-weakest-areas': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The Quiz\'s Own Rival Model', route: '/observability/observability-maturity/the-quizs-own-rival-maturity-model' },
+      { label: 'Building a Real Anomaly Detector', route: '/observability/observability-maturity/building-a-real-anomaly-detector-for-mttr' },
+    ],
+    tip: 'The page\'s own Challenge only returns an overall average and level label; the page\'s own separate "Maturity Assessment" codeTab shows named weakest areas with next steps but never combines the two -- built and verified assessMaturity(), merging both into one function.',
+    gotchas: [
+      'Sorting areas by level ascending only tells you WHICH areas are weakest, not WHY -- the combined function keeps each area\'s own nextStep field specifically so the output stays actionable, not just a ranked list.',
+    ],
+  },
+  'observability/observability-maturity/building-a-real-anomaly-detector-for-mttr': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Combining Overall Score With Weakest Areas', route: '/observability/observability-maturity/combining-overall-score-with-named-weakest-areas' },
+      { label: 'Observability Maturity (overview)', route: '/observability/observability-maturity' },
+    ],
+    tip: 'The page\'s own AIOps QnA describes anomaly detection in prose ("ML models learn the normal behavior of each metric... alert when a metric deviates significantly") with zero code -- built and verified a real z-score detector against 8 weeks of simulated MTTR data, correctly staying silent on a normal week and firing on a genuine regression.',
+    gotchas: [
+      'A z-score detector needs enough historical data to have a meaningful mean and standard deviation in the first place -- a brand-new service or metric has no real baseline to compare against yet.',
+    ],
+  },
   'observability/infrastructure-metrics': {
     apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
     related: [

@@ -396,7 +396,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
       </div>
     }
   }
-  <a routerLink="/observability/observability-maturity" routerLinkActive="active"><span class="nl-text">Observability Maturity</span>@if(progress.isDone('obs-observability-maturity')){<span class="nl-done">✓</span>}</a>
+  <a routerLink="/observability/observability-maturity" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+    <span class="nl-text">Observability Maturity</span>
+    @if(progress.isDone('obs-observability-maturity')){<span class="nl-done">✓</span>}
+    @if (subtopicsOf('observability-maturity')) {
+      <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('observability-maturity')"
+              (click)="toggleSubtopics('observability-maturity', $event)" aria-label="Toggle subtopics">›</button>
+    }
+  </a>
+  @if (subtopicsOf('observability-maturity'); as omSubs) {
+    @if (isSubtopicsExpanded('observability-maturity')) {
+      <div class="nav-subtopics">
+        @for (s of omSubs; track s.route) {
+          <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+            <span class="nl-text">{{ s.label }}</span>
+          </a>
+        }
+      </div>
+    }
+  }
 </div>
 
 <div class="nav-group">

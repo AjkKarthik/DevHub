@@ -1,0 +1,26 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Observability Maturity" topicRoute="/observability/observability-maturity"
+    subtopicLabel="Building a Real Anomaly Detector for MTTR" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">Building a Real Anomaly Detector for MTTR</h1>
+  <p class="page-subtitle">The page's own AIOps QnA describes anomaly detection in prose with zero code — this subtopic builds and verifies a real z-score detector against simulated MTTR data.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>Together these three subtopics fix a real internal contradiction, build the fuller assessment function the page's own two code examples never combine, and turn the page's own final Level 4 QnA topic — anomaly detection — into a real, working, verified detector.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Observability Maturity" topicRoute="/observability/observability-maturity"
+    [prev]="{ label: 'Combining Overall Score With Named Weakest Areas', route: '/observability/observability-maturity/combining-overall-score-with-named-weakest-areas' }" />
+</div>

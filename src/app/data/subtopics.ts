@@ -3758,4 +3758,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Aggregating Events by Process AND Syscall', route: '/observability/ebpf-observability/aggregating-events-by-process-and-syscall' },
     { label: 'Measuring Why Aggregate-Only Capture Is Cheaper', route: '/observability/ebpf-observability/measuring-why-aggregate-only-capture-is-cheaper' },
   ],
+  'observability-maturity': [
+    { label: 'The Quiz’s Own Rival Maturity Model', route: '/observability/observability-maturity/the-quizs-own-rival-maturity-model' },
+    { label: 'Combining Overall Score With Named Weakest Areas', route: '/observability/observability-maturity/combining-overall-score-with-named-weakest-areas' },
+    { label: 'Building a Real Anomaly Detector for MTTR', route: '/observability/observability-maturity/building-a-real-anomaly-detector-for-mttr' },
+  ],
 };

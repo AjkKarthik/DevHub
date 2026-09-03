@@ -2861,6 +2861,9 @@ const OBS_LABELS: Record<string, string> = {
   'ebpf-observability/aggregating-events-by-process-and-syscall': 'Aggregating Events by Process AND Syscall',
   'ebpf-observability/measuring-why-aggregate-only-capture-is-cheaper': 'Measuring Why Aggregate-Only Capture Is Cheaper',
   'observability-maturity':     'Observability Maturity',
+  'observability-maturity/the-quizs-own-rival-maturity-model': 'The Quiz’s Own Rival Maturity Model',
+  'observability-maturity/combining-overall-score-with-named-weakest-areas': 'Combining Overall Score With Named Weakest Areas',
+  'observability-maturity/building-a-real-anomaly-detector-for-mttr': 'Building a Real Anomaly Detector for MTTR',
   'cheatsheet':                 'Observability Cheatsheet',
   'interview-prep':             'Observability Interview Prep',
 };

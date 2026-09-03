@@ -3589,7 +3589,12 @@ export const routes: Routes = [
         { path: 'aggregating-events-by-process-and-syscall', loadComponent: () => import('./components/architecture/observability/ebpf-observability/subtopics/aggregating-events-by-process-and-syscall/aggregating-events-by-process-and-syscall').then(m => m.AggregatingEventsByProcessAndSyscallSubtopic) },
         { path: 'measuring-why-aggregate-only-capture-is-cheaper', loadComponent: () => import('./components/architecture/observability/ebpf-observability/subtopics/measuring-why-aggregate-only-capture-is-cheaper/measuring-why-aggregate-only-capture-is-cheaper').then(m => m.MeasuringWhyAggregateOnlyCaptureIsCheaperSubtopic) },
       ] },
-    { path: 'observability-maturity',     loadComponent: () => import('./components/architecture/observability/observability-maturity/observability-maturity').then(m => m.ObsObservabilityMaturity) },
+    { path: 'observability-maturity', children: [
+        { path: '', loadComponent: () => import('./components/architecture/observability/observability-maturity/observability-maturity').then(m => m.ObsObservabilityMaturity) },
+        { path: 'the-quizs-own-rival-maturity-model', loadComponent: () => import('./components/architecture/observability/observability-maturity/subtopics/the-quizs-own-rival-maturity-model/the-quizs-own-rival-maturity-model').then(m => m.TheQuizsOwnRivalMaturityModelSubtopic) },
+        { path: 'combining-overall-score-with-named-weakest-areas', loadComponent: () => import('./components/architecture/observability/observability-maturity/subtopics/combining-overall-score-with-named-weakest-areas/combining-overall-score-with-named-weakest-areas').then(m => m.CombiningOverallScoreWithNamedWeakestAreasSubtopic) },
+        { path: 'building-a-real-anomaly-detector-for-mttr', loadComponent: () => import('./components/architecture/observability/observability-maturity/subtopics/building-a-real-anomaly-detector-for-mttr/building-a-real-anomaly-detector-for-mttr').then(m => m.BuildingARealAnomalyDetectorForMttrSubtopic) },
+      ] },
     { path: 'cheatsheet',                 loadComponent: () => import('./components/architecture/observability/cheatsheet/cheatsheet').then(m => m.ObsCheatsheet) },
     { path: 'interview-prep',             loadComponent: () => import('./components/architecture/observability/interview-prep/interview-prep').then(m => m.ObsInterviewPrep) },
   ] },
