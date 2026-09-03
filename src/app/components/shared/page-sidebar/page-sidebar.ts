@@ -34058,6 +34058,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       '$size only matches an exact array length — it cannot be combined with range comparisons in the same operator.',
     ],
   },
+  'mongodb/array-queries/the-compound-multikey-restriction-is-unconditional': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Array Queries', route: '/mongodb/array-queries' },
+      { label: 'Indexes',       route: '/mongodb/indexes' },
+    ],
+    tip: 'The one-array-field-per-compound-index restriction is checked per DOCUMENT, not per schema — a collection where only SOME documents have two array fields can still break the index the moment one of those documents is inserted.',
+    gotchas: [
+      'This restriction is enforced at insert/update time once the index exists — an existing document violating it silently blocks the createIndex() call from succeeding in the first place.',
+    ],
+  },
+  'mongodb/array-queries/slicing-arrays-with-the-slice-projection-operator': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Array Queries',         route: '/mongodb/array-queries' },
+      { label: 'Projections & Sorting', route: '/mongodb/projections-sorting' },
+    ],
+    tip: '$slice returns elements from the array AS STORED — it never sorts or filters first, so pairing it with a meaningful stored order (or a prior $sort in aggregation) is essential to get a meaningful "top N" or "recent N" result.',
+    gotchas: [
+      'The [skip, limit] form can return FEWER than limit elements if the array is shorter than skip + limit — it never pads or errors, it just returns whatever remains.',
+    ],
+  },
+  'mongodb/array-queries/sorting-by-an-array-field-uses-min-or-max': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Array Queries',         route: '/mongodb/array-queries' },
+      { label: 'Projections & Sorting', route: '/mongodb/projections-sorting' },
+    ],
+    tip: 'A document with a wide spread of array values (a very low min AND a very high max) can sort FIRST in both ascending and descending order — a real, counter-intuitive consequence of using the array\'s own extreme values for comparison.',
+    gotchas: [
+      'Sorting by an array field is never the same as sorting by an average, a sum, or any other aggregate — those need a computed field via $addFields before $sort.',
+    ],
+  },
   'mongodb/projections-sorting': {
     apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
     related: [

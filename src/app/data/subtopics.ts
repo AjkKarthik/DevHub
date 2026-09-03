@@ -1568,6 +1568,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Querying Permission Bitmasks With $bitsAllSet and $bitsAnySet', route: '/mongodb/query-operators/querying-permission-bitmasks-with-bitsallset' },
     { label: 'Finding Nearby Places With $near and a 2dsphere Index', route: '/mongodb/query-operators/finding-nearby-places-with-near-and-2dsphere' },
   ],
+  'array-queries': [
+    { label: 'The Compound Multikey Restriction Is Unconditional, Not About Size', route: '/mongodb/array-queries/the-compound-multikey-restriction-is-unconditional' },
+    { label: 'Slicing Arrays With the $slice Projection Operator', route: '/mongodb/array-queries/slicing-arrays-with-the-slice-projection-operator' },
+    { label: 'Sorting by an Array Field Uses Min or Max, Not Average', route: '/mongodb/array-queries/sorting-by-an-array-field-uses-min-or-max' },
+  ],
   closures: [
     { label: 'var Shares One Binding, let Creates One Per Iteration', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
     { label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },

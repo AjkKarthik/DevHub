@@ -1,0 +1,26 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Array Queries" topicRoute="/mongodb/array-queries"
+    subtopicLabel="The Compound Multikey Restriction Is Unconditional, Not About Size" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">The Compound Multikey Restriction Is Unconditional, Not About Size</h1>
+  <p class="page-subtitle">The main page's own theory bullet said the compound multikey restriction only kicks in for arrays "of different sizes" — verified against MongoDB's own docs, the real restriction has nothing to do with array length at all.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>This same page's own mistake block and codeTab already state the restriction correctly with no size qualifier at all — this subtopic reconciles the one section that had it wrong with the two that already had it right.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Array Queries" topicRoute="/mongodb/array-queries"
+    [next]="{ label: 'Slicing Arrays With the $slice Projection Operator', route: '/mongodb/array-queries/slicing-arrays-with-the-slice-projection-operator' }" />
+</div>

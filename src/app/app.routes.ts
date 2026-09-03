@@ -2625,7 +2625,12 @@ export const routes: Routes = [
       { path: 'querying-permission-bitmasks-with-bitsallset', loadComponent: () => import('./components/data/mongodb/query-operators/subtopics/querying-permission-bitmasks-with-bitsallset/querying-permission-bitmasks-with-bitsallset').then(m => m.QueryingPermissionBitmasksWithBitsallsetSubtopic) },
       { path: 'finding-nearby-places-with-near-and-2dsphere', loadComponent: () => import('./components/data/mongodb/query-operators/subtopics/finding-nearby-places-with-near-and-2dsphere/finding-nearby-places-with-near-and-2dsphere').then(m => m.FindingNearbyPlacesWithNearAnd2dsphereSubtopic) },
     ] },
-    { path: 'array-queries',         loadComponent: () => import('./components/data/mongodb/array-queries/array-queries').then(m => m.MongoArrayQueries) },
+    { path: 'array-queries', children: [
+      { path: '', loadComponent: () => import('./components/data/mongodb/array-queries/array-queries').then(m => m.MongoArrayQueries) },
+      { path: 'the-compound-multikey-restriction-is-unconditional', loadComponent: () => import('./components/data/mongodb/array-queries/subtopics/the-compound-multikey-restriction-is-unconditional/the-compound-multikey-restriction-is-unconditional').then(m => m.TheCompoundMultikeyRestrictionIsUnconditionalSubtopic) },
+      { path: 'slicing-arrays-with-the-slice-projection-operator', loadComponent: () => import('./components/data/mongodb/array-queries/subtopics/slicing-arrays-with-the-slice-projection-operator/slicing-arrays-with-the-slice-projection-operator').then(m => m.SlicingArraysWithTheSliceProjectionOperatorSubtopic) },
+      { path: 'sorting-by-an-array-field-uses-min-or-max', loadComponent: () => import('./components/data/mongodb/array-queries/subtopics/sorting-by-an-array-field-uses-min-or-max/sorting-by-an-array-field-uses-min-or-max').then(m => m.SortingByAnArrayFieldUsesMinOrMaxSubtopic) },
+    ] },
     { path: 'projections-sorting',   loadComponent: () => import('./components/data/mongodb/projections-sorting/projections-sorting').then(m => m.MongoProjectionsSorting) },
     { path: 'aggregation-pipeline',  loadComponent: () => import('./components/data/mongodb/aggregation-pipeline/aggregation-pipeline').then(m => m.MongoAggregationPipeline) },
     { path: 'lookup-joins',          loadComponent: () => import('./components/data/mongodb/lookup-joins/lookup-joins').then(m => m.MongoLookupJoins) },

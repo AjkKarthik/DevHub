@@ -118,7 +118,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/mongodb/array-queries" routerLinkActive="active"><span class="nl-text">Array Queries</span>@if(p.isDone('mongo-array-queries')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/mongodb/array-queries" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Array Queries</span>
+        @if(p.isDone('mongo-array-queries')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('array-queries')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('array-queries')"
+                  (click)="toggleSubtopics('array-queries', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('array-queries'); as aqSubs) {
+        @if (isSubtopicsExpanded('array-queries')) {
+          <div class="nav-subtopics">
+            @for (s of aqSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/mongodb/projections-sorting" routerLinkActive="active"><span class="nl-text">Projections &amp; Sorting</span>@if(p.isDone('mongo-projections-sorting')){<span class="nl-done">✓</span>}</a>
     </div>
 
