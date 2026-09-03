@@ -7490,6 +7490,34 @@ this same check before any other new hub's first subtopic set:
     direct component inspection; all 3 subtopic pages checked individually — no console errors,
     correct h1/breadcrumb, 860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar
     content confirmed on the final subtopic. **MongoDB hub Phase 10: 7 of 21 topics complete.**
+16. **The `aggregation-pipeline` batch was a clean main page — no compile bug or internal
+    inconsistency found after careful reading. All 3 subtopics are gap-closing**, each building
+    real, Node-verified code for something the page names in prose but never demonstrates: (1)
+    `$lookup` is a QuickRef entry and a quiz question gives full syntax in its own explanation, but
+    no codeTab shows it in either the simple equality form or the pipeline form; built both,
+    verified with a pure-JS join simulation confirming the left-outer-join semantics (a user with
+    no matching orders gets an empty array, never a dropped document); (2) `$bucket`/`$bucketAuto`,
+    from the page's own QnA syntax, verified boundary math precisely — a value exactly equal to a
+    boundary always falls into the bucket it STARTS, never the one it ends, and a value outside
+    every boundary is silently dropped without a default; (3) `$facet`-based pagination
+    (`data` + `totalCount` in one call), the exact pattern the page's own QnA names but never
+    builds, verified against a 23-item seeded array confirming `totalCount` reflects every matching
+    document regardless of the current page's skip/limit, including the documented fact that
+    `$count` emits NO document at all (not `{ count: 0 }`) when its input is empty. Self-caught and
+    fixed a bare-single-brace-in-prose gotcha during the standing pre-build sweep — the third
+    subtopic's own page-subtitle text contained a literal `{ $facet: { ... } }` pattern as static
+    `.html` text, entity-escaped before the build ever ran. No `SUBTOPICS` collision for
+    `aggregation-pipeline` (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly,
+    confirmed collision-free, left bare). All three `exercise.solution` fields swept clean of
+    `<code>`/entity contamination; the standing apostrophe-after-letter sweep found nothing
+    unescaped; `\$`-prefixed operator names (including `$$`-prefixed pipeline variables) inside
+    every codeTab verified correct by extracting and evaluating the exact backtick spans as real
+    JavaScript. Build passed clean (foreground execution, explicit `EXITCODE:$?` capture, zero
+    `ERROR` lines). Browser-verified: nav accordion opens with all 3 subtopic links (fresh on the
+    first check, toggle count 8 as expected); all 3 subtopic pages checked individually — no
+    console errors, correct h1/breadcrumb, 860px wrapper via `getComputedStyle`, entity-escaped
+    braces rendering as literal text, tailored (not DEFAULT) sidebar content confirmed on the final
+    subtopic. **MongoDB hub Phase 10: 8 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -8577,10 +8605,10 @@ this same check before any other new hub's first subtopic set:
   Progress: `mongoTotal=21` in progress.service.ts. MongoDB pages use `app-common-mistakes` AND
   `app-revision-card`. Reference pages (cheatsheet, interview-prep) have no PageComplete.
   Challenge.language: `'typescript'`. MongoNavComponent at `shared/mongo-nav/mongo-nav.ts`.
-  Phase 10: 7 of 21 topics have subtopics (`/mongodb/fundamentals`, pilot batch;
+  Phase 10: 8 of 21 topics have subtopics (`/mongodb/fundamentals`, pilot batch;
   `/mongodb/installation-setup`; `/mongodb/crud-operations`; `/mongodb/update-operators`;
-  `/mongodb/query-operators`; `/mongodb/array-queries`; `/mongodb/projections-sorting`,
-  2026-09-03) — see
+  `/mongodb/query-operators`; `/mongodb/array-queries`; `/mongodb/projections-sorting`;
+  `/mongodb/aggregation-pipeline`, 2026-09-03) — see
   "MongoDB hub subtopic wiring" section above for the `MongoNavComponent` accordion structural fix
   (15th `*NavComponent`-based hub in a row missing it at pilot time), the `mongo-fundamentals`/
   `mongo-installation-setup` SUBTOPICS-map collision resolutions (the former collided with the

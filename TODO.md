@@ -8955,7 +8955,15 @@ off here with a date.
   field via `$addFields`+`$sort` (the QnA describes it, no codeTab shows it), with a Try It on
   find().sort()'s silent failure mode. Build clean, browser-verified (nav accordion fresh on first
   check, all five main-page fix occurrences, 3 subtopic pages, breadcrumb, sidebar).
-- [ ] `/mongodb/aggregation-pipeline` — Aggregation Pipeline
+- [x] `/mongodb/aggregation-pipeline` — Aggregation Pipeline (2026-09-03) — extended
+  `MongoNavComponent`'s toggle to an eighth topic (bare key, no collision). Clean main page — no
+  bug found, so all 3 subtopics are gap-closing: a real `$lookup` example in both simple and
+  pipeline forms (a QuickRef entry + quiz syntax, zero codeTab); `$bucket`/`$bucketAuto` with
+  verified boundary math (lower-inclusive, upper-exclusive, silent-drop-without-default); `$facet`
+  pagination (`data`+`totalCount`), verified against a seeded array including the documented fact
+  that `$count` emits nothing at all on empty input. Self-caught a bare-brace-in-prose gotcha in
+  the third subtopic's page-subtitle before the build. Build clean, browser-verified (nav accordion
+  fresh on first check, 3 subtopic pages, breadcrumb, sidebar, escaped braces render correctly).
 - [ ] `/mongodb/lookup-joins` — $lookup & Joins
 - [ ] `/mongodb/aggregation-expressions` — Aggregation Expressions
 - [ ] `/mongodb/schema-design-patterns` — Schema Design Patterns
