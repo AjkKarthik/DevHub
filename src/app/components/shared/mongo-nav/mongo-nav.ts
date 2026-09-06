@@ -301,7 +301,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/mongodb/query-performance" routerLinkActive="active"><span class="nl-text">Query Performance</span>@if(p.isDone('mongo-query-performance')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/mongodb/query-performance" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Query Performance</span>
+        @if(p.isDone('mongo-query-performance')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('query-performance')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('query-performance')"
+                  (click)="toggleSubtopics('query-performance', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('query-performance'); as qpSubs) {
+        @if (isSubtopicsExpanded('query-performance')) {
+          <div class="nav-subtopics">
+            @for (s of qpSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

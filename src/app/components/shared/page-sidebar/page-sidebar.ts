@@ -34410,6 +34410,37 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The profiler (db.setProfilingLevel) captures slow queries in production without requiring explain() to be run manually on every suspect query.',
     ],
   },
+  'mongodb/query-performance/reindex-never-got-the-hybrid-builds-non-blocking-fix': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Query Performance', route: '/mongodb/query-performance' },
+      { label: 'Indexes',           route: '/mongodb/indexes' },
+    ],
+    tip: 'reIndex() always takes a full exclusive lock for its entire duration on every MongoDB version — it never got createIndex()\'s own non-blocking hybrid build protocol.',
+    gotchas: [
+      'Since MongoDB 5.0, reIndex() can only run on standalone instances at all — not a replica set or sharded cluster — and it has been deprecated since 6.0.',
+    ],
+  },
+  'mongodb/query-performance/compact-stopped-blocking-crud-in-mongodb-4-4': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Query Performance', route: '/mongodb/query-performance' },
+    ],
+    tip: 'compact stopped blocking CRUD operations in MongoDB 4.4 — before that version it blocked everything for its entire duration, which is why "maintenance window only" advice is now stale for current versions.',
+    gotchas: [
+      'Non-blocking is not free — compact still adds real checkpoint overhead, which is why running it on a secondary node is still recommended.',
+    ],
+  },
+  'mongodb/query-performance/causal-consistency-read-your-own-writes-after-a-secondary-read': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Query Performance', route: '/mongodb/query-performance' },
+    ],
+    tip: 'client.startSession({ causalConsistency: true }) only guarantees read-your-own-writes when BOTH the write and the read use majority-level write/read concern, in addition to sharing the same session.',
+    gotchas: [
+      'Causal consistency is scoped to one session object, not the cluster or collection — a different client, or the same client without the session, gets no guarantee at all.',
+    ],
+  },
   'mongodb/transactions': {
     apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
     related: [

@@ -1614,6 +1614,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Text and 2dsphere Indexes Can Be Multikey Too', route: '/mongodb/indexes/text-and-2dsphere-indexes-can-be-multikey-too' },
     { label: 'hideIndex: Testing a Drop Without Actually Dropping', route: '/mongodb/indexes/hideindex-testing-a-drop-without-actually-dropping' },
   ],
+  'query-performance': [
+    { label: 'reIndex Never Got the Non-Blocking Hybrid Build Fix', route: '/mongodb/query-performance/reindex-never-got-the-hybrid-builds-non-blocking-fix' },
+    { label: 'Compact Stopped Blocking CRUD in MongoDB 4.4', route: '/mongodb/query-performance/compact-stopped-blocking-crud-in-mongodb-4-4' },
+    { label: 'Causal Consistency: Read-Your-Own-Writes After a Secondary Read', route: '/mongodb/query-performance/causal-consistency-read-your-own-writes-after-a-secondary-read' },
+  ],
   closures: [
     { label: 'var Shares One Binding, let Creates One Per Iteration', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
     { label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },

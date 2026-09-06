@@ -2679,7 +2679,12 @@ export const routes: Routes = [
       { path: 'text-and-2dsphere-indexes-can-be-multikey-too', loadComponent: () => import('./components/data/mongodb/indexes/subtopics/text-and-2dsphere-indexes-can-be-multikey-too/text-and-2dsphere-indexes-can-be-multikey-too').then(m => m.TextAnd2dsphereIndexesCanBeMultikeyTooSubtopic) },
       { path: 'hideindex-testing-a-drop-without-actually-dropping', loadComponent: () => import('./components/data/mongodb/indexes/subtopics/hideindex-testing-a-drop-without-actually-dropping/hideindex-testing-a-drop-without-actually-dropping').then(m => m.HideindexTestingADropWithoutActuallyDroppingSubtopic) },
     ] },
-    { path: 'query-performance',     loadComponent: () => import('./components/data/mongodb/query-performance/query-performance').then(m => m.MongoQueryPerformance) },
+    { path: 'query-performance', children: [
+      { path: '', loadComponent: () => import('./components/data/mongodb/query-performance/query-performance').then(m => m.MongoQueryPerformance) },
+      { path: 'reindex-never-got-the-hybrid-builds-non-blocking-fix', loadComponent: () => import('./components/data/mongodb/query-performance/subtopics/reindex-never-got-the-hybrid-builds-non-blocking-fix/reindex-never-got-the-hybrid-builds-non-blocking-fix').then(m => m.ReindexNeverGotTheHybridBuildsNonBlockingFixSubtopic) },
+      { path: 'compact-stopped-blocking-crud-in-mongodb-4-4', loadComponent: () => import('./components/data/mongodb/query-performance/subtopics/compact-stopped-blocking-crud-in-mongodb-4-4/compact-stopped-blocking-crud-in-mongodb-4-4').then(m => m.CompactStoppedBlockingCrudInMongodb44Subtopic) },
+      { path: 'causal-consistency-read-your-own-writes-after-a-secondary-read', loadComponent: () => import('./components/data/mongodb/query-performance/subtopics/causal-consistency-read-your-own-writes-after-a-secondary-read/causal-consistency-read-your-own-writes-after-a-secondary-read').then(m => m.CausalConsistencyReadYourOwnWritesAfterASecondaryReadSubtopic) },
+    ] },
     { path: 'transactions',          loadComponent: () => import('./components/data/mongodb/transactions/transactions').then(m => m.MongoTransactions) },
     { path: 'change-streams',        loadComponent: () => import('./components/data/mongodb/change-streams/change-streams').then(m => m.MongoChangeStreams) },
     { path: 'replication-sharding',  loadComponent: () => import('./components/data/mongodb/replication-sharding/replication-sharding').then(m => m.MongoReplicationSharding) },
