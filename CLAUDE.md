@@ -7678,6 +7678,57 @@ this same check before any other new hub's first subtopic set:
     all 3 subtopic pages checked individually — correct h1/breadcrumb (all 4 levels confirmed),
     860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the
     final subtopic. **MongoDB hub Phase 10: 11 of 21 topics complete.**
+19. **The `data-modelling` batch found and fixed a genuine, self-contained Quick Reference
+    redundancy-plus-gap, discovered by cross-referencing the page's own theory, Quick Reference,
+    and QnA sections against each other**: the Quick Reference listed both "Parent Reference" AND
+    a separate "Adjacency List" entry, both describing the identical mechanism ("each node stores
+    its parent ID") — the page's own theory section already correctly treats these as SYNONYMS
+    ("Parent Reference (Adjacency List)"). Verified via MongoDB's own official tree-structure
+    documentation that it names exactly FIVE patterns (Parent References, Child References, Array
+    of Ancestors, Materialized Paths, Nested Sets) and never uses the term "Adjacency List" at
+    all — confirming it's informal CS terminology, not a sixth distinct pattern. Meanwhile, the
+    page's own QnA fully explains a genuinely DIFFERENT, real MongoDB-documented pattern under the
+    name "Ancestor Array" (each node stores an array of ALL its ancestor IDs, not just its
+    immediate parent) that never appeared in the Quick Reference at all. Fixed by replacing the
+    redundant "Adjacency List" entry with the real, previously-missing "Array of Ancestors"
+    pattern. Three subtopics: (1) **fix-adjacent** — builds the Array of Ancestors pattern
+    (verified against MongoDB's own official tutorial's exact document shape and queries), with a
+    Try It establishing a genuine, verified DIFFERENCE from the sibling Schema Design Patterns
+    topic's own Materialised Path subtopic: a node's own descendants query includes itself under
+    Materialised Path's regex (since its own path contains its own name) but EXCLUDES itself under
+    Array of Ancestors (since a node is never its own ancestor); (2) **gap-closing** — the page's
+    own theory names Nested Sets in real detail ("expensive to maintain") with zero codeTab
+    anywhere; built it, verified against MongoDB's own tutorial's exact document shape and
+    descendant/ancestor queries, then quantified the "expensive to maintain" claim with a real
+    insert-cost demonstration (inserting one leaf under "Databases" required updating exactly 3
+    existing documents — every ancestor of the insertion point), with a Try It showing a SECOND
+    insertion (near the tree's start) touches 5 nodes including an entirely unrelated sibling
+    subtree, disproving the assumption that only direct ancestors ever need updating; (3)
+    **gap-closing** — the page's own theory names the workload matrix as the FIRST step in schema
+    design but the concept stays entirely abstract, with not even the Challenge itself building
+    one; built the actual matrix for the Challenge's own Social Media Feed scenario, verified via
+    direct execution that the getFeed row is 9x more frequent than all writes combined, tracing
+    exactly which row justifies the Challenge's own already-baked-in extended-reference and
+    computed-pattern choices — with a Try It showing the IDENTICAL schema shape becomes the WRONG
+    choice once the matrix's own numbers are inverted (a write-heavy admin dashboard with a
+    fast-changing denormalized field). No `SUBTOPICS` collision for `data-modelling` (checked both
+    `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed collision-free, left
+    bare). All three `exercise.solution` fields swept clean of `<code>`/entity contamination; the
+    standing apostrophe-after-letter sweep and the `[prev]`/`[next]`-label straight-apostrophe
+    sweep both found nothing unescaped; bracket-balance and backtick-parity scripts confirmed
+    clean on all three files. Build passed clean (foreground execution, explicit `EXITCODE:$?`
+    capture, zero `ERROR` lines). **Hit a fully-dead dev server this batch** (`preview_list`
+    returned an empty array — the process had died outright during a session interruption, not
+    merely gone stale) — resolved with a clean `preview_start` cold-start plus polling for
+    readiness, same as every prior batch's proactive-restart practice. Browser-verified: no
+    console errors on any of the 4 pages; nav accordion opens with all 3 subtopic links (toggle
+    count 12 across the hub, fresh on first check); the Quick Reference fix confirmed rendering
+    live via a scoped check against the `app-quick-ref` section specifically (not just a
+    whole-page text search, since "Adjacency List" legitimately still appears once, correctly, in
+    the theory section's own unchanged parenthetical); all 3 subtopic pages checked individually —
+    correct h1/breadcrumb (all 4 levels confirmed), 860px wrapper via `getComputedStyle`, tailored
+    (not DEFAULT) sidebar content confirmed on the final subtopic. **MongoDB hub Phase 10: 12 of
+    21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -8765,11 +8816,11 @@ this same check before any other new hub's first subtopic set:
   Progress: `mongoTotal=21` in progress.service.ts. MongoDB pages use `app-common-mistakes` AND
   `app-revision-card`. Reference pages (cheatsheet, interview-prep) have no PageComplete.
   Challenge.language: `'typescript'`. MongoNavComponent at `shared/mongo-nav/mongo-nav.ts`.
-  Phase 10: 11 of 21 topics have subtopics (`/mongodb/fundamentals`, pilot batch;
+  Phase 10: 12 of 21 topics have subtopics (`/mongodb/fundamentals`, pilot batch;
   `/mongodb/installation-setup`; `/mongodb/crud-operations`; `/mongodb/update-operators`;
   `/mongodb/query-operators`; `/mongodb/array-queries`; `/mongodb/projections-sorting`;
   `/mongodb/aggregation-pipeline`; `/mongodb/lookup-joins`; `/mongodb/aggregation-expressions`;
-  `/mongodb/schema-design-patterns`, 2026-09-03) — see
+  `/mongodb/schema-design-patterns`; `/mongodb/data-modelling`, 2026-09-03) — see
   "MongoDB hub subtopic wiring" section above for the `MongoNavComponent` accordion structural fix
   (15th `*NavComponent`-based hub in a row missing it at pilot time), the `mongo-fundamentals`/
   `mongo-installation-setup` SUBTOPICS-map collision resolutions (the former collided with the

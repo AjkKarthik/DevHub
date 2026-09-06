@@ -9009,7 +9009,23 @@ off here with a date.
   ancestor/descendant queries verified against MongoDB's own tutorial. Build clean,
   browser-verified (nav accordion fresh on first check, toggle count 11, main-page fix rendering
   live, 3 subtopic pages, breadcrumb all 4 levels, sidebar).
-- [ ] `/mongodb/data-modelling` — Data Modelling
+- [x] `/mongodb/data-modelling` — Data Modelling (2026-09-03) — extended `MongoNavComponent`'s
+  toggle to a twelfth topic (bare key, no collision). Found and fixed a Quick Reference
+  redundancy-plus-gap: "Parent Reference" and a separate "Adjacency List" entry both described the
+  identical mechanism (the page's own theory already treats them as synonyms), while a genuinely
+  different, real MongoDB-documented pattern — Array of Ancestors — never appeared in the Quick
+  Reference at all despite being fully explained in the page's own QnA. Verified via MongoDB's own
+  tree-structure docs (exactly 5 named patterns, no "Adjacency List") and fixed by swapping the
+  redundant entry for the missing one. 3 subtopics: Array of Ancestors built and verified against
+  MongoDB's own tutorial, with a Try It on a real difference from the sibling Materialised Path
+  subtopic (self-inclusion in descendants queries); Nested Sets built and verified, with a real
+  insert-cost demonstration (3 documents changed for one insert) and a Try It showing a second
+  insertion touches 5 nodes including an unrelated subtree; a concrete Workload Matrix built for
+  the Challenge's own Social Media Feed scenario, verified via execution (getFeed 9x more frequent
+  than all writes), with a Try It flipping the numbers to show the identical schema becomes wrong
+  under a different workload. Hit a fully-dead dev server (not just stale) — cold-started cleanly.
+  Build clean, browser-verified (nav accordion fresh on first check, toggle count 12, Quick
+  Reference fix confirmed via a scoped check, 3 subtopic pages, breadcrumb all 4 levels, sidebar).
 - [ ] `/mongodb/time-series` — Time Series Collections
 - [ ] `/mongodb/indexes` — Indexes
 - [ ] `/mongodb/query-performance` — Query Performance & explain()
