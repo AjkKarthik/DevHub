@@ -8033,6 +8033,54 @@ this same check before any other new hub's first subtopic set:
     individually — correct h1/breadcrumb (all 4 levels confirmed), 860px wrapper via
     `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed via a direct text search
     for the tip's own distinctive phrase. **MongoDB hub Phase 10: 18 of 21 topics complete.**
+19. **The `security` batch found and fixed TWO genuine issues, one a fabricated-feature citation
+    (the same failure category as prior fabricated-citation catches in this file — RFC 4652,
+    the K8s gRPC-probe version, the Optic tool status) and one a real security anti-pattern in a
+    Challenge presented as the correct reference solution**: a QnA on credential rotation claimed
+    "MongoDB's multiple passwords per user (MongoDB 7.2+)" as a zero-downtime rotation mechanism —
+    verified directly against <code>db.updateUser()</code>'s own reference documentation (a single
+    <code>pwd</code> field that REPLACES the password immediately) and MongoDB's own 8.0 changelog
+    (zero mentions of any such feature) that no such capability exists at all; the QnA's own code
+    example didn't even demonstrate "multiple passwords" — it was a bare, ordinary password change.
+    Fixed to state the real, only zero-downtime pattern: blue/green (create a new user, migrate
+    connections, drop the old user). Separately, the "Secure User System Setup" Challenge — for a
+    HEALTHCARE application — hashed passwords with plain <code>createHash("sha256")</code>, a fast,
+    unsalted, deterministic hash unsuitable for password storage; verified via direct execution that
+    bcrypt produces a DIFFERENT hash for the identical password every time (automatic salting) while
+    SHA-256 always produces the same digest, exactly what makes rainbow-table/brute-force attacks
+    practical. Fixed to bcrypt.hash()/bcrypt.compare(), which also required restructuring the login
+    query (fetch by username only, then compare against the fetched hash, since a salted hash can
+    never be matched via query-level equality). Three subtopics, each verified via direct Node.js
+    execution: (1) **fix-adjacent** — models a naive in-place password change (10 of 10 active
+    connections fail authentication instantly) against blue/green rotation at 60% migrated (0 of 10
+    fail), with a Try It on what happens if the old user is dropped before migration reaches 100%;
+    (2) **fix-adjacent** — the SHA-256-vs-bcrypt fix demonstrated directly (bcrypt's salted output
+    differs on every call; SHA-256's never does), with a Try It on why a precomputed rainbow table
+    that defeats every stolen SHA-256 hash at once does NOT transfer to bcrypt's per-hash salts; (3)
+    **gap-closing** — one of the page's own quiz questions explains deterministic-vs-randomized
+    CSFLE pattern leakage in real technical detail but no codeTab demonstrates it; built an
+    illustrative HMAC-based deterministic scheme (same plaintext -> same ciphertext, verified via
+    execution) contrasted against real AES-256-GCM randomized encryption (different ciphertext every
+    time even for identical plaintext), with a Try It establishing the choice is dictated by whether
+    a field needs server-side equality queries, not a general security-maximizing default. SUBTOPICS
+    key hub-prefixed to `mongo-security` (bare `security` collides with the SQL hub's own topic,
+    matching this hub's own already-`mongo-`-prefixed progress/search key). All three
+    `exercise.solution` fields swept clean of `<code>`/entity contamination (all backtick-delimited,
+    correctly tolerating bare apostrophes in comments); the standing apostrophe-after-letter sweep
+    (run against both the new subtopic files and the main page file itself, after all edits) and the
+    `[prev]`/`[next]`-label straight-apostrophe/double-quote sweeps both found nothing unescaped
+    requiring a fix; bracket-balance and backtick-parity scripts confirmed clean on all three
+    subtopic files and the main page file. Build passed clean on the first attempt (foreground
+    execution, explicit `EXITCODE:$?` capture, zero `ERROR` lines). Browser-verified with a
+    proactive dev-server restart before checking (fresh on the first check, toggle count 19 as
+    expected across the hub): no console errors on any of the 4 pages; nav accordion opens with all
+    3 subtopic links; both main-page fixes confirmed rendering live via direct component data
+    inspection (the bcrypt check also confirmed the OLD `createHash('sha256')` functional call was
+    gone, distinguishing it from a harmless explanatory comment that intentionally still mentions
+    the old approach by name for contrast); the subtopic page checked individually — correct
+    h1/breadcrumb (all 4 levels confirmed), 860px wrapper via `getComputedStyle`, tailored (not
+    DEFAULT) sidebar content confirmed via a direct text search for the tip's own distinctive
+    phrase. **MongoDB hub Phase 10: 19 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -9120,7 +9168,7 @@ this same check before any other new hub's first subtopic set:
   Progress: `mongoTotal=21` in progress.service.ts. MongoDB pages use `app-common-mistakes` AND
   `app-revision-card`. Reference pages (cheatsheet, interview-prep) have no PageComplete.
   Challenge.language: `'typescript'`. MongoNavComponent at `shared/mongo-nav/mongo-nav.ts`.
-  Phase 10: 18 of 21 topics have subtopics (`/mongodb/fundamentals`, pilot batch;
+  Phase 10: 19 of 21 topics have subtopics (`/mongodb/fundamentals`, pilot batch;
   `/mongodb/installation-setup`; `/mongodb/crud-operations`; `/mongodb/update-operators`;
   `/mongodb/query-operators`; `/mongodb/array-queries`; `/mongodb/projections-sorting`;
   `/mongodb/aggregation-pipeline`; `/mongodb/lookup-joins`; `/mongodb/aggregation-expressions`;
@@ -9128,7 +9176,9 @@ this same check before any other new hub's first subtopic set:
   `/mongodb/indexes` (SUBTOPICS key hub-prefixed to `mongo-indexes` — bare `indexes` collides
   with the SQL hub's own topic); `/mongodb/query-performance`; `/mongodb/transactions`
   (SUBTOPICS key hub-prefixed to `mongo-transactions` — bare `transactions` collides with the
-  SQL hub's own topic); `/mongodb/change-streams`; `/mongodb/replication-sharding`, 2026-09-06) —
+  SQL hub's own topic); `/mongodb/change-streams`; `/mongodb/replication-sharding`;
+  `/mongodb/security` (SUBTOPICS key hub-prefixed to `mongo-security` — bare `security` collides
+  with the SQL hub's own topic), 2026-09-06) —
   see "MongoDB hub subtopic wiring" section above for the `MongoNavComponent` accordion structural
   fix (15th `*NavComponent`-based hub in a row missing it at pilot time), the `mongo-fundamentals`/
   `mongo-installation-setup` SUBTOPICS-map collision resolutions (the former collided with the
@@ -9141,10 +9191,13 @@ this same check before any other new hub's first subtopic set:
   found and fixed on the Transactions page (verified via WebFetch against MongoDB's own
   Production Considerations page), the pipeline-comment/oplog-retention inaccuracies found
   and fixed on the Change Streams page (the latter verified via WebFetch against MongoDB's own
-  Replica Set Oplog documentation), and the cross-QnA zone-sharding/oplog-size-floor inaccuracies
+  Replica Set Oplog documentation), the cross-QnA zone-sharding/oplog-size-floor inaccuracies
   found and fixed on the Replication & Sharding page (the zone-sharding fix catchable by cross-
   referencing the page's own two QnAs against each other; the oplog-floor fix verified via
-  WebFetch against MongoDB's own Replica Set Oplog documentation).
+  WebFetch against MongoDB's own Replica Set Oplog documentation), and the fabricated "multiple
+  passwords per user" feature claim plus a plain-SHA-256 password-hashing anti-pattern found and
+  fixed on the Security & Authentication page (the fabricated-feature claim verified via WebFetch/
+  WebSearch against MongoDB's own db.updateUser() docs and 8.0 changelog).
 - **Hub home**: Angular, C#, ASP.NET Core, SQL, TypeScript, React, JavaScript, CSS, HTML, Blazor, Go, Node.js, Python, DevOps, AWS, Azure, Linux, Redis, GraphQL, Messaging, Testing, DSA, AI/ML, Containers/K8s, Terraform/IaC, Service Mesh, System Design, Architecture Patterns, Design Patterns, Security, API Design, Observability, Web Performance, and MongoDB are all `available: true`. Everything else "Soon".
 - Progress totals: Angular 58, C# 50, ASP.NET Core 45, SQL 44, TypeScript 20, React 17, JavaScript 22, CSS 22, HTML 23, Web Performance 20, Blazor 20, Go 21, Node.js 23, Python 21, DevOps 21, AWS 21, Azure 22, Linux 19, Redis 21, GraphQL 20, Messaging 20, Testing 19, DSA 21, AI 19, Containers/K8s 22, Terraform 21, Service Mesh 19, System Design 24, Architecture Patterns 22, Design Patterns 36, Security 23, API Design 19, Observability 20, MongoDB 21 (`progress.service.ts`).
 - Hero stat: "933+ Live Pages" (corrected 2026-07-01 — hub-home.ts's Angular card was showing `topics: 63` instead of the actual 68, undercounting the site total by 5).

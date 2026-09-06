@@ -9123,7 +9123,23 @@ off here with a date.
   (collision-free). Build clean on the first attempt. Browser-verified (nav accordion fresh on
   first check, toggle count 18, both main-page fixes rendering live, subtopic page checked,
   breadcrumb all 4 levels, sidebar tailored).
-- [ ] `/mongodb/security` — Security & Authentication
+- [x] 2026-09-06 — `/mongodb/security` — Security & Authentication. Fixed a fabricated-feature
+  QnA claim ("MongoDB's multiple passwords per user, MongoDB 7.2+" for zero-downtime rotation) —
+  verified via WebFetch/WebSearch against db.updateUser()'s own docs and MongoDB's 8.0 changelog
+  that no such feature exists; corrected to state the real, only pattern (blue/green new-user
+  rotation). Also fixed a real security anti-pattern in the "Secure User System Setup" Challenge's
+  own reference solution: plain createHash("sha256") for password hashing (fast, unsalted,
+  deterministic — unsuitable for password storage) for a HEALTHCARE app; fixed to bcrypt.hash()/
+  bcrypt.compare(), verified via direct execution that bcrypt salts automatically (different hash
+  every call) while SHA-256 doesn't, which also required restructuring the login query (fetch by
+  username, then compare against the fetched hash). 3 subtopics, each verified via direct Node.js
+  execution: the naive-vs-blue/green rotation outage model; the SHA-256-vs-bcrypt fix demonstrated
+  directly; and a deterministic-vs-randomized CSFLE pattern-leakage demonstration for a quiz
+  question the page explains in prose but never shows in code. SUBTOPICS key hub-prefixed to
+  `mongo-security` (bare `security` collides with the SQL hub's own topic). Build clean on the
+  first attempt. Browser-verified (nav accordion fresh on first check, toggle count 19, both
+  main-page fixes rendering live, subtopic page checked, breadcrumb all 4 levels, sidebar
+  tailored).
 - [ ] `/mongodb/mongodb-nodejs` — MongoDB with Node.js
 - [ ] `/mongodb/atlas-search` — Atlas Search & Vector Search
 
