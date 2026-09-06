@@ -134,13 +134,14 @@ process.on('SIGINT', async () => {
       label: 'Filter Pipeline & Full Document',
       language: 'typescript',
       code: `// Filter change stream with an aggregation pipeline
-// Only receive insert/update events where status === 'shipped'
+// Only receive insert/update events where status === 'shipped' --
+// filtered SERVER-SIDE, matching the "Filtering events in application
+// code instead of the pipeline" mistake block's own guidance below.
 const pipeline = [
   {
     $match: {
-      operationType: { $in: ['insert', 'update', 'replace'] },
-      // Match on fullDocument fields (for insert/replace)
-      // or use $match on updateDescription for update events
+      operationType: { \$in: ['insert', 'update', 'replace'] },
+      'fullDocument.status': 'shipped',
     }
   },
   {
@@ -160,13 +161,10 @@ const changeStream = collection.watch(pipeline, {
 });
 
 for await (const event of changeStream) {
-  // Using async iteration — cleaner than event emitter
-  if (event.operationType === 'update') {
-    const newStatus = event.fullDocument?.status;
-    if (newStatus === 'shipped') {
-      await sendShippingNotification(event.documentKey._id);
-    }
-  }
+  // Using async iteration — cleaner than event emitter.
+  // Every event that reaches here already matched status: 'shipped'
+  // server-side, so there's no client-side status re-check needed.
+  await sendShippingNotification(event.documentKey._id);
 }`,
     },
     {
@@ -495,7 +493,7 @@ startStockMonitor().catch(console.error);`,
   qna: QnaItem[] = [
     {
       q: 'How long does MongoDB retain oplog events for resume?',
-      a: 'The oplog is a capped collection with a configurable size. MongoDB ensures a minimum retention period of <strong>1 hour</strong> by default (configurable with <code>oplogMinRetentionHours</code>). In practice, most deployments retain 24–72 hours. If your application is down longer than the oplog window, the resume token expires and you cannot resume — you\'ll need to resync from the current state. Set <code>oplogMinRetentionHours</code> to match your expected maximum downtime.',
+      a: 'The oplog is a capped collection with a configurable maximum size — verified against MongoDB\'s own documentation that <strong>by default there is no guaranteed minimum retention period at all</strong>: <code>oplogMinRetentionHours</code> defaults to <strong>0</strong> (disabled), and MongoDB simply truncates the oldest entries the moment the oplog reaches its configured max size, regardless of how old those entries are. Retention only gets a real time-based floor once you explicitly set <code>oplogMinRetentionHours</code> — with it set, an entry is removed only once BOTH the oplog exceeds its max size AND the entry is older than the configured hours. In practice many deployments happen to retain 24–72 hours simply because their write rate hasn\'t filled the configured oplog size yet — that\'s a side effect of your write volume, not a guarantee. If your application is down longer than however long the oplog actually held on this deployment, the resume token expires and you cannot resume — you\'ll need to resync from the current state. Set <code>oplogMinRetentionHours</code> explicitly to match your expected maximum downtime rather than relying on size-based retention happening to be long enough.',
     },
     {
       q: 'Can I watch changes from multiple collections in one stream?',

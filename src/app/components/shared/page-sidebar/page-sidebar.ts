@@ -34497,6 +34497,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Change streams only capture changes AFTER they start — they are not a substitute for an initial full data sync when bootstrapping a new consumer.',
     ],
   },
+  'mongodb/change-streams/status-filter-comment-vs-actual-pipeline-code': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Change Streams', route: '/mongodb/change-streams' },
+      { label: 'Oplog Retention Has No Default Minimum Hours', route: '/mongodb/change-streams/oplog-retention-has-no-default-minimum-hours' },
+    ],
+    tip: 'A pipeline comment claiming a server-side filter is only as reliable as the $match stage it describes — always check what the stage actually filters on, not what a nearby comment claims.',
+    gotchas: [
+      'Pushing a fullDocument.status condition into $match cuts transmitted events by roughly 98% in a realistic low-match-rate scenario, versus filtering the same condition client-side after every event is already sent.',
+    ],
+  },
+  'mongodb/change-streams/oplog-retention-has-no-default-minimum-hours': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Change Streams', route: '/mongodb/change-streams' },
+      { label: 'The Comment vs. the Actual Pipeline Code', route: '/mongodb/change-streams/status-filter-comment-vs-actual-pipeline-code' },
+      { label: 'updateLookup Plus $match: A Real Resume-Token Risk', route: '/mongodb/change-streams/updatelookup-plus-match-resume-token-not-found-risk' },
+    ],
+    tip: 'oplogMinRetentionHours defaults to 0 — there is no guaranteed minimum oplog retention window until you explicitly set it; the default is purely size-based truncation.',
+    gotchas: [
+      'An observed "24-72 hours" retention figure without oplogMinRetentionHours set is a byproduct of the current write rate against a fixed oplog size — it can shrink without warning the moment write volume increases.',
+    ],
+  },
+  'mongodb/change-streams/updatelookup-plus-match-resume-token-not-found-risk': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Change Streams', route: '/mongodb/change-streams' },
+      { label: 'Oplog Retention Has No Default Minimum Hours', route: '/mongodb/change-streams/oplog-retention-has-no-default-minimum-hours' },
+    ],
+    tip: 'MongoDB\'s own documentation warns that fullDocument: "updateLookup" combined with a $match on a fullDocument field can produce "Resume Token Not Found" errors under rapid deletions — pre/post images with "whenAvailable" avoid the underlying live-lookup race entirely.',
+    gotchas: [
+      'The risk applies to any collection that is ever bulk-deleted from during a traffic spike, not only permanently high-throughput deployments.',
+    ],
+  },
   'mongodb/replication-sharding': {
     apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
     related: [

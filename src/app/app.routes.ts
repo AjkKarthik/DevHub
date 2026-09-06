@@ -2691,7 +2691,12 @@ export const routes: Routes = [
       { path: 'dual-retry-loop-transient-vs-unknown-commit', loadComponent: () => import('./components/data/mongodb/transactions/subtopics/dual-retry-loop-transient-vs-unknown-commit/dual-retry-loop-transient-vs-unknown-commit').then(m => m.DualRetryLoopTransientVsUnknownCommitSubtopic) },
       { path: 'transactiontoolargeforcache-the-real-limit', loadComponent: () => import('./components/data/mongodb/transactions/subtopics/transactiontoolargeforcache-the-real-limit/transactiontoolargeforcache-the-real-limit').then(m => m.TransactiontoolargeforcacheTheRealLimitSubtopic) },
     ] },
-    { path: 'change-streams',        loadComponent: () => import('./components/data/mongodb/change-streams/change-streams').then(m => m.MongoChangeStreams) },
+    { path: 'change-streams', children: [
+      { path: '', loadComponent: () => import('./components/data/mongodb/change-streams/change-streams').then(m => m.MongoChangeStreams) },
+      { path: 'status-filter-comment-vs-actual-pipeline-code', loadComponent: () => import('./components/data/mongodb/change-streams/subtopics/status-filter-comment-vs-actual-pipeline-code/status-filter-comment-vs-actual-pipeline-code').then(m => m.StatusFilterCommentVsActualPipelineCodeSubtopic) },
+      { path: 'oplog-retention-has-no-default-minimum-hours', loadComponent: () => import('./components/data/mongodb/change-streams/subtopics/oplog-retention-has-no-default-minimum-hours/oplog-retention-has-no-default-minimum-hours').then(m => m.OplogRetentionHasNoDefaultMinimumHoursSubtopic) },
+      { path: 'updatelookup-plus-match-resume-token-not-found-risk', loadComponent: () => import('./components/data/mongodb/change-streams/subtopics/updatelookup-plus-match-resume-token-not-found-risk/updatelookup-plus-match-resume-token-not-found-risk').then(m => m.UpdatelookupPlusMatchResumeTokenNotFoundRiskSubtopic) },
+    ] },
     { path: 'replication-sharding',  loadComponent: () => import('./components/data/mongodb/replication-sharding/replication-sharding').then(m => m.MongoReplicationSharding) },
     { path: 'security',              loadComponent: () => import('./components/data/mongodb/security/security').then(m => m.MongoSecurity) },
     { path: 'mongodb-nodejs',        loadComponent: () => import('./components/data/mongodb/mongodb-nodejs/mongodb-nodejs').then(m => m.MongoMongodbNodejs) },

@@ -1,0 +1,26 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Change Streams" topicRoute="/mongodb/change-streams"
+    subtopicLabel="updateLookup Plus $match: A Real Resume-Token Risk" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">updateLookup Plus $match: A Real Resume-Token Risk</h1>
+  <p class="page-subtitle">The sibling subtopic's own fix combined updateLookup with a $match on a fullDocument field — exactly the pairing MongoDB's own documentation warns can cause "Resume Token Not Found" errors under rapid deletions.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>This closes the topic's arc: the pipeline-filtering fix from the first subtopic is genuinely correct, but it also introduces a real, documented risk this subtopic names and fixes — the same discipline as always checking a fix against a technology's own documented edge cases, not just its happy path.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Change Streams" topicRoute="/mongodb/change-streams"
+    [prev]="{ label: 'Oplog Retention Has No Default Minimum Hours', route: '/mongodb/change-streams/oplog-retention-has-no-default-minimum-hours' }" />
+</div>

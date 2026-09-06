@@ -1,0 +1,26 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Change Streams" topicRoute="/mongodb/change-streams"
+    subtopicLabel="The Comment vs. the Actual Pipeline Code" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">The Comment vs. the Actual Pipeline Code</h1>
+  <p class="page-subtitle">The main page's own "Filter Pipeline & Full Document" codeTab claimed a server-side status filter its $match stage never actually implemented — the real filtering ran client-side instead, the exact anti-pattern the page's own next mistake block warns against.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>This directly corrects the main page's own codeTab, and sets up the topic's remaining subtopics: the oplog retention default the page also got wrong, and a real, documented risk that pushing a fullDocument condition into $match can introduce under the right (or wrong) conditions.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Change Streams" topicRoute="/mongodb/change-streams"
+    [next]="{ label: 'Oplog Retention Has No Default Minimum Hours', route: '/mongodb/change-streams/oplog-retention-has-no-default-minimum-hours' }" />
+</div>

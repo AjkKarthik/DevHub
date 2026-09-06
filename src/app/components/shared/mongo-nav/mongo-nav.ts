@@ -343,7 +343,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/mongodb/change-streams" routerLinkActive="active"><span class="nl-text">Change Streams</span>@if(p.isDone('mongo-change-streams')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/mongodb/change-streams" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Change Streams</span>
+        @if(p.isDone('mongo-change-streams')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('change-streams')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('change-streams')"
+                  (click)="toggleSubtopics('change-streams', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('change-streams'); as csSubs) {
+        @if (isSubtopicsExpanded('change-streams')) {
+          <div class="nav-subtopics">
+            @for (s of csSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
