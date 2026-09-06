@@ -9077,7 +9077,21 @@ off here with a date.
   editing it, learning from the prior indexes batch). Browser-verified (nav accordion fresh on
   first check, toggle count 15, both main-page fixes rendering live, 3 subtopic pages, breadcrumb
   all 4 levels, sidebar).
-- [ ] `/mongodb/transactions` — Transactions
+- [x] 2026-09-06 — `/mongodb/transactions` — Transactions. Fixed a genuine internal
+  contradiction (the "read concern snapshot" QnA claimed it's the default for a transaction,
+  contradicted by quiz Q6's own explanation; verified via MongoDB's own docs the real default is
+  "local", with snapshot ISOLATION always-on regardless of read concern level) and a genuinely
+  wrong "1000 write operations"/"1GB oplog" hard-limit claim (verified via two WebFetch calls
+  against MongoDB's own Production Considerations page that neither figure is documented; the
+  real limits are the 60s runtime, 16MB per oplog entry, and a genuine TransactionTooLargeForCache
+  error the page never mentioned). 3 subtopics, each independently verified via direct Node.js
+  execution: the real precedence chain for read concern resolution; the dual-retry loop
+  (TransientTransactionError retries the whole body, UnknownTransactionCommitResult retries only
+  the commit); and the real TransactionTooLargeForCache cache-size ceiling contrasted against the
+  debunked operation-count figure. SUBTOPICS key hub-prefixed to `mongo-transactions` (bare
+  `transactions` collides with the SQL hub's own topic). Build clean on the first attempt.
+  Browser-verified (nav accordion fresh on first check, toggle count 16, all three main-page fixes
+  rendering live, subtopic page checked, breadcrumb all 4 levels, sidebar tailored).
 - [ ] `/mongodb/change-streams` — Change Streams
 - [ ] `/mongodb/replication-sharding` — Replication & Sharding
 - [ ] `/mongodb/security` — Security & Authentication

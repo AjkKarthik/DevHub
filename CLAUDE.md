@@ -7877,6 +7877,63 @@ this same check before any other new hub's first subtopic set:
     subtopic pages checked individually — correct h1/breadcrumb (all 4 levels confirmed), 860px
     wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the final
     subtopic. **MongoDB hub Phase 10: 15 of 21 topics complete.**
+16. **The `transactions` batch found and fixed a genuine internal contradiction plus a
+    genuinely wrong claim, both requiring external verification against MongoDB's own docs**: the
+    "read concern snapshot" QnA claimed <code>"snapshot"</code> read concern "is the default for
+    a transaction" — directly contradicted by the page's own separate quiz Q6 explanation on
+    isolation, which already correctly described the read concern LEVEL as defaulting to local.
+    Verified via MongoDB's own read-concern documentation that if unspecified, a transaction
+    inherits from the session-level (then client-level) default, typically <code>"local"</code> —
+    and that every transaction ALREADY gets full snapshot ISOLATION as a behavior regardless of
+    which read concern level is in effect, a genuinely separate concept from the read concern
+    LEVEL named <code>"snapshot"</code>. Fixed the QnA answer, plus quiz Q6's own correct-answer
+    option text and explanation, to state both facts consistently. A second QnA claimed "maximum
+    1000 write operations per transaction" and a "1GB oplog size" cap as hard limits — verified via
+    two separate WebFetch calls against MongoDB's own Production Considerations page that NEITHER
+    figure is documented as an enforced limit at all: "1000" is a performance best-practice
+    recommendation from a MongoDB blog post, and the real hard limits are the 60-second default
+    runtime, each individual oplog entry staying within the 16MB BSON document size limit (the
+    OVERALL transaction size cap was removed since MongoDB creates as many oplog entries as
+    needed), and a genuine <code>TransactionTooLargeForCache</code> error when a transaction's data
+    cannot fit in the WiredTiger cache at all — a fact the main page never mentioned. Fixed the QnA
+    to state the verified facts. Three subtopics, each independently verified: (1) **fix-adjacent**
+    — a pure-JS model of the real precedence chain (transaction-level → session default →
+    client default → "local"), verified across four representative cases matching the documented
+    precedence exactly, with a Try It on an explicit <code>startTransaction({ readConcern: {
+    level: 'snapshot' } })</code> overriding a conflicting session default; (2) **gap-closing** —
+    the theory/quiz name <code>TransientTransactionError</code> (retry the WHOLE transaction body)
+    and <code>UnknownTransactionCommitResult</code> (retry ONLY the commit) as two distinct
+    retryable errors, but no codeTab ever builds the two-level retry loop the distinction actually
+    requires; built and verified <code>runTransactionWithRetry()</code>/<code>commitWithRetry()</code>
+    via direct Node.js execution across both failure shapes — a flaky commit correctly ran the body
+    exactly once, while a flaky body correctly re-ran it from scratch on a fresh transaction; (3)
+    **gap-closing** — modeled the real <code>TransactionTooLargeForCache</code> ceiling (WiredTiger
+    cache ≈ 50% of RAM − 1GB, 256MB floor, verified via WebSearch) against two contrasting
+    scenarios verified via direct execution: 25,000 small (<1KB) documents in one transaction (the
+    exact case the old "1000 writes" figure warned about) totals only ~21.5MB and poses no real
+    cache risk, while 300 documents near the 16MB BSON limit each totals ~4.39GB and genuinely
+    exceeds a 3.5GB cache outright — the real ceiling tracks total DATA SIZE, not operation count.
+    No `SUBTOPICS` collision check came back clean this time — bare `transactions` is already
+    claimed by the SQL hub's own `/sql/transactions` topic (a Redis hub `/redis/transactions`
+    route also exists, currently without subtopics) — hub-prefixed to `mongo-transactions`,
+    matching this hub's own established progress/search key prefix (already `mongo-`-prefixed for
+    progress/search purposes independent of this collision, so no separate mismatch to reconcile).
+    All three `exercise.solution` fields swept clean of `<code>`/entity contamination; the standing
+    apostrophe-after-letter sweep (run against both the new subtopic files and the main page file
+    itself, after all four edits) and the `[prev]`/`[next]`-label straight-apostrophe sweep both
+    found nothing unescaped — none of the three subtopic titles needed rewording this batch, since
+    none contained a straight apostrophe at all; bracket-balance and backtick-parity scripts
+    confirmed clean on all three files, including a correctly-escaped `\$inc` MongoDB operator
+    inside a nested driver-code example. Build passed clean on the first attempt (foreground
+    execution, explicit `EXITCODE:$?` capture, zero `ERROR` lines). Browser-verified with a
+    proactive dev-server restart before checking (fresh on the first check, toggle count 16 as
+    expected): no console errors on any of the 4 pages; nav accordion opens with all 3 subtopic
+    links; all three main-page fixes (the QnA answer, quiz Q6's option text, quiz Q6's explanation,
+    and the separate "1000 write operations" QnA) confirmed rendering live via direct component
+    data inspection; the subtopic page checked individually — correct h1/breadcrumb (all 4 levels
+    confirmed), 860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content
+    confirmed via a direct text search for the tip's own distinctive phrase. **MongoDB hub Phase
+    10: 16 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -8964,22 +9021,26 @@ this same check before any other new hub's first subtopic set:
   Progress: `mongoTotal=21` in progress.service.ts. MongoDB pages use `app-common-mistakes` AND
   `app-revision-card`. Reference pages (cheatsheet, interview-prep) have no PageComplete.
   Challenge.language: `'typescript'`. MongoNavComponent at `shared/mongo-nav/mongo-nav.ts`.
-  Phase 10: 15 of 21 topics have subtopics (`/mongodb/fundamentals`, pilot batch;
+  Phase 10: 16 of 21 topics have subtopics (`/mongodb/fundamentals`, pilot batch;
   `/mongodb/installation-setup`; `/mongodb/crud-operations`; `/mongodb/update-operators`;
   `/mongodb/query-operators`; `/mongodb/array-queries`; `/mongodb/projections-sorting`;
   `/mongodb/aggregation-pipeline`; `/mongodb/lookup-joins`; `/mongodb/aggregation-expressions`;
   `/mongodb/schema-design-patterns`; `/mongodb/data-modelling`; `/mongodb/time-series`;
   `/mongodb/indexes` (SUBTOPICS key hub-prefixed to `mongo-indexes` — bare `indexes` collides
-  with the SQL hub's own topic); `/mongodb/query-performance`, 2026-09-06) — see
+  with the SQL hub's own topic); `/mongodb/query-performance`; `/mongodb/transactions`
+  (SUBTOPICS key hub-prefixed to `mongo-transactions` — bare `transactions` collides with the
+  SQL hub's own topic), 2026-09-06) — see
   "MongoDB hub subtopic wiring" section above for the `MongoNavComponent` accordion structural fix
   (15th `*NavComponent`-based hub in a row missing it at pilot time), the `mongo-fundamentals`/
   `mongo-installation-setup` SUBTOPICS-map collision resolutions (the former collided with the
   JavaScript hub's own bare `fundamentals` topic key; the latter was proactively hub-prefixed
   against the Redis hub's own bare `installation-setup` route), the genuine driver-vs-server
   connection-limit inaccuracy found and fixed in the Fundamentals page's own "Not closing the
-  MongoClient" mistake block, and the three genuine inaccuracies (a missing authSource=admin, a
+  MongoClient" mistake block, the three genuine inaccuracies (a missing authSource=admin, a
   wrong maxIncomingConnections default, and a backwards auth-bootstrap ordering) found and fixed
-  on the Installation & Setup page.
+  on the Installation & Setup page, and the read-concern-default/1000-write-limit inaccuracies
+  found and fixed on the Transactions page (verified via WebFetch against MongoDB's own
+  Production Considerations page).
 - **Hub home**: Angular, C#, ASP.NET Core, SQL, TypeScript, React, JavaScript, CSS, HTML, Blazor, Go, Node.js, Python, DevOps, AWS, Azure, Linux, Redis, GraphQL, Messaging, Testing, DSA, AI/ML, Containers/K8s, Terraform/IaC, Service Mesh, System Design, Architecture Patterns, Design Patterns, Security, API Design, Observability, Web Performance, and MongoDB are all `available: true`. Everything else "Soon".
 - Progress totals: Angular 58, C# 50, ASP.NET Core 45, SQL 44, TypeScript 20, React 17, JavaScript 22, CSS 22, HTML 23, Web Performance 20, Blazor 20, Go 21, Node.js 23, Python 21, DevOps 21, AWS 21, Azure 22, Linux 19, Redis 21, GraphQL 20, Messaging 20, Testing 19, DSA 21, AI 19, Containers/K8s 22, Terraform 21, Service Mesh 19, System Design 24, Architecture Patterns 22, Design Patterns 36, Security 23, API Design 19, Observability 20, MongoDB 21 (`progress.service.ts`).
 - Hero stat: "933+ Live Pages" (corrected 2026-07-01 — hub-home.ts's Angular card was showing `topics: 63` instead of the actual 68, undercounting the site total by 5).
