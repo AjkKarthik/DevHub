@@ -8137,6 +8137,68 @@ this same check before any other new hub's first subtopic set:
     h1/breadcrumb (all 4 levels confirmed), 860px wrapper via `getComputedStyle`, tailored (not
     DEFAULT) sidebar content confirmed via a direct text search for the tip's own distinctive
     phrase. **MongoDB hub Phase 10: 20 of 21 topics complete — only `atlas-search` remains.**
+21. **The `atlas-search` batch — the 21st and FINAL topic — found and fixed a genuine, well-
+    verified fabricated field reference in the "E-commerce Search with Facets" Challenge's own
+    solution**: it requested <code>count: { type: 'total' }</code> inside the <code>$search</code>
+    stage, then read the result back via <code>products[0]?.['$$searchCount']</code> — a field
+    that has never existed on any Atlas Search result document. Verified via WebFetch against
+    MongoDB's own Counting Search Results documentation (including its own worked example output)
+    that the count is exposed exclusively through the <code>$$SEARCH_META</code> SYSTEM VARIABLE,
+    which must be explicitly captured via a <code>$project</code> stage (e.g.
+    <code>meta: '$$SEARCH_META'</code>) before it can be read at all — the original solution's own
+    <code>$project</code> stage never captured it, meaning even fixing the access expression alone
+    would still return nothing. Fixed both halves: added the missing <code>$project</code> field
+    and corrected the access expression to <code>products[0]?.meta?.count?.total</code>. Three
+    subtopics, each verified via direct Node.js execution or WebFetch against MongoDB's own docs:
+    (1) **fix-adjacent** — reproduces the broken-vs-fixed access exactly via a pure-JS model of
+    <code>$$SEARCH_META</code>'s documented per-document behavior (every returned document in one
+    query carries an IDENTICAL metadata snapshot), with a Try It establishing that fixing only ONE
+    of the two halves (access expression OR projection) still returns nothing; (2) **gap-closing**
+    — the page's own "Compound Search with Filters" codeTab also requests
+    <code>count: { type: 'total' }</code> but never captures or reads it at all (a distinct
+    incompleteness from the Challenge's fabricated-field bug, since nothing here is factually
+    wrong, the codeTab just never finishes what it started) — completed it using the exact
+    <code>$$SEARCH_META</code> pattern from the sibling subtopic, reusing the page's own compound
+    query verbatim, with the "total"-vs-"lowerBound" count-type trade-off verified via WebFetch
+    against MongoDB's own documentation (total: exact but expensive; lowerBound: fast but
+    approximate above a configurable threshold, default 1000); (3) **gap-closing** — the page's
+    own QnA describes <code>$vectorSearch</code> (semantic search, hybrid search via
+    <code>$unionWith</code> + reciprocal rank fusion) in real depth, but none of the page's FOUR
+    codeTabs ever builds a working vector search query; built one, verified via WebFetch against
+    MongoDB's own <code>$vectorSearch</code> stage reference (exact field names, and the
+    documented "numCandidates should be at least 20x the limit for good recall" guidance — noting
+    the main page's own QnA example uses only a 10x ratio) and confirmed the distinct
+    <code>vectorSearchScore</code> meta key (not <code>searchScore</code>). **A real, self-caught
+    bug during authoring, not the standing sweep**: an early draft of subtopic 3's own demo code
+    referenced a `limit` variable at the top level of a standalone script where it was never in
+    scope (only declared as a parameter inside an unrelated function earlier in the same codeTab)
+    — caught by extracting and executing the exact code as real JavaScript before publishing,
+    fixed to a literal value. A second self-caught issue: an early draft used a backslash-escaped
+    apostrophe (<code>\\'</code>) inside a DOUBLE-nested single-quoted string within the SAME
+    template literal, risking the exact delimiter-collision this file has documented many times —
+    switched to double quotes for the inner string instead, verified correct by extracting and
+    evaluating the exact backtick span as real JavaScript. A third self-caught issue: a bare single
+    brace (<code>{ type: 'total' }</code>) in one subtopic's own static `.html` page-subtitle text
+    — caught by the standing pre-build sweep and entity-escaped before the build ever ran,
+    confirmed rendering correctly as literal text afterward. No `SUBTOPICS` collision for
+    `atlas-search` (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly,
+    confirmed collision-free, left bare). All three `exercise.solution` fields swept clean of
+    `<code>`/entity contamination; the standing apostrophe-after-letter sweep (run against both the
+    new subtopic files and the main page file itself, after the fix) and the
+    `[prev]`/`[next]`-label straight-apostrophe/double-quote sweeps both found nothing unescaped;
+    bracket-balance and backtick-parity scripts confirmed clean on all three subtopic files and the
+    main page file. Build passed clean on the first attempt (foreground execution, explicit
+    `EXITCODE:$?` capture, zero `ERROR` lines). Browser-verified with a proactive dev-server
+    restart before checking (fresh on the first check): no console errors on any of the 4 pages;
+    nav accordion opens with all 3 subtopic links; the main-page fix confirmed rendering live via
+    direct component data inspection; both gap-closing subtopics' entity-escaped/literal-dollar
+    text confirmed rendering correctly as literal text (not vanished, not raw entity codes); the
+    subtopic pages checked individually — correct h1/breadcrumb (all 4 levels confirmed), 860px
+    wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed via a direct
+    text search for each tip's own distinctive phrase; **a final hub-wide check confirmed exactly
+    21 `.nav-subtopics-toggle` elements render across the entire MongoDB hub, one per topic**.
+    **This completes the MongoDB hub's entire Phase 10 rollout — all 21 topics now have deep-dive
+    subtopic pages, 63 subtopic pages total across the hub, finished 2026-09-06.**
 
 ## Current state (update when it changes!)
 
@@ -9224,7 +9286,7 @@ this same check before any other new hub's first subtopic set:
   Progress: `mongoTotal=21` in progress.service.ts. MongoDB pages use `app-common-mistakes` AND
   `app-revision-card`. Reference pages (cheatsheet, interview-prep) have no PageComplete.
   Challenge.language: `'typescript'`. MongoNavComponent at `shared/mongo-nav/mongo-nav.ts`.
-  Phase 10: 20 of 21 topics have subtopics (`/mongodb/fundamentals`, pilot batch;
+  Phase 10: **COMPLETE — 21 of 21 topics have subtopics** (`/mongodb/fundamentals`, pilot batch;
   `/mongodb/installation-setup`; `/mongodb/crud-operations`; `/mongodb/update-operators`;
   `/mongodb/query-operators`; `/mongodb/array-queries`; `/mongodb/projections-sorting`;
   `/mongodb/aggregation-pipeline`; `/mongodb/lookup-joins`; `/mongodb/aggregation-expressions`;
@@ -9234,7 +9296,8 @@ this same check before any other new hub's first subtopic set:
   (SUBTOPICS key hub-prefixed to `mongo-transactions` — bare `transactions` collides with the
   SQL hub's own topic); `/mongodb/change-streams`; `/mongodb/replication-sharding`;
   `/mongodb/security` (SUBTOPICS key hub-prefixed to `mongo-security` — bare `security` collides
-  with the SQL hub's own topic); `/mongodb/mongodb-nodejs`, 2026-09-06) —
+  with the SQL hub's own topic); `/mongodb/mongodb-nodejs`; `/mongodb/atlas-search`, finished
+  2026-09-06, 63 subtopic pages total across the hub) —
   see "MongoDB hub subtopic wiring" section above for the `MongoNavComponent` accordion structural
   fix (15th `*NavComponent`-based hub in a row missing it at pilot time), the `mongo-fundamentals`/
   `mongo-installation-setup` SUBTOPICS-map collision resolutions (the former collided with the
@@ -9253,10 +9316,13 @@ this same check before any other new hub's first subtopic set:
   WebFetch against MongoDB's own Replica Set Oplog documentation), the fabricated "multiple
   passwords per user" feature claim plus a plain-SHA-256 password-hashing anti-pattern found and
   fixed on the Security & Authentication page (the fabricated-feature claim verified via WebFetch/
-  WebSearch against MongoDB's own db.updateUser() docs and 8.0 changelog), and the broken
+  WebSearch against MongoDB's own db.updateUser() docs and 8.0 changelog), the broken
   empty-string aggregation field references plus the Mongoose schema's own missing password
   field found and fixed on the MongoDB with Node.js page (the Mongoose strict-mode mechanism
-  verified via WebSearch against Mongoose's own documentation).
+  verified via WebSearch against Mongoose's own documentation), and the fabricated
+  `$$searchCount` field reference (the real mechanism is `$$SEARCH_META`) found and fixed on the
+  Atlas Search & Vector Search page (verified via WebFetch against MongoDB's own Counting Search
+  Results documentation).
 - **Hub home**: Angular, C#, ASP.NET Core, SQL, TypeScript, React, JavaScript, CSS, HTML, Blazor, Go, Node.js, Python, DevOps, AWS, Azure, Linux, Redis, GraphQL, Messaging, Testing, DSA, AI/ML, Containers/K8s, Terraform/IaC, Service Mesh, System Design, Architecture Patterns, Design Patterns, Security, API Design, Observability, Web Performance, and MongoDB are all `available: true`. Everything else "Soon".
 - Progress totals: Angular 58, C# 50, ASP.NET Core 45, SQL 44, TypeScript 20, React 17, JavaScript 22, CSS 22, HTML 23, Web Performance 20, Blazor 20, Go 21, Node.js 23, Python 21, DevOps 21, AWS 21, Azure 22, Linux 19, Redis 21, GraphQL 20, Messaging 20, Testing 19, DSA 21, AI 19, Containers/K8s 22, Terraform 21, Service Mesh 19, System Design 24, Architecture Patterns 22, Design Patterns 36, Security 23, API Design 19, Observability 20, MongoDB 21 (`progress.service.ts`).
 - Hero stat: "933+ Live Pages" (corrected 2026-07-01 — hub-home.ts's Angular card was showing `topics: 63` instead of the actual 68, undercounting the site total by 5).

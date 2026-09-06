@@ -9157,7 +9157,25 @@ off here with a date.
   on first check, toggle count 20, both main-page fixes rendering live, subtopic page checked,
   breadcrumb all 4 levels, sidebar tailored). Only `/mongodb/atlas-search` remains to finish the
   hub.
-- [ ] `/mongodb/atlas-search` — Atlas Search & Vector Search
+- [x] 2026-09-06 — `/mongodb/atlas-search` — Atlas Search & Vector Search. **Final MongoDB hub
+  Phase 10 topic — hub now COMPLETE (21/21).** Fixed a genuine fabricated field reference in the
+  "E-commerce Search with Facets" Challenge's own solution: it requested `count: { type: 'total'
+  }` then read the result via `products[0]?.['$$searchCount']` — a field that has never existed
+  on any Atlas Search document. Verified via WebFetch against MongoDB's own Counting Search
+  Results docs that the count is exposed only via the `$$SEARCH_META` system variable, requiring
+  an explicit `$project` capture; fixed both the missing projection and the access expression. 3
+  subtopics, each verified via direct Node.js execution or WebFetch: the broken-vs-fixed
+  $$SEARCH_META access; completing the "Compound Search with Filters" codeTab's own unread count
+  request; and a real $vectorSearch query for a QnA the page discusses at length but never
+  demonstrates (verified exact field names and the "numCandidates should be 20x the limit"
+  guidance against MongoDB's own docs — noting the main page's own QnA example uses only 10x).
+  Self-caught and fixed two authoring bugs before publishing: an out-of-scope variable reference
+  in a demo snippet, and a nested-apostrophe delimiter collision (switched to double quotes).
+  SUBTOPICS key left bare (collision-free). Build clean on the first attempt. Browser-verified
+  (nav accordion fresh on first check; main-page fix rendering live; both subtopic pages checked;
+  breadcrumb all 4 levels; sidebar tailored; **a final hub-wide check confirmed exactly 21
+  `.nav-subtopics-toggle` elements across the entire hub, one per topic**). MongoDB hub Phase 10:
+  63 subtopic pages total across the hub, finished 2026-09-06.
 
 #### Redis — 21 topic pages
 
