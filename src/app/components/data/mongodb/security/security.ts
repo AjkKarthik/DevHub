@@ -339,7 +339,7 @@ async function secureLogin(username: string, password: string) {
   // TODO: prevent NoSQL injection, hash password before querying
 }`,
     solution: `import { MongoClient } from 'mongodb';
-import { createHash } from 'crypto';
+import bcrypt from 'bcrypt';
 
 const adminClient = new MongoClient(process.env['MONGO_ADMIN_URI']!);
 
@@ -385,8 +385,14 @@ async function setupSecureDatabase() {
   });
 }
 
-function hashPassword(password: string): string {
-  return createHash('sha256').update(password).digest('hex');
+// NOT createHash('sha256') -- SHA-256 alone is a fast, deterministic hash
+// with no salt, unsuitable for password storage (rainbow tables, GPU brute
+// force). bcrypt salts automatically and its cost factor makes brute
+// force deliberately slow -- verified: two bcrypt.hash() calls on the
+// IDENTICAL password produce two DIFFERENT hashes, unlike SHA-256, which
+// always produces the exact same output for the same input.
+async function hashPassword(password: string): Promise<string> {
+  return bcrypt.hash(password, 12);
 }
 
 async function secureLogin(username: string, password: string) {
@@ -397,13 +403,19 @@ async function secureLogin(username: string, password: string) {
   if (!safeUsername || !safePassword) throw new Error('Invalid credentials');
 
   const appClient = new MongoClient(process.env['PATIENTS_URI']!);
+
+  // Fetch by username ONLY -- bcrypt's per-user random salt means the
+  // stored hash can never be matched via query-level equality the way a
+  // plain SHA-256 digest could. The password check happens AFTER
+  // fetching, via bcrypt.compare() against the fetched hash.
   const user = await appClient.db('patients').collection('users').findOne({
     username: safeUsername,
-    passwordHash: hashPassword(safePassword),
   });
 
+  const passwordOk = user ? await bcrypt.compare(safePassword, user.passwordHash) : false;
   await appClient.close();
-  return user;
+
+  return passwordOk ? user : null;
 }`,
   };
 
@@ -467,7 +479,7 @@ async function secureLogin(username: string, password: string) {
   qna: QnaItem[] = [
     {
       q: 'How do I rotate MongoDB credentials without downtime?',
-      a: 'Use MongoDB\'s <strong>multiple passwords per user</strong> (MongoDB 7.2+): <code>db.updateUser("appUser", { pwd: "newPass", mechanisms: ["SCRAM-SHA-256"] })</code>. For older versions: (1) Create a new user with the new credentials and readWrite role; (2) Deploy the new connection string (blue/green or rolling restart); (3) Wait until all connections use the new credentials; (4) Drop the old user. Never rotate credentials in a single step — it causes a brief outage.',
+      a: 'MongoDB has no built-in "multiple valid passwords per user" mechanism — verified directly against <code>db.updateUser()</code>\'s own reference documentation, its <code>pwd</code> field takes a single password value and REPLACES the existing one immediately; there is no server-side feature that keeps an old and new password simultaneously valid. The actual zero-downtime pattern is a blue/green NEW USER, not an in-place password change: (1) Create a NEW user with new credentials and the same role(s) as the existing one; (2) Deploy the new connection string to your application (rolling restart or blue/green deploy); (3) Wait until every connection has switched to the new user; (4) Drop the OLD user. Never call <code>db.updateUser()</code> to change an in-use account\'s password directly in a single step — every connection still using the old password fails to authenticate the instant it changes, causing a brief outage.',
     },
     {
       q: 'What is the difference between TLS and encryption at rest?',

@@ -34641,6 +34641,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Network exposure (binding to 0.0.0.0 without a firewall) combined with weak or no authentication is one of the most common causes of publicly exposed, unsecured MongoDB instances found by security researchers.',
     ],
   },
+  'mongodb/security/blue-green-rotation-not-a-fabricated-feature': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Security & Authentication', route: '/mongodb/security' },
+      { label: 'bcrypt, Not SHA-256, for Password Hashing', route: '/mongodb/security/bcrypt-not-sha256-for-password-hashing' },
+    ],
+    tip: 'There is no "multiple passwords per user" MongoDB feature — db.updateUser() replaces the password immediately. Zero-downtime rotation is always a blue/green new-user pattern: create, migrate, then drop the old user.',
+    gotchas: [
+      'Dropping the old user before every connection has migrated to the new one reintroduces the exact outage the blue/green pattern exists to avoid.',
+    ],
+  },
+  'mongodb/security/bcrypt-not-sha256-for-password-hashing': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Security & Authentication', route: '/mongodb/security' },
+      { label: 'Blue/Green Rotation, Not a Fabricated Feature', route: '/mongodb/security/blue-green-rotation-not-a-fabricated-feature' },
+      { label: 'Deterministic vs. Randomized Encryption, Made Concrete', route: '/mongodb/security/deterministic-vs-randomized-encryption-leakage' },
+    ],
+    tip: 'Plain SHA-256 is a fast, unsalted, deterministic hash unsuitable for password storage — bcrypt (or Argon2id/scrypt) automatically salts and is deliberately slow, requiring compare() instead of equality.',
+    gotchas: [
+      'MongoDB\'s own SCRAM-SHA-256 connection-authentication protocol is unrelated to how an application should hash its OWN user password records.',
+    ],
+  },
+  'mongodb/security/deterministic-vs-randomized-encryption-leakage': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Security & Authentication', route: '/mongodb/security' },
+      { label: 'bcrypt, Not SHA-256, for Password Hashing', route: '/mongodb/security/bcrypt-not-sha256-for-password-hashing' },
+    ],
+    tip: 'Deterministic CSFLE encryption is required for equality queries but lets an observer detect which records share a value (pattern leakage); randomized encryption leaks nothing but cannot be queried for equality at all.',
+    gotchas: [
+      'The choice between deterministic and randomized encryption is dictated by whether the field needs server-side equality queries, not by a general "always pick the safest option" default.',
+    ],
+  },
   'mongodb/mongodb-nodejs': {
     apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
     related: [

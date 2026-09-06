@@ -385,7 +385,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/mongodb/security" routerLinkActive="active"><span class="nl-text">Security &amp; Auth</span>@if(p.isDone('mongo-security')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/mongodb/security" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Security &amp; Auth</span>
+        @if(p.isDone('mongo-security')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('mongo-security')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('mongo-security')"
+                  (click)="toggleSubtopics('mongo-security', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('mongo-security'); as secSubs) {
+        @if (isSubtopicsExpanded('mongo-security')) {
+          <div class="nav-subtopics">
+            @for (s of secSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/mongodb/mongodb-nodejs" routerLinkActive="active"><span class="nl-text">MongoDB with Node.js</span>@if(p.isDone('mongo-mongodb-nodejs')){<span class="nl-done">✓</span>}</a>
       <a routerLink="/mongodb/atlas-search" routerLinkActive="active"><span class="nl-text">Atlas &amp; Vector Search</span>@if(p.isDone('mongo-atlas-search')){<span class="nl-done">✓</span>}</a>
     </div>

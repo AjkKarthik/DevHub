@@ -2703,7 +2703,12 @@ export const routes: Routes = [
       { path: 'oplog-default-has-a-990mb-floor-the-page-missed', loadComponent: () => import('./components/data/mongodb/replication-sharding/subtopics/oplog-default-has-a-990mb-floor-the-page-missed/oplog-default-has-a-990mb-floor-the-page-missed').then(m => m.OplogDefaultHasA990MbFloorThePageMissedSubtopic) },
       { path: 'reconfig-code-for-a-hidden-delayed-backup-member', loadComponent: () => import('./components/data/mongodb/replication-sharding/subtopics/reconfig-code-for-a-hidden-delayed-backup-member/reconfig-code-for-a-hidden-delayed-backup-member').then(m => m.ReconfigCodeForAHiddenDelayedBackupMemberSubtopic) },
     ] },
-    { path: 'security',              loadComponent: () => import('./components/data/mongodb/security/security').then(m => m.MongoSecurity) },
+    { path: 'security', children: [
+      { path: '', loadComponent: () => import('./components/data/mongodb/security/security').then(m => m.MongoSecurity) },
+      { path: 'blue-green-rotation-not-a-fabricated-feature', loadComponent: () => import('./components/data/mongodb/security/subtopics/blue-green-rotation-not-a-fabricated-feature/blue-green-rotation-not-a-fabricated-feature').then(m => m.BlueGreenRotationNotAFabricatedFeatureSubtopic) },
+      { path: 'bcrypt-not-sha256-for-password-hashing', loadComponent: () => import('./components/data/mongodb/security/subtopics/bcrypt-not-sha256-for-password-hashing/bcrypt-not-sha256-for-password-hashing').then(m => m.BcryptNotSha256ForPasswordHashingSubtopic) },
+      { path: 'deterministic-vs-randomized-encryption-leakage', loadComponent: () => import('./components/data/mongodb/security/subtopics/deterministic-vs-randomized-encryption-leakage/deterministic-vs-randomized-encryption-leakage').then(m => m.DeterministicVsRandomizedEncryptionLeakageSubtopic) },
+    ] },
     { path: 'mongodb-nodejs',        loadComponent: () => import('./components/data/mongodb/mongodb-nodejs/mongodb-nodejs').then(m => m.MongoMongodbNodejs) },
     { path: 'atlas-search',          loadComponent: () => import('./components/data/mongodb/atlas-search/atlas-search').then(m => m.MongoAtlasSearch) },
     { path: 'cheatsheet',            loadComponent: () => import('./components/data/mongodb/cheatsheet/cheatsheet').then(m => m.MongoCheatsheet) },

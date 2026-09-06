@@ -1637,6 +1637,13 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Oplog Default Has a 990MB Floor', route: '/mongodb/replication-sharding/oplog-default-has-a-990mb-floor-the-page-missed' },
     { label: 'Reconfig Code for a Hidden, Delayed Backup Member', route: '/mongodb/replication-sharding/reconfig-code-for-a-hidden-delayed-backup-member' },
   ],
+  // NOTE: bare 'security' is already claimed by the SQL hub's own topic (see the
+  // 'security' entry above and its own NOTE comment) — hub-prefixed to avoid collision.
+  'mongo-security': [
+    { label: 'Blue/Green Rotation, Not a Fabricated Feature', route: '/mongodb/security/blue-green-rotation-not-a-fabricated-feature' },
+    { label: 'bcrypt, Not SHA-256, for Password Hashing', route: '/mongodb/security/bcrypt-not-sha256-for-password-hashing' },
+    { label: 'Deterministic vs. Randomized Encryption, Made Concrete', route: '/mongodb/security/deterministic-vs-randomized-encryption-leakage' },
+  ],
   closures: [
     { label: 'var Shares One Binding, let Creates One Per Iteration', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
     { label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },

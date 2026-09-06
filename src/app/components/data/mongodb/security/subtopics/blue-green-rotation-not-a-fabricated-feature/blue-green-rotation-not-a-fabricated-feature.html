@@ -1,0 +1,26 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Security & Authentication" topicRoute="/mongodb/security"
+    subtopicLabel="Blue/Green Rotation, Not a Fabricated Feature" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">Blue/Green Rotation, Not a Fabricated Feature</h1>
+  <p class="page-subtitle">The main page's own QnA claimed MongoDB 7.2+ added a "multiple passwords per user" feature for zero-downtime rotation — verified against MongoDB's own docs and changelog that no such feature exists at all.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>This directly corrects the main page's own QnA, and sets up the topic's remaining subtopics: a real security anti-pattern in the page's own Challenge solution, and a concrete demonstration of a distinction one of the page's own quiz questions explains only in prose.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Security & Authentication" topicRoute="/mongodb/security"
+    [next]="{ label: 'bcrypt, Not SHA-256, for Password Hashing', route: '/mongodb/security/bcrypt-not-sha256-for-password-hashing' }" />
+</div>
