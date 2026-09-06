@@ -7771,6 +7771,63 @@ this same check before any other new hub's first subtopic set:
     pages checked individually — correct h1/breadcrumb (all 4 levels confirmed), 860px wrapper via
     `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the final subtopic.
     **MongoDB hub Phase 10: 13 of 21 topics complete.**
+21. **The `indexes` batch found and fixed TWO more genuine issues, both self-contained (zero
+    external research needed to catch, though external verification was needed to confirm the
+    fix), plus a real `SUBTOPICS` collision requiring a genuine structural fix (not just a data-
+    file key rename)**: (1) the theory's own "Background index builds" bullet attributed the
+    "lock only at the beginning and end" behavior to MongoDB 4.4+, while the SAME bullet's
+    opening sentence already (correctly) said index builds stopped blocking reads/writes since
+    MongoDB 4.2+ — a version mismatch. Verified against MongoDB's own documented hybrid index
+    build protocol (multiple corroborating sources) that the lock-only-at-start-and-end behavior
+    IS what MongoDB 4.2 itself introduced — replacing the OLD foreground/background distinction
+    entirely, not a separate 4.4 improvement layered on top. Fixed to correctly describe the
+    four-phase protocol (X at Initialize, IX during the bulk scan, S during Drain, X at Commit)
+    all under the single MongoDB 4.2+ hybrid build. (2) The multikey-indexes QnA claimed "$text
+    and $2dsphere indexes cannot be multikey" — verified against MongoDB's own official Multikey
+    Indexes documentation, which names exactly ONE excluded index type (hashed), plus separate
+    confirmation that text indexes on array-of-strings fields and 2dsphere indexes on arrays of
+    GeoJSON geometries both work exactly like a regular multikey index. Fixed the QnA to state the
+    real restriction. Three subtopics, each verified via direct Node.js execution or research: (1)
+    **fix-adjacent** — models the four-phase lock timeline precisely, confirming only 2 of 4
+    phases are fully blocking (both brief), with a Try It on what happens to a write arriving
+    during the Drain phase specifically (queued, not rejected); (2) **fix-adjacent** — builds a
+    real text index on an array-of-tags field and a 2dsphere index on an array of GeoJSON
+    locations, verified via a pure-JS array-contains model matching the documented multikey
+    expansion behavior, with a Try It confirming the SEPARATE compound-index one-array-field
+    restriction still applies regardless of index type; (3) **gap-closing** — the QnA names
+    `hideIndex()` (MongoDB 6.0+) in one sentence with zero code, directly answering the risk the
+    page's own "removing unused indexes" advice raises; built and verified a real hide → test →
+    unhide cycle via a pure-JS planner-visibility model, with a Try It on the one documented
+    exception (the `_id` index can never be hidden). **Real `SUBTOPICS` collision, requiring a
+    genuine structural fix**: bare `indexes` was already claimed by the SQL hub's own
+    `/sql/indexes` topic — hub-prefixed the MongoDB entry to `mongo-indexes` (matching this hub's
+    own established `mongo-` progress/search key prefix, confirmed already used verbatim for
+    `p.isDone('mongo-indexes')`), with all three `MongoNavComponent` accordion helper calls using
+    the prefixed key consistently; `breadcrumb.ts`'s own `MONGO_LABELS` map and `page-sidebar.ts`'s
+    `SIDEBAR_MAP` needed no prefix (each hub's own labels map, and the full-path-prefixed sidebar
+    keys, carry no cross-hub collision risk); `search.ts`'s existing `mongo-` → `/mongodb/`
+    prefix-strip rule handled the `mongo-indexes/<slug>` composite routes correctly with no
+    special-casing needed. **A real, self-caught build failure, caught and fixed before the batch
+    was considered done**: the QnA fix itself introduced a straight, unescaped apostrophe in
+    "MongoDB's own documentation names" inside the single-quoted `a:` field — producing the
+    classic cascade of unrelated parser errors (`TS1005`, `TS18004`, `TS2353`, `TS2552`) far from
+    the actual break; caught by the first build attempt, fixed with `\'`, then a full apostrophe
+    sweep of the entire main-page file confirmed no other instances before rebuilding. Confirmed
+    `mongo-indexes` collision-free as a NEW key (checked both `subtopics.ts` forms and grepped
+    `app.routes.ts` directly for the bare `indexes` collision specifically). All three
+    `exercise.solution` fields swept clean of `<code>`/entity contamination; the standing
+    apostrophe-after-letter sweep and the `[prev]`/`[next]`-label straight-apostrophe sweep both
+    found nothing unescaped in the new subtopic files; bracket-balance and backtick-parity scripts
+    confirmed clean on all three. Build passed clean on the second attempt (foreground execution,
+    explicit `EXITCODE:$?` capture, zero `ERROR` lines). Browser-verified with a proactive
+    dev-server restart before checking (fresh on the first check, toggle count 14 as expected): no
+    console errors on any of the 4 pages; nav accordion opens with all 3 subtopic links; both
+    main-page fixes confirmed rendering live (the theory bullet directly, the QnA after expanding
+    both the QnA section's own outer toggle and the specific question's own row); all 3 subtopic
+    pages checked individually — correct h1/breadcrumb (all 4 levels confirmed), 860px wrapper via
+    `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the final subtopic; the
+    `/sql/indexes` cross-hub isolation check passed, confirming the hub-prefix fix left the SQL
+    hub's own page completely untouched. **MongoDB hub Phase 10: 14 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -8858,12 +8915,13 @@ this same check before any other new hub's first subtopic set:
   Progress: `mongoTotal=21` in progress.service.ts. MongoDB pages use `app-common-mistakes` AND
   `app-revision-card`. Reference pages (cheatsheet, interview-prep) have no PageComplete.
   Challenge.language: `'typescript'`. MongoNavComponent at `shared/mongo-nav/mongo-nav.ts`.
-  Phase 10: 13 of 21 topics have subtopics (`/mongodb/fundamentals`, pilot batch;
+  Phase 10: 14 of 21 topics have subtopics (`/mongodb/fundamentals`, pilot batch;
   `/mongodb/installation-setup`; `/mongodb/crud-operations`; `/mongodb/update-operators`;
   `/mongodb/query-operators`; `/mongodb/array-queries`; `/mongodb/projections-sorting`;
   `/mongodb/aggregation-pipeline`; `/mongodb/lookup-joins`; `/mongodb/aggregation-expressions`;
-  `/mongodb/schema-design-patterns`; `/mongodb/data-modelling`; `/mongodb/time-series`,
-  2026-09-06) — see
+  `/mongodb/schema-design-patterns`; `/mongodb/data-modelling`; `/mongodb/time-series`;
+  `/mongodb/indexes` (SUBTOPICS key hub-prefixed to `mongo-indexes` — bare `indexes` collides
+  with the SQL hub's own topic), 2026-09-06) — see
   "MongoDB hub subtopic wiring" section above for the `MongoNavComponent` accordion structural fix
   (15th `*NavComponent`-based hub in a row missing it at pilot time), the `mongo-fundamentals`/
   `mongo-installation-setup` SUBTOPICS-map collision resolutions (the former collided with the

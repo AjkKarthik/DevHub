@@ -9042,7 +9042,23 @@ off here with a date.
   gap. Build clean, browser-verified (nav accordion fresh on first check, toggle count 13, both
   main-page fixes confirmed rendering live including the quiz's own answer flip, 3 subtopic
   pages, breadcrumb all 4 levels, sidebar).
-- [ ] `/mongodb/indexes` — Indexes
+- [x] `/mongodb/indexes` — Indexes (2026-09-06) — extended `MongoNavComponent`'s toggle to a
+  fourteenth topic. Hub-prefixed the SUBTOPICS key to `mongo-indexes` (bare `indexes` was already
+  claimed by the SQL hub's own topic). Found and fixed two genuine issues: the theory's own
+  "Background index builds" bullet attributed the lock-only-at-start-and-end behavior to MongoDB
+  4.4+, contradicting its own opening sentence (correctly citing 4.2+) — verified against
+  MongoDB's own documented hybrid build protocol that this IS the 4.2 hybrid build itself, not a
+  separate 4.4 improvement; fixed to describe the real four-phase lock timeline. The multikey QnA
+  claimed "$text and $2dsphere indexes cannot be multikey" — verified against MongoDB's own docs
+  that only hashed indexes are excluded; fixed. 3 subtopics: the four-phase lock timeline modeled
+  precisely (only 2 of 4 phases fully blocking); a real text-index-on-tags-array and 2dsphere-on-
+  locations-array example verified against the documented multikey behavior; hideIndex() built
+  and verified via a planner-visibility model, with a Try It on the `_id`-can-never-be-hidden
+  exception. Self-caught and fixed a real build failure (an unescaped apostrophe in the QnA fix
+  itself, "MongoDB's own documentation") before the batch was done. Build clean on the second
+  attempt, browser-verified (nav accordion fresh on first check, toggle count 14, both main-page
+  fixes rendering live, 3 subtopic pages, breadcrumb all 4 levels, sidebar, `/sql/indexes`
+  cross-hub isolation confirmed unaffected).
 - [ ] `/mongodb/query-performance` — Query Performance & explain()
 - [ ] `/mongodb/transactions` — Transactions
 - [ ] `/mongodb/change-streams` — Change Streams
