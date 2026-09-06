@@ -1,0 +1,26 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Atlas Search & Vector Search" topicRoute="/mongodb/atlas-search"
+    subtopicLabel="Building a Real $vectorSearch Query" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">Building a Real $vectorSearch Query</h1>
+  <p class="page-subtitle">The main page's own QnA describes semantic search, recommendations, and hybrid search via $vectorSearch in real depth — but not one of the page's four codeTabs ever builds a working vector search query.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>This closes the topic's arc: the two prior subtopics both corrected the main page's own Challenge and codeTab content, while this subtopic builds real code for a QnA the page already explains well, just never demonstrates — completing the entire MongoDB hub's Phase 10 rollout.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Atlas Search & Vector Search" topicRoute="/mongodb/atlas-search"
+    [prev]="{ label: 'Exposing the Count You Already Requested', route: '/mongodb/atlas-search/exposing-the-count-you-already-requested' }" />
+</div>

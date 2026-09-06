@@ -423,7 +423,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/mongodb/atlas-search" routerLinkActive="active"><span class="nl-text">Atlas &amp; Vector Search</span>@if(p.isDone('mongo-atlas-search')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/mongodb/atlas-search" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Atlas &amp; Vector Search</span>
+        @if(p.isDone('mongo-atlas-search')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('atlas-search')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('atlas-search')"
+                  (click)="toggleSubtopics('atlas-search', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('atlas-search'); as asSubs) {
+        @if (isSubtopicsExpanded('atlas-search')) {
+          <div class="nav-subtopics">
+            @for (s of asSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

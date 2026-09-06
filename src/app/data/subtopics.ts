@@ -1649,6 +1649,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Mongoose Schema Was Missing Its Own Password Field', route: '/mongodb/mongodb-nodejs/mongoose-schema-was-missing-its-own-password-field' },
     { label: 'Ordered vs. Unordered bulkWrite, Demonstrated', route: '/mongodb/mongodb-nodejs/ordered-vs-unordered-bulkwrite-demonstrated' },
   ],
+  'atlas-search': [
+    { label: 'A Field Name That Was Never Real', route: '/mongodb/atlas-search/search-count-field-was-fabricated-use-search-meta' },
+    { label: 'Exposing the Count You Already Requested', route: '/mongodb/atlas-search/exposing-the-count-you-already-requested' },
+    { label: 'Building a Real $vectorSearch Query', route: '/mongodb/atlas-search/building-a-real-vectorsearch-query' },
+  ],
   closures: [
     { label: 'var Shares One Binding, let Creates One Per Iteration', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
     { label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },

@@ -34630,6 +34630,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Atlas Search indexes are managed separately from regular MongoDB indexes and have their own dedicated syntax for defining analyzers and mappings.',
     ],
   },
+  'mongodb/atlas-search/search-count-field-was-fabricated-use-search-meta': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Atlas Search & Vector Search', route: '/mongodb/atlas-search' },
+      { label: 'Exposing the Count You Already Requested', route: '/mongodb/atlas-search/exposing-the-count-you-already-requested' },
+    ],
+    tip: 'The count metadata from count: { type: "total" } is exposed through the $$SEARCH_META system variable, not a plain field name — it must be explicitly captured via a $project stage before it can be read.',
+    gotchas: [
+      'Fixing only the access expression without also capturing $$SEARCH_META in a $project stage still returns nothing — both halves are required together.',
+    ],
+  },
+  'mongodb/atlas-search/exposing-the-count-you-already-requested': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Atlas Search & Vector Search', route: '/mongodb/atlas-search' },
+      { label: 'A Field Name That Was Never Real', route: '/mongodb/atlas-search/search-count-field-was-fabricated-use-search-meta' },
+      { label: 'Building a Real $vectorSearch Query', route: '/mongodb/atlas-search/building-a-real-vectorsearch-query' },
+    ],
+    tip: 'Requesting count: { type: "total" } inside $search only makes the value available via $$SEARCH_META — without an explicit $project capturing it, the count is computed and then simply discarded.',
+    gotchas: [
+      'count: { type: "total" } (exact, more expensive) and { type: "lowerBound" } (fast, may undercount above a threshold) are a genuine cost-vs-exactness trade-off, not interchangeable names for the same thing.',
+    ],
+  },
+  'mongodb/atlas-search/building-a-real-vectorsearch-query': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Atlas Search & Vector Search', route: '/mongodb/atlas-search' },
+      { label: 'Exposing the Count You Already Requested', route: '/mongodb/atlas-search/exposing-the-count-you-already-requested' },
+    ],
+    tip: '$vectorSearch exposes its similarity score via { $meta: "vectorSearchScore" }, a completely different meta key from ordinary $search\'s "searchScore" — the two are not interchangeable.',
+    gotchas: [
+      'MongoDB\'s own documented guidance recommends numCandidates be at least 20x the limit for good ANN recall — a 10x ratio (as in the main page\'s own QnA example) falls short of that floor.',
+    ],
+  },
   'mongodb/security': {
     apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
     related: [

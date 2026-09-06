@@ -2950,6 +2950,9 @@ const MONGO_LABELS: Record<string, string> = {
   'mongodb-nodejs/mongoose-schema-was-missing-its-own-password-field': 'The Mongoose Schema Was Missing Its Own Password Field',
   'mongodb-nodejs/ordered-vs-unordered-bulkwrite-demonstrated': 'Ordered vs. Unordered bulkWrite, Demonstrated',
   'atlas-search':            'Atlas Search & Vector Search',
+  'atlas-search/search-count-field-was-fabricated-use-search-meta': 'A Field Name That Was Never Real',
+  'atlas-search/exposing-the-count-you-already-requested': 'Exposing the Count You Already Requested',
+  'atlas-search/building-a-real-vectorsearch-query': 'Building a Real $vectorSearch Query',
   'cheatsheet':              'MongoDB Cheat Sheet',
   'interview-prep':          'MongoDB Interview Prep',
 };

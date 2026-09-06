@@ -2715,7 +2715,12 @@ export const routes: Routes = [
       { path: 'mongoose-schema-was-missing-its-own-password-field', loadComponent: () => import('./components/data/mongodb/mongodb-nodejs/subtopics/mongoose-schema-was-missing-its-own-password-field/mongoose-schema-was-missing-its-own-password-field').then(m => m.MongooseSchemaWasMissingItsOwnPasswordFieldSubtopic) },
       { path: 'ordered-vs-unordered-bulkwrite-demonstrated', loadComponent: () => import('./components/data/mongodb/mongodb-nodejs/subtopics/ordered-vs-unordered-bulkwrite-demonstrated/ordered-vs-unordered-bulkwrite-demonstrated').then(m => m.OrderedVsUnorderedBulkwriteDemonstratedSubtopic) },
     ] },
-    { path: 'atlas-search',          loadComponent: () => import('./components/data/mongodb/atlas-search/atlas-search').then(m => m.MongoAtlasSearch) },
+    { path: 'atlas-search', children: [
+      { path: '', loadComponent: () => import('./components/data/mongodb/atlas-search/atlas-search').then(m => m.MongoAtlasSearch) },
+      { path: 'search-count-field-was-fabricated-use-search-meta', loadComponent: () => import('./components/data/mongodb/atlas-search/subtopics/search-count-field-was-fabricated-use-search-meta/search-count-field-was-fabricated-use-search-meta').then(m => m.SearchCountFieldWasFabricatedUseSearchMetaSubtopic) },
+      { path: 'exposing-the-count-you-already-requested', loadComponent: () => import('./components/data/mongodb/atlas-search/subtopics/exposing-the-count-you-already-requested/exposing-the-count-you-already-requested').then(m => m.ExposingTheCountYouAlreadyRequestedSubtopic) },
+      { path: 'building-a-real-vectorsearch-query', loadComponent: () => import('./components/data/mongodb/atlas-search/subtopics/building-a-real-vectorsearch-query/building-a-real-vectorsearch-query').then(m => m.BuildingARealVectorsearchQuerySubtopic) },
+    ] },
     { path: 'cheatsheet',            loadComponent: () => import('./components/data/mongodb/cheatsheet/cheatsheet').then(m => m.MongoCheatsheet) },
     { path: 'interview-prep',        loadComponent: () => import('./components/data/mongodb/interview-prep/interview-prep').then(m => m.MongoInterviewPrep) },
   ] },
