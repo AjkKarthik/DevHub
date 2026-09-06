@@ -7986,6 +7986,53 @@ this same check before any other new hub's first subtopic set:
     confirmed), 860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content
     confirmed via a direct text search for the tip's own distinctive phrase. **MongoDB hub Phase
     10: 17 of 21 topics complete.**
+18. **The `replication-sharding` batch found and fixed a genuine cross-QnA inconsistency plus a
+    genuine incompleteness, both self-contained (zero external research needed to CATCH, though
+    external verification was needed to confirm each fix)**: the main page has TWO separate QnAs
+    describing the identical zone-sharding upper-bound technique — one already correctly wrote
+    <code>{ region: "EU~" }</code>; the OTHER wrote <code>{ region: "EU" + "" }</code>, a no-op
+    string concatenation producing an upper bound IDENTICAL to the lower bound, <code>"EU"</code> —
+    a zero-width, invalid zone range. The two QnAs also used different command names for the exact
+    same operation (<code>sh.addShardTag()</code>/<code>sh.addTagRange()</code> vs.
+    <code>sh.addShardToZone()</code>/<code>sh.updateZoneKeyRange()</code>); verified via WebSearch
+    against MongoDB's own documentation that the former pair are legacy aliases for the latter, not
+    a different mechanism. Fixed the broken QnA to use the modern commands and the already-working
+    tilde technique, verified via direct JS string-comparison execution matching the exact claimed
+    ordering behavior. Separately, a QnA's oplog-size default ("5% of disk or 50GB, whichever is
+    smaller") was verified via WebFetch against MongoDB's own Replica Set Oplog documentation to be
+    correct on the UPPER bound only — it omitted the documented 990MB MINIMUM floor entirely,
+    which is the ACTIVE constraint on a small dev-VM disk. Tightened the QnA to state the full
+    two-sided clamp. Three subtopics, each verified via direct Node.js execution: (1)
+    **fix-adjacent** — reproduces the exact string-concatenation bug and the tilde fix, with a Try
+    It applying the identical technique to a "US"-prefixed zone and confirming the tilde is not
+    optional; (2) **fix-adjacent** — models the real two-sided oplog-size formula against a small
+    10GB disk (990MB floor is the active constraint, nearly double a naive 5%-only estimate) and a
+    large 2TB disk (the 50GB cap is the active constraint instead), with a Try It computing the
+    real oplog size for a 5GB dev disk; (3) **gap-closing** — the page names <code>hidden: true</code>,
+    <code>priority: 0</code>, and <code>secondaryDelaySecs</code> across two separate QnAs but never
+    shows the actual <code>rs.reconfig()</code> call that applies them; built and verified the real
+    fetch-mutate-bump-version-reconfig pattern combining all three fields onto one member, with a
+    Try It on why passing a PARTIAL config object to <code>rs.reconfig()</code> is destructive
+    (reconfig replaces the whole config, it does not merge). No `SUBTOPICS` collision for
+    `replication-sharding` (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly,
+    confirmed collision-free, left bare). All three `exercise.solution` fields swept clean of
+    `<code>`/entity contamination; the standing apostrophe-after-letter sweep (run against both the
+    new subtopic files and the main page file itself, after both edits) and the
+    `[prev]`/`[next]`-label straight-apostrophe/double-quote sweeps both found nothing unescaped;
+    bracket-balance and backtick-parity scripts confirmed clean on all three subtopic files and the
+    main page file. Build passed clean on the first attempt (foreground execution, explicit
+    `EXITCODE:$?` capture, zero `ERROR` lines). **The dev server had died outright during a session
+    interruption between batches** (`preview_list` returned an empty array) — resolved with a clean
+    `preview_start` cold-start; a first readiness-poll attempt was moved to the background by the
+    harness rather than timing out outright, and completed successfully moments later, confirming
+    the server came up fine. Browser-verified: no console errors on any of the 4 pages; nav
+    accordion opens with all 3 subtopic links, fresh on the first check; both main-page fixes
+    (targeted precisely — the FIRST, unrelated pre-existing zone-sharding QnA had to be excluded
+    from the match, since it already correctly used the modern commands before this batch)
+    confirmed rendering live via direct component data inspection; the subtopic page checked
+    individually — correct h1/breadcrumb (all 4 levels confirmed), 860px wrapper via
+    `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed via a direct text search
+    for the tip's own distinctive phrase. **MongoDB hub Phase 10: 18 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -9073,7 +9120,7 @@ this same check before any other new hub's first subtopic set:
   Progress: `mongoTotal=21` in progress.service.ts. MongoDB pages use `app-common-mistakes` AND
   `app-revision-card`. Reference pages (cheatsheet, interview-prep) have no PageComplete.
   Challenge.language: `'typescript'`. MongoNavComponent at `shared/mongo-nav/mongo-nav.ts`.
-  Phase 10: 17 of 21 topics have subtopics (`/mongodb/fundamentals`, pilot batch;
+  Phase 10: 18 of 21 topics have subtopics (`/mongodb/fundamentals`, pilot batch;
   `/mongodb/installation-setup`; `/mongodb/crud-operations`; `/mongodb/update-operators`;
   `/mongodb/query-operators`; `/mongodb/array-queries`; `/mongodb/projections-sorting`;
   `/mongodb/aggregation-pipeline`; `/mongodb/lookup-joins`; `/mongodb/aggregation-expressions`;
@@ -9081,9 +9128,9 @@ this same check before any other new hub's first subtopic set:
   `/mongodb/indexes` (SUBTOPICS key hub-prefixed to `mongo-indexes` — bare `indexes` collides
   with the SQL hub's own topic); `/mongodb/query-performance`; `/mongodb/transactions`
   (SUBTOPICS key hub-prefixed to `mongo-transactions` — bare `transactions` collides with the
-  SQL hub's own topic); `/mongodb/change-streams`, 2026-09-06) — see
-  "MongoDB hub subtopic wiring" section above for the `MongoNavComponent` accordion structural fix
-  (15th `*NavComponent`-based hub in a row missing it at pilot time), the `mongo-fundamentals`/
+  SQL hub's own topic); `/mongodb/change-streams`; `/mongodb/replication-sharding`, 2026-09-06) —
+  see "MongoDB hub subtopic wiring" section above for the `MongoNavComponent` accordion structural
+  fix (15th `*NavComponent`-based hub in a row missing it at pilot time), the `mongo-fundamentals`/
   `mongo-installation-setup` SUBTOPICS-map collision resolutions (the former collided with the
   JavaScript hub's own bare `fundamentals` topic key; the latter was proactively hub-prefixed
   against the Redis hub's own bare `installation-setup` route), the genuine driver-vs-server
@@ -9092,9 +9139,12 @@ this same check before any other new hub's first subtopic set:
   wrong maxIncomingConnections default, and a backwards auth-bootstrap ordering) found and fixed
   on the Installation & Setup page, the read-concern-default/1000-write-limit inaccuracies
   found and fixed on the Transactions page (verified via WebFetch against MongoDB's own
-  Production Considerations page), and the pipeline-comment/oplog-retention inaccuracies found
+  Production Considerations page), the pipeline-comment/oplog-retention inaccuracies found
   and fixed on the Change Streams page (the latter verified via WebFetch against MongoDB's own
-  Replica Set Oplog documentation).
+  Replica Set Oplog documentation), and the cross-QnA zone-sharding/oplog-size-floor inaccuracies
+  found and fixed on the Replication & Sharding page (the zone-sharding fix catchable by cross-
+  referencing the page's own two QnAs against each other; the oplog-floor fix verified via
+  WebFetch against MongoDB's own Replica Set Oplog documentation).
 - **Hub home**: Angular, C#, ASP.NET Core, SQL, TypeScript, React, JavaScript, CSS, HTML, Blazor, Go, Node.js, Python, DevOps, AWS, Azure, Linux, Redis, GraphQL, Messaging, Testing, DSA, AI/ML, Containers/K8s, Terraform/IaC, Service Mesh, System Design, Architecture Patterns, Design Patterns, Security, API Design, Observability, Web Performance, and MongoDB are all `available: true`. Everything else "Soon".
 - Progress totals: Angular 58, C# 50, ASP.NET Core 45, SQL 44, TypeScript 20, React 17, JavaScript 22, CSS 22, HTML 23, Web Performance 20, Blazor 20, Go 21, Node.js 23, Python 21, DevOps 21, AWS 21, Azure 22, Linux 19, Redis 21, GraphQL 20, Messaging 20, Testing 19, DSA 21, AI 19, Containers/K8s 22, Terraform 21, Service Mesh 19, System Design 24, Architecture Patterns 22, Design Patterns 36, Security 23, API Design 19, Observability 20, MongoDB 21 (`progress.service.ts`).
 - Hero stat: "933+ Live Pages" (corrected 2026-07-01 — hub-home.ts's Angular card was showing `topics: 63` instead of the actual 68, undercounting the site total by 5).

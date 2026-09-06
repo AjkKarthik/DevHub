@@ -9108,7 +9108,21 @@ off here with a date.
   Build clean on the first attempt. Browser-verified (nav accordion fresh on first check, toggle
   count 17, both main-page fixes rendering live, subtopic page checked, breadcrumb all 4 levels,
   sidebar tailored).
-- [ ] `/mongodb/replication-sharding` — Replication & Sharding
+- [x] 2026-09-06 — `/mongodb/replication-sharding` — Replication & Sharding. Fixed a genuine
+  cross-QnA inconsistency: one QnA correctly used "EU~" as a zone-sharding upper bound, while a
+  DIFFERENT QnA used "EU" + "" — a no-op concatenation identical to the lower bound, producing a
+  zero-width invalid range — plus used the legacy sh.addShardTag()/sh.addTagRange() command names
+  instead of the modern sh.addShardToZone()/sh.updateZoneKeyRange() (verified via WebSearch these
+  are aliases). Also fixed an oplog-size QnA that stated only the upper half of the real formula
+  ("5% of disk or 50GB, whichever is smaller") — verified via WebFetch against MongoDB's own
+  Replica Set Oplog docs that a 990MB MINIMUM floor also applies, which is the active constraint
+  on a small dev-VM disk. 3 subtopics, each verified via direct Node.js execution: the tilde-vs-
+  concatenation string comparison; the two-sided oplog-size formula modeled against small and
+  large disks; and the actual rs.reconfig() code for a hidden+delayed backup member, which the
+  page only ever describes in prose across two separate QnAs. SUBTOPICS key left bare
+  (collision-free). Build clean on the first attempt. Browser-verified (nav accordion fresh on
+  first check, toggle count 18, both main-page fixes rendering live, subtopic page checked,
+  breadcrumb all 4 levels, sidebar tailored).
 - [ ] `/mongodb/security` — Security & Authentication
 - [ ] `/mongodb/mongodb-nodejs` — MongoDB with Node.js
 - [ ] `/mongodb/atlas-search` — Atlas Search & Vector Search
