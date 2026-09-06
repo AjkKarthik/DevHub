@@ -1,0 +1,26 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Time Series Collections" topicRoute="/mongodb/time-series"
+    subtopicLabel="Updates Are Allowed, But Only on the metaField" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">Updates Are Allowed, But Only on the metaField</h1>
+  <p class="page-subtitle">The main page's own mistakes block and a quiz question originally claimed a blanket "no updates" rule — verified against MongoDB's own documented update requirements that this changed in MongoDB 5.1+, with real restrictions worth knowing precisely.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="MongoDB 5.1+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>This corrects and sharpens the main page's own "append-only" framing without abandoning its core lesson — measurement data genuinely stays immutable; it's specifically the metaField, under real restrictions, that gained a documented escape hatch.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Time Series Collections" topicRoute="/mongodb/time-series"
+    [next]="{ label: '$merge vs. $out for Scheduled Downsampling', route: '/mongodb/time-series/merge-vs-out-for-scheduled-downsampling' }" />
+</div>

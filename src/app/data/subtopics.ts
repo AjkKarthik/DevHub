@@ -1603,6 +1603,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Nested Sets: A Real Left/Right Boundary Example', route: '/mongodb/data-modelling/nested-sets-a-real-left-right-boundary-example' },
     { label: 'Building the Workload Matrix Behind the Challenge', route: '/mongodb/data-modelling/building-the-workload-matrix-behind-the-challenge' },
   ],
+  'time-series': [
+    { label: 'Updates Are Allowed, But Only on the metaField', route: '/mongodb/time-series/updates-are-allowed-but-only-on-the-metafield' },
+    { label: '$merge vs. $out for Scheduled Downsampling', route: '/mongodb/time-series/merge-vs-out-for-scheduled-downsampling' },
+    { label: '$densify Bounds: Partition vs. Full, Made Concrete', route: '/mongodb/time-series/densify-bounds-partition-vs-full-made-concrete' },
+  ],
   closures: [
     { label: 'var Shares One Binding, let Creates One Per Iteration', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
     { label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },

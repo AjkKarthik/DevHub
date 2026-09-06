@@ -224,11 +224,11 @@ const smoothedSeries = await db.collection('temperatures').aggregate([
       explanation: 'The timeField must be a BSON Date type. String dates are not optimised by the time series storage engine and don\'t enable efficient range queries, bucketing, or expiry. Always use new Date() or parse strings to Date before inserting.',
     },
     {
-      title: 'Trying to update or delete time series documents',
-      wrong: `// Time series collections are APPEND-ONLY
+      title: 'Trying to update a measurement field in a time series document',
+      wrong: `// Measurement fields (anything other than metaField) stay APPEND-ONLY
 await col.updateOne({ _id: id }, { $set: { temperature: 25.0 } });
-// Error: update not supported for time series collections`,
-      right: `// Time series data is immutable — append corrections as new documents
+// Error: only the metaField can be updated, and only with multi:true`,
+      right: `// Time series measurement data is immutable — append corrections as new documents
 await col.insertOne({
   timestamp: new Date(),
   sensorId: 'sensor-001',
@@ -237,7 +237,7 @@ await col.insertOne({
   correctionOf: originalTimestamp,
 });
 // Query: use the latest reading or filter by isCorrected flag`,
-      explanation: 'Time series collections are append-only — updates and deletes are not supported. If a measurement was wrong, insert a correction document with a flag. For analysis, use the most recent or the corrected value. This is by design: time series data represents historical facts.',
+      explanation: 'Since MongoDB 5.1+, updates on time series collections are allowed ONLY on the metaField (matching and modifying it, with multi:true required, upsert forbidden) — measurement fields like temperature stay append-only, so the wrong example above still fails. Deletes ARE supported (since 5.1+, with most restrictions removed in 7.0+), just less efficient than on a regular collection, since a bucket may need to be decompressed and re-compressed. If a measurement was wrong, insert a correction document with a flag rather than trying to edit the original value in place.',
     },
     {
       title: 'Not specifying granularity matching the measurement interval',
@@ -404,8 +404,8 @@ async function getMovingAvg(hostname: string, windowMinutes = 5) {
         'No — time series collections are append-only',
         'Yes, but only the metaField',
       ],
-      answer: 2,
-      explanation: 'Time series collections are append-only by design — update and delete operations are not supported. This reflects the immutable nature of historical measurement data. Insert correction documents if a measurement was wrong.',
+      answer: 3,
+      explanation: 'Since MongoDB 5.1+, updates are allowed on time series collections, but strictly limited to the metaField — you can only match on and modify the metaField value, multi:true is required, and upsert is forbidden. Measurement fields (like temperature) remain immutable by design. Insert correction documents if a measurement value was wrong.',
     },
     { q: 'What are time series collections in MongoDB and what advantages do they provide over regular collections?', options: ['Time series collections are regular collections with a mandatory createdAt index that MongoDB manages automatically for TTL expiration', 'Time series collections are a specialized collection type optimized for storing time-stamped data — MongoDB internally clusters documents by time and metadata, compresses data automatically, and provides efficient time-range queries', 'Time series collections replace the Bucket Pattern by storing all measurements in a single document that grows indefinitely until a new collection is started each day', 'Time series collections are Atlas-only features that enable real-time streaming inserts without write latency'], answer: 1, explanation: 'Time series collections (MongoDB 5.0+): created with db.createCollection("sensorData", { timeseries: { timeField: "timestamp", metaField: "metadata", granularity: "seconds" } }). Automatic bucketing: MongoDB internally implements the Bucket Pattern — groups measurements by time window and metadata. Storage compression: time-stamped values often have similar patterns. MongoDB uses delta encoding and dictionary compression on the column-oriented internal storage. Result: significantly smaller storage compared to regular collections (often 50-90% smaller for repetitive sensor data). Query efficiency: range queries on the timeField use internal bucket metadata to skip irrelevant buckets without scanning individual measurements. metaField indexing: queries on metadata (device ID, sensor type) are automatically supported via the internal bucket structure. Limitations: documents in time series collections are immutable once written (no updates). Deletes are supported but inefficient. No unique indexes other than the time + meta compound. No transactions within time series collections. Automatic deletion: set expireAfterSeconds on creation for automatic TTL-based data expiration.' },
     { q: 'How does the TTL (Time-To-Live) index work in MongoDB for automatic document expiration?', options: ['A TTL index is a special type of unique index that rejects documents with duplicate timestamp values after the specified expiry window', 'A TTL index on a Date field causes MongoDB to automatically delete documents where the indexed date field value plus the expireAfterSeconds setting is in the past', 'TTL indexes work by compressing documents older than the specified time and moving them to a cold storage collection automatically', 'A TTL index is applied per-shard and each shard independently manages expiration without coordination from the mongos router'], answer: 1, explanation: 'TTL index creation: db.logs.createIndex({ createdAt: 1 }, { expireAfterSeconds: 86400 }). This deletes documents where createdAt + 86400 seconds (24 hours) < current time. How expiration works: MongoDB runs a background thread (TTLMonitor) that checks TTL indexes every 60 seconds. Documents where (dateFieldValue + expireAfterSeconds) < now are deleted in batches. Expiration is not exact to the second — there can be up to 60 seconds of delay plus the time needed to delete the batch. Single-field Date only: TTL indexes must be on a single Date field. Compound indexes cannot be TTL indexes. Cannot use on embedded sub-fields. Array of dates: if the indexed field is an array of Dates, the document expires when the earliest date in the array is past the TTL threshold. Adjusting expiry: db.runCommand({ collMod: "logs", index: { keyPattern: { createdAt: 1 }, expireAfterSeconds: 3600 } }). Time series TTL: set expireAfterSeconds directly on collection creation — more efficient than a TTL index on a time series collection since it uses bucket metadata.' },

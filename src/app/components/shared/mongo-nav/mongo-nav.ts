@@ -259,7 +259,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/mongodb/time-series" routerLinkActive="active"><span class="nl-text">Time Series Collections</span>@if(p.isDone('mongo-time-series')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/mongodb/time-series" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Time Series Collections</span>
+        @if(p.isDone('mongo-time-series')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('time-series')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('time-series')"
+                  (click)="toggleSubtopics('time-series', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('time-series'); as tsSubs) {
+        @if (isSubtopicsExpanded('time-series')) {
+          <div class="nav-subtopics">
+            @for (s of tsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

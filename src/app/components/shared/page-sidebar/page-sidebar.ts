@@ -34425,6 +34425,37 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Choosing the right granularity (seconds, minutes, hours) setting affects both storage efficiency and query performance for a given workload.',
     ],
   },
+  'mongodb/time-series/updates-are-allowed-but-only-on-the-metafield': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Time Series Collections', route: '/mongodb/time-series' },
+    ],
+    tip: 'Since MongoDB 5.1+, updates on time series collections are allowed, but strictly limited to the metaField — match and modify only the metaField, multi:true required, upsert forbidden.',
+    gotchas: [
+      'Even a correctly metaField-only update is rejected if issued as a single-document updateOne() instead of updateMany()/multi:true.',
+    ],
+  },
+  'mongodb/time-series/merge-vs-out-for-scheduled-downsampling': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Time Series Collections', route: '/mongodb/time-series' },
+      { label: 'Aggregation Pipeline',    route: '/mongodb/aggregation-pipeline' },
+    ],
+    tip: '$out replaces the ENTIRE target collection with the current run\'s output — a scheduled downsampling job using $out silently wipes out every previously-computed rollup on every run.',
+    gotchas: [
+      '$merge\'s whenMatched only compares against documents the CURRENT run\'s own output contains — a day the current run never touched simply survives untouched.',
+    ],
+  },
+  'mongodb/time-series/densify-bounds-partition-vs-full-made-concrete': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Time Series Collections', route: '/mongodb/time-series' },
+    ],
+    tip: '$densify bounds: "full" stretches EVERY partition to the global min/max timestamp across the whole input, producing far more documents than bounds: "partition", which only fills gaps within each partition\'s own observed range.',
+    gotchas: [
+      '$fill\'s locf method cannot close a null gap that falls BEFORE a partition\'s own first real reading — those slots stay null even after $fill runs.',
+    ],
+  },
   'mongodb/atlas-search': {
     apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
     related: [

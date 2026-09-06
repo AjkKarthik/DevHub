@@ -1,0 +1,26 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Time Series Collections" topicRoute="/mongodb/time-series"
+    subtopicLabel="$densify Bounds: Partition vs. Full, Made Concrete" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">$densify Bounds: Partition vs. Full, Made Concrete</h1>
+  <p class="page-subtitle">The main page's own QnA explains the partition-vs-full bounds distinction with a worked example — but the only $densify codeTab on the page uses "partition," so "full" is never actually demonstrated or counted.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="MongoDB 5.1+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>This closes the loop on the main page's own combined-pipeline advice ("densify to create missing time points, then fill to interpolate") by showing that WHICH bounds mode you pick changes not just how many documents come out, but whether $fill's own locf method can actually close every resulting gap.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Time Series Collections" topicRoute="/mongodb/time-series"
+    [prev]="{ label: '$merge vs. $out for Scheduled Downsampling', route: '/mongodb/time-series/merge-vs-out-for-scheduled-downsampling' }" />
+</div>

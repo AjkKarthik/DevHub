@@ -2667,7 +2667,12 @@ export const routes: Routes = [
       { path: 'nested-sets-a-real-left-right-boundary-example', loadComponent: () => import('./components/data/mongodb/data-modelling/subtopics/nested-sets-a-real-left-right-boundary-example/nested-sets-a-real-left-right-boundary-example').then(m => m.NestedSetsARealLeftRightBoundaryExampleSubtopic) },
       { path: 'building-the-workload-matrix-behind-the-challenge', loadComponent: () => import('./components/data/mongodb/data-modelling/subtopics/building-the-workload-matrix-behind-the-challenge/building-the-workload-matrix-behind-the-challenge').then(m => m.BuildingTheWorkloadMatrixBehindTheChallengeSubtopic) },
     ] },
-    { path: 'time-series',           loadComponent: () => import('./components/data/mongodb/time-series/time-series').then(m => m.MongoTimeSeries) },
+    { path: 'time-series', children: [
+      { path: '', loadComponent: () => import('./components/data/mongodb/time-series/time-series').then(m => m.MongoTimeSeries) },
+      { path: 'updates-are-allowed-but-only-on-the-metafield', loadComponent: () => import('./components/data/mongodb/time-series/subtopics/updates-are-allowed-but-only-on-the-metafield/updates-are-allowed-but-only-on-the-metafield').then(m => m.UpdatesAreAllowedButOnlyOnTheMetafieldSubtopic) },
+      { path: 'merge-vs-out-for-scheduled-downsampling', loadComponent: () => import('./components/data/mongodb/time-series/subtopics/merge-vs-out-for-scheduled-downsampling/merge-vs-out-for-scheduled-downsampling').then(m => m.MergeVsOutForScheduledDownsamplingSubtopic) },
+      { path: 'densify-bounds-partition-vs-full-made-concrete', loadComponent: () => import('./components/data/mongodb/time-series/subtopics/densify-bounds-partition-vs-full-made-concrete/densify-bounds-partition-vs-full-made-concrete').then(m => m.DensifyBoundsPartitionVsFullMadeConcreteSubtopic) },
+    ] },
     { path: 'indexes',               loadComponent: () => import('./components/data/mongodb/indexes/indexes').then(m => m.MongoIndexes) },
     { path: 'query-performance',     loadComponent: () => import('./components/data/mongodb/query-performance/query-performance').then(m => m.MongoQueryPerformance) },
     { path: 'transactions',          loadComponent: () => import('./components/data/mongodb/transactions/transactions').then(m => m.MongoTransactions) },
