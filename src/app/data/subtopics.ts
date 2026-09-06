@@ -1619,6 +1619,14 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Compact Stopped Blocking CRUD in MongoDB 4.4', route: '/mongodb/query-performance/compact-stopped-blocking-crud-in-mongodb-4-4' },
     { label: 'Causal Consistency: Read-Your-Own-Writes After a Secondary Read', route: '/mongodb/query-performance/causal-consistency-read-your-own-writes-after-a-secondary-read' },
   ],
+  // NOTE: bare 'transactions' is already claimed by the SQL hub's own /sql/transactions topic
+  // (and a Redis hub /redis/transactions route also exists, currently without subtopics) —
+  // hub-prefixed to avoid collision, matching the established pattern.
+  'mongo-transactions': [
+    { label: 'Read Concern Defaults to Local, Not Snapshot', route: '/mongodb/transactions/read-concern-defaults-to-local-not-snapshot' },
+    { label: 'The Real Dual-Retry Loop', route: '/mongodb/transactions/dual-retry-loop-transient-vs-unknown-commit' },
+    { label: 'TransactionTooLargeForCache: The Real Limit', route: '/mongodb/transactions/transactiontoolargeforcache-the-real-limit' },
+  ],
   closures: [
     { label: 'var Shares One Binding, let Creates One Per Iteration', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
     { label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },

@@ -324,7 +324,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
 
     <div class="nav-group">
       <p class="nav-group-label">Transactions & Streaming</p>
-      <a routerLink="/mongodb/transactions" routerLinkActive="active"><span class="nl-text">Transactions</span>@if(p.isDone('mongo-transactions')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/mongodb/transactions" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Transactions</span>
+        @if(p.isDone('mongo-transactions')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('mongo-transactions')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('mongo-transactions')"
+                  (click)="toggleSubtopics('mongo-transactions', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('mongo-transactions'); as txnSubs) {
+        @if (isSubtopicsExpanded('mongo-transactions')) {
+          <div class="nav-subtopics">
+            @for (s of txnSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/mongodb/change-streams" routerLinkActive="active"><span class="nl-text">Change Streams</span>@if(p.isDone('mongo-change-streams')){<span class="nl-done">✓</span>}</a>
     </div>
 

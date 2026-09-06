@@ -34452,6 +34452,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A transaction held open too long can hit the default timeout and abort — keep transactional operations short and focused.',
     ],
   },
+  'mongodb/transactions/read-concern-defaults-to-local-not-snapshot': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Transactions', route: '/mongodb/transactions' },
+      { label: 'The Real Dual-Retry Loop', route: '/mongodb/transactions/dual-retry-loop-transient-vs-unknown-commit' },
+    ],
+    tip: 'If no read concern is set anywhere, a transaction runs under read concern "local" — never "snapshot" automatically — but every transaction still gets full snapshot ISOLATION as a behavior regardless of the read concern level.',
+    gotchas: [
+      'The precedence chain checks startTransaction()\'s own explicit option first, then the session\'s defaultTransactionOptions, then the client-level default, falling back to "local" only if none of those set anything.',
+    ],
+  },
+  'mongodb/transactions/dual-retry-loop-transient-vs-unknown-commit': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Transactions', route: '/mongodb/transactions' },
+      { label: 'Read Concern Defaults to Local, Not Snapshot', route: '/mongodb/transactions/read-concern-defaults-to-local-not-snapshot' },
+      { label: 'TransactionTooLargeForCache: The Real Limit', route: '/mongodb/transactions/transactiontoolargeforcache-the-real-limit' },
+    ],
+    tip: 'TransientTransactionError means retry the WHOLE transaction body from scratch; UnknownTransactionCommitResult means retry ONLY the commit call — re-running the body after that error risks applying its writes twice.',
+    gotchas: [
+      'Calling commitTransaction() again after it already succeeded is a safe no-op, which is exactly what makes a bare commit-only retry loop correct.',
+    ],
+  },
+  'mongodb/transactions/transactiontoolargeforcache-the-real-limit': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Transactions', route: '/mongodb/transactions' },
+      { label: 'The Real Dual-Retry Loop', route: '/mongodb/transactions/dual-retry-loop-transient-vs-unknown-commit' },
+    ],
+    tip: 'There is no documented hard "1000 write operations" limit on a transaction — the real, enforced ceiling is TransactionTooLargeForCache, which fires when a transaction\'s total data size could never fit the WiredTiger cache, regardless of operation count.',
+    gotchas: [
+      'Ordinary cache pressure produces a different, transient, retryable WriteConflict — TransactionTooLargeForCache specifically means the transaction can never succeed no matter how many times it is retried.',
+    ],
+  },
   'mongodb/change-streams': {
     apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
     related: [

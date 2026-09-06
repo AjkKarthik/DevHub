@@ -2685,7 +2685,12 @@ export const routes: Routes = [
       { path: 'compact-stopped-blocking-crud-in-mongodb-4-4', loadComponent: () => import('./components/data/mongodb/query-performance/subtopics/compact-stopped-blocking-crud-in-mongodb-4-4/compact-stopped-blocking-crud-in-mongodb-4-4').then(m => m.CompactStoppedBlockingCrudInMongodb44Subtopic) },
       { path: 'causal-consistency-read-your-own-writes-after-a-secondary-read', loadComponent: () => import('./components/data/mongodb/query-performance/subtopics/causal-consistency-read-your-own-writes-after-a-secondary-read/causal-consistency-read-your-own-writes-after-a-secondary-read').then(m => m.CausalConsistencyReadYourOwnWritesAfterASecondaryReadSubtopic) },
     ] },
-    { path: 'transactions',          loadComponent: () => import('./components/data/mongodb/transactions/transactions').then(m => m.MongoTransactions) },
+    { path: 'transactions', children: [
+      { path: '', loadComponent: () => import('./components/data/mongodb/transactions/transactions').then(m => m.MongoTransactions) },
+      { path: 'read-concern-defaults-to-local-not-snapshot', loadComponent: () => import('./components/data/mongodb/transactions/subtopics/read-concern-defaults-to-local-not-snapshot/read-concern-defaults-to-local-not-snapshot').then(m => m.ReadConcernDefaultsToLocalNotSnapshotSubtopic) },
+      { path: 'dual-retry-loop-transient-vs-unknown-commit', loadComponent: () => import('./components/data/mongodb/transactions/subtopics/dual-retry-loop-transient-vs-unknown-commit/dual-retry-loop-transient-vs-unknown-commit').then(m => m.DualRetryLoopTransientVsUnknownCommitSubtopic) },
+      { path: 'transactiontoolargeforcache-the-real-limit', loadComponent: () => import('./components/data/mongodb/transactions/subtopics/transactiontoolargeforcache-the-real-limit/transactiontoolargeforcache-the-real-limit').then(m => m.TransactiontoolargeforcacheTheRealLimitSubtopic) },
+    ] },
     { path: 'change-streams',        loadComponent: () => import('./components/data/mongodb/change-streams/change-streams').then(m => m.MongoChangeStreams) },
     { path: 'replication-sharding',  loadComponent: () => import('./components/data/mongodb/replication-sharding/replication-sharding').then(m => m.MongoReplicationSharding) },
     { path: 'security',              loadComponent: () => import('./components/data/mongodb/security/security').then(m => m.MongoSecurity) },

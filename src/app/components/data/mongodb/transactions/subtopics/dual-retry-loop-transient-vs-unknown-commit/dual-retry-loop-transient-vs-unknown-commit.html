@@ -1,0 +1,27 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Transactions" topicRoute="/mongodb/transactions"
+    subtopicLabel="The Real Dual-Retry Loop" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">The Real Dual-Retry Loop</h1>
+  <p class="page-subtitle">The main page describes TransientTransactionError and UnknownTransactionCommitResult as two separately-retryable errors, but no codeTab ever builds the two-level retry loop the distinction actually requires.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>This turns the main page's own retryable-error names into working, verified code — the same "retry the outer operation, not the inner one" discipline as an idempotent HTTP retry, just applied at the transaction/commit boundary specifically.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Transactions" topicRoute="/mongodb/transactions"
+    [prev]="{ label: 'Read Concern Defaults to Local, Not Snapshot', route: '/mongodb/transactions/read-concern-defaults-to-local-not-snapshot' }"
+    [next]="{ label: 'TransactionTooLargeForCache: The Real Limit', route: '/mongodb/transactions/transactiontoolargeforcache-the-real-limit' }" />
+</div>
