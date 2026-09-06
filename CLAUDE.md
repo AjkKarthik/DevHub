@@ -7934,6 +7934,58 @@ this same check before any other new hub's first subtopic set:
     confirmed), 860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content
     confirmed via a direct text search for the tip's own distinctive phrase. **MongoDB hub Phase
     10: 16 of 21 topics complete.**
+17. **The `change-streams` batch found and fixed a genuine, self-contained mismatch between a
+    codeTab's own comment and its code, plus a genuinely wrong claim about oplog retention,
+    plus a completely unmentioned documented risk — all in one page**: the "Filter Pipeline &
+    Full Document" codeTab opened with a comment claiming "Only receive insert/update events
+    where status === 'shipped'", but its own <code>$match</code> stage only ever filtered on
+    <code>operationType</code>, with the status check actually living in the client-side
+    for-await loop — the exact anti-pattern the page's OWN "Filtering events in application code
+    instead of the pipeline" mistake block, right below it, explicitly warns against. Fixed by
+    pushing <code>'fullDocument.status': 'shipped'</code> into the pipeline's own <code>$match</code>
+    stage, matching the mistake block's own established pattern, and removing the now-redundant
+    client-side re-check. Separately, a QnA claimed "MongoDB ensures a minimum retention period
+    of 1 hour by default" — verified via WebFetch against MongoDB's own Replica Set Oplog
+    documentation ("By default MongoDB does not set a minimum oplog retention period and
+    automatically truncates the oplog... to maintain the configured maximum oplog size") that
+    <code>oplogMinRetentionHours</code> defaults to 0 (disabled), with NO time-based floor at
+    all — purely size-based truncation. Fixed the QnA to state the real default and clarify that
+    an observed "24-72 hours" figure is a byproduct of write volume, not a guarantee. Three
+    subtopics: (1) **fix-adjacent** — reproduces the comment-vs-code mismatch and quantifies the
+    fix's real benefit via direct Node.js execution: pushing the status condition into
+    <code>$match</code> cuts transmitted events by 98.0% for a realistic 10,000-event/2%-match-rate
+    scenario, with a Try It distinguishing "which $match stage the condition lives in" (doesn't
+    matter) from "whether ANY stage filters on it at all" (the actual original bug); (2)
+    **fix-adjacent** — models the real size-based-vs-explicit-floor retention behavior via direct
+    execution, showing a high-write-rate scenario genuinely retains under 1 hour at the true
+    default (~50 minutes), disproving the false "1 hour minimum" claim concretely, with a Try It
+    computing how a calm 500MB/hour deployment's own ~20-hour "safe-looking" retention would
+    silently shrink to ~6.83 hours if write volume tripled, since nothing was actually guaranteeing
+    that number; (3) **gap-closing** — a real, documented risk the main page never mentions at
+    all: verified via WebFetch against MongoDB's own official change streams documentation that
+    combining <code>fullDocument: "updateLookup"</code> with a <code>$match</code> on a
+    fullDocument field can produce "Resume Token Not Found" errors under rapid deletions or
+    traffic spikes (a live lookup racing against a since-deleted document), with MongoDB's own
+    recommended fix being pre/post images (<code>fullDocument</code>/<code>fullDocumentBeforeChange:
+    "whenAvailable"</code>) instead, since those are captured durably at write time rather than
+    looked up live later — directly relevant since the FIRST subtopic's own fix introduces exactly
+    this risky combination, verified via a timestamp-based race simulation matching the documented
+    mechanism precisely. No `SUBTOPICS` collision for `change-streams` (checked both `subtopics.ts`
+    forms and grepped `app.routes.ts` directly, confirmed collision-free, left bare). All three
+    `exercise.solution` fields swept clean of `<code>`/entity contamination; the standing
+    apostrophe-after-letter sweep (run against both the new subtopic files and the main page file
+    itself, after all edits) and the `[prev]`/`[next]`-label straight-apostrophe/double-quote
+    sweeps both found nothing unescaped; bracket-balance and backtick-parity scripts confirmed
+    clean on all three subtopic files and the main page file. Build passed clean on the first
+    attempt (foreground execution, explicit `EXITCODE:$?` capture, zero `ERROR` lines).
+    Browser-verified with a proactive dev-server restart before checking (fresh on the first
+    check, toggle count 17 as expected across the hub): no console errors on any of the 4 pages;
+    nav accordion opens with all 3 subtopic links; both main-page fixes (the corrected pipeline
+    codeTab and the corrected oplog QnA) confirmed rendering live via direct component data
+    inspection; the subtopic page checked individually — correct h1/breadcrumb (all 4 levels
+    confirmed), 860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content
+    confirmed via a direct text search for the tip's own distinctive phrase. **MongoDB hub Phase
+    10: 17 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -9021,7 +9073,7 @@ this same check before any other new hub's first subtopic set:
   Progress: `mongoTotal=21` in progress.service.ts. MongoDB pages use `app-common-mistakes` AND
   `app-revision-card`. Reference pages (cheatsheet, interview-prep) have no PageComplete.
   Challenge.language: `'typescript'`. MongoNavComponent at `shared/mongo-nav/mongo-nav.ts`.
-  Phase 10: 16 of 21 topics have subtopics (`/mongodb/fundamentals`, pilot batch;
+  Phase 10: 17 of 21 topics have subtopics (`/mongodb/fundamentals`, pilot batch;
   `/mongodb/installation-setup`; `/mongodb/crud-operations`; `/mongodb/update-operators`;
   `/mongodb/query-operators`; `/mongodb/array-queries`; `/mongodb/projections-sorting`;
   `/mongodb/aggregation-pipeline`; `/mongodb/lookup-joins`; `/mongodb/aggregation-expressions`;
@@ -9029,7 +9081,7 @@ this same check before any other new hub's first subtopic set:
   `/mongodb/indexes` (SUBTOPICS key hub-prefixed to `mongo-indexes` — bare `indexes` collides
   with the SQL hub's own topic); `/mongodb/query-performance`; `/mongodb/transactions`
   (SUBTOPICS key hub-prefixed to `mongo-transactions` — bare `transactions` collides with the
-  SQL hub's own topic), 2026-09-06) — see
+  SQL hub's own topic); `/mongodb/change-streams`, 2026-09-06) — see
   "MongoDB hub subtopic wiring" section above for the `MongoNavComponent` accordion structural fix
   (15th `*NavComponent`-based hub in a row missing it at pilot time), the `mongo-fundamentals`/
   `mongo-installation-setup` SUBTOPICS-map collision resolutions (the former collided with the
@@ -9038,9 +9090,11 @@ this same check before any other new hub's first subtopic set:
   connection-limit inaccuracy found and fixed in the Fundamentals page's own "Not closing the
   MongoClient" mistake block, the three genuine inaccuracies (a missing authSource=admin, a
   wrong maxIncomingConnections default, and a backwards auth-bootstrap ordering) found and fixed
-  on the Installation & Setup page, and the read-concern-default/1000-write-limit inaccuracies
+  on the Installation & Setup page, the read-concern-default/1000-write-limit inaccuracies
   found and fixed on the Transactions page (verified via WebFetch against MongoDB's own
-  Production Considerations page).
+  Production Considerations page), and the pipeline-comment/oplog-retention inaccuracies found
+  and fixed on the Change Streams page (the latter verified via WebFetch against MongoDB's own
+  Replica Set Oplog documentation).
 - **Hub home**: Angular, C#, ASP.NET Core, SQL, TypeScript, React, JavaScript, CSS, HTML, Blazor, Go, Node.js, Python, DevOps, AWS, Azure, Linux, Redis, GraphQL, Messaging, Testing, DSA, AI/ML, Containers/K8s, Terraform/IaC, Service Mesh, System Design, Architecture Patterns, Design Patterns, Security, API Design, Observability, Web Performance, and MongoDB are all `available: true`. Everything else "Soon".
 - Progress totals: Angular 58, C# 50, ASP.NET Core 45, SQL 44, TypeScript 20, React 17, JavaScript 22, CSS 22, HTML 23, Web Performance 20, Blazor 20, Go 21, Node.js 23, Python 21, DevOps 21, AWS 21, Azure 22, Linux 19, Redis 21, GraphQL 20, Messaging 20, Testing 19, DSA 21, AI 19, Containers/K8s 22, Terraform 21, Service Mesh 19, System Design 24, Architecture Patterns 22, Design Patterns 36, Security 23, API Design 19, Observability 20, MongoDB 21 (`progress.service.ts`).
 - Hero stat: "933+ Live Pages" (corrected 2026-07-01 — hub-home.ts's Angular card was showing `topics: 63` instead of the actual 68, undercounting the site total by 5).

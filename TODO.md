@@ -9092,7 +9092,22 @@ off here with a date.
   `transactions` collides with the SQL hub's own topic). Build clean on the first attempt.
   Browser-verified (nav accordion fresh on first check, toggle count 16, all three main-page fixes
   rendering live, subtopic page checked, breadcrumb all 4 levels, sidebar tailored).
-- [ ] `/mongodb/change-streams` — Change Streams
+- [x] 2026-09-06 — `/mongodb/change-streams` — Change Streams. Fixed a genuine mismatch between
+  the "Filter Pipeline & Full Document" codeTab's own comment (claiming a server-side status
+  filter) and its actual $match stage (which only filtered on operationType, with the real status
+  check running client-side — the exact anti-pattern the page's own next mistake block warns
+  against); pushed the status condition into $match, verified via direct Node.js execution that
+  this cuts transmitted events by 98.0% for a realistic scenario. Also fixed a QnA falsely
+  claiming a default 1-hour minimum oplog retention (verified via WebFetch against MongoDB's own
+  Replica Set Oplog docs that oplogMinRetentionHours defaults to 0 — purely size-based
+  truncation, no time floor at all). 3 subtopics: the comment-vs-code fix quantified; the real
+  size-based retention behavior modeled and verified; and a genuinely undocumented-on-this-page
+  risk — MongoDB's own documented "Resume Token Not Found" warning when combining
+  fullDocument:"updateLookup" with a $match on a fullDocument field under rapid deletions, fixed
+  via pre/post images with "whenAvailable" instead. SUBTOPICS key left bare (collision-free).
+  Build clean on the first attempt. Browser-verified (nav accordion fresh on first check, toggle
+  count 17, both main-page fixes rendering live, subtopic page checked, breadcrumb all 4 levels,
+  sidebar tailored).
 - [ ] `/mongodb/replication-sharding` — Replication & Sharding
 - [ ] `/mongodb/security` — Security & Authentication
 - [ ] `/mongodb/mongodb-nodejs` — MongoDB with Node.js
