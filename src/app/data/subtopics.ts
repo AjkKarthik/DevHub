@@ -1632,6 +1632,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Oplog Retention Has No Default Minimum Hours', route: '/mongodb/change-streams/oplog-retention-has-no-default-minimum-hours' },
     { label: 'updateLookup Plus $match: A Real Resume-Token Risk', route: '/mongodb/change-streams/updatelookup-plus-match-resume-token-not-found-risk' },
   ],
+  'replication-sharding': [
+    { label: 'The EU Tilde Upper Bound Fixes a Broken Zone Range', route: '/mongodb/replication-sharding/eu-tilde-upper-bound-fixes-the-broken-zone-range' },
+    { label: 'The Oplog Default Has a 990MB Floor', route: '/mongodb/replication-sharding/oplog-default-has-a-990mb-floor-the-page-missed' },
+    { label: 'Reconfig Code for a Hidden, Delayed Backup Member', route: '/mongodb/replication-sharding/reconfig-code-for-a-hidden-delayed-backup-member' },
+  ],
   closures: [
     { label: 'var Shares One Binding, let Creates One Per Iteration', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
     { label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },

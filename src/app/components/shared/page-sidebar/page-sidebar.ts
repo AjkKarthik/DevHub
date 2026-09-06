@@ -34543,6 +34543,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Read preference settings (primary, secondary, nearest) trade consistency for read scalability and latency — choose deliberately per use case.',
     ],
   },
+  'mongodb/replication-sharding/eu-tilde-upper-bound-fixes-the-broken-zone-range': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Replication & Sharding', route: '/mongodb/replication-sharding' },
+      { label: 'The Oplog Default Has a 990MB Floor', route: '/mongodb/replication-sharding/oplog-default-has-a-990mb-floor-the-page-missed' },
+    ],
+    tip: 'sh.addShardTag()/sh.addTagRange() are legacy aliases for sh.addShardToZone()/sh.updateZoneKeyRange() — same mechanism, newer names. A tilde ("EU~") as an upper bound sorts after every EU-prefixed string; concatenating an empty string onto the lower bound does not.',
+    gotchas: [
+      'A zone key range whose lower and upper bound are identical (like the original "EU" + "" bug) is zero-width and matches nothing.',
+    ],
+  },
+  'mongodb/replication-sharding/oplog-default-has-a-990mb-floor-the-page-missed': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Replication & Sharding', route: '/mongodb/replication-sharding' },
+      { label: 'The EU Tilde Upper Bound Fixes a Broken Zone Range', route: '/mongodb/replication-sharding/eu-tilde-upper-bound-fixes-the-broken-zone-range' },
+      { label: 'Reconfig Code for a Hidden, Delayed Backup Member', route: '/mongodb/replication-sharding/reconfig-code-for-a-hidden-delayed-backup-member' },
+    ],
+    tip: 'The default oplog size formula is max(990MB, min(5% of free disk, 50GB)) — a two-sided clamp, not just "5% of disk, capped at 50GB."',
+    gotchas: [
+      'On a small dev-VM disk, the 990MB floor (not the 5% calculation) is usually the ACTIVE constraint — estimating oplog size from disk percentage alone underestimates it there.',
+    ],
+  },
+  'mongodb/replication-sharding/reconfig-code-for-a-hidden-delayed-backup-member': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Replication & Sharding', route: '/mongodb/replication-sharding' },
+      { label: 'The Oplog Default Has a 990MB Floor', route: '/mongodb/replication-sharding/oplog-default-has-a-990mb-floor-the-page-missed' },
+    ],
+    tip: 'rs.reconfig() REPLACES the whole replica set config, it never merges — always start from rs.conf(), mutate the specific member, bump version, then pass the full object back.',
+    gotchas: [
+      'hidden, priority: 0, and secondaryDelaySecs are independent fields on the same member — nothing prevents combining all three into one dedicated, delayed backup node.',
+    ],
+  },
   'mongodb/time-series': {
     apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
     related: [

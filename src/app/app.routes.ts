@@ -2697,7 +2697,12 @@ export const routes: Routes = [
       { path: 'oplog-retention-has-no-default-minimum-hours', loadComponent: () => import('./components/data/mongodb/change-streams/subtopics/oplog-retention-has-no-default-minimum-hours/oplog-retention-has-no-default-minimum-hours').then(m => m.OplogRetentionHasNoDefaultMinimumHoursSubtopic) },
       { path: 'updatelookup-plus-match-resume-token-not-found-risk', loadComponent: () => import('./components/data/mongodb/change-streams/subtopics/updatelookup-plus-match-resume-token-not-found-risk/updatelookup-plus-match-resume-token-not-found-risk').then(m => m.UpdatelookupPlusMatchResumeTokenNotFoundRiskSubtopic) },
     ] },
-    { path: 'replication-sharding',  loadComponent: () => import('./components/data/mongodb/replication-sharding/replication-sharding').then(m => m.MongoReplicationSharding) },
+    { path: 'replication-sharding', children: [
+      { path: '', loadComponent: () => import('./components/data/mongodb/replication-sharding/replication-sharding').then(m => m.MongoReplicationSharding) },
+      { path: 'eu-tilde-upper-bound-fixes-the-broken-zone-range', loadComponent: () => import('./components/data/mongodb/replication-sharding/subtopics/eu-tilde-upper-bound-fixes-the-broken-zone-range/eu-tilde-upper-bound-fixes-the-broken-zone-range').then(m => m.EuTildeUpperBoundFixesTheBrokenZoneRangeSubtopic) },
+      { path: 'oplog-default-has-a-990mb-floor-the-page-missed', loadComponent: () => import('./components/data/mongodb/replication-sharding/subtopics/oplog-default-has-a-990mb-floor-the-page-missed/oplog-default-has-a-990mb-floor-the-page-missed').then(m => m.OplogDefaultHasA990MbFloorThePageMissedSubtopic) },
+      { path: 'reconfig-code-for-a-hidden-delayed-backup-member', loadComponent: () => import('./components/data/mongodb/replication-sharding/subtopics/reconfig-code-for-a-hidden-delayed-backup-member/reconfig-code-for-a-hidden-delayed-backup-member').then(m => m.ReconfigCodeForAHiddenDelayedBackupMemberSubtopic) },
+    ] },
     { path: 'security',              loadComponent: () => import('./components/data/mongodb/security/security').then(m => m.MongoSecurity) },
     { path: 'mongodb-nodejs',        loadComponent: () => import('./components/data/mongodb/mongodb-nodejs/mongodb-nodejs').then(m => m.MongoMongodbNodejs) },
     { path: 'atlas-search',          loadComponent: () => import('./components/data/mongodb/atlas-search/atlas-search').then(m => m.MongoAtlasSearch) },

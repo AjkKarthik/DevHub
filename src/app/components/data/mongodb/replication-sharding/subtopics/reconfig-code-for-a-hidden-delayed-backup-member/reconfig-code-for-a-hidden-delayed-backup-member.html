@@ -1,0 +1,26 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Replication & Sharding" topicRoute="/mongodb/replication-sharding"
+    subtopicLabel="Reconfig Code for a Hidden, Delayed Backup Member" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">Reconfig Code for a Hidden, Delayed Backup Member</h1>
+  <p class="page-subtitle">The main page names hidden: true, priority: 0, and secondaryDelaySecs across two separate QnAs, but never shows the actual rs.reconfig() call that applies them to a running replica set.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>This closes the topic's arc: the zone-sharding fix and the oplog-size tightening both corrected main-page content, while this subtopic builds the working code the page's own hidden-member and delayed-replica QnAs describe only in prose.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Replication & Sharding" topicRoute="/mongodb/replication-sharding"
+    [prev]="{ label: 'The Oplog Default Has a 990MB Floor', route: '/mongodb/replication-sharding/oplog-default-has-a-990mb-floor-the-page-missed' }" />
+</div>

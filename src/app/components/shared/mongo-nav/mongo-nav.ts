@@ -366,7 +366,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
 
     <div class="nav-group">
       <p class="nav-group-label">Advanced</p>
-      <a routerLink="/mongodb/replication-sharding" routerLinkActive="active"><span class="nl-text">Replication &amp; Sharding</span>@if(p.isDone('mongo-replication-sharding')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/mongodb/replication-sharding" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Replication &amp; Sharding</span>
+        @if(p.isDone('mongo-replication-sharding')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('replication-sharding')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('replication-sharding')"
+                  (click)="toggleSubtopics('replication-sharding', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('replication-sharding'); as rsSubs) {
+        @if (isSubtopicsExpanded('replication-sharding')) {
+          <div class="nav-subtopics">
+            @for (s of rsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/mongodb/security" routerLinkActive="active"><span class="nl-text">Security &amp; Auth</span>@if(p.isDone('mongo-security')){<span class="nl-done">✓</span>}</a>
       <a routerLink="/mongodb/mongodb-nodejs" routerLinkActive="active"><span class="nl-text">MongoDB with Node.js</span>@if(p.isDone('mongo-mongodb-nodejs')){<span class="nl-done">✓</span>}</a>
       <a routerLink="/mongodb/atlas-search" routerLinkActive="active"><span class="nl-text">Atlas &amp; Vector Search</span>@if(p.isDone('mongo-atlas-search')){<span class="nl-done">✓</span>}</a>
