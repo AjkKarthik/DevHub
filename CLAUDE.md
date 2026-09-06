@@ -7729,6 +7729,48 @@ this same check before any other new hub's first subtopic set:
     correct h1/breadcrumb (all 4 levels confirmed), 860px wrapper via `getComputedStyle`, tailored
     (not DEFAULT) sidebar content confirmed on the final subtopic. **MongoDB hub Phase 10: 12 of
     21 topics complete.**
+20. **The `time-series` batch found and fixed a genuine self-contradiction spanning the main
+    page's own mistakes block AND a quiz question, discovered by cross-referencing them against
+    the page's own QnA limitations answer**: the mistakes block claimed "Time series collections
+    are append-only — updates and deletes are not supported" as an unqualified blanket rule, and a
+    quiz question's own explanation repeated the identical claim — while the SAME page's own QnA
+    already correctly stated "Deletes: supported but less efficient than regular collections."
+    Verified via MongoDB's own documented update-command requirements and a WebSearch confirming
+    the version history: MongoDB 5.0 was fully append-only, but 5.1+ allows deletes AND limited
+    updates (strictly matching/modifying the metaField only, with `multi: true` required and
+    `upsert` forbidden), with most delete restrictions further removed in 7.0+. Confirmed the
+    quiz question's own fourth option ("Yes, but only the metaField") was ALREADY the accurate
+    answer, just never selected as correct. Fixed the mistake's title/explanation (measurement
+    fields specifically stay immutable; the metaField does not) and the quiz's own `answer` index
+    and explanation to match. Three subtopics, each verified via direct Node.js execution: (1)
+    **fix-adjacent** — a valid metaField-only rename (renaming a hostname across every historical
+    document) contrasted against three rejected variants (filtering/modifying a measurement field
+    in any combination), with a Try It on the SEPARATE `multi:true` requirement (a correctly
+    metaField-scoped `updateOne()`, without `multi:true`, is still rejected); (2) **gap-closing** —
+    the page's own QnA explains why `$merge` beats `$out` for scheduled downsampling in real detail
+    with zero codeTab demonstrating it across sequential runs; built two consecutive scheduled runs
+    verified matching claimed output exactly ($out silently destroys day 1's rollup; $merge
+    preserves it), with a Try It on `whenMatched: 'replace'`'s actual scope (a same-day re-run
+    replaces only that day's own document, never touching days the run didn't recompute); (3)
+    **gap-closing** — the QnA explains `$densify`'s `bounds: "partition"` vs. `"full"` with a
+    worked example but the ONLY `$densify` codeTab on the page uses `"partition"`; built both side
+    by side, verified via direct execution that `"full"` produces exactly 4x more documents than
+    `"partition"` for the same 4-document seed (32 vs. 8), with a Try It establishing that `$fill`'s
+    own `locf` method cannot close a null gap `"full"` bounds introduces BEFORE a partition's own
+    first real reading. No `SUBTOPICS` collision for `time-series` (checked both `subtopics.ts`
+    forms and grepped `app.routes.ts` directly, confirmed collision-free, left bare). All three
+    `exercise.solution` fields swept clean of `<code>`/entity contamination; the standing
+    apostrophe-after-letter sweep and the `[prev]`/`[next]`-label straight-apostrophe sweep both
+    found nothing unescaped; bracket-balance and backtick-parity scripts confirmed clean on all
+    three files. Build passed clean (foreground execution, explicit `EXITCODE:$?` capture, zero
+    `ERROR` lines). Browser-verified with a proactive dev-server restart before checking (fresh on
+    the first check, toggle count 13 as expected): no console errors on any of the 4 pages; nav
+    accordion opens with all 3 subtopic links; both main-page fixes confirmed rendering live — the
+    mistakes-block fix directly, and the quiz fix by clicking through to question 5/9 specifically
+    and confirming option D is now marked correct with the updated explanation; all 3 subtopic
+    pages checked individually — correct h1/breadcrumb (all 4 levels confirmed), 860px wrapper via
+    `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the final subtopic.
+    **MongoDB hub Phase 10: 13 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -8816,11 +8858,12 @@ this same check before any other new hub's first subtopic set:
   Progress: `mongoTotal=21` in progress.service.ts. MongoDB pages use `app-common-mistakes` AND
   `app-revision-card`. Reference pages (cheatsheet, interview-prep) have no PageComplete.
   Challenge.language: `'typescript'`. MongoNavComponent at `shared/mongo-nav/mongo-nav.ts`.
-  Phase 10: 12 of 21 topics have subtopics (`/mongodb/fundamentals`, pilot batch;
+  Phase 10: 13 of 21 topics have subtopics (`/mongodb/fundamentals`, pilot batch;
   `/mongodb/installation-setup`; `/mongodb/crud-operations`; `/mongodb/update-operators`;
   `/mongodb/query-operators`; `/mongodb/array-queries`; `/mongodb/projections-sorting`;
   `/mongodb/aggregation-pipeline`; `/mongodb/lookup-joins`; `/mongodb/aggregation-expressions`;
-  `/mongodb/schema-design-patterns`; `/mongodb/data-modelling`, 2026-09-03) — see
+  `/mongodb/schema-design-patterns`; `/mongodb/data-modelling`; `/mongodb/time-series`,
+  2026-09-06) — see
   "MongoDB hub subtopic wiring" section above for the `MongoNavComponent` accordion structural fix
   (15th `*NavComponent`-based hub in a row missing it at pilot time), the `mongo-fundamentals`/
   `mongo-installation-setup` SUBTOPICS-map collision resolutions (the former collided with the

@@ -9026,7 +9026,22 @@ off here with a date.
   under a different workload. Hit a fully-dead dev server (not just stale) — cold-started cleanly.
   Build clean, browser-verified (nav accordion fresh on first check, toggle count 12, Quick
   Reference fix confirmed via a scoped check, 3 subtopic pages, breadcrumb all 4 levels, sidebar).
-- [ ] `/mongodb/time-series` — Time Series Collections
+- [x] `/mongodb/time-series` — Time Series Collections (2026-09-06) — extended
+  `MongoNavComponent`'s toggle to a thirteenth topic (bare key, no collision). Found and fixed a
+  genuine self-contradiction: the mistakes block AND a quiz question both claimed a blanket
+  "updates and deletes are not supported," directly contradicting the page's own QnA, which
+  already correctly said deletes are supported. Verified via MongoDB's own documented update
+  requirements and version history (5.0 fully append-only; 5.1+ allows deletes and metaField-only
+  updates with multi:true required; 7.0+ removes most delete restrictions) — the quiz's own 4th
+  option ("Yes, but only the metaField") was already the correct answer, just never selected.
+  Fixed both. 3 subtopics: a valid metaField-only rename verified against 3 rejected variants,
+  with a Try It on the separate multi:true requirement; $merge vs. $out across two sequential
+  scheduled downsampling runs, verified via execution ($out destroys history, $merge preserves
+  it); $densify bounds partition vs. full, verified full produces exactly 4x more documents (32
+  vs. 8) for the same seed, with a Try It on locf's own inability to close a pre-first-reading
+  gap. Build clean, browser-verified (nav accordion fresh on first check, toggle count 13, both
+  main-page fixes confirmed rendering live including the quiz's own answer flip, 3 subtopic
+  pages, breadcrumb all 4 levels, sidebar).
 - [ ] `/mongodb/indexes` — Indexes
 - [ ] `/mongodb/query-performance` — Query Performance & explain()
 - [ ] `/mongodb/transactions` — Transactions
