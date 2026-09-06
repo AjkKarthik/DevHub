@@ -282,7 +282,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
 
     <div class="nav-group">
       <p class="nav-group-label">Performance</p>
-      <a routerLink="/mongodb/indexes" routerLinkActive="active"><span class="nl-text">Indexes</span>@if(p.isDone('mongo-indexes')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/mongodb/indexes" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Indexes</span>
+        @if(p.isDone('mongo-indexes')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('mongo-indexes')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('mongo-indexes')"
+                  (click)="toggleSubtopics('mongo-indexes', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('mongo-indexes'); as idxSubs) {
+        @if (isSubtopicsExpanded('mongo-indexes')) {
+          <div class="nav-subtopics">
+            @for (s of idxSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/mongodb/query-performance" routerLinkActive="active"><span class="nl-text">Query Performance</span>@if(p.isDone('mongo-query-performance')){<span class="nl-done">✓</span>}</a>
     </div>
 

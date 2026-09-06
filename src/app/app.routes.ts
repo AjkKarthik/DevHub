@@ -2673,7 +2673,12 @@ export const routes: Routes = [
       { path: 'merge-vs-out-for-scheduled-downsampling', loadComponent: () => import('./components/data/mongodb/time-series/subtopics/merge-vs-out-for-scheduled-downsampling/merge-vs-out-for-scheduled-downsampling').then(m => m.MergeVsOutForScheduledDownsamplingSubtopic) },
       { path: 'densify-bounds-partition-vs-full-made-concrete', loadComponent: () => import('./components/data/mongodb/time-series/subtopics/densify-bounds-partition-vs-full-made-concrete/densify-bounds-partition-vs-full-made-concrete').then(m => m.DensifyBoundsPartitionVsFullMadeConcreteSubtopic) },
     ] },
-    { path: 'indexes',               loadComponent: () => import('./components/data/mongodb/indexes/indexes').then(m => m.MongoIndexes) },
+    { path: 'indexes', children: [
+      { path: '', loadComponent: () => import('./components/data/mongodb/indexes/indexes').then(m => m.MongoIndexes) },
+      { path: 'hybrid-index-builds-the-real-4-2-lock-timeline', loadComponent: () => import('./components/data/mongodb/indexes/subtopics/hybrid-index-builds-the-real-4-2-lock-timeline/hybrid-index-builds-the-real-4-2-lock-timeline').then(m => m.HybridIndexBuildsTheReal42LockTimelineSubtopic) },
+      { path: 'text-and-2dsphere-indexes-can-be-multikey-too', loadComponent: () => import('./components/data/mongodb/indexes/subtopics/text-and-2dsphere-indexes-can-be-multikey-too/text-and-2dsphere-indexes-can-be-multikey-too').then(m => m.TextAnd2dsphereIndexesCanBeMultikeyTooSubtopic) },
+      { path: 'hideindex-testing-a-drop-without-actually-dropping', loadComponent: () => import('./components/data/mongodb/indexes/subtopics/hideindex-testing-a-drop-without-actually-dropping/hideindex-testing-a-drop-without-actually-dropping').then(m => m.HideindexTestingADropWithoutActuallyDroppingSubtopic) },
+    ] },
     { path: 'query-performance',     loadComponent: () => import('./components/data/mongodb/query-performance/query-performance').then(m => m.MongoQueryPerformance) },
     { path: 'transactions',          loadComponent: () => import('./components/data/mongodb/transactions/transactions').then(m => m.MongoTransactions) },
     { path: 'change-streams',        loadComponent: () => import('./components/data/mongodb/change-streams/change-streams').then(m => m.MongoChangeStreams) },

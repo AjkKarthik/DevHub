@@ -1608,6 +1608,12 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: '$merge vs. $out for Scheduled Downsampling', route: '/mongodb/time-series/merge-vs-out-for-scheduled-downsampling' },
     { label: '$densify Bounds: Partition vs. Full, Made Concrete', route: '/mongodb/time-series/densify-bounds-partition-vs-full-made-concrete' },
   ],
+  // NOTE: bare 'indexes' is already claimed by the SQL hub's own /sql/indexes topic — hub-prefixed
+  'mongo-indexes': [
+    { label: 'Hybrid Index Builds: The Real 4.2+ Lock Timeline', route: '/mongodb/indexes/hybrid-index-builds-the-real-4-2-lock-timeline' },
+    { label: 'Text and 2dsphere Indexes Can Be Multikey Too', route: '/mongodb/indexes/text-and-2dsphere-indexes-can-be-multikey-too' },
+    { label: 'hideIndex: Testing a Drop Without Actually Dropping', route: '/mongodb/indexes/hideindex-testing-a-drop-without-actually-dropping' },
+  ],
   closures: [
     { label: 'var Shares One Binding, let Creates One Per Iteration', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
     { label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },

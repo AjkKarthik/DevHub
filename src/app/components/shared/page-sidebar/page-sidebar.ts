@@ -34369,6 +34369,36 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A covered query (index contains every field the query needs) avoids touching the actual documents at all, a significant performance win.',
     ],
   },
+  'mongodb/indexes/hybrid-index-builds-the-real-4-2-lock-timeline': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Indexes', route: '/mongodb/indexes' },
+    ],
+    tip: 'The hybrid index build (MongoDB 4.2+) takes an exclusive lock only during its brief Initialize and Commit phases — the much longer bulk-scan phase freely interleaves reads and writes.',
+    gotchas: [
+      'A write arriving during the short Drain phase is queued, not rejected — it resumes once the build reaches Commit.',
+    ],
+  },
+  'mongodb/indexes/text-and-2dsphere-indexes-can-be-multikey-too': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Indexes', route: '/mongodb/indexes' },
+    ],
+    tip: 'Only hashed indexes are excluded from being multikey — text indexes on an array of strings and 2dsphere indexes on an array of GeoJSON geometries both work exactly like a regular multikey index.',
+    gotchas: [
+      'The compound-index one-array-field restriction still applies regardless of index type — combining two array-valued fields in one compound index is never allowed, text/2dsphere included.',
+    ],
+  },
+  'mongodb/indexes/hideindex-testing-a-drop-without-actually-dropping': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Indexes', route: '/mongodb/indexes' },
+    ],
+    tip: 'A hidden index is fully maintained on every write — only its eligibility for query-plan selection changes, which is what makes hideIndex() a safe, instantly-reversible test before a real dropIndex().',
+    gotchas: [
+      'The _id index is the one documented exception — it can never be hidden.',
+    ],
+  },
   'mongodb/query-performance': {
     apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
     related: [

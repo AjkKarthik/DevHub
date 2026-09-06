@@ -1,0 +1,26 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Indexes" topicRoute="/mongodb/indexes"
+    subtopicLabel="Hybrid Index Builds: The Real 4.2+ Lock Timeline" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">Hybrid Index Builds: The Real 4.2+ Lock Timeline</h1>
+  <p class="page-subtitle">The main page's own theory attributed the "lock only at start and end" behavior to MongoDB 4.4+ — verified against MongoDB's own documented hybrid build protocol that this is exactly what MongoDB 4.2 itself introduced.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="MongoDB 4.2+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>Knowing the exact phase timeline matters for production index rollouts — the two brief exclusive-lock windows (Initialize, Commit) are the only moments worth scheduling around, not the entire build's duration.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Indexes" topicRoute="/mongodb/indexes"
+    [next]="{ label: 'Text and 2dsphere Indexes Can Be Multikey Too', route: '/mongodb/indexes/text-and-2dsphere-indexes-can-be-multikey-too' }" />
+</div>

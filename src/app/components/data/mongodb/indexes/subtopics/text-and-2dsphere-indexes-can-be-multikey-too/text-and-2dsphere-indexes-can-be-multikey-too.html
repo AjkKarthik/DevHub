@@ -1,0 +1,27 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Indexes" topicRoute="/mongodb/indexes"
+    subtopicLabel="Text and 2dsphere Indexes Can Be Multikey Too" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">Text and 2dsphere Indexes Can Be Multikey Too</h1>
+  <p class="page-subtitle">The main page's own multikey QnA claimed text and 2dsphere indexes cannot be multikey — verified against MongoDB's own documentation that only hashed indexes are actually excluded.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>This corrects one specific claim without disturbing the rest of the main page's own multikey QnA, which correctly states the compound-index one-array-field restriction, the covered-query limitation, and the index-bloat warning for large arrays — all of which still apply exactly as written.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Indexes" topicRoute="/mongodb/indexes"
+    [prev]="{ label: 'Hybrid Index Builds: The Real 4.2+ Lock Timeline', route: '/mongodb/indexes/hybrid-index-builds-the-real-4-2-lock-timeline' }"
+    [next]="{ label: 'hideIndex: Testing a Drop Without Actually Dropping', route: '/mongodb/indexes/hideindex-testing-a-drop-without-actually-dropping' }" />
+</div>
