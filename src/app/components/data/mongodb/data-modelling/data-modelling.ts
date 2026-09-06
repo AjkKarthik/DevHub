@@ -29,7 +29,7 @@ export class MongoDataModelling {
     { type: 'keyword', name: 'Parent Reference',   desc: 'Each child stores its parent ID. Good for hierarchies with frequent parent changes.' },
     { type: 'keyword', name: 'Child Reference',    desc: 'Parent stores array of child IDs. Good when children list is bounded.' },
     { type: 'keyword', name: 'Materialised Path',  desc: 'Node stores full ancestor path as string. Fast subtree queries via $regex prefix.' },
-    { type: 'keyword', name: 'Adjacency List',     desc: 'Each node has parentId. Simple recursive traversal; use $graphLookup for depth.' },
+    { type: 'keyword', name: 'Array of Ancestors', desc: 'Node stores an array of ALL ancestor IDs (not just its parent). Fast "find all descendants of X" range query.' },
     { type: 'keyword', name: 'Workload Matrix',    desc: 'Table of queries × frequency × read/write → drives schema decisions.' },
   ];
 

@@ -1598,6 +1598,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Attribute Pattern Needs $elemMatch to Avoid False Positives', route: '/mongodb/schema-design-patterns/attribute-pattern-needs-elemmatch-to-avoid-false-positives' },
     { label: 'Materialised Path: Ancestors and Descendants With $regex', route: '/mongodb/schema-design-patterns/materialised-path-ancestors-and-descendants-with-regex' },
   ],
+  'data-modelling': [
+    { label: 'Array of Ancestors: The Real Fifth Tree Pattern', route: '/mongodb/data-modelling/array-of-ancestors-the-real-fifth-tree-pattern' },
+    { label: 'Nested Sets: A Real Left/Right Boundary Example', route: '/mongodb/data-modelling/nested-sets-a-real-left-right-boundary-example' },
+    { label: 'Building the Workload Matrix Behind the Challenge', route: '/mongodb/data-modelling/building-the-workload-matrix-behind-the-challenge' },
+  ],
   closures: [
     { label: 'var Shares One Binding, let Creates One Per Iteration', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
     { label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },

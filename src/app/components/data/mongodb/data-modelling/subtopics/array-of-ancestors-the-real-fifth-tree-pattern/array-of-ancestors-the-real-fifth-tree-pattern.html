@@ -1,0 +1,26 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Data Modelling" topicRoute="/mongodb/data-modelling"
+    subtopicLabel="Array of Ancestors: The Real Fifth Tree Pattern" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">Array of Ancestors: The Real Fifth Tree Pattern</h1>
+  <p class="page-subtitle">The main page's own Quick Reference listed "Parent Reference" and "Adjacency List" as two separate entries — verified these are the same pattern, while a genuinely different, documented pattern (Array of Ancestors) was missing entirely.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>This directly extends the sibling Schema Design Patterns topic's own Materialised Path subtopic — both patterns solve the identical "fast subtree query" problem with a precomputed field, but with genuinely different self-inclusion behavior for descendants queries, verified precisely in this subtopic's own Try It exercise.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Data Modelling" topicRoute="/mongodb/data-modelling"
+    [next]="{ label: 'Nested Sets: A Real Left/Right Boundary Example', route: '/mongodb/data-modelling/nested-sets-a-real-left-right-boundary-example' }" />
+</div>

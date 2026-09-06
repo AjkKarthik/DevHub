@@ -1,0 +1,27 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Data Modelling" topicRoute="/mongodb/data-modelling"
+    subtopicLabel="Nested Sets: A Real Left/Right Boundary Example" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">Nested Sets: A Real Left/Right Boundary Example</h1>
+  <p class="page-subtitle">The main page's own theory names Nested Sets in real detail — including its "expensive to maintain" warning — but no codeTab anywhere on the page ever builds one, or shows a real insert cost.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>Nested Sets sits at the opposite end of the read/write tradeoff spectrum from Parent Reference — the main page's own theory already frames this choice, and this subtopic's insert-cost demonstration gives that tradeoff a concrete number instead of just an abstract warning.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Data Modelling" topicRoute="/mongodb/data-modelling"
+    [prev]="{ label: 'Array of Ancestors: The Real Fifth Tree Pattern', route: '/mongodb/data-modelling/array-of-ancestors-the-real-fifth-tree-pattern' }"
+    [next]="{ label: 'Building the Workload Matrix Behind the Challenge', route: '/mongodb/data-modelling/building-the-workload-matrix-behind-the-challenge' }" />
+</div>

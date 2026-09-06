@@ -34282,6 +34282,38 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Denormalizing for read performance means writes must update multiple copies of the same data — a real consistency tradeoff to weigh deliberately.',
     ],
   },
+  'mongodb/data-modelling/array-of-ancestors-the-real-fifth-tree-pattern': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Data Modelling', route: '/mongodb/data-modelling' },
+      { label: 'Schema Design Patterns', route: '/mongodb/schema-design-patterns' },
+    ],
+    tip: 'Array of Ancestors stores a full ancestors array PLUS a parent field — the two answer different queries (all ancestors vs. direct children), and neither replaces the other.',
+    gotchas: [
+      'Unlike Materialised Path\'s own $regex descendants query, { ancestors: nodeId } never matches the node\'s own document — a node is never listed in its own ancestors array.',
+    ],
+  },
+  'mongodb/data-modelling/nested-sets-a-real-left-right-boundary-example': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Data Modelling', route: '/mongodb/data-modelling' },
+    ],
+    tip: 'A node\'s own left/right range must fully CONTAIN every descendant\'s range — descendants match { left: { $gt: N.left }, right: { $lt: N.right } }, ancestors match the reversed comparison.',
+    gotchas: [
+      'Inserting one new node can shift far more than its own direct ancestors — every node with a left/right value at or past the insertion point on the tree\'s shared number line shifts too, even in unrelated sibling subtrees.',
+    ],
+  },
+  'mongodb/data-modelling/building-the-workload-matrix-behind-the-challenge': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Data Modelling', route: '/mongodb/data-modelling' },
+      { label: 'Schema Design Patterns', route: '/mongodb/schema-design-patterns' },
+    ],
+    tip: 'A workload matrix\'s read/write ratio and how fast a denormalized field changes are co-equal inputs to a schema decision, not decoration added after the fact — the identical schema shape can be right or wrong depending on those numbers alone.',
+    gotchas: [
+      'A workload matrix built at launch can go stale as usage patterns shift — revisit it when real traffic diverges from what it originally assumed, not just once at project start.',
+    ],
+  },
   'mongodb/schema-design-patterns': {
     apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
     related: [

@@ -240,7 +240,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/mongodb/data-modelling" routerLinkActive="active"><span class="nl-text">Data Modelling</span>@if(p.isDone('mongo-data-modelling')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/mongodb/data-modelling" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Data Modelling</span>
+        @if(p.isDone('mongo-data-modelling')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('data-modelling')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('data-modelling')"
+                  (click)="toggleSubtopics('data-modelling', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('data-modelling'); as dmSubs) {
+        @if (isSubtopicsExpanded('data-modelling')) {
+          <div class="nav-subtopics">
+            @for (s of dmSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/mongodb/time-series" routerLinkActive="active"><span class="nl-text">Time Series Collections</span>@if(p.isDone('mongo-time-series')){<span class="nl-done">✓</span>}</a>
     </div>
 

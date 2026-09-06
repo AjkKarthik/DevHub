@@ -2661,7 +2661,12 @@ export const routes: Routes = [
       { path: 'attribute-pattern-needs-elemmatch-to-avoid-false-positives', loadComponent: () => import('./components/data/mongodb/schema-design-patterns/subtopics/attribute-pattern-needs-elemmatch-to-avoid-false-positives/attribute-pattern-needs-elemmatch-to-avoid-false-positives').then(m => m.AttributePatternNeedsElemmatchToAvoidFalsePositivesSubtopic) },
       { path: 'materialised-path-ancestors-and-descendants-with-regex', loadComponent: () => import('./components/data/mongodb/schema-design-patterns/subtopics/materialised-path-ancestors-and-descendants-with-regex/materialised-path-ancestors-and-descendants-with-regex').then(m => m.MaterialisedPathAncestorsAndDescendantsWithRegexSubtopic) },
     ] },
-    { path: 'data-modelling',        loadComponent: () => import('./components/data/mongodb/data-modelling/data-modelling').then(m => m.MongoDataModelling) },
+    { path: 'data-modelling', children: [
+      { path: '', loadComponent: () => import('./components/data/mongodb/data-modelling/data-modelling').then(m => m.MongoDataModelling) },
+      { path: 'array-of-ancestors-the-real-fifth-tree-pattern', loadComponent: () => import('./components/data/mongodb/data-modelling/subtopics/array-of-ancestors-the-real-fifth-tree-pattern/array-of-ancestors-the-real-fifth-tree-pattern').then(m => m.ArrayOfAncestorsTheRealFifthTreePatternSubtopic) },
+      { path: 'nested-sets-a-real-left-right-boundary-example', loadComponent: () => import('./components/data/mongodb/data-modelling/subtopics/nested-sets-a-real-left-right-boundary-example/nested-sets-a-real-left-right-boundary-example').then(m => m.NestedSetsARealLeftRightBoundaryExampleSubtopic) },
+      { path: 'building-the-workload-matrix-behind-the-challenge', loadComponent: () => import('./components/data/mongodb/data-modelling/subtopics/building-the-workload-matrix-behind-the-challenge/building-the-workload-matrix-behind-the-challenge').then(m => m.BuildingTheWorkloadMatrixBehindTheChallengeSubtopic) },
+    ] },
     { path: 'time-series',           loadComponent: () => import('./components/data/mongodb/time-series/time-series').then(m => m.MongoTimeSeries) },
     { path: 'indexes',               loadComponent: () => import('./components/data/mongodb/indexes/indexes').then(m => m.MongoIndexes) },
     { path: 'query-performance',     loadComponent: () => import('./components/data/mongodb/query-performance/query-performance').then(m => m.MongoQueryPerformance) },
