@@ -8081,6 +8081,62 @@ this same check before any other new hub's first subtopic set:
     h1/breadcrumb (all 4 levels confirmed), 860px wrapper via `getComputedStyle`, tailored (not
     DEFAULT) sidebar content confirmed via a direct text search for the tip's own distinctive
     phrase. **MongoDB hub Phase 10: 19 of 21 topics complete.**
+20. **The `mongodb-nodejs` batch found and fixed TWO genuine, self-contained bugs, both catchable
+    by careful reading alone (zero external research needed to catch, though a short verification
+    pass confirmed the exact Mongoose strict-mode mechanism)**: the aggregation-framework QnA's
+    own "total spent per customer" pipeline showed <code>{ $group: { _id: "", totalSpent: { $sum:
+    "" }, orderCount: { $sum: 1 } } }</code> — both <code>_id</code> and the <code>$sum</code>
+    expression were bare EMPTY-STRING LITERALS (constants), not the <code>$fieldName</code>
+    references the surrounding prose and the pipeline's own stated purpose clearly required.
+    Fixed to <code>_id: "$customerId"</code> and <code>$sum: "$total"</code>, verified via direct
+    Node.js execution that the broken version collapses every document into ONE meaningless group
+    with a totalSpent of 0, while the fixed version correctly groups per customer with real totals.
+    Separately, the "Mongoose Schema (for comparison)" codeTab defined a <code>pre('save')</code>
+    hook specifically to hash a <code>password</code> field — but the schema itself never declared
+    a <code>password</code> field at all, and the hook called an undeclared <code>hashPassword()</code>
+    function. Verified against Mongoose's own strict-mode documentation ("values passed to a model
+    constructor that were not specified in the schema do not get saved to the db") that the
+    original codeTab's hook computed and assigned a hashed value that strict mode would silently
+    discard at save time — the whole point of the example (demonstrating the middleware system)
+    was undermined by its own missing field. Fixed by adding the <code>password</code> field and
+    replacing <code>hashPassword()</code> with a real <code>bcrypt.hash()</code> call, tying back
+    to the sibling Security & Authentication topic's own bcrypt fix. Three subtopics, each verified
+    via direct Node.js execution: (1) **fix-adjacent** — reproduces the broken-vs-fixed
+    <code>$group</code> behavior exactly, with a Try It on why fixing only the <code>_id</code>
+    reference (leaving <code>$sum: ""</code> untouched) still leaves every customer's total at 0,
+    since grouping and summing are independent parts of the same stage; (2) **fix-adjacent** — a
+    pure-JS model of Mongoose's own documented strict-mode behavior (an undeclared path set on a
+    document is never persisted), verified matching the broken-vs-fixed schema exactly, with a Try
+    It establishing that a real application built from the original codeTab would never store any
+    password at all, despite the hashing computation genuinely running; (3) **gap-closing** — the
+    page's own QnA on bulk operations describes ordered-vs-unordered <code>bulkWrite()</code> in
+    real detail ("ordered: stop on first error"; "unordered: continue on errors... combined error
+    list") but no codeTab ever runs both side by side; built and verified both modes against 5
+    operations where #2 and #4 fail — ordered stops after #2 (only op #1 ever succeeds), unordered
+    processes all 5 (ops #1/#3/#5 succeed, both failures collected) — with a Try It on a
+    1,000-row CSV import where ordered bulkWrite silently never attempts 993 of the rows behind a
+    single bad row at position #7; the misconceptions also verified via WebSearch against
+    MongoDB's own documentation that unordered operations "can execute in any order and in
+    parallel" (not guaranteed, but permitted), a real trade-off beyond merely "errors don't stop
+    the batch." No `SUBTOPICS` collision for `mongodb-nodejs` (checked both `subtopics.ts` forms
+    and grepped `app.routes.ts` directly, confirmed collision-free, left bare). All three
+    `exercise.solution` fields swept clean of `<code>`/entity contamination; the standing
+    apostrophe-after-letter sweep (run against both the new subtopic files and the main page file
+    itself, after all edits) and the `[prev]`/`[next]`-label straight-apostrophe/double-quote
+    sweeps both found nothing unescaped; bracket-balance and backtick-parity scripts confirmed
+    clean on all three subtopic files and the main page file, including correctly-escaped
+    <code>\$match</code>/<code>\$group</code>/<code>\$customerId</code> MongoDB operator/field
+    references inside nested driver-code examples (verified via direct Node.js execution that
+    <code>\$</code>-with-no-following-brace renders correctly as a literal <code>$</code>, matching
+    the established convention already used throughout this session). Build passed clean on the
+    first attempt (foreground execution, explicit `EXITCODE:$?` capture, zero `ERROR` lines).
+    Browser-verified with a proactive dev-server restart before checking (fresh on the first
+    check, toggle count 20 as expected across the hub): no console errors on any of the 4 pages;
+    nav accordion opens with all 3 subtopic links; both main-page fixes confirmed rendering live
+    via direct component data inspection; the subtopic page checked individually — correct
+    h1/breadcrumb (all 4 levels confirmed), 860px wrapper via `getComputedStyle`, tailored (not
+    DEFAULT) sidebar content confirmed via a direct text search for the tip's own distinctive
+    phrase. **MongoDB hub Phase 10: 20 of 21 topics complete — only `atlas-search` remains.**
 
 ## Current state (update when it changes!)
 
@@ -9168,7 +9224,7 @@ this same check before any other new hub's first subtopic set:
   Progress: `mongoTotal=21` in progress.service.ts. MongoDB pages use `app-common-mistakes` AND
   `app-revision-card`. Reference pages (cheatsheet, interview-prep) have no PageComplete.
   Challenge.language: `'typescript'`. MongoNavComponent at `shared/mongo-nav/mongo-nav.ts`.
-  Phase 10: 19 of 21 topics have subtopics (`/mongodb/fundamentals`, pilot batch;
+  Phase 10: 20 of 21 topics have subtopics (`/mongodb/fundamentals`, pilot batch;
   `/mongodb/installation-setup`; `/mongodb/crud-operations`; `/mongodb/update-operators`;
   `/mongodb/query-operators`; `/mongodb/array-queries`; `/mongodb/projections-sorting`;
   `/mongodb/aggregation-pipeline`; `/mongodb/lookup-joins`; `/mongodb/aggregation-expressions`;
@@ -9178,7 +9234,7 @@ this same check before any other new hub's first subtopic set:
   (SUBTOPICS key hub-prefixed to `mongo-transactions` — bare `transactions` collides with the
   SQL hub's own topic); `/mongodb/change-streams`; `/mongodb/replication-sharding`;
   `/mongodb/security` (SUBTOPICS key hub-prefixed to `mongo-security` — bare `security` collides
-  with the SQL hub's own topic), 2026-09-06) —
+  with the SQL hub's own topic); `/mongodb/mongodb-nodejs`, 2026-09-06) —
   see "MongoDB hub subtopic wiring" section above for the `MongoNavComponent` accordion structural
   fix (15th `*NavComponent`-based hub in a row missing it at pilot time), the `mongo-fundamentals`/
   `mongo-installation-setup` SUBTOPICS-map collision resolutions (the former collided with the
@@ -9194,10 +9250,13 @@ this same check before any other new hub's first subtopic set:
   Replica Set Oplog documentation), the cross-QnA zone-sharding/oplog-size-floor inaccuracies
   found and fixed on the Replication & Sharding page (the zone-sharding fix catchable by cross-
   referencing the page's own two QnAs against each other; the oplog-floor fix verified via
-  WebFetch against MongoDB's own Replica Set Oplog documentation), and the fabricated "multiple
+  WebFetch against MongoDB's own Replica Set Oplog documentation), the fabricated "multiple
   passwords per user" feature claim plus a plain-SHA-256 password-hashing anti-pattern found and
   fixed on the Security & Authentication page (the fabricated-feature claim verified via WebFetch/
-  WebSearch against MongoDB's own db.updateUser() docs and 8.0 changelog).
+  WebSearch against MongoDB's own db.updateUser() docs and 8.0 changelog), and the broken
+  empty-string aggregation field references plus the Mongoose schema's own missing password
+  field found and fixed on the MongoDB with Node.js page (the Mongoose strict-mode mechanism
+  verified via WebSearch against Mongoose's own documentation).
 - **Hub home**: Angular, C#, ASP.NET Core, SQL, TypeScript, React, JavaScript, CSS, HTML, Blazor, Go, Node.js, Python, DevOps, AWS, Azure, Linux, Redis, GraphQL, Messaging, Testing, DSA, AI/ML, Containers/K8s, Terraform/IaC, Service Mesh, System Design, Architecture Patterns, Design Patterns, Security, API Design, Observability, Web Performance, and MongoDB are all `available: true`. Everything else "Soon".
 - Progress totals: Angular 58, C# 50, ASP.NET Core 45, SQL 44, TypeScript 20, React 17, JavaScript 22, CSS 22, HTML 23, Web Performance 20, Blazor 20, Go 21, Node.js 23, Python 21, DevOps 21, AWS 21, Azure 22, Linux 19, Redis 21, GraphQL 20, Messaging 20, Testing 19, DSA 21, AI 19, Containers/K8s 22, Terraform 21, Service Mesh 19, System Design 24, Architecture Patterns 22, Design Patterns 36, Security 23, API Design 19, Observability 20, MongoDB 21 (`progress.service.ts`).
 - Hero stat: "933+ Live Pages" (corrected 2026-07-01 — hub-home.ts's Angular card was showing `topics: 63` instead of the actual 68, undercounting the site total by 5).

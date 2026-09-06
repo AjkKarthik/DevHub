@@ -9140,7 +9140,23 @@ off here with a date.
   first attempt. Browser-verified (nav accordion fresh on first check, toggle count 19, both
   main-page fixes rendering live, subtopic page checked, breadcrumb all 4 levels, sidebar
   tailored).
-- [ ] `/mongodb/mongodb-nodejs` — MongoDB with Node.js
+- [x] 2026-09-06 — `/mongodb/mongodb-nodejs` — MongoDB with Node.js. Fixed a genuine broken
+  aggregation pipeline in the aggregation-framework QnA: `{ $group: { _id: "", totalSpent: {
+  $sum: "" } ... } }` used bare EMPTY-STRING LITERALS instead of $fieldName references — verified
+  via direct Node.js execution the broken version collapses everything into one meaningless group
+  (totalSpent: 0), fixed to `_id: "$customerId"`/`$sum: "$total"`. Also fixed the "Mongoose Schema
+  (for comparison)" codeTab: its pre-save hook hashed a `password` field the schema never
+  declared, and called an undeclared `hashPassword()` function — verified via WebSearch against
+  Mongoose's own strict-mode docs that an undeclared path is never persisted, meaning the original
+  example silently never stored any password at all; fixed by adding the field and using
+  bcrypt.hash() (tying to the sibling Security topic's own bcrypt fix). 3 subtopics, each verified
+  via direct Node.js execution: the broken-vs-fixed $group behavior; a pure-JS model of Mongoose's
+  strict-mode field-dropping; and a real ordered-vs-unordered bulkWrite side-by-side demonstration
+  for a QnA that explains the distinction in prose but never shows it in code. SUBTOPICS key left
+  bare (collision-free). Build clean on the first attempt. Browser-verified (nav accordion fresh
+  on first check, toggle count 20, both main-page fixes rendering live, subtopic page checked,
+  breadcrumb all 4 levels, sidebar tailored). Only `/mongodb/atlas-search` remains to finish the
+  hub.
 - [ ] `/mongodb/atlas-search` — Atlas Search & Vector Search
 
 #### Redis — 21 topic pages
