@@ -34686,6 +34686,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Mongoose\'s automatic type casting can silently coerce unexpected input types — understand its casting behavior before trusting it for validation.',
     ],
   },
+  'mongodb/mongodb-nodejs/broken-group-by-empty-string-field-references': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'MongoDB with Node.js', route: '/mongodb/mongodb-nodejs' },
+      { label: 'The Mongoose Schema Was Missing Its Own Password Field', route: '/mongodb/mongodb-nodejs/mongoose-schema-was-missing-its-own-password-field' },
+    ],
+    tip: 'A bare string like "customerId" inside $group is a CONSTANT to MongoDB, not a field reference — it needs the leading $ ("$customerId") to actually read that field\'s value per document.',
+    gotchas: [
+      'A pipeline like this runs without any error at all — it just silently produces one meaningless group instead of the intended per-customer breakdown.',
+    ],
+  },
+  'mongodb/mongodb-nodejs/mongoose-schema-was-missing-its-own-password-field': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'MongoDB with Node.js', route: '/mongodb/mongodb-nodejs' },
+      { label: 'A Pipeline That Groups By Nothing', route: '/mongodb/mongodb-nodejs/broken-group-by-empty-string-field-references' },
+      { label: 'Ordered vs. Unordered bulkWrite, Demonstrated', route: '/mongodb/mongodb-nodejs/ordered-vs-unordered-bulkwrite-demonstrated' },
+    ],
+    tip: 'Mongoose\'s default strict mode never persists a field the schema itself never declared — a pre-save hook computing and assigning a value to an undeclared path does real work that is silently discarded at save time.',
+    gotchas: [
+      'The whole point of the password pre-save hook example was demonstrating the middleware system — a missing schema field undermines the ONE thing the example exists to show.',
+    ],
+  },
+  'mongodb/mongodb-nodejs/ordered-vs-unordered-bulkwrite-demonstrated': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'MongoDB with Node.js', route: '/mongodb/mongodb-nodejs' },
+      { label: 'The Mongoose Schema Was Missing Its Own Password Field', route: '/mongodb/mongodb-nodejs/mongoose-schema-was-missing-its-own-password-field' },
+    ],
+    tip: 'Ordered bulkWrite (the default) stops at the first failure — every operation after it is never even attempted; { ordered: false } continues through all operations and collects every error into one combined list.',
+    gotchas: [
+      'Unordered bulkWrite operations may also execute in any order (including in parallel) — a real trade-off, not just "errors don\'t stop the batch."',
+    ],
+  },
 
   // ── Security: per-page entries ──────────────────────────────────────────────
   'security/fundamentals': {

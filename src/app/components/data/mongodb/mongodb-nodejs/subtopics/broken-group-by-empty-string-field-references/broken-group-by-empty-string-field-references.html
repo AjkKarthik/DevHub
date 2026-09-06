@@ -1,0 +1,26 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="MongoDB with Node.js" topicRoute="/mongodb/mongodb-nodejs"
+    subtopicLabel="A Pipeline That Groups By Nothing" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">A Pipeline That Groups By Nothing</h1>
+  <p class="page-subtitle">The main page's own aggregation QnA showed a "total spent per customer" pipeline with empty-string literals instead of $fieldName references — syntactically valid, but grouping and summing nothing meaningful.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>This directly corrects the main page's own QnA, and sets up the topic's remaining subtopics: a comparison codeTab with a similarly-broken undeclared reference, and a real demonstration of a bulk-write behavior the page only ever describes in prose.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="MongoDB with Node.js" topicRoute="/mongodb/mongodb-nodejs"
+    [next]="{ label: 'The Mongoose Schema Was Missing Its Own Password Field', route: '/mongodb/mongodb-nodejs/mongoose-schema-was-missing-its-own-password-field' }" />
+</div>

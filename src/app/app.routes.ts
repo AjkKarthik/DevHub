@@ -2709,7 +2709,12 @@ export const routes: Routes = [
       { path: 'bcrypt-not-sha256-for-password-hashing', loadComponent: () => import('./components/data/mongodb/security/subtopics/bcrypt-not-sha256-for-password-hashing/bcrypt-not-sha256-for-password-hashing').then(m => m.BcryptNotSha256ForPasswordHashingSubtopic) },
       { path: 'deterministic-vs-randomized-encryption-leakage', loadComponent: () => import('./components/data/mongodb/security/subtopics/deterministic-vs-randomized-encryption-leakage/deterministic-vs-randomized-encryption-leakage').then(m => m.DeterministicVsRandomizedEncryptionLeakageSubtopic) },
     ] },
-    { path: 'mongodb-nodejs',        loadComponent: () => import('./components/data/mongodb/mongodb-nodejs/mongodb-nodejs').then(m => m.MongoMongodbNodejs) },
+    { path: 'mongodb-nodejs', children: [
+      { path: '', loadComponent: () => import('./components/data/mongodb/mongodb-nodejs/mongodb-nodejs').then(m => m.MongoMongodbNodejs) },
+      { path: 'broken-group-by-empty-string-field-references', loadComponent: () => import('./components/data/mongodb/mongodb-nodejs/subtopics/broken-group-by-empty-string-field-references/broken-group-by-empty-string-field-references').then(m => m.BrokenGroupByEmptyStringFieldReferencesSubtopic) },
+      { path: 'mongoose-schema-was-missing-its-own-password-field', loadComponent: () => import('./components/data/mongodb/mongodb-nodejs/subtopics/mongoose-schema-was-missing-its-own-password-field/mongoose-schema-was-missing-its-own-password-field').then(m => m.MongooseSchemaWasMissingItsOwnPasswordFieldSubtopic) },
+      { path: 'ordered-vs-unordered-bulkwrite-demonstrated', loadComponent: () => import('./components/data/mongodb/mongodb-nodejs/subtopics/ordered-vs-unordered-bulkwrite-demonstrated/ordered-vs-unordered-bulkwrite-demonstrated').then(m => m.OrderedVsUnorderedBulkwriteDemonstratedSubtopic) },
+    ] },
     { path: 'atlas-search',          loadComponent: () => import('./components/data/mongodb/atlas-search/atlas-search').then(m => m.MongoAtlasSearch) },
     { path: 'cheatsheet',            loadComponent: () => import('./components/data/mongodb/cheatsheet/cheatsheet').then(m => m.MongoCheatsheet) },
     { path: 'interview-prep',        loadComponent: () => import('./components/data/mongodb/interview-prep/interview-prep').then(m => m.MongoInterviewPrep) },

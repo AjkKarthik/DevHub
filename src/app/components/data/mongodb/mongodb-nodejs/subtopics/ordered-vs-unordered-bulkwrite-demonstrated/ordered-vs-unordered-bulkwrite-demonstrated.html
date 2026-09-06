@@ -1,0 +1,26 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="MongoDB with Node.js" topicRoute="/mongodb/mongodb-nodejs"
+    subtopicLabel="Ordered vs. Unordered bulkWrite, Demonstrated" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">Ordered vs. Unordered bulkWrite, Demonstrated</h1>
+  <p class="page-subtitle">The main page's own QnA describes the ordered-vs-unordered bulkWrite distinction precisely — stop on first error vs. continue and collect all errors — but no codeTab ever runs both side by side.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>This closes the topic's arc: the aggregation-pipeline fix and the Mongoose schema fix both corrected main-page content, while this subtopic builds real, verified code for a behavior the page's own QnA already explains correctly, just never demonstrates.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="MongoDB with Node.js" topicRoute="/mongodb/mongodb-nodejs"
+    [prev]="{ label: 'The Mongoose Schema Was Missing Its Own Password Field', route: '/mongodb/mongodb-nodejs/mongoose-schema-was-missing-its-own-password-field' }" />
+</div>
