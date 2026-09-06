@@ -9059,7 +9059,24 @@ off here with a date.
   attempt, browser-verified (nav accordion fresh on first check, toggle count 14, both main-page
   fixes rendering live, 3 subtopic pages, breadcrumb all 4 levels, sidebar, `/sql/indexes`
   cross-hub isolation confirmed unaffected).
-- [ ] `/mongodb/query-performance` — Query Performance & explain()
+- [x] `/mongodb/query-performance` — Query Performance & explain() (2026-09-06) — extended
+  `MongoNavComponent`'s toggle to a fifteenth topic (bare key, no collision, checked both quoted
+  and unquoted forms). Found and fixed two genuine issues in the same "index fragmentation" QnA:
+  the claim "MongoDB 4.4+: background reindex supported (non-blocking)" for `reIndex()` — verified
+  against MongoDB's own docs that reIndex() has NEVER supported non-blocking mode on any version,
+  is standalone-only since 5.0, and deprecated since 6.0; and the claim that `compact` "blocks all
+  operations" as a blanket rule — verified this was true only before MongoDB 4.4, with compact
+  now non-blocking for CRUD since then (though still adding checkpoint overhead). Fixed both. 3
+  subtopics: the createIndex()-vs-reIndex() blocking-time comparison (54.5x more blocked time for
+  reIndex, verified via execution), with a Try It on the separate standalone-only restriction;
+  compact's pre-4.4-vs-4.4+ behavior modeled directly; a real causally consistent session
+  (client.startSession({ causalConsistency: true })) built and verified via a replication-lag
+  model, with a Try It on the majority-write-concern requirement. Self-caught and reworded a
+  subtopic title before it could break a sibling page's [prev]/[next] label (straight apostrophe).
+  Build clean on the first attempt (proactively swept the main page file for apostrophes after
+  editing it, learning from the prior indexes batch). Browser-verified (nav accordion fresh on
+  first check, toggle count 15, both main-page fixes rendering live, 3 subtopic pages, breadcrumb
+  all 4 levels, sidebar).
 - [ ] `/mongodb/transactions` — Transactions
 - [ ] `/mongodb/change-streams` — Change Streams
 - [ ] `/mongodb/replication-sharding` — Replication & Sharding

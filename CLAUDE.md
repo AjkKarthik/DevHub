@@ -7828,6 +7828,55 @@ this same check before any other new hub's first subtopic set:
     `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the final subtopic; the
     `/sql/indexes` cross-hub isolation check passed, confirming the hub-prefix fix left the SQL
     hub's own page completely untouched. **MongoDB hub Phase 10: 14 of 21 topics complete.**
+22. **The `query-performance` batch found and fixed TWO more genuine issues, both self-contained
+    (zero external research needed to catch, though external verification was needed to confirm
+    each fix), in the exact same "index fragmentation" QnA answer**: (1) the QnA claimed "MongoDB
+    4.4+: background reindex supported (non-blocking)" for `reIndex()` — verified against
+    MongoDB's own official documentation that `reIndex()` has NEVER supported a non-blocking mode
+    in any version; it always takes a full exclusive lock for its entire duration, is restricted
+    to standalone instances only since MongoDB 5.0 (never replica sets or sharded clusters), and
+    has been deprecated since MongoDB 6.0. (2) The SAME QnA claimed `compact` "blocks all
+    operations on the collection during compaction" as a blanket rule — verified via MongoDB's own
+    documented version history that this was true only BEFORE MongoDB 4.4; since 4.4, compact does
+    not block CRUD operations on WiredTiger at all (though it still adds real checkpoint overhead,
+    which is why running it on a secondary is still recommended). Fixed both. Three subtopics,
+    each verified via direct Node.js execution: (1) **fix-adjacent** — models the blocking-time
+    difference between `createIndex()`'s hybrid build (2 of 4 phases briefly blocking) and
+    `reIndex()`'s single fully-blocking phase for an identical total duration (54.5x more blocked
+    time), with a Try It on the SEPARATE standalone-only restriction that disqualifies `reIndex()`
+    on a replica set before the blocking question even arises; (2) **fix-adjacent** — models the
+    pre-4.4-vs-4.4+ `compact` behavior directly, confirming zero app downtime post-fix for an
+    identical compact duration, with a Try It distinguishing the now-resolved blocking concern from
+    the still-real checkpoint-overhead concern; (3) **gap-closing** — the QnA on secondary reads
+    names causal consistency in one clause ("use causal consistency if you do" need
+    read-your-own-writes) with zero codeTab building one; built a real
+    `client.startSession({ causalConsistency: true })` example with the documented
+    majority-write-concern + majority-read-concern requirement, verified via a replication-lag
+    model that an uncausal read returns stale data while a causal read correctly waits for the
+    session's own tracked operation time, with a Try It on the easy-to-miss gap where swapping in
+    `{ w: 1 }` (non-majority) write concern silently breaks the guarantee even inside a causally
+    consistent session. **A real, self-caught apostrophe-collision gotcha caught proactively,
+    before it could break any sibling page**: the first subtopic's own working title ("reIndex
+    Never Got the Hybrid Build's Non-Blocking Fix") contained a straight apostrophe — reworded to
+    "reIndex Never Got the Non-Blocking Hybrid Build Fix" (dropping the possessive construction
+    entirely) before any sibling page's `[prev]`/`[next]` label could reference it, per the
+    established precedent from this same session's `aggregation-expressions` batch. No
+    `SUBTOPICS` collision for `query-performance` (checked both `subtopics.ts` forms — quoted and
+    unquoted — and grepped `app.routes.ts` directly, confirmed collision-free, left bare). All
+    three `exercise.solution` fields swept clean of `<code>`/entity contamination; the standing
+    apostrophe-after-letter sweep (run against BOTH the new subtopic files and the main page file
+    itself, after the two QnA edits) and the `[prev]`/`[next]`-label straight-apostrophe sweep both
+    found nothing unescaped; bracket-balance and backtick-parity scripts confirmed clean on all
+    three files. Build passed clean on the first attempt this time (foreground execution, explicit
+    `EXITCODE:$?` capture, zero `ERROR` lines) — the main-page-file apostrophe sweep run
+    proactively this batch (learned from the `indexes` batch's own self-caught build failure)
+    avoided a repeat. Browser-verified with a proactive dev-server restart before checking (fresh
+    on the first check, toggle count 15 as expected): no console errors on any of the 4 pages; nav
+    accordion opens with all 3 subtopic links; both main-page fixes confirmed rendering live after
+    expanding both the QnA section's own outer toggle and the specific question's own row; all 3
+    subtopic pages checked individually — correct h1/breadcrumb (all 4 levels confirmed), 860px
+    wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the final
+    subtopic. **MongoDB hub Phase 10: 15 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -8915,13 +8964,13 @@ this same check before any other new hub's first subtopic set:
   Progress: `mongoTotal=21` in progress.service.ts. MongoDB pages use `app-common-mistakes` AND
   `app-revision-card`. Reference pages (cheatsheet, interview-prep) have no PageComplete.
   Challenge.language: `'typescript'`. MongoNavComponent at `shared/mongo-nav/mongo-nav.ts`.
-  Phase 10: 14 of 21 topics have subtopics (`/mongodb/fundamentals`, pilot batch;
+  Phase 10: 15 of 21 topics have subtopics (`/mongodb/fundamentals`, pilot batch;
   `/mongodb/installation-setup`; `/mongodb/crud-operations`; `/mongodb/update-operators`;
   `/mongodb/query-operators`; `/mongodb/array-queries`; `/mongodb/projections-sorting`;
   `/mongodb/aggregation-pipeline`; `/mongodb/lookup-joins`; `/mongodb/aggregation-expressions`;
   `/mongodb/schema-design-patterns`; `/mongodb/data-modelling`; `/mongodb/time-series`;
   `/mongodb/indexes` (SUBTOPICS key hub-prefixed to `mongo-indexes` — bare `indexes` collides
-  with the SQL hub's own topic), 2026-09-06) — see
+  with the SQL hub's own topic); `/mongodb/query-performance`, 2026-09-06) — see
   "MongoDB hub subtopic wiring" section above for the `MongoNavComponent` accordion structural fix
   (15th `*NavComponent`-based hub in a row missing it at pilot time), the `mongo-fundamentals`/
   `mongo-installation-setup` SUBTOPICS-map collision resolutions (the former collided with the
