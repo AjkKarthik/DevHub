@@ -114,7 +114,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/redis/sets" routerLinkActive="active"><span class="nl-text">Sets</span>@if(p.isDone('redis-sets')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/redis/sets" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Sets</span>
+        @if(p.isDone('redis-sets')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('sets')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('sets')"
+                  (click)="toggleSubtopics('sets', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('sets'); as setSubs) {
+        @if (isSubtopicsExpanded('sets')) {
+          <div class="nav-subtopics">
+            @for (s of setSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/redis/sorted-sets" routerLinkActive="active"><span class="nl-text">Sorted Sets</span>@if(p.isDone('redis-sorted-sets')){<span class="nl-done">✓</span>}</a>
       <a routerLink="/redis/redis-stack" routerLinkActive="active"><span class="nl-text">Redis Stack &amp; Modules</span>@if(p.isDone('redis-redis-stack')){<span class="nl-done">✓</span>}</a>
     </div>

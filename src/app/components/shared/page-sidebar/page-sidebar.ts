@@ -37787,6 +37787,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'SPOP removes and returns a RANDOM member — useful for random sampling, but easy to misuse if deterministic ordering was actually needed.',
     ],
   },
+  'redis/sets/sets-have-a-third-encoding-listpack-since-redis-7-2': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Sets', route: '/redis/sets' },
+      { label: 'SMOVE: Atomic State Transitions Between Sets', route: '/redis/sets/smove-atomic-state-transitions-between-sets' },
+    ],
+    tip: 'Sets have three encodings, not two: intset (small all-integer sets), listpack (small non-integer sets, Redis 7.2+), and hashtable — a small set of string members no longer jumps straight to hashtable.',
+    gotchas: [
+      'set-max-listpack-entries (default 128) is a plain entry count, but set-max-listpack-value (default 64) is a separate per-value byte-size cap — both must be satisfied to stay in listpack.',
+    ],
+  },
+  'redis/sets/smove-atomic-state-transitions-between-sets': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Sets', route: '/redis/sets' },
+      { label: 'Sets Have a Third Encoding: listpack (Redis 7.2+)', route: '/redis/sets/sets-have-a-third-encoding-listpack-since-redis-7-2' },
+      { label: 'SINTERCARD: Counting Overlap Without Fetching It', route: '/redis/sets/sintercard-counting-overlap-without-fetching-it' },
+    ],
+    tip: 'SMOVE guarantees a member is always visible as belonging to source OR destination, never both or neither — the exact crash-window risk a separate SREM + SADD pair would reintroduce.',
+    gotchas: [
+      'If the member already exists in the destination set, SMOVE still returns 1 and simply removes it from source — no error, no duplicate.',
+    ],
+  },
+  'redis/sets/sintercard-counting-overlap-without-fetching-it': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Sets', route: '/redis/sets' },
+      { label: 'SMOVE: Atomic State Transitions Between Sets', route: '/redis/sets/smove-atomic-state-transitions-between-sets' },
+    ],
+    tip: 'SINTERCARD with LIMIT stops counting early once the threshold is reached — a result equal to LIMIT proves "at least LIMIT," not the exact intersection size.',
+    gotchas: [
+      'SINTERCARD never transmits the actual matching members, only the count — a genuinely smaller network payload than SINTER, not just a client-side convenience.',
+    ],
+  },
   'redis/sorted-sets': {
     apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
     related: [

@@ -1,0 +1,26 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Sets" topicRoute="/redis/sets"
+    subtopicLabel="SINTERCARD: Counting Overlap Without Fetching It" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">SINTERCARD: Counting Overlap Without Fetching It</h1>
+  <p class="page-subtitle">The main page's QnA names SINTERCARD and its LIMIT option in one sentence — here it builds a real "do these two sets share at least N items" check and traces exactly what LIMIT does and doesn't guarantee.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Redis 7.0+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>This closes the topic's arc: the first subtopic fixed the missing listpack encoding tier, the second built SMOVE; this one builds a working example for SINTERCARD, the last command the page names but never demonstrates.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Sets" topicRoute="/redis/sets"
+    [prev]="{ label: 'SMOVE: Atomic State Transitions Between Sets', route: '/redis/sets/smove-atomic-state-transitions-between-sets' }" />
+</div>

@@ -2756,7 +2756,12 @@ export const routes: Routes = [
       { path: 'lmpop-the-non-blocking-sibling-of-blpop', loadComponent: () => import('./components/data/redis/lists/subtopics/lmpop-the-non-blocking-sibling-of-blpop/lmpop-the-non-blocking-sibling-of-blpop').then(m => m.LmpopTheNonBlockingSiblingOfBlpopSubtopic) },
       { path: 'lpos-rank-count-and-the-nil-vs-empty-array', loadComponent: () => import('./components/data/redis/lists/subtopics/lpos-rank-count-and-the-nil-vs-empty-array/lpos-rank-count-and-the-nil-vs-empty-array').then(m => m.LposRankCountAndTheNilVsEmptyArraySubtopic) },
     ] },
-    { path: 'sets',                 loadComponent: () => import('./components/data/redis/sets/sets').then(m => m.RedisSets) },
+    { path: 'sets', children: [
+      { path: '', loadComponent: () => import('./components/data/redis/sets/sets').then(m => m.RedisSets) },
+      { path: 'sets-have-a-third-encoding-listpack-since-redis-7-2', loadComponent: () => import('./components/data/redis/sets/subtopics/sets-have-a-third-encoding-listpack-since-redis-7-2/sets-have-a-third-encoding-listpack-since-redis-7-2').then(m => m.SetsHaveAThirdEncodingListpackSinceRedis72Subtopic) },
+      { path: 'smove-atomic-state-transitions-between-sets', loadComponent: () => import('./components/data/redis/sets/subtopics/smove-atomic-state-transitions-between-sets/smove-atomic-state-transitions-between-sets').then(m => m.SmoveAtomicStateTransitionsBetweenSetsSubtopic) },
+      { path: 'sintercard-counting-overlap-without-fetching-it', loadComponent: () => import('./components/data/redis/sets/subtopics/sintercard-counting-overlap-without-fetching-it/sintercard-counting-overlap-without-fetching-it').then(m => m.SintercardCountingOverlapWithoutFetchingItSubtopic) },
+    ] },
     { path: 'sorted-sets',          loadComponent: () => import('./components/data/redis/sorted-sets/sorted-sets').then(m => m.RedisSortedSets) },
     { path: 'key-commands',         loadComponent: () => import('./components/data/redis/key-commands/key-commands').then(m => m.RedisKeyCommands) },
     { path: 'transactions',         loadComponent: () => import('./components/data/redis/transactions/transactions').then(m => m.RedisTransactions) },

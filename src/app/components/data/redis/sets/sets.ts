@@ -41,7 +41,7 @@ export class RedisSets {
       points: [
         'A Redis set is an unordered collection of unique string members. SADD silently ignores duplicates — ideal for tracking unique items without deduplication logic.',
         'Membership checks with SISMEMBER are O(1) — constant time regardless of set size. This makes sets perfect for "has this user seen this item?" style lookups.',
-        'Sets use intset encoding for small sets of integers (≤ set-max-intset-entries, default 512) — extremely compact. Larger sets or string members use a hashtable.',
+        'Sets actually use THREE encodings, not two: intset for small all-integer sets (≤ set-max-intset-entries, default 512) — extremely compact; listpack for small sets containing non-integer members (≤ set-max-listpack-entries, default 128, each value ≤ set-max-listpack-value, default 64 bytes) — added in Redis 7.2, verified directly against Redis\'s own config.c source; only once EITHER threshold is exceeded does Redis convert to a full hashtable.',
         'Maximum set size: 2^32 - 1 members (4 billion members per key).',
       ],
     },
@@ -219,7 +219,7 @@ async function getSuggestions(user: string): Promise<string[]> {
       q: 'Which encoding does Redis use for a set of 100 small integers?',
       options: ['hashtable', 'intset', 'skiplist', 'ziplist'],
       answer: 1,
-      explanation: 'Intset is a sorted array of integers — extremely compact. Used when all members are integers and the set is below set-max-intset-entries (default 512). Faster SISMEMBER than hashtable for small integer sets.',
+      explanation: 'Intset is a sorted array of integers — extremely compact. Used when all members are integers and the set is below set-max-intset-entries (default 512). A set of 100 non-integer strings would instead use listpack (Redis 7.2+), not jump straight to hashtable — only exceeding set-max-listpack-entries (default 128) or a value over set-max-listpack-value (default 64 bytes) converts it to hashtable.',
     },
     {
       q: 'What does SINTERSTORE do?',
@@ -237,7 +237,7 @@ async function getSuggestions(user: string): Promise<string[]> {
       q: 'What memory encoding does Redis use for small sets of integers?',
       options: ['skiplist', 'hashtable', 'intset', 'listpack'],
       answer: 2,
-      explanation: 'Redis stores sets of small integers as intset — a sorted array of integers. Very memory-efficient and fast for operations like SISMEMBER. When the set contains non-integer members or exceeds set-max-intset-entries (512), it converts to hashtable.',
+      explanation: 'Redis stores sets of small integers as intset — a sorted array of integers. Very memory-efficient and fast for operations like SISMEMBER. When the set contains non-integer members it uses listpack instead (Redis 7.2+, up to set-max-listpack-entries, default 128) -- only exceeding set-max-intset-entries (512) for an all-integer set, or the listpack thresholds for a non-integer one, converts it to hashtable.',
     },
     {
       q: 'When would you use a Redis set instead of a sorted set?',
@@ -266,7 +266,7 @@ async function getSuggestions(user: string): Promise<string[]> {
     },
     {
       q: 'What is the intset encoding for Redis sets?',
-      a: 'When a set contains only integers and is small (< set-max-intset-entries, default 512), Redis uses <strong>intset</strong> — a sorted array of integers in memory. Very memory-efficient and fast for SISMEMBER (binary search). Adding a non-integer or exceeding the threshold converts to hashtable. Use integer member sets for token/session IDs to exploit this optimisation.',
+      a: 'When a set contains only integers and is small (< set-max-intset-entries, default 512), Redis uses <strong>intset</strong> — a sorted array of integers in memory. Very memory-efficient and fast for SISMEMBER (binary search). Adding a non-integer element does NOT jump straight to hashtable, contrary to older Redis behavior — verified against Redis\'s own config.c source, Redis 7.2+ instead converts to <strong>listpack</strong> (up to set-max-listpack-entries, default 128, each value ≤ set-max-listpack-value, default 64 bytes); only exceeding one of these thresholds converts to hashtable. Use integer member sets for token/session IDs to exploit the intset optimisation specifically.',
     },
     {
       q: 'How do you use Redis sets for unique visitor counting?',

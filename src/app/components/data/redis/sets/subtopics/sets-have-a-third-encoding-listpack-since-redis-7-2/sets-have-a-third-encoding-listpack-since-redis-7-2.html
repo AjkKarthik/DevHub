@@ -1,0 +1,26 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Sets" topicRoute="/redis/sets"
+    subtopicLabel="Sets Have a Third Encoding: listpack (Redis 7.2+)" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">Sets Have a Third Encoding: listpack (Redis 7.2+)</h1>
+  <p class="page-subtitle">The main page described sets as having only two encodings — intset and hashtable. Verified against Redis's own config.c source: a real listpack tier for small non-integer sets exists too, added in Redis 7.2.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Redis 7.2+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>This is the main-page fix for this topic — the theory, quiz, and QnA now correctly describe the three-tier encoding model instead of omitting listpack entirely. Next: SMOVE, named in the QnA but never demonstrated in any codeTab.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Sets" topicRoute="/redis/sets"
+    [next]="{ label: 'SMOVE: Atomic State Transitions Between Sets', route: '/redis/sets/smove-atomic-state-transitions-between-sets' }" />
+</div>
