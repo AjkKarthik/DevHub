@@ -37704,7 +37704,41 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     tip: 'A Hash lets you store and update individual FIELDS of an object (HSET user:1 name "Alice") without re-serializing and rewriting the entire object — meaningfully more efficient than storing a JSON blob as a String when only one field changes.',
     gotchas: [
       'HGETALL on a very large hash transfers the entire hash in one response — HSCAN provides cursor-based iteration for large hashes.',
-      'There is no native TTL per individual hash field — expiration applies to the whole key (the entire hash), not individual fields within it (in most Redis versions).',
+      'Redis < 7.4 has no per-field TTL — expiration applies to the whole key. Redis 7.4+ adds real per-field expiration via HEXPIRE/HTTL/HPERSIST.',
+    ],
+  },
+  'redis/hashes/hexpire-real-per-field-ttl-since-redis-7-4': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Hashes', route: '/redis/hashes' },
+      { label: 'The Shopping Cart Challenge Leaves Phantom Zero-Quantity Items', route: '/redis/hashes/shopping-cart-phantom-zero-quantity-items' },
+    ],
+    tip: 'HEXPIRE (Redis 7.4+) sets a genuine, independent TTL on a hash field — but the KEY\'s own TTL always takes precedence if one is set, removing every field regardless of any longer field-level TTL.',
+    gotchas: [
+      'A field\'s TTL is cleared only by HDEL or an HSET that overwrites it — HINCRBY leaves an existing field TTL untouched.',
+    ],
+  },
+  'redis/hashes/shopping-cart-phantom-zero-quantity-items': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Hashes', route: '/redis/hashes' },
+      { label: 'HEXPIRE: Real Per-Field TTL, Since Redis 7.4', route: '/redis/hashes/hexpire-real-per-field-ttl-since-redis-7-4' },
+      { label: 'HRANDFIELD: Sampling With and Without Repeats', route: '/redis/hashes/hrandfield-sampling-with-and-without-repeats' },
+    ],
+    tip: 'Storing a quantity-0 field instead of removing it leaves a phantom line item any direct reader of the hash (an analytics job, an admin tool) would still see — fix it at write time with HDEL, not by filtering on read.',
+    gotchas: [
+      'A quantity stepper UI\'s decrement button routinely calls the same addItem handler regardless of the resulting number — this bug surfaces from completely ordinary UI code, not a contrived misuse.',
+    ],
+  },
+  'redis/hashes/hrandfield-sampling-with-and-without-repeats': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Hashes', route: '/redis/hashes' },
+      { label: 'Shopping Cart Challenge Leaves Phantom Zero-Quantity Items', route: '/redis/hashes/shopping-cart-phantom-zero-quantity-items' },
+    ],
+    tip: 'A positive HRANDFIELD count returns distinct fields, capped at the hash size; a negative count returns exactly abs(count) fields and explicitly allows repeats — pick based on whether repeats are acceptable for your use case.',
+    gotchas: [
+      'The reply order for a positive count is documented as "not truly random" — shuffle client-side if genuinely random ORDER (not just selection) matters.',
     ],
   },
   'redis/sets': {

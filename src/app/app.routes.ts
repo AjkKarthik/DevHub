@@ -2744,7 +2744,12 @@ export const routes: Routes = [
       { path: 'msetnx-all-or-nothing-vs-a-loop-of-setnx-calls', loadComponent: () => import('./components/data/redis/strings/subtopics/msetnx-all-or-nothing-vs-a-loop-of-setnx-calls/msetnx-all-or-nothing-vs-a-loop-of-setnx-calls').then(m => m.MsetnxAllOrNothingVsALoopOfSetnxCallsSubtopic) },
       { path: 'getrange-setrange-fixed-width-records-at-byte-offsets', loadComponent: () => import('./components/data/redis/strings/subtopics/getrange-setrange-fixed-width-records-at-byte-offsets/getrange-setrange-fixed-width-records-at-byte-offsets').then(m => m.GetrangeSetrangeFixedWidthRecordsAtByteOffsetsSubtopic) },
     ] },
-    { path: 'hashes',               loadComponent: () => import('./components/data/redis/hashes/hashes').then(m => m.RedisHashes) },
+    { path: 'hashes', children: [
+      { path: '', loadComponent: () => import('./components/data/redis/hashes/hashes').then(m => m.RedisHashes) },
+      { path: 'hexpire-real-per-field-ttl-since-redis-7-4', loadComponent: () => import('./components/data/redis/hashes/subtopics/hexpire-real-per-field-ttl-since-redis-7-4/hexpire-real-per-field-ttl-since-redis-7-4').then(m => m.HexpireRealPerFieldTtlSinceRedis74Subtopic) },
+      { path: 'shopping-cart-phantom-zero-quantity-items', loadComponent: () => import('./components/data/redis/hashes/subtopics/shopping-cart-phantom-zero-quantity-items/shopping-cart-phantom-zero-quantity-items').then(m => m.ShoppingCartPhantomZeroQuantityItemsSubtopic) },
+      { path: 'hrandfield-sampling-with-and-without-repeats', loadComponent: () => import('./components/data/redis/hashes/subtopics/hrandfield-sampling-with-and-without-repeats/hrandfield-sampling-with-and-without-repeats').then(m => m.HrandfieldSamplingWithAndWithoutRepeatsSubtopic) },
+    ] },
     { path: 'lists',                loadComponent: () => import('./components/data/redis/lists/lists').then(m => m.RedisLists) },
     { path: 'sets',                 loadComponent: () => import('./components/data/redis/sets/sets').then(m => m.RedisSets) },
     { path: 'sorted-sets',          loadComponent: () => import('./components/data/redis/sorted-sets/sorted-sets').then(m => m.RedisSortedSets) },

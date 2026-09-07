@@ -1678,6 +1678,13 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'MSETNX Is All-or-Nothing; a Loop of SETNX Calls Is Not', route: '/redis/strings/msetnx-all-or-nothing-vs-a-loop-of-setnx-calls' },
     { label: 'GETRANGE/SETRANGE: Fixed-Width Records at Byte Offsets', route: '/redis/strings/getrange-setrange-fixed-width-records-at-byte-offsets' },
   ],
+  // NOTE: bare 'hashes' confirmed collision-free (checked both quoted and
+  // unquoted forms, plus app.routes.ts route paths directly).
+  'hashes': [
+    { label: 'HEXPIRE: Real Per-Field TTL, Since Redis 7.4', route: '/redis/hashes/hexpire-real-per-field-ttl-since-redis-7-4' },
+    { label: 'The Shopping Cart Challenge Leaves Phantom Zero-Quantity Items', route: '/redis/hashes/shopping-cart-phantom-zero-quantity-items' },
+    { label: 'HRANDFIELD: Sampling With and Without Repeats', route: '/redis/hashes/hrandfield-sampling-with-and-without-repeats' },
+  ],
   closures: [
     { label: 'var Shares One Binding, let Creates One Per Iteration', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
     { label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },

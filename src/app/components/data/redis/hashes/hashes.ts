@@ -45,7 +45,7 @@ export class RedisHashes {
     {
       heading: 'Memory Efficiency: ziplist vs hashtable',
       points: [
-        'For small hashes (≤ hash-max-listpack-entries, default 128 fields, and each value ≤ hash-max-listpack-value, default 64 bytes), Redis uses a compact ziplist (listpack in Redis 7+) encoding — contiguous memory, no pointer overhead.',
+        'For small hashes (≤ hash-max-listpack-entries, default 512 fields on Redis 7.0+, and each value ≤ hash-max-listpack-value, default 64 bytes), Redis uses a compact ziplist (listpack in Redis 7+) encoding — contiguous memory, no pointer overhead. Verified directly against Redis\'s own current config.c source: the entries default was 128 on Redis 6.x and changed to 512 with the 7.0 release.',
         'When either limit is exceeded, Redis converts the hash to a full hashtable. This uses more memory but provides O(1) field access.',
         'For many small objects (e.g., 10M user profiles), storing each as a hash key-per-user is more memory-efficient than storing as JSON strings in separate top-level keys — the ziplist encoding saves pointer overhead.',
         'The most memory-efficient pattern for millions of small objects: group 100 objects into one hash with numeric IDs as fields (the "hash-of-hashes" pattern).',
@@ -170,10 +170,10 @@ const exists = await redis.hexists('user:1', 'phone');  // 0`,
       explanation: 'HGETALL on a massive hash blocks the event loop while Redis serialises the entire response. HSCAN iterates in batches without blocking.',
     },
     {
-      title: 'Setting TTLs on individual hash fields',
-      wrong: 'EXPIRE user:1 field_name 3600  // not how it works',
-      right: 'EXPIRE user:1 3600  // TTL applies to the entire key, not fields',
-      explanation: 'Redis TTLs apply to the key as a whole — you cannot expire individual hash fields. Use sorted sets (score = expiry timestamp) or separate top-level keys for per-field expiry.',
+      title: 'Trying to expire a hash field with plain EXPIRE',
+      wrong: 'EXPIRE user:1 field_name 3600  // not how it works -- EXPIRE only ever targets a whole key',
+      right: 'HEXPIRE user:1 3600 FIELDS 1 field_name  // Redis 7.4+: real per-field TTL',
+      explanation: 'EXPIRE has never taken a field argument — it always applies to the entire key. But this is no longer "TTLs are key-only, period": Redis 7.4 (verified against the command\'s own docs, since: "7.4.0") added HEXPIRE/HPEXPIRE/HEXPIREAT/HPEXPIREAT plus HTTL/HPERSIST for genuine, independent per-field expiration. On Redis < 7.4, the only options are a sorted set (score = expiry timestamp) or separate top-level keys.',
     },
     {
       title: 'Using HMSET instead of HSET',
@@ -217,10 +217,10 @@ async function getCart(cartId: string): Promise<Record<string, number>> {
 
   quiz: QuizQuestion[] = [
     {
-      q: 'What encoding does Redis use for small hashes (< 128 fields, values < 64 bytes)?',
+      q: 'What encoding does Redis use for small hashes (< 512 fields on Redis 7.0+, values < 64 bytes)?',
       options: ['hashtable', 'ziplist / listpack', 'skiplist', 'intset'],
       answer: 1,
-      explanation: 'Small hashes use a compact ziplist (listpack in Redis 7+) — contiguous memory without pointer overhead. This is 2-3x more memory efficient than a full hashtable for small objects.',
+      explanation: 'Small hashes use a compact ziplist (listpack in Redis 7+) — contiguous memory without pointer overhead. This is 2-3x more memory efficient than a full hashtable for small objects. The field-count threshold (hash-max-listpack-entries) defaults to 512 on Redis 7.0+, up from 128 on Redis 6.x -- verified directly against Redis\'s own current config.c source.',
     },
     {
       q: 'How do you atomically increment a numeric field in a hash?',
@@ -250,7 +250,7 @@ async function getCart(cartId: string): Promise<Record<string, number>> {
       q: 'What is the memory encoding optimisation for small Redis hashes?',
       options: ['Hashes always use a standard dictionary', 'Small hashes use listpack (ziplist) encoding, converting to a hash table when field count or value size exceeds thresholds', 'Hashes are always stored as sorted sets internally', 'No encoding optimisation exists for hashes'],
       answer: 1,
-      explanation: 'Redis stores small hashes as listpack (formerly ziplist) — a compact sequential structure much more memory-efficient than a hash table. Configured via hash-max-listpack-entries (128) and hash-max-listpack-value (64). Exceeding thresholds converts to hashtable.',
+      explanation: 'Redis stores small hashes as listpack (formerly ziplist) — a compact sequential structure much more memory-efficient than a hash table. Configured via hash-max-listpack-entries (512 on Redis 7.0+, was 128 on Redis 6.x) and hash-max-listpack-value (64). Exceeding thresholds converts to hashtable.',
     },
   ];
 
@@ -261,11 +261,11 @@ async function getCart(cartId: string): Promise<Record<string, number>> {
     },
     {
       q: 'Can I set a TTL on a single field of a hash?',
-      a: 'No — Redis TTLs apply to the entire key. Workarounds: (1) store expiry timestamp as a field value and check in application code; (2) use a sorted set with score = expiry time; (3) use separate top-level keys if per-field expiry is critical.',
+      a: 'As of Redis 7.4 (verified against the HEXPIRE command\'s own docs), yes — <code>HEXPIRE key seconds FIELDS numfields field [field...]</code> sets a genuine, independent TTL per field, with <code>HTTL</code> to read it back and <code>HPERSIST</code> to clear it. A field\'s own TTL is cleared only by HDEL or an HSET that overwrites it; if the KEY itself also has a TTL, the key expiring takes precedence and removes everything regardless of any longer field-level TTL. On Redis versions before 7.4, the workarounds are: (1) store an expiry timestamp as a field value and check it in application code; (2) use a sorted set with score = expiry time; (3) use separate top-level keys if per-field expiry is critical.',
     },
     {
       q: 'When should you use a Redis hash instead of multiple string keys?',
-      a: 'Use hashes for multi-field entities (user profile with name, email, score). A hash <code>user:1001</code> is more memory-efficient than separate keys <code>user:1001:name</code>, <code>user:1001:email</code> — especially under the listpack threshold (128 fields default). You also get atomic multi-field reads with HGETALL.',
+      a: 'Use hashes for multi-field entities (user profile with name, email, score). A hash <code>user:1001</code> is more memory-efficient than separate keys <code>user:1001:name</code>, <code>user:1001:email</code> — especially under the listpack threshold (512 fields default on Redis 7.0+). You also get atomic multi-field reads with HGETALL.',
     },
     {
       q: 'How do you atomically update multiple hash fields?',
@@ -277,7 +277,7 @@ async function getCart(cartId: string): Promise<Record<string, number>> {
     },
     {
       q: 'Why does listpack encoding make individual field lookups on a hash O(n) instead of O(1), and why is this an acceptable tradeoff for small hashes?',
-      a: 'Listpack stores fields sequentially as a flat, compact byte sequence rather than using hash-table buckets with computed offsets — finding a specific field means scanning entries linearly until a match is found, which is O(n) rather than the O(1) average-case lookup a real hashtable provides. This is an acceptable tradeoff specifically because listpack is only used for SMALL hashes (below hash-max-listpack-entries, default 128) — scanning at most 128 compact entries sequentially is still extremely fast in absolute terms (likely faster than a hashtable\'s pointer-chasing for such small N due to cache locality), while the memory savings from avoiding hash-table overhead (buckets, pointers, padding) are significant at that scale.',
+      a: 'Listpack stores fields sequentially as a flat, compact byte sequence rather than using hash-table buckets with computed offsets — finding a specific field means scanning entries linearly until a match is found, which is O(n) rather than the O(1) average-case lookup a real hashtable provides. This is an acceptable tradeoff specifically because listpack is only used for SMALL hashes (below hash-max-listpack-entries, default 512 on Redis 7.0+, was 128 on Redis 6.x) — scanning at most a few hundred compact entries sequentially is still extremely fast in absolute terms (likely faster than a hashtable\'s pointer-chasing for such small N due to cache locality), while the memory savings from avoiding hash-table overhead (buckets, pointers, padding) are significant at that scale.',
     },
   ];
 
@@ -288,13 +288,13 @@ async function getCart(cartId: string): Promise<Record<string, number>> {
       'HGETALL returns flat list; map to object in application code',
       'HINCRBY for atomic numeric field increments (no GET+SET needed)',
       'Small hashes use ziplist — memory-efficient for millions of objects',
-      'TTL applies to the entire key, not individual fields',
+      'Plain EXPIRE only targets a whole key -- Redis 7.4+ adds real per-field TTL via HEXPIRE/HTTL/HPERSIST',
       'HSCAN for safe iteration over large hashes (avoid HGETALL on large sets)',
     ],
     interviewFocus: [
       'Hash vs JSON string — when do you choose each?',
       'What is the ziplist encoding and why does it matter for memory?',
-      'How do you implement per-field expiry when Redis doesn\'t support it natively?',
+      'How does HEXPIRE (Redis 7.4+) provide per-field expiry, and what are the pre-7.4 workarounds?',
       'How is HINCRBY different from GET + SET for counters?',
     ],
   };
