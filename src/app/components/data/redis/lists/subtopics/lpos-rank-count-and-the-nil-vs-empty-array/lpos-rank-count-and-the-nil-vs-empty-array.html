@@ -1,0 +1,26 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Lists" topicRoute="/redis/lists"
+    subtopicLabel="LPOS: RANK, COUNT, and the Nil vs. Empty Array Distinction" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">LPOS: RANK, COUNT, and the Nil vs. Empty Array Distinction</h1>
+  <p class="page-subtitle">The main page's QnA explains LPOS accurately but never demonstrates it — here it builds RANK/COUNT examples and traces a real, easy-to-miss gotcha: "not found" is represented two different ways depending on whether COUNT was used.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Redis 6.0.6+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>This closes the topic's arc: the first subtopic fixed the byte-size-vs-entry-count listpack claim, the second built LMPOP; this one builds a working example for LPOS, the last command the page names but never demonstrates.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Lists" topicRoute="/redis/lists"
+    [prev]="{ label: 'LMPOP: The Non-Blocking Sibling of BLPOP', route: '/redis/lists/lmpop-the-non-blocking-sibling-of-blpop' }" />
+</div>

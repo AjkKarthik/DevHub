@@ -1,0 +1,27 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Lists" topicRoute="/redis/lists"
+    subtopicLabel="LMPOP: The Non-Blocking Sibling of BLPOP" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">LMPOP: The Non-Blocking Sibling of BLPOP</h1>
+  <p class="page-subtitle">The main page names LMPOP in one sentence but never demonstrates it — here it builds the non-blocking counterpart to the Priority Job Queue Challenge's own BLPOP pattern, and traces a real "never spills across keys" gotcha.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Redis 7.0+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>This closes a real gap the main page's own theory leaves open — LMPOP is named but never shown. Next: LPOS, named in the QnA but also never demonstrated in any codeTab.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Lists" topicRoute="/redis/lists"
+    [prev]="{ label: 'list-max-listpack-size Is a Byte-Size Cap, Not an Entry Count', route: '/redis/lists/list-max-listpack-size-is-a-byte-size-cap' }"
+    [next]="{ label: 'LPOS: RANK, COUNT, and the Nil vs. Empty Array Distinction', route: '/redis/lists/lpos-rank-count-and-the-nil-vs-empty-array' }" />
+</div>

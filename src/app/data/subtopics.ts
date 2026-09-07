@@ -1685,6 +1685,13 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Shopping Cart Challenge Leaves Phantom Zero-Quantity Items', route: '/redis/hashes/shopping-cart-phantom-zero-quantity-items' },
     { label: 'HRANDFIELD: Sampling With and Without Repeats', route: '/redis/hashes/hrandfield-sampling-with-and-without-repeats' },
   ],
+  // NOTE: bare 'lists' confirmed collision-free (checked both quoted and
+  // unquoted forms, plus app.routes.ts route paths directly).
+  'lists': [
+    { label: 'list-max-listpack-size Is a Byte-Size Cap, Not an Entry Count', route: '/redis/lists/list-max-listpack-size-is-a-byte-size-cap' },
+    { label: 'LMPOP: The Non-Blocking Sibling of BLPOP', route: '/redis/lists/lmpop-the-non-blocking-sibling-of-blpop' },
+    { label: 'LPOS: RANK, COUNT, and the Nil vs. Empty Array Distinction', route: '/redis/lists/lpos-rank-count-and-the-nil-vs-empty-array' },
+  ],
   closures: [
     { label: 'var Shares One Binding, let Creates One Per Iteration', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
     { label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },

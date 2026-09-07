@@ -37696,6 +37696,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'For genuinely reliable queue semantics (avoiding message loss on consumer crash), Streams with consumer groups are usually a better fit than a plain List.',
     ],
   },
+  'redis/lists/list-max-listpack-size-is-a-byte-size-cap': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Lists', route: '/redis/lists' },
+      { label: 'LMPOP: The Non-Blocking Sibling of BLPOP', route: '/redis/lists/lmpop-the-non-blocking-sibling-of-blpop' },
+    ],
+    tip: 'list-max-listpack-size defaults to -2, a per-node BYTE-SIZE cap (8KB) — not an entry count like hash-max-listpack-entries. A handful of large elements can convert a list to quicklist well before element count alone would suggest it.',
+    gotchas: [
+      'Setting list-max-listpack-size to a POSITIVE value switches its meaning entirely to a per-node entry-count cap, unlike the negative default.',
+    ],
+  },
+  'redis/lists/lmpop-the-non-blocking-sibling-of-blpop': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Lists', route: '/redis/lists' },
+      { label: 'list-max-listpack-size Is a Byte-Size Cap, Not an Entry Count', route: '/redis/lists/list-max-listpack-size-is-a-byte-size-cap' },
+      { label: 'LPOS: RANK, COUNT, and the Nil vs. Empty Array Distinction', route: '/redis/lists/lpos-rank-count-and-the-nil-vs-empty-array' },
+    ],
+    tip: 'LMPOP only ever pops from the FIRST non-empty key in the list you pass — asking for a large COUNT never causes it to spill into a second key to make up the difference, even if the first key has fewer elements than COUNT.',
+    gotchas: [
+      'A worker loop draining several priority queues in one pass still needs repeated LMPOP calls — one call never merges results across more than one key.',
+    ],
+  },
+  'redis/lists/lpos-rank-count-and-the-nil-vs-empty-array': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Lists', route: '/redis/lists' },
+      { label: 'LMPOP: The Non-Blocking Sibling of BLPOP', route: '/redis/lists/lmpop-the-non-blocking-sibling-of-blpop' },
+    ],
+    tip: 'LPOS returns nil when no COUNT is given and nothing matches, but returns an empty array when COUNT is given — a naive truthiness check on the result silently misclassifies the COUNT case, since an empty array is truthy in JavaScript.',
+    gotchas: [
+      'RANK\'s sign only changes the scan DIRECTION, never how the returned index is numbered — indices are always 0-based counting from the list\'s head.',
+    ],
+  },
   'redis/hashes': {
     apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
     related: [

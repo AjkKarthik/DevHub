@@ -2750,7 +2750,12 @@ export const routes: Routes = [
       { path: 'shopping-cart-phantom-zero-quantity-items', loadComponent: () => import('./components/data/redis/hashes/subtopics/shopping-cart-phantom-zero-quantity-items/shopping-cart-phantom-zero-quantity-items').then(m => m.ShoppingCartPhantomZeroQuantityItemsSubtopic) },
       { path: 'hrandfield-sampling-with-and-without-repeats', loadComponent: () => import('./components/data/redis/hashes/subtopics/hrandfield-sampling-with-and-without-repeats/hrandfield-sampling-with-and-without-repeats').then(m => m.HrandfieldSamplingWithAndWithoutRepeatsSubtopic) },
     ] },
-    { path: 'lists',                loadComponent: () => import('./components/data/redis/lists/lists').then(m => m.RedisLists) },
+    { path: 'lists', children: [
+      { path: '', loadComponent: () => import('./components/data/redis/lists/lists').then(m => m.RedisLists) },
+      { path: 'list-max-listpack-size-is-a-byte-size-cap', loadComponent: () => import('./components/data/redis/lists/subtopics/list-max-listpack-size-is-a-byte-size-cap/list-max-listpack-size-is-a-byte-size-cap').then(m => m.ListMaxListpackSizeIsAByteSizeCapSubtopic) },
+      { path: 'lmpop-the-non-blocking-sibling-of-blpop', loadComponent: () => import('./components/data/redis/lists/subtopics/lmpop-the-non-blocking-sibling-of-blpop/lmpop-the-non-blocking-sibling-of-blpop').then(m => m.LmpopTheNonBlockingSiblingOfBlpopSubtopic) },
+      { path: 'lpos-rank-count-and-the-nil-vs-empty-array', loadComponent: () => import('./components/data/redis/lists/subtopics/lpos-rank-count-and-the-nil-vs-empty-array/lpos-rank-count-and-the-nil-vs-empty-array').then(m => m.LposRankCountAndTheNilVsEmptyArraySubtopic) },
+    ] },
     { path: 'sets',                 loadComponent: () => import('./components/data/redis/sets/sets').then(m => m.RedisSets) },
     { path: 'sorted-sets',          loadComponent: () => import('./components/data/redis/sorted-sets/sorted-sets').then(m => m.RedisSortedSets) },
     { path: 'key-commands',         loadComponent: () => import('./components/data/redis/key-commands/key-commands').then(m => m.RedisKeyCommands) },

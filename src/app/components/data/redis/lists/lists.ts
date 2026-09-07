@@ -38,9 +38,9 @@ export class RedisLists {
     {
       heading: 'List Internals',
       points: [
-        'Redis lists are doubly-linked lists (listpack/quicklist encoding). LPUSH and RPUSH are O(1) — pushing to either end is constant time regardless of list length.',
+        'Redis lists start as a single flat listpack, then convert to a quicklist (a genuine doubly-linked list of listpack nodes) once they grow past list-max-listpack-size. LPUSH and RPUSH are O(1) either way — pushing to either end is constant time regardless of list length.',
         'LRANGE is O(N+S) where S is the offset from head. Slicing from the head of a long list is fast; from deep within a long list is slower.',
-        'Small lists (≤ list-max-listpack-size elements) use a compact listpack (ziplist) encoding. Larger lists use a quicklist — a doubly-linked list of listpack nodes.',
+        'A short list starts as a single, flat listpack — not a linked list at all. Once it exceeds list-max-listpack-size, Redis converts it into a quicklist (a genuine doubly-linked list of listpack nodes). Verified directly against Redis\'s own config.c source: the default (-2) is a BYTE-SIZE limit (8KB per node), not an entry count — negative values mean -1=4KB, -2=8KB, -3=16KB, -4=32KB, -5=64KB; only a positive value switches the limit to "max entries per node" instead.',
         'Lists are perfect for queues (RPUSH + BLPOP), stacks (LPUSH + LPOP), activity feeds (LPUSH + LTRIM to keep last N), and message buffers.',
       ],
     },
@@ -77,7 +77,7 @@ export class RedisLists {
         'Combining LPUSH (add to the left/head) with RPOP (remove from the right/tail) implements a simple FIFO queue — producers push new work items to one end while consumers pop from the other end, processing items in the order they were added.',
         'BLPOP and BRPOP block the calling client until an item becomes available (up to a configurable timeout), eliminating the need for a consumer to poll an empty list repeatedly — significantly more efficient than a loop that calls LPOP and sleeps when the list is empty.',
         'For work queues requiring reliability (ensuring a popped item is not lost if the consumer crashes mid-processing), RPOPLPUSH (or the newer LMOVE) atomically moves an item to a separate "processing" list, letting you detect and recover items whose consumer crashed before acknowledging completion.',
-        'Redis Lists are implemented as a doubly-linked list of quicklist nodes internally, giving O(1) push/pop operations at either end — but random access by index (LINDEX on a large list) is O(N), making lists a poor choice for use cases requiring frequent access to arbitrary middle elements.',
+        'A large Redis list is internally a quicklist — a doubly-linked list of listpack nodes — giving O(1) push/pop operations at either end, but random access by index (LINDEX deep into a large list) is O(N), making lists a poor choice for use cases requiring frequent access to arbitrary middle elements.',
       ],
     },
   ];
@@ -234,7 +234,7 @@ async function nextJob(): Promise<object | null> {
       q: 'What memory encoding does Redis use for small lists?',
       options: ['skiplist', 'hashtable', 'quicklist with listpack nodes', 'linkedlist'],
       answer: 2,
-      explanation: 'Redis lists use quicklist: a doubly-linked list of listpack (formerly ziplist) nodes. Small lists (< list-max-listpack-size entries of small values) use a single listpack node — very memory-efficient. Larger lists split into multiple nodes.',
+      explanation: 'Redis lists use quicklist: a doubly-linked list of listpack (formerly ziplist) nodes. A short list starts as a single listpack — very memory-efficient — and converts to a quicklist once it exceeds list-max-listpack-size, whose default (-2) is a per-node BYTE-SIZE cap (8KB), not an entry count.',
     },
   ];
 
@@ -257,7 +257,7 @@ async function nextJob(): Promise<object | null> {
     },
     {
       q: 'What is the quicklist encoding in Redis lists?',
-      a: 'Redis lists use <strong>quicklist</strong>: a linked list of listpack nodes. Small lists use a single listpack node. As the list grows, it splits into multiple listpack nodes. This balances memory efficiency (listpack is compact) with operation performance. Configure node size with <code>list-max-listpack-size</code>.',
+      a: 'Redis lists use <strong>quicklist</strong>: a linked list of listpack nodes. A short list is stored as a single, flat listpack with no linking at all. Once it exceeds <code>list-max-listpack-size</code> it converts into a genuine quicklist, splitting across multiple listpack nodes. The default (<code>-2</code>) caps each node at 8KB, not a fixed entry count — verified directly against Redis\'s own config.c source, where negative values mean a byte-size limit (-1=4KB ... -5=64KB) and only a positive value switches to a per-node entry-count cap.',
     },
     {
       q: 'What is the difference between LRANGE and LINDEX?',
@@ -266,7 +266,7 @@ async function nextJob(): Promise<object | null> {
   ];
 
   revision: RevisionSummary = {
-    oneLiner: 'Redis lists are doubly-linked: O(1) push/pop at either end — use RPUSH+BLPOP for queues, LPUSH+LTRIM for capped activity feeds.',
+    oneLiner: 'Redis lists start as a flat listpack and convert to a quicklist (doubly-linked) once they grow past a size threshold — O(1) push/pop at either end either way; use RPUSH+BLPOP for queues, LPUSH+LTRIM for capped activity feeds.',
     mustKnow: [
       'LPUSH/RPUSH O(1); LRANGE O(N) — paginate large lists',
       'BLPOP for blocking consumers — dedicated connection required',
