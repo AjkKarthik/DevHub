@@ -9219,7 +9219,28 @@ off here with a date.
   accordion opens with all 3 links (2 toggles total across the hub); all three main-page fixes
   confirmed live via direct component-data inspection; all 3 subtopic pages checked — breadcrumb,
   860px wrapper, no console errors.
-- [ ] `/redis/strings` — Strings
+- [x] `/redis/strings` — Strings (2026-09-07) — 3rd Redis hub Phase 10 batch. Fixed a genuine
+  crash-window bug in the Rate Limiter Challenge's reference solution: it did INCR then a
+  separate EXPIRE, the exact same mistake the page's own "SET + EXPIRE separately" mistake block
+  warns against, just with a different command pair. Verified via WebSearch this is a
+  well-documented real risk for Redis rate limiters (a crash between the two calls leaks a
+  counter with no TTL forever); fixed with an atomic Lua script (`redis.eval` combining
+  INCR+EXPIRE in one round trip). Also verified two other checkable claims on the page and
+  confirmed them ALREADY CORRECT (no fix needed): SETNX deprecated since 2.6.12, GETSET
+  deprecated since 6.2, and the embstr 44-byte threshold (confirmed via directly reading Redis's
+  own current `src/object.c` — a plausible-sounding WebSearch summary claiming this changed in
+  Redis 8.2 was itself wrong, caught by checking primary source instead of trusting it). 3
+  subtopics, each independently verified via direct execution: the exact leak/fix reproduced via
+  a FakeRedis simulation; MSETNX's real all-or-nothing guarantee contrasted against a naive loop
+  of SETNX calls (which can leave one key reserved even while reporting overall failure); and a
+  GETRANGE/SETRANGE fixed-width record store, with a Try It demonstrating a real stale-trailing-
+  bytes corruption bug when a shorter value overwrites a longer one. Proactively hub-prefixed the
+  SUBTOPICS key to `redis-strings` (bare `strings` collides with the DSA hub's own route, no
+  active collision today but matching the established preemptive-fix precedent). Build clean on
+  first attempt. Browser-verified with a proactive dev-server restart: nav accordion opens with
+  all 3 links (3 toggles total across the hub); the Challenge fix confirmed live via direct
+  component-data inspection; all 3 subtopic pages checked — breadcrumb, 860px wrapper, no console
+  errors.
 - [ ] `/redis/hashes` — Hashes
 - [ ] `/redis/lists` — Lists
 - [ ] `/redis/sets` — Sets

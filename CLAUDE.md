@@ -8346,6 +8346,63 @@ this same check before any other new hub's first subtopic set:
    all 3 subtopic pages checked individually — correct h1/breadcrumb (all 4 levels), 860px wrapper
    via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed. **Redis hub Phase 10:
    2 of 21 topics complete.**
+3. **The `strings` batch found and fixed a genuine, well-verified bug in the main page's own
+   Rate Limiter Challenge — the SAME crash-window mistake the page's own first mistake block
+   warns against, just applied to a different pair of commands**: the mistake block teaches
+   generically that splitting `SET` + `EXPIRE` into two round trips risks a crash leaving a key
+   with no TTL forever — but the Rate Limiter Challenge's own reference solution did exactly this
+   with `INCR` then a separate `EXPIRE`. Verified via WebSearch against multiple independent
+   sources describing this exact pattern for Redis-based rate limiters ("if the client performs
+   the INCR command but does not perform the EXPIRE the key will be leaked") that the standard,
+   documented fix is a Lua script combining both into one atomic round trip — fixed the Challenge's
+   `starterCode`/`solution`/`hints` to use `redis.eval()` with an inline Lua script
+   (`local count = redis.call("INCR", KEYS[1]); if count == 1 then redis.call("EXPIRE", ...) end`),
+   verified via direct execution that the buggy version genuinely leaves a permanently un-expiring
+   key after a simulated crash while the fixed version sets the TTL in the same atomic call.
+   **Two other specific, checkable claims on the same page were verified and confirmed ALREADY
+   CORRECT, no fix needed** — SETNX deprecated since Redis 2.6.12 and GETSET deprecated since
+   Redis 6.2 (both confirmed via WebSearch against Redis's own documentation), and the embstr
+   encoding's 44-byte threshold (confirmed via directly fetching and reading Redis's own current
+   `src/object.c` source — `OBJ_ENCODING_EMBSTR_SIZE_LIMIT` is still a plain, unconditional 44-byte
+   check with no key-length dependency, DIRECTLY CONTRADICTING a plausible-sounding WebSearch
+   summary claiming Redis 8.2 changed it to a "64-byte cache-line heuristic" — the summary was
+   itself wrong, caught only by checking the real primary source instead of trusting it). Three
+   subtopics, each independently verified: (1) **fix-adjacent** — reproduces the exact crash-window
+   leak and the Lua-script fix via a `FakeRedis` simulation, verified via direct execution matching
+   both the buggy (`hasTtl: false`) and fixed (`hasTtl: true`) outputs exactly, with a Try It
+   contrasting the same risk for a raw `MULTI`/`EXEC` transaction instead (genuinely safer in one
+   way — a client-side crash before `EXEC` is ever sent leaves no leaked key at all — but still
+   worse than one `EVAL` round trip for latency); (2) **gap-closing** — the QnA names MSETNX\'s
+   all-or-nothing guarantee in one sentence with zero codeTab ever demonstrating it; built a
+   username+email signup-reservation example showing a naive loop of individual `SETNX` calls can
+   leave ONE key reserved even while the overall function reports failure (verified via direct
+   execution: a second signup attempt with a taken username still successfully reserves a NEW,
+   unrelated email address), contrasted against real `MSETNX` semantics correctly refusing any
+   partial write; (3) **gap-closing** — the quiz explains `GETRANGE` precisely and names `SETRANGE`
+   but no codeTab ever builds anything with either; built a dense fixed-width record store (4-byte
+   integers at computed byte offsets) generalizing the page\'s own `SETBIT`/`BITCOUNT` per-bit
+   pattern to whole-byte fields, verified via direct execution, with a Try It demonstrating a real,
+   concrete data-corruption failure mode (renaming a 15-character value down to 4 characters via
+   `SETRANGE` leaves 11 stale trailing bytes from the old value — verified via direct execution
+   producing the exact corrupted string `"Bob!ander Smith"`). **A real, proactively-resolved
+   cross-hub `SUBTOPICS` collision**: bare `strings` is also a route under the DSA hub
+   (`/dsa/strings`) — confirmed via a direct `app.routes.ts` grep, and confirmed `DsaNavComponent`
+   has zero `subtopicsOf()` calls today (no active collision), but hub-prefixed to `redis-strings`
+   anyway per the established preemptive-collision-fix precedent, matching this hub\'s own already-
+   `redis-`-prefixed progress/search key. All three `.ts` files swept for stray apostrophes (all
+   flagged matches confirmed safe, inside backtick-delimited `code:`/`solution:` fields or already
+   correctly `\'`-escaped in the single-quoted `prompt:` field); bracket-balance and backtick-parity
+   confirmed clean on all three; no bare `@word`/single-`{` in any `.html` file\'s static text; no
+   `SUBTOPICS`-key straight-apostrophe/quote issues in any `[prev]`/`[next]` label. Build passed
+   clean (foreground, explicit `EXITCODE:$?` capture, zero real `ERROR` lines). Browser-verified
+   with a proactive dev-server restart before checking: no console errors on any of the 4 pages;
+   nav accordion opens with all 3 subtopic links (3 toggles total across the hub, confirming
+   `fundamentals`/`installation-setup`/`strings` all now have subtopics); the Challenge fix
+   confirmed rendering live via direct component-data inspection (`cmp.challenge.solution` read
+   directly, confirming both `redis.eval` and `incrAndExpireScript` present); all 3 subtopic pages
+   checked individually — correct h1/breadcrumb (all 4 levels), 860px wrapper via
+   `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed. **Redis hub Phase 10:
+   3 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -8529,16 +8586,19 @@ this same check before any other new hub's first subtopic set:
   All 23 cards `available: true` in `data/redis/home/home.ts`. Progress: `redisTotal=21` in progress.service.ts.
   Redis pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. RedisNavComponent at `shared/redis-nav/redis-nav.ts`.
-  Phase 10: 2 of 21 topics have subtopics (`/redis/fundamentals`, pilot batch;
-  `/redis/installation-setup`, finished 2026-09-07) — see
+  Phase 10: 3 of 21 topics have subtopics (`/redis/fundamentals`, pilot batch;
+  `/redis/installation-setup`; `/redis/strings`, finished 2026-09-07) — see
   "Redis hub subtopic wiring" section above for the `RedisNavComponent` accordion structural fix
-  (16th `*NavComponent`-based hub in a row missing it at pilot time), the `redis-fundamentals`
-  SUBTOPICS-map collision resolution (bare `fundamentals` collides with the JavaScript hub's own
-  topic key; bare `installation-setup` confirmed collision-free since MongoDB's own topic of the
-  same name was proactively hub-prefixed to `mongo-installation-setup` anticipating this), and the
-  genuine inaccuracies found and fixed so far: Redis-on-Flash version-line conflation on the
-  Fundamentals page, and a `rename-command` typo plus two source-verified (`config.c`/
-  `networking.c`) restart-requirement/protected-mode inaccuracies on the Installation & Setup page.
+  (16th `*NavComponent`-based hub in a row missing it at pilot time), the SUBTOPICS-map collision
+  resolutions (bare `fundamentals` collides with the JavaScript hub's own topic key;
+  `installation-setup` confirmed collision-free since MongoDB's own topic of the same name was
+  proactively hub-prefixed to `mongo-installation-setup`; `strings` proactively hub-prefixed to
+  `redis-strings` against the DSA hub's own bare `strings` route), and the genuine inaccuracies
+  found and fixed so far: Redis-on-Flash version-line conflation on the Fundamentals page; a
+  `rename-command` typo plus two source-verified (`config.c`/`networking.c`) restart-requirement/
+  protected-mode inaccuracies on the Installation & Setup page; and a crash-window TTL-leak bug in
+  the Rate Limiter Challenge's own INCR+EXPIRE pattern on the Strings page — the same mistake the
+  page's own mistake block warns against for SET+EXPIRE, fixed with an atomic Lua script.
 - **GraphQL hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Pink theme `$accent: #e535ab`, `$tint: #fdf2f9`, dark `#f472b6`, dark bg `#3d0a26`. Search prefix `gql-`. Route: `/graphql`.
   CSS classes: `.gql-page`, `.gql-icon`, `.gql-section`. Icon content: `◈` at `font-size: 1.8rem`. `tech="javascript"`.
