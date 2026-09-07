@@ -8454,6 +8454,53 @@ this same check before any other new hub's first subtopic set:
    correctly (not as a stray backslash); all 3 subtopic pages checked individually — correct
    h1/breadcrumb (all 4 levels), 860px wrapper via `getComputedStyle`, tailored (not DEFAULT)
    sidebar content confirmed. **Redis hub Phase 10: 4 of 21 topics complete.**
+5. **The `lists` batch found and fixed a genuine, well-verified inaccuracy of the same general
+   shape as the Hashes topic's own listpack-threshold fix, but with a subtler mechanism**: the main
+   page's theory, quiz, and QnA all framed `list-max-listpack-size` as an ENTRY-COUNT threshold
+   ("small lists (≤ list-max-listpack-size elements)"), matching how hash-max-listpack-entries
+   genuinely works. Verified directly against Redis's own current `src/config.c` source
+   (`createIntConfig("list-max-listpack-size", ..., -2, ...)`) and corroborated by multiple
+   independent sources: the default value (`-2`) is a per-node BYTE-SIZE cap (8KB), not an entry
+   count at all — negative values mean -1=4KB, -2=8KB, -3=16KB, -4=32KB, -5=64KB; only a POSITIVE
+   value switches the config to a genuine entry-count cap instead. A short list also does not start
+   as "a doubly-linked list" in any sense — it starts as a single, flat listpack with no linking at
+   all, only converting to a genuine quicklist (a doubly-linked list of listpack nodes) once the
+   byte-size threshold is exceeded. Fixed five separate touchpoints restating the same
+   overgeneralization: the opening theory bullet, the dedicated listpack theory bullet, a quiz
+   question's own explanation, a QnA answer, a second QnA/theory bullet describing lists as always
+   "a doubly-linked list," and the revision `oneLiner`. Six other specific, checkable claims were
+   verified and confirmed ALREADY CORRECT (no fix needed): LPUSH's multi-element push order
+   (`LPUSH key a b c` → `[c, b, a, ...]`, confirmed by reading Redis's own `t_list.c` pushGenericCommand
+   loop directly), LMOVE since 6.2.0, RPOPLPUSH deprecated since 6.2.0, LMPOP since 7.0.0, and LPOS
+   since 6.0.6 (all confirmed via each command's own official docs). Three subtopics, each
+   independently verified: (1) **fix-adjacent** — reproduces the byte-size-vs-entry-count
+   distinction directly, with a demo showing 3 large elements (~9000 bytes) converting to quicklist
+   under the default cap while 500 tiny elements stay a flat listpack — the exact counterintuitive
+   consequence of the real byte-size rule; (2) **gap-closing** — the theory names LMPOP in one
+   sentence with zero codeTab ever calling it; built the non-blocking sibling of the main page's
+   own BLPOP-based Priority Job Queue Challenge, verified via direct execution (matching Redis's own
+   documented example exactly) that LMPOP never spills into a second key even when COUNT exceeds
+   the first non-empty key's own length; (3) **gap-closing** — the QnA names LPOS's RANK/COUNT
+   options in one paragraph with zero codeTab ever calling it; built a RANK/COUNT demo matching
+   Redis's own documented example output exactly (`LPOS mylist 3 COUNT 0 RANK 2` → `[8, 9, 10]`),
+   plus a genuinely easy-to-miss gotcha verified against Redis's own docs: LPOS returns nil for "not
+   found" without COUNT, but an empty array (truthy in JS) for "not found" WITH count — a naive
+   truthiness check silently misclassifies the COUNT case. **A real, self-caught house-style
+   violation caught and fixed before the build, not the standing sweep**: a `solution:` field
+   (backtick-delimited, per the established "no markdown backticks inside solution fields" rule)
+   used an escaped backtick-wrapped code span (`` !\`[]\` ``) for emphasis — syntactically safe
+   (properly escaped, would not have broken the build) but inconsistent with house style; caught by
+   direct file re-read and fixed to plain text before the build ever ran. No `SUBTOPICS` collision
+   for `lists` (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed
+   collision-free, left bare). Build passed clean (foreground, explicit `EXITCODE:$?` capture, zero
+   real `ERROR` lines). Browser-verified with a proactive dev-server restart before checking: no
+   console errors on any of the 4 pages; nav accordion opens with all 3 subtopic links (5 toggles
+   total across the hub, confirming `fundamentals`/`installation-setup`/`strings`/`hashes`/`lists`
+   all now have subtopics); all main-page fixes confirmed rendering live via direct component-data
+   inspection; all 3 subtopic pages checked individually — correct h1/breadcrumb (all 4 levels),
+   860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed via a
+   direct text search for the tip's own distinctive phrase. **Redis hub Phase 10: 5 of 21 topics
+   complete.**
 
 ## Current state (update when it changes!)
 
@@ -8637,23 +8684,26 @@ this same check before any other new hub's first subtopic set:
   All 23 cards `available: true` in `data/redis/home/home.ts`. Progress: `redisTotal=21` in progress.service.ts.
   Redis pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. RedisNavComponent at `shared/redis-nav/redis-nav.ts`.
-  Phase 10: 4 of 21 topics have subtopics (`/redis/fundamentals`, pilot batch;
-  `/redis/installation-setup`; `/redis/strings`; `/redis/hashes`, finished 2026-09-07) — see
-  "Redis hub subtopic wiring" section above for the `RedisNavComponent` accordion structural fix
-  (16th `*NavComponent`-based hub in a row missing it at pilot time), the SUBTOPICS-map collision
-  resolutions (bare `fundamentals` collides with the JavaScript hub's own topic key;
-  `installation-setup` confirmed collision-free since MongoDB's own topic of the same name was
-  proactively hub-prefixed to `mongo-installation-setup`; `strings` proactively hub-prefixed to
-  `redis-strings` against the DSA hub's own bare `strings` route; `hashes` confirmed collision-free,
-  left bare), and the genuine inaccuracies found and fixed so far: Redis-on-Flash version-line
-  conflation on the Fundamentals page; a `rename-command` typo plus two source-verified
-  (`config.c`/`networking.c`) restart-requirement/protected-mode inaccuracies on the Installation &
-  Setup page; a crash-window TTL-leak bug in the Rate Limiter Challenge's own INCR+EXPIRE pattern
-  on the Strings page (the same mistake the page's own mistake block warns against for SET+EXPIRE,
-  fixed with an atomic Lua script); and, on the Hashes page, an outdated "cannot expire individual
-  hash fields" claim (Redis 7.4 added real per-field TTL via HEXPIRE, verified against the command's
-  own docs) plus a stale `hash-max-listpack-entries` default of 128 (verified via Redis's own
-  current `config.c` source to be 512 since Redis 7.0).
+  Phase 10: 5 of 21 topics have subtopics (`/redis/fundamentals`, pilot batch;
+  `/redis/installation-setup`; `/redis/strings`; `/redis/hashes`; `/redis/lists`, finished
+  2026-09-07) — see "Redis hub subtopic wiring" section above for the `RedisNavComponent` accordion
+  structural fix (16th `*NavComponent`-based hub in a row missing it at pilot time), the
+  SUBTOPICS-map collision resolutions (bare `fundamentals` collides with the JavaScript hub's own
+  topic key; `installation-setup` confirmed collision-free since MongoDB's own topic of the same
+  name was proactively hub-prefixed to `mongo-installation-setup`; `strings` proactively
+  hub-prefixed to `redis-strings` against the DSA hub's own bare `strings` route; `hashes` and
+  `lists` both confirmed collision-free, left bare), and the genuine inaccuracies found and fixed
+  so far: Redis-on-Flash version-line conflation on the Fundamentals page; a `rename-command` typo
+  plus two source-verified (`config.c`/`networking.c`) restart-requirement/protected-mode
+  inaccuracies on the Installation & Setup page; a crash-window TTL-leak bug in the Rate Limiter
+  Challenge's own INCR+EXPIRE pattern on the Strings page (the same mistake the page's own mistake
+  block warns against for SET+EXPIRE, fixed with an atomic Lua script); on the Hashes page, an
+  outdated "cannot expire individual hash fields" claim (Redis 7.4 added real per-field TTL via
+  HEXPIRE, verified against the command's own docs) plus a stale `hash-max-listpack-entries`
+  default of 128 (verified via Redis's own current `config.c` source to be 512 since Redis 7.0);
+  and, on the Lists page, the same class of stale listpack-threshold claim applied to
+  `list-max-listpack-size` — verified the real default (`-2`) is a per-node BYTE-SIZE cap (8KB),
+  not an entry count, fixed across five separate touchpoints restating the same overgeneralization.
 - **GraphQL hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Pink theme `$accent: #e535ab`, `$tint: #fdf2f9`, dark `#f472b6`, dark bg `#3d0a26`. Search prefix `gql-`. Route: `/graphql`.
   CSS classes: `.gql-page`, `.gql-icon`, `.gql-section`. Icon content: `◈` at `font-size: 1.8rem`. `tech="javascript"`.

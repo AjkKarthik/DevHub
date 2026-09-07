@@ -9260,7 +9260,27 @@ off here with a date.
   links (4 toggles total across the hub); both main-page fixes and the label-escaping fix
   confirmed live via direct component-data inspection; all 3 subtopic pages checked — breadcrumb,
   860px wrapper, no console errors.
-- [ ] `/redis/lists` — Lists
+- [x] `/redis/lists` — Lists (2026-09-07) — 5th Redis hub Phase 10 batch. Fixed a genuine
+  inaccuracy of the same shape as the Hashes topic's own listpack fix: the theory/quiz/QnA framed
+  list-max-listpack-size as an entry-count threshold, matching how hashes work — verified via
+  Redis's own current config.c source the real default (-2) is a per-node BYTE-SIZE cap (8KB), not
+  an entry count; also fixed the related "lists are always a doubly-linked list" overgeneralization
+  (a short list starts as a flat listpack, only converting to quicklist past the threshold). Fixed
+  across 5 touchpoints (opening theory bullet, dedicated listpack bullet, quiz explanation, QnA,
+  revision oneLiner). Verified 6 other claims (LPUSH push order, LMOVE/RPOPLPUSH/LMPOP/LPOS
+  versions) already correct — including reading Redis's own t_list.c source directly to confirm
+  push ordering. 3 subtopics, each independently verified: the byte-size-vs-entry-count distinction
+  demonstrated with a counterintuitive example (3 large elements convert to quicklist, 500 tiny
+  ones don't); LMPOP built as the non-blocking sibling of the main page's own BLPOP Challenge,
+  verified it never spills across keys even when COUNT exceeds the first key's length (matching
+  Redis's own documented example exactly); and LPOS's RANK/COUNT semantics plus a real nil-vs-
+  empty-array truthiness gotcha, verified against Redis's own documented example output exactly.
+  Self-caught and fixed a house-style violation (an escaped backtick-wrapped code span inside a
+  solution: field) before the build. SUBTOPICS key left bare (confirmed collision-free). Build
+  clean on first attempt. Browser-verified with a proactive dev-server restart: nav accordion opens
+  with all 3 links (5 toggles total across the hub); all main-page fixes confirmed live via direct
+  component-data inspection; all 3 subtopic pages checked — breadcrumb, 860px wrapper, tailored
+  sidebar content, no console errors.
 - [ ] `/redis/sets` — Sets
 - [ ] `/redis/sorted-sets` — Sorted Sets
 - [ ] `/redis/key-commands` — Key Commands & Patterns
