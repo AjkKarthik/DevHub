@@ -2738,7 +2738,12 @@ export const routes: Routes = [
       { path: 'protected-mode-checks-password-not-bind', loadComponent: () => import('./components/data/redis/installation-setup/subtopics/protected-mode-checks-password-not-bind/protected-mode-checks-password-not-bind').then(m => m.ProtectedModeChecksPasswordNotBindSubtopic) },
       { path: 'config-rewrite-needs-a-config-file', loadComponent: () => import('./components/data/redis/installation-setup/subtopics/config-rewrite-needs-a-config-file/config-rewrite-needs-a-config-file').then(m => m.ConfigRewriteNeedsAConfigFileSubtopic) },
     ] },
-    { path: 'strings',              loadComponent: () => import('./components/data/redis/strings/strings').then(m => m.RedisStrings) },
+    { path: 'strings', children: [
+      { path: '', loadComponent: () => import('./components/data/redis/strings/strings').then(m => m.RedisStrings) },
+      { path: 'atomic-incr-expire-fixes-the-rate-limiter-ttl-leak', loadComponent: () => import('./components/data/redis/strings/subtopics/atomic-incr-expire-fixes-the-rate-limiter-ttl-leak/atomic-incr-expire-fixes-the-rate-limiter-ttl-leak').then(m => m.AtomicIncrExpireFixesTheRateLimiterTtlLeakSubtopic) },
+      { path: 'msetnx-all-or-nothing-vs-a-loop-of-setnx-calls', loadComponent: () => import('./components/data/redis/strings/subtopics/msetnx-all-or-nothing-vs-a-loop-of-setnx-calls/msetnx-all-or-nothing-vs-a-loop-of-setnx-calls').then(m => m.MsetnxAllOrNothingVsALoopOfSetnxCallsSubtopic) },
+      { path: 'getrange-setrange-fixed-width-records-at-byte-offsets', loadComponent: () => import('./components/data/redis/strings/subtopics/getrange-setrange-fixed-width-records-at-byte-offsets/getrange-setrange-fixed-width-records-at-byte-offsets').then(m => m.GetrangeSetrangeFixedWidthRecordsAtByteOffsetsSubtopic) },
+    ] },
     { path: 'hashes',               loadComponent: () => import('./components/data/redis/hashes/hashes').then(m => m.RedisHashes) },
     { path: 'lists',                loadComponent: () => import('./components/data/redis/lists/lists').then(m => m.RedisLists) },
     { path: 'sets',                 loadComponent: () => import('./components/data/redis/sets/sets').then(m => m.RedisSets) },

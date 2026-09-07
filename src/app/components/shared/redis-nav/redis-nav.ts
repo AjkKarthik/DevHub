@@ -57,7 +57,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
 
     <div class="nav-group">
       <p class="nav-group-label">Data Structures</p>
-      <a routerLink="/redis/strings" routerLinkActive="active"><span class="nl-text">Strings</span>@if(p.isDone('redis-strings')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/redis/strings" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Strings</span>
+        @if(p.isDone('redis-strings')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('redis-strings')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('redis-strings')"
+                  (click)="toggleSubtopics('redis-strings', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('redis-strings'); as strSubs) {
+        @if (isSubtopicsExpanded('redis-strings')) {
+          <div class="nav-subtopics">
+            @for (s of strSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/redis/hashes" routerLinkActive="active"><span class="nl-text">Hashes</span>@if(p.isDone('redis-hashes')){<span class="nl-done">✓</span>}</a>
       <a routerLink="/redis/lists" routerLinkActive="active"><span class="nl-text">Lists</span>@if(p.isDone('redis-lists')){<span class="nl-done">✓</span>}</a>
       <a routerLink="/redis/sets" routerLinkActive="active"><span class="nl-text">Sets</span>@if(p.isDone('redis-sets')){<span class="nl-done">✓</span>}</a>

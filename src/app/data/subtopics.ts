@@ -1669,6 +1669,15 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Protected-Mode Checks for a Password, Not a Bind', route: '/redis/installation-setup/protected-mode-checks-password-not-bind' },
     { label: 'CONFIG REWRITE Needs a Config File to Rewrite', route: '/redis/installation-setup/config-rewrite-needs-a-config-file' },
   ],
+  // NOTE: keyed 'redis-strings' -- proactively hub-prefixed since the DSA
+  // hub also has a bare 'strings' route (DsaNavComponent has no
+  // subtopics-accordion support yet, so no active collision today, but a
+  // future DSA Phase 10 pilot would collide with a bare key here).
+  'redis-strings': [
+    { label: 'Atomic INCR + EXPIRE Fixes the Rate Limiter TTL Leak', route: '/redis/strings/atomic-incr-expire-fixes-the-rate-limiter-ttl-leak' },
+    { label: 'MSETNX Is All-or-Nothing; a Loop of SETNX Calls Is Not', route: '/redis/strings/msetnx-all-or-nothing-vs-a-loop-of-setnx-calls' },
+    { label: 'GETRANGE/SETRANGE: Fixed-Width Records at Byte Offsets', route: '/redis/strings/getrange-setrange-fixed-width-records-at-byte-offsets' },
+  ],
   closures: [
     { label: 'var Shares One Binding, let Creates One Per Iteration', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
     { label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },

@@ -37650,6 +37650,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'SETNX (or SET with NX) is the building block for a simple distributed lock — but a naive implementation without an expiry risks a permanently stuck lock if the lock holder crashes.',
     ],
   },
+  'redis/strings/atomic-incr-expire-fixes-the-rate-limiter-ttl-leak': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Strings', route: '/redis/strings' },
+      { label: 'MSETNX Is All-or-Nothing; a Loop of SETNX Calls Is Not', route: '/redis/strings/msetnx-all-or-nothing-vs-a-loop-of-setnx-calls' },
+    ],
+    tip: 'A rate limiter that does INCR then a separate EXPIRE has the exact crash-window risk this topic\'s own "SET + EXPIRE separately" mistake warns about — a Lua script combining both closes it, the same fix applied to a different command pair.',
+    gotchas: [
+      'A process killed between INCR and EXPIRE leaves a counter key with no TTL forever — that specific window key never resets again.',
+    ],
+  },
+  'redis/strings/msetnx-all-or-nothing-vs-a-loop-of-setnx-calls': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Strings', route: '/redis/strings' },
+      { label: 'Atomic INCR + EXPIRE Fixes the Rate Limiter TTL Leak', route: '/redis/strings/atomic-incr-expire-fixes-the-rate-limiter-ttl-leak' },
+      { label: 'GETRANGE/SETRANGE: Fixed-Width Records at Byte Offsets', route: '/redis/strings/getrange-setrange-fixed-width-records-at-byte-offsets' },
+    ],
+    tip: 'Each individual SETNX call is atomic on its own, but a loop of several SETNX calls covering different keys is NOT atomic as a group — only MSETNX checks every key first and writes all-or-nothing.',
+    gotchas: [
+      'A naive loop can leave one key reserved even while the overall function reports failure, since nothing rolls back an earlier successful SETNX once a later one fails.',
+    ],
+  },
+  'redis/strings/getrange-setrange-fixed-width-records-at-byte-offsets': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Strings', route: '/redis/strings' },
+      { label: 'MSETNX Is All-or-Nothing; a Loop of SETNX Calls Is Not', route: '/redis/strings/msetnx-all-or-nothing-vs-a-loop-of-setnx-calls' },
+    ],
+    tip: 'SETRANGE at a fixed offset (id * recordWidth) turns one Redis string into a dense array of fixed-width records — the same packing idea as SETBIT/BITCOUNT, generalized from single bits to whole bytes.',
+    gotchas: [
+      'SETRANGE never clears bytes beyond the length of the value you give it — writing a shorter value into a slot that held a longer one leaves stale trailing bytes from the old value.',
+    ],
+  },
   'redis/lists': {
     apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
     related: [
