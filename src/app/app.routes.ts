@@ -2732,7 +2732,12 @@ export const routes: Routes = [
       { path: 'keyspace-notifications-a-real-expiration-listener', loadComponent: () => import('./components/data/redis/fundamentals/subtopics/keyspace-notifications-a-real-expiration-listener/keyspace-notifications-a-real-expiration-listener').then(m => m.KeyspaceNotificationsARealExpirationListenerSubtopic) },
       { path: 'multi-exec-real-atomicity-is-isolation-not-rollback', loadComponent: () => import('./components/data/redis/fundamentals/subtopics/multi-exec-real-atomicity-is-isolation-not-rollback/multi-exec-real-atomicity-is-isolation-not-rollback').then(m => m.MultiExecRealAtomicityIsIsolationNotRollbackSubtopic) },
     ] },
-    { path: 'installation-setup',   loadComponent: () => import('./components/data/redis/installation-setup/installation-setup').then(m => m.RedisInstallationSetup) },
+    { path: 'installation-setup', children: [
+      { path: '', loadComponent: () => import('./components/data/redis/installation-setup/installation-setup').then(m => m.RedisInstallationSetup) },
+      { path: 'bind-and-aof-preamble-are-runtime-modifiable', loadComponent: () => import('./components/data/redis/installation-setup/subtopics/bind-and-aof-preamble-are-runtime-modifiable/bind-and-aof-preamble-are-runtime-modifiable').then(m => m.BindAndAofPreambleAreRuntimeModifiableSubtopic) },
+      { path: 'protected-mode-checks-password-not-bind', loadComponent: () => import('./components/data/redis/installation-setup/subtopics/protected-mode-checks-password-not-bind/protected-mode-checks-password-not-bind').then(m => m.ProtectedModeChecksPasswordNotBindSubtopic) },
+      { path: 'config-rewrite-needs-a-config-file', loadComponent: () => import('./components/data/redis/installation-setup/subtopics/config-rewrite-needs-a-config-file/config-rewrite-needs-a-config-file').then(m => m.ConfigRewriteNeedsAConfigFileSubtopic) },
+    ] },
     { path: 'strings',              loadComponent: () => import('./components/data/redis/strings/strings').then(m => m.RedisStrings) },
     { path: 'hashes',               loadComponent: () => import('./components/data/redis/hashes/hashes').then(m => m.RedisHashes) },
     { path: 'lists',                loadComponent: () => import('./components/data/redis/lists/lists').then(m => m.RedisLists) },

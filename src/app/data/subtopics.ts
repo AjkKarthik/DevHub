@@ -1661,6 +1661,14 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Keyspace Notifications: A Real Expiration Listener', route: '/redis/fundamentals/keyspace-notifications-a-real-expiration-listener' },
     { label: 'MULTI/EXEC Real Atomicity: Isolation, Not Rollback', route: '/redis/fundamentals/multi-exec-real-atomicity-is-isolation-not-rollback' },
   ],
+  // NOTE: bare 'installation-setup' confirmed collision-free -- the MongoDB
+  // hub's own topic of the same name was proactively hub-prefixed to
+  // 'mongo-installation-setup' anticipating exactly this moment.
+  'installation-setup': [
+    { label: 'bind and aof-use-rdb-preamble Are Runtime-Modifiable', route: '/redis/installation-setup/bind-and-aof-preamble-are-runtime-modifiable' },
+    { label: 'Protected-Mode Checks for a Password, Not a Bind', route: '/redis/installation-setup/protected-mode-checks-password-not-bind' },
+    { label: 'CONFIG REWRITE Needs a Config File to Rewrite', route: '/redis/installation-setup/config-rewrite-needs-a-config-file' },
+  ],
   closures: [
     { label: 'var Shares One Binding, let Creates One Per Iteration', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
     { label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },

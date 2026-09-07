@@ -37592,6 +37592,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'maxmemory and an eviction policy should be set explicitly — an unbounded Redis instance can consume all available host memory and crash.',
     ],
   },
+  'redis/installation-setup/bind-and-aof-preamble-are-runtime-modifiable': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Installation & Setup', route: '/redis/installation-setup' },
+      { label: 'Protected-Mode Checks for a Password, Not a Bind', route: '/redis/installation-setup/protected-mode-checks-password-not-bind' },
+    ],
+    tip: 'Verified directly against config.c: bind and aof-use-rdb-preamble are both MODIFIABLE_CONFIG — only cluster-enabled among the three the main page originally grouped together is genuinely IMMUTABLE_CONFIG and needs a restart.',
+    gotchas: [
+      'A live CONFIG SET change is only in memory — a restart before CONFIG REWRITE runs reverts to whatever redis.conf still says on disk.',
+    ],
+  },
+  'redis/installation-setup/protected-mode-checks-password-not-bind': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Installation & Setup', route: '/redis/installation-setup' },
+      { label: 'bind and aof-use-rdb-preamble Are Runtime-Modifiable', route: '/redis/installation-setup/bind-and-aof-preamble-are-runtime-modifiable' },
+      { label: 'CONFIG REWRITE Needs a Config File to Rewrite', route: '/redis/installation-setup/config-rewrite-needs-a-config-file' },
+    ],
+    tip: 'Protected-mode\'s real accept-time check (verified against networking.c) only reads whether the default user has a password set — an explicit bind directive plays no part in the condition at all.',
+    gotchas: [
+      'bind 0.0.0.0 with no requirepass still gets every external connection DENIED by protected-mode — the bind directive alone never satisfies the check.',
+    ],
+  },
+  'redis/installation-setup/config-rewrite-needs-a-config-file': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Installation & Setup', route: '/redis/installation-setup' },
+      { label: 'Protected-Mode Checks for a Password, Not a Bind', route: '/redis/installation-setup/protected-mode-checks-password-not-bind' },
+    ],
+    tip: 'CONFIG REWRITE fails immediately with "The server is running without a config file" if redis-server was ever started with no .conf path argument — confirmed directly from configRewriteCommand\'s own server.configfile == NULL check.',
+    gotchas: [
+      'CLI flags like --requirepass or --maxmemory passed directly to redis-server configure Redis identically to a config file, but leave no file for CONFIG REWRITE to write back to.',
+    ],
+  },
   'redis/key-commands': {
     apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
     related: [
