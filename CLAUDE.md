@@ -8200,6 +8200,94 @@ this same check before any other new hub's first subtopic set:
     **This completes the MongoDB hub's entire Phase 10 rollout — all 21 topics now have deep-dive
     subtopic pages, 63 subtopic pages total across the hub, finished 2026-09-06.**
 
+### Redis hub subtopic wiring — first pilot; the 16th `*NavComponent` in a row missing the
+subtopics-accordion structural fix
+
+Confirmed via direct file inspection before the pilot (`/redis/fundamentals`, 2026-09-07) — do
+this same check before any other new hub's first subtopic set:
+
+1. **`RedisNavComponent` (`shared/redis-nav/redis-nav.ts`) had ZERO subtopics-accordion
+   support** — the same structural gap already hit and fixed on every `*NavComponent`-based hub's
+   own pilot before it (Go, DevOps, Containers, AWS, Azure, Linux, Terraform, Service Mesh,
+   System Design, Architecture Patterns, Design Patterns, Security, API Design, Observability,
+   MongoDB — this is the 16th in a row). Fixed identically: added `signal`, `Router`,
+   `NavigationEnd`, `filter` (rxjs), and `SUBTOPICS` (from `../../../data/subtopics`) to the
+   imports, then the same three methods (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`)
+   and constructor-level router subscription, copied directly from `MongoNavComponent`'s own
+   implementation (read directly, not reconstructed from memory, per the established
+   copy-fidelity discipline). Worked correctly on the first browser check — no stale-chunk
+   incident, verified via both `window.ng.getComponent()` direct calls and a live DOM query for
+   `.nav-subtopic-link` elements.
+2. **Real `SUBTOPICS` map bare-key collision**: `fundamentals` was already claimed by the
+   JavaScript hub's own `/javascript/fundamentals` topic (checked both quoted and unquoted forms,
+   per the standing collision-detection discipline). Hub-prefixed to `redis-fundamentals` —
+   matching this hub's own established progress/search key prefix (`redis-`, confirmed via the
+   pre-existing `p.isDone('redis-fundamentals')` nav markup) — with the usual `// NOTE:` comment.
+   The `RedisNavComponent` accordion helper calls (`subtopicsOf`/`isSubtopicsExpanded`/
+   `toggleSubtopics`) all use the prefixed `'redis-fundamentals'` key consistently.
+3. **`REDIS_LABELS` breadcrumb map uses bare keys** (`'fundamentals'`), matching the generic
+   pattern every hub's own dedicated labels map shares — composite subtopic keys there are bare
+   too (`'fundamentals/<slug>'`).
+4. **`SIDEBAR_MAP` keys are FULL-PATH PREFIXED** (`'redis/fundamentals'`, confirmed the base
+   entry — and its own `REDIS_DEFAULT` constant — already existed) — subtopic composite keys
+   follow suit: `'redis/fundamentals/<slug>'`.
+5. **`.redis-page` wrapper rule is NOT global** (confirmed absent from `src/styles.scss`, despite
+   being fully baked into the topic page's OWN component `.scss` with `max-width`/`padding`
+   together) — every subtopic `.scss` needs the standalone
+   `.redis-page { max-width: 860px; margin: 0 auto; }` rule, with `.subtopic-page`'s own padding
+   declared separately, matching the majority non-global-wrapper convention.
+6. **No live playground** — Redis CLI/driver content has no in-browser runtime, following the
+   same `<app-code-block>`-only pattern as every other non-JS-runtime-specific hub — every code
+   tab across all three subtopics uses plain TypeScript (ioredis) driver-shaped snippets, matching
+   the main page's own `codeTabs` style exactly. Icon content: `R` (light tint fill, `$accent:
+   #dc382d`, `$tint: #fff0ef`, dark `#f87171`/`#3d0a0a` — confirmed matching this file's own
+   already-documented Redis theme values against the real `fundamentals.scss`), `tech="javascript"`
+   in `app-page-meta`.
+7. **The `fundamentals` pilot batch found and fixed a genuine version-line-conflation inaccuracy
+   in the main page's own "Can Redis hold more data than available RAM?" QnA**: it claimed "Redis
+   7.x introduced Redis on Flash (enterprise) for tiered storage" — verified via WebSearch against
+   Redis's own 2016 press materials (a Redis Labs + Intel announcement at the AWS Summit in New
+   York) that Redis on Flash was announced in 2016, roughly six years before open-source Redis
+   reached version 7.0 at all (2022). The underlying error is conflating two genuinely separate
+   version lines — open-source Redis's own version numbers versus Redis Enterprise Software's own,
+   completely independent release numbering — which happen to share some of the same digits
+   ("7.x", "8.x") purely by coincidence, not because they're the same axis. Fixed the QnA to state
+   the real timeline and name the conflation explicitly. Three subtopics: (1) **fix-adjacent** — a
+   verified year-by-year timeline model (2016 Enterprise announcement, 2020 OSS Redis 6.0, 2022
+   OSS Redis 7.0, 2024 Enterprise Auto Tiering/Flex rebrand) confirmed via direct execution to sort
+   correctly and expose the real 6-year gap, with a Try It on a DIFFERENT real-world "Redis
+   Software 8.0.2" citation testing whether the reader can now correctly identify which version
+   line it belongs to; (2) **gap-closing** — the page's own QnA names the exact
+   `notify-keyspace-events` config flag and the `__keyevent@db__:event`/`__keyspace@db__:key`
+   channel-naming convention in real detail, but no codeTab ever subscribes to one; built a real
+   ioredis expiration listener plus a verified channel/message-pairing model (confirmed via direct
+   execution that the two channel families swap which piece of information is the channel vs. the
+   message); (3) **gap-closing** — the page's own quiz calls pipelining "not atomic, unlike
+   MULTI/EXEC," easy to misread as "MULTI/EXEC rolls back on error" — verified via WebSearch
+   against Redis's own documented transaction semantics that MULTI/EXEC's real guarantee is
+   ISOLATION (no other client's command interleaves once EXEC begins), NOT rollback of a runtime
+   error in one queued command; built a verified no-rollback demonstration (confirmed via direct
+   execution that two of three queued commands succeed even though the middle one throws) tightening
+   the exact scope of the "atomic" claim. No `SUBTOPICS` collision beyond the `fundamentals`
+   hub-prefix resolved above. All three `exercise.solution` fields swept clean of `<code>`/entity
+   contamination; the standing apostrophe-after-letter sweep found nothing unescaped across all
+   three `.ts` files; angle-bracket placeholder tokens (`<db>`, `<event>`) inside
+   `[innerHTML]`-bound `theory.points` correctly entity-escaped per the established Service-Mesh-hub
+   precedent (`consul` batch); nested template-literal escaping in two subtopics' own codeTabs
+   verified correct by extracting and evaluating the exact backtick spans as real JavaScript before
+   trusting them. Build passed clean (foreground execution, explicit `EXITCODE:$?` capture, zero
+   `ERROR` lines). Browser-verified with a fresh dev-server cold-start (the prior server had died
+   during a session interruption; the compile took ~107 seconds this time, longer than the usual
+   cold-start window, requiring an extra poll cycle before the server responded): no console errors
+   on any of the 4 pages; nav accordion opens with all 3 subtopic links, confirmed via both
+   `window.ng.getComponent()` and a live DOM query, fresh on the first check; the main-page fix
+   confirmed rendering live via direct component data inspection; the entity-escaped placeholder
+   tokens confirmed rendering as literal text (not vanished) on the keyspace-notifications
+   subtopic page; the subtopic pages checked individually — correct h1/breadcrumb (all 4 levels:
+   Redis → Redis Fundamentals → subtopic), 860px wrapper via `getComputedStyle`, tailored (not
+   DEFAULT) sidebar content confirmed via a direct text search for the tip's own distinctive
+   phrase. **Redis hub Phase 10: 1 of 21 topics complete.**
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
@@ -8382,6 +8470,13 @@ this same check before any other new hub's first subtopic set:
   All 23 cards `available: true` in `data/redis/home/home.ts`. Progress: `redisTotal=21` in progress.service.ts.
   Redis pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. RedisNavComponent at `shared/redis-nav/redis-nav.ts`.
+  Phase 10: 1 of 21 topics have subtopics (`/redis/fundamentals`, pilot batch, 2026-09-07) — see
+  "Redis hub subtopic wiring" section above for the `RedisNavComponent` accordion structural fix
+  (16th `*NavComponent`-based hub in a row missing it at pilot time), the `redis-fundamentals`
+  SUBTOPICS-map collision resolution (bare `fundamentals` collides with the JavaScript hub's own
+  topic key), and the genuine Redis-on-Flash version-line-conflation inaccuracy found and fixed
+  in the Fundamentals page's own "Can Redis hold more data than available RAM?" QnA (verified via
+  WebSearch against Redis's own 2016 press materials).
 - **GraphQL hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Pink theme `$accent: #e535ab`, `$tint: #fdf2f9`, dark `#f472b6`, dark bg `#3d0a26`. Search prefix `gql-`. Route: `/graphql`.
   CSS classes: `.gql-page`, `.gql-icon`, `.gql-section`. Icon content: `◈` at `font-size: 1.8rem`. `tech="javascript"`.

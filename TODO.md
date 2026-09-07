@@ -9179,7 +9179,23 @@ off here with a date.
 
 #### Redis — 21 topic pages
 
-- [ ] `/redis/fundamentals` — Redis Fundamentals
+- [x] 2026-09-07 — `/redis/fundamentals` — Redis Fundamentals. **First Redis hub Phase 10
+  pilot batch.** Fixed `RedisNavComponent`'s missing subtopics-accordion structural support (16th
+  `*NavComponent`-based hub in a row missing it at pilot time, copied directly from
+  `MongoNavComponent`'s own implementation). Fixed a genuine version-line-conflation inaccuracy in
+  the "Can Redis hold more data than available RAM?" QnA: it claimed "Redis 7.x introduced Redis
+  on Flash" — verified via WebSearch against Redis's own 2016 press materials that Redis on Flash
+  (Enterprise-only) predates open-source Redis 7.0 by roughly six years; the two conflate
+  completely separate version lines. 3 subtopics, each verified via direct Node.js execution: a
+  year-by-year timeline model exposing the real 6-year gap; a real ioredis keyspace-notification
+  expiration listener for a mechanism the page names but never builds; and a precise correction of
+  what MULTI/EXEC's "atomic" guarantee actually means (isolation from other clients, NOT rollback
+  of a runtime error in one queued command — verified against Redis's own documented transaction
+  semantics). SUBTOPICS key hub-prefixed to `redis-fundamentals` (bare `fundamentals` collides
+  with the JavaScript hub's own topic). Build clean on the first attempt. Browser-verified (nav
+  accordion fresh on first check via both `window.ng.getComponent()` and a live DOM query; main-
+  page fix rendering live; both subtopic pages checked; breadcrumb all 4 levels; sidebar
+  tailored).
 - [ ] `/redis/installation-setup` — Installation & CLI
 - [ ] `/redis/strings` — Strings
 - [ ] `/redis/hashes` — Hashes
