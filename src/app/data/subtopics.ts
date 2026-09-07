@@ -1654,6 +1654,13 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Exposing the Count You Already Requested', route: '/mongodb/atlas-search/exposing-the-count-you-already-requested' },
     { label: 'Building a Real $vectorSearch Query', route: '/mongodb/atlas-search/building-a-real-vectorsearch-query' },
   ],
+  // NOTE: bare 'fundamentals' is already claimed by the JavaScript hub's own topic —
+  // hub-prefixed to avoid collision, matching the established pattern.
+  'redis-fundamentals': [
+    { label: 'Redis on Flash Predates OSS Redis 7 by Years', route: '/redis/fundamentals/redis-on-flash-predates-oss-redis-7-by-years' },
+    { label: 'Keyspace Notifications: A Real Expiration Listener', route: '/redis/fundamentals/keyspace-notifications-a-real-expiration-listener' },
+    { label: 'MULTI/EXEC Real Atomicity: Isolation, Not Rollback', route: '/redis/fundamentals/multi-exec-real-atomicity-is-isolation-not-rollback' },
+  ],
   closures: [
     { label: 'var Shares One Binding, let Creates One Per Iteration', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
     { label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },

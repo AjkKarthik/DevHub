@@ -1,0 +1,26 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Redis Fundamentals" topicRoute="/redis/fundamentals"
+    subtopicLabel="Redis on Flash Predates OSS Redis 7 by Years" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">Redis on Flash Predates OSS Redis 7 by Years</h1>
+  <p class="page-subtitle">The main page's own QnA claimed "Redis 7.x introduced Redis on Flash" — verified against Redis's own 2016 press materials that this Enterprise-only feature predates open-source Redis 7.0 by roughly six years.</p>
+  <app-page-meta [readingTime]="6" difficulty="beginner" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>This directly corrects the main page's own QnA, and sets up the topic's remaining subtopics: a real keyspace-notification listener the page names but never builds, and a precise correction of what MULTI/EXEC's own "atomic" guarantee actually means.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Redis Fundamentals" topicRoute="/redis/fundamentals"
+    [next]="{ label: 'Keyspace Notifications: A Real Expiration Listener', route: '/redis/fundamentals/keyspace-notifications-a-real-expiration-listener' }" />
+</div>

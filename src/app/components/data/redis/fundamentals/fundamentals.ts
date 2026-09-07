@@ -262,7 +262,7 @@ async function getSession(token: string): Promise<string | null> {
     },
     {
       q: 'Can Redis hold more data than available RAM?',
-      a: 'Not in standard mode — Redis uses RAM for all data. When memory is exhausted, behaviour depends on the maxmemory-policy: noeviction (default) returns errors; LRU/LFU policies evict old keys to make room. Redis 7.x introduced Redis on Flash (enterprise) for tiered storage, but this is not open source.',
+      a: 'Not in standard mode — Redis uses RAM for all data. When memory is exhausted, behaviour depends on the maxmemory-policy: noeviction (default) returns errors; LRU/LFU policies evict old keys to make room. Redis Enterprise (not open source) offers tiered storage — Redis on Flash, since rebranded Auto Tiering — that extends RAM with local SSD/flash for less-active data, but this predates open-source Redis 7.x by years: verified against Redis\'s own 2016 press materials, Redis on Flash was announced in 2016, tied to Redis Enterprise\'s own separate release/version numbering, not the open-source Redis version line at all.',
     },
     {
       q: 'What is the difference between TTL and PTTL?',

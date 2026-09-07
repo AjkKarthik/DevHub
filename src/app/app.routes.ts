@@ -2726,7 +2726,12 @@ export const routes: Routes = [
   ] },
   { path: 'redis', children: [
     { path: '', loadComponent: () => import('./components/data/redis/home/home').then(m => m.RedisHome) },
-    { path: 'fundamentals',         loadComponent: () => import('./components/data/redis/fundamentals/fundamentals').then(m => m.RedisFundamentals) },
+    { path: 'fundamentals', children: [
+      { path: '', loadComponent: () => import('./components/data/redis/fundamentals/fundamentals').then(m => m.RedisFundamentals) },
+      { path: 'redis-on-flash-predates-oss-redis-7-by-years', loadComponent: () => import('./components/data/redis/fundamentals/subtopics/redis-on-flash-predates-oss-redis-7-by-years/redis-on-flash-predates-oss-redis-7-by-years').then(m => m.RedisOnFlashPredatesOssRedis7ByYearsSubtopic) },
+      { path: 'keyspace-notifications-a-real-expiration-listener', loadComponent: () => import('./components/data/redis/fundamentals/subtopics/keyspace-notifications-a-real-expiration-listener/keyspace-notifications-a-real-expiration-listener').then(m => m.KeyspaceNotificationsARealExpirationListenerSubtopic) },
+      { path: 'multi-exec-real-atomicity-is-isolation-not-rollback', loadComponent: () => import('./components/data/redis/fundamentals/subtopics/multi-exec-real-atomicity-is-isolation-not-rollback/multi-exec-real-atomicity-is-isolation-not-rollback').then(m => m.MultiExecRealAtomicityIsIsolationNotRollbackSubtopic) },
+    ] },
     { path: 'installation-setup',   loadComponent: () => import('./components/data/redis/installation-setup/installation-setup').then(m => m.RedisInstallationSetup) },
     { path: 'strings',              loadComponent: () => import('./components/data/redis/strings/strings').then(m => m.RedisStrings) },
     { path: 'hashes',               loadComponent: () => import('./components/data/redis/hashes/hashes').then(m => m.RedisHashes) },

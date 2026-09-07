@@ -2959,6 +2959,9 @@ const MONGO_LABELS: Record<string, string> = {
 
 const REDIS_LABELS: Record<string, string> = {
   'fundamentals':          'Redis Fundamentals',
+  'fundamentals/redis-on-flash-predates-oss-redis-7-by-years': 'Redis on Flash Predates OSS Redis 7 by Years',
+  'fundamentals/keyspace-notifications-a-real-expiration-listener': 'Keyspace Notifications: A Real Expiration Listener',
+  'fundamentals/multi-exec-real-atomicity-is-isolation-not-rollback': 'MULTI/EXEC Real Atomicity: Isolation, Not Rollback',
   'installation-setup':    'Installation & CLI',
   'strings':               'Strings',
   'hashes':                'Hashes',

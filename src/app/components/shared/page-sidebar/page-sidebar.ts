@@ -37546,6 +37546,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'TTL (time-to-live) on keys is Redis\'s built-in expiration mechanism — forgetting to set one on cache entries can silently turn Redis into an ever-growing memory leak.',
     ],
   },
+  'redis/fundamentals/redis-on-flash-predates-oss-redis-7-by-years': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Redis Fundamentals', route: '/redis/fundamentals' },
+      { label: 'Keyspace Notifications: A Real Expiration Listener', route: '/redis/fundamentals/keyspace-notifications-a-real-expiration-listener' },
+    ],
+    tip: 'Redis on Flash (now Auto Tiering) is a Redis Enterprise-only feature announced in 2016 — six years before open-source Redis reached version 7.0. Redis Enterprise Software maintains its own separate version line from open-source Redis.',
+    gotchas: [
+      'A version number cited for an Enterprise-only feature needs checking against Redis Enterprise\'s own release notes, not assumed to align with the open-source Redis version of the same digits.',
+    ],
+  },
+  'redis/fundamentals/keyspace-notifications-a-real-expiration-listener': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Redis Fundamentals', route: '/redis/fundamentals' },
+      { label: 'Redis on Flash Predates OSS Redis 7 by Years', route: '/redis/fundamentals/redis-on-flash-predates-oss-redis-7-by-years' },
+      { label: 'MULTI/EXEC Real Atomicity: Isolation, Not Rollback', route: '/redis/fundamentals/multi-exec-real-atomicity-is-isolation-not-rollback' },
+    ],
+    tip: 'notify-keyspace-events enables real-time pub/sub events on key changes — __keyevent@db__:event (subscribe by event, get the key as the message) and __keyspace@db__:key (subscribe by key, get the event as the message) are complementary, not competing, channel families.',
+    gotchas: [
+      'A subscriber connection cannot also run ordinary GET/SET commands — (P)SUBSCRIBE puts a connection into a dedicated mode requiring a separate client instance for anything else.',
+    ],
+  },
+  'redis/fundamentals/multi-exec-real-atomicity-is-isolation-not-rollback': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Redis Fundamentals', route: '/redis/fundamentals' },
+      { label: 'Keyspace Notifications: A Real Expiration Listener', route: '/redis/fundamentals/keyspace-notifications-a-real-expiration-listener' },
+    ],
+    tip: 'MULTI/EXEC never rolls back a runtime error in one of its queued commands — every other queued command still runs. Its real "atomic" guarantee is isolation: no other client\'s command can interleave once EXEC begins.',
+    gotchas: [
+      'Only a syntax/queueing-time error (detected before EXEC ever runs) aborts the whole transaction — a runtime error inside an otherwise-valid command does not.',
+    ],
+  },
   'redis/installation-setup': {
     apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
     related: [
