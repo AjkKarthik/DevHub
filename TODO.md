@@ -9281,7 +9281,28 @@ off here with a date.
   with all 3 links (5 toggles total across the hub); all main-page fixes confirmed live via direct
   component-data inspection; all 3 subtopic pages checked — breadcrumb, 860px wrapper, tailored
   sidebar content, no console errors.
-- [ ] `/redis/sets` — Sets
+- [x] `/redis/sets` — Sets (2026-09-07) — 6th Redis hub Phase 10 batch. Fixed a genuine missing
+  THIRD encoding tier: the theory/quiz/QnA all described sets as having only two encodings
+  (intset, hashtable), implying non-integer sets always use hashtable — verified via Redis's own
+  current config.c source a real listpack tier exists (set-max-listpack-entries default 128,
+  set-max-listpack-value default 64), added in Redis 7.2, for small non-integer sets. Fixed 4
+  touchpoints (theory bullet, two quiz explanations, a QnA answer). Verified a related suspicious
+  claim (SISMEMBER "always O(1)" vs. the QnA's own "intset... binary search" phrasing) and
+  confirmed it ALREADY CORRECT per SISMEMBER's own official docs (O(1) regardless of encoding) —
+  no fix applied. 3 subtopics, each independently verified: the real three-tier encoding decision
+  reproduced across 4 cases, with a Try It on leading-zero numeric strings ("007") correctly
+  failing the integer round-trip and landing in listpack not intset; SMOVE built as the actual
+  pending→processing job-queue example the QnA names but never shows, verified against SMOVE's
+  own documented atomicity guarantee and already-in-destination edge case exactly; and SINTERCARD
+  with LIMIT built as an "at least N mutual interests" threshold check, verified matching Redis's
+  own documented example output exactly. Self-caught and fixed a real bug in my own code before
+  publishing: an async helper function whose console.log calls forgot to await it, which would
+  have printed "Promise { true }" instead of the claimed "true" — caught by actually running the
+  code, not assuming it was correct. SUBTOPICS key left bare (confirmed collision-free). Build
+  clean on first attempt. Browser-verified with a proactive dev-server restart: nav accordion
+  opens with all 3 links (6 toggles total across the hub); all main-page fixes and the self-caught
+  await fix confirmed live via direct component-data inspection; all 3 subtopic pages checked —
+  breadcrumb, 860px wrapper, tailored sidebar content, no console errors.
 - [ ] `/redis/sorted-sets` — Sorted Sets
 - [ ] `/redis/key-commands` — Key Commands & Patterns
 - [ ] `/redis/transactions` — Transactions (MULTI/EXEC)

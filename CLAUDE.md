@@ -8501,6 +8501,49 @@ this same check before any other new hub's first subtopic set:
    860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed via a
    direct text search for the tip's own distinctive phrase. **Redis hub Phase 10: 5 of 21 topics
    complete.**
+6. **The `sets` batch found and fixed a genuine, previously-unmentioned THIRD encoding tier the
+   main page's theory, quiz, and QnA all omitted — a richer finding than a stale threshold number,
+   since it's a real missing tier, not just a wrong default**: the main page described sets as
+   having exactly two encodings (intset for small integer sets, hashtable for "larger sets or
+   string members"), implying any non-integer set immediately becomes a hashtable. Verified
+   directly against Redis's own current `src/config.c` source: `set-max-listpack-entries` (default
+   128) and `set-max-listpack-value` (default 64) confirm a real listpack tier for small
+   NON-INTEGER sets, added in Redis 7.2 and corroborated by multiple independent sources describing
+   the same three-tier model. Fixed the theory bullet, two separate quiz explanations, and a QnA
+   answer, all four restating the same two-encoding omission. **A related claim was checked and
+   confirmed ALREADY CORRECT, avoiding an unnecessary "fix"**: the quiz's "SISMEMBER is O(1)"
+   answer looked suspect against the QnA's own "intset... binary search" phrasing (binary search is
+   O(log N), not O(1)) — but verified directly against SISMEMBER's own official docs
+   (`"complexity": "O(1)"`), Redis's own documented complexity is unconditionally O(1) regardless of
+   internal encoding, so the quiz answer was left unchanged. Three subtopics, each independently
+   verified: (1) **fix-adjacent** — reproduces the real three-tier encoding decision directly,
+   verified via execution across four representative cases (100 integers → intset, 100 short
+   strings → listpack — the tier the old theory never mentioned, 200 short strings → hashtable, one
+   very long value → hashtable), with a Try It on numeric-looking strings with leading zeros (e.g.
+   `"007"`) correctly failing the integer round-trip check and landing in listpack, not intset; (2)
+   **gap-closing** — the QnA names SMOVE's job-queue state-transition use case in one paragraph
+   with zero codeTab ever calling it; built the actual pending→processing example, verified via
+   execution matching SMOVE's own documented atomicity guarantee and its own documented
+   already-in-destination edge case (still returns 1, no duplicate) exactly; (3) **gap-closing** —
+   a separate QnA names SINTERCARD and its LIMIT option in one sentence with zero codeTab ever
+   calling it; built both a plain SINTERCARD-vs-SINTER comparison and an "at least N mutual
+   interests" threshold check, verified via execution matching Redis's own documented example
+   output exactly (`SINTERCARD 2 key1 key2 LIMIT 1` → `1`). **A real, self-caught bug in my own
+   illustrative code, caught by verifying claimed console output against actual execution, not
+   assumed correct**: the "at least N mutual interests" codeTab declared its helper function
+   `async` but the two `console.log` calls never awaited it, so the ACTUAL output would have been
+   `Promise { true }`/`Promise { false }`, not the claimed bare `true`/`false` — caught by running
+   the exact code before publishing, fixed by adding the missing `await`, re-verified matching the
+   claimed output exactly afterward. No `SUBTOPICS` collision for `sets` (checked both
+   `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed collision-free, left bare).
+   Build passed clean (foreground, explicit `EXITCODE:$?` capture, zero real `ERROR` lines).
+   Browser-verified with a proactive dev-server restart before checking: no console errors on any
+   of the 4 pages; nav accordion opens with all 3 subtopic links (6 toggles total across the hub,
+   confirming `fundamentals`/`installation-setup`/`strings`/`hashes`/`lists`/`sets` all now have
+   subtopics); all main-page fixes and the self-caught `await` fix confirmed rendering live via
+   direct component-data inspection; all 3 subtopic pages checked individually — correct
+   h1/breadcrumb (all 4 levels), 860px wrapper via `getComputedStyle`, tailored (not DEFAULT)
+   sidebar content confirmed. **Redis hub Phase 10: 6 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -8684,15 +8727,15 @@ this same check before any other new hub's first subtopic set:
   All 23 cards `available: true` in `data/redis/home/home.ts`. Progress: `redisTotal=21` in progress.service.ts.
   Redis pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. RedisNavComponent at `shared/redis-nav/redis-nav.ts`.
-  Phase 10: 5 of 21 topics have subtopics (`/redis/fundamentals`, pilot batch;
-  `/redis/installation-setup`; `/redis/strings`; `/redis/hashes`; `/redis/lists`, finished
-  2026-09-07) — see "Redis hub subtopic wiring" section above for the `RedisNavComponent` accordion
-  structural fix (16th `*NavComponent`-based hub in a row missing it at pilot time), the
+  Phase 10: 6 of 21 topics have subtopics (`/redis/fundamentals`, pilot batch;
+  `/redis/installation-setup`; `/redis/strings`; `/redis/hashes`; `/redis/lists`; `/redis/sets`,
+  finished 2026-09-07) — see "Redis hub subtopic wiring" section above for the `RedisNavComponent`
+  accordion structural fix (16th `*NavComponent`-based hub in a row missing it at pilot time), the
   SUBTOPICS-map collision resolutions (bare `fundamentals` collides with the JavaScript hub's own
   topic key; `installation-setup` confirmed collision-free since MongoDB's own topic of the same
   name was proactively hub-prefixed to `mongo-installation-setup`; `strings` proactively
-  hub-prefixed to `redis-strings` against the DSA hub's own bare `strings` route; `hashes` and
-  `lists` both confirmed collision-free, left bare), and the genuine inaccuracies found and fixed
+  hub-prefixed to `redis-strings` against the DSA hub's own bare `strings` route; `hashes`, `lists`
+  and `sets` all confirmed collision-free, left bare), and the genuine inaccuracies found and fixed
   so far: Redis-on-Flash version-line conflation on the Fundamentals page; a `rename-command` typo
   plus two source-verified (`config.c`/`networking.c`) restart-requirement/protected-mode
   inaccuracies on the Installation & Setup page; a crash-window TTL-leak bug in the Rate Limiter
@@ -8701,9 +8744,12 @@ this same check before any other new hub's first subtopic set:
   outdated "cannot expire individual hash fields" claim (Redis 7.4 added real per-field TTL via
   HEXPIRE, verified against the command's own docs) plus a stale `hash-max-listpack-entries`
   default of 128 (verified via Redis's own current `config.c` source to be 512 since Redis 7.0);
-  and, on the Lists page, the same class of stale listpack-threshold claim applied to
+  on the Lists page, the same class of stale listpack-threshold claim applied to
   `list-max-listpack-size` — verified the real default (`-2`) is a per-node BYTE-SIZE cap (8KB),
-  not an entry count, fixed across five separate touchpoints restating the same overgeneralization.
+  not an entry count, fixed across five separate touchpoints restating the same overgeneralization;
+  and, on the Sets page, a real THIRD encoding tier (listpack, Redis 7.2+, via `set-max-listpack-
+  entries`/`set-max-listpack-value`) entirely missing from the page's own two-encoding (intset/
+  hashtable) description.
 - **GraphQL hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Pink theme `$accent: #e535ab`, `$tint: #fdf2f9`, dark `#f472b6`, dark bg `#3d0a26`. Search prefix `gql-`. Route: `/graphql`.
   CSS classes: `.gql-page`, `.gql-icon`, `.gql-section`. Icon content: `◈` at `font-size: 1.8rem`. `tech="javascript"`.
