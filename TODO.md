@@ -9241,7 +9241,25 @@ off here with a date.
   all 3 links (3 toggles total across the hub); the Challenge fix confirmed live via direct
   component-data inspection; all 3 subtopic pages checked — breadcrumb, 860px wrapper, no console
   errors.
-- [ ] `/redis/hashes` — Hashes
+- [x] `/redis/hashes` — Hashes (2026-09-07) — 4th Redis hub Phase 10 batch. Fixed two genuine,
+  well-verified inaccuracies: (1) the mistake block/QnA claimed "you cannot expire individual
+  hash fields" — verified Redis 7.4 added real per-field TTL via HEXPIRE/HTTL/HPERSIST (confirmed
+  against the command's own docs, since: "7.4.0"), fixed 4 touchpoints (mistake, QnA, revision
+  mustKnow, interviewFocus); (2) the theory/quiz stated hash-max-listpack-entries defaults to 128
+  in three places — verified via Redis's own current config.c source the real default is 512
+  since Redis 7.0 (was 128 on 6.x), fixed all three plus two more stale mentions found in the same
+  sweep. Confirmed two other claims (HRANDFIELD since 6.2, max 2^32-1 fields) already correct. 3
+  subtopics, each independently verified: HEXPIRE/HTTL/HPERSIST reproduced with documented return
+  codes; a genuine phantom-zero-quantity-item bug found and fixed in the Shopping Cart Challenge's
+  own reference solution (HSET on qty<=0 instead of HDEL); and HRANDFIELD's positive/negative
+  count semantics demonstrated (the theory names it but no codeTab ever called it). Self-caught
+  and fixed a double-backslash apostrophe-escaping mistake (`\\'` instead of `\'`) in a codeTab
+  label before the build ever ran. SUBTOPICS key left bare (confirmed collision-free). Build clean
+  on first attempt. Hit a fully-dead dev server (all prior instances stopped) — resolved with a
+  fresh cold-start via a backgrounded until-loop. Browser-verified: nav accordion opens with all 3
+  links (4 toggles total across the hub); both main-page fixes and the label-escaping fix
+  confirmed live via direct component-data inspection; all 3 subtopic pages checked — breadcrumb,
+  860px wrapper, no console errors.
 - [ ] `/redis/lists` — Lists
 - [ ] `/redis/sets` — Sets
 - [ ] `/redis/sorted-sets` — Sorted Sets

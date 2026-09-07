@@ -8403,6 +8403,57 @@ this same check before any other new hub's first subtopic set:
    checked individually — correct h1/breadcrumb (all 4 levels), 860px wrapper via
    `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed. **Redis hub Phase 10:
    3 of 21 topics complete.**
+4. **The `hashes` batch found and fixed TWO more genuine, well-verified inaccuracies, the first a
+   real version-drift finding on the same scale as the Strings topic's INCR+EXPIRE bug**: the main
+   page's own mistake block AND QnA both stated, unconditionally, "Redis TTLs apply to the entire
+   key... you cannot expire individual hash fields." Verified directly against the `HEXPIRE`
+   command's own official docs (`"since": "7.4.0"`) that Redis 7.4 (released 2024) added
+   `HEXPIRE`/`HPEXPIRE`/`HEXPIREAT`/`HPEXPIREAT` plus `HTTL`/`HPERSIST` for genuine, independent
+   per-field TTLs — a claim that was true for every version before 7.4 but stopped being true two
+   years ago. Fixed the mistake block, the QnA, the revision `mustKnow` bullet, and the
+   `interviewFocus` bullet (all four repeated or depended on the same now-outdated claim). Second,
+   the theory/quiz stated `hash-max-listpack-entries` defaults to 128 in three separate places —
+   verified directly against Redis's own current `src/config.c` source
+   (`createSizeTConfig("hash-max-listpack-entries", ..., 512, ...)`) that the real current default
+   is 512, confirmed via multiple independent secondary sources that this changed from 128 (Redis
+   6.x) to 512 with the Redis 7.0 release. Fixed all three occurrences (a theory bullet, a quiz
+   question's own title/explanation, and a second quiz explanation), plus two further QnA/sidebar
+   mentions of the stale "128" figure found in the same sweep. Two other specific, checkable claims
+   were verified and confirmed ALREADY CORRECT (no fix needed): HRANDFIELD introduced in Redis 6.2
+   (confirmed via the command's own `"since": "6.2.0"`) and a hash's max field count of 2^32 - 1
+   (confirmed via Redis's own FAQ). Three subtopics, each independently verified: (1) **fix-adjacent**
+   — reproduces HEXPIRE/HTTL/HPERSIST's own documented per-field return codes (-2 no field, -1 no
+   TTL, positive N, 1/2 for HEXPIRE's set/delete codes) via a `FakeRedisHash` simulation, verified
+   via direct execution matching every documented case exactly, plus a second codeTab confirming
+   HSET (not HEXPIRE) clears an existing field TTL, with a Try It on the key-TTL-takes-precedence
+   interaction rule; (2) **fix-adjacent** — a genuine, demonstrable data-integrity gap in the
+   Shopping Cart Challenge's own reference solution: `addItem` calls `HSET` unconditionally for any
+   quantity including 0, leaving a "phantom" zero-quantity field in the cart hash after an entirely
+   ordinary UI action (a quantity stepper's decrement button reaching zero) — verified via direct
+   execution that the buggy version leaves `{ widget: 3, gadget: 0 }` while the fixed version
+   (calling `HDEL` when `qty <= 0`) correctly leaves `{ widget: 3 }`; (3) **gap-closing** — the
+   theory names HRANDFIELD accurately but no codeTab ever calls it; built both a positive-count
+   ("distinct winners, capped at hash size") and negative-count ("exactly N results, repeats
+   allowed") demo, each verified via direct execution matching HRANDFIELD's own documented
+   positive/negative semantics exactly. **A real, self-caught double-backslash escaping mistake
+   caught and fixed before the build, not the standing sweep** — a `codeTabs.label` field (single-
+   quoted, not backtick-delimited) used `\\'` instead of the correct single `\'` for an apostrophe
+   ("HSET clears a field\\'s own TTL"), which would have rendered a visible stray backslash;
+   caught via direct file re-read before ever running the build, fixed to `\'`, confirmed rendering
+   correctly (`"HSET clears a field's own TTL"`) via direct component-data inspection after
+   publishing. No `SUBTOPICS` collision for `hashes` (checked both `subtopics.ts` forms and grepped
+   `app.routes.ts` directly, confirmed collision-free, left bare). Build passed clean (foreground,
+   explicit `EXITCODE:$?` capture, zero real `ERROR` lines). **Hit a fully-dead dev server this
+   batch** (`preview_list` returned zero running servers, all three prior instances long since
+   stopped) — resolved with a clean `preview_start` cold-start, waited out via a backgrounded
+   `until`-loop polling task rather than a fixed sleep. Browser-verified: no console errors on any
+   of the 4 pages; nav accordion opens with all 3 subtopic links (4 toggles total across the hub,
+   confirming `fundamentals`/`installation-setup`/`strings`/`hashes` all now have subtopics); both
+   main-page fixes (the TTL mistake/QnA and the listpack-entries default) confirmed rendering live
+   via direct component-data inspection; the self-caught label-escaping fix confirmed rendering
+   correctly (not as a stray backslash); all 3 subtopic pages checked individually — correct
+   h1/breadcrumb (all 4 levels), 860px wrapper via `getComputedStyle`, tailored (not DEFAULT)
+   sidebar content confirmed. **Redis hub Phase 10: 4 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -8586,19 +8637,23 @@ this same check before any other new hub's first subtopic set:
   All 23 cards `available: true` in `data/redis/home/home.ts`. Progress: `redisTotal=21` in progress.service.ts.
   Redis pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. RedisNavComponent at `shared/redis-nav/redis-nav.ts`.
-  Phase 10: 3 of 21 topics have subtopics (`/redis/fundamentals`, pilot batch;
-  `/redis/installation-setup`; `/redis/strings`, finished 2026-09-07) — see
+  Phase 10: 4 of 21 topics have subtopics (`/redis/fundamentals`, pilot batch;
+  `/redis/installation-setup`; `/redis/strings`; `/redis/hashes`, finished 2026-09-07) — see
   "Redis hub subtopic wiring" section above for the `RedisNavComponent` accordion structural fix
   (16th `*NavComponent`-based hub in a row missing it at pilot time), the SUBTOPICS-map collision
   resolutions (bare `fundamentals` collides with the JavaScript hub's own topic key;
   `installation-setup` confirmed collision-free since MongoDB's own topic of the same name was
   proactively hub-prefixed to `mongo-installation-setup`; `strings` proactively hub-prefixed to
-  `redis-strings` against the DSA hub's own bare `strings` route), and the genuine inaccuracies
-  found and fixed so far: Redis-on-Flash version-line conflation on the Fundamentals page; a
-  `rename-command` typo plus two source-verified (`config.c`/`networking.c`) restart-requirement/
-  protected-mode inaccuracies on the Installation & Setup page; and a crash-window TTL-leak bug in
-  the Rate Limiter Challenge's own INCR+EXPIRE pattern on the Strings page — the same mistake the
-  page's own mistake block warns against for SET+EXPIRE, fixed with an atomic Lua script.
+  `redis-strings` against the DSA hub's own bare `strings` route; `hashes` confirmed collision-free,
+  left bare), and the genuine inaccuracies found and fixed so far: Redis-on-Flash version-line
+  conflation on the Fundamentals page; a `rename-command` typo plus two source-verified
+  (`config.c`/`networking.c`) restart-requirement/protected-mode inaccuracies on the Installation &
+  Setup page; a crash-window TTL-leak bug in the Rate Limiter Challenge's own INCR+EXPIRE pattern
+  on the Strings page (the same mistake the page's own mistake block warns against for SET+EXPIRE,
+  fixed with an atomic Lua script); and, on the Hashes page, an outdated "cannot expire individual
+  hash fields" claim (Redis 7.4 added real per-field TTL via HEXPIRE, verified against the command's
+  own docs) plus a stale `hash-max-listpack-entries` default of 128 (verified via Redis's own
+  current `config.c` source to be 512 since Redis 7.0).
 - **GraphQL hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Pink theme `$accent: #e535ab`, `$tint: #fdf2f9`, dark `#f472b6`, dark bg `#3d0a26`. Search prefix `gql-`. Route: `/graphql`.
   CSS classes: `.gql-page`, `.gql-icon`, `.gql-section`. Icon content: `◈` at `font-size: 1.8rem`. `tech="javascript"`.
