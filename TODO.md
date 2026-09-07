@@ -9196,7 +9196,29 @@ off here with a date.
   accordion fresh on first check via both `window.ng.getComponent()` and a live DOM query; main-
   page fix rendering live; both subtopic pages checked; breadcrumb all 4 levels; sidebar
   tailored).
-- [ ] `/redis/installation-setup` — Installation & CLI
+- [x] `/redis/installation-setup` — Installation & CLI (2026-09-07) — 2nd Redis hub Phase 10 batch.
+  Fixed three genuine main-page issues: a `rename-command CONFIG """"` typo (4 quotes → correct 2,
+  verified via WebSearch), a QnA claiming bind/aof-use-rdb-preamble/cluster-enabled all "require a
+  restart" (verified DIRECTLY against Redis's own real `src/config.c` source: only cluster-enabled
+  is IMMUTABLE_CONFIG; bind and aof-use-rdb-preamble are both MODIFIABLE_CONFIG), and a
+  theory-bullet + quiz claim that protected-mode is lifted by "an explicit bind OR requirepass"
+  (verified against Redis's own real `networking.c` accept-time check: bind status plays no part
+  at all, only whether the default user has a password). Self-caught and corrected a wrong claim
+  of my own before publishing (a Try It originally asserted `port` was restart-only — a config.c
+  grep showed it's actually MODIFIABLE_CONFIG with a live `updatePort()` re-bind handler; swapped
+  to the verified-immutable `databases` directive instead). 3 subtopics, each independently
+  verified via direct execution/source-grepping: the three-directive flag lookup reproduced as a
+  TS model; the protected-mode accept-time check reproduced with the specific bind-0.0.0.0-still-
+  rejected counter-example; and a gap-closing subtopic tying CONFIG REWRITE's own
+  `server.configfile == NULL` failure mode directly to the main page's own Docker Setup codeTab
+  (fetched the REAL official redis Dockerfile/entrypoint — confirmed 2 of the page's 3 commands
+  leave configfile unset, only the mounted-conf-file command would let CONFIG REWRITE succeed).
+  SUBTOPICS key left bare (checked both forms + `app.routes.ts` — MongoDB's own identically-named
+  topic had already been proactively hub-prefixed to `mongo-installation-setup`, leaving this one
+  free). Build clean on first attempt. Browser-verified with a proactive dev-server restart: nav
+  accordion opens with all 3 links (2 toggles total across the hub); all three main-page fixes
+  confirmed live via direct component-data inspection; all 3 subtopic pages checked — breadcrumb,
+  860px wrapper, no console errors.
 - [ ] `/redis/strings` — Strings
 - [ ] `/redis/hashes` — Hashes
 - [ ] `/redis/lists` — Lists

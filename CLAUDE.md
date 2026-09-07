@@ -8287,6 +8287,65 @@ this same check before any other new hub's first subtopic set:
    Redis → Redis Fundamentals → subtopic), 860px wrapper via `getComputedStyle`, tailored (not
    DEFAULT) sidebar content confirmed via a direct text search for the tip's own distinctive
    phrase. **Redis hub Phase 10: 1 of 21 topics complete.**
+2. **The `installation-setup` batch found and fixed THREE genuine issues on the main page, one
+   requiring a mid-batch course-correction after a self-verification caught my own first draft
+   being wrong**: (1) a plain typo — `rename-command CONFIG """"` (four double-quote characters)
+   in the "recommended way to run Redis in production" QnA, verified via WebSearch against Redis's
+   own documented `rename-command` syntax that disabling a command takes exactly two quote
+   characters (`""`), fixed to `rename-command CONFIG ""`. (2) A QnA claiming "directives like
+   bind, aof-use-rdb-preamble, and cluster-enabled require a restart" — verified DIRECTLY against
+   Redis's own `src/config.c` (fetched and grepped, not assumed): only `cluster-enabled` is
+   registered `IMMUTABLE_CONFIG`; both `bind` (via `createSpecialConfig`, with its own live
+   `applyBind` handler) and `aof-use-rdb-preamble` are `MODIFIABLE_CONFIG` and change live with
+   `CONFIG SET`. (3) A theory bullet AND a quiz question both claiming protected-mode lifts its
+   restriction "unless (a) a bind address is explicitly configured, or (b) requirepass is set" —
+   verified directly against Redis's own `networking.c` accept-time check
+   (`server.protected_mode && DefaultUser->flags & USER_FLAG_NOPASS`) that bind status plays NO
+   part in the real condition at all; only whether the default user has a password matters. Fixed
+   both the quiz option text and its explanation. **A real self-caught correction during
+   subtopic-writing, not the standing sweep**: the first draft of subtopic 1's own Try It used
+   `port` as a "sounds fundamental, but is it restart-only?" example, asserting it was
+   `IMMUTABLE_CONFIG` — a direct grep of `config.c` before publishing revealed `port` is actually
+   `MODIFIABLE_CONFIG` with its own `updatePort()` handler that genuinely closes and reopens the
+   listening socket live (confirmed by reading `updatePort`'s own body, which calls
+   `changeListener()`). Swapped the example to `databases` (verified `IMMUTABLE_CONFIG`, no apply
+   handler at all) instead of publishing the wrong claim. Three subtopics, each independently
+   verified: (1) **fix-adjacent** — reproduces the three-directive flag lookup directly as a small
+   TypeScript model, verified via execution matching the real `config.c` registrations exactly,
+   with a Try It distinguishing four more directives (`maxmemory`/`appendonly` modifiable,
+   `cluster-enabled`/`databases` immutable) each independently checked against the real source
+   before being used as answer key; (2) **fix-adjacent** — reproduces the exact
+   `networking.c` accept-time condition as a small function, verified via execution across five
+   scenarios including the specific counter-example (bind 0.0.0.0 explicit + no password + external
+   client → still REJECTED, disproving the "explicit bind satisfies protected-mode" claim); (3)
+   **gap-closing** — a real, previously undocumented gap this same verification pass surfaced: the
+   main page's QnA names `CONFIG REWRITE` as how to persist a `CONFIG SET` change but never mentions
+   it can fail outright — verified directly against `configRewriteCommand`'s own
+   `server.configfile == NULL` check (exact error text `"The server is running without a config
+   file"` confirmed from source) and, separately, against the REAL official `redis` Docker image's
+   own `Dockerfile` (`CMD ["redis-server"]`, no config-file argument) and `docker-entrypoint.sh`
+   (never injects one), tying the gap directly to the main page's own three Docker Setup commands —
+   two of the three (no args; `--requirepass` as a bare CLI flag) leave `server.configfile` unset
+   and would fail `CONFIG REWRITE`, only the third (mounting and passing an explicit `.conf` path)
+   would succeed. **Lesson reinforced**: a plausible-sounding WebSearch summary claimed the official
+   image's default CMD points at a config-file path — checking the REAL, primary-source Dockerfile
+   directly (not the summary) showed this was wrong; the summary was itself a stale/incorrect
+   secondary source. No `SUBTOPICS` collision for `installation-setup` (checked both `subtopics.ts`
+   forms AND grepped `app.routes.ts` directly — confirmed the MongoDB hub's own identically-named
+   topic had already been proactively hub-prefixed to `mongo-installation-setup` anticipating this
+   exact moment, per its own inline `// NOTE:` comment — leaving bare `installation-setup` free for
+   this batch). All three `.ts` files swept for stray apostrophes (all matches confirmed safe,
+   inside backtick-delimited `code:`/`solution:` fields); bracket-balance and backtick-parity
+   confirmed clean on all three; no bare `@word`/single-`{` in any `.html` file's static text; no
+   generic/tag mentions needing `<code>&lt;...&gt;</code>` wrapping. Build passed clean (foreground,
+   explicit `EXITCODE:$?` capture, zero real `ERROR` lines). Browser-verified with a proactive
+   dev-server restart before checking: no console errors on any of the 4 pages; nav accordion opens
+   with all 3 subtopic links (2 toggles total across the hub, confirming both `fundamentals` and
+   `installation-setup` now have subtopics); all three main-page fixes confirmed rendering live via
+   direct component-data inspection (`cmp.qna`/`cmp.quiz` read directly, not just DOM text search);
+   all 3 subtopic pages checked individually — correct h1/breadcrumb (all 4 levels), 860px wrapper
+   via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed. **Redis hub Phase 10:
+   2 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -8470,13 +8529,16 @@ this same check before any other new hub's first subtopic set:
   All 23 cards `available: true` in `data/redis/home/home.ts`. Progress: `redisTotal=21` in progress.service.ts.
   Redis pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. RedisNavComponent at `shared/redis-nav/redis-nav.ts`.
-  Phase 10: 1 of 21 topics have subtopics (`/redis/fundamentals`, pilot batch, 2026-09-07) — see
+  Phase 10: 2 of 21 topics have subtopics (`/redis/fundamentals`, pilot batch;
+  `/redis/installation-setup`, finished 2026-09-07) — see
   "Redis hub subtopic wiring" section above for the `RedisNavComponent` accordion structural fix
   (16th `*NavComponent`-based hub in a row missing it at pilot time), the `redis-fundamentals`
   SUBTOPICS-map collision resolution (bare `fundamentals` collides with the JavaScript hub's own
-  topic key), and the genuine Redis-on-Flash version-line-conflation inaccuracy found and fixed
-  in the Fundamentals page's own "Can Redis hold more data than available RAM?" QnA (verified via
-  WebSearch against Redis's own 2016 press materials).
+  topic key; bare `installation-setup` confirmed collision-free since MongoDB's own topic of the
+  same name was proactively hub-prefixed to `mongo-installation-setup` anticipating this), and the
+  genuine inaccuracies found and fixed so far: Redis-on-Flash version-line conflation on the
+  Fundamentals page, and a `rename-command` typo plus two source-verified (`config.c`/
+  `networking.c`) restart-requirement/protected-mode inaccuracies on the Installation & Setup page.
 - **GraphQL hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Pink theme `$accent: #e535ab`, `$tint: #fdf2f9`, dark `#f472b6`, dark bg `#3d0a26`. Search prefix `gql-`. Route: `/graphql`.
   CSS classes: `.gql-page`, `.gql-icon`, `.gql-section`. Icon content: `◈` at `font-size: 1.8rem`. `tech="javascript"`.
