@@ -9357,7 +9357,24 @@ off here with a date.
   accordion opens with all 3 links; both main-page fixes confirmed live via direct
   component-data inspection; all 3 subtopic pages checked — breadcrumb (all 4 levels),
   860px wrapper, tailored sidebar content, no console errors.
-- [ ] `/redis/lua-scripting` — Lua Scripting
+- [x] 2026-09-08 — `/redis/lua-scripting` — Lua Scripting: 3 subtopics (the sandbox
+  actually rejects global variables, determinism no longer required since Redis 7.0,
+  redis.set_repl() for skipping replication of throwaway writes). Found and fixed the
+  strongest bug in this hub so far: the "Using global variables" mistake block had the
+  real sandbox behavior EXACTLY BACKWARDS — it claimed a global assignment silently
+  persists shared state between EVAL calls, but Redis's own docs (verified via two
+  independent sources) confirm the sandbox REJECTS global-variable creation outright with
+  a named error ("Script attempted to create global variable 'name'"), aborting the
+  script immediately every time. Also fixed a stale QnA claim that scripts "must be
+  deterministic for AOF/replication" — verified this described VERBATIM replication,
+  which was replaced as the default by effects replication in Redis 5.0 and removed
+  ENTIRELY as of 7.0, so math.random/TIME/SRANDMEMBER are all safe to use freely now.
+  SUBTOPICS key left bare (confirmed collision-free). Build clean on first attempt. Hit
+  a fully-dead dev server (empty process list) plus 3 stray auto-opened file:// tabs —
+  resolved with a clean cold-start, closed the stray tabs after verification.
+  Browser-verified: nav accordion opens with all 3 links; both main-page fixes confirmed
+  live via direct component-data inspection; all 3 subtopic pages checked — breadcrumb
+  (all 4 levels), 860px wrapper, tailored sidebar content, no console errors.
 - [ ] `/redis/persistence` — Persistence (RDB & AOF)
 - [ ] `/redis/pub-sub` — Pub/Sub Messaging
 - [ ] `/redis/streams` — Streams

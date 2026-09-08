@@ -8684,6 +8684,54 @@ this same check before any other new hub's first subtopic set:
    correct h1/breadcrumb (all 4 levels), 860px wrapper via `getComputedStyle`, tailored (not
    DEFAULT) sidebar content confirmed via direct text search. **Redis hub Phase 10: 9 of 21 topics
    complete.**
+10. **The `lua-scripting` batch found and fixed TWO more genuine, well-verified inaccuracies, one
+    of them the strongest finding this hub has produced so far — the page's own mistake block had
+    the actual sandbox behavior EXACTLY BACKWARDS**: the "Using global variables in Lua scripts"
+    mistake block claimed an undeclared-global assignment "persists between EVAL calls on same
+    server" as a silent, dangerous shared-mutable-state bug. Verified via TWO independent sources
+    (Redis's own official Lua API reference, fetched directly, plus a separate corroborating
+    GitHub issue) that Redis's Lua sandbox actively BLOCKS global-variable creation — the script
+    fails immediately every single time with a named error, "Script attempted to create global
+    variable 'name'". The real danger isn't a subtle, hard-to-find bug at all; it's a hard, loud
+    crash on the very first execution — the opposite of what the mistake block described. Fixed
+    the title, wrong-example comment, and explanation to state the verified, correct behavior.
+    Separately, the QnA's "(6) Deterministic required (no math.random without seed)... Scripts
+    must be deterministic for AOF/replication" limitation was verified stale: this described
+    VERBATIM script replication specifically, which was replaced as the default by EFFECTS
+    replication in Redis 5.0 and removed from Redis ENTIRELY as of 7.0 — confirmed directly via
+    `redis.replicate_commands()`'s own docs ("Until version: 7.0.0... as of Redis v7.0, verbatim
+    script replication is no longer supported") and the Lua API reference's own explicit statement
+    that "the restrictions on non-deterministic functions are removed" under effects replication.
+    Fixed the QnA to state math.random/TIME/SRANDMEMBER are all safe to use freely on any current
+    Redis version. Three subtopics, each verified via direct Node.js execution: (1) **fix-adjacent**
+    — reproduces the exact sandbox-rejection error via a small model matching the documented error
+    text precisely, with a Try It on the SCRIPT LOAD-vs-EXEC-time distinction (a global-variable
+    mistake hiding in a rarely-taken branch is undetected until that branch actually executes,
+    since SCRIPT LOAD only compiles and caches, never runs); (2) **fix-adjacent** — models the
+    verbatim-vs-effects replication distinction directly (forced-same-seed vs. genuinely-different-
+    every-call), with a Try It on WHY the replica never needs to independently reproduce a script's
+    own random value under effects replication (it only ever applies the primary's already-decided
+    write commands, never re-runs the script's Lua source at all); (3) **gap-closing** — a real,
+    documented feature the main page never mentions at all, `redis.set_repl()`, built from Redis's
+    own worked SUNIONSTORE/SRANDMEMBER/SADD/DEL example verified via direct execution matching the
+    docs' own claim that only the final SADD needs replicating, with a Try It confirming
+    `redis.set_repl()`'s scope resets to REPL_ALL automatically at the start of every new script
+    execution (verified against the docs' own "initialized to redis.REPL_ALL when a script begins
+    its execution" statement). No `SUBTOPICS` collision for `lua-scripting` (checked both
+    `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed collision-free, left
+    bare). All three `exercise.solution` fields swept clean of `<code>`/entity contamination; the
+    standing apostrophe-after-letter sweep, bracket-balance, and backtick-parity checks all found
+    nothing to fix across all three files and both main-page edits. Build passed clean (foreground
+    execution, explicit `EXITCODE:$?` capture, zero real `ERROR` lines). **Hit a fully-dead dev
+    server this batch** (`preview_list` returned an empty process array, alongside three stray
+    file:// tabs auto-opened by the harness's own post-Write preview hooks) — resolved with a
+    clean `preview_start` cold-start; the stray file:// tabs were closed once verification was
+    done rather than navigated into. Browser-verified: no console errors on any of the 4 pages;
+    nav accordion opens with all 3 subtopic links, confirmed via both `window.ng.getComponent()`
+    and a live DOM click-and-query; both main-page fixes confirmed rendering live via direct
+    component-data inspection; all 3 subtopic pages checked individually — correct h1/breadcrumb
+    (all 4 levels), 860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content
+    confirmed via direct text search. **Redis hub Phase 10: 10 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -8867,16 +8915,18 @@ this same check before any other new hub's first subtopic set:
   All 23 cards `available: true` in `data/redis/home/home.ts`. Progress: `redisTotal=21` in progress.service.ts.
   Redis pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. RedisNavComponent at `shared/redis-nav/redis-nav.ts`.
-  Phase 10: 9 of 21 topics have subtopics (`/redis/fundamentals`, pilot batch;
+  Phase 10: 10 of 21 topics have subtopics (`/redis/fundamentals`, pilot batch;
   `/redis/installation-setup`; `/redis/strings`; `/redis/hashes`; `/redis/lists`; `/redis/sets`;
-  `/redis/sorted-sets`; `/redis/key-commands`; `/redis/transactions`, finished 2026-09-08) — see
+  `/redis/sorted-sets`; `/redis/key-commands`; `/redis/transactions`; `/redis/lua-scripting`,
+  finished 2026-09-08) — see
   "Redis hub subtopic wiring" section above for
   the `RedisNavComponent` accordion structural fix (16th `*NavComponent`-based hub in a row missing
   it at pilot time), the SUBTOPICS-map collision resolutions (bare `fundamentals` collides with the
   JavaScript hub's own topic key; `installation-setup` confirmed collision-free since MongoDB's own
   topic of the same name was proactively hub-prefixed to `mongo-installation-setup`; `strings`
   proactively hub-prefixed to `redis-strings` against the DSA hub's own bare `strings` route;
-  `hashes`, `lists`, `sets` and `sorted-sets` all confirmed collision-free, left bare; `transactions`
+  `hashes`, `lists`, `sets`, `sorted-sets`, `key-commands` and `lua-scripting` all confirmed
+  collision-free, left bare; `transactions`
   hub-prefixed to `redis-transactions` against the SQL hub's own bare `transactions` route), and the
   genuine inaccuracies found and fixed so far: Redis-on-Flash version-line conflation on the
   Fundamentals page; a `rename-command` typo plus two source-verified (`config.c`/`networking.c`)
@@ -8901,7 +8951,11 @@ this same check before any other new hub's first subtopic set:
   Redis 6.0, two major versions earlier); and, on the Transactions (MULTI/EXEC) page, the WATCH/CAS
   codeTab and Atomic Inventory Decrement Challenge both used a single shared connection for WATCH —
   exactly the anti-pattern the page's own third mistake block warns against — verified via
-  simulation to risk a silent false-success CAS corruption, fixed with `redis.duplicate()`.
+  simulation to risk a silent false-success CAS corruption, fixed with `redis.duplicate()`; and,
+  on the Lua Scripting page, the "Using global variables" mistake block had the sandbox's actual
+  behavior exactly backwards (Redis rejects a global-variable assignment outright with a hard
+  error, it does not silently persist shared state) plus a stale "scripts must be deterministic"
+  QnA claim describing verbatim replication, which was removed entirely as of Redis 7.0.
 - **GraphQL hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Pink theme `$accent: #e535ab`, `$tint: #fdf2f9`, dark `#f472b6`, dark bg `#3d0a26`. Search prefix `gql-`. Route: `/graphql`.
   CSS classes: `.gql-page`, `.gql-icon`, `.gql-section`. Icon content: `◈` at `font-size: 1.8rem`. `tech="javascript"`.
