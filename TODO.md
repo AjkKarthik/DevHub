@@ -9303,7 +9303,26 @@ off here with a date.
   opens with all 3 links (6 toggles total across the hub); all main-page fixes and the self-caught
   await fix confirmed live via direct component-data inspection; all 3 subtopic pages checked —
   breadcrumb, 860px wrapper, tailored sidebar content, no console errors.
-- [ ] `/redis/sorted-sets` — Sorted Sets
+- [x] `/redis/sorted-sets` — Sorted Sets (2026-09-08) — 7th Redis hub Phase 10 batch. Fixed two
+  genuine issues: (1) the page's own "Node.js Patterns" codeTab's isAllowedSliding function
+  committed the exact member-collision mistake the page's own mistake block warns against — used
+  the bare millisecond timestamp as both score and member, verified via direct execution that 3
+  concurrent same-millisecond requests collapse into 1 counted entry; fixed to append
+  Math.random(), matching the mistake block's own recommended fix, re-verified counting all 3. (2)
+  The QnA presented ZRANGEBYLEX as current — verified against the command's own official docs it's
+  been deprecated since Redis 6.2.0 in favor of the unified ZRANGE ... BYLEX; fixed the QnA. 3
+  subtopics, each independently verified: the exact undercount/fix reproduced via a FakeRedisZSet
+  simulation; ZUNIONSTORE's WEIGHTS/AGGREGATE built from Redis's own documented worked example
+  (verified matching exactly) plus a genuinely undocumented-on-the-page 4th AGGREGATE mode, COUNT;
+  and the modern ZRANGE...BYLEX autocomplete pattern, verified matching Redis's own documented
+  example exactly. Self-caught and fixed a real escaping mistake before the build: an unnecessary
+  backslash-escaped backtick around text already wrapped in `<code>` tags (backticks need no
+  escaping in a single-quoted string at all) — would have rendered a stray visible backslash.
+  SUBTOPICS key left bare (confirmed collision-free). Build clean on first attempt. Browser-
+  verified with a proactive dev-server restart: nav accordion opens with all 3 links (7 toggles
+  total across the hub); both main-page fixes and the self-caught escaping fix confirmed live via
+  direct component-data inspection; all 3 subtopic pages checked — breadcrumb, 860px wrapper,
+  tailored sidebar content, no console errors.
 - [ ] `/redis/key-commands` — Key Commands & Patterns
 - [ ] `/redis/transactions` — Transactions (MULTI/EXEC)
 - [ ] `/redis/lua-scripting` — Lua Scripting

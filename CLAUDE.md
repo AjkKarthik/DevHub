@@ -8544,6 +8544,50 @@ this same check before any other new hub's first subtopic set:
    direct component-data inspection; all 3 subtopic pages checked individually — correct
    h1/breadcrumb (all 4 levels), 860px wrapper via `getComputedStyle`, tailored (not DEFAULT)
    sidebar content confirmed. **Redis hub Phase 10: 6 of 21 topics complete.**
+7. **The `sorted-sets` batch found and fixed TWO more genuine, well-verified issues, one a
+   self-contained bug mirroring the Strings topic's own INCR+EXPIRE finding, one a stale-status
+   claim requiring external verification**: the main page's own mistake block explicitly warns
+   against reusing a member string in a sliding-window ZADD — but the SAME page's own "Node.js
+   Patterns" codeTab committed exactly this mistake in its `isAllowedSliding` function, using
+   `` `${now}` `` as BOTH score and member with no added uniqueness. Verified via direct execution
+   that three concurrent requests landing in the same millisecond (a completely realistic burst,
+   since `Date.now()` only has millisecond resolution) collapse into just ONE counted entry —
+   fixed to `` `${now}-${Math.random()}` ``, matching the mistake block's own recommended fix
+   exactly, re-verified to correctly count all 3. Separately, the QnA presented `ZRANGEBYLEX` as a
+   current, recommended command — verified directly against the command's own official docs that
+   it has been DEPRECATED since Redis 6.2.0, in favor of the unified `ZRANGE key min max BYLEX`
+   (the same replacement pattern the page's own quiz explanation already correctly notes for
+   `ZRANGEBYSCORE` elsewhere on the same page) — fixed the QnA to state this. Three subtopics, each
+   independently verified: (1) **fix-adjacent** — reproduces the exact undercount and fix via a
+   `FakeRedisZSet` simulation, verified via direct execution matching both the buggy (1 counted)
+   and fixed (3 counted) outputs exactly, with a Try It on why a proposed `process.hrtime.bigint()`
+   nanosecond-timestamp fix only narrows the collision window probabilistically rather than closing
+   it structurally the way appending `Math.random()` does; (2) **gap-closing** — the QnA names
+   `ZUNIONSTORE`'s `WEIGHTS`/`AGGREGATE SUM|MIN|MAX` in one paragraph with zero codeTab ever
+   calling it; built the exact worked example from Redis's own docs (`WEIGHTS 2 3` on two sets,
+   verified via direct execution matching `one=5, three=9, two=10` precisely), plus a genuinely
+   undocumented-on-the-page fourth AGGREGATE mode, `COUNT` (verified against Redis's own docs),
+   demonstrated as a server-side tag-popularity tally; (3) **fix-adjacent** — builds the modern
+   `ZRANGE ... BYLEX` autocomplete pattern the QnA names but never shows, verified via direct
+   execution matching Redis's own documented `ZRANGEBYLEX` example exactly, with a Try It on why
+   using a non-constant score (e.g. a timestamp) for a lexicographic-only sorted set produces
+   genuinely UNSPECIFIED query results per Redis's own documentation, not merely "less optimal."
+   **A real, self-caught escaping mistake caught and fixed before the build, not the standing
+   sweep**: a `theory.points` bullet used an unnecessary backslash-escaped backtick (`` \\` ``)
+   around an inline code mention already wrapped in `<code>` tags — backticks need no escaping at
+   all inside a single-quoted string, and the redundant escape would have rendered a visible stray
+   backslash; caught by direct file re-read, fixed by removing both the escape and the now-redundant
+   inner backticks entirely (the `<code>` tag alone already provides the styling). No `SUBTOPICS`
+   collision for `sorted-sets` (checked both `subtopics.ts` forms and grepped `app.routes.ts`
+   directly, confirmed collision-free, left bare). Build passed clean (foreground, explicit
+   `EXITCODE:$?` capture, zero real `ERROR` lines). Browser-verified with a proactive dev-server
+   restart before checking: no console errors on any of the 4 pages; nav accordion opens with all 3
+   subtopic links (7 toggles total across the hub, confirming
+   `fundamentals`/`installation-setup`/`strings`/`hashes`/`lists`/`sets`/`sorted-sets` all now have
+   subtopics); both main-page fixes and the self-caught escaping fix confirmed rendering live via
+   direct component-data inspection; all 3 subtopic pages checked individually — correct
+   h1/breadcrumb (all 4 levels), 860px wrapper via `getComputedStyle`, tailored (not DEFAULT)
+   sidebar content confirmed. **Redis hub Phase 10: 7 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -8727,29 +8771,33 @@ this same check before any other new hub's first subtopic set:
   All 23 cards `available: true` in `data/redis/home/home.ts`. Progress: `redisTotal=21` in progress.service.ts.
   Redis pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. RedisNavComponent at `shared/redis-nav/redis-nav.ts`.
-  Phase 10: 6 of 21 topics have subtopics (`/redis/fundamentals`, pilot batch;
-  `/redis/installation-setup`; `/redis/strings`; `/redis/hashes`; `/redis/lists`; `/redis/sets`,
-  finished 2026-09-07) — see "Redis hub subtopic wiring" section above for the `RedisNavComponent`
-  accordion structural fix (16th `*NavComponent`-based hub in a row missing it at pilot time), the
-  SUBTOPICS-map collision resolutions (bare `fundamentals` collides with the JavaScript hub's own
-  topic key; `installation-setup` confirmed collision-free since MongoDB's own topic of the same
-  name was proactively hub-prefixed to `mongo-installation-setup`; `strings` proactively
-  hub-prefixed to `redis-strings` against the DSA hub's own bare `strings` route; `hashes`, `lists`
-  and `sets` all confirmed collision-free, left bare), and the genuine inaccuracies found and fixed
-  so far: Redis-on-Flash version-line conflation on the Fundamentals page; a `rename-command` typo
-  plus two source-verified (`config.c`/`networking.c`) restart-requirement/protected-mode
-  inaccuracies on the Installation & Setup page; a crash-window TTL-leak bug in the Rate Limiter
-  Challenge's own INCR+EXPIRE pattern on the Strings page (the same mistake the page's own mistake
-  block warns against for SET+EXPIRE, fixed with an atomic Lua script); on the Hashes page, an
-  outdated "cannot expire individual hash fields" claim (Redis 7.4 added real per-field TTL via
-  HEXPIRE, verified against the command's own docs) plus a stale `hash-max-listpack-entries`
-  default of 128 (verified via Redis's own current `config.c` source to be 512 since Redis 7.0);
-  on the Lists page, the same class of stale listpack-threshold claim applied to
-  `list-max-listpack-size` — verified the real default (`-2`) is a per-node BYTE-SIZE cap (8KB),
-  not an entry count, fixed across five separate touchpoints restating the same overgeneralization;
-  and, on the Sets page, a real THIRD encoding tier (listpack, Redis 7.2+, via `set-max-listpack-
-  entries`/`set-max-listpack-value`) entirely missing from the page's own two-encoding (intset/
-  hashtable) description.
+  Phase 10: 7 of 21 topics have subtopics (`/redis/fundamentals`, pilot batch;
+  `/redis/installation-setup`; `/redis/strings`; `/redis/hashes`; `/redis/lists`; `/redis/sets`;
+  `/redis/sorted-sets`, finished 2026-09-08) — see "Redis hub subtopic wiring" section above for
+  the `RedisNavComponent` accordion structural fix (16th `*NavComponent`-based hub in a row missing
+  it at pilot time), the SUBTOPICS-map collision resolutions (bare `fundamentals` collides with the
+  JavaScript hub's own topic key; `installation-setup` confirmed collision-free since MongoDB's own
+  topic of the same name was proactively hub-prefixed to `mongo-installation-setup`; `strings`
+  proactively hub-prefixed to `redis-strings` against the DSA hub's own bare `strings` route;
+  `hashes`, `lists`, `sets` and `sorted-sets` all confirmed collision-free, left bare), and the
+  genuine inaccuracies found and fixed so far: Redis-on-Flash version-line conflation on the
+  Fundamentals page; a `rename-command` typo plus two source-verified (`config.c`/`networking.c`)
+  restart-requirement/protected-mode inaccuracies on the Installation & Setup page; a crash-window
+  TTL-leak bug in the Rate Limiter Challenge's own INCR+EXPIRE pattern on the Strings page (the
+  same mistake the page's own mistake block warns against for SET+EXPIRE, fixed with an atomic Lua
+  script); on the Hashes page, an outdated "cannot expire individual hash fields" claim (Redis 7.4
+  added real per-field TTL via HEXPIRE, verified against the command's own docs) plus a stale
+  `hash-max-listpack-entries` default of 128 (verified via Redis's own current `config.c` source to
+  be 512 since Redis 7.0); on the Lists page, the same class of stale listpack-threshold claim
+  applied to `list-max-listpack-size` — verified the real default (`-2`) is a per-node BYTE-SIZE
+  cap (8KB), not an entry count, fixed across five separate touchpoints restating the same
+  overgeneralization; on the Sets page, a real THIRD encoding tier (listpack, Redis 7.2+, via
+  `set-max-listpack-entries`/`set-max-listpack-value`) entirely missing from the page's own
+  two-encoding (intset/hashtable) description; and, on the Sorted Sets page, a genuine self-
+  contained member-collision bug in the sliding-window rate limiter codeTab (mirroring the page's
+  own mistake block, undercounting concurrent same-millisecond requests) plus a stale claim that
+  `ZRANGEBYLEX` is current when it has actually been deprecated since Redis 6.2.0 in favor of the
+  unified `ZRANGE ... BYLEX`.
 - **GraphQL hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Pink theme `$accent: #e535ab`, `$tint: #fdf2f9`, dark `#f472b6`, dark bg `#3d0a26`. Search prefix `gql-`. Route: `/graphql`.
   CSS classes: `.gql-page`, `.gql-icon`, `.gql-section`. Icon content: `◈` at `font-size: 1.8rem`. `tech="javascript"`.
