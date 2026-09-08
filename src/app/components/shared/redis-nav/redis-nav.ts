@@ -241,7 +241,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
 
     <div class="nav-group">
       <p class="nav-group-label">Pub/Sub &amp; Streams</p>
-      <a routerLink="/redis/pub-sub" routerLinkActive="active"><span class="nl-text">Pub/Sub Messaging</span>@if(p.isDone('redis-pub-sub')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/redis/pub-sub" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Pub/Sub Messaging</span>
+        @if(p.isDone('redis-pub-sub')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('pub-sub')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('pub-sub')"
+                  (click)="toggleSubtopics('pub-sub', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('pub-sub'); as pubSubSubs) {
+        @if (isSubtopicsExpanded('pub-sub')) {
+          <div class="nav-subtopics">
+            @for (s of pubSubSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/redis/streams" routerLinkActive="active"><span class="nl-text">Redis Streams</span>@if(p.isDone('redis-streams')){<span class="nl-done">✓</span>}</a>
     </div>
 

@@ -1735,6 +1735,13 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'DEBUG SLEEP vs. SAVE: Two Completely Different Commands', route: '/redis/persistence/debug-sleep-vs-save-two-different-commands' },
     { label: 'Monitoring BGSAVE’s Copy-on-Write Memory Growth', route: '/redis/persistence/monitoring-bgsave-cow-memory-growth' },
   ],
+  // NOTE: bare 'pub-sub' confirmed collision-free (checked both quoted
+  // and unquoted forms in this file, plus app.routes.ts route paths directly).
+  'pub-sub': [
+    { label: 'The Complete Subscribe-Mode Command List', route: '/redis/pub-sub/the-complete-subscribe-mode-command-list' },
+    { label: 'RESP3 Removes the Subscribe-Mode Restriction Entirely', route: '/redis/pub-sub/resp3-removes-the-subscribe-mode-restriction' },
+    { label: 'Sharded Pub/Sub: SSUBSCRIBE and SPUBLISH, Actually Demonstrated', route: '/redis/pub-sub/sharded-pubsub-ssubscribe-and-spublish' },
+  ],
   closures: [
     { label: 'var Shares One Binding, let Creates One Per Iteration', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
     { label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },

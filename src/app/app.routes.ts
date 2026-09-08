@@ -2792,7 +2792,12 @@ export const routes: Routes = [
       { path: 'debug-sleep-vs-save-two-different-commands', loadComponent: () => import('./components/data/redis/persistence/subtopics/debug-sleep-vs-save-two-different-commands/debug-sleep-vs-save-two-different-commands').then(m => m.DebugSleepVsSaveTwoDifferentCommandsSubtopic) },
       { path: 'monitoring-bgsave-cow-memory-growth', loadComponent: () => import('./components/data/redis/persistence/subtopics/monitoring-bgsave-cow-memory-growth/monitoring-bgsave-cow-memory-growth').then(m => m.MonitoringBgsaveCowMemoryGrowthSubtopic) },
     ] },
-    { path: 'pub-sub',              loadComponent: () => import('./components/data/redis/pub-sub/pub-sub').then(m => m.RedisPubSub) },
+    { path: 'pub-sub', children: [
+      { path: '', loadComponent: () => import('./components/data/redis/pub-sub/pub-sub').then(m => m.RedisPubSub) },
+      { path: 'the-complete-subscribe-mode-command-list', loadComponent: () => import('./components/data/redis/pub-sub/subtopics/the-complete-subscribe-mode-command-list/the-complete-subscribe-mode-command-list').then(m => m.TheCompleteSubscribeModeCommandListSubtopic) },
+      { path: 'resp3-removes-the-subscribe-mode-restriction', loadComponent: () => import('./components/data/redis/pub-sub/subtopics/resp3-removes-the-subscribe-mode-restriction/resp3-removes-the-subscribe-mode-restriction').then(m => m.Resp3RemovesTheSubscribeModeRestrictionSubtopic) },
+      { path: 'sharded-pubsub-ssubscribe-and-spublish', loadComponent: () => import('./components/data/redis/pub-sub/subtopics/sharded-pubsub-ssubscribe-and-spublish/sharded-pubsub-ssubscribe-and-spublish').then(m => m.ShardedPubsubSsubscribeAndSpublishSubtopic) },
+    ] },
     { path: 'streams',              loadComponent: () => import('./components/data/redis/streams/streams').then(m => m.RedisStreams) },
     { path: 'caching-patterns',     loadComponent: () => import('./components/data/redis/caching-patterns/caching-patterns').then(m => m.RedisCachingPatterns) },
     { path: 'eviction-policies',    loadComponent: () => import('./components/data/redis/eviction-policies/eviction-policies').then(m => m.RedisEvictionPolicies) },

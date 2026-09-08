@@ -37923,6 +37923,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A slow subscriber can be disconnected by Redis (client-output-buffer-limit) if it can\'t keep up with the message rate.',
     ],
   },
+  'redis/pub-sub/the-complete-subscribe-mode-command-list': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Pub/Sub Messaging', route: '/redis/pub-sub' },
+      { label: 'RESP3 Removes the Subscribe-Mode Restriction Entirely', route: '/redis/pub-sub/resp3-removes-the-subscribe-mode-restriction' },
+    ],
+    tip: 'Verified directly against Redis\'s own docs: BOTH RESET and QUIT are allowed on a subscribed connection, alongside SUBSCRIBE/SSUBSCRIBE/PSUBSCRIBE/UNSUBSCRIBE/SUNSUBSCRIBE/PUNSUBSCRIBE/PING — not just one or the other, as two different sections of the main page each partially claimed.',
+    gotchas: [
+      'RESET is comparatively new to this list (Redis 6.2+) — a client written against older Redis-version documentation may not expect it to be allowed here.',
+    ],
+  },
+  'redis/pub-sub/resp3-removes-the-subscribe-mode-restriction': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Pub/Sub Messaging', route: '/redis/pub-sub' },
+      { label: 'The Complete Subscribe-Mode Command List', route: '/redis/pub-sub/the-complete-subscribe-mode-command-list' },
+      { label: 'Sharded Pub/Sub: SSUBSCRIBE and SPUBLISH, Actually Demonstrated', route: '/redis/pub-sub/sharded-pubsub-ssubscribe-and-spublish' },
+    ],
+    tip: 'The "two connections needed for Pub/Sub" rule is a RESP2-specific limitation, not a fundamental one — verified directly against Redis\'s own docs, a client that has opted into RESP3 via HELLO can issue any command while subscribed on the same connection.',
+    gotchas: [
+      'This is a genuine capability, not a recommendation to abandon two connections by default — mixing subscription and regular traffic adds real client-side routing complexity, and library support for it varies.',
+    ],
+  },
+  'redis/pub-sub/sharded-pubsub-ssubscribe-and-spublish': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Pub/Sub Messaging', route: '/redis/pub-sub' },
+      { label: 'RESP3 Removes the Subscribe-Mode Restriction Entirely', route: '/redis/pub-sub/resp3-removes-the-subscribe-mode-restriction' },
+    ],
+    tip: 'SPUBLISH routes a message to exactly ONE shard — the one owning the channel name\'s cluster slot, via the same slot-hashing algorithm used for regular keys — instead of broadcasting to every node the way classic PUBLISH does in Cluster mode.',
+    gotchas: [
+      'A channel name always hashes to the same slot, so SPUBLISH routing is fully deterministic — there is no load-based or random splitting across shards for a given channel.',
+    ],
+  },
   'redis/transactions': {
     apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
     related: [
