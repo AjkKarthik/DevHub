@@ -1699,6 +1699,13 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'SMOVE: Atomic State Transitions Between Sets', route: '/redis/sets/smove-atomic-state-transitions-between-sets' },
     { label: 'SINTERCARD: Counting Overlap Without Fetching It', route: '/redis/sets/sintercard-counting-overlap-without-fetching-it' },
   ],
+  // NOTE: bare 'sorted-sets' confirmed collision-free (checked both quoted
+  // and unquoted forms, plus app.routes.ts route paths directly).
+  'sorted-sets': [
+    { label: 'The Sliding Window Rate Limiter Has the Same Member-Collision Bug', route: '/redis/sorted-sets/sliding-window-has-the-same-member-collision-bug' },
+    { label: 'ZUNIONSTORE: WEIGHTS, AGGREGATE, and the COUNT Mode', route: '/redis/sorted-sets/zunionstore-weights-aggregate-and-count-mode' },
+    { label: 'ZRANGEBYLEX Is Deprecated — Use ZRANGE ... BYLEX', route: '/redis/sorted-sets/zrangebylex-is-deprecated-use-zrange-bylex' },
+  ],
   closures: [
     { label: 'var Shares One Binding, let Creates One Per Iteration', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
     { label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },

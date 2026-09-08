@@ -37832,6 +37832,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Updating a member\'s score with ZADD (without NX/XX flags) implicitly re-sorts it — repeated updates to the same key at high frequency have real overhead.',
     ],
   },
+  'redis/sorted-sets/sliding-window-has-the-same-member-collision-bug': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Sorted Sets', route: '/redis/sorted-sets' },
+      { label: 'ZUNIONSTORE: WEIGHTS, AGGREGATE, and the COUNT Mode', route: '/redis/sorted-sets/zunionstore-weights-aggregate-and-count-mode' },
+    ],
+    tip: 'A sliding-window ZADD using a bare timestamp as BOTH score and member silently undercounts — two requests in the same millisecond collide on the same member and only one is ever counted.',
+    gotchas: [
+      'This bug only surfaces under real concurrency — a sequential test suite calling the rate limiter one request at a time never exercises it.',
+    ],
+  },
+  'redis/sorted-sets/zunionstore-weights-aggregate-and-count-mode': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Sorted Sets', route: '/redis/sorted-sets' },
+      { label: 'The Sliding Window Rate Limiter Has the Same Member-Collision Bug', route: '/redis/sorted-sets/sliding-window-has-the-same-member-collision-bug' },
+      { label: 'ZRANGEBYLEX Is Deprecated — Use ZRANGE ... BYLEX', route: '/redis/sorted-sets/zrangebylex-is-deprecated-use-zrange-bylex' },
+    ],
+    tip: 'AGGREGATE has a real fourth mode beyond SUM/MIN/MAX: COUNT, which ignores original scores entirely and tallies how many input sets each member appears in (optionally weighted).',
+    gotchas: [
+      'WEIGHTS multiplies each element\'s score by its OWN set\'s weight BEFORE aggregation, not after the combined result is computed.',
+    ],
+  },
+  'redis/sorted-sets/zrangebylex-is-deprecated-use-zrange-bylex': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Sorted Sets', route: '/redis/sorted-sets' },
+      { label: 'ZUNIONSTORE: WEIGHTS, AGGREGATE, and the COUNT Mode', route: '/redis/sorted-sets/zunionstore-weights-aggregate-and-count-mode' },
+    ],
+    tip: 'ZRANGEBYLEX has been deprecated since Redis 6.2.0 — the modern equivalent is the unified ZRANGE key min max BYLEX, the same replacement pattern already used for ZRANGEBYSCORE.',
+    gotchas: [
+      'Lexicographic range results are documented as unspecified once members have different scores — a set used for pure lexicographic queries needs a constant score for every member.',
+    ],
+  },
   'redis/streams': {
     apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
     related: [

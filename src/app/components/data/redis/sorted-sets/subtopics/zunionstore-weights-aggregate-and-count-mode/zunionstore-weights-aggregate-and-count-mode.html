@@ -1,0 +1,27 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Sorted Sets" topicRoute="/redis/sorted-sets"
+    subtopicLabel="ZUNIONSTORE: WEIGHTS, AGGREGATE, and the COUNT Mode" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">ZUNIONSTORE: WEIGHTS, AGGREGATE, and the COUNT Mode</h1>
+  <p class="page-subtitle">The main page's own QnA describes WEIGHTS and AGGREGATE SUM/MIN/MAX in one paragraph but never demonstrates them — and never mentions a real fourth AGGREGATE mode, COUNT, verified against Redis's own docs.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>This closes a real gap the main page's own QnA leaves open — ZUNIONSTORE is described but never demonstrated, and COUNT isn't mentioned at all. Next: ZRANGEBYLEX, which the page's own QnA presents as current when it has actually been deprecated since Redis 6.2.0.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Sorted Sets" topicRoute="/redis/sorted-sets"
+    [prev]="{ label: 'The Sliding Window Rate Limiter Has the Same Member-Collision Bug', route: '/redis/sorted-sets/sliding-window-has-the-same-member-collision-bug' }"
+    [next]="{ label: 'ZRANGEBYLEX Is Deprecated — Use ZRANGE ... BYLEX', route: '/redis/sorted-sets/zrangebylex-is-deprecated-use-zrange-bylex' }" />
+</div>

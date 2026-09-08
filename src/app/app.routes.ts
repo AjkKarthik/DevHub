@@ -2762,7 +2762,12 @@ export const routes: Routes = [
       { path: 'smove-atomic-state-transitions-between-sets', loadComponent: () => import('./components/data/redis/sets/subtopics/smove-atomic-state-transitions-between-sets/smove-atomic-state-transitions-between-sets').then(m => m.SmoveAtomicStateTransitionsBetweenSetsSubtopic) },
       { path: 'sintercard-counting-overlap-without-fetching-it', loadComponent: () => import('./components/data/redis/sets/subtopics/sintercard-counting-overlap-without-fetching-it/sintercard-counting-overlap-without-fetching-it').then(m => m.SintercardCountingOverlapWithoutFetchingItSubtopic) },
     ] },
-    { path: 'sorted-sets',          loadComponent: () => import('./components/data/redis/sorted-sets/sorted-sets').then(m => m.RedisSortedSets) },
+    { path: 'sorted-sets', children: [
+      { path: '', loadComponent: () => import('./components/data/redis/sorted-sets/sorted-sets').then(m => m.RedisSortedSets) },
+      { path: 'sliding-window-has-the-same-member-collision-bug', loadComponent: () => import('./components/data/redis/sorted-sets/subtopics/sliding-window-has-the-same-member-collision-bug/sliding-window-has-the-same-member-collision-bug').then(m => m.SlidingWindowHasTheSameMemberCollisionBugSubtopic) },
+      { path: 'zunionstore-weights-aggregate-and-count-mode', loadComponent: () => import('./components/data/redis/sorted-sets/subtopics/zunionstore-weights-aggregate-and-count-mode/zunionstore-weights-aggregate-and-count-mode').then(m => m.ZunionstoreWeightsAggregateAndCountModeSubtopic) },
+      { path: 'zrangebylex-is-deprecated-use-zrange-bylex', loadComponent: () => import('./components/data/redis/sorted-sets/subtopics/zrangebylex-is-deprecated-use-zrange-bylex/zrangebylex-is-deprecated-use-zrange-bylex').then(m => m.ZrangebylexIsDeprecatedUseZrangeBylexSubtopic) },
+    ] },
     { path: 'key-commands',         loadComponent: () => import('./components/data/redis/key-commands/key-commands').then(m => m.RedisKeyCommands) },
     { path: 'transactions',         loadComponent: () => import('./components/data/redis/transactions/transactions').then(m => m.RedisTransactions) },
     { path: 'lua-scripting',        loadComponent: () => import('./components/data/redis/lua-scripting/lua-scripting').then(m => m.RedisLuaScripting) },
