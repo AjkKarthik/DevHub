@@ -71,7 +71,7 @@ const theory: TheoryPoint[] = [
 const codeTabs: CodeTab[] = [
   {
     label: 'LogQL Queries',
-    language: 'typescript',
+    language: 'bash',
     code: `# ── LOG SELECTION ─────────────────────────────────────────────────
 
 # All error logs from order-service
@@ -115,7 +115,7 @@ count_over_time(
   },
   {
     label: 'Promtail Config',
-    language: 'typescript',
+    language: 'bash',
     code: `# promtail-config.yaml — Kubernetes DaemonSet log shipping
 server:
   http_listen_port: 9080
@@ -149,15 +149,18 @@ scrape_configs:
           stages:
             - drop:
                 expression: '.*"level":"debug".*'
-      # Sample 10% of health check logs
+      # Drop health check logs entirely -- Promtail's drop stage is
+      # purely deterministic (match or don't match), it has NO
+      # percentage/probabilistic parameter, so a fractional "sample 10%"
+      # is not actually achievable at this layer. True probabilistic
+      # sampling has to happen in APPLICATION code, before the log line
+      # is ever emitted (see the Structured Logging topic's log sampler).
       - match:
           selector: '{job="kubernetes-pods"}'
           stages:
             - drop:
                 expression: '"path":"/health"'
-                drop_counter_reason: health_check_sample
-                # Drop 90% of health checks:
-                # keep only when hash(log_line) % 10 == 0
+                drop_counter_reason: health_check_full_drop
     relabel_configs:
       - source_labels: [__meta_kubernetes_namespace]
         target_label: namespace

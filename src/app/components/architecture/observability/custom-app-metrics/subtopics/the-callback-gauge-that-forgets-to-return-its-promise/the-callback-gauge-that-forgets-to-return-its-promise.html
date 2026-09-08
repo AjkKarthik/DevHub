@@ -1,0 +1,27 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Custom App Metrics" topicRoute="/observability/custom-app-metrics"
+    subtopicLabel="The Callback Gauge That Forgets to Return Its Promise" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">The Callback Gauge That Forgets to Return Its Promise</h1>
+  <p class="page-subtitle">prom-client only awaits a Gauge's collect() function if it returns a Promise — verified that the main page's own pendingOrdersGauge silently scrapes stale, empty data because it never does.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic builds the domain-event pattern the main page names in theory but never shows in code — emitting structured business events and converting them to metrics in a separate, decoupled listener.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Custom App Metrics" topicRoute="/observability/custom-app-metrics"
+    [prev]="{ label: 'The Abstraction Layer’s Hardcoded Empty Label Set', route: '/observability/custom-app-metrics/the-abstraction-layers-hardcoded-empty-label-set' }"
+    [next]="{ label: 'The Domain-Event Pattern for Decoupled Metrics', route: '/observability/custom-app-metrics/the-domain-event-pattern-for-decoupled-metrics' }" />
+</div>

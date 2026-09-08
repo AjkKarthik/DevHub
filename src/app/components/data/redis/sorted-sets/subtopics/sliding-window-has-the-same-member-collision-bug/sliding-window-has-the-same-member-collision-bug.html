@@ -1,0 +1,26 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Sorted Sets" topicRoute="/redis/sorted-sets"
+    subtopicLabel="The Sliding Window Rate Limiter Has the Same Member-Collision Bug" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">The Sliding Window Rate Limiter Has the Same Member-Collision Bug Its Own Mistake Block Warns Against</h1>
+  <p class="page-subtitle">The main page's own mistake block warns against reusing a member string in a sliding-window ZADD — but its own "Node.js Patterns" codeTab commits exactly this mistake, silently undercounting concurrent requests.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>This is the main-page fix for this topic — the "Node.js Patterns" codeTab now uses a unique per-request member, matching its own mistake block's own recommended fix. Next: ZUNIONSTORE, named in the QnA with WEIGHTS and AGGREGATE but never demonstrated in any codeTab.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Sorted Sets" topicRoute="/redis/sorted-sets"
+    [next]="{ label: 'ZUNIONSTORE: WEIGHTS, AGGREGATE, and the COUNT Mode', route: '/redis/sorted-sets/zunionstore-weights-aggregate-and-count-mode' }" />
+</div>

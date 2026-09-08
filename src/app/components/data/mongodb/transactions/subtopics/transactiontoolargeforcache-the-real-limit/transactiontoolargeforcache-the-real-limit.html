@@ -1,0 +1,26 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Transactions" topicRoute="/mongodb/transactions"
+    subtopicLabel="TransactionTooLargeForCache: The Real Limit" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">TransactionTooLargeForCache: The Real Limit</h1>
+  <p class="page-subtitle">The main page's own QnA claimed a hard "1000 write operations" cap per transaction — verified against MongoDB's own Production Considerations page that no such limit exists; the real ceiling is the WiredTiger cache.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>This directly corrects the main page's own QnA, and completes the topic's arc across all three subtopics: the read concern a transaction runs under, how to retry it correctly when something transient goes wrong, and the one real hard limit on how much data it can ever hold at once.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Transactions" topicRoute="/mongodb/transactions"
+    [prev]="{ label: 'The Real Dual-Retry Loop', route: '/mongodb/transactions/dual-retry-loop-transient-vs-unknown-commit' }" />
+</div>

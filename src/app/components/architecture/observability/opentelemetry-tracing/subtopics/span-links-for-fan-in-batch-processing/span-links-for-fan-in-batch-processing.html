@@ -1,0 +1,27 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="OTel Tracing Deep Dive" topicRoute="/observability/opentelemetry-tracing"
+    subtopicLabel="Span Links for Fan-In Batch Processing" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">Span Links for Fan-In Batch Processing</h1>
+  <p class="page-subtitle">One of the page's own quiz explanations names span Links as part of the trace data model — this subtopic builds and verifies the one case a parent-child edge structurally can't handle: a batch span with several unrelated origins.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic returns to a plain parent-child chain, but one that breaks in a different, subtler way — a callback queued by a legacy driver and invoked much later, outside the async context that created it.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="OTel Tracing Deep Dive" topicRoute="/observability/opentelemetry-tracing"
+    [prev]="{ label: 'The Kafka Producer Span That Leaks When send() Throws', route: '/observability/opentelemetry-tracing/the-kafka-producer-span-that-leaks-when-send-throws' }"
+    [next]="{ label: 'context.bind() Rescues a Queued Legacy Callback', route: '/observability/opentelemetry-tracing/context-bind-rescues-a-queued-legacy-callback' }" />
+</div>

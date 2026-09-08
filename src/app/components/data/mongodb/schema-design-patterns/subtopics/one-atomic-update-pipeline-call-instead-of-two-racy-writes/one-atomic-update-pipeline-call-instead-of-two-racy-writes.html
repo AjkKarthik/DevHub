@@ -1,0 +1,26 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Schema Design Patterns" topicRoute="/mongodb/schema-design-patterns"
+    subtopicLabel="One Atomic Update-Pipeline Call Instead of Two Racy Writes" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">One Atomic Update-Pipeline Call Instead of Two Racy Writes</h1>
+  <p class="page-subtitle">The main page's own Challenge solution originally split addReview's atomic increment and its avgRating recompute into two separate writes — verified via a concurrency model that this silently stores a stale average under real interleaving.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="MongoDB 4.2+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>This ties directly to the sibling Aggregation Expressions topic's own $addFields self-reference subtopic — the SAME underlying question ("can a later part see an earlier part computed nearby") has opposite answers depending on whether you're inside one $addFields stage or across separate stages in an update-pipeline array.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Schema Design Patterns" topicRoute="/mongodb/schema-design-patterns"
+    [next]="{ label: 'The Attribute Pattern Needs $elemMatch to Avoid False Positives', route: '/mongodb/schema-design-patterns/attribute-pattern-needs-elemmatch-to-avoid-false-positives' }" />
+</div>

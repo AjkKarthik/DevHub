@@ -1,0 +1,26 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Query Performance" topicRoute="/mongodb/query-performance"
+    subtopicLabel="reIndex Never Got the Non-Blocking Hybrid Build Fix" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">reIndex Never Got the Non-Blocking Hybrid Build Fix</h1>
+  <p class="page-subtitle">The main page's own QnA claimed "MongoDB 4.4+: background reindex supported (non-blocking)" — verified against MongoDB's own documentation that reIndex() has never supported a non-blocking mode, on any version.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="MongoDB 5.0+ (standalone only)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>This directly extends the sibling Indexes topic's own Hybrid Index Builds subtopic — the SAME question ("does this index-related command block reads/writes") has genuinely different answers for createIndex() and reIndex(), even though both sound like they should behave the same way.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Query Performance" topicRoute="/mongodb/query-performance"
+    [next]="{ label: 'Compact Stopped Blocking CRUD in MongoDB 4.4', route: '/mongodb/query-performance/compact-stopped-blocking-crud-in-mongodb-4-4' }" />
+</div>

@@ -1,0 +1,27 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Replication & Sharding" topicRoute="/mongodb/replication-sharding"
+    subtopicLabel="The Oplog Default Has a 990MB Floor" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">The Oplog Default Has a 990MB Floor</h1>
+  <p class="page-subtitle">The main page's own QnA described the default oplog size as "5% of disk or 50GB, whichever is smaller" — correct on the upper side, but missing the 990MB minimum floor MongoDB's own documentation also specifies.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>This tightens the main page's own oplog-size description, and connects directly to a related fact already covered elsewhere in this hub: oplogMinRetentionHours (a separate, opt-in setting) defaults to 0, while THIS floor (990MB) is baked into the automatic size formula itself with no configuration needed.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Replication & Sharding" topicRoute="/mongodb/replication-sharding"
+    [prev]="{ label: 'The EU Tilde Upper Bound Fixes a Broken Zone Range', route: '/mongodb/replication-sharding/eu-tilde-upper-bound-fixes-the-broken-zone-range' }"
+    [next]="{ label: 'Reconfig Code for a Hidden, Delayed Backup Member', route: '/mongodb/replication-sharding/reconfig-code-for-a-hidden-delayed-backup-member' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Security & Authentication" topicRoute="/mongodb/security"
+    subtopicLabel="Deterministic vs. Randomized Encryption, Made Concrete" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">Deterministic vs. Randomized Encryption, Made Concrete</h1>
+  <p class="page-subtitle">A quiz question on the main page explains why deterministic CSFLE encryption can leak information via pattern matching, in real technical detail — but no codeTab anywhere on the page demonstrates the property directly.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="MongoDB 4.2+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>This closes the topic's arc: the credential-rotation fix and the password-hashing fix both corrected main-page content, while this subtopic builds working code for a distinction the page's own quiz already explains correctly, just never demonstrates.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Security & Authentication" topicRoute="/mongodb/security"
+    [prev]="{ label: 'bcrypt, Not SHA-256, for Password Hashing', route: '/mongodb/security/bcrypt-not-sha256-for-password-hashing' }" />
+</div>

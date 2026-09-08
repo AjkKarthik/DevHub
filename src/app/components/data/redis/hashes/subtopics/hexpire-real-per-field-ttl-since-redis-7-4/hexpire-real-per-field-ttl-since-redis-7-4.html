@@ -1,0 +1,26 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Hashes" topicRoute="/redis/hashes"
+    subtopicLabel="HEXPIRE: Real Per-Field TTL, Since Redis 7.4" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">HEXPIRE: Real Per-Field TTL, Since Redis 7.4</h1>
+  <p class="page-subtitle">The main page's own mistake block and QnA said "you cannot expire individual hash fields." That was true until Redis 7.4 shipped HEXPIRE/HTTL/HPERSIST — a genuine per-field TTL mechanism.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Redis 7.4+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>This is the main-page fix for this topic — the mistake block and QnA now correctly describe Redis 7.4's real per-field TTL mechanism instead of stating a now-outdated absolute rule. Next: a genuine data-integrity gap in the Shopping Cart Challenge's own reference solution.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Hashes" topicRoute="/redis/hashes"
+    [next]="{ label: 'The Shopping Cart Challenge Leaves Phantom Zero-Quantity Items', route: '/redis/hashes/shopping-cart-phantom-zero-quantity-items' }" />
+</div>

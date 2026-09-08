@@ -190,26 +190,36 @@ async function getDailyActiveCount(date: string): Promise<number> {
   challenge: Challenge = {
     title: 'Rate Limiter (Fixed Window)',
     language: 'typescript',
-    description: 'Implement a simple fixed-window rate limiter using Redis strings. Write `isAllowed(userId, limit, windowSeconds)` that returns true if the user is within their rate limit for the current window, false otherwise.',
+    description: 'Implement a simple fixed-window rate limiter using Redis strings. Write `isAllowed(userId, limit, windowSeconds)` that returns true if the user is within their rate limit for the current window, false otherwise. INCR and EXPIRE must happen atomically -- a crash between the two must never leave a counter with no TTL.',
     hints: [
       'Key: `ratelimit:{userId}:{Math.floor(Date.now() / (windowSeconds * 1000))}`',
-      'Use INCR to increment the counter atomically',
-      'On first request (count === 1), set the key\'s TTL to windowSeconds',
+      'A separate INCR then EXPIRE has the exact crash-window risk the "Using SET + EXPIRE separately" mistake above warns about -- a Lua script combining both into one round trip closes it',
+      'redis.call("INCR", KEYS[1]) followed by a conditional redis.call("EXPIRE", ...) inside the SAME script runs as one indivisible operation',
     ],
     starterCode: `import Redis from 'ioredis';
 const redis = new Redis();
 
 async function isAllowed(userId: string, limit: number, windowSeconds: number): Promise<boolean> {
-  // TODO: implement fixed-window rate limiting
+  // TODO: implement fixed-window rate limiting, atomically
 }`,
     solution: `import Redis from 'ioredis';
 const redis = new Redis();
 
+// Increment and (on first hit) set the TTL as ONE atomic Lua script --
+// this is the same fix this topic's own "SET + EXPIRE separately" mistake
+// teaches, applied to INCR + EXPIRE instead.
+const incrAndExpireScript = \`
+  local count = redis.call("INCR", KEYS[1])
+  if count == 1 then
+    redis.call("EXPIRE", KEYS[1], ARGV[1])
+  end
+  return count
+\`;
+
 async function isAllowed(userId: string, limit: number, windowSeconds: number): Promise<boolean> {
   const window = Math.floor(Date.now() / (windowSeconds * 1000));
   const key = \`ratelimit:\${userId}:\${window}\`;
-  const count = await redis.incr(key);
-  if (count === 1) await redis.expire(key, windowSeconds);
+  const count = await redis.eval(incrAndExpireScript, 1, key, windowSeconds) as number;
   return count <= limit;
 }`,
   };

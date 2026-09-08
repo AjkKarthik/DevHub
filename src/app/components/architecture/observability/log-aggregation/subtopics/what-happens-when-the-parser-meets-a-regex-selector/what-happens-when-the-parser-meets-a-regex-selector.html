@@ -1,0 +1,26 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Log Aggregation" topicRoute="/observability/log-aggregation"
+    subtopicLabel="What Happens When the Parser Meets a Regex Selector" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">What Happens When the Parser Meets a Regex Selector</h1>
+  <p class="page-subtitle">The Challenge's own parseStreamSelector explicitly excludes regex selectors — but feeding it the exact query style the page's own QnA uses doesn't reject cleanly, it silently garbles the result. Verified, then fixed.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>This closes the last of the three gaps this topic's own subtopics build: a genuine sampling-claim inaccuracy in the Promtail config, the dead man's switch alert the QnA names but never shows, and a real robustness gap in the Challenge's own reference solution.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Log Aggregation" topicRoute="/observability/log-aggregation"
+    [prev]="{ label: 'The Dead Man’s Switch Query the QnA Names But Never Shows', route: '/observability/log-aggregation/the-dead-mans-switch-query-the-qna-names-but-never-shows' }" />
+</div>

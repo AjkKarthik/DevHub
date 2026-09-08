@@ -1,0 +1,26 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Lists" topicRoute="/redis/lists"
+    subtopicLabel="list-max-listpack-size Is a Byte-Size Cap" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">list-max-listpack-size Is a Byte-Size Cap, Not an Entry Count</h1>
+  <p class="page-subtitle">The main page framed the listpack-to-quicklist threshold as an entry count, matching how hashes work. Verified against Redis's own source: the default (-2) is a per-node byte-size cap (8KB), not an entry count.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>This is the main-page fix for this topic — the theory, quiz, and QnA now correctly describe the byte-size threshold instead of an entry-count one. Next: LMPOP, named in the theory but never demonstrated in any codeTab.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Lists" topicRoute="/redis/lists"
+    [next]="{ label: 'LMPOP: The Non-Blocking Sibling of BLPOP', route: '/redis/lists/lmpop-the-non-blocking-sibling-of-blpop' }" />
+</div>

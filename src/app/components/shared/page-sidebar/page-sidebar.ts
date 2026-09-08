@@ -33837,6 +33837,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Documents are limited to 16MB — a document approaching this limit is usually a modeling smell (embedding too much unbounded data).',
     ],
   },
+  'mongodb/fundamentals/the-100-cap-is-the-drivers-not-the-servers-limit': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'MongoDB Fundamentals', route: '/mongodb/fundamentals' },
+      { label: 'MongoDB with Node.js', route: '/mongodb/mongodb-nodejs' },
+    ],
+    tip: 'maxPoolSize is a per-MongoClient setting the driver enforces locally — it has no way to know or coordinate with the server\'s own actual connection ceiling at all.',
+    gotchas: [
+      'Raising maxPoolSize on one client does nothing to protect against OTHER leaked clients each opening their own separate pool.',
+    ],
+  },
+  'mongodb/fundamentals/implementing-optimistic-concurrency-with-a-version-field': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'MongoDB Fundamentals', route: '/mongodb/fundamentals' },
+      { label: 'Transactions',         route: '/mongodb/transactions' },
+    ],
+    tip: 'findOneAndUpdate\'s filter-plus-update is atomic — a version-matched filter is a lightweight alternative to a full multi-document transaction when only ONE document\'s consistency is at stake.',
+    gotchas: [
+      'A failed optimistic-lock write returns null, not an error — the caller must explicitly check for it and retry, or the "someone else won the race" case silently does nothing.',
+    ],
+  },
+  'mongodb/fundamentals/chunking-and-reassembling-a-file-with-gridfs': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'MongoDB Fundamentals', route: '/mongodb/fundamentals' },
+      { label: 'Data Modelling',       route: '/mongodb/data-modelling' },
+    ],
+    tip: 'GridFS\'s 255 KiB default chunk size is a configurable constructor option, not a fixed constant — a bucket handling many small files can raise it to reduce the fs.chunks document count per file.',
+    gotchas: [
+      'GridFS reads are NOT automatically atomic against concurrent writes to the same file — deleting a file mid-download can produce a partial read.',
+    ],
+  },
   'mongodb/installation-setup': {
     apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
     related: [
@@ -33847,6 +33880,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'MongoDB Atlas (managed) handles patching, backups, and scaling automatically — self-hosting takes on that operational burden directly.',
       'Connection string format differences (srv vs standard) trip up many developers moving between Atlas and self-hosted setups.',
+    ],
+  },
+  'mongodb/installation-setup/why-the-docker-connection-string-needs-authsource-admin': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Installation & Setup', route: '/mongodb/installation-setup' },
+      { label: 'Security & Auth',      route: '/mongodb/security' },
+    ],
+    tip: 'authSource silently falls back to whatever database is in the connection string\'s own path segment — it does NOT default to "admin" unless the path segment is also empty.',
+    gotchas: [
+      'A missing authSource fails with a generic authentication error, not a message naming the wrong database it actually tried.',
+    ],
+  },
+  'mongodb/installation-setup/the-real-path-to-enabling-auth-the-localhost-exception': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Installation & Setup', route: '/mongodb/installation-setup' },
+      { label: 'Security & Auth',      route: '/mongodb/security' },
+    ],
+    tip: 'The localhost exception grants create-the-first-user access only — it never grants ongoing unauthenticated access, and it closes itself permanently the instant that first user exists.',
+    gotchas: [
+      'The localhost exception only applies to connections actually originating from localhost — a container reaching mongod over the Docker network is not localhost from mongod\'s own point of view.',
+    ],
+  },
+  'mongodb/installation-setup/the-real-maxincomingconnections-default-is-65536': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Installation & Setup', route: '/mongodb/installation-setup' },
+      { label: 'MongoDB Fundamentals', route: '/mongodb/fundamentals' },
+    ],
+    tip: 'net.maxIncomingConnections is itself automatically capped by the OS\'s own file-descriptor limit — raising the config value alone does nothing without also raising ulimit -n.',
+    gotchas: [
+      'This is the SAME distinction the Fundamentals topic\'s own subtopic on maxPoolSize covers — a driver-side per-client cap versus this server-side total cap are two entirely different numbers.',
     ],
   },
   'mongodb/crud-operations': {
@@ -33861,6 +33927,38 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'deleteMany with an empty filter {} deletes EVERY document in the collection — a classic production incident waiting to happen.',
     ],
   },
+  'mongodb/crud-operations/why-the-soft-delete-index-needs-deletedat-null-not-exists': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'CRUD Operations', route: '/mongodb/crud-operations' },
+      { label: 'Indexes',         route: '/mongodb/indexes' },
+    ],
+    tip: 'A partial index is only ever consulted when the query\'s own filter matches its partialFilterExpression exactly — a near-miss filter falls back to a full collection scan with no warning.',
+    gotchas: [
+      'This same missing-field-vs-explicit-null distinction is exactly what the Fundamentals topic\'s own $exists mistake block already warns about, just applied here to index eligibility instead of query results.',
+    ],
+  },
+  'mongodb/crud-operations/mixing-operations-in-a-real-bulkwrite-call': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'CRUD Operations', route: '/mongodb/crud-operations' },
+    ],
+    tip: 'bulkWrite\'s array of operation objects each wraps its intent in its own key (insertOne, updateOne, deleteOne, ...) — a common structural mistake is passing a bare CRUD call shape instead of this wrapped form.',
+    gotchas: [
+      'With ordered:false, a bulkWrite\'s own result can report both successes and failures for the SAME call — always check writeErrors, never assume a resolved promise means everything succeeded.',
+    ],
+  },
+  'mongodb/crud-operations/session-based-causal-consistency-for-read-your-writes': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'CRUD Operations',       route: '/mongodb/crud-operations' },
+      { label: 'Replication & Sharding', route: '/mongodb/replication-sharding' },
+    ],
+    tip: 'A session\'s causal-consistency guarantee only covers operations run THROUGH that session — a query that forgets to pass { session } silently loses the guarantee with no error at all.',
+    gotchas: [
+      'Causal consistency has a real latency cost (a secondary may have to wait to catch up) — reach for readPreference: primary instead when every read genuinely needs the absolute latest data.',
+    ],
+  },
   'mongodb/query-operators': {
     apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
     related: [
@@ -33873,6 +33971,38 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       '$or queries generally cannot use a single compound index as efficiently as an equivalent $and — check explain() output before assuming an index is used.',
     ],
   },
+  'mongodb/query-operators/why-tags-1-needs-its-own-index-not-the-multikey-one': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Query Operators', route: '/mongodb/query-operators' },
+      { label: 'Indexes',         route: '/mongodb/indexes' },
+    ],
+    tip: 'A multikey index (built on the bare array field) stores one entry per array VALUE — an index built on a specific dotted position path like tags.1 is a completely separate, non-multikey index instead.',
+    gotchas: [
+      'A position-specific index only ever helps queries on that EXACT position — checking tags.4 needs its own separate index, not a variation of the tags.1 one.',
+    ],
+  },
+  'mongodb/query-operators/querying-permission-bitmasks-with-bitsallset': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Query Operators', route: '/mongodb/query-operators' },
+    ],
+    tip: 'Bitwise query operators take bit POSITIONS (0-indexed), not the flag VALUES themselves — checking for READ (value 1) means passing position 0, not the number 1.',
+    gotchas: [
+      '$bitsAllSet requires every listed bit to be set; $bitsAnySet requires only one — mixing them up silently changes an AND check into an OR check.',
+    ],
+  },
+  'mongodb/query-operators/finding-nearby-places-with-near-and-2dsphere': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Query Operators', route: '/mongodb/query-operators' },
+      { label: 'Indexes',         route: '/mongodb/indexes' },
+    ],
+    tip: 'GeoJSON coordinates are always [longitude, latitude] — the opposite of the common [lat, lng] convention — swapping them silently queries the wrong hemisphere instead of throwing an error.',
+    gotchas: [
+      '$near requires a 2dsphere (or 2d) index to exist on the queried field at all — without one, the query fails outright rather than falling back to a full scan.',
+    ],
+  },
   'mongodb/update-operators': {
     apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
     related: [
@@ -33882,6 +34012,38 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       '$push without $each appends a single element; forgetting $each when trying to append multiple elements silently pushes an array as one nested element instead.',
       'upsert:true creates a new document if no match is found — a typo in the filter can silently create unwanted duplicate documents instead of updating the intended one.',
+    ],
+  },
+  'mongodb/update-operators/sorting-a-real-top-n-with-push-sort-slice-together': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Update Operators', route: '/mongodb/update-operators' },
+    ],
+    tip: '$push applies its modifiers in a fixed order — $each, then $sort, then $slice — so the array is fully sorted BEFORE it gets trimmed, never the other way around.',
+    gotchas: [
+      'Without $sort, $slice keeps the array bounded by INSERTION order, not by value — a genuinely high-scoring entry can still get trimmed away if it was pushed early.',
+    ],
+  },
+  'mongodb/update-operators/removing-an-array-element-by-index-unset-then-pull': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Update Operators', route: '/mongodb/update-operators' },
+      { label: 'CRUD Operations',  route: '/mongodb/crud-operations' },
+    ],
+    tip: '$unset on an array index sets that slot to null without shifting the array — the array\'s own length is unchanged until a following $pull actually compacts it.',
+    gotchas: [
+      'If the array can legitimately contain a real null value elsewhere, $pull: { arr: null } would remove that too — this two-step pattern only works safely when null is otherwise never a valid array element.',
+    ],
+  },
+  'mongodb/update-operators/optimistic-locking-scoped-to-one-array-element': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Update Operators', route: '/mongodb/update-operators' },
+      { label: 'MongoDB Fundamentals', route: '/mongodb/fundamentals' },
+    ],
+    tip: 'This lock is scoped to ONE array element\'s current value, not a whole-document version counter — two concurrent writes to two DIFFERENT elements of the same document never conflict with each other at all.',
+    gotchas: [
+      'A hardcoded array index (items.2.qty) is brittle if the array can reorder — pairing this pattern with a stable per-item id field is safer than a bare numeric index in production.',
     ],
   },
   'mongodb/array-queries': {
@@ -33896,16 +34058,83 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       '$size only matches an exact array length — it cannot be combined with range comparisons in the same operator.',
     ],
   },
+  'mongodb/array-queries/the-compound-multikey-restriction-is-unconditional': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Array Queries', route: '/mongodb/array-queries' },
+      { label: 'Indexes',       route: '/mongodb/indexes' },
+    ],
+    tip: 'The one-array-field-per-compound-index restriction is checked per DOCUMENT, not per schema — a collection where only SOME documents have two array fields can still break the index the moment one of those documents is inserted.',
+    gotchas: [
+      'This restriction is enforced at insert/update time once the index exists — an existing document violating it silently blocks the createIndex() call from succeeding in the first place.',
+    ],
+  },
+  'mongodb/array-queries/slicing-arrays-with-the-slice-projection-operator': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Array Queries',         route: '/mongodb/array-queries' },
+      { label: 'Projections & Sorting', route: '/mongodb/projections-sorting' },
+    ],
+    tip: '$slice returns elements from the array AS STORED — it never sorts or filters first, so pairing it with a meaningful stored order (or a prior $sort in aggregation) is essential to get a meaningful "top N" or "recent N" result.',
+    gotchas: [
+      'The [skip, limit] form can return FEWER than limit elements if the array is shorter than skip + limit — it never pads or errors, it just returns whatever remains.',
+    ],
+  },
+  'mongodb/array-queries/sorting-by-an-array-field-uses-min-or-max': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Array Queries',         route: '/mongodb/array-queries' },
+      { label: 'Projections & Sorting', route: '/mongodb/projections-sorting' },
+    ],
+    tip: 'A document with a wide spread of array values (a very low min AND a very high max) can sort FIRST in both ascending and descending order — a real, counter-intuitive consequence of using the array\'s own extreme values for comparison.',
+    gotchas: [
+      'Sorting by an array field is never the same as sorting by an average, a sum, or any other aggregate — those need a computed field via $addFields before $sort.',
+    ],
+  },
   'mongodb/projections-sorting': {
     apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
     related: [
       { label: 'Query Operators', route: '/mongodb/query-operators' },
       { label: 'Indexes',         route: '/mongodb/indexes' },
     ],
-    tip: 'A sort without a supporting index requires an in-memory sort with a 32MB working-set limit by default — sorting large result sets without the right index can silently fail or fall back to disk with a real performance cliff.',
+    tip: 'A sort without a supporting index requires an in-memory sort with a 100MB working-set limit by default — sorting large result sets without the right index can silently fail or fall back to disk with a real performance cliff.',
     gotchas: [
       'Projections reduce network transfer but do NOT reduce the work MongoDB does to find matching documents — an inefficient query stays inefficient regardless of the projection.',
       'Excluding _id explicitly (_id: 0) is required, since it is included by default even when other fields are excluded.',
+    ],
+  },
+  'mongodb/projections-sorting/the-real-sort-memory-limit-is-100mb-not-32': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Projections & Sorting', route: '/mongodb/projections-sorting' },
+      { label: 'Indexes',               route: '/mongodb/indexes' },
+    ],
+    tip: 'The QueryExceededMemoryLimitNoDiskUseAllowed error message itself reports the exact byte count (104857600) — a fast way to confirm the real limit directly from the error, without needing to trust any documentation or blog post\'s stated figure.',
+    gotchas: [
+      'allowDiskUse:true is an aggregation-pipeline option — plain find().sort() has no equivalent escape hatch and must rely entirely on an index to avoid the limit.',
+    ],
+  },
+  'mongodb/projections-sorting/building-a-real-covered-query': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Projections & Sorting', route: '/mongodb/projections-sorting' },
+      { label: 'Indexes',               route: '/mongodb/indexes' },
+      { label: 'Query Performance',     route: '/mongodb/query-performance' },
+    ],
+    tip: '_id is included by default even in an inclusion projection — forgetting to explicitly exclude it (_id: 0) is the single most common reason an otherwise-perfect covered-query setup silently falls back to fetching full documents.',
+    gotchas: [
+      'A covering index only stays covering for queries whose filter, sort, AND projection fields are ALL a subset of the indexed fields — adding one new projected field breaks coverage for every query using it.',
+    ],
+  },
+  'mongodb/projections-sorting/sorting-by-a-computed-field-with-addfields': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Projections & Sorting', route: '/mongodb/projections-sorting' },
+      { label: 'Aggregation Pipeline',  route: '/mongodb/aggregation-pipeline' },
+    ],
+    tip: 'find().sort() only ever accepts a document field name — there is no way to sort by an expression in find() at all, which is exactly why this pattern requires switching to the aggregate() API entirely, not just adding an extra option.',
+    gotchas: [
+      'A computed sort field via $addFields has no supporting index by definition — this pattern is inherently an in-memory (or allowDiskUse) sort, never an indexed one.',
     ],
   },
   'mongodb/aggregation-pipeline': {
@@ -33920,6 +34149,38 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Each pipeline stage receives the OUTPUT of the previous stage, not the original collection — field names from an early $project affect what later stages can reference.',
     ],
   },
+  'mongodb/aggregation-pipeline/a-real-lookup-example-simple-and-pipeline-form': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Aggregation Pipeline', route: '/mongodb/aggregation-pipeline' },
+      { label: 'Lookup & Joins',       route: '/mongodb/lookup-joins' },
+    ],
+    tip: '$lookup joins never use an index on the LOCAL collection — only an index on the foreignField of the joined (from) collection speeds up the match, the same way any other join\'s indexing strategy works.',
+    gotchas: [
+      'The pipeline form of $lookup needs its own $match with $expr to compare the let-bound variable against a foreign field — a plain equality filter object cannot reference a $$-prefixed variable.',
+    ],
+  },
+  'mongodb/aggregation-pipeline/bucketing-prices-with-bucket-and-bucketauto': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Aggregation Pipeline', route: '/mongodb/aggregation-pipeline' },
+    ],
+    tip: 'A $bucket boundary is lower-bound inclusive and upper-bound exclusive — a value exactly equal to a boundary always falls into the HIGHER bucket, never the lower one.',
+    gotchas: [
+      'A value outside every defined boundary is silently dropped from the results entirely unless a default bucket is specified — there is no implicit catch-all.',
+    ],
+  },
+  'mongodb/aggregation-pipeline/paginating-with-facet-data-plus-total-count': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Aggregation Pipeline', route: '/mongodb/aggregation-pipeline' },
+      { label: 'Projections & Sorting', route: '/mongodb/projections-sorting' },
+    ],
+    tip: 'Both sub-pipelines inside a $facet see the SAME filtered input — the count sub-pipeline reflects every matching document, not just the ones that made it onto the current page.',
+    gotchas: [
+      'A $skip/$limit sub-pipeline that comes AFTER an expensive stage inside the same $facet branch still pays that stage\'s full cost for every document, not just the page being returned.',
+    ],
+  },
   'mongodb/aggregation-expressions': {
     apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
     related: [
@@ -33929,6 +34190,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Expression operators ($cond, $switch) evaluate at the document level within a stage — they cannot reference fields introduced by a LATER stage.',
       '$dateToString and similar date operators require the field to actually be a BSON Date type, not a string that merely looks like a date.',
+    ],
+  },
+  'mongodb/aggregation-expressions/a-single-addfields-stage-cant-see-its-own-new-fields': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Aggregation Expressions', route: '/mongodb/aggregation-expressions' },
+      { label: 'Aggregation Pipeline',    route: '/mongodb/aggregation-pipeline' },
+    ],
+    tip: 'A missing field compares as null in BSON, and null sorts BEFORE every Date — a $lt comparison against a sibling field that does not exist yet silently evaluates to true for every document, not an error.',
+    gotchas: [
+      'Fix by chaining a SEPARATE, later $addFields stage for any field whose expression needs to reference a sibling field newly computed in the current stage.',
+    ],
+  },
+  'mongodb/aggregation-expressions/let-for-reusing-a-sub-expression-without-recomputing-it': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Aggregation Expressions', route: '/mongodb/aggregation-expressions' },
+      { label: 'Aggregation Pipeline',    route: '/mongodb/aggregation-pipeline' },
+    ],
+    tip: 'Variables declared inside the same $let vars block cannot reference one another — a $$-prefixed reference inside vars always resolves to an OUTER variable, never a sibling being defined right next to it.',
+    gotchas: [
+      'To build one $let-bound variable on top of another, nest a second $let inside the first one\'s own "in" expression.',
+    ],
+  },
+  'mongodb/aggregation-expressions/datetrunc-for-grouping-events-by-day-and-hour': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Aggregation Expressions', route: '/mongodb/aggregation-expressions' },
+      { label: 'Aggregation Pipeline',    route: '/mongodb/aggregation-pipeline' },
+    ],
+    tip: '$dateTrunc always rounds DOWN to the start of the containing unit, and for every unit except "week" its bin edges are anchored to a fixed reference date (2000-01-01T00:00:00Z), not to midnight of the current day.',
+    gotchas: [
+      'startOfWeek only has any effect when unit is "week" — it is silently ignored for every other unit.',
     ],
   },
   'mongodb/lookup-joins': {
@@ -33943,6 +34237,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The pipeline variant of $lookup (with a nested pipeline) enables more complex join conditions than the simple localField/foreignField form.',
     ],
   },
+  'mongodb/lookup-joins/lookup-is-actually-supported-inside-facet-sub-pipelines': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: '$lookup & Joins',      route: '/mongodb/lookup-joins' },
+      { label: 'Aggregation Pipeline', route: '/mongodb/aggregation-pipeline' },
+    ],
+    tip: 'Only ten named stages are excluded from a $facet sub-pipeline — $collStats, $facet, $geoNear, $indexStats, $out, $merge, $planCacheStats, $search, $searchMeta, and $vectorSearch. $lookup was never one of them.',
+    gotchas: [
+      'A single $facet stage can run two or more independent $lookup-using branches over the same shared filtered input in one round trip — a real way to avoid extra queries in a reporting pipeline.',
+    ],
+  },
+  'mongodb/lookup-joins/correlated-vs-uncorrelated-lookup-subqueries': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: '$lookup & Joins',      route: '/mongodb/lookup-joins' },
+      { label: 'Aggregation Pipeline', route: '/mongodb/aggregation-pipeline' },
+    ],
+    tip: 'A pipeline $lookup sub-pipeline is correlated only if it actually REFERENCES a let-bound $$variable somewhere — merely declaring an unused let binding does not make an otherwise-static sub-pipeline correlated.',
+    gotchas: [
+      'MongoDB\'s own terminology is the opposite of what "uncorrelated $lookup" might sound like — uncorrelated means the sub-pipeline result is the SAME for every input document, not that it varies.',
+    ],
+  },
+  'mongodb/lookup-joins/a-real-self-join-one-level-org-chart': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: '$lookup & Joins', route: '/mongodb/lookup-joins' },
+      { label: 'Aggregation Pipeline', route: '/mongodb/aggregation-pipeline' },
+    ],
+    tip: 'A self-join is nothing more than an ordinary $lookup where "from" happens to name the same collection the pipeline is already running against — there is no dedicated self-join syntax.',
+    gotchas: [
+      'A one-level self-join only resolves an immediate parent/manager reference — an arbitrary-depth chain (grandparent, great-grandparent) needs either multiple chained $lookup stages or $graphLookup.',
+    ],
+  },
   'mongodb/data-modelling': {
     apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
     related: [
@@ -33955,6 +34282,38 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Denormalizing for read performance means writes must update multiple copies of the same data — a real consistency tradeoff to weigh deliberately.',
     ],
   },
+  'mongodb/data-modelling/array-of-ancestors-the-real-fifth-tree-pattern': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Data Modelling', route: '/mongodb/data-modelling' },
+      { label: 'Schema Design Patterns', route: '/mongodb/schema-design-patterns' },
+    ],
+    tip: 'Array of Ancestors stores a full ancestors array PLUS a parent field — the two answer different queries (all ancestors vs. direct children), and neither replaces the other.',
+    gotchas: [
+      'Unlike Materialised Path\'s own $regex descendants query, { ancestors: nodeId } never matches the node\'s own document — a node is never listed in its own ancestors array.',
+    ],
+  },
+  'mongodb/data-modelling/nested-sets-a-real-left-right-boundary-example': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Data Modelling', route: '/mongodb/data-modelling' },
+    ],
+    tip: 'A node\'s own left/right range must fully CONTAIN every descendant\'s range — descendants match { left: { $gt: N.left }, right: { $lt: N.right } }, ancestors match the reversed comparison.',
+    gotchas: [
+      'Inserting one new node can shift far more than its own direct ancestors — every node with a left/right value at or past the insertion point on the tree\'s shared number line shifts too, even in unrelated sibling subtrees.',
+    ],
+  },
+  'mongodb/data-modelling/building-the-workload-matrix-behind-the-challenge': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Data Modelling', route: '/mongodb/data-modelling' },
+      { label: 'Schema Design Patterns', route: '/mongodb/schema-design-patterns' },
+    ],
+    tip: 'A workload matrix\'s read/write ratio and how fast a denormalized field changes are co-equal inputs to a schema decision, not decoration added after the fact — the identical schema shape can be right or wrong depending on those numbers alone.',
+    gotchas: [
+      'A workload matrix built at launch can go stale as usage patterns shift — revisit it when real traffic diverges from what it originally assumed, not just once at project start.',
+    ],
+  },
   'mongodb/schema-design-patterns': {
     apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
     related: [
@@ -33964,6 +34323,38 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'The polymorphic pattern (documents in one collection with varying shapes, distinguished by a type field) trades schema flexibility for more complex application-level validation.',
       'Applying a design pattern without matching the actual read/write access pattern of the application often makes performance worse, not better.',
+    ],
+  },
+  'mongodb/schema-design-patterns/one-atomic-update-pipeline-call-instead-of-two-racy-writes': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Schema Design Patterns', route: '/mongodb/schema-design-patterns' },
+      { label: 'Aggregation Expressions', route: '/mongodb/aggregation-expressions' },
+    ],
+    tip: 'Passing an ARRAY of $set stages to updateOne (instead of a plain update document) makes a later stage able to reference a field set by an earlier stage in the SAME array — atomic, in one call, no transaction needed for single-document consistency.',
+    gotchas: [
+      'Classic update operators ($push, $inc, $pull) cannot be mixed into an update-pipeline array — use $add, $concatArrays + $sortArray + $slice as their aggregation-expression equivalents instead.',
+    ],
+  },
+  'mongodb/schema-design-patterns/attribute-pattern-needs-elemmatch-to-avoid-false-positives': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Schema Design Patterns', route: '/mongodb/schema-design-patterns' },
+      { label: 'Query Operators',        route: '/mongodb/query-operators' },
+    ],
+    tip: 'A plain query on specs.k and specs.v (no $elemMatch) matches if EITHER condition is satisfied by ANY array element — not necessarily the SAME element — a real false-positive risk for the Attribute Pattern\'s own {k,v} array shape.',
+    gotchas: [
+      'The same compound index on specs.k + specs.v is used by both the plain and $elemMatch query forms — the index affects performance, $elemMatch affects correctness.',
+    ],
+  },
+  'mongodb/schema-design-patterns/materialised-path-ancestors-and-descendants-with-regex': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Schema Design Patterns', route: '/mongodb/schema-design-patterns' },
+    ],
+    tip: 'MongoDB\'s own documented materialised-path convention puts the delimiter at BOTH the start and end of the path string, not just between segments — this is what keeps a $regex descendants query from matching a longer name that merely starts with the target segment.',
+    gotchas: [
+      'Finding ancestors is not a simple regex the way finding descendants is — it needs the target node\'s own path split into every possible prefix, then matched with $in.',
     ],
   },
   'mongodb/indexes': {
@@ -33978,6 +34369,36 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A covered query (index contains every field the query needs) avoids touching the actual documents at all, a significant performance win.',
     ],
   },
+  'mongodb/indexes/hybrid-index-builds-the-real-4-2-lock-timeline': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Indexes', route: '/mongodb/indexes' },
+    ],
+    tip: 'The hybrid index build (MongoDB 4.2+) takes an exclusive lock only during its brief Initialize and Commit phases — the much longer bulk-scan phase freely interleaves reads and writes.',
+    gotchas: [
+      'A write arriving during the short Drain phase is queued, not rejected — it resumes once the build reaches Commit.',
+    ],
+  },
+  'mongodb/indexes/text-and-2dsphere-indexes-can-be-multikey-too': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Indexes', route: '/mongodb/indexes' },
+    ],
+    tip: 'Only hashed indexes are excluded from being multikey — text indexes on an array of strings and 2dsphere indexes on an array of GeoJSON geometries both work exactly like a regular multikey index.',
+    gotchas: [
+      'The compound-index one-array-field restriction still applies regardless of index type — combining two array-valued fields in one compound index is never allowed, text/2dsphere included.',
+    ],
+  },
+  'mongodb/indexes/hideindex-testing-a-drop-without-actually-dropping': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Indexes', route: '/mongodb/indexes' },
+    ],
+    tip: 'A hidden index is fully maintained on every write — only its eligibility for query-plan selection changes, which is what makes hideIndex() a safe, instantly-reversible test before a real dropIndex().',
+    gotchas: [
+      'The _id index is the one documented exception — it can never be hidden.',
+    ],
+  },
   'mongodb/query-performance': {
     apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
     related: [
@@ -33987,6 +34408,37 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'A high "totalDocsExamined" relative to "nReturned" indicates the index (or lack of one) is not effectively filtering — a classic performance red flag.',
       'The profiler (db.setProfilingLevel) captures slow queries in production without requiring explain() to be run manually on every suspect query.',
+    ],
+  },
+  'mongodb/query-performance/reindex-never-got-the-hybrid-builds-non-blocking-fix': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Query Performance', route: '/mongodb/query-performance' },
+      { label: 'Indexes',           route: '/mongodb/indexes' },
+    ],
+    tip: 'reIndex() always takes a full exclusive lock for its entire duration on every MongoDB version — it never got createIndex()\'s own non-blocking hybrid build protocol.',
+    gotchas: [
+      'Since MongoDB 5.0, reIndex() can only run on standalone instances at all — not a replica set or sharded cluster — and it has been deprecated since 6.0.',
+    ],
+  },
+  'mongodb/query-performance/compact-stopped-blocking-crud-in-mongodb-4-4': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Query Performance', route: '/mongodb/query-performance' },
+    ],
+    tip: 'compact stopped blocking CRUD operations in MongoDB 4.4 — before that version it blocked everything for its entire duration, which is why "maintenance window only" advice is now stale for current versions.',
+    gotchas: [
+      'Non-blocking is not free — compact still adds real checkpoint overhead, which is why running it on a secondary node is still recommended.',
+    ],
+  },
+  'mongodb/query-performance/causal-consistency-read-your-own-writes-after-a-secondary-read': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Query Performance', route: '/mongodb/query-performance' },
+    ],
+    tip: 'client.startSession({ causalConsistency: true }) only guarantees read-your-own-writes when BOTH the write and the read use majority-level write/read concern, in addition to sharing the same session.',
+    gotchas: [
+      'Causal consistency is scoped to one session object, not the cluster or collection — a different client, or the same client without the session, gets no guarantee at all.',
     ],
   },
   'mongodb/transactions': {
@@ -34000,6 +34452,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A transaction held open too long can hit the default timeout and abort — keep transactional operations short and focused.',
     ],
   },
+  'mongodb/transactions/read-concern-defaults-to-local-not-snapshot': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Transactions', route: '/mongodb/transactions' },
+      { label: 'The Real Dual-Retry Loop', route: '/mongodb/transactions/dual-retry-loop-transient-vs-unknown-commit' },
+    ],
+    tip: 'If no read concern is set anywhere, a transaction runs under read concern "local" — never "snapshot" automatically — but every transaction still gets full snapshot ISOLATION as a behavior regardless of the read concern level.',
+    gotchas: [
+      'The precedence chain checks startTransaction()\'s own explicit option first, then the session\'s defaultTransactionOptions, then the client-level default, falling back to "local" only if none of those set anything.',
+    ],
+  },
+  'mongodb/transactions/dual-retry-loop-transient-vs-unknown-commit': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Transactions', route: '/mongodb/transactions' },
+      { label: 'Read Concern Defaults to Local, Not Snapshot', route: '/mongodb/transactions/read-concern-defaults-to-local-not-snapshot' },
+      { label: 'TransactionTooLargeForCache: The Real Limit', route: '/mongodb/transactions/transactiontoolargeforcache-the-real-limit' },
+    ],
+    tip: 'TransientTransactionError means retry the WHOLE transaction body from scratch; UnknownTransactionCommitResult means retry ONLY the commit call — re-running the body after that error risks applying its writes twice.',
+    gotchas: [
+      'Calling commitTransaction() again after it already succeeded is a safe no-op, which is exactly what makes a bare commit-only retry loop correct.',
+    ],
+  },
+  'mongodb/transactions/transactiontoolargeforcache-the-real-limit': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Transactions', route: '/mongodb/transactions' },
+      { label: 'The Real Dual-Retry Loop', route: '/mongodb/transactions/dual-retry-loop-transient-vs-unknown-commit' },
+    ],
+    tip: 'There is no documented hard "1000 write operations" limit on a transaction — the real, enforced ceiling is TransactionTooLargeForCache, which fires when a transaction\'s total data size could never fit the WiredTiger cache, regardless of operation count.',
+    gotchas: [
+      'Ordinary cache pressure produces a different, transient, retryable WriteConflict — TransactionTooLargeForCache specifically means the transaction can never succeed no matter how many times it is retried.',
+    ],
+  },
   'mongodb/change-streams': {
     apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
     related: [
@@ -34009,6 +34495,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'A resume token must be persisted to correctly resume a change stream after an application restart without missing or duplicating events.',
       'Change streams only capture changes AFTER they start — they are not a substitute for an initial full data sync when bootstrapping a new consumer.',
+    ],
+  },
+  'mongodb/change-streams/status-filter-comment-vs-actual-pipeline-code': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Change Streams', route: '/mongodb/change-streams' },
+      { label: 'Oplog Retention Has No Default Minimum Hours', route: '/mongodb/change-streams/oplog-retention-has-no-default-minimum-hours' },
+    ],
+    tip: 'A pipeline comment claiming a server-side filter is only as reliable as the $match stage it describes — always check what the stage actually filters on, not what a nearby comment claims.',
+    gotchas: [
+      'Pushing a fullDocument.status condition into $match cuts transmitted events by roughly 98% in a realistic low-match-rate scenario, versus filtering the same condition client-side after every event is already sent.',
+    ],
+  },
+  'mongodb/change-streams/oplog-retention-has-no-default-minimum-hours': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Change Streams', route: '/mongodb/change-streams' },
+      { label: 'The Comment vs. the Actual Pipeline Code', route: '/mongodb/change-streams/status-filter-comment-vs-actual-pipeline-code' },
+      { label: 'updateLookup Plus $match: A Real Resume-Token Risk', route: '/mongodb/change-streams/updatelookup-plus-match-resume-token-not-found-risk' },
+    ],
+    tip: 'oplogMinRetentionHours defaults to 0 — there is no guaranteed minimum oplog retention window until you explicitly set it; the default is purely size-based truncation.',
+    gotchas: [
+      'An observed "24-72 hours" retention figure without oplogMinRetentionHours set is a byproduct of the current write rate against a fixed oplog size — it can shrink without warning the moment write volume increases.',
+    ],
+  },
+  'mongodb/change-streams/updatelookup-plus-match-resume-token-not-found-risk': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Change Streams', route: '/mongodb/change-streams' },
+      { label: 'Oplog Retention Has No Default Minimum Hours', route: '/mongodb/change-streams/oplog-retention-has-no-default-minimum-hours' },
+    ],
+    tip: 'MongoDB\'s own documentation warns that fullDocument: "updateLookup" combined with a $match on a fullDocument field can produce "Resume Token Not Found" errors under rapid deletions — pre/post images with "whenAvailable" avoid the underlying live-lookup race entirely.',
+    gotchas: [
+      'The risk applies to any collection that is ever bulk-deleted from during a traffic spike, not only permanently high-throughput deployments.',
     ],
   },
   'mongodb/replication-sharding': {
@@ -34023,6 +34543,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Read preference settings (primary, secondary, nearest) trade consistency for read scalability and latency — choose deliberately per use case.',
     ],
   },
+  'mongodb/replication-sharding/eu-tilde-upper-bound-fixes-the-broken-zone-range': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Replication & Sharding', route: '/mongodb/replication-sharding' },
+      { label: 'The Oplog Default Has a 990MB Floor', route: '/mongodb/replication-sharding/oplog-default-has-a-990mb-floor-the-page-missed' },
+    ],
+    tip: 'sh.addShardTag()/sh.addTagRange() are legacy aliases for sh.addShardToZone()/sh.updateZoneKeyRange() — same mechanism, newer names. A tilde ("EU~") as an upper bound sorts after every EU-prefixed string; concatenating an empty string onto the lower bound does not.',
+    gotchas: [
+      'A zone key range whose lower and upper bound are identical (like the original "EU" + "" bug) is zero-width and matches nothing.',
+    ],
+  },
+  'mongodb/replication-sharding/oplog-default-has-a-990mb-floor-the-page-missed': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Replication & Sharding', route: '/mongodb/replication-sharding' },
+      { label: 'The EU Tilde Upper Bound Fixes a Broken Zone Range', route: '/mongodb/replication-sharding/eu-tilde-upper-bound-fixes-the-broken-zone-range' },
+      { label: 'Reconfig Code for a Hidden, Delayed Backup Member', route: '/mongodb/replication-sharding/reconfig-code-for-a-hidden-delayed-backup-member' },
+    ],
+    tip: 'The default oplog size formula is max(990MB, min(5% of free disk, 50GB)) — a two-sided clamp, not just "5% of disk, capped at 50GB."',
+    gotchas: [
+      'On a small dev-VM disk, the 990MB floor (not the 5% calculation) is usually the ACTIVE constraint — estimating oplog size from disk percentage alone underestimates it there.',
+    ],
+  },
+  'mongodb/replication-sharding/reconfig-code-for-a-hidden-delayed-backup-member': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Replication & Sharding', route: '/mongodb/replication-sharding' },
+      { label: 'The Oplog Default Has a 990MB Floor', route: '/mongodb/replication-sharding/oplog-default-has-a-990mb-floor-the-page-missed' },
+    ],
+    tip: 'rs.reconfig() REPLACES the whole replica set config, it never merges — always start from rs.conf(), mutate the specific member, bump version, then pass the full object back.',
+    gotchas: [
+      'hidden, priority: 0, and secondaryDelaySecs are independent fields on the same member — nothing prevents combining all three into one dedicated, delayed backup node.',
+    ],
+  },
   'mongodb/time-series': {
     apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
     related: [
@@ -34032,6 +34586,37 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Time-series collections have restrictions on updates and index types compared to regular collections — check compatibility before migrating existing time-based data.',
       'Choosing the right granularity (seconds, minutes, hours) setting affects both storage efficiency and query performance for a given workload.',
+    ],
+  },
+  'mongodb/time-series/updates-are-allowed-but-only-on-the-metafield': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Time Series Collections', route: '/mongodb/time-series' },
+    ],
+    tip: 'Since MongoDB 5.1+, updates on time series collections are allowed, but strictly limited to the metaField — match and modify only the metaField, multi:true required, upsert forbidden.',
+    gotchas: [
+      'Even a correctly metaField-only update is rejected if issued as a single-document updateOne() instead of updateMany()/multi:true.',
+    ],
+  },
+  'mongodb/time-series/merge-vs-out-for-scheduled-downsampling': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Time Series Collections', route: '/mongodb/time-series' },
+      { label: 'Aggregation Pipeline',    route: '/mongodb/aggregation-pipeline' },
+    ],
+    tip: '$out replaces the ENTIRE target collection with the current run\'s output — a scheduled downsampling job using $out silently wipes out every previously-computed rollup on every run.',
+    gotchas: [
+      '$merge\'s whenMatched only compares against documents the CURRENT run\'s own output contains — a day the current run never touched simply survives untouched.',
+    ],
+  },
+  'mongodb/time-series/densify-bounds-partition-vs-full-made-concrete': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Time Series Collections', route: '/mongodb/time-series' },
+    ],
+    tip: '$densify bounds: "full" stretches EVERY partition to the global min/max timestamp across the whole input, producing far more documents than bounds: "partition", which only fills gaps within each partition\'s own observed range.',
+    gotchas: [
+      '$fill\'s locf method cannot close a null gap that falls BEFORE a partition\'s own first real reading — those slots stay null even after $fill runs.',
     ],
   },
   'mongodb/atlas-search': {
@@ -34045,6 +34630,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Atlas Search indexes are managed separately from regular MongoDB indexes and have their own dedicated syntax for defining analyzers and mappings.',
     ],
   },
+  'mongodb/atlas-search/search-count-field-was-fabricated-use-search-meta': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Atlas Search & Vector Search', route: '/mongodb/atlas-search' },
+      { label: 'Exposing the Count You Already Requested', route: '/mongodb/atlas-search/exposing-the-count-you-already-requested' },
+    ],
+    tip: 'The count metadata from count: { type: "total" } is exposed through the $$SEARCH_META system variable, not a plain field name — it must be explicitly captured via a $project stage before it can be read.',
+    gotchas: [
+      'Fixing only the access expression without also capturing $$SEARCH_META in a $project stage still returns nothing — both halves are required together.',
+    ],
+  },
+  'mongodb/atlas-search/exposing-the-count-you-already-requested': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Atlas Search & Vector Search', route: '/mongodb/atlas-search' },
+      { label: 'A Field Name That Was Never Real', route: '/mongodb/atlas-search/search-count-field-was-fabricated-use-search-meta' },
+      { label: 'Building a Real $vectorSearch Query', route: '/mongodb/atlas-search/building-a-real-vectorsearch-query' },
+    ],
+    tip: 'Requesting count: { type: "total" } inside $search only makes the value available via $$SEARCH_META — without an explicit $project capturing it, the count is computed and then simply discarded.',
+    gotchas: [
+      'count: { type: "total" } (exact, more expensive) and { type: "lowerBound" } (fast, may undercount above a threshold) are a genuine cost-vs-exactness trade-off, not interchangeable names for the same thing.',
+    ],
+  },
+  'mongodb/atlas-search/building-a-real-vectorsearch-query': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Atlas Search & Vector Search', route: '/mongodb/atlas-search' },
+      { label: 'Exposing the Count You Already Requested', route: '/mongodb/atlas-search/exposing-the-count-you-already-requested' },
+    ],
+    tip: '$vectorSearch exposes its similarity score via { $meta: "vectorSearchScore" }, a completely different meta key from ordinary $search\'s "searchScore" — the two are not interchangeable.',
+    gotchas: [
+      'MongoDB\'s own documented guidance recommends numCandidates be at least 20x the limit for good ANN recall — a 10x ratio (as in the main page\'s own QnA example) falls short of that floor.',
+    ],
+  },
   'mongodb/security': {
     apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
     related: [
@@ -34056,6 +34675,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Network exposure (binding to 0.0.0.0 without a firewall) combined with weak or no authentication is one of the most common causes of publicly exposed, unsecured MongoDB instances found by security researchers.',
     ],
   },
+  'mongodb/security/blue-green-rotation-not-a-fabricated-feature': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Security & Authentication', route: '/mongodb/security' },
+      { label: 'bcrypt, Not SHA-256, for Password Hashing', route: '/mongodb/security/bcrypt-not-sha256-for-password-hashing' },
+    ],
+    tip: 'There is no "multiple passwords per user" MongoDB feature — db.updateUser() replaces the password immediately. Zero-downtime rotation is always a blue/green new-user pattern: create, migrate, then drop the old user.',
+    gotchas: [
+      'Dropping the old user before every connection has migrated to the new one reintroduces the exact outage the blue/green pattern exists to avoid.',
+    ],
+  },
+  'mongodb/security/bcrypt-not-sha256-for-password-hashing': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Security & Authentication', route: '/mongodb/security' },
+      { label: 'Blue/Green Rotation, Not a Fabricated Feature', route: '/mongodb/security/blue-green-rotation-not-a-fabricated-feature' },
+      { label: 'Deterministic vs. Randomized Encryption, Made Concrete', route: '/mongodb/security/deterministic-vs-randomized-encryption-leakage' },
+    ],
+    tip: 'Plain SHA-256 is a fast, unsalted, deterministic hash unsuitable for password storage — bcrypt (or Argon2id/scrypt) automatically salts and is deliberately slow, requiring compare() instead of equality.',
+    gotchas: [
+      'MongoDB\'s own SCRAM-SHA-256 connection-authentication protocol is unrelated to how an application should hash its OWN user password records.',
+    ],
+  },
+  'mongodb/security/deterministic-vs-randomized-encryption-leakage': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Security & Authentication', route: '/mongodb/security' },
+      { label: 'bcrypt, Not SHA-256, for Password Hashing', route: '/mongodb/security/bcrypt-not-sha256-for-password-hashing' },
+    ],
+    tip: 'Deterministic CSFLE encryption is required for equality queries but lets an observer detect which records share a value (pattern leakage); randomized encryption leaks nothing but cannot be queried for equality at all.',
+    gotchas: [
+      'The choice between deterministic and randomized encryption is dictated by whether the field needs server-side equality queries, not by a general "always pick the safest option" default.',
+    ],
+  },
   'mongodb/mongodb-nodejs': {
     apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
     related: [
@@ -34065,6 +34718,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Reusing a single MongoClient instance (connection pooling) across the application lifetime is the correct pattern — creating a new client per request exhausts connections under load.',
       'Mongoose\'s automatic type casting can silently coerce unexpected input types — understand its casting behavior before trusting it for validation.',
+    ],
+  },
+  'mongodb/mongodb-nodejs/broken-group-by-empty-string-field-references': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'MongoDB with Node.js', route: '/mongodb/mongodb-nodejs' },
+      { label: 'The Mongoose Schema Was Missing Its Own Password Field', route: '/mongodb/mongodb-nodejs/mongoose-schema-was-missing-its-own-password-field' },
+    ],
+    tip: 'A bare string like "customerId" inside $group is a CONSTANT to MongoDB, not a field reference — it needs the leading $ ("$customerId") to actually read that field\'s value per document.',
+    gotchas: [
+      'A pipeline like this runs without any error at all — it just silently produces one meaningless group instead of the intended per-customer breakdown.',
+    ],
+  },
+  'mongodb/mongodb-nodejs/mongoose-schema-was-missing-its-own-password-field': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'MongoDB with Node.js', route: '/mongodb/mongodb-nodejs' },
+      { label: 'A Pipeline That Groups By Nothing', route: '/mongodb/mongodb-nodejs/broken-group-by-empty-string-field-references' },
+      { label: 'Ordered vs. Unordered bulkWrite, Demonstrated', route: '/mongodb/mongodb-nodejs/ordered-vs-unordered-bulkwrite-demonstrated' },
+    ],
+    tip: 'Mongoose\'s default strict mode never persists a field the schema itself never declared — a pre-save hook computing and assigning a value to an undeclared path does real work that is silently discarded at save time.',
+    gotchas: [
+      'The whole point of the password pre-save hook example was demonstrating the middleware system — a missing schema field undermines the ONE thing the example exists to show.',
+    ],
+  },
+  'mongodb/mongodb-nodejs/ordered-vs-unordered-bulkwrite-demonstrated': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'MongoDB with Node.js', route: '/mongodb/mongodb-nodejs' },
+      { label: 'The Mongoose Schema Was Missing Its Own Password Field', route: '/mongodb/mongodb-nodejs/mongoose-schema-was-missing-its-own-password-field' },
+    ],
+    tip: 'Ordered bulkWrite (the default) stops at the first failure — every operation after it is never even attempted; { ordered: false } continues through all operations and collects every error into one combined list.',
+    gotchas: [
+      'Unordered bulkWrite operations may also execute in any order (including in parallel) — a real trade-off, not just "errors don\'t stop the batch."',
     ],
   },
 
@@ -36007,6 +36694,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A maturity model is a roadmap, not a checklist to rush through — each stage builds genuine organizational habits the next stage depends on.',
     ],
   },
+  'observability/observability-maturity/the-quizs-own-rival-maturity-model': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Observability Maturity (overview)', route: '/observability/observability-maturity' },
+      { label: 'Combining Overall Score With Weakest Areas', route: '/observability/observability-maturity/combining-overall-score-with-named-weakest-areas' },
+    ],
+    tip: 'Verified by comparing the page\'s own quiz against its own theory/quickRef/Challenge: the quiz introduced a completely different 4-level model (Reactive/Proactive/Predictive/Optimized) where "Level 2" and "Level 3" mean different things than the SAME level numbers mean everywhere else on the page.',
+    gotchas: [
+      'Two internally-consistent groups of sections (theory+quickRef+Challenge+revision vs. one quiz question) contradicting each other is a real, catchable signal -- worth cross-checking even when both "sides" individually read as coherent and well-written.',
+    ],
+  },
+  'observability/observability-maturity/combining-overall-score-with-named-weakest-areas': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The Quiz\'s Own Rival Model', route: '/observability/observability-maturity/the-quizs-own-rival-maturity-model' },
+      { label: 'Building a Real Anomaly Detector', route: '/observability/observability-maturity/building-a-real-anomaly-detector-for-mttr' },
+    ],
+    tip: 'The page\'s own Challenge only returns an overall average and level label; the page\'s own separate "Maturity Assessment" codeTab shows named weakest areas with next steps but never combines the two -- built and verified assessMaturity(), merging both into one function.',
+    gotchas: [
+      'Sorting areas by level ascending only tells you WHICH areas are weakest, not WHY -- the combined function keeps each area\'s own nextStep field specifically so the output stays actionable, not just a ranked list.',
+    ],
+  },
+  'observability/observability-maturity/building-a-real-anomaly-detector-for-mttr': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Combining Overall Score With Weakest Areas', route: '/observability/observability-maturity/combining-overall-score-with-named-weakest-areas' },
+      { label: 'Observability Maturity (overview)', route: '/observability/observability-maturity' },
+    ],
+    tip: 'The page\'s own AIOps QnA describes anomaly detection in prose ("ML models learn the normal behavior of each metric... alert when a metric deviates significantly") with zero code -- built and verified a real z-score detector against 8 weeks of simulated MTTR data, correctly staying silent on a normal week and firing on a genuine regression.',
+    gotchas: [
+      'A z-score detector needs enough historical data to have a meaningful mean and standard deviation in the first place -- a brand-new service or metric has no real baseline to compare against yet.',
+    ],
+  },
   'observability/infrastructure-metrics': {
     apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
     related: [
@@ -36019,6 +36739,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Container-level metrics can be misleading in a shared/oversubscribed environment — check what the underlying node is actually experiencing too.',
     ],
   },
+  'observability/infrastructure-metrics/the-missing-rate-wrapper-on-the-cpu-limit-query': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Building the Time-to-Exhaustion Capacity Projection', route: '/observability/infrastructure-metrics/building-the-time-to-exhaustion-capacity-projection' },
+      { label: 'Infrastructure Metrics (overview)', route: '/observability/infrastructure-metrics' },
+    ],
+    tip: 'A monotonic counter divided directly by a static limit, with no rate() wrapper, produces a value that grows without bound the longer a container has been running — completely independent of how busy it actually is.',
+    gotchas: [
+      'Gauges (like a deployment\'s replica counts) never need rate() — only counters do. Knowing which metric TYPE you\'re dividing is the whole rule.',
+    ],
+  },
+  'observability/infrastructure-metrics/building-the-time-to-exhaustion-capacity-projection': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The Missing rate() Wrapper on the CPU Limit Query', route: '/observability/infrastructure-metrics/the-missing-rate-wrapper-on-the-cpu-limit-query' },
+      { label: 'Tracking a Sustained Condition Before Alerting', route: '/observability/infrastructure-metrics/tracking-a-sustained-condition-before-alerting' },
+    ],
+    tip: 'The same percent-full reading can mean 2 weeks of headroom or 2 hours, depending entirely on the current growth rate — time-to-exhaustion accounts for rate, a flat percent-full threshold does not.',
+    gotchas: [
+      'A disk at only 50% full can still trigger a time-to-exhaustion alert sooner than one at 96% full, if its growth rate is high enough — percent-full alone cannot distinguish a controlled fill from a runaway one.',
+    ],
+  },
+  'observability/infrastructure-metrics/tracking-a-sustained-condition-before-alerting': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Building the Time-to-Exhaustion Capacity Projection', route: '/observability/infrastructure-metrics/building-the-time-to-exhaustion-capacity-projection' },
+      { label: 'Infrastructure Metrics (overview)', route: '/observability/infrastructure-metrics' },
+    ],
+    tip: 'A gauge only reports the CURRENT value at scrape time — distinguishing a momentary blip from a genuinely sustained problem (e.g. "waiting > 0 for 30+ seconds") requires explicitly tracking when the condition first became true.',
+    gotchas: [
+      'Even a single instant where the condition clears resets the sustained-duration clock entirely — a queue that keeps draining and refilling needs the FULL window to elapse again from scratch, it doesn\'t accumulate partial credit.',
+    ],
+  },
   'observability/custom-app-metrics': {
     apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
     related: [
@@ -36029,6 +36782,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Counters, gauges, and histograms are DIFFERENT metric types with different aggregation semantics — using a counter where a gauge is needed (or vice versa) produces misleading dashboards.',
       'High-cardinality labels (like a raw user ID) on a metric can explode storage cost and query time in most time-series databases.',
+    ],
+  },
+  'observability/custom-app-metrics/the-abstraction-layers-hardcoded-empty-label-set': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The Callback Gauge That Forgets to Return Its Promise', route: '/observability/custom-app-metrics/the-callback-gauge-that-forgets-to-return-its-promise' },
+      { label: 'Custom App Metrics (overview)', route: '/observability/custom-app-metrics' },
+    ],
+    tip: 'prom-client validates every .inc(labels) call against the labelNames a metric was REGISTERED with — a factory method that hardcodes labelNames: [] breaks the moment any caller actually passes labels.',
+    gotchas: [
+      'The label set is only ever registered on a metric\'s FIRST call — a later call introducing a brand-new label key on the same metric name still throws, even after the fix.',
+    ],
+  },
+  'observability/custom-app-metrics/the-callback-gauge-that-forgets-to-return-its-promise': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The Abstraction Layer’s Hardcoded Empty Label Set', route: '/observability/custom-app-metrics/the-abstraction-layers-hardcoded-empty-label-set' },
+      { label: 'The Domain-Event Pattern for Decoupled Metrics', route: '/observability/custom-app-metrics/the-domain-event-pattern-for-decoupled-metrics' },
+    ],
+    tip: 'prom-client\'s Gauge.get() only awaits a callback collect() function if it returns a Promise — a collect() that fires an async .then() chain WITHOUT returning it lets the scrape serialize stale/empty data before the update ever lands.',
+    gotchas: [
+      'This bug is specific to the "poll external state at scrape time" pattern — a directly-recorded metric (a counter .inc()\'d inline in business code) has no async gap to worry about at all.',
+    ],
+  },
+  'observability/custom-app-metrics/the-domain-event-pattern-for-decoupled-metrics': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The Callback Gauge That Forgets to Return Its Promise', route: '/observability/custom-app-metrics/the-callback-gauge-that-forgets-to-return-its-promise' },
+      { label: 'Custom App Metrics (overview)', route: '/observability/custom-app-metrics' },
+    ],
+    tip: 'The domain-event pattern decouples business code from metrics entirely — an EventEmitter listener, not a directly-imported metrics module, is the only file that ever touches prom-client.',
+    gotchas: [
+      'A typo\'d event name (e.g. emitting "OrderPlace" instead of "OrderPlaced") produces zero errors anywhere — EventEmitter.emit() silently returns false when no listener matches, unlike a typo\'d method name on an abstraction-layer interface, which TypeScript would catch at compile time.',
     ],
   },
   'observability/prometheus-metrics': {
@@ -36087,6 +36873,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A dashboard is not a substitute for alerting — nobody is watching a dashboard 24/7, which is why alerting design matters independently.',
     ],
   },
+  'observability/grafana-dashboards/the-broken-nested-json-panel-link': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Testing the Loki Trace-ID Regex’s Real Limits', route: '/observability/grafana-dashboards/testing-the-loki-trace-id-regexs-real-limits' },
+      { label: 'Grafana Dashboards (overview)', route: '/observability/grafana-dashboards' },
+    ],
+    tip: 'Hand-escaping nested JSON inside a template literal is a common source of silently broken links — testing a URL\'s JSON payload in ISOLATION can look fine even when it fails once embedded in its real, full document context.',
+    gotchas: [
+      'JSON.stringify() + encodeURIComponent() sidesteps hand-escaping entirely and is what real dashboard-as-code tooling does — building the URL programmatically rather than as a hand-written string is the general fix.',
+    ],
+  },
+  'observability/grafana-dashboards/testing-the-loki-trace-id-regexs-real-limits': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The Broken Nested-JSON Panel Link', route: '/observability/grafana-dashboards/the-broken-nested-json-panel-link' },
+      { label: 'Automated Deployment-Correlation Detection', route: '/observability/grafana-dashboards/automated-deployment-correlation-detection' },
+    ],
+    tip: 'A derivedField matcherRegex has zero understanding of JSON structure — it matches the first occurrence of a literal substring pattern anywhere in the log line, decoy fields included, and \\w+ alone cannot span a hyphenated trace ID.',
+    gotchas: [
+      'A hyphenated trace ID (e.g. a UUID-shaped one) produces NO MATCH AT ALL under a \\w+-only regex — word-character classes never include hyphens.',
+    ],
+  },
+  'observability/grafana-dashboards/automated-deployment-correlation-detection': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Testing the Loki Trace-ID Regex’s Real Limits', route: '/observability/grafana-dashboards/testing-the-loki-trace-id-regexs-real-limits' },
+      { label: 'Grafana Dashboards (overview)', route: '/observability/grafana-dashboards' },
+    ],
+    tip: 'Correlating a metric spike with a deploy timestamp only ever establishes TEMPORAL correlation, not causation — a strong investigative lead, the same limited signal a human eyeballing a dashboard annotation gets.',
+    gotchas: [
+      'Picking the MOST RECENT deployment before a spike (not just the first match found) matters once a service has more than one deploy within the correlation window — array order is not a substitute for an explicit "most recent" rule.',
+    ],
+  },
   'observability/log-aggregation': {
     apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
     related: [
@@ -36097,6 +36916,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Log volume at scale has real storage and query-cost implications — sampling or tiered retention (hot/warm/cold) is often necessary, not optional.',
       'A log shipper falling behind or crashing can silently drop logs — monitor the shipping pipeline\'s own health, not just the application.',
+    ],
+  },
+  'observability/log-aggregation/promtails-drop-stage-has-no-sampling-rate': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The Dead Man’s Switch Query the QnA Names But Never Shows', route: '/observability/log-aggregation/the-dead-mans-switch-query-the-qna-names-but-never-shows' },
+      { label: 'Log Aggregation (overview)', route: '/observability/log-aggregation' },
+    ],
+    tip: 'Promtail\'s drop stage is purely deterministic (match or don\'t match) -- confirmed against Loki\'s own docs it has no percentage/probability field, so "sample X%" is not achievable at the shipper layer at all.',
+    gotchas: [
+      'True probabilistic log sampling has to happen in APPLICATION code, deciding whether to emit the log line at all -- by the time a log line reaches Promtail, the cost of generating and writing it has already been paid.',
+    ],
+  },
+  'observability/log-aggregation/the-dead-mans-switch-query-the-qna-names-but-never-shows': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Promtail’s Drop Stage Has No Sampling Rate', route: '/observability/log-aggregation/promtails-drop-stage-has-no-sampling-rate' },
+      { label: 'What Happens When the Parser Meets a Regex Selector', route: '/observability/log-aggregation/what-happens-when-the-parser-meets-a-regex-selector' },
+    ],
+    tip: 'absent_over_time() fires when a stream produces NO log lines at all in a window -- the opposite condition from every content-based alert (like an error-rate threshold), which can never detect a service that has gone completely silent.',
+    gotchas: [
+      'A service that crashes and stops logging entirely looks IDENTICAL to a healthy, quiet service under any rate()-based error alert -- rate() of zero logs is 0, and 0 never crosses a "> N" threshold.',
+    ],
+  },
+  'observability/log-aggregation/what-happens-when-the-parser-meets-a-regex-selector': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The Dead Man’s Switch Query the QnA Names But Never Shows', route: '/observability/log-aggregation/the-dead-mans-switch-query-the-qna-names-but-never-shows' },
+      { label: 'Log Aggregation (overview)', route: '/observability/log-aggregation' },
+    ],
+    tip: 'The Challenge\'s own parseStreamSelector() explicitly excludes regex (=~) selectors -- but a regex selector doesn\'t get cleanly rejected, it gets silently garbled into a plausible-looking but wrong result.',
+    gotchas: [
+      'indexOf(\'=\') finds the "=" INSIDE the "=~" operator, not a real key/value delimiter -- checking for the two-character "=~" sequence before parsing is what actually distinguishes a regex pair from an exact-match one.',
     ],
   },
   'observability/structured-logging': {
@@ -36111,6 +36963,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Including a correlation/trace ID in every log line is what connects structured logs back to distributed traces for full request reconstruction.',
     ],
   },
+  'observability/structured-logging/the-middlewares-raw-traceparent-header-bug': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Building a Log Sampler From the Quiz’s Own Numbers', route: '/observability/structured-logging/building-a-log-sampler-from-the-quizs-own-numbers' },
+      { label: 'Structured Logging (overview)', route: '/observability/structured-logging' },
+    ],
+    tip: 'A W3C traceparent header is a compound value (version-trace_id-parent_id-trace_flags) -- storing the whole header as traceId puts three unrelated segments into every log line instead of the clean 32-hex trace ID.',
+    gotchas: [
+      'Split the header on "-" and take index 1 for the trace-id segment -- confirmed against the W3C Trace Context spec\'s own official example header.',
+    ],
+  },
+  'observability/structured-logging/building-a-log-sampler-from-the-quizs-own-numbers': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The Middleware’s Raw traceparent Header Bug', route: '/observability/structured-logging/the-middlewares-raw-traceparent-header-bug' },
+      { label: 'The Log-Level Endpoint’s Stale-Timer Race Condition', route: '/observability/structured-logging/the-log-level-endpoints-stale-timer-race-condition' },
+    ],
+    tip: 'Head-based probabilistic sampling (keep 100% of ERROR, 10% of WARN, 1% of INFO) preserves statistical validity -- a sampled count divided back by its rate gives a reasonable estimate of the true count, at the cost of losing any one specific dropped event.',
+    gotchas: [
+      'Consistent (hash-based) sampling on a field like userId trades "find one specific dropped request" for "reliably capture a sampled user\'s ENTIRE session" -- a genuinely different, sometimes more useful guarantee than pure random per-event sampling.',
+    ],
+  },
+  'observability/structured-logging/the-log-level-endpoints-stale-timer-race-condition': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Building a Log Sampler From the Quiz’s Own Numbers', route: '/observability/structured-logging/building-a-log-sampler-from-the-quizs-own-numbers' },
+      { label: 'Structured Logging (overview)', route: '/observability/structured-logging' },
+    ],
+    tip: 'Every call to a naive dynamic-log-level endpoint schedules its OWN independent revert timer -- a second call before the first timer fires does not cancel it, so an earlier, stale timer can silently override a newer admin\'s intended level.',
+    gotchas: [
+      'Track the pending timer in a variable and clearTimeout() it at the start of every new call, before scheduling a fresh one -- the same debounce-style pattern used anywhere a repeated action should supersede, not stack with, a previous pending one.',
+    ],
+  },
   'observability/log-best-practices': {
     apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
     related: [
@@ -36120,6 +37005,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Sensitive data (passwords, tokens, full credit card numbers) must never be logged — a common compliance and security failure mode.',
       'Log levels (DEBUG/INFO/WARN/ERROR) should be used consistently — logging routine events at ERROR trains responders to ignore alerts.',
+    ],
+  },
+  'observability/log-best-practices/the-test-loggers-two-silent-bugs': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The Classifier That Misses a Quarter of the Log Contract', route: '/observability/log-best-practices/the-classifier-that-misses-a-quarter-of-the-log-contract' },
+      { label: 'Log Best Practices (overview)', route: '/observability/log-best-practices' },
+    ],
+    tip: 'A Node.js Writable stream\'s write handler MUST call its callback parameter -- omitting it silently stalls the stream after the first write, dropping every subsequent write within the same test.',
+    gotchas: [
+      'pino\'s default level field is a NUMBER (30 for info, 40 for warn), not a string -- a test asserting .toBe(\'info\') needs the formatters.level option to serialize it as a label first.',
+    ],
+  },
+  'observability/log-best-practices/the-classifier-that-misses-a-quarter-of-the-log-contract': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The Test Logger’s Two Silent Bugs', route: '/observability/log-best-practices/the-test-loggers-two-silent-bugs' },
+      { label: 'Logging Which Path Correlation-ID Extraction Took', route: '/observability/log-best-practices/logging-which-path-correlation-id-extraction-took' },
+    ],
+    tip: 'A finite keyword-guessing classifier inevitably misses real event phrasing outside its vocabulary -- verified that 3 of the page\'s own 13 Log Contract events ("cancelled," "lost," "unavailable") get silently misclassified as debug.',
+    gotchas: [
+      'The most robust fix combines both approaches: look up the level directly for events already in the contract, and fall back to keyword-guessing only for messages that were never catalogued at all.',
+    ],
+  },
+  'observability/log-best-practices/logging-which-path-correlation-id-extraction-took': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The Classifier That Misses a Quarter of the Log Contract', route: '/observability/log-best-practices/the-classifier-that-misses-a-quarter-of-the-log-contract' },
+      { label: 'Log Best Practices (overview)', route: '/observability/log-best-practices' },
+    ],
+    tip: 'Recording WHETHER a trace ID was extracted from an inbound header or freshly generated tells you, after the fact, whether searching an upstream service\'s logs for that same ID could ever succeed.',
+    gotchas: [
+      'A "generated" source is expected and correct for the FIRST service in any chain (a public gateway, a scheduled job) -- it only becomes suspicious on a service that should only ever be called internally.',
     ],
   },
   'observability/distributed-tracing': {
@@ -36132,6 +37050,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Async message boundaries (a queue between services) break automatic trace propagation unless the trace context is explicitly carried in message headers.',
       'Sampling (recording only a percentage of traces) is often necessary at scale — but sampling out the rare, slow, or erroring requests defeats the purpose of tracing them at all.',
+    ],
+  },
+  'observability/distributed-tracing/baggage-doesnt-automatically-reach-the-tracing-backend': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'A Real Kafka Trace-Context Propagation, Verified', route: '/observability/distributed-tracing/a-real-kafka-trace-context-propagation-verified' },
+      { label: 'Distributed Tracing (overview)', route: '/observability/distributed-tracing' },
+    ],
+    tip: 'W3C Baggage propagates as context to application code and as HTTP headers across services -- but it does NOT automatically become a span attribute, verified against a real OTel SDK showing an empty attributes object by default.',
+    gotchas: [
+      'Reaching the tracing backend needs an explicit extra step -- either manual span.setAttribute() calls, or registering the separate, opt-in BaggageSpanProcessor component.',
+    ],
+  },
+  'observability/distributed-tracing/a-real-kafka-trace-context-propagation-verified': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Baggage Doesn’t Automatically Reach the Tracing Backend', route: '/observability/distributed-tracing/baggage-doesnt-automatically-reach-the-tracing-backend' },
+      { label: 'Building an N+1 Detector From the Span Tree', route: '/observability/distributed-tracing/building-an-n-plus-one-detector-from-the-span-tree' },
+    ],
+    tip: 'propagation.inject()/extract() correctly reconstruct the same traceId and a real parent-child link across two entirely separate function calls -- verified end-to-end against a real OTel SDK, not just described in prose.',
+    gotchas: [
+      'A producer and consumer span link through the traceId carried in message headers, not through sharing a tracer instance -- two genuinely separate services with their own tracer providers link this same way.',
+    ],
+  },
+  'observability/distributed-tracing/building-an-n-plus-one-detector-from-the-span-tree': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'A Real Kafka Trace-Context Propagation, Verified', route: '/observability/distributed-tracing/a-real-kafka-trace-context-propagation-verified' },
+      { label: 'Distributed Tracing (overview)', route: '/observability/distributed-tracing' },
+    ],
+    tip: 'Grouping sibling spans by parentSpanId + operation name and checking whether they run sequentially (not overlapping) reliably distinguishes a genuine N+1 pattern from a legitimate parallel fan-out that would otherwise look identical.',
+    gotchas: [
+      'A single overlapping pair flips the whole group\'s sequential flag to false and it never resets -- a group that\'s mostly sequential with one coincidental overlap gets reported as NOT likely N+1.',
     ],
   },
   'observability/opentelemetry': {
@@ -36191,6 +37142,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Context propagation must be correctly wired through async/await boundaries and thread pools, or child spans silently detach from their parent trace.',
     ],
   },
+  'observability/opentelemetry-tracing/the-kafka-producer-span-that-leaks-when-send-throws': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'OTel Tracing Deep Dive (overview)', route: '/observability/opentelemetry-tracing' },
+      { label: 'Span Links for Fan-In Batch Processing', route: '/observability/opentelemetry-tracing/span-links-for-fan-in-batch-processing' },
+    ],
+    tip: 'startActiveSpan() never auto-ends a span -- verified with a real Node simulation that a producer span left outside a try/finally simply never calls span.end() when the underlying send() call throws.',
+    gotchas: [
+      'The happy path (a successful send()) hides the bug completely -- span.end() only fails to run on the exact failure path a broker outage would trigger.',
+    ],
+  },
+  'observability/opentelemetry-tracing/span-links-for-fan-in-batch-processing': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The Kafka Producer Span Leak', route: '/observability/opentelemetry-tracing/the-kafka-producer-span-that-leaks-when-send-throws' },
+      { label: 'context.bind() Rescues a Queued Callback', route: '/observability/opentelemetry-tracing/context-bind-rescues-a-queued-legacy-callback' },
+    ],
+    tip: 'A batch span processing messages from several independent traces has no single parent -- verified via a real OTel SDK export that Links (not a parent-child edge) is the mechanism that connects a fan-in span back to every origin trace.',
+    gotchas: [
+      'Links are set at span-creation time via startSpan()\'s own options, not added after the fact the way attributes and events are.',
+    ],
+  },
+  'observability/opentelemetry-tracing/context-bind-rescues-a-queued-legacy-callback': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Span Links for Fan-In Batch Processing', route: '/observability/opentelemetry-tracing/span-links-for-fan-in-batch-processing' },
+      { label: 'OTel Tracing Deep Dive (overview)', route: '/observability/opentelemetry-tracing' },
+    ],
+    tip: 'Verified with a real OTel SDK: a callback queued by a legacy driver and invoked later from an unrelated background interval loses its trace context entirely -- a completely new, unrelated trace ID -- unless explicitly rescued with context.bind().',
+    gotchas: [
+      'AsyncLocalStorage propagates automatically across await/Promise.then() and across async work SCHEDULED synchronously within an active context -- it does not automatically follow a callback stored and invoked later by code outside that context.',
+    ],
+  },
   'observability/sli-slo-sla': {
     apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
     related: [
@@ -36248,6 +37232,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'An error budget policy only works if it has real teeth — a budget that gets "overridden" every time it\'s exhausted provides no actual behavioral incentive.',
     ],
   },
+  'observability/error-budgets-toil/the-payback-months-comment-was-off-by-60-percent': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Error Budgets & Toil (overview)', route: '/observability/error-budgets-toil' },
+      { label: 'Multi-Window Burn Rate Check', route: '/observability/error-budgets-toil/implementing-the-multi-window-burn-rate-check' },
+    ],
+    tip: 'Verified by running the page\'s own computeToilRoi() function directly: the "Deployment gate" comment claims a 6-month payback, but the code\'s own formula actually produces 9.6 months for that exact input -- still the best ROI of the three items, just not the number stated.',
+    gotchas: [
+      'A wrong number can point at the right conclusion by coincidence -- "automate first" was still correct advice here, which is exactly what makes a payback-months error easy to miss on a casual read.',
+    ],
+  },
+  'observability/error-budgets-toil/implementing-the-multi-window-burn-rate-check': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The Payback-Months Comment', route: '/observability/error-budgets-toil/the-payback-months-comment-was-off-by-60-percent' },
+      { label: 'Budget Exhaustion for a Spent Budget', route: '/observability/error-budgets-toil/budget-exhaustion-time-for-a-partially-spent-budget' },
+    ],
+    tip: 'The page\'s own Challenge only computes a SINGLE burn rate value -- built and verified a real multi-window check (combining the page\'s own computeBurnRate() with a short AND long window comparison) that correctly stays silent on a transient spike while still firing on a genuinely sustained incident.',
+    gotchas: [
+      'A transient spike can push a SHORT window\'s burn rate well past the threshold while the LONG window stays low -- checking only one window, whichever one, misses either fast detection or false-positive resistance.',
+    ],
+  },
+  'observability/error-budgets-toil/budget-exhaustion-time-for-a-partially-spent-budget': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Multi-Window Burn Rate Check', route: '/observability/error-budgets-toil/implementing-the-multi-window-burn-rate-check' },
+      { label: 'Error Budgets & Toil (overview)', route: '/observability/error-budgets-toil' },
+    ],
+    tip: 'The page\'s own "budget exhausted in 30d / 14 = 2.14 days" formula is stated only as a comment, and only for a FRESH (100%) budget -- extended and verified for a partially-spent budget, e.g. 90% already consumed cuts the same 14x-burn-rate exhaustion window down to about 5 hours, not 2.14 days.',
+    gotchas: [
+      'A team checking only the fresh-budget formula against a budget that\'s already partially consumed will consistently overestimate how much runway is actually left.',
+    ],
+  },
   'observability/alerting-design': {
     apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
     related: [
@@ -36258,6 +37275,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'An alert with no clear, actionable runbook trains on-call engineers to acknowledge and ignore it — every alert should have a defined response action.',
       'Alert thresholds copied from another team\'s system without adjusting for actual traffic patterns often produce constant false positives or miss real issues entirely.',
+    ],
+  },
+  'observability/alerting-design/the-watchdog-rule-needs-a-separate-monitoring-stack': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Alerting Design (overview)', route: '/observability/alerting-design' },
+      { label: 'Building an Escalation-Policy State Machine', route: '/observability/alerting-design/building-a-real-escalation-policy-state-machine' },
+    ],
+    tip: 'Verified via a direct simulation: a monitoring rule checking its OWN absence, running on the SAME Prometheus instance it is meant to protect, cannot detect a full outage of that instance -- once it is dead, that rule never evaluates either. An external heartbeat service, which pages when it STOPS receiving pings, is what actually catches the failure the page\'s own code tab implements via Dead Man\'s Snitch.',
+    gotchas: [
+      'A meta-monitoring Prometheus watching the primary stack works too -- the constraint is genuine independence from whatever it is protecting against, not "must be a third-party SaaS product."',
+    ],
+  },
+  'observability/alerting-design/building-a-real-escalation-policy-state-machine': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The Watchdog Rule Needs a Separate Stack', route: '/observability/alerting-design/the-watchdog-rule-needs-a-separate-monitoring-stack' },
+      { label: 'Dynamic Thresholds', route: '/observability/alerting-design/dynamic-thresholds-catch-what-a-static-one-misses' },
+    ],
+    tip: 'The page\'s own QnA describes a 3-tier escalation policy (primary -> secondary -> team lead, with 15-minute and 10-minute timeouts) in prose -- verified with a real state-machine implementation across all three outcomes: primary acks in time, primary never acks but secondary does, and nobody ever acks at all.',
+    gotchas: [
+      'Each tier\'s timeout is relative to when THAT tier was paged, not relative to when the alert originally fired -- a policy with three 10-minute tiers can take 30 minutes to fully exhaust, not 10.',
+    ],
+  },
+  'observability/alerting-design/dynamic-thresholds-catch-what-a-static-one-misses': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Building an Escalation-Policy State Machine', route: '/observability/alerting-design/building-a-real-escalation-policy-state-machine' },
+      { label: 'Alerting Design (overview)', route: '/observability/alerting-design' },
+    ],
+    tip: 'Verified with synthetic weekly-seasonal data: a flat static threshold either false-positives during a normal, expected weekly batch-job spike, or false-negatives on a genuine 7x-normal degradation during an otherwise-quiet hour -- a z-score-based dynamic threshold (compare against that SAME hour\'s own historical baseline) correctly handles both.',
+    gotchas: [
+      'Dynamic thresholds need real historical data for the SAME time-of-week/time-of-day slot before they are trustworthy -- a newly-deployed service has no seasonal baseline to compare against yet.',
     ],
   },
   'observability/on-call-incidents': {
@@ -36272,6 +37322,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Declaring an incident resolved as soon as symptoms disappear (without confirming the root cause) risks a recurrence from the same underlying issue shortly after.',
     ],
   },
+  'observability/on-call-incidents/computing-the-postmortems-own-mttd-and-mttr': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'On-Call & Incidents (overview)', route: '/observability/on-call-incidents' },
+      { label: 'Walking the Five Whys', route: '/observability/on-call-incidents/walking-the-five-whys-to-the-real-root-cause' },
+    ],
+    tip: 'Applying the page\'s own computeIncidentMetrics() Challenge function to the postmortem template\'s real timeline gives MTTD 8 min / MTTR 39 min using the canonical deploy-to-alert / alert-to-full-recovery reference points -- noticeably different from the "What Went Well" bullets\' own 5-minute figure, which uses error-rate-onset instead of deploy time as its own start point.',
+    gotchas: [
+      'MTTD and MTTR depend entirely on WHICH timestamp counts as "start" and "restoration" -- a postmortem that mixes reference points across its own sections produces numbers that look precise but aren\'t directly comparable to each other.',
+    ],
+  },
+  'observability/on-call-incidents/walking-the-five-whys-to-the-real-root-cause': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Computing MTTD and MTTR', route: '/observability/on-call-incidents/computing-the-postmortems-own-mttd-and-mttr' },
+      { label: 'Tracking Action Items', route: '/observability/on-call-incidents/tracking-postmortem-action-items-to-completion' },
+    ],
+    tip: 'The page\'s own theory names the Five Whys technique but the postmortem template only ever lists a flat root cause plus three contributing factors -- this subtopic walks the actual five sequential "why" questions from the visible symptom down to the same systemic testing-process gap the template\'s own contributing factors already point at.',
+    gotchas: [
+      'The fifth "why" should land on something the team can actually change (a process, a test, a review checklist) -- stopping at "the retry loop had a bug" is stopping one or two whys too early.',
+    ],
+  },
+  'observability/on-call-incidents/tracking-postmortem-action-items-to-completion': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Walking the Five Whys', route: '/observability/on-call-incidents/walking-the-five-whys-to-the-real-root-cause' },
+      { label: 'On-Call & Incidents (overview)', route: '/observability/on-call-incidents' },
+    ],
+    tip: 'The theory and QnA both name "not tracking action item completion" as a real postmortem failure mode -- built and verified a small classifier against the postmortem template\'s own real action items table, correctly flagging one item as OVERDUE relative to a simulated "today" while the other three are on track or completed.',
+    gotchas: [
+      'A postmortem action item with no owner or no due date can never be classified as overdue at all -- it just silently never comes up, which is functionally the same as nobody tracking it.',
+    ],
+  },
   'observability/cloud-native-monitoring': {
     apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
     related: [
@@ -36283,6 +37366,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Cardinality explosion from per-pod labels (a new pod name on every restart/scale event) can overwhelm a metrics backend not designed for Kubernetes\'s churn.',
     ],
   },
+  'observability/cloud-native-monitoring/the-command-override-that-drops-config-file': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'PodMonitor Uses a Different Field Name Than ServiceMonitor', route: '/observability/cloud-native-monitoring/podmonitor-uses-a-different-field-name-than-servicemonitor' },
+      { label: 'Cloud-Native Monitoring (overview)', route: '/observability/cloud-native-monitoring' },
+    ],
+    tip: 'docker-compose\'s command: field replaces a container\'s default CMD entirely, not just appends to it — every flag the base image would normally pass, including --config.file, has to be re-listed explicitly or it\'s simply gone.',
+    gotchas: [
+      'Prometheus\'s own compiled-in default for --config.file is a RELATIVE path ("prometheus.yml"), resolved against the image\'s WORKDIR -- not the /etc/prometheus/prometheus.yml a volume mount might correctly place the file at.',
+    ],
+  },
+  'observability/cloud-native-monitoring/podmonitor-uses-a-different-field-name-than-servicemonitor': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The command: Override That Drops --config.file', route: '/observability/cloud-native-monitoring/the-command-override-that-drops-config-file' },
+      { label: 'Routing the Page’s Own Alert With AlertmanagerConfig', route: '/observability/cloud-native-monitoring/routing-the-pages-own-alert-with-alertmanagerconfig' },
+    ],
+    tip: 'ServiceMonitor uses endpoints:, but PodMonitor uses podMetricsEndpoints: — a genuinely different field name, confirmed against the Prometheus Operator\'s own API reference, not just a stylistic variant.',
+    gotchas: [
+      'A PodMonitor manifest that copies ServiceMonitor\'s endpoints: field verbatim is not a typo the API server necessarily rejects — the unrecognized field can be silently dropped, leaving the PodMonitor selecting pods but scraping nothing.',
+    ],
+  },
+  'observability/cloud-native-monitoring/routing-the-pages-own-alert-with-alertmanagerconfig': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'PodMonitor Uses a Different Field Name Than ServiceMonitor', route: '/observability/cloud-native-monitoring/podmonitor-uses-a-different-field-name-than-servicemonitor' },
+      { label: 'Cloud-Native Monitoring (overview)', route: '/observability/cloud-native-monitoring' },
+    ],
+    tip: 'AlertmanagerConfig\'s route.matchers matches on the exact same label keys a PrometheusRule\'s alert already carries — routing by label is a direct extension of an alert that already has that label, not a separate system.',
+    gotchas: [
+      'A Slack webhook URL is a credential, not something to inline as plaintext — reference it via apiURL.name/apiURL.key pointing at a Kubernetes Secret, especially since these manifests are typically stored in Git.',
+    ],
+  },
   'observability/ebpf-observability': {
     apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
     related: [
@@ -36292,6 +37408,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'eBPF-based tools (Cilium, Pixie) can observe traffic and performance without requiring any code changes to the monitored application — a major advantage for observing legacy or third-party services.',
       'eBPF requires a sufficiently modern kernel version — not every production environment can adopt it immediately.',
+    ],
+  },
+  'observability/ebpf-observability/why-a-go-service-needs-a-different-uprobe-than-openssl': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'eBPF Observability (overview)', route: '/observability/ebpf-observability' },
+      { label: 'Aggregating Events by Process AND Syscall', route: '/observability/ebpf-observability/aggregating-events-by-process-and-syscall' },
+    ],
+    tip: 'Verified via research: the page\'s own OpenSSL SSL_read/SSL_write uprobe technique for TLS visibility does not work at all for Go services, since Go\'s standard crypto/tls is a pure-Go implementation that never calls OpenSSL -- confirmed against Pixie\'s and Brendan Gregg\'s own published eBPF research.',
+    gotchas: [
+      'Go\'s growable, moving goroutine stacks make RETURN probes (uretprobes) genuinely crash Go programs in some cases -- tools targeting Go TLS have to locate RET instructions by disassembly instead of using a plain return probe.',
+    ],
+  },
+  'observability/ebpf-observability/aggregating-events-by-process-and-syscall': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Why a Go Service Needs a Different Uprobe', route: '/observability/ebpf-observability/why-a-go-service-needs-a-different-uprobe-than-openssl' },
+      { label: 'Measuring Aggregate-Only Capture', route: '/observability/ebpf-observability/measuring-why-aggregate-only-capture-is-cheaper' },
+    ],
+    tip: 'The page\'s own bpftrace code tab aggregates by BOTH process name and syscall type (`@[comm, probe] = count()`), but the page\'s own Challenge only ever aggregates by process name alone -- extended and verified the richer two-level aggregation the bpftrace example already demonstrates.',
+    gotchas: [
+      'A two-level Map key (like `process::syscall`) needs a delimiter that can never appear inside either component -- a process or syscall name containing the chosen delimiter would silently collide two distinct keys into one.',
+    ],
+  },
+  'observability/ebpf-observability/measuring-why-aggregate-only-capture-is-cheaper': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Aggregating Events by Process AND Syscall', route: '/observability/ebpf-observability/aggregating-events-by-process-and-syscall' },
+      { label: 'eBPF Observability (overview)', route: '/observability/ebpf-observability' },
+    ],
+    tip: 'The page\'s own mistakes block states "eBPF overhead is proportional to event frequency × work per event" as a bare principle -- measured directly with a 200,000-event simulation that aggregate-only counting is roughly 23x cheaper than per-event stack/payload capture, making the abstract claim concrete.',
+    gotchas: [
+      'This is a simulation of the RELATIVE COST SHAPE in userspace JavaScript, not a literal kernel eBPF benchmark -- the actual in-kernel multiplier depends on the specific probe type, verifier-imposed constraints, and hardware, but the underlying principle (aggregate work is O(1) per event; payload capture work scales with payload size) transfers directly.',
     ],
   },
   'observability/performance-profiling': {
@@ -36306,6 +37455,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Profiling overhead, even when described as "low," is not zero — validate it doesn\'t materially affect the exact latency numbers you\'re trying to measure.',
     ],
   },
+  'observability/performance-profiling/import-lru-from-lru-cache-is-v6-era-syntax': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Performance Profiling (overview)', route: '/observability/performance-profiling' },
+      { label: 'Offloading Work to worker_threads', route: '/observability/performance-profiling/offloading-blocking-work-to-worker-threads-measured' },
+    ],
+    tip: 'Verified directly against the real, currently-installed lru-cache package (v11): `require(\'lru-cache\')` returns a plain object with a named LRUCache export -- there is no default export at all, so `import LRU from \'lru-cache\'` followed by `new LRU(...)` throws "LRU is not a constructor" every time.',
+    gotchas: [
+      'This changed at lru-cache v7 -- code copied from an older tutorial or a pre-2022 Stack Overflow answer very often still uses the old default-import syntax.',
+    ],
+  },
+  'observability/performance-profiling/offloading-blocking-work-to-worker-threads-measured': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The lru-cache Import Fix', route: '/observability/performance-profiling/import-lru-from-lru-cache-is-v6-era-syntax' },
+      { label: 'Tracking a Leaked Resource With async_hooks', route: '/observability/performance-profiling/tracking-a-leaked-resource-with-async-hooks' },
+    ],
+    tip: 'The main page\'s own theory names worker_threads as the fix for event-loop-blocking CPU work but never demonstrates it -- verified directly with a real timer running throughout: the SAME heavy computation blocks a scheduled tick to zero when run synchronously, and lets over 30 ticks through when moved to a worker.',
+    gotchas: [
+      'A worker thread has its own separate V8 heap and event loop -- data passed via postMessage() is structured-cloned, not shared by reference, unless you deliberately use a SharedArrayBuffer.',
+    ],
+  },
+  'observability/performance-profiling/tracking-a-leaked-resource-with-async-hooks': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Offloading Work to worker_threads', route: '/observability/performance-profiling/offloading-blocking-work-to-worker-threads-measured' },
+      { label: 'Performance Profiling (overview)', route: '/observability/performance-profiling' },
+    ],
+    tip: 'Verified directly: watching every built-in PROMISE resource via async_hooks is genuinely noisy (Node keeps several of its own internal promise resources alive) -- tagging your OWN AsyncResource type instead, the technique real APM leak trackers actually use, cleanly isolates just the leaked resource.',
+    gotchas: [
+      'A custom AsyncResource subclass\'s init hook fires from INSIDE super(), before the subclass constructor body has set any of its own fields -- reading a just-constructed resource\'s custom property inside init() sees undefined every time.',
+    ],
+  },
   'observability/chaos-engineering': {
     apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
     related: [
@@ -36315,6 +37497,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Chaos experiments should start small and in non-production (or a carefully scoped production blast radius) before scaling up — an uncontrolled chaos experiment IS an incident.',
       'The value of chaos engineering is in the LEARNING and subsequent fixes, not in the experiment itself — a chaos day that finds no issues and prompts no follow-up work has produced little value.',
+    ],
+  },
+  'observability/chaos-engineering/the-injectable-decorator-thats-never-actually-injected': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Chaos Engineering (overview)', route: '/observability/chaos-engineering' },
+      { label: 'Adding a Real Abort Mechanism', route: '/observability/chaos-engineering/adding-a-real-abort-mechanism-to-the-scheduler' },
+    ],
+    tip: 'Verified directly: the page\'s own FaultInjectionMiddleware class is used entirely via static method calls, so Angular\'s @Injectable({ providedIn: \'root\' }) decorator and its @angular/core import never actually do anything -- confirmed by running identical static-method calls with and without the decorator and getting identical behavior.',
+    gotchas: [
+      'A class annotated for dependency injection but only ever accessed through static members is a real, easy-to-miss signal that the class was adapted from different boilerplate than the code around it actually needs.',
+    ],
+  },
+  'observability/chaos-engineering/adding-a-real-abort-mechanism-to-the-scheduler': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'The @Injectable Decorator', route: '/observability/chaos-engineering/the-injectable-decorator-thats-never-actually-injected' },
+      { label: 'Verifying the Fault Injector', route: '/observability/chaos-engineering/verifying-the-fault-injectors-rate-and-latency' },
+    ],
+    tip: 'The page\'s own mistakes block and theory both insist an abort mechanism is REQUIRED before running any chaos experiment -- but the page\'s own Challenge scheduler has no such mechanism at all, just a fixed wait. Built and verified a real health-polling version that correctly runs the full duration when healthy and aborts within one poll interval once a health check fails.',
+    gotchas: [
+      'An abort mechanism that only checks health ONCE, at the start, provides no real protection -- the whole point is polling repeatedly throughout the experiment\'s duration, not just validating preconditions before it begins.',
+    ],
+  },
+  'observability/chaos-engineering/verifying-the-fault-injectors-rate-and-latency': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Adding a Real Abort Mechanism', route: '/observability/chaos-engineering/adding-a-real-abort-mechanism-to-the-scheduler' },
+      { label: 'Chaos Engineering (overview)', route: '/observability/chaos-engineering' },
+    ],
+    tip: 'Verified statistically over 20,000 trials that the page\'s own Math.random()-based fault injector\'s observed failure rate matches its configured errorRate within a fraction of a percentage point, and separately confirmed the configured latencyMs is genuinely applied end-to-end, not just declared in config.',
+    gotchas: [
+      'A single trial or a handful of manual test runs cannot confirm a probabilistic fault injector is calibrated correctly -- the configured rate is a statistical property that only becomes visible over many trials.',
     ],
   },
 
@@ -36331,6 +37546,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'TTL (time-to-live) on keys is Redis\'s built-in expiration mechanism — forgetting to set one on cache entries can silently turn Redis into an ever-growing memory leak.',
     ],
   },
+  'redis/fundamentals/redis-on-flash-predates-oss-redis-7-by-years': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Redis Fundamentals', route: '/redis/fundamentals' },
+      { label: 'Keyspace Notifications: A Real Expiration Listener', route: '/redis/fundamentals/keyspace-notifications-a-real-expiration-listener' },
+    ],
+    tip: 'Redis on Flash (now Auto Tiering) is a Redis Enterprise-only feature announced in 2016 — six years before open-source Redis reached version 7.0. Redis Enterprise Software maintains its own separate version line from open-source Redis.',
+    gotchas: [
+      'A version number cited for an Enterprise-only feature needs checking against Redis Enterprise\'s own release notes, not assumed to align with the open-source Redis version of the same digits.',
+    ],
+  },
+  'redis/fundamentals/keyspace-notifications-a-real-expiration-listener': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Redis Fundamentals', route: '/redis/fundamentals' },
+      { label: 'Redis on Flash Predates OSS Redis 7 by Years', route: '/redis/fundamentals/redis-on-flash-predates-oss-redis-7-by-years' },
+      { label: 'MULTI/EXEC Real Atomicity: Isolation, Not Rollback', route: '/redis/fundamentals/multi-exec-real-atomicity-is-isolation-not-rollback' },
+    ],
+    tip: 'notify-keyspace-events enables real-time pub/sub events on key changes — __keyevent@db__:event (subscribe by event, get the key as the message) and __keyspace@db__:key (subscribe by key, get the event as the message) are complementary, not competing, channel families.',
+    gotchas: [
+      'A subscriber connection cannot also run ordinary GET/SET commands — (P)SUBSCRIBE puts a connection into a dedicated mode requiring a separate client instance for anything else.',
+    ],
+  },
+  'redis/fundamentals/multi-exec-real-atomicity-is-isolation-not-rollback': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Redis Fundamentals', route: '/redis/fundamentals' },
+      { label: 'Keyspace Notifications: A Real Expiration Listener', route: '/redis/fundamentals/keyspace-notifications-a-real-expiration-listener' },
+    ],
+    tip: 'MULTI/EXEC never rolls back a runtime error in one of its queued commands — every other queued command still runs. Its real "atomic" guarantee is isolation: no other client\'s command can interleave once EXEC begins.',
+    gotchas: [
+      'Only a syntax/queueing-time error (detected before EXEC ever runs) aborts the whole transaction — a runtime error inside an otherwise-valid command does not.',
+    ],
+  },
   'redis/installation-setup': {
     apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
     related: [
@@ -36341,6 +37590,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Redis persistence (RDB/AOF) must be explicitly configured — a default install may lose all data on a restart if persistence isn\'t enabled.',
       'maxmemory and an eviction policy should be set explicitly — an unbounded Redis instance can consume all available host memory and crash.',
+    ],
+  },
+  'redis/installation-setup/bind-and-aof-preamble-are-runtime-modifiable': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Installation & Setup', route: '/redis/installation-setup' },
+      { label: 'Protected-Mode Checks for a Password, Not a Bind', route: '/redis/installation-setup/protected-mode-checks-password-not-bind' },
+    ],
+    tip: 'Verified directly against config.c: bind and aof-use-rdb-preamble are both MODIFIABLE_CONFIG — only cluster-enabled among the three the main page originally grouped together is genuinely IMMUTABLE_CONFIG and needs a restart.',
+    gotchas: [
+      'A live CONFIG SET change is only in memory — a restart before CONFIG REWRITE runs reverts to whatever redis.conf still says on disk.',
+    ],
+  },
+  'redis/installation-setup/protected-mode-checks-password-not-bind': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Installation & Setup', route: '/redis/installation-setup' },
+      { label: 'bind and aof-use-rdb-preamble Are Runtime-Modifiable', route: '/redis/installation-setup/bind-and-aof-preamble-are-runtime-modifiable' },
+      { label: 'CONFIG REWRITE Needs a Config File to Rewrite', route: '/redis/installation-setup/config-rewrite-needs-a-config-file' },
+    ],
+    tip: 'Protected-mode\'s real accept-time check (verified against networking.c) only reads whether the default user has a password set — an explicit bind directive plays no part in the condition at all.',
+    gotchas: [
+      'bind 0.0.0.0 with no requirepass still gets every external connection DENIED by protected-mode — the bind directive alone never satisfies the check.',
+    ],
+  },
+  'redis/installation-setup/config-rewrite-needs-a-config-file': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Installation & Setup', route: '/redis/installation-setup' },
+      { label: 'Protected-Mode Checks for a Password, Not a Bind', route: '/redis/installation-setup/protected-mode-checks-password-not-bind' },
+    ],
+    tip: 'CONFIG REWRITE fails immediately with "The server is running without a config file" if redis-server was ever started with no .conf path argument — confirmed directly from configRewriteCommand\'s own server.configfile == NULL check.',
+    gotchas: [
+      'CLI flags like --requirepass or --maxmemory passed directly to redis-server configure Redis identically to a config file, but leave no file for CONFIG REWRITE to write back to.',
     ],
   },
   'redis/key-commands': {
@@ -36355,6 +37638,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'DEL on a very large collection value (a huge list/set) can also block briefly — UNLINK performs the deallocation asynchronously instead.',
     ],
   },
+  'redis/key-commands/setex-vs-set-ex-nx-composability': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Key Commands & Expiry', route: '/redis/key-commands' },
+      { label: '--memkeys Is Redis 6.0, Not 7', route: '/redis/key-commands/memkeys-is-redis-6-not-7-and-what-it-does' },
+    ],
+    tip: 'SETEX carries no deprecation notice in its own official docs — the real reason to prefer SET key value EX seconds is that it composes with NX/XX/GET/KEEPTTL, capabilities SETEX has no equivalent for at all.',
+    gotchas: [
+      'A distributed lock built on SETEX has no way to say "only if nobody already holds it" — two racing workers can both silently overwrite each other with no error at all.',
+    ],
+  },
+  'redis/key-commands/memkeys-is-redis-6-not-7-and-what-it-does': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Key Commands & Expiry', route: '/redis/key-commands' },
+      { label: 'SETEX vs. SET ... EX ... NX Composability', route: '/redis/key-commands/setex-vs-set-ex-nx-composability' },
+      { label: 'DUMP Does Not Include the TTL', route: '/redis/key-commands/dump-does-not-include-the-ttl' },
+    ],
+    tip: 'redis-cli --memkeys shipped in Redis 6.0 (2020), not "7+" — checked directly against the PR that introduced it, which merged in February 2019, before Redis 6.0 itself was even released.',
+    gotchas: [
+      '--memkeys is a client-side redis-cli convenience built on SCAN + MEMORY USAGE (Redis 4.0+) — there is no new server-side command behind it at all.',
+    ],
+  },
+  'redis/key-commands/dump-does-not-include-the-ttl': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Key Commands & Expiry', route: '/redis/key-commands' },
+      { label: '--memkeys Is Redis 6.0, Not 7', route: '/redis/key-commands/memkeys-is-redis-6-not-7-and-what-it-does' },
+    ],
+    tip: 'DUMP\'s payload contains only the value, an RDB version marker, and a checksum — never the TTL. A migration that forgets to read PTTL before DUMPing silently makes the copied key immortal.',
+    gotchas: [
+      'RESTORE\'s ttl argument of 0 means "no expiry" — it is NOT the same thing as PTTL\'s "-1" return value, even though both represent "never expires." A correct migration helper must translate -1 to 0 explicitly.',
+    ],
+  },
   'redis/strings': {
     apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
     related: [
@@ -36365,6 +37682,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'A Redis string can hold up to 512MB — using it to store a large serialized blob works but loses the ability to operate on individual fields the way a Hash would allow.',
       'SETNX (or SET with NX) is the building block for a simple distributed lock — but a naive implementation without an expiry risks a permanently stuck lock if the lock holder crashes.',
+    ],
+  },
+  'redis/strings/atomic-incr-expire-fixes-the-rate-limiter-ttl-leak': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Strings', route: '/redis/strings' },
+      { label: 'MSETNX Is All-or-Nothing; a Loop of SETNX Calls Is Not', route: '/redis/strings/msetnx-all-or-nothing-vs-a-loop-of-setnx-calls' },
+    ],
+    tip: 'A rate limiter that does INCR then a separate EXPIRE has the exact crash-window risk this topic\'s own "SET + EXPIRE separately" mistake warns about — a Lua script combining both closes it, the same fix applied to a different command pair.',
+    gotchas: [
+      'A process killed between INCR and EXPIRE leaves a counter key with no TTL forever — that specific window key never resets again.',
+    ],
+  },
+  'redis/strings/msetnx-all-or-nothing-vs-a-loop-of-setnx-calls': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Strings', route: '/redis/strings' },
+      { label: 'Atomic INCR + EXPIRE Fixes the Rate Limiter TTL Leak', route: '/redis/strings/atomic-incr-expire-fixes-the-rate-limiter-ttl-leak' },
+      { label: 'GETRANGE/SETRANGE: Fixed-Width Records at Byte Offsets', route: '/redis/strings/getrange-setrange-fixed-width-records-at-byte-offsets' },
+    ],
+    tip: 'Each individual SETNX call is atomic on its own, but a loop of several SETNX calls covering different keys is NOT atomic as a group — only MSETNX checks every key first and writes all-or-nothing.',
+    gotchas: [
+      'A naive loop can leave one key reserved even while the overall function reports failure, since nothing rolls back an earlier successful SETNX once a later one fails.',
+    ],
+  },
+  'redis/strings/getrange-setrange-fixed-width-records-at-byte-offsets': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Strings', route: '/redis/strings' },
+      { label: 'MSETNX Is All-or-Nothing; a Loop of SETNX Calls Is Not', route: '/redis/strings/msetnx-all-or-nothing-vs-a-loop-of-setnx-calls' },
+    ],
+    tip: 'SETRANGE at a fixed offset (id * recordWidth) turns one Redis string into a dense array of fixed-width records — the same packing idea as SETBIT/BITCOUNT, generalized from single bits to whole bytes.',
+    gotchas: [
+      'SETRANGE never clears bytes beyond the length of the value you give it — writing a shorter value into a slot that held a longer one leaves stale trailing bytes from the old value.',
     ],
   },
   'redis/lists': {
@@ -36379,6 +37730,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'For genuinely reliable queue semantics (avoiding message loss on consumer crash), Streams with consumer groups are usually a better fit than a plain List.',
     ],
   },
+  'redis/lists/list-max-listpack-size-is-a-byte-size-cap': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Lists', route: '/redis/lists' },
+      { label: 'LMPOP: The Non-Blocking Sibling of BLPOP', route: '/redis/lists/lmpop-the-non-blocking-sibling-of-blpop' },
+    ],
+    tip: 'list-max-listpack-size defaults to -2, a per-node BYTE-SIZE cap (8KB) — not an entry count like hash-max-listpack-entries. A handful of large elements can convert a list to quicklist well before element count alone would suggest it.',
+    gotchas: [
+      'Setting list-max-listpack-size to a POSITIVE value switches its meaning entirely to a per-node entry-count cap, unlike the negative default.',
+    ],
+  },
+  'redis/lists/lmpop-the-non-blocking-sibling-of-blpop': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Lists', route: '/redis/lists' },
+      { label: 'list-max-listpack-size Is a Byte-Size Cap, Not an Entry Count', route: '/redis/lists/list-max-listpack-size-is-a-byte-size-cap' },
+      { label: 'LPOS: RANK, COUNT, and the Nil vs. Empty Array Distinction', route: '/redis/lists/lpos-rank-count-and-the-nil-vs-empty-array' },
+    ],
+    tip: 'LMPOP only ever pops from the FIRST non-empty key in the list you pass — asking for a large COUNT never causes it to spill into a second key to make up the difference, even if the first key has fewer elements than COUNT.',
+    gotchas: [
+      'A worker loop draining several priority queues in one pass still needs repeated LMPOP calls — one call never merges results across more than one key.',
+    ],
+  },
+  'redis/lists/lpos-rank-count-and-the-nil-vs-empty-array': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Lists', route: '/redis/lists' },
+      { label: 'LMPOP: The Non-Blocking Sibling of BLPOP', route: '/redis/lists/lmpop-the-non-blocking-sibling-of-blpop' },
+    ],
+    tip: 'LPOS returns nil when no COUNT is given and nothing matches, but returns an empty array when COUNT is given — a naive truthiness check on the result silently misclassifies the COUNT case, since an empty array is truthy in JavaScript.',
+    gotchas: [
+      'RANK\'s sign only changes the scan DIRECTION, never how the returned index is numbered — indices are always 0-based counting from the list\'s head.',
+    ],
+  },
   'redis/hashes': {
     apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
     related: [
@@ -36387,7 +37772,41 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     tip: 'A Hash lets you store and update individual FIELDS of an object (HSET user:1 name "Alice") without re-serializing and rewriting the entire object — meaningfully more efficient than storing a JSON blob as a String when only one field changes.',
     gotchas: [
       'HGETALL on a very large hash transfers the entire hash in one response — HSCAN provides cursor-based iteration for large hashes.',
-      'There is no native TTL per individual hash field — expiration applies to the whole key (the entire hash), not individual fields within it (in most Redis versions).',
+      'Redis < 7.4 has no per-field TTL — expiration applies to the whole key. Redis 7.4+ adds real per-field expiration via HEXPIRE/HTTL/HPERSIST.',
+    ],
+  },
+  'redis/hashes/hexpire-real-per-field-ttl-since-redis-7-4': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Hashes', route: '/redis/hashes' },
+      { label: 'The Shopping Cart Challenge Leaves Phantom Zero-Quantity Items', route: '/redis/hashes/shopping-cart-phantom-zero-quantity-items' },
+    ],
+    tip: 'HEXPIRE (Redis 7.4+) sets a genuine, independent TTL on a hash field — but the KEY\'s own TTL always takes precedence if one is set, removing every field regardless of any longer field-level TTL.',
+    gotchas: [
+      'A field\'s TTL is cleared only by HDEL or an HSET that overwrites it — HINCRBY leaves an existing field TTL untouched.',
+    ],
+  },
+  'redis/hashes/shopping-cart-phantom-zero-quantity-items': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Hashes', route: '/redis/hashes' },
+      { label: 'HEXPIRE: Real Per-Field TTL, Since Redis 7.4', route: '/redis/hashes/hexpire-real-per-field-ttl-since-redis-7-4' },
+      { label: 'HRANDFIELD: Sampling With and Without Repeats', route: '/redis/hashes/hrandfield-sampling-with-and-without-repeats' },
+    ],
+    tip: 'Storing a quantity-0 field instead of removing it leaves a phantom line item any direct reader of the hash (an analytics job, an admin tool) would still see — fix it at write time with HDEL, not by filtering on read.',
+    gotchas: [
+      'A quantity stepper UI\'s decrement button routinely calls the same addItem handler regardless of the resulting number — this bug surfaces from completely ordinary UI code, not a contrived misuse.',
+    ],
+  },
+  'redis/hashes/hrandfield-sampling-with-and-without-repeats': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Hashes', route: '/redis/hashes' },
+      { label: 'Shopping Cart Challenge Leaves Phantom Zero-Quantity Items', route: '/redis/hashes/shopping-cart-phantom-zero-quantity-items' },
+    ],
+    tip: 'A positive HRANDFIELD count returns distinct fields, capped at the hash size; a negative count returns exactly abs(count) fields and explicitly allows repeats — pick based on whether repeats are acceptable for your use case.',
+    gotchas: [
+      'The reply order for a positive count is documented as "not truly random" — shuffle client-side if genuinely random ORDER (not just selection) matters.',
     ],
   },
   'redis/sets': {
@@ -36402,6 +37821,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'SPOP removes and returns a RANDOM member — useful for random sampling, but easy to misuse if deterministic ordering was actually needed.',
     ],
   },
+  'redis/sets/sets-have-a-third-encoding-listpack-since-redis-7-2': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Sets', route: '/redis/sets' },
+      { label: 'SMOVE: Atomic State Transitions Between Sets', route: '/redis/sets/smove-atomic-state-transitions-between-sets' },
+    ],
+    tip: 'Sets have three encodings, not two: intset (small all-integer sets), listpack (small non-integer sets, Redis 7.2+), and hashtable — a small set of string members no longer jumps straight to hashtable.',
+    gotchas: [
+      'set-max-listpack-entries (default 128) is a plain entry count, but set-max-listpack-value (default 64) is a separate per-value byte-size cap — both must be satisfied to stay in listpack.',
+    ],
+  },
+  'redis/sets/smove-atomic-state-transitions-between-sets': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Sets', route: '/redis/sets' },
+      { label: 'Sets Have a Third Encoding: listpack (Redis 7.2+)', route: '/redis/sets/sets-have-a-third-encoding-listpack-since-redis-7-2' },
+      { label: 'SINTERCARD: Counting Overlap Without Fetching It', route: '/redis/sets/sintercard-counting-overlap-without-fetching-it' },
+    ],
+    tip: 'SMOVE guarantees a member is always visible as belonging to source OR destination, never both or neither — the exact crash-window risk a separate SREM + SADD pair would reintroduce.',
+    gotchas: [
+      'If the member already exists in the destination set, SMOVE still returns 1 and simply removes it from source — no error, no duplicate.',
+    ],
+  },
+  'redis/sets/sintercard-counting-overlap-without-fetching-it': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Sets', route: '/redis/sets' },
+      { label: 'SMOVE: Atomic State Transitions Between Sets', route: '/redis/sets/smove-atomic-state-transitions-between-sets' },
+    ],
+    tip: 'SINTERCARD with LIMIT stops counting early once the threshold is reached — a result equal to LIMIT proves "at least LIMIT," not the exact intersection size.',
+    gotchas: [
+      'SINTERCARD never transmits the actual matching members, only the count — a genuinely smaller network payload than SINTER, not just a client-side convenience.',
+    ],
+  },
   'redis/sorted-sets': {
     apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
     related: [
@@ -36411,6 +37864,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'ZRANGEBYSCORE with a very wide range on a large sorted set can still return a huge result — always paginate with LIMIT for user-facing leaderboard queries.',
       'Updating a member\'s score with ZADD (without NX/XX flags) implicitly re-sorts it — repeated updates to the same key at high frequency have real overhead.',
+    ],
+  },
+  'redis/sorted-sets/sliding-window-has-the-same-member-collision-bug': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Sorted Sets', route: '/redis/sorted-sets' },
+      { label: 'ZUNIONSTORE: WEIGHTS, AGGREGATE, and the COUNT Mode', route: '/redis/sorted-sets/zunionstore-weights-aggregate-and-count-mode' },
+    ],
+    tip: 'A sliding-window ZADD using a bare timestamp as BOTH score and member silently undercounts — two requests in the same millisecond collide on the same member and only one is ever counted.',
+    gotchas: [
+      'This bug only surfaces under real concurrency — a sequential test suite calling the rate limiter one request at a time never exercises it.',
+    ],
+  },
+  'redis/sorted-sets/zunionstore-weights-aggregate-and-count-mode': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Sorted Sets', route: '/redis/sorted-sets' },
+      { label: 'The Sliding Window Rate Limiter Has the Same Member-Collision Bug', route: '/redis/sorted-sets/sliding-window-has-the-same-member-collision-bug' },
+      { label: 'ZRANGEBYLEX Is Deprecated — Use ZRANGE ... BYLEX', route: '/redis/sorted-sets/zrangebylex-is-deprecated-use-zrange-bylex' },
+    ],
+    tip: 'AGGREGATE has a real fourth mode beyond SUM/MIN/MAX: COUNT, which ignores original scores entirely and tallies how many input sets each member appears in (optionally weighted).',
+    gotchas: [
+      'WEIGHTS multiplies each element\'s score by its OWN set\'s weight BEFORE aggregation, not after the combined result is computed.',
+    ],
+  },
+  'redis/sorted-sets/zrangebylex-is-deprecated-use-zrange-bylex': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Sorted Sets', route: '/redis/sorted-sets' },
+      { label: 'ZUNIONSTORE: WEIGHTS, AGGREGATE, and the COUNT Mode', route: '/redis/sorted-sets/zunionstore-weights-aggregate-and-count-mode' },
+    ],
+    tip: 'ZRANGEBYLEX has been deprecated since Redis 6.2.0 — the modern equivalent is the unified ZRANGE key min max BYLEX, the same replacement pattern already used for ZRANGEBYSCORE.',
+    gotchas: [
+      'Lexicographic range results are documented as unspecified once members have different scores — a set used for pure lexicographic queries needs a constant score for every member.',
     ],
   },
   'redis/streams': {
@@ -36445,6 +37932,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'WATCH provides optimistic locking (abort the transaction if a watched key changed) — without it, MULTI/EXEC alone doesn\'t prevent race conditions on values read before the transaction started.',
       'For genuinely complex conditional logic, a Lua script (atomic by nature, since Redis is single-threaded) is often a cleaner fit than MULTI/EXEC with WATCH.',
+    ],
+  },
+  'redis/transactions/shared-connection-breaks-watch-under-concurrency': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Transactions (MULTI/EXEC)', route: '/redis/transactions' },
+      { label: 'WATCH Inside MULTI Is Not Allowed', route: '/redis/transactions/watch-inside-multi-is-not-allowed' },
+    ],
+    tip: 'A single shared Redis client instance used for WATCH by concurrent callers doesn\'t just risk an error — verified via simulation, one caller\'s EXEC can silently clear another caller\'s watch set, letting a genuinely stale compare-and-swap succeed with no error at all.',
+    gotchas: [
+      'The fix is a dedicated connection per WATCH-based operation (redis.duplicate()), not just "be careful" — the shared module-level Redis client used elsewhere on this page is unsafe specifically for WATCH.',
+    ],
+  },
+  'redis/transactions/watch-inside-multi-is-not-allowed': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Transactions (MULTI/EXEC)', route: '/redis/transactions' },
+      { label: 'A Shared Connection Breaks WATCH Under Concurrency', route: '/redis/transactions/shared-connection-breaks-watch-under-concurrency' },
+      { label: 'The Partial-Execution Mistake, as Real, Runnable Code', route: '/redis/transactions/the-partial-execution-mistake-as-real-runnable-code' },
+    ],
+    tip: 'WATCH after MULTI has already begun is not just bad style — Redis returns a real "ERR WATCH inside MULTI is not allowed" error, and the erroring WATCH is silently discarded rather than aborting the rest of the queued transaction.',
+    gotchas: [
+      'Calling MULTI a second time before the first block is closed is a related, separately-documented error: "ERR MULTI calls can not be nested."',
+    ],
+  },
+  'redis/transactions/the-partial-execution-mistake-as-real-runnable-code': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Transactions (MULTI/EXEC)', route: '/redis/transactions' },
+      { label: 'WATCH Inside MULTI Is Not Allowed', route: '/redis/transactions/watch-inside-multi-is-not-allowed' },
+    ],
+    tip: 'ioredis\'s own documented EXEC reply shape is Array<[Error | null, result]> — a failed command still occupies its own position in the array with an error in the first slot, it is never simply omitted.',
+    gotchas: [
+      'A non-null EXEC result only rules out a WATCH conflict — it says nothing about whether an individual queued command failed at runtime. Check results.some(([err]) => err) separately.',
     ],
   },
   'redis/lua-scripting': {

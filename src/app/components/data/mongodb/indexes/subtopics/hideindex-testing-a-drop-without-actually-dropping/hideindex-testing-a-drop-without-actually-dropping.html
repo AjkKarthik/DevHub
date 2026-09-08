@@ -1,0 +1,26 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Indexes" topicRoute="/mongodb/indexes"
+    subtopicLabel="hideIndex: Testing a Drop Without Actually Dropping" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">hideIndex: Testing a Drop Without Actually Dropping</h1>
+  <p class="page-subtitle">One of the main page's own QnAs names hideIndex() in a single sentence with zero code — but it directly answers the risk the page's own "removing unused indexes" advice raises.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="MongoDB 6.0+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>This closes the loop on the main page's own $indexStats advice for finding unused indexes — hideIndex() is the safe, instantly-reversible verification step between "this index LOOKS unused" and "I'm confident enough to permanently drop it."</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Indexes" topicRoute="/mongodb/indexes"
+    [prev]="{ label: 'Text and 2dsphere Indexes Can Be Multikey Too', route: '/mongodb/indexes/text-and-2dsphere-indexes-can-be-multikey-too' }" />
+</div>

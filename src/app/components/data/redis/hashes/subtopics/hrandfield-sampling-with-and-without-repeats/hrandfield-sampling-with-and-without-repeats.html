@@ -1,0 +1,26 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Hashes" topicRoute="/redis/hashes"
+    subtopicLabel="HRANDFIELD: Sampling With and Without Repeats" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">HRANDFIELD: Sampling With and Without Repeats</h1>
+  <p class="page-subtitle">The main page's theory names HRANDFIELD accurately but never demonstrates it — here it builds a distinct-winners drawing and a with-replacement dice roll, the two modes its positive/negative count actually gives you.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Redis 6.2+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>This closes the topic's arc: the first two subtopics fixed a now-outdated TTL claim and a real data-integrity gap in the Shopping Cart Challenge; this one builds a working example for a command the page names but never demonstrates in code.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Hashes" topicRoute="/redis/hashes"
+    [prev]="{ label: 'The Shopping Cart Challenge Leaves Phantom Zero-Quantity Items', route: '/redis/hashes/shopping-cart-phantom-zero-quantity-items' }" />
+</div>

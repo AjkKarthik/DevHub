@@ -1,0 +1,26 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Aggregation Pipeline" topicRoute="/mongodb/aggregation-pipeline"
+    subtopicLabel="Paginating With $facet: Data Plus Total Count" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">Paginating With $facet: Data Plus Total Count</h1>
+  <p class="page-subtitle">The main page's own QnA names the exact &#123; $facet: &#123; data: [...], totalCount: [...] &#125; &#125; pattern for combining a page of results with a total count in one call — this subtopic builds and verifies it.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>The main page's own quiz already explains WHY $facet can be slower than separate queries in some cases — this subtopic shows the specific pagination use case where combining both needs into one round trip is usually still the right call.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Aggregation Pipeline" topicRoute="/mongodb/aggregation-pipeline"
+    [prev]="{ label: 'Bucketing Prices With $bucket and $bucketAuto', route: '/mongodb/aggregation-pipeline/bucketing-prices-with-bucket-and-bucketauto' }" />
+</div>

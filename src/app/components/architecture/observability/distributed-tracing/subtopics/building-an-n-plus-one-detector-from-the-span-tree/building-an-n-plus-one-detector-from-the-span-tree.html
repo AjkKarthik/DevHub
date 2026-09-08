@@ -1,0 +1,26 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Distributed Tracing" topicRoute="/observability/distributed-tracing"
+    subtopicLabel="Building an N+1 Detector From the Span Tree" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">Building an N+1 Detector From the Span Tree</h1>
+  <p class="page-subtitle">The quiz describes N+1 queries as "visually obvious" in a flamegraph — this subtopic turns that visual pattern into a real function, verified against both a genuine N+1 case and a legitimate parallel fan-out that could otherwise look identical.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>This closes the last of the three gaps this topic's own subtopics build: a genuine inaccuracy in the baggage explanation, a real end-to-end verification of the Kafka propagation pattern, and a programmatic version of the flamegraph's own "visually obvious" N+1 pattern.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Distributed Tracing" topicRoute="/observability/distributed-tracing"
+    [prev]="{ label: 'A Real Kafka Trace-Context Propagation, Verified', route: '/observability/distributed-tracing/a-real-kafka-trace-context-propagation-verified' }" />
+</div>

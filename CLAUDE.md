@@ -6494,6 +6494,2196 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
     correct h1/breadcrumb, 860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar
     content confirmed on the final subtopic. **Observability hub Phase 10: 4 of 20 topics
     complete.**
+13. **The `grafana-dashboards` batch — the second topic in the Metrics nav group — found and fixed
+    a genuine broken-JSON bug in the main page's own "Dashboard has no links to logs or traces"
+    mistake block's `right` field**: the hand-escaped nested-JSON string (a Grafana panel link URL)
+    used inconsistent backslash-escaping — most inner quotes were single-escaped (`\"`, a no-op
+    inside a backtick template literal, collapsing to a bare `"`), while exactly one pair (around
+    `$service`) was correctly triple-escaped. Verified via direct execution that embedding the
+    broken `url` value as a JSON string field inside its real, full panel-link object context (not
+    tested in isolation) fails `JSON.parse()` with "Expected ',' or '}' after property value in
+    JSON at position 78." Fixed by rewriting to build the URL programmatically via
+    `JSON.stringify()` + `encodeURIComponent()`, matching what real dashboard-as-code tooling does
+    and sidestepping hand-escaping entirely. Also fixed two mistagged codeTabs ("Dashboard JSON"
+    and "Loki + Tempo Linking", both YAML/JSON content tagged `language: 'typescript'`) to the
+    established `'bash'` convention. Three subtopics: (1) **fix-adjacent** — reproduces and
+    verifies both the broken and fixed URL-building code in their true embedded context; a self-
+    caught mistake during authoring: an initial codeTab draft tested the URL's JSON portion in
+    ISOLATION (too lenient, incorrectly appeared to parse fine) — caught by recognizing this didn't
+    match the real bug context, rewritten to correctly reconstruct the full panel-link document and
+    re-verified via extracting the exact displayed code text and executing it standalone; (2)
+    **gap-closing** — demonstrates two real, verified limits of the page's own Loki `derivedField`
+    `matcherRegex: '"traceId":"(\w+)"'`: JSON-structure blindness (a decoy field literally named
+    `traceId` appearing earlier in a log line wins over the real field, verified via execution) and
+    `\w+`'s inability to span a hyphenated trace ID (verified: produces no match at all); (3)
+    **gap-closing** — builds `detectDeploymentCorrelation()`, turning the page's own "eyeball the
+    annotation timeline" mistake-block advice into a verified, testable function, with a Try It
+    confirming the "most recent, not first-found" attribution rule via a realistic rapid-hotfix
+    scenario. No `SUBTOPICS` collision for bare `grafana-dashboards` (checked both `subtopics.ts`
+    forms and grepped `app.routes.ts` directly, confirmed collision-free, left bare).
+    `ObsNavComponent`'s toggle for this topic used a single consistent key across all five
+    accordion-related calls, double-checked via grep after writing. Build passed clean (foreground
+    execution, explicit `EXITCODE:$?` capture, zero `ERROR` lines). Browser-verified with a hard
+    reload first: nav accordion opens with all 3 subtopic links on the first check; all three
+    main-page fixes confirmed rendering live via `window.ng.getComponent()` (the `right` field's
+    `JSON.stringify`/`encodeURIComponent` rewrite, and both mistagged codeTabs now correctly tagged
+    `'bash'`); all 3 subtopic pages checked individually — zero console errors, correct
+    h1/breadcrumb, 860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content
+    confirmed on the final subtopic. **Observability hub Phase 10: 5 of 20 topics complete.**
+14. **The `custom-app-metrics` batch — the third topic in the Metrics nav group — found and fixed
+    TWO genuine, self-contained bugs on the main page's own codeTabs, both verified end-to-end
+    against the real `prom-client` package**: (1) the "Metric Abstraction Layer" codeTab's
+    `getOrCreateCounter()` hardcoded `labelNames: []` regardless of whatever labels a caller
+    actually passed, while the SAME class's `recordDuration()`/`setGauge()` correctly derive
+    `labelNames` from `Object.keys(labels)` — verified via direct execution that this breaks the
+    page's OWN literal usage comment (`metrics.incrementCounter('orders_placed_total', { type:
+    'subscription' })`) with `Added label "type" is not included in initial labelset: []`. Fixed
+    by passing `labels` into `getOrCreateCounter()` so it registers them on first creation,
+    matching the sibling methods' already-correct pattern. (2) The "Business Metrics" codeTab's
+    `pendingOrdersGauge` callback `collect()` fired an async `getPendingOrders().then(...)` chain
+    WITHOUT returning it — reading prom-client's own `Gauge.get()` source directly confirmed it
+    only awaits `collect()`'s result if that result IS a Promise (`if (v instanceof Promise) await
+    v`). Verified via a real `register.metrics()` scrape that the gauge serializes in its
+    just-`reset()` (empty) state every time, with the async update always landing too late. Fixed
+    by returning the promise chain. Three subtopics: (1) **fix-adjacent** — reproduces and
+    verifies both the broken and fixed `getOrCreateCounter()` against real prom-client, with a Try
+    It on a real, still-standing limitation: the label set only ever registers on a metric's
+    FIRST call, so a later call introducing a new label key on the same metric name still throws,
+    even after the fix; (2) **fix-adjacent** — reproduces the stale-scrape bug and fix via a real
+    `register.metrics()` call, with a Try It distinguishing this async-callback-gauge pattern from
+    the page's own directly-recorded `checkoutDuration` histogram, which has no async gap to
+    worry about at all; (3) **gap-closing** — the theory section names a second decoupling
+    technique ("domain event pattern: emit structured domain events... convert them to metrics in
+    an event listener") that neither codeTab ever demonstrates (both use the abstraction-layer
+    pattern instead); built and verified a real `EventEmitter`-based listener end-to-end, with a
+    Try It on the silent-failure cost unique to this pattern — a typo'd event name (`'OrderPlace'`
+    instead of `'OrderPlaced'`) produces zero errors anywhere, unlike a typo'd abstraction-layer
+    method name, which TypeScript catches at compile time. No `SUBTOPICS` collision for bare
+    `custom-app-metrics` (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly,
+    confirmed collision-free, left bare). `ObsNavComponent`'s toggle for this topic used a single
+    consistent key across all five accordion-related calls, double-checked via grep after writing.
+    Build passed clean (foreground execution, explicit `EXITCODE:$?` capture, zero `ERROR` lines).
+    Browser-verified with a hard reload first: nav accordion opens with all 3 subtopic links on the
+    first check; both main-page fixes confirmed rendering live via `window.ng.getComponent()`; all
+    3 subtopic pages checked individually — zero console errors, correct h1/breadcrumb, 860px
+    wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the final
+    subtopic. **Observability hub Phase 10: 6 of 20 topics complete.**
+15. **The `infrastructure-metrics` batch — the fourth topic in the Metrics nav group — found and
+    fixed a genuine, purely self-contained PromQL correctness bug in the "Kubernetes Metrics"
+    theory bullet**: it gave `container_cpu_usage_seconds_total / kube_pod_container_resource_limits
+    {resource="cpu"}` as the "CPU throttling ratio," reading "> 0.8" as "consistently hitting CPU
+    limits." `container_cpu_usage_seconds_total` is a monotonic COUNTER — dividing it directly by a
+    static limit, with no `rate()` wrapper, is the same class of mistake this hub's own Prometheus
+    & Metrics topic already warns against generally. Verified with concrete numbers via direct
+    execution: a container running at a genuinely healthy 10% average CPU usage the whole time
+    crosses the page's own "> 0.8" threshold within the FIRST MINUTE it's alive (6.0 after 1
+    minute, 30.0 after 5, 360.0 after an hour), climbing without bound regardless of actual load,
+    while the correctly `rate()`-wrapped version stays flat at the true 0.10. The formula was also
+    mislabeled — it's a usage-to-limit ratio, not throttling, which the page's own codeTabs already
+    correctly define elsewhere as `container_cpu_throttled_seconds_total /
+    container_cpu_usage_seconds_total`. Fixed by wrapping the counter in `rate(...[5m])` and
+    correcting the label to distinguish it from the real throttling metric. Also fixed two
+    mistagged codeTabs ("Key PromQL Queries" and "Alert Rules", both PromQL/YAML content tagged
+    `language: 'typescript'`) to the established `'bash'` convention. Three subtopics: (1)
+    **fix-adjacent** — reproduces the exact broken/fixed math via direct execution, with a Try It
+    on why the page's OWN unwrapped gauge-based "Deployment health" ratio right below it is
+    correctly safe without `rate()` — gauges report a current state and never need it, only
+    counters do; (2) **gap-closing** — the QnA names time-to-exhaustion capacity projection as "the
+    most useful capacity alert" with a precise 2-weeks-vs-2-hours worked example in prose, never
+    shown in code anywhere on the page; built and verified `projectExhaustion()` against those
+    exact numbers via direct execution, with a Try It showing a disk at only 50% full can still
+    alert sooner than one at 96% full if its growth rate is high enough; (3) **gap-closing** — the
+    connection-pool mistake block's own fix states "alert when waiting count is non-zero for more
+    than 30 seconds," but the gauge it builds has no notion of duration at all; built and verified
+    a `SustainedConditionTracker` via direct execution across three scenarios (a momentary blip
+    that correctly doesn't fire, a genuinely sustained condition that fires at the 30s mark, and a
+    Try It confirming a single instant where the condition clears resets the clock entirely rather
+    than accumulating partial credit). No `SUBTOPICS` collision for bare `infrastructure-metrics`
+    (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed
+    collision-free, left bare). `ObsNavComponent`'s toggle for this topic used a single consistent
+    key across all five accordion-related calls, double-checked via grep after writing. Build
+    passed clean (foreground execution, explicit `EXITCODE:$?` capture, zero `ERROR` lines).
+    Browser-verified with a hard reload first: nav accordion opens with all 3 subtopic links on the
+    first check; the theory-bullet fix and both codeTab language fixes confirmed rendering live via
+    `window.ng.getComponent()`; all 3 subtopic pages checked individually — zero console errors,
+    correct h1/breadcrumb, 860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar
+    content confirmed on the final subtopic. **Observability hub Phase 10: 7 of 20 topics
+    complete.**
+16. **The `cloud-native-monitoring` batch — the fifth and final topic in the Metrics nav group —
+    found and fixed a genuine, thoroughly-verified Docker Compose bug in the "Thanos Setup"
+    codeTab**: the <code>prometheus</code> service's <code>command:</code> list gave four
+    <code>--storage.tsdb.*</code> flags plus <code>--web.enable-lifecycle</code>, but no
+    <code>--config.file</code> flag — verified via WebFetch against the official
+    <code>prom/prometheus</code> Dockerfile that the image's default CMD is
+    <code>["--config.file=/etc/prometheus/prometheus.yml", "--storage.tsdb.path=/prometheus"]</code>,
+    and that Docker Compose's <code>command:</code> REPLACES CMD entirely, not appends — every
+    flag not re-listed is simply gone. Verified via WebSearch against Prometheus's own flag
+    definitions that <code>--config.file</code>'s compiled-in default is a RELATIVE path
+    (<code>Default("prometheus.yml")</code>), and via a second WebFetch that the image's own
+    <code>WORKDIR</code> is <code>/prometheus</code> — meaning the omitted flag makes Prometheus
+    look for <code>/prometheus/prometheus.yml</code>, a path occupied by the
+    <code>prometheus-data</code> TSDB volume, never the config correctly mounted at
+    <code>/etc/prometheus/prometheus.yml</code>. The volume mount itself was completely correct,
+    which is exactly what made this easy to miss on a casual read. Fixed by adding the missing
+    flag. Also fixed two mistagged codeTabs ("Prometheus Operator CRDs" and "Thanos Setup", both
+    YAML/docker-compose content tagged `language: 'typescript'`) to the established `'bash'`
+    convention. Three subtopics: (1) **fix-adjacent** — reproduces the exact failure chain and the
+    fix, with a Try It on why the page's own Prometheus Operator CRDs never hit this failure mode
+    at all (the Operator generates container args programmatically, never hand-writing a
+    `command:` list); (2) **gap-closing** — the Quick Reference names PodMonitor for DaemonSets/
+    StatefulSets but no codeTab ever builds one; verified via WebFetch against the Prometheus
+    Operator's own API reference that PodMonitor's scrape-endpoint field is genuinely
+    `podMetricsEndpoints`, not `endpoints` like ServiceMonitor — a real, easy copy-paste trap since
+    an unrecognized field can be silently dropped rather than rejected; (3) **gap-closing** — the
+    Quick Reference names AlertmanagerConfig for "Slack webhook, PagerDuty key, routing by label"
+    but never shows one; built and verified a manifest routing the EXACT
+    `OrderServiceHighErrorRate` alert already defined on the page's own PrometheusRule codeTab,
+    verified via WebSearch against real AlertmanagerConfig examples for the
+    `route.matchers`/`receivers`/`slackConfigs` shape, including the `apiURL.name`/`apiURL.key`
+    Secret-reference pattern for the webhook URL. **A real, self-caught escaping bug found and
+    fixed before the build, not after**: an early draft of a misconceptions field used `\\'`
+    (double-backslash) around nested array-literal quotes inside a single-quoted TS string — this
+    is NOT the correct single-backslash `\'` convention documented elsewhere in this file; a
+    double-backslash produces a literal backslash character followed by an UNESCAPED quote that
+    prematurely terminates the string. Caught via a direct grep/re-read before the build, fixed by
+    rewording to avoid the nested-quote collision entirely rather than trying to re-escape it. No
+    `SUBTOPICS` collision for bare `cloud-native-monitoring` (checked both `subtopics.ts` forms and
+    grepped `app.routes.ts` directly, confirmed collision-free, left bare). `ObsNavComponent`'s
+    toggle for this topic used a single consistent key across all five accordion-related calls,
+    double-checked via grep after writing. Build passed clean (foreground execution, explicit
+    `EXITCODE:$?` capture, zero `ERROR` lines). Browser-verified with a hard reload first: nav
+    accordion opens with all 3 subtopic links on the first check (8 toggles total across the hub,
+    confirming all 5 Metrics-group topics now have subtopics); both main-page fixes confirmed
+    rendering live via `window.ng.getComponent()`; all 3 subtopic pages checked individually — zero
+    console errors, correct h1/breadcrumb, 860px wrapper via `getComputedStyle`, tailored (not
+    DEFAULT) sidebar content confirmed on the final subtopic. **Observability hub Phase 10: 8 of 20
+    topics complete — Metrics nav group fully done.**
+17. **The `structured-logging` batch — the first topic in the Logging nav group — found and fixed
+    a genuine, well-verified bug in the "Pino Setup" codeTab's `loggingMiddleware`**: it read
+    `req.headers['traceparent']` directly and stored the ENTIRE raw header string as `traceId`.
+    Verified against the W3C Trace Context specification that a `traceparent` header is a compound
+    value with the format `version-trace_id-parent_id-trace_flags`, and that the spec's own
+    official example header's trace-id segment — `4bf92f3577b34da6a3ce929d0e0e4736` — is
+    byte-for-byte IDENTICAL to the SAME page's own "Log Schema" codeTab's `traceId` example,
+    confirming that codeTab's expected shape is a bare 32-hex-character trace-id, not the full
+    55-character compound header the middleware was actually storing. Fixed by extracting just the
+    trace-id segment (`traceparent?.split('-')[1]`, falling back to `crypto.randomUUID()` when no
+    header is present). Three subtopics: (1) **fix-adjacent** — reproduces the exact mismatch
+    against the W3C spec's own official example header via direct execution, with a Try It on the
+    fallback path when no `traceparent` header exists at all; (2) **gap-closing** — the quiz
+    explains head-based probabilistic sampling and its "statistical validity" property (estimating
+    a true count from a sampled one) in real depth, never coded anywhere; built and verified
+    `shouldSampleLog()`/`estimateTrueCount()` against the quiz's own exact rates (100% ERROR, 10%
+    WARN, 1% INFO) across 200,000 trials via direct execution, with a Try It on hash-based
+    consistent (per-user) sampling as a genuinely different alternative to pure random per-event
+    sampling; (3) **gap-closing** — the "Logging at DEBUG level in production" mistake block's own
+    fix code schedules an independent revert `setTimeout` on every admin call with no tracking at
+    all; verified via direct execution — with margins wide enough to avoid real `setTimeout` jitter
+    after an initial too-tight-timing attempt produced a flaky, misleading result, self-caught and
+    corrected before publishing — that a second call before the first timer fires lets the STALE
+    first timer silently override the second admin's intended level; built and verified the
+    `clearTimeout()`-tracking fix. No `SUBTOPICS` collision for bare `structured-logging` (checked
+    both `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed collision-free, left
+    bare). `ObsNavComponent`'s toggle for this topic used a single consistent key across all five
+    accordion-related calls, double-checked via grep after writing. Build passed clean (foreground
+    execution, explicit `EXITCODE:$?` capture, zero `ERROR` lines). Browser-verified with a hard
+    reload first: nav accordion opens with all 3 subtopic links on the first check; the
+    `traceparent` fix confirmed rendering live via `window.ng.getComponent()`; all 3 subtopic pages
+    checked individually — zero console errors, correct h1/breadcrumb, 860px wrapper via
+    `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the final subtopic.
+    **Observability hub Phase 10: 9 of 20 topics complete.**
+18. **The `log-aggregation` batch — the second topic in the Logging nav group — found and fixed a
+    genuine, well-verified inaccuracy in the "Promtail Config" codeTab's "Sample 10% of health
+    check logs" section**: it configured a `drop` stage matching `'"path":"/health"'` with a
+    comment claiming "Drop 90% of health checks: keep only when hash(log_line) % 10 == 0" — but the
+    `drop` stage shown has no such condition at all, it unconditionally drops every matching line.
+    Verified against Loki's own official documentation for the `drop` pipeline stage that its
+    complete configuration field set (`source`, `separator`, `value`, `expression`, `older_than`,
+    `longer_than`, `drop_counter_reason`) includes no percentage or probability parameter whatsoever
+    — the stage is purely deterministic, matching a condition or not, per line. Confirmed by
+    comparing against the SAME page's own LATER mistake block ("Shipping all logs including health
+    check and metrics scrape logs"), which correctly frames the identical `drop` config as a full
+    drop with no sampling claim at all — an internal inconsistency findable without any external
+    research, once cross-referenced. Fixed by correcting the comment and relabeling the counter
+    reason (`health_check_full_drop`). Three subtopics: (1) **fix-adjacent** — lists every real
+    field the `drop` stage supports (confirmed none is a rate), with a Try It on a regex-based
+    workaround (matching on the last hex digit of `traceId`) that technically achieves a crude ~1/16
+    sampling but defeats the actual cost-saving goal, since Promtail still has to receive and
+    evaluate every line before dropping most of them — the real savings only come from never
+    emitting the log line in application code at all, tying back to the sibling Structured Logging
+    topic's own log-sampler subtopic; (2) **gap-closing** — the log-based-alerting QnA names "dead
+    man switch" alerting in one clause with zero code anywhere; verified LogQL's
+    `absent_over_time()` directly against Loki's own documentation ("returns... a 1-element vector
+    with the value 1 if the range vector passed to it has no elements") and built a real alert rule
+    matching the page's own existing `- alert: ... expr: ... for: ... labels: ...` style, with a Try
+    It on why a total-silence outage is structurally invisible to the page's own `rate()`-based
+    error alert (`rate()` of zero logs is 0, and `0 > 10` is always false); (3) **gap-closing** —
+    the Challenge's own `parseStreamSelector()` explicitly scopes itself to exclude regex (`=~`)
+    selectors, but the page's own QnA one section earlier uses exactly that syntax
+    (`{service=~"order|payment"}`) as a realistic example query; verified via direct execution that
+    feeding it to the unmodified reference solution doesn't reject cleanly, it silently GARBLES the
+    result (`indexOf('=')` finds the `=` inside the `=~` operator, producing
+    `{ service: '~"order|payment' }`) — built and verified the fix (`pair.includes('=~')` checked
+    before parsing). No `SUBTOPICS` collision for bare `log-aggregation` (checked both
+    `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed collision-free, left bare).
+    `ObsNavComponent`'s toggle for this topic used a single consistent key across all five
+    accordion-related calls, double-checked via grep after writing. Build passed clean (foreground
+    execution, explicit `EXITCODE:$?` capture, zero `ERROR` lines). Browser-verified with a hard
+    reload first: nav accordion opens with all 3 subtopic links on the first check; both main-page
+    fixes confirmed rendering live via `window.ng.getComponent()`; all 3 subtopic pages checked
+    individually — zero console errors, correct h1/breadcrumb, 860px wrapper via `getComputedStyle`,
+    tailored (not DEFAULT) sidebar content confirmed on the final subtopic. **Observability hub
+    Phase 10: 10 of 20 topics complete — halfway through the hub.**
+19. **The `log-best-practices` batch — the third and final topic in the Logging nav group — found
+    and fixed TWO genuine, independent bugs in the "Log Testing" codeTab's own `createTestLogger()`
+    helper, both verified against real pino**: (1) its `Writable` stream's `write(chunk)` handler
+    never called the required `callback` parameter — Node's Writable stream contract requires
+    calling it to signal readiness for the next write; without it, the stream stalls after the
+    FIRST write, and every subsequent logger call within the same test silently vanishes from
+    `getLines()`. Verified via direct execution: a realistic two-call sequence
+    (`logger.info(...)` then `logger.warn(...)`) only captured 1 of 2 expected lines. (2) The
+    codeTab's own assertions — `expect(orderLog![&#39;level&#39;]).toBe(&#39;info&#39;)` — expect a
+    STRING, but verified against real pino output that its default `level` field is a NUMBER (`30`
+    for info, `40` for warn) — the exact assertion pattern the codeTab presents as correct would
+    fail against real pino, every time, with no configuration change. Fixed by adding the
+    `callback()` call and a `formatters: { level: (label) => ({ level: label }) }` option; re-
+    verified both fixes together produce 2/2 captured lines with correctly string-typed levels.
+    Three subtopics: (1) **fix-adjacent** — reproduces both bugs side by side against real pino,
+    with a Try It on why the page's own SECOND test (a single logger call) happened to still pass
+    despite the callback bug — the bug only breaks capturing a SECOND write on the same stream
+    instance; (2) **gap-closing** — running the page's own 13-event "Log Contract" codeTab through
+    the Challenge's `classifyLogLevel()` keyword classifier via direct execution finds 3 real
+    mismatches (`ORDER_CANCELLED`, `DB_CONNECTION_LOST`, `CACHE_UNAVAILABLE` — all silently
+    classified as `'debug'` despite being configured as `info`/`error`/`warn`) — not a bug in
+    either section on its own, but a genuine, well-verified limitation of finite keyword-guessing
+    versus an authoritative source already present in the same codebase, with a Try It on the
+    hybrid fix (lookup first, keyword-fallback for uncatalogued messages); (3) **gap-closing** —
+    the theory section states the correlation-ID extraction rule precisely ("extract from headers
+    first, generate only if missing, log the extraction source") but no codeTab ever builds it;
+    built and verified `extractOrGenerateTraceId()`, reusing the EXACT trace-ID extraction
+    technique already fixed on the sibling Structured Logging topic's own `traceparent`-header-bug
+    subtopic, with a Try It on why a `'generated'` source structurally rules out finding the same
+    trace ID in an upstream service's logs. No `SUBTOPICS` collision for bare `log-best-practices`
+    (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed
+    collision-free, left bare). `ObsNavComponent`'s toggle for this topic used a single consistent
+    key across all five accordion-related calls, double-checked via grep after writing. Build
+    passed clean (foreground execution, explicit `EXITCODE:$?` capture, zero `ERROR` lines).
+    Browser-verified with a hard reload first: nav accordion opens with all 3 subtopic links on the
+    first check (11 toggles total across the hub, confirming all 3 Logging-group topics now have
+    subtopics); the main-page fix confirmed rendering live via `window.ng.getComponent()`; all 3
+    subtopic pages checked individually — zero console errors, correct h1/breadcrumb, 860px wrapper
+    via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the final subtopic.
+    **Observability hub Phase 10: 11 of 20 topics complete — Logging nav group fully done.**
+20. **The `distributed-tracing` batch — the first topic in the Tracing nav group — found and fixed
+    a genuine inaccuracy in the baggage-propagation quiz explanation, verified against a real
+    `@opentelemetry/api` SDK rather than assumed**: it stated baggage "is additional context
+    attached to the trace for filtering and correlation in the tracing backend," implying setting
+    `userId` at the entry point makes it automatically searchable downstream. Verified via direct
+    execution that setting baggage and starting a span inside that context produces a span whose
+    `attributes` object is completely EMPTY — baggage never automatically becomes a span attribute.
+    Confirmed via OpenTelemetry's own contrib package documentation that the bridge from
+    propagated context to a searchable span attribute is a SEPARATE, opt-in component,
+    `BaggageSpanProcessor` ("reads entries stored in Baggage from the parent context and adds the
+    baggage entries' keys and values to the span as attributes on span start") — without it, only a
+    manual `span.setAttribute()` call gets baggage onto a span at all. Fixed the explanation to
+    state this precisely. Also fixed two codeTabs ("Trace Flow Example" and "Trace Search Queries")
+    mistagged as `language: 'typescript'` — verified via a real `tsc` compile that "Trace Flow
+    Example" is not even valid TypeScript at all (a sequence of bare `{...}` object-literal-shaped
+    blocks at the TOP LEVEL of a script parses as labeled block statements, not object literals,
+    producing a cascade of `TS1005`/`TS1109` errors) — both fixed to `'bash'`. Three subtopics: (1)
+    **fix-adjacent** — reproduces the verified finding against a real OTel SDK (an empty
+    `attributes: {}` object, confirmed), with a Try It on the real security cost of registering
+    `BaggageSpanProcessor` unconditionally rather than with an explicit key allowlist; (2)
+    **gap-closing** — the QnA describes `propagation.inject()`/`propagation.extract()` for Kafka in
+    prose with zero code executed; ran the full producer-to-consumer flow against a real OTel SDK
+    (`NodeTracerProvider` + `InMemorySpanExporter`), confirming the two spans — created in two
+    genuinely separate function calls with no shared execution context — end up sharing one
+    `traceId` and a real parent-child link, purely through the header-carrier round trip; (3)
+    **gap-closing** — the quiz calls N+1 query patterns "visually obvious" in a flamegraph but never
+    builds a detector; built and verified `detectNPlusOne()` on the Challenge's own `Span`
+    interface, including a sequential-vs-parallel timing check that correctly distinguishes a
+    genuine N+1 (flagged) from a legitimate concurrent fan-out (correctly not flagged) — with a Try
+    It surfacing a real, honest limitation: a single overlapping pair flips the whole group's
+    `sequential` flag and it never resets, so a group that's mostly sequential with one incidental
+    overlap gets reported as not-likely-N+1. **A real, proactively-checked `SUBTOPICS` collision**:
+    bare `distributed-tracing` was already claimed by the System Design hub's own topic (confirmed
+    by grepping `subtopics.ts` directly, not just `app.routes.ts`) — hub-prefixed to
+    `obs-distributed-tracing`, matching this hub's own established `obs-` progress/search key
+    prefix; all five `ObsNavComponent` accordion calls use the prefixed key consistently, while
+    `breadcrumb.ts`/`page-sidebar.ts` composite keys stay bare/full-path per each map's own
+    per-hub-scoped convention (no collision risk there). Confirmed via direct browser navigation
+    that `/system-design/distributed-tracing` renders completely unaffected. Build passed clean
+    (foreground execution, explicit `EXITCODE:$?` capture, zero `ERROR` lines — also confirming no
+    duplicate-key error from the collision resolution). Browser-verified with a hard reload first
+    (after restarting the dev server, which had died during a session interruption — confirmed via
+    `preview_list` returning an empty array, then a full cold-start `preview_start` + polling until
+    the server responded): nav accordion opens with all 3 subtopic links on the first check; both
+    main-page fixes confirmed rendering live via `window.ng.getComponent()`; all 3 subtopic pages
+    checked individually — zero console errors, correct h1/breadcrumb, 860px wrapper via
+    `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the final subtopic; the
+    `/system-design/distributed-tracing` cross-hub isolation check passed. **Observability hub
+    Phase 10: 12 of 20 topics complete.**
+21. **The `opentelemetry-tracing` batch — the second topic in the Tracing nav group — found and
+    fixed a genuine span leak in the main page's own "Kafka Context Propagation" code tab, caught
+    purely by comparing it against the page's own SIBLING code tab**: the "Advanced Manual Tracing"
+    tab wraps every single span in `try/finally`, with an explicit comment on its very first one —
+    `// always end — startActiveSpan does NOT auto-end`. The "Kafka Context Propagation" tab right
+    below it breaks its own neighbor's rule: `publishOrderEvent()`'s producer span calls
+    `span.end()` as a bare, unconditional statement AFTER `await kafka.producer().send(...)`, with
+    no `try/finally` at all. Verified directly via a minimal simulation reproducing the exact shape
+    (not just reasoned about): the buggy version calls `span.end()` zero times when the awaited
+    call throws (a realistic broker outage, timeout, or network partition), exactly once when it
+    succeeds — the happy-path behavior is identical between buggy and fixed, which is precisely why
+    this kind of bug survives casual review. Fixed by wrapping the `send()` call in `try/finally`.
+    Three subtopics: (1) **fix-adjacent** — reproduces the exact leak/fix via the same minimal
+    simulation, with a Try It on why a typical unit test (mocking `send()` to always resolve) never
+    exercises the failing branch, and what a dedicated rejection-mock test would need to assert
+    instead; (2) **gap-closing** — one of the page's own quiz explanations lists `links (references
+    to other traces)` as part of the span data model, alongside attributes and events, but neither
+    code tab nor any mistake block ever creates one; built and verified against a REAL
+    `@opentelemetry/api` + `@opentelemetry/sdk-trace-node` SDK (with an `InMemorySpanExporter`) that
+    a batch-processing span fanning in from 3 unrelated origin traces correctly exports with NO
+    single parent while its own `links` array carries all 3 origin trace IDs intact — the canonical
+    case a plain parent-child edge structurally can't express; (3) **gap-closing** — the page's own
+    QnA on instrumenting legacy callback-based code names `context.bind(context.active(),
+    callbackFn)` as the fix, explaining AsyncLocalStorage "propagates automatically across await/
+    Promise.then(), but NOT across plain callbacks unless you explicitly bind" — with zero code
+    demonstrating either the failure or the fix. Getting a GENUINE failure to reproduce took more
+    care than "any callback": a callback registered synchronously and invoked shortly after via
+    `setImmediate` still correctly inherits context automatically in Node.js, since scheduling that
+    async work happens while the original context is still active — confirmed by a first draft of
+    this exact test accidentally proving the OPPOSITE of what was intended, caught before writing
+    any subtopic content. The genuine failure needs the callback STORED and invoked LATER by a
+    background async chain that was created independently of any request context (the realistic
+    shape of a legacy connection-pool driver draining a queue on its own timer) — verified via the
+    same real OTel SDK that an unbound callback queued this way comes back with a completely
+    different, unrelated `traceId` (a brand-new root trace, not merely a missing parent field),
+    while the `context.bind()`-wrapped version correctly reproduces the original trace and parent
+    link. No `SUBTOPICS` collision for `opentelemetry-tracing` (checked both `subtopics.ts` forms
+    and grepped `app.routes.ts` directly, confirmed collision-free, left bare). All apostrophes in
+    `[innerHTML]`-bound fields used the typographic curly quote consistently; `exercise.solution`
+    fields (plain interpolation) swept clean of `<code>`/entity contamination. **A real stale
+    dev-server incident, resolved with the established fix**: the running `ng serve` process was
+    serving a bundle from well before this batch — `subtopicsOf('opentelemetry-tracing')` returned
+    `null` and the nav toggle button was entirely absent from the DOM despite a clean production
+    build — a full `preview_stop`/`preview_start` restart (not just a hard reload, which alone did
+    not fix it) resolved it; confirmed via a fresh `subtopicsOf()` call returning the correct data
+    immediately after the cold-start compile finished. Build passed clean (foreground, explicit
+    exit-code capture, zero `ERROR` lines). Browser-verified after the restart: nav accordion opens
+    with all 3 subtopic links; the main-page `try/finally` fix confirmed live via direct component
+    inspection; all 3 subtopic pages checked individually — zero console errors, correct
+    h1/breadcrumb, 860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content
+    confirmed on the final subtopic. **Observability hub Phase 10: 13 of 20 topics complete.**
+22. **The `performance-profiling` batch — the third and final topic in the Tracing nav group —
+    found and fixed a genuine, verified break in the main page's own "Memory Leak Detection" code
+    tab**: `import LRU from 'lru-cache'; const cache2 = new LRU&lt;string, object&gt;(...)` is
+    v6-era default-export syntax. Verified directly against the real, currently-published
+    `lru-cache` package (v11): `require('lru-cache')` returns a plain object whose only useful
+    member is a NAMED export, `LRUCache` — there is no default export at all. Confirmed via a real
+    Node.js reproduction that `new LRU(...)` throws `TypeError: LRU is not a constructor` under the
+    CJS-interop binding a default import resolves to for a module with no true default. Fixed to
+    `import { LRUCache } from 'lru-cache'; new LRUCache(...)`. Three subtopics, each independently
+    verified via real code execution: (1) **fix-adjacent** — reproduces the exact break/fix against
+    the real installed package, with a Try It on a namespace-import alternative (`import * as LRU`)
+    that would also technically work but loses the readability the named-import form provides; (2)
+    **gap-closing** — the page's own theory names `worker_threads` as the fix for event-loop
+    blocking in one sentence, never demonstrated; verified with a live 10ms timer running
+    throughout that the identical heavy computation produces zero ticks when run synchronously on
+    the main thread, and lets 30+ ticks through when moved to a real `Worker`; (3) **gap-closing**
+    — the page's own QnA names `async_hooks` for finding resource leaks in one sentence, never
+    shown. First verified the NAIVE approach (watching every built-in `PROMISE` resource) is
+    genuinely too noisy — Node keeps several of its own internal promise resources alive, producing
+    6 "active" entries for a script that leaked exactly 1. Built and verified the real fix: a custom
+    `AsyncResource` subclass tagging only the business-relevant operation, cleanly isolating the
+    leaked entry with an exact count of 1 — including catching a genuine ordering gotcha along the
+    way (a custom `AsyncResource` subclass's `init()` hook fires from INSIDE `super()`, before the
+    subclass constructor body has set any of its own fields, so reading a just-constructed
+    resource's custom property inside `init()` sees `undefined` every time — the tracker has to
+    store the resource REFERENCE at init time and read fields later). **Retitled the first subtopic
+    to avoid literal quote marks around "lru-cache" in its own title** — a subtopic's title gets
+    embedded verbatim as a `[prev]`/`[next]` label on sibling pages, and the original title
+    (`import LRU from 'lru-cache' Is v6-Era Syntax`) would have collided with the label string's own
+    single-quote delimiters the moment another page referenced it; caught and fixed BEFORE any
+    sibling page ever referenced it, per the established "check a subtopic's own title for a bare
+    `'`/`"` before creating any cross-page reference to it" discipline. No `SUBTOPICS` collision for
+    `performance-profiling` (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly,
+    confirmed collision-free, left bare). Build passed clean (foreground, explicit exit-code
+    capture, zero `ERROR` lines). **A second stale dev-server incident in a row, resolved with the
+    same established fix**: the running server (restarted fresh at the start of the immediately-
+    prior `opentelemetry-tracing` batch) was ALREADY stale again by the time this batch's new files
+    were written — `subtopicsOf('performance-profiling')` returned `null` despite a clean build — a
+    full `preview_stop`/`preview_start` restart resolved it immediately, confirming this is a
+    per-batch risk in this session's dev-server setup, not a one-off from the earlier incident.
+    Browser-verified after the restart: nav accordion opens with all 3 subtopic links; the
+    main-page `LRUCache` fix confirmed live via direct component inspection; all 3 subtopic pages
+    checked individually — zero console errors, correct h1/breadcrumb, 860px wrapper via
+    `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the final subtopic.
+    **This completes the Observability hub's Tracing nav group** (`distributed-tracing`,
+    `opentelemetry-tracing`, `performance-profiling` — all 3 of 3 topics now have subtopics).
+    **Observability hub Phase 10: 14 of 20 topics complete.**
+23. **The `alerting-design` batch — the first topic in the Alerting & SRE nav group — found and
+    fixed a genuine, self-contained tension between the main page's own theory and its own quiz**:
+    the theory bullet on dead man's switches named a plain PromQL `absent()` rule as "the"
+    mechanism, with no mention of WHERE it needs to run — read in isolation, a natural conclusion
+    is "add this as another rule in the same Prometheus." The page's own quiz, on a completely
+    separate question, states the actual constraint forcefully: an external heartbeat service is
+    required precisely because "a full failure of that pipeline... would silently disable the
+    watchdog itself at the same time" if the check ran on the same stack. Verified directly via a
+    `FakePrometheus`/`ExternalHeartbeatService` simulation that a self-referential check running on
+    the same instance it protects genuinely cannot detect that instance's own total outage — once
+    it's dead, the check itself never evaluates either, only an independent system pinging in
+    (or being pinged by) the primary stack can. Tightened the theory bullet to state the constraint
+    explicitly, matching what the page's own "Alertmanager Config" code tab already implements
+    correctly (a Dead Man's Snitch webhook). Also fixed two codeTabs ("Alert Rules", "Alertmanager
+    Config") mistagged `language: 'typescript'` despite containing YAML — fixed to `'bash'`,
+    matching the established convention for non-TS content elsewhere in this hub. Three subtopics:
+    (1) **fix-adjacent** — reproduces the exact finding via the same simulation, with a Try It
+    distinguishing the CHECK itself (must run independently of what it protects) from the
+    NOTIFICATION channel (a separate, related but distinct concern — changing only the pager
+    integration doesn't fix a check that still can't evaluate once the primary process is dead);
+    (2) **gap-closing** — the QnA describes a complete 3-tier escalation policy (primary →
+    secondary → team lead, with 15-minute and 10-minute timeouts) in prose with zero code
+    anywhere on the page; built and verified a real state-machine function across all three
+    genuine outcomes (an on-time acknowledgement, a late one caught by the next tier, and total
+    silence exhausting the whole policy), with a Try It on why the total worst-case time is the
+    SUM of every tier's own timeout (35 minutes for three tiers of 15/10/10), not the longest
+    single tier; (3) **gap-closing** — the QnA's one-line dynamic-threshold example ("3 standard
+    deviations above the same hour from the previous week") had zero code demonstrating it;
+    verified against synthetic weekly-seasonal data that a flat static threshold is stuck between
+    two failure modes at once — false-positiving on a completely normal, expected weekly batch-job
+    spike, or false-negativing on a genuine multiple-times-normal degradation during an otherwise-
+    quiet hour — while a per-hour dynamic baseline (mean + N·stddev of that SAME hour's own
+    history) correctly distinguishes both. **A real, self-caught over-escaping mistake, caught by
+    the standing pre-build sweep before the build ever ran**: an early draft of the first
+    subtopic's own `theory.points` field used `\"` around a quoted PromQL fragment inside an
+    already SINGLE-quoted TS string — double quotes never need escaping inside a single-quoted
+    string at all, and the stray backslashes would have rendered as literal, visible characters;
+    fixed by removing the unnecessary escaping. No `SUBTOPICS` collision for `alerting-design`
+    (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed
+    collision-free, left bare). Build passed clean (foreground, explicit exit-code capture, zero
+    `ERROR` lines). **A third stale/dead dev-server incident in this same stretch, though this
+    time the server had died outright** (`preview_list` returned an empty array) rather than
+    merely serving a stale bundle — a fresh `preview_start` plus polling for a 200 response
+    resolved it cleanly. Browser-verified: nav accordion opens with all 3 subtopic links; all
+    three main-page fixes (the theory bullet, both codeTab languages) confirmed live via direct
+    component inspection; all 3 subtopic pages checked individually — zero console errors,
+    correct h1/breadcrumb, 860px wrapper via `getComputedStyle`, no stray backslash artifacts
+    from the escaping fix, tailored (not DEFAULT) sidebar content confirmed on the final
+    subtopic. **Observability hub Phase 10: 15 of 20 topics complete.**
+24. **The `on-call-incidents` batch — the second topic in the Alerting & SRE nav group — found and
+    fixed a real gap between what the main page's own quickRef defines and what its own worked
+    example actually computes**: the quickRef defines MTTD as "average time from incident start to
+    first alert fire" and MTTR as "average time from detection to service restoration," and the
+    page's own "Postmortem Template" code tab gives a complete, real timeline with exact
+    timestamps — but nothing on the page ever applies either formula to it. Applying the page's OWN
+    `computeIncidentMetrics` Challenge function to the canonical reference points (deployment as
+    incident start, full-recovery confirmation as restoration) gives MTTD = 8 minutes and MTTR = 39
+    minutes — while the "What Went Well" narrative bullets implicitly use DIFFERENT reference
+    points (error-rate-onset as start, baseline-return — a mitigation signal, not a resolution — as
+    restoration), giving 5 minutes and 16 minutes instead, with no label anywhere distinguishing
+    which pair of numbers is being reported. A second, smaller precision issue found in the same
+    sweep: "Rollback took < 6 minutes" is computed directly from the same timeline (14:41 to 14:47)
+    to be exactly 6 minutes, not less than — fixed the wording. Also fixed two codeTabs ("Incident
+    Runbook Template", "Postmortem Template") mistagged `language: 'typescript'` despite containing
+    plain shell/markdown content — fixed to `'bash'`. Three subtopics: (1) **fix-adjacent** —
+    reproduces both reference-point choices side by side via the page's own Challenge function, with
+    a Try It on why the canonical 39-minute figure is more useful for the question MTTR is meant to
+    answer, without declaring the narrative's own 16-minute figure illegitimate — the actual problem
+    is mixing both, unlabeled, in the same document; (2) **gap-closing** — the theory names the Five
+    Whys technique directly ("ask 'why did this happen?' five times... the fifth answer is usually a
+    systemic or process failure") but the postmortem template only ever lists a flat root cause plus
+    three contributing factors, never chained into the actual sequential questions; built the real
+    five-step chain from the postmortem's own facts, landing on the same systemic testing-process gap
+    the contributing factors already point at — verified the nested-apostrophe escaping in the
+    displayed code (a doubled-backslash `\\'` surviving the outer template literal to produce a
+    correctly-escaped `\'` in the DISPLAYED inner TS string) by extracting and evaluating the exact
+    backtick span as real JavaScript before trusting it, per the established verification technique;
+    (3) **gap-closing** — the theory and QnA both name "not tracking action item completion" as a
+    real postmortem failure mode with zero code anywhere; built and verified a classifier against the
+    postmortem's own real four-item action table — two items share the identical due date
+    (2024-01-22), and with only one of the two marked complete against a simulated "today," the
+    classifier correctly flags the other as OVERDUE while the other two items remain on track. No
+    `SUBTOPICS` collision for `on-call-incidents` (checked both `subtopics.ts` forms and grepped
+    `app.routes.ts` directly, confirmed collision-free, left bare). Build passed clean (foreground,
+    explicit exit-code capture, zero `ERROR` lines). **A fourth stale-dev-server incident in this
+    same stretch**, resolved with the now-established fix (full `preview_stop`/`preview_start`
+    restart, not just a hard reload). **A transient git push failure** (`fatal: unable to access...
+    Failed to connect to github.com port 443`) on the first attempt, unrelated to any content —
+    resolved cleanly on an immediate retry with zero files touched, confirming the commit itself had
+    already succeeded locally and only the network hop needed a second try. Browser-verified: nav
+    accordion opens with all 3 subtopic links; all three main-page fixes confirmed live via direct
+    component data inspection; all 3 subtopic pages checked individually — zero console errors,
+    correct h1/breadcrumb, 860px wrapper via `getComputedStyle`, the escaped apostrophe confirmed
+    rendering correctly in the live component data (not the DOM alone, which would have masked a
+    still-broken escape), tailored (not DEFAULT) sidebar content confirmed on the final subtopic.
+    **Observability hub Phase 10: 16 of 20 topics complete.**
+25. **The `error-budgets-toil` batch — the third and final topic in the Alerting & SRE nav group —
+    found and fixed a genuine arithmetic error by running the page's own `computeToilRoi()`
+    function directly against its own three real toil-inventory items**: the trailing comment
+    claimed "Deployment gate: 6.7h/month, payback 6 months ← automate first!" — but the function's
+    own formula (`automationEffortDays / (monthlyHours / 8)`) evaluates to 9.6 months for that exact
+    input, not 6. The monthly-hours figure (6.7h) was correct, and the CONCLUSION ("automate first!")
+    was also still correct by coincidence — 9.6 months is still the shortest payback of the three
+    items (13.3 and 36.4 months for the other two) — which is exactly what made the wrong number
+    easy to miss: the comment read as internally consistent and pointed at the right decision, it
+    just stated the wrong magnitude for one of the three numbers backing that decision. Fixed all
+    three comment lines to the verified values. Also fixed the "Error Budget Tracking" codeTab
+    mistagged `language: 'typescript'` despite containing PromQL/pseudo-config content — fixed to
+    `'bash'`. Three subtopics: (1) **fix-adjacent** — reproduces the exact computation against all
+    three inventory items, with a Try It attempting to isolate which specific arithmetic step was
+    most likely miscalculated by hand while drafting the original comment; (2) **gap-closing** —
+    the page's own theory is explicit about multi-window burn rate ("combine a short window... and a
+    long window... both windows must exceed the threshold before firing") and its own PromQL alert
+    implements exactly this, but the page's own Challenge only ever asks for a SINGLE-value
+    `computeBurnRate()` function — nothing on the page runs the multi-window check end-to-end as
+    working code. Built directly on top of the page's own unmodified `computeBurnRate()`, verified
+    that a transient spike (short window pushed past threshold, long window diluted by surrounding
+    healthy traffic) correctly does NOT fire, while a genuinely sustained incident (both windows
+    elevated) correctly does; (3) **gap-closing** — the page's own exhaustion-time formula
+    (`time_remaining_hours = budget_remaining / (burn_rate * error_budget_per_hour)`) appears ONLY
+    as a trailing comment, never as real code, and the worked example ("budget exhausted in 30d / 14
+    = 2.14 days") implicitly assumes the ENTIRE budget is still fresh. Turned the comment into a
+    real, runnable function, verified the page's own "2.14 days" figure exactly, then extended it
+    with a `budgetRemainingFraction` parameter — a budget already 90% consumed hitting the same 14×
+    burn rate is exhausted in roughly 5 hours, not 2.14 days, a real and substantial difference the
+    fresh-budget-only formula has no way to express. No `SUBTOPICS` collision for `error-budgets-toil`
+    (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed collision-
+    free, left bare). Build passed clean (foreground, explicit exit-code capture, zero `ERROR`
+    lines). **Proactively restarted the dev server before verification this time** (rather than
+    waiting to discover a stale bundle), matching this session's now-established pattern — the fresh
+    restart correctly served the new bundle on the very first check, with no repeat of the
+    stale-bundle incident hit on several prior batches in this same stretch. Browser-verified: nav
+    accordion opens with all 3 subtopic links; all three main-page fixes confirmed live via direct
+    component data inspection; all 3 subtopic pages checked individually — zero console errors,
+    correct h1/breadcrumb, 860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar
+    content confirmed on the final subtopic. **This completes the Observability hub's Alerting & SRE
+    nav group** (`alerting-design`, `on-call-incidents`, `error-budgets-toil` — all 3 of 3 topics
+    now have subtopics). **Observability hub Phase 10: 17 of 20 topics complete.**
+26. **The `chaos-engineering` batch — the first topic in the Advanced nav group — found and fixed a
+    genuine, self-contained issue in the main page's own "Custom Fault Injection" code tab**:
+    `FaultInjectionMiddleware` is decorated with Angular's `@Injectable({ providedIn: 'root' })`
+    (imported from `@angular/core`) — Angular's DI-container registration decorator, meant for
+    classes that get CONSTRUCTED and injected elsewhere. Every member the class actually uses —
+    `injectFault()`, and the config it reads — is declared `static`, and every call site calls it
+    as `FaultInjectionMiddleware.injectFault()`, a plain static reference. Angular's DI container
+    never constructs an instance anywhere in the shown code, because nothing ever asks it to.
+    Verified directly: wrapping the class in a no-op decorator (standing in for what `@Injectable`
+    actually does) and calling the same static method produces byte-identical behavior to calling
+    it with no decorator at all — the decorator and its import genuinely do nothing for this
+    specific class as written. Removed both. Also fixed the "Chaos Mesh Experiment" codeTab
+    mistagged `language: 'typescript'` despite containing YAML — fixed to `'bash'`. Three
+    subtopics: (1) **fix-adjacent** — reproduces the with/without-decorator comparison directly,
+    with a Try It on what would ALSO need to change (every call site, not just the decorator) if
+    the class later gained real instance state — a subtle point, since adding instance state alone
+    without rewriting call sites to actually inject an instance would just be a second, unrelated
+    bug; (2) **gap-closing** — the page's own mistakes block calls an abort mechanism mandatory in
+    the strongest possible terms ("An experiment without an abort is an uncontrolled failure"), and
+    a QnA repeats it ("Set automatic stop conditions... stop automatically") — but the page's own
+    Challenge scheduler, `scheduleExperiment()`, has no such mechanism at all, just a fixed wait
+    with no metric check anywhere. Built and verified `scheduleExperimentWithAbort()`, polling a
+    health-check function throughout the wait: a genuinely healthy run completes the full
+    configured duration, while a run that turns unhealthy partway through aborts within roughly one
+    poll interval, well before the fixed duration would otherwise have elapsed; (3) **gap-closing**
+    — the page's own fault injector configures `errorRate` and `latencyMs` as plain numbers via
+    `Math.random() < faultConfig.errorRate`, with nothing on the page ever checking these values
+    against actual observed behavior. Verified statistically over 20,000 trials that the observed
+    failure rate (0.0998) lands within a tenth of a percentage point of the configured 0.1, and
+    separately confirmed a configured 50ms latency is genuinely applied end-to-end (measured 55ms),
+    not just recorded in config and ignored — with a Try It distinguishing why the probabilistic
+    claim needed thousands of trials to verify while the deterministic latency claim only needed
+    one measurement. **A first for this stretch of the hub**: the h1/eyebrow title itself contains a
+    literal `@Injectable` mention as bare `.html` static text, requiring the standard `&#64;`
+    entity-escape — confirmed the SAME string is safe UNESCAPED when it instead appears inside a
+    `[prev]`/`[next]` bound-attribute expression (`{ label: 'The @Injectable Decorator...' }`),
+    matching the established "bound attributes never trip this, only bare text nodes do" rule
+    exactly. No `SUBTOPICS` collision for `chaos-engineering` (checked both `subtopics.ts` forms
+    and grepped `app.routes.ts` directly, confirmed collision-free, left bare). Build passed clean
+    (foreground, explicit exit-code capture, zero `ERROR` lines). Browser-verified after a
+    proactive dev-server restart (fresh on the first check): nav accordion opens with all 3
+    subtopic links, including the literal "@Injectable" mention rendering correctly as text on
+    every page it appears; both main-page fixes confirmed live via direct component data
+    inspection; all 3 subtopic pages checked individually — zero console errors, correct
+    h1/breadcrumb, 860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content
+    confirmed on the final subtopic. **Observability hub Phase 10: 18 of 20 topics complete.**
+27. **The `ebpf-observability` batch — the second topic in the Advanced nav group — found and
+    fixed a genuine overgeneralization, verified via research (WebSearch/WebFetch against Pixie's
+    own published eBPF blog and Brendan Gregg's own bcc/BPF Golang function-tracing research)**:
+    the theory bullet stated "If your service uses application-level TLS... eBPF can see the
+    plaintext," and the QnA attributed this specifically to OpenSSL `SSL_read`/`SSL_write` uprobes,
+    describing the technique as working for "any service using system-level TLS." Confirmed this
+    does not hold for Go services: Go's standard `crypto/tls` is a pure-Go implementation that
+    never calls OpenSSL at all, so a generic OpenSSL uprobe observes nothing for a Go process
+    regardless of how much TLS traffic it handles — a genuinely different technique (hooking
+    `crypto/tls.(*Conn).Read`/`writeRecordLocked` directly) is required instead. Tightened both the
+    theory bullet and the QnA to state this precisely, including a further-verified wrinkle: Go's
+    growable, moving goroutine stacks make return probes (uretprobes) risk crashing Go programs —
+    confirmed independently by both Pixie's own research (naming the exact alternate symbols) and
+    Brendan Gregg's own early exploratory findings (documenting the SAME crash risk from a
+    completely different angle) — requiring a disassembly-based workaround (locating a function's
+    own `RET` instruction offsets and placing plain, non-return uprobes there) instead of a plain
+    uretprobe. Also fixed two codeTabs ("bpftrace one-liners", "Cilium / Hubble") mistagged
+    `language: 'typescript'` despite containing shell/YAML content — fixed to `'bash'`. Three
+    subtopics, verified via research and direct code execution: (1) **fix-adjacent** — the
+    verified finding, with real bpftrace syntax contrasting the OpenSSL and Go-specific uprobe
+    targets, and a Try It on why a Node.js service (also not written in C) IS visible to the
+    OpenSSL uprobe (Node bundles and genuinely calls into OpenSSL for its own crypto module) while
+    a Go service isn't — the deciding factor is whether the process calls into `libssl`, not
+    whether it's a compiled language; (2) **gap-closing** — the page's own bpftrace example
+    aggregates by BOTH process and syscall in one pass (`@[comm, probe] = count()`), but the page's
+    own Challenge only ever aggregates by process, deliberately discarding the syscall dimension.
+    Built and verified the two-level aggregation the bpftrace example already demonstrates working,
+    with a Try It on the delimiter-collision risk of joining composite Map keys with a plain string
+    separator (and the nested-Map alternative that sidesteps it entirely); (3) **gap-closing** —
+    the page's own mistakes block states "eBPF overhead is proportional to event frequency × work
+    per event" as a bare, unmeasured principle. Measured directly with a 200,000-event simulation
+    that aggregate-only counting is roughly 23x cheaper than per-event stack/payload capture,
+    explicitly framed as a simulation of the RELATIVE cost shape in userspace JavaScript rather
+    than a literal in-kernel eBPF benchmark, since the actual kernel-side multiplier depends on
+    probe type, verifier constraints, and hardware. No `SUBTOPICS` collision for
+    `ebpf-observability` (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly,
+    confirmed collision-free, left bare). All nested-template-literal escaping (a doubled-backslash
+    `\\n` inside bpftrace `printf` strings, and a doubled-backslash `\\'` inside a nested
+    single-quoted JS string) verified correct by extracting and evaluating the exact backtick spans
+    as real JavaScript before trusting them, per the established verification technique. Build
+    passed clean (foreground, explicit exit-code capture, zero `ERROR` lines). Browser-verified
+    after a proactive dev-server restart (fresh on the first check): nav accordion opens with all 3
+    subtopic links; all main-page fixes confirmed live via direct component data inspection; all 3
+    subtopic pages checked individually — zero console errors, correct h1/breadcrumb, 860px wrapper
+    via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the final subtopic.
+    **Observability hub Phase 10: 19 of 20 topics complete — only `observability-maturity`
+    remains to finish the entire hub.**
+28. **The `observability-maturity` batch — the 23rd and FINAL topic — found and fixed a genuine, self-
+    contained internal contradiction in the main page's own quiz**: one question introduced a
+    completely different 4-level maturity model (Reactive/Proactive/Predictive/Optimized, levels 1-4)
+    than the 5-level (0-4) model used consistently EVERYWHERE else on the page — the quickRef (six
+    entries literally named "Maturity Level 0" through "Level 4"), the theory's own five headings
+    ("Level 0 → Level 1", "Level 1 → Level 2", etc.), the Challenge's own `LEVELS` array
+    (`['Level 0', 'Level 1', 'Level 2', 'Level 3', 'Level 4']`), and the revision summary. The quiz's
+    own "Level 2" included SLOs (which the page's own model reserves for Level 3); the quiz's own
+    "Level 3" included chaos engineering (which the page's own model reserves for Level 4). Caught
+    purely by comparing the page's own sections against each other — zero external research needed,
+    the same self-contained-contradiction pattern this hub has caught many times before, just in its
+    strongest form yet (a rival numbering scheme, not just a wrong fact). Rewrote the quiz question
+    and explanation to match the page's own established 0-4 model precisely. Also fixed the "Roadmap
+    Template" codeTab mistagged `language: 'typescript'` despite containing plain markdown/shell
+    content — fixed to `'bash'`. Three subtopics: (1) **fix-adjacent** — reproduces both models side
+    by side via direct comparison, with a Try It confirming "observability as code" (part of the
+    quiz's old, now-removed Level 4) doesn't appear anywhere in the page's own established Level 4
+    criteria at all; (2) **gap-closing** — the page's own Challenge only returns an anonymous overall
+    score; the page's own separate "Maturity Assessment" codeTab names weakest areas but never
+    computes an overall level. Built and verified `assessMaturity()`, reusing the Challenge's own
+    `getMaturityLevel()` completely unmodified while surfacing named weakest areas with their own
+    `nextStep` guidance attached; (3) **gap-closing** — the page's own AIOps QnA describes anomaly
+    detection in real prose detail ("ML models learn the normal behavior of each metric... alert when
+    a metric deviates significantly") with zero code anywhere. Built and verified a real z-score
+    detector against 8 weeks of simulated MTTR data — correctly staying silent on a moderately
+    elevated week (46 min against a 41.5 baseline) and firing on a genuine regression (120 min),
+    demonstrating exactly the "reduces false positives from misconfigured static thresholds" benefit
+    the QnA describes. No `SUBTOPICS` collision for `observability-maturity` (checked both
+    `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed collision-free, left bare).
+    Nested template-literal interpolation (a single-backslash `\${w.area}` needing to survive as REAL,
+    working interpolation syntax in the displayed code, not literal escaped text) verified correct by
+    extracting and evaluating the exact backtick span as real JavaScript before trusting it. Build
+    passed clean (foreground, explicit exit-code capture, zero `ERROR` lines). **A fresh dev-server
+    start was needed** (the server had died outright during a session interruption, `preview_list`
+    returned an empty array) — resolved with a clean `preview_start` plus polling for a 200 response,
+    fresh on the first check afterward. Browser-verified: nav accordion opens with all 3 subtopic
+    links; both main-page fixes confirmed live via direct component data inspection; all 3 subtopic
+    pages checked individually — zero console errors, correct h1/breadcrumb, 860px wrapper via
+    `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the final subtopic; **a
+    final hub-wide check confirmed all 20 of 20 topic nav toggles now render** across the entire
+    Observability & SRE hub, one per topic. **This completes the Observability & SRE hub's entire
+    Phase 10 rollout — all 20 topics now have deep-dive subtopic pages, 60 subtopic pages total
+    across the hub, finished 2026-09-02.**
+
+### MongoDB hub subtopic wiring — first pilot; the 15th `*NavComponent` in a row missing the
+subtopics-accordion structural fix
+
+Confirmed via direct file inspection before the pilot (`/mongodb/fundamentals`, 2026-09-03) — do
+this same check before any other new hub's first subtopic set:
+
+1. **`MongoNavComponent` (`shared/mongo-nav/mongo-nav.ts`) had ZERO subtopics-accordion support** —
+   the same structural gap already hit and fixed on every `*NavComponent`-based hub's own pilot
+   before it (Go, DevOps, Containers, AWS, Azure, Linux, Terraform, Service Mesh, System Design,
+   Architecture Patterns, Design Patterns, Security, API Design, Observability — this is the 15th
+   in a row). Fixed identically: added `signal`, `Router`, `NavigationEnd`, `filter` (rxjs), and
+   `SUBTOPICS` (from `../../../data/subtopics`) to the imports, then the same three methods
+   (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`) and constructor-level router
+   subscription, copied directly from `ObsNavComponent`'s own implementation (read directly, not
+   reconstructed from memory, per the established copy-fidelity discipline). Worked correctly on
+   the first browser check — no stale-chunk incident, verified via both `window.ng.getComponent()`
+   direct calls and a live DOM query for `.nav-subtopic-link` elements.
+2. **Real `SUBTOPICS` map bare-key collision**: `fundamentals` was already claimed by the
+   JavaScript hub's own `/javascript/fundamentals` topic (checked both quoted and unquoted forms,
+   per the standing collision-detection discipline). Hub-prefixed to `mongo-fundamentals` —
+   matching this hub's own established progress/search key prefix (`mongo-`, confirmed via the
+   pre-existing `p.isDone('mongo-fundamentals')` nav markup) — with the usual `// NOTE:` comment.
+   The `MongoNavComponent` accordion helper calls (`subtopicsOf`/`isSubtopicsExpanded`/
+   `toggleSubtopics`) all use the prefixed `'mongo-fundamentals'` key consistently.
+3. **`SIDEBAR_MAP` keys are FULL-PATH PREFIXED** (`'mongodb/fundamentals'`, confirmed the base
+   entry — and its own `MONGO_DEFAULT` constant — already existed) — subtopic composite keys
+   follow suit: `'mongodb/fundamentals/<slug>'`.
+4. **`MONGO_LABELS` breadcrumb map uses bare keys** (`'fundamentals'`), matching the generic
+   pattern every hub's own dedicated labels map shares — composite subtopic keys there are bare
+   too (`'fundamentals/<slug>'`).
+5. **Progress/search keys are `mongo-` PREFIXED** (`mongo-fundamentals`), confirmed via existing
+   nav markup and `search.ts`'s own dedicated `mongo-` → `/mongodb/` prefix-strip rule, which
+   already handles composite subtopic routes (`mongo-fundamentals/<slug>` → `/mongodb/fundamentals/
+   <slug>`) correctly with no special-casing needed.
+6. **A stale "Current state" figure corrected**: this file's own MongoDB summary previously stated
+   the accent color as `#00ed64` — direct inspection of the real `fundamentals.scss` shows the
+   actual values are `$accent: #13aa52`, `$tint: #e8fef4` — corrected below, matching the same
+   verify-before-recommend discipline already applied to the earlier Python and Architecture
+   Patterns hub corrections in this file.
+7. **`.mongo-page` wrapper rule is NOT global** (confirmed absent from `src/styles.scss`, despite
+   being fully baked into the topic page's OWN component `.scss` with `max-width`/`padding`
+   together) — every subtopic `.scss` needs the standard standalone
+   `.mongo-page { max-width: 860px; margin: 0 auto; }` rule, with `.subtopic-page`'s own padding
+   declared separately, matching the majority non-global-wrapper convention.
+8. **No live playground** — MongoDB shell/driver content has no in-browser runtime, following the
+   same `<app-code-block>`-only pattern as every other non-JS-runtime-specific hub — every code tab
+   uses plain TypeScript driver-shaped snippets, matching the main page's own `codeTabs` style
+   exactly. Icon content: `🍃` (light tint fill), `tech="javascript"` in `app-page-meta`.
+9. **The `fundamentals` pilot batch found and fixed a genuine, dual-source-verified inaccuracy in
+   the main page's own "Not closing the MongoClient" mistake block**: it attributed the number 100
+   to "the server's connection limit (default 100 per mongod)." Verified via WebSearch against both
+   sides of that claim independently: the Node.js driver's own `maxPoolSize` option — the actual
+   source of "100" — defaults to 100, but caps only ONE `MongoClient` instance's own pool; the
+   mongod SERVER's own real ceiling, `net.maxIncomingConnections`, defaults to 65536 — over 650×
+   larger, a completely different setting on a completely different side of the connection. Fixed
+   the explanation to state the real mechanism: leaking many clients (each up to 100 connections)
+   is what can climb toward the server's own much larger ceiling, not any single client on its own.
+   Three subtopics: (1) **fix-adjacent** — a direct simulation (verified via Node execution)
+   pinpointing the exact crossover point: 655 leaked clients stays under the server's 65536 ceiling,
+   656 crosses it — with a Try It computing the same crossover for a lowered `maxPoolSize` of 20
+   (verified: 3277 clients, roughly 5× more than the default-100 case, since a smaller per-client
+   cap makes any one leak less dangerous without fixing the underlying bug); (2) **gap-closing** —
+   the QnA's own "read the version, update only if it matches, increment it" optimistic-concurrency
+   sentence had zero code anywhere; built and verified (via a direct Node simulation of
+   `findOneAndUpdate`'s atomic filter-then-update semantics) a real version-field implementation,
+   confirming a stale-version write returns `null` rather than throwing, and that a retry after
+   re-reading the current version succeeds; (3) **gap-closing** — the document-size-limit QnA names
+   GridFS's real "255 KB chunks... fs.files / fs.chunks" mechanism in one sentence with zero code;
+   verified GridFS's exact default chunk size via WebSearch (255 KiB = 261,120 bytes, not a round
+   255,000) and built a chunk/reassemble round-trip verified via direct execution on a 20 MB buffer
+   (81 chunks: 80 full + one 81,920-byte remainder, reassembling byte-for-byte identical to the
+   original) plus a Try It confirming the exact-multiple-file boundary case (522,240 bytes produces
+   exactly 2 full chunks, no trailing empty third chunk). No further `SUBTOPICS` collision beyond
+   the `fundamentals` hub-prefix resolved above. All three `exercise.solution` fields swept clean of
+   `<code>`/entity contamination (plain-interpolation rule); the standing apostrophe-after-letter
+   sweep found nothing unescaped across all three `.ts` files; the nested backtick/`${...}`
+   escaping inside subtopic 1's own codeTab was verified correct by extracting and evaluating the
+   exact backtick span as real JavaScript before trusting it (confirmed rendering literal backticks
+   and live interpolation syntax, not stray backslashes), per the established verification
+   technique. Build passed clean (foreground execution, explicit `EXITCODE:$?` capture, zero
+   `ERROR` lines). Browser-verified with a proactive dev-server restart before checking (matching
+   this session's own established practice): no console errors on any of the 4 pages; nav accordion
+   opens with all 3 subtopic links, confirmed via both `window.ng.getComponent()` direct calls and
+   a live DOM query; the main-page fix confirmed rendering live via direct component data
+   inspection; all 3 subtopic pages checked individually — correct h1, 860px wrapper via
+   `getComputedStyle`, breadcrumb showing all 4 levels on the first subtopic; tailored (not
+   DEFAULT) sidebar content confirmed on the final subtopic. **MongoDB hub Phase 10: 1 of 21
+   topics complete.**
+10. **The `installation-setup` batch found and fixed THREE genuine issues, extending
+    `MongoNavComponent`'s toggle to a second topic and hub-prefixing its own `SUBTOPICS` key
+    proactively (`mongo-installation-setup`) since the Redis hub also has its own bare
+    `installation-setup` route, with no active collision today only because `RedisNavComponent`
+    has no subtopics-accordion support yet — matching the established preemptive collision-fix
+    precedent (Design Patterns' `clean-architecture`, Security's `sec-api-security`)**: (1) the
+    "Docker Quick-start" theory bullet's own connect-from-another-container example —
+    `mongodb://admin:secret@mongo:27017/myapp` — omitted `authSource=admin`. Verified via
+    WebSearch against the driver's own documented 3-tier fallback (explicit param → the connection
+    string's own path database → `admin` only as a last resort, confirmed via a direct execution
+    of the exact resolution logic) that since the admin user in this scenario lives in the `admin`
+    database (per the page's own preceding `MONGO_INITDB_ROOT_*` bullet), the example as written
+    resolves `authSource` to `myapp` instead and fails to authenticate — caught by comparing this
+    example against the SAME page's own Docker Compose codeTab, which already correctly includes
+    `?authSource=admin`; (2) a QnA on connection pooling claimed the server's own
+    `maxIncomingConnections` limit "default 1,000,000." Verified via WebSearch — the same source
+    already used to fix an analogous claim on the sibling Fundamentals topic's own pilot batch —
+    that the real default is 65536, itself further capped by the OS's own file-descriptor limit
+    via the documented `(RLIMIT_NOFILE / 2) * 0.8` formula, verified via direct execution across
+    several `ulimit -n` values including the exact threshold (163840) where the OS-derived cap and
+    the configured default land on the identical number; (3) a QnA claimed the admin user must be
+    created BEFORE enabling authorization, with a mongod restart as the only way around it.
+    Verified against MongoDB's own official docs (the "localhost exception," fetched via
+    WebSearch) that the real, standard, documented order is the OPPOSITE — enable authorization
+    FIRST, then connect via localhost, which is still permitted to create exactly one first user
+    with zero restarts, closing itself permanently the instant that user exists; the
+    restart-without-auth approach is explicitly acknowledged as a fallback for when the exception
+    itself is unreachable (an unusual `bindIp`, a proxy in front of mongod), not the standard path.
+    3 subtopics, one per fix, each independently verified. No further `SUBTOPICS` collision beyond
+    the proactive Redis-hub prefix resolved above. All three `exercise.solution` fields swept clean
+    of `<code>`/entity contamination; the standing apostrophe-after-letter sweep found nothing
+    unescaped; nested backtick/`${...}` escaping in subtopic 3's own codeTab verified correct by
+    extracting and evaluating the exact backtick span as real JavaScript. Build passed clean
+    (foreground execution, explicit `EXITCODE:$?` capture, zero `ERROR` lines). **Hit the
+    established stale-dev-server-artifact family again — a hard `window.location.reload(true)`
+    was insufficient this time; the second nav toggle (`mongo-installation-setup`) only rendered
+    after a full `preview_stop`/`preview_start` restart**, confirmed via a direct DOM toggle-count
+    check (1 before the restart, 2 after) rather than assuming the fix worked from the underlying
+    signal state alone (which was already correct even while the DOM under-rendered — the same
+    "verify the DOM, not just the component data" lesson this file has documented before).
+    Browser-verified after the restart: no console errors on any of the 4 pages; nav accordion
+    opens with all 3 subtopic links, confirmed via both `window.ng.getComponent()` and a live DOM
+    query; all three main-page fixes confirmed rendering live via direct component data
+    inspection; all 3 subtopic pages checked individually — correct h1/breadcrumb, 860px wrapper
+    via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the final
+    subtopic. **MongoDB hub Phase 10: 2 of 21 topics complete.**
+11. **The `crud-operations` batch found and fixed a genuine, self-contained inaccuracy in the main
+    page's own soft-delete theory bullet**: it paired a `{ deletedAt: null }` query with a partial
+    index built on `partialFilterExpression: { deletedAt: { $exists: true } }`. Verified via
+    MongoDB's own documented partial-index eligibility rule (a query can only use a partial index
+    when its own filter matches the index's filter expression) and a direct simulation across
+    three representative documents — active-explicit-null, deleted, active-missing-field — that
+    these two filters cover entirely different document sets: the broken index includes the
+    DELETED document (it has the field, just non-null) and excludes the active-but-missing-field
+    one, while the query does the exact opposite. Fixed the index to use the SAME filter as the
+    query, `{ deletedAt: null }`, confirmed both syntactically valid (a plain equality expression
+    is one of the documented allowed partial-index filter forms) and semantically correct. 3
+    subtopics, each verified via direct Node.js execution: (1) **fix-adjacent** — the exact
+    simulation reproducing the mismatch, with a Try It confirming `$exists: true` is STILL wrong
+    even after a hypothetical migration eliminates the missing-field case entirely (it still
+    covers the deleted document, which the query never wants); (2) **gap-closing** — `bulkWrite()`
+    gets a QuickRef entry, an entire theory section, and two QnAs, but zero actual `bulkWrite()`
+    syntax appears in any of the page's four codeTabs; built a real mixed-operation call
+    (`insertOne`/`updateOne`/`deleteOne`/`updateMany` in one array) with `writeErrors` inspection,
+    turning the page's own ordered-bulkWrite-failure QnA prose into working result-checking code;
+    (3) **gap-closing** — the causal-consistency QnA describes the exact shopping-cart
+    write-then-read-on-secondary scenario in real detail, naming `client.startSession()` and
+    `afterClusterTime` by name, but never shows the actual session code; built it, with a Try It
+    on why an UNRELATED call with no `{ session }` gets no guarantee at all regardless of how
+    recently a different session's own write happened. **Self-caught and fixed two bare-single-
+    brace-in-prose gotchas during the standing pre-build sweep** — both new subtopics' own
+    page-subtitle text contained literal `{ deletedAt: null }` / `{ session }` as static `.html`
+    text (Angular's AOT template compiler treats a bare `{` as a potential ICU-expansion start
+    regardless of a later matching `}`), entity-escaped to `&#123;`/`&#125;` before the build ever
+    ran — confirmed via a live browser check afterward that both render as literal brace
+    characters, not raw entity codes. No `SUBTOPICS` collision for `crud-operations` (checked
+    both `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed collision-free, left
+    bare). Build passed clean (foreground execution, explicit `EXITCODE:$?` capture, zero `ERROR`
+    lines). Browser-verified with a proactive dev-server restart before checking (fresh on the
+    first check — the toggle count correctly read 3 immediately, no repeat of the prior batch's
+    stale-server incident): no console errors on any of the 4 pages; nav accordion opens with all
+    3 subtopic links; the main-page fix confirmed rendering live via direct component data
+    inspection; all 3 subtopic pages checked individually — correct h1/breadcrumb, 860px wrapper
+    via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the final
+    subtopic. **MongoDB hub Phase 10: 3 of 21 topics complete.**
+12. **The `update-operators` batch was the cleanest main page found so far in this hub — a
+    careful read of every theory bullet, codeTab, mistake, quiz question, and QnA found no
+    self-contained bug or cross-section contradiction worth fixing.** All 3 subtopics are
+    gap-closing instead, each building real, Node-verified code for something the page names in
+    prose but never demonstrates: (1) `$sort` is named twice as a `$push` modifier (a theory
+    bullet and a quiz explanation) but no codeTab — not even the page's own "Leaderboard with
+    Bounded History" Challenge — ever combines it with `$each` and `$slice`; verified via direct
+    execution that the Challenge's own `scoreHistory` pattern (`$each` + `$slice`, no `$sort`)
+    keeps the 10 MOST RECENT scores, not the 10 HIGHEST, a genuinely different array illustrated
+    with a concrete high-score-pushed-out-by-later-mediocre-scores example; (2) the QnA's own
+    two-step `$unset`-then-`$pull` idiom for removing an array element by index, verified step by
+    step (unset leaves a `null` placeholder without shortening the array; pull is what actually
+    compacts it), with a Try It on why the pattern is unsafe on an array that can legitimately
+    contain real `null` values; (3) optimistic locking scoped to a single array element's own
+    current value (from a one-sentence QnA description), verified via a simulation and explicitly
+    contrasted with the whole-document version-field pattern already built in the Fundamentals
+    topic's own subtopic — two different conflict scopes, not the same technique applied to a
+    different field. No `SUBTOPICS` collision for `update-operators` (checked both `subtopics.ts`
+    forms and grepped `app.routes.ts` directly, confirmed collision-free, left bare). All three
+    `exercise.solution` fields swept clean of `<code>`/entity contamination; the standing
+    apostrophe-after-letter sweep found nothing unescaped; nested template-literal escaping in two
+    of the three codeTabs (a `${arrayField}.${index}` dynamic key, and a `${itemIndex}` filter
+    key) verified correct by extracting and evaluating the exact backtick spans as real
+    JavaScript. Build passed clean (foreground execution, explicit `EXITCODE:$?` capture, zero
+    `ERROR` lines). Browser-verified: nav accordion opens with all 3 subtopic links (fresh on the
+    first check, toggle count 4 as expected); all 3 subtopic pages checked individually — no
+    console errors, correct h1/breadcrumb, 860px wrapper via `getComputedStyle`, tailored (not
+    DEFAULT) sidebar content confirmed on the final subtopic. **MongoDB hub Phase 10: 4 of 21
+    topics complete.**
+13. **The `query-operators` batch found and fixed a genuine, well-verified inaccuracy in the main
+    page's own QnA on array-size queries**: it claimed a position-based query like
+    `{ "tags.1": { $exists: true } }` "can use a multikey index on tags." Verified via WebSearch
+    against MongoDB's own documented indexing rules that this is backwards — a multikey index on
+    the bare array field stores one entry per array VALUE and has no notion of position at all;
+    querying a specific array position instead requires its own separate index built directly on
+    that dotted path (`createIndex({ "tags.1": 1 })`), explicitly documented as a distinct,
+    NON-multikey index (one entry per document, not per array element). Fixed the QnA to state the
+    real distinction. Also verified the page's own BSON type comparison order theory bullet against
+    MongoDB's official docs and confirmed it accurate — not every specific, checkable claim on this
+    page turned out wrong. 3 subtopics: (1) **fix-adjacent** — traces the multikey-vs-position-index
+    distinction with the correct `createIndex` calls for each access pattern, with a Try It on the
+    COLLSCAN fallback when no position-specific index exists at all; (2) **gap-closing** — turns the
+    quiz's own bitwise permission example (READ/WRITE/ADMIN bitmask, `$bitsAllSet`/`$bitsAnySet`)
+    into a verified working example, matching a direct execution check across four seed users; (3)
+    **gap-closing** — builds the `2dsphere` index and `$near` query the page's own geospatial QnA
+    describes in real depth but never shows in code, verified against the exact documented syntax
+    (GeoJSON `[longitude, latitude]` order, `$maxDistance`/`$minDistance` in meters). No `SUBTOPICS`
+    collision for `query-operators` (checked both `subtopics.ts` forms and grepped `app.routes.ts`
+    directly, confirmed collision-free, left bare). All three `exercise.solution` fields swept
+    clean of `<code>`/entity contamination; the standing apostrophe-after-letter sweep found nothing
+    unescaped; `\$`-prefixed operator names inside every codeTab verified correct by extracting and
+    evaluating the exact backtick spans as real JavaScript. Build passed clean (foreground
+    execution, explicit `EXITCODE:$?` capture, zero `ERROR` lines). Browser-verified: nav accordion
+    opens with all 3 subtopic links (fresh on the first check, toggle count 5 as expected); the
+    main-page fix confirmed rendering live via direct component data inspection; all 3 subtopic
+    pages checked individually — no console errors, correct h1/breadcrumb, 860px wrapper via
+    `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the final subtopic.
+    **MongoDB hub Phase 10: 5 of 21 topics complete.**
+14. **The `array-queries` batch found and fixed a genuine internal inconsistency in the main
+    page's own "Multikey Indexes" theory bullet**: it said a compound index cannot have two
+    multikey fields "from arrays of different sizes," implying two same-sized arrays might be
+    fine. Verified via WebSearch against MongoDB's own docs that the restriction is unconditional
+    — "each indexed document can have at most one indexed field whose value is an array," with
+    array length never a factor. The SAME page's own mistake block and codeTab already stated the
+    restriction correctly with no size qualifier at all ("cannot create compound multikey index on
+    two array fields") — only the theory bullet had introduced the incorrect exception. Fixed it
+    to match. 3 subtopics, each verified via direct Node.js execution: (1) **fix-adjacent** — the
+    unconditional restriction traced with a same-length-arrays example that still fails, plus a
+    Try It on what happens when only one document out of thousands violates it (the whole
+    `createIndex()` call fails outright, no partial index gets built); (2) **gap-closing** — all
+    three forms of the `$slice` projection operator (positive N, negative N, `[skip, limit]`),
+    which the page's own QnA describes in real detail but no codeTab demonstrates, including the
+    edge case where `[10, 5]` on a 12-element array returns only 2 elements, and skipping past the
+    end returns an empty array; (3) **gap-closing** — sorting by an array field uses the
+    document's own min (ascending) or max (descending) value, verified with a concrete example
+    where the SAME document (widest min/max spread) sorts FIRST in both directions — a result
+    structurally impossible for a scalar field. No `SUBTOPICS` collision for `array-queries`
+    (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed
+    collision-free, left bare). All three `exercise.solution` fields swept clean of `<code>`/entity
+    contamination; the standing apostrophe-after-letter sweep found nothing unescaped; `\$`-prefixed
+    operator names inside every codeTab verified correct by extracting and evaluating the exact
+    backtick spans as real JavaScript. Build passed clean (foreground execution, explicit
+    `EXITCODE:$?` capture, zero `ERROR` lines). Browser-verified: nav accordion opens with all 3
+    subtopic links (fresh on the first check, toggle count 6 as expected); the main-page fix
+    confirmed rendering live via direct component data inspection; all 3 subtopic pages checked
+    individually — no console errors, correct h1/breadcrumb, 860px wrapper via `getComputedStyle`,
+    tailored (not DEFAULT) sidebar content confirmed on the final subtopic. **MongoDB hub Phase 10:
+    6 of 21 topics complete.**
+15. **The `projections-sorting` batch found and fixed a genuine, self-contained internal
+    contradiction — the same fact stated wrong in FOUR places and correctly in a fifth**: the main
+    page stated the in-memory sort memory limit as "32 MB" in a theory bullet, a dedicated QnA
+    (titled "What is the 32 MB sort memory limit?"), a mustKnow bullet, and an interviewFocus
+    bullet — while a fifth QnA on the same page, about sort performance without an index, correctly
+    stated "the in-memory sort limit is 100MB per query." Verified via WebSearch against MongoDB's
+    own documented error behavior that `QueryExceededMemoryLimitNoDiskUseAllowed` reports the exact
+    limit as 104857600 bytes — precisely 100 MiB, confirming the single correct QnA over the four
+    incorrect mentions (repetition is not the same as verification). Also found and fixed the
+    identical stale figure in this page's own `page-sidebar.ts` tip text — a sixth occurrence.
+    Fixed all six to state 100 MB. 3 subtopics, each verified via direct Node.js execution or
+    research: (1) **fix-adjacent** — the four-vs-one contradiction itself, with a document-count
+    Try It showing the wrong 32MB figure would have understated real capacity by roughly 3× (16384
+    vs. the correct 51200 documents at 2KB each); (2) **gap-closing** — a real covered query, built
+    from the main page's own theory requirements (every filter/sort/projection field must be
+    indexed, `_id` must be explicitly excluded unless also indexed), verified with a
+    coverage-checking function across a correct case, a missing `_id: 0` case, and a projection
+    referencing a non-indexed field; (3) **gap-closing** — sorting by a computed field via
+    `$addFields` + `$sort`, the exact pattern the page's own QnA describes for sorting by
+    description length, verified against real seed data, including a Try It on the silent (no
+    error) failure mode of trying the same thing directly in `find().sort()` with no aggregation
+    stage at all. No `SUBTOPICS` collision for `projections-sorting` (checked both `subtopics.ts`
+    forms and grepped `app.routes.ts` directly, confirmed collision-free, left bare). All three
+    `exercise.solution` fields swept clean of `<code>`/entity contamination; the standing
+    apostrophe-after-letter sweep found nothing unescaped; nested backtick/`${...}` escaping in two
+    of the three codeTabs (a template-literal log statement and a `$strLenCP`/`$size` aggregation
+    pipeline) verified correct by extracting and evaluating the exact backtick spans as real
+    JavaScript. Build passed clean (foreground execution, explicit `EXITCODE:$?` capture, zero
+    `ERROR` lines). Browser-verified: nav accordion opens with all 3 subtopic links (fresh on the
+    first check, toggle count 7 as expected); all five main-page fix occurrences confirmed live via
+    direct component inspection; all 3 subtopic pages checked individually — no console errors,
+    correct h1/breadcrumb, 860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar
+    content confirmed on the final subtopic. **MongoDB hub Phase 10: 7 of 21 topics complete.**
+16. **The `aggregation-pipeline` batch was a clean main page — no compile bug or internal
+    inconsistency found after careful reading. All 3 subtopics are gap-closing**, each building
+    real, Node-verified code for something the page names in prose but never demonstrates: (1)
+    `$lookup` is a QuickRef entry and a quiz question gives full syntax in its own explanation, but
+    no codeTab shows it in either the simple equality form or the pipeline form; built both,
+    verified with a pure-JS join simulation confirming the left-outer-join semantics (a user with
+    no matching orders gets an empty array, never a dropped document); (2) `$bucket`/`$bucketAuto`,
+    from the page's own QnA syntax, verified boundary math precisely — a value exactly equal to a
+    boundary always falls into the bucket it STARTS, never the one it ends, and a value outside
+    every boundary is silently dropped without a default; (3) `$facet`-based pagination
+    (`data` + `totalCount` in one call), the exact pattern the page's own QnA names but never
+    builds, verified against a 23-item seeded array confirming `totalCount` reflects every matching
+    document regardless of the current page's skip/limit, including the documented fact that
+    `$count` emits NO document at all (not `{ count: 0 }`) when its input is empty. Self-caught and
+    fixed a bare-single-brace-in-prose gotcha during the standing pre-build sweep — the third
+    subtopic's own page-subtitle text contained a literal `{ $facet: { ... } }` pattern as static
+    `.html` text, entity-escaped before the build ever ran. No `SUBTOPICS` collision for
+    `aggregation-pipeline` (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly,
+    confirmed collision-free, left bare). All three `exercise.solution` fields swept clean of
+    `<code>`/entity contamination; the standing apostrophe-after-letter sweep found nothing
+    unescaped; `\$`-prefixed operator names (including `$$`-prefixed pipeline variables) inside
+    every codeTab verified correct by extracting and evaluating the exact backtick spans as real
+    JavaScript. Build passed clean (foreground execution, explicit `EXITCODE:$?` capture, zero
+    `ERROR` lines). Browser-verified: nav accordion opens with all 3 subtopic links (fresh on the
+    first check, toggle count 8 as expected); all 3 subtopic pages checked individually — no
+    console errors, correct h1/breadcrumb, 860px wrapper via `getComputedStyle`, entity-escaped
+    braces rendering as literal text, tailored (not DEFAULT) sidebar content confirmed on the final
+    subtopic. **MongoDB hub Phase 10: 8 of 21 topics complete.**
+16. **The `lookup-joins` batch found and fixed TWO genuine, well-verified inaccuracies, both
+    checked directly against MongoDB's own official documentation rather than assumed**: the
+    "What are the limits of $lookup" QnA claimed "$lookup in $facet: not supported inside $facet
+    sub-pipelines" — verified via WebFetch against MongoDB's own `$facet` reference page that this
+    is false; the documented exceptions list ($collStats, $facet, $geoNear, $indexStats, $out,
+    $merge, $planCacheStats, $search, $searchMeta, $vectorSearch) never includes $lookup at all,
+    meaning $lookup has always been fully supported inside $facet sub-pipelines. Separately, the
+    "$lookup Performance and Alternatives" theory bullet called the let/pipeline form of $lookup
+    "the uncorrelated $lookup syntax" — verified via WebSearch against MongoDB's own terminology
+    (and a real oneuptime.com writeup citing it directly) that this is backwards: a pipeline
+    $lookup that binds outer-document fields with `let` and references them via `$$` in the
+    sub-pipeline is precisely what MongoDB calls a CORRELATED subquery (result varies per input
+    document); "uncorrelated" describes a sub-pipeline that never references a let binding at all
+    and therefore returns the identical result for every input document, letting MongoDB's planner
+    legitimately cache and reuse it. Fixed both. Three subtopics, each verified via direct Node.js
+    execution: (1) **fix-adjacent** — reproduces two independent $facet branches, each running its
+    own $lookup against the same shared filtered input, verified matching claimed output exactly,
+    with a Try It naming the actual shared reasoning behind every genuinely-excluded stage ($out/
+    $merge write outside the pipeline; $geoNear/$search/$vectorSearch must be the first stage) —
+    contrasted against why $lookup triggers neither constraint; (2) **fix-adjacent** — builds an
+    uncorrelated pipeline $lookup (a global top-3-most-expensive-products sub-pipeline returning
+    the identical array on every order) side by side with a correlated one (a per-category
+    top-2-products sub-pipeline using `let`/`$$category`), verified via direct execution that the
+    uncorrelated version is genuinely identical across 3 different orders while the correlated one
+    varies by category — with a Try It on the easy-to-miss case where a let binding is DECLARED but
+    never referenced, which is still uncorrelated despite superficially "having" the pipeline
+    syntax; (3) **gap-closing** — the QnA names the self-join pattern ("join a collection with
+    itself... useful for graph queries before $graphLookup") in one sentence with zero code
+    anywhere; built a one-level employee→manager self-join, verified via direct execution
+    (including the top-of-chart employee with a null managerId correctly producing an EMPTY manager
+    array, not an error), with a Try It establishing the genuine boundary where a one-level
+    self-join stops being enough (reaching a manager's-manager needs either a second chained
+    $lookup or $graphLookup, tying back to the page's own $graphLookup QnA). No `SUBTOPICS`
+    collision for `lookup-joins` (checked both `subtopics.ts` forms and grepped `app.routes.ts`
+    directly, confirmed collision-free, left bare). All three `exercise.solution` fields swept
+    clean of `<code>`/entity contamination; the standing apostrophe-after-letter sweep found
+    nothing unescaped; `\$`-prefixed operator/variable names (including `$$`-prefixed pipeline
+    variables) inside every codeTab verified correct via a bracket-balance and backtick-parity
+    script before the build. Build passed clean (foreground execution, explicit `EXITCODE:$?`
+    capture, zero `ERROR` lines). Browser-verified with a proactive dev-server restart before
+    checking (fresh on the first check, toggle count 9 as expected): no console errors on any of
+    the 4 pages; nav accordion opens with all 3 subtopic links; both main-page fixes (the QnA
+    correction, requiring expanding both the QnA section's own outer toggle and the specific
+    question's own row, and the theory-bullet correction, rendering directly since theory blocks
+    are not collapsed) confirmed rendering live; all 3 subtopic pages checked individually —
+    correct h1/breadcrumb, 860px wrapper via `getComputedStyle`, `$$`-prefixed pipeline variables
+    confirmed rendering as literal text (not vanished), tailored (not DEFAULT) sidebar content
+    confirmed on the final subtopic. **MongoDB hub Phase 10: 9 of 21 topics complete.**
+17. **The `aggregation-expressions` batch found and fixed a genuine, severe, well-verified logic
+    bug in the main page's own "Date Expressions" codeTab, discovered by cross-referencing the
+    page's own Challenge solution against a different codeTab on the same page**: the codeTab
+    computed <code>expiresAt</code> and <code>isExpired: { $lt: ['$expiresAt', '$$NOW'] }</code> in
+    the SAME <code>$addFields</code> stage object. Verified directly against MongoDB's own
+    <code>$addFields</code> documentation (including its own worked example, which deliberately
+    splits a dependent computation into a SEPARATE, later stage) that every field expression in one
+    $addFields stage is evaluated against the document as it was BEFORE that stage ran — never
+    against a sibling field being computed in the same object. Verified further against MongoDB's
+    own official BSON comparison-order docs that a missing field compares as null, and null sorts
+    BEFORE every Date — meaning the bug was not merely "uncomputable" but actively, silently WRONG:
+    verified via a precise pure-JS model (mirroring the exact BSON `$lt` semantics) that `isExpired`
+    evaluated to `true` for EVERY document, always, regardless of whether the order was genuinely
+    expired or not. This exact chaining pattern (splitting a dependent field into a later stage) is
+    already correctly used by the page's own Challenge solution for `subtotal` → `tax`/`grandTotal`
+    — the Date Expressions codeTab simply never followed its own page's established convention.
+    Fixed by splitting into two $addFields stages. **A real, separately-checked false lead avoided
+    before publishing**: initially suspected the QnA's "$divide returns null when the divisor is
+    zero — it does not throw an error" claim was wrong (a MongoDB JIRA ticket, SERVER-6144, closed
+    in ancient version 2.3.2, suggested "error handling" was added for divide-by-zero) — but a
+    real MongoDB Community Forums thread ("Why the $divide returns null?", 2023) and a second
+    independent source both directly confirmed current behavior genuinely still returns null, no
+    error — the page's original claim was correct all along, and no "fix" was applied. Three
+    subtopics: (1) **fix-adjacent** — reproduces the exact bug/fix via a precise pure-JS model
+    matching MongoDB's own documented BSON comparison semantics, verified across a genuinely-expired
+    and a genuinely-fresh order (both incorrectly `true` in the buggy version; correctly `true`/
+    `false` in the fixed version), with a Try It distinguishing this from the page's own "Arithmetic
+    & String" codeTab, which computes several independent NEW fields side by side in one stage with
+    zero bug risk, since none of them reference each other by name; (2) **gap-closing** — the
+    page's own quiz explains `$let` in real detail ("declares local variables... to avoid redundant
+    computation") with zero codeTab building one; built a margin-computation example (with vs.
+    without `$let`), verified matching output via direct execution — and, before publishing an
+    initial WRONG guess about `$let`'s own `vars`-block evaluation order, verified directly against
+    MongoDB's own `$let` documentation (including its own worked `{ low: 1, high: "$$low" }`
+    example) that variables in the SAME `vars` block CANNOT reference each other at all — a
+    `$$`-prefixed reference inside `vars` always resolves to an OUTER variable, matching (not
+    contradicting) the sibling subtopic's own $addFields finding, just enforced as an invalid
+    reference rather than a silent missing/null; (3) **gap-closing** — the page's own QnA names
+    `$dateTrunc` in one clause with zero code anywhere, while the page's own "Group by month"
+    example instead uses separate `$year`+`$month` extraction; built a day/hour bucketing example,
+    verified truncation math via direct execution, plus verified via MongoDB's own $dateTrunc
+    reference (not assumed) that bin edges for every unit except "week" are anchored to a FIXED
+    reference date (2000-01-01T00:00:00Z), not to midnight of the current day as an initial draft of
+    the misconception field incorrectly assumed before being corrected. **A real, self-caught
+    apostrophe-collision gotcha caught proactively, before it could break any sibling page**: the
+    first subtopic's own working title ("A Single $addFields Stage Can't See Its Own New Fields")
+    contained a straight apostrophe — since a subtopic's title gets embedded verbatim in sibling
+    pages' `[prev]`/`[next]` labels (a single-quoted JS object literal string inside a double-quoted
+    Angular attribute), reworded to "Cannot" instead of "Can't" to sidestep the collision entirely,
+    per the established precedent (no safe entity-escape exists for this specific case). No
+    `SUBTOPICS` collision for `aggregation-expressions` (checked both `subtopics.ts` forms and
+    grepped `app.routes.ts` directly, confirmed collision-free, left bare). All three
+    `exercise.solution` fields swept clean of `<code>`/entity contamination; the standing
+    apostrophe-after-letter sweep and the `[prev]`/`[next]`-label straight-apostrophe sweep both
+    found nothing unescaped; bracket-balance and backtick-parity scripts confirmed clean on all
+    three files, including correctly-escaped nested template literals (`\`...\``) inside the $let
+    codeTab's own JS-equivalent functions. Build passed clean (foreground execution, explicit
+    `EXITCODE:$?` capture, zero `ERROR` lines). Browser-verified with a proactive dev-server restart
+    before checking (fresh on the first check, toggle count 10 as expected): no console errors on
+    any of the 4 pages; nav accordion opens with all 3 subtopic links; the main-page fix confirmed
+    rendering live after switching the code-block's own tab selector to "Date Expressions"
+    specifically; all 3 subtopic pages checked individually — correct h1/breadcrumb, 860px wrapper
+    via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the final subtopic.
+    **MongoDB hub Phase 10: 10 of 21 topics complete.**
+18. **The `schema-design-patterns` batch found and fixed a genuine race condition in the main
+    page's own Challenge solution, discovered by cross-referencing it against the page's OWN
+    earlier "Computed Pattern" codeTab**: the Challenge's `addReview` function performed the
+    stats increment ($inc reviewCount/ratingSum + $push recentReviews) as one atomic
+    `findOneAndUpdate`, then made a SEPARATE, later `updateOne` to compute and store `avgRating`
+    from a snapshot captured by the first call — with no transaction wrapping the two, unlike the
+    page's own earlier Computed Pattern codeTab, which correctly wraps its own two writes in a
+    real MongoDB transaction. Verified via a precise concurrency model that if two `addReview`
+    calls for the same product genuinely interleave, the first call's own "recompute avgRating"
+    step can run AFTER a second call's full increment has already landed, silently overwriting the
+    correct average with one computed from stale data (verified: `avgRating: 5` instead of the
+    correct `4`). Fixed by combining everything into ONE atomic call using MongoDB's own
+    update-with-aggregation-pipeline (an array of `$set` stages passed to `updateOne` instead of a
+    plain update document) — verified directly against MongoDB's own documentation (including its
+    own worked example) that, unlike a single `$addFields` stage's siblings, a LATER `$set` stage
+    in this array CAN reference a field set by an EARLIER stage in the SAME array, letting
+    `avgRating` be computed from the freshly-incremented `reviewCount`/`ratingSum` atomically, with
+    no transaction needed since everything lives on one document. Also verified the exact syntax
+    needed to replicate `$push`/`$each`/`$slice`/`$sort` inside a pipeline update (`$concatArrays`
+    + `$sortArray` + `$slice`, since classic update operators cannot be mixed into a pipeline
+    array) before applying it. Three subtopics: (1) **fix-adjacent** — reproduces the exact race
+    via a precise concurrency model, both buggy and fixed versions verified matching claimed
+    output exactly, with a Try It on why a $jsonSchema validator (a different codeTab on the same
+    page) does nothing to prevent this class of bug; (2) **gap-closing** — the page's own quiz
+    explains the Attribute Pattern (`specs: [{k,v}]` + one compound index) in real depth but no
+    codeTab builds one; built it, verified via direct execution that a PLAIN query (no
+    `$elemMatch`) produces a genuine false positive — a movie where "director" and "Nolan" appear
+    on two DIFFERENT array elements (Nolan is actually the producer) incorrectly matches a
+    director=Nolan search, while `$elemMatch` correctly excludes it; (3) **gap-closing** — the
+    page's own QnA names all four tree-structure patterns in one dense paragraph with zero code;
+    built Materialised Path specifically (the one the QnA calls out as easiest for $regex
+    ancestor/descendant queries), verified via MongoDB's own official tutorial that the delimiter
+    convention is comma-bounded on BOTH sides of the path string, plus an independently-verified
+    ancestors query (build every path prefix, then match with `$in`) that MongoDB's own tutorial
+    doesn't show directly. No `SUBTOPICS` collision for `schema-design-patterns` (checked both
+    `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed collision-free, left
+    bare). All three `exercise.solution` fields swept clean of `<code>`/entity contamination; the
+    standing apostrophe-after-letter sweep and the `[prev]`/`[next]`-label straight-apostrophe
+    sweep both found nothing unescaped; bracket-balance and backtick-parity scripts confirmed
+    clean on all three files. Build passed clean (foreground execution, explicit `EXITCODE:$?`
+    capture, zero `ERROR` lines). Browser-verified with a proactive dev-server restart before
+    checking (fresh on the first check, toggle count 11 as expected): no console errors on any of
+    the 4 pages; nav accordion opens with all 3 subtopic links; the main-page fix confirmed
+    rendering live after Reveal Solution + View Code (the update-pipeline comment and
+    `$sortArray`/`$concatArrays` usage present, the old separate "Recompute avgRating" step gone);
+    all 3 subtopic pages checked individually — correct h1/breadcrumb (all 4 levels confirmed),
+    860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the
+    final subtopic. **MongoDB hub Phase 10: 11 of 21 topics complete.**
+19. **The `data-modelling` batch found and fixed a genuine, self-contained Quick Reference
+    redundancy-plus-gap, discovered by cross-referencing the page's own theory, Quick Reference,
+    and QnA sections against each other**: the Quick Reference listed both "Parent Reference" AND
+    a separate "Adjacency List" entry, both describing the identical mechanism ("each node stores
+    its parent ID") — the page's own theory section already correctly treats these as SYNONYMS
+    ("Parent Reference (Adjacency List)"). Verified via MongoDB's own official tree-structure
+    documentation that it names exactly FIVE patterns (Parent References, Child References, Array
+    of Ancestors, Materialized Paths, Nested Sets) and never uses the term "Adjacency List" at
+    all — confirming it's informal CS terminology, not a sixth distinct pattern. Meanwhile, the
+    page's own QnA fully explains a genuinely DIFFERENT, real MongoDB-documented pattern under the
+    name "Ancestor Array" (each node stores an array of ALL its ancestor IDs, not just its
+    immediate parent) that never appeared in the Quick Reference at all. Fixed by replacing the
+    redundant "Adjacency List" entry with the real, previously-missing "Array of Ancestors"
+    pattern. Three subtopics: (1) **fix-adjacent** — builds the Array of Ancestors pattern
+    (verified against MongoDB's own official tutorial's exact document shape and queries), with a
+    Try It establishing a genuine, verified DIFFERENCE from the sibling Schema Design Patterns
+    topic's own Materialised Path subtopic: a node's own descendants query includes itself under
+    Materialised Path's regex (since its own path contains its own name) but EXCLUDES itself under
+    Array of Ancestors (since a node is never its own ancestor); (2) **gap-closing** — the page's
+    own theory names Nested Sets in real detail ("expensive to maintain") with zero codeTab
+    anywhere; built it, verified against MongoDB's own tutorial's exact document shape and
+    descendant/ancestor queries, then quantified the "expensive to maintain" claim with a real
+    insert-cost demonstration (inserting one leaf under "Databases" required updating exactly 3
+    existing documents — every ancestor of the insertion point), with a Try It showing a SECOND
+    insertion (near the tree's start) touches 5 nodes including an entirely unrelated sibling
+    subtree, disproving the assumption that only direct ancestors ever need updating; (3)
+    **gap-closing** — the page's own theory names the workload matrix as the FIRST step in schema
+    design but the concept stays entirely abstract, with not even the Challenge itself building
+    one; built the actual matrix for the Challenge's own Social Media Feed scenario, verified via
+    direct execution that the getFeed row is 9x more frequent than all writes combined, tracing
+    exactly which row justifies the Challenge's own already-baked-in extended-reference and
+    computed-pattern choices — with a Try It showing the IDENTICAL schema shape becomes the WRONG
+    choice once the matrix's own numbers are inverted (a write-heavy admin dashboard with a
+    fast-changing denormalized field). No `SUBTOPICS` collision for `data-modelling` (checked both
+    `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed collision-free, left
+    bare). All three `exercise.solution` fields swept clean of `<code>`/entity contamination; the
+    standing apostrophe-after-letter sweep and the `[prev]`/`[next]`-label straight-apostrophe
+    sweep both found nothing unescaped; bracket-balance and backtick-parity scripts confirmed
+    clean on all three files. Build passed clean (foreground execution, explicit `EXITCODE:$?`
+    capture, zero `ERROR` lines). **Hit a fully-dead dev server this batch** (`preview_list`
+    returned an empty array — the process had died outright during a session interruption, not
+    merely gone stale) — resolved with a clean `preview_start` cold-start plus polling for
+    readiness, same as every prior batch's proactive-restart practice. Browser-verified: no
+    console errors on any of the 4 pages; nav accordion opens with all 3 subtopic links (toggle
+    count 12 across the hub, fresh on first check); the Quick Reference fix confirmed rendering
+    live via a scoped check against the `app-quick-ref` section specifically (not just a
+    whole-page text search, since "Adjacency List" legitimately still appears once, correctly, in
+    the theory section's own unchanged parenthetical); all 3 subtopic pages checked individually —
+    correct h1/breadcrumb (all 4 levels confirmed), 860px wrapper via `getComputedStyle`, tailored
+    (not DEFAULT) sidebar content confirmed on the final subtopic. **MongoDB hub Phase 10: 12 of
+    21 topics complete.**
+20. **The `time-series` batch found and fixed a genuine self-contradiction spanning the main
+    page's own mistakes block AND a quiz question, discovered by cross-referencing them against
+    the page's own QnA limitations answer**: the mistakes block claimed "Time series collections
+    are append-only — updates and deletes are not supported" as an unqualified blanket rule, and a
+    quiz question's own explanation repeated the identical claim — while the SAME page's own QnA
+    already correctly stated "Deletes: supported but less efficient than regular collections."
+    Verified via MongoDB's own documented update-command requirements and a WebSearch confirming
+    the version history: MongoDB 5.0 was fully append-only, but 5.1+ allows deletes AND limited
+    updates (strictly matching/modifying the metaField only, with `multi: true` required and
+    `upsert` forbidden), with most delete restrictions further removed in 7.0+. Confirmed the
+    quiz question's own fourth option ("Yes, but only the metaField") was ALREADY the accurate
+    answer, just never selected as correct. Fixed the mistake's title/explanation (measurement
+    fields specifically stay immutable; the metaField does not) and the quiz's own `answer` index
+    and explanation to match. Three subtopics, each verified via direct Node.js execution: (1)
+    **fix-adjacent** — a valid metaField-only rename (renaming a hostname across every historical
+    document) contrasted against three rejected variants (filtering/modifying a measurement field
+    in any combination), with a Try It on the SEPARATE `multi:true` requirement (a correctly
+    metaField-scoped `updateOne()`, without `multi:true`, is still rejected); (2) **gap-closing** —
+    the page's own QnA explains why `$merge` beats `$out` for scheduled downsampling in real detail
+    with zero codeTab demonstrating it across sequential runs; built two consecutive scheduled runs
+    verified matching claimed output exactly ($out silently destroys day 1's rollup; $merge
+    preserves it), with a Try It on `whenMatched: 'replace'`'s actual scope (a same-day re-run
+    replaces only that day's own document, never touching days the run didn't recompute); (3)
+    **gap-closing** — the QnA explains `$densify`'s `bounds: "partition"` vs. `"full"` with a
+    worked example but the ONLY `$densify` codeTab on the page uses `"partition"`; built both side
+    by side, verified via direct execution that `"full"` produces exactly 4x more documents than
+    `"partition"` for the same 4-document seed (32 vs. 8), with a Try It establishing that `$fill`'s
+    own `locf` method cannot close a null gap `"full"` bounds introduces BEFORE a partition's own
+    first real reading. No `SUBTOPICS` collision for `time-series` (checked both `subtopics.ts`
+    forms and grepped `app.routes.ts` directly, confirmed collision-free, left bare). All three
+    `exercise.solution` fields swept clean of `<code>`/entity contamination; the standing
+    apostrophe-after-letter sweep and the `[prev]`/`[next]`-label straight-apostrophe sweep both
+    found nothing unescaped; bracket-balance and backtick-parity scripts confirmed clean on all
+    three files. Build passed clean (foreground execution, explicit `EXITCODE:$?` capture, zero
+    `ERROR` lines). Browser-verified with a proactive dev-server restart before checking (fresh on
+    the first check, toggle count 13 as expected): no console errors on any of the 4 pages; nav
+    accordion opens with all 3 subtopic links; both main-page fixes confirmed rendering live — the
+    mistakes-block fix directly, and the quiz fix by clicking through to question 5/9 specifically
+    and confirming option D is now marked correct with the updated explanation; all 3 subtopic
+    pages checked individually — correct h1/breadcrumb (all 4 levels confirmed), 860px wrapper via
+    `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the final subtopic.
+    **MongoDB hub Phase 10: 13 of 21 topics complete.**
+21. **The `indexes` batch found and fixed TWO more genuine issues, both self-contained (zero
+    external research needed to catch, though external verification was needed to confirm the
+    fix), plus a real `SUBTOPICS` collision requiring a genuine structural fix (not just a data-
+    file key rename)**: (1) the theory's own "Background index builds" bullet attributed the
+    "lock only at the beginning and end" behavior to MongoDB 4.4+, while the SAME bullet's
+    opening sentence already (correctly) said index builds stopped blocking reads/writes since
+    MongoDB 4.2+ — a version mismatch. Verified against MongoDB's own documented hybrid index
+    build protocol (multiple corroborating sources) that the lock-only-at-start-and-end behavior
+    IS what MongoDB 4.2 itself introduced — replacing the OLD foreground/background distinction
+    entirely, not a separate 4.4 improvement layered on top. Fixed to correctly describe the
+    four-phase protocol (X at Initialize, IX during the bulk scan, S during Drain, X at Commit)
+    all under the single MongoDB 4.2+ hybrid build. (2) The multikey-indexes QnA claimed "$text
+    and $2dsphere indexes cannot be multikey" — verified against MongoDB's own official Multikey
+    Indexes documentation, which names exactly ONE excluded index type (hashed), plus separate
+    confirmation that text indexes on array-of-strings fields and 2dsphere indexes on arrays of
+    GeoJSON geometries both work exactly like a regular multikey index. Fixed the QnA to state the
+    real restriction. Three subtopics, each verified via direct Node.js execution or research: (1)
+    **fix-adjacent** — models the four-phase lock timeline precisely, confirming only 2 of 4
+    phases are fully blocking (both brief), with a Try It on what happens to a write arriving
+    during the Drain phase specifically (queued, not rejected); (2) **fix-adjacent** — builds a
+    real text index on an array-of-tags field and a 2dsphere index on an array of GeoJSON
+    locations, verified via a pure-JS array-contains model matching the documented multikey
+    expansion behavior, with a Try It confirming the SEPARATE compound-index one-array-field
+    restriction still applies regardless of index type; (3) **gap-closing** — the QnA names
+    `hideIndex()` (MongoDB 6.0+) in one sentence with zero code, directly answering the risk the
+    page's own "removing unused indexes" advice raises; built and verified a real hide → test →
+    unhide cycle via a pure-JS planner-visibility model, with a Try It on the one documented
+    exception (the `_id` index can never be hidden). **Real `SUBTOPICS` collision, requiring a
+    genuine structural fix**: bare `indexes` was already claimed by the SQL hub's own
+    `/sql/indexes` topic — hub-prefixed the MongoDB entry to `mongo-indexes` (matching this hub's
+    own established `mongo-` progress/search key prefix, confirmed already used verbatim for
+    `p.isDone('mongo-indexes')`), with all three `MongoNavComponent` accordion helper calls using
+    the prefixed key consistently; `breadcrumb.ts`'s own `MONGO_LABELS` map and `page-sidebar.ts`'s
+    `SIDEBAR_MAP` needed no prefix (each hub's own labels map, and the full-path-prefixed sidebar
+    keys, carry no cross-hub collision risk); `search.ts`'s existing `mongo-` → `/mongodb/`
+    prefix-strip rule handled the `mongo-indexes/<slug>` composite routes correctly with no
+    special-casing needed. **A real, self-caught build failure, caught and fixed before the batch
+    was considered done**: the QnA fix itself introduced a straight, unescaped apostrophe in
+    "MongoDB's own documentation names" inside the single-quoted `a:` field — producing the
+    classic cascade of unrelated parser errors (`TS1005`, `TS18004`, `TS2353`, `TS2552`) far from
+    the actual break; caught by the first build attempt, fixed with `\'`, then a full apostrophe
+    sweep of the entire main-page file confirmed no other instances before rebuilding. Confirmed
+    `mongo-indexes` collision-free as a NEW key (checked both `subtopics.ts` forms and grepped
+    `app.routes.ts` directly for the bare `indexes` collision specifically). All three
+    `exercise.solution` fields swept clean of `<code>`/entity contamination; the standing
+    apostrophe-after-letter sweep and the `[prev]`/`[next]`-label straight-apostrophe sweep both
+    found nothing unescaped in the new subtopic files; bracket-balance and backtick-parity scripts
+    confirmed clean on all three. Build passed clean on the second attempt (foreground execution,
+    explicit `EXITCODE:$?` capture, zero `ERROR` lines). Browser-verified with a proactive
+    dev-server restart before checking (fresh on the first check, toggle count 14 as expected): no
+    console errors on any of the 4 pages; nav accordion opens with all 3 subtopic links; both
+    main-page fixes confirmed rendering live (the theory bullet directly, the QnA after expanding
+    both the QnA section's own outer toggle and the specific question's own row); all 3 subtopic
+    pages checked individually — correct h1/breadcrumb (all 4 levels confirmed), 860px wrapper via
+    `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the final subtopic; the
+    `/sql/indexes` cross-hub isolation check passed, confirming the hub-prefix fix left the SQL
+    hub's own page completely untouched. **MongoDB hub Phase 10: 14 of 21 topics complete.**
+22. **The `query-performance` batch found and fixed TWO more genuine issues, both self-contained
+    (zero external research needed to catch, though external verification was needed to confirm
+    each fix), in the exact same "index fragmentation" QnA answer**: (1) the QnA claimed "MongoDB
+    4.4+: background reindex supported (non-blocking)" for `reIndex()` — verified against
+    MongoDB's own official documentation that `reIndex()` has NEVER supported a non-blocking mode
+    in any version; it always takes a full exclusive lock for its entire duration, is restricted
+    to standalone instances only since MongoDB 5.0 (never replica sets or sharded clusters), and
+    has been deprecated since MongoDB 6.0. (2) The SAME QnA claimed `compact` "blocks all
+    operations on the collection during compaction" as a blanket rule — verified via MongoDB's own
+    documented version history that this was true only BEFORE MongoDB 4.4; since 4.4, compact does
+    not block CRUD operations on WiredTiger at all (though it still adds real checkpoint overhead,
+    which is why running it on a secondary is still recommended). Fixed both. Three subtopics,
+    each verified via direct Node.js execution: (1) **fix-adjacent** — models the blocking-time
+    difference between `createIndex()`'s hybrid build (2 of 4 phases briefly blocking) and
+    `reIndex()`'s single fully-blocking phase for an identical total duration (54.5x more blocked
+    time), with a Try It on the SEPARATE standalone-only restriction that disqualifies `reIndex()`
+    on a replica set before the blocking question even arises; (2) **fix-adjacent** — models the
+    pre-4.4-vs-4.4+ `compact` behavior directly, confirming zero app downtime post-fix for an
+    identical compact duration, with a Try It distinguishing the now-resolved blocking concern from
+    the still-real checkpoint-overhead concern; (3) **gap-closing** — the QnA on secondary reads
+    names causal consistency in one clause ("use causal consistency if you do" need
+    read-your-own-writes) with zero codeTab building one; built a real
+    `client.startSession({ causalConsistency: true })` example with the documented
+    majority-write-concern + majority-read-concern requirement, verified via a replication-lag
+    model that an uncausal read returns stale data while a causal read correctly waits for the
+    session's own tracked operation time, with a Try It on the easy-to-miss gap where swapping in
+    `{ w: 1 }` (non-majority) write concern silently breaks the guarantee even inside a causally
+    consistent session. **A real, self-caught apostrophe-collision gotcha caught proactively,
+    before it could break any sibling page**: the first subtopic's own working title ("reIndex
+    Never Got the Hybrid Build's Non-Blocking Fix") contained a straight apostrophe — reworded to
+    "reIndex Never Got the Non-Blocking Hybrid Build Fix" (dropping the possessive construction
+    entirely) before any sibling page's `[prev]`/`[next]` label could reference it, per the
+    established precedent from this same session's `aggregation-expressions` batch. No
+    `SUBTOPICS` collision for `query-performance` (checked both `subtopics.ts` forms — quoted and
+    unquoted — and grepped `app.routes.ts` directly, confirmed collision-free, left bare). All
+    three `exercise.solution` fields swept clean of `<code>`/entity contamination; the standing
+    apostrophe-after-letter sweep (run against BOTH the new subtopic files and the main page file
+    itself, after the two QnA edits) and the `[prev]`/`[next]`-label straight-apostrophe sweep both
+    found nothing unescaped; bracket-balance and backtick-parity scripts confirmed clean on all
+    three files. Build passed clean on the first attempt this time (foreground execution, explicit
+    `EXITCODE:$?` capture, zero `ERROR` lines) — the main-page-file apostrophe sweep run
+    proactively this batch (learned from the `indexes` batch's own self-caught build failure)
+    avoided a repeat. Browser-verified with a proactive dev-server restart before checking (fresh
+    on the first check, toggle count 15 as expected): no console errors on any of the 4 pages; nav
+    accordion opens with all 3 subtopic links; both main-page fixes confirmed rendering live after
+    expanding both the QnA section's own outer toggle and the specific question's own row; all 3
+    subtopic pages checked individually — correct h1/breadcrumb (all 4 levels confirmed), 860px
+    wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on the final
+    subtopic. **MongoDB hub Phase 10: 15 of 21 topics complete.**
+16. **The `transactions` batch found and fixed a genuine internal contradiction plus a
+    genuinely wrong claim, both requiring external verification against MongoDB's own docs**: the
+    "read concern snapshot" QnA claimed <code>"snapshot"</code> read concern "is the default for
+    a transaction" — directly contradicted by the page's own separate quiz Q6 explanation on
+    isolation, which already correctly described the read concern LEVEL as defaulting to local.
+    Verified via MongoDB's own read-concern documentation that if unspecified, a transaction
+    inherits from the session-level (then client-level) default, typically <code>"local"</code> —
+    and that every transaction ALREADY gets full snapshot ISOLATION as a behavior regardless of
+    which read concern level is in effect, a genuinely separate concept from the read concern
+    LEVEL named <code>"snapshot"</code>. Fixed the QnA answer, plus quiz Q6's own correct-answer
+    option text and explanation, to state both facts consistently. A second QnA claimed "maximum
+    1000 write operations per transaction" and a "1GB oplog size" cap as hard limits — verified via
+    two separate WebFetch calls against MongoDB's own Production Considerations page that NEITHER
+    figure is documented as an enforced limit at all: "1000" is a performance best-practice
+    recommendation from a MongoDB blog post, and the real hard limits are the 60-second default
+    runtime, each individual oplog entry staying within the 16MB BSON document size limit (the
+    OVERALL transaction size cap was removed since MongoDB creates as many oplog entries as
+    needed), and a genuine <code>TransactionTooLargeForCache</code> error when a transaction's data
+    cannot fit in the WiredTiger cache at all — a fact the main page never mentioned. Fixed the QnA
+    to state the verified facts. Three subtopics, each independently verified: (1) **fix-adjacent**
+    — a pure-JS model of the real precedence chain (transaction-level → session default →
+    client default → "local"), verified across four representative cases matching the documented
+    precedence exactly, with a Try It on an explicit <code>startTransaction({ readConcern: {
+    level: 'snapshot' } })</code> overriding a conflicting session default; (2) **gap-closing** —
+    the theory/quiz name <code>TransientTransactionError</code> (retry the WHOLE transaction body)
+    and <code>UnknownTransactionCommitResult</code> (retry ONLY the commit) as two distinct
+    retryable errors, but no codeTab ever builds the two-level retry loop the distinction actually
+    requires; built and verified <code>runTransactionWithRetry()</code>/<code>commitWithRetry()</code>
+    via direct Node.js execution across both failure shapes — a flaky commit correctly ran the body
+    exactly once, while a flaky body correctly re-ran it from scratch on a fresh transaction; (3)
+    **gap-closing** — modeled the real <code>TransactionTooLargeForCache</code> ceiling (WiredTiger
+    cache ≈ 50% of RAM − 1GB, 256MB floor, verified via WebSearch) against two contrasting
+    scenarios verified via direct execution: 25,000 small (<1KB) documents in one transaction (the
+    exact case the old "1000 writes" figure warned about) totals only ~21.5MB and poses no real
+    cache risk, while 300 documents near the 16MB BSON limit each totals ~4.39GB and genuinely
+    exceeds a 3.5GB cache outright — the real ceiling tracks total DATA SIZE, not operation count.
+    No `SUBTOPICS` collision check came back clean this time — bare `transactions` is already
+    claimed by the SQL hub's own `/sql/transactions` topic (a Redis hub `/redis/transactions`
+    route also exists, currently without subtopics) — hub-prefixed to `mongo-transactions`,
+    matching this hub's own established progress/search key prefix (already `mongo-`-prefixed for
+    progress/search purposes independent of this collision, so no separate mismatch to reconcile).
+    All three `exercise.solution` fields swept clean of `<code>`/entity contamination; the standing
+    apostrophe-after-letter sweep (run against both the new subtopic files and the main page file
+    itself, after all four edits) and the `[prev]`/`[next]`-label straight-apostrophe sweep both
+    found nothing unescaped — none of the three subtopic titles needed rewording this batch, since
+    none contained a straight apostrophe at all; bracket-balance and backtick-parity scripts
+    confirmed clean on all three files, including a correctly-escaped `\$inc` MongoDB operator
+    inside a nested driver-code example. Build passed clean on the first attempt (foreground
+    execution, explicit `EXITCODE:$?` capture, zero `ERROR` lines). Browser-verified with a
+    proactive dev-server restart before checking (fresh on the first check, toggle count 16 as
+    expected): no console errors on any of the 4 pages; nav accordion opens with all 3 subtopic
+    links; all three main-page fixes (the QnA answer, quiz Q6's option text, quiz Q6's explanation,
+    and the separate "1000 write operations" QnA) confirmed rendering live via direct component
+    data inspection; the subtopic page checked individually — correct h1/breadcrumb (all 4 levels
+    confirmed), 860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content
+    confirmed via a direct text search for the tip's own distinctive phrase. **MongoDB hub Phase
+    10: 16 of 21 topics complete.**
+17. **The `change-streams` batch found and fixed a genuine, self-contained mismatch between a
+    codeTab's own comment and its code, plus a genuinely wrong claim about oplog retention,
+    plus a completely unmentioned documented risk — all in one page**: the "Filter Pipeline &
+    Full Document" codeTab opened with a comment claiming "Only receive insert/update events
+    where status === 'shipped'", but its own <code>$match</code> stage only ever filtered on
+    <code>operationType</code>, with the status check actually living in the client-side
+    for-await loop — the exact anti-pattern the page's OWN "Filtering events in application code
+    instead of the pipeline" mistake block, right below it, explicitly warns against. Fixed by
+    pushing <code>'fullDocument.status': 'shipped'</code> into the pipeline's own <code>$match</code>
+    stage, matching the mistake block's own established pattern, and removing the now-redundant
+    client-side re-check. Separately, a QnA claimed "MongoDB ensures a minimum retention period
+    of 1 hour by default" — verified via WebFetch against MongoDB's own Replica Set Oplog
+    documentation ("By default MongoDB does not set a minimum oplog retention period and
+    automatically truncates the oplog... to maintain the configured maximum oplog size") that
+    <code>oplogMinRetentionHours</code> defaults to 0 (disabled), with NO time-based floor at
+    all — purely size-based truncation. Fixed the QnA to state the real default and clarify that
+    an observed "24-72 hours" figure is a byproduct of write volume, not a guarantee. Three
+    subtopics: (1) **fix-adjacent** — reproduces the comment-vs-code mismatch and quantifies the
+    fix's real benefit via direct Node.js execution: pushing the status condition into
+    <code>$match</code> cuts transmitted events by 98.0% for a realistic 10,000-event/2%-match-rate
+    scenario, with a Try It distinguishing "which $match stage the condition lives in" (doesn't
+    matter) from "whether ANY stage filters on it at all" (the actual original bug); (2)
+    **fix-adjacent** — models the real size-based-vs-explicit-floor retention behavior via direct
+    execution, showing a high-write-rate scenario genuinely retains under 1 hour at the true
+    default (~50 minutes), disproving the false "1 hour minimum" claim concretely, with a Try It
+    computing how a calm 500MB/hour deployment's own ~20-hour "safe-looking" retention would
+    silently shrink to ~6.83 hours if write volume tripled, since nothing was actually guaranteeing
+    that number; (3) **gap-closing** — a real, documented risk the main page never mentions at
+    all: verified via WebFetch against MongoDB's own official change streams documentation that
+    combining <code>fullDocument: "updateLookup"</code> with a <code>$match</code> on a
+    fullDocument field can produce "Resume Token Not Found" errors under rapid deletions or
+    traffic spikes (a live lookup racing against a since-deleted document), with MongoDB's own
+    recommended fix being pre/post images (<code>fullDocument</code>/<code>fullDocumentBeforeChange:
+    "whenAvailable"</code>) instead, since those are captured durably at write time rather than
+    looked up live later — directly relevant since the FIRST subtopic's own fix introduces exactly
+    this risky combination, verified via a timestamp-based race simulation matching the documented
+    mechanism precisely. No `SUBTOPICS` collision for `change-streams` (checked both `subtopics.ts`
+    forms and grepped `app.routes.ts` directly, confirmed collision-free, left bare). All three
+    `exercise.solution` fields swept clean of `<code>`/entity contamination; the standing
+    apostrophe-after-letter sweep (run against both the new subtopic files and the main page file
+    itself, after all edits) and the `[prev]`/`[next]`-label straight-apostrophe/double-quote
+    sweeps both found nothing unescaped; bracket-balance and backtick-parity scripts confirmed
+    clean on all three subtopic files and the main page file. Build passed clean on the first
+    attempt (foreground execution, explicit `EXITCODE:$?` capture, zero `ERROR` lines).
+    Browser-verified with a proactive dev-server restart before checking (fresh on the first
+    check, toggle count 17 as expected across the hub): no console errors on any of the 4 pages;
+    nav accordion opens with all 3 subtopic links; both main-page fixes (the corrected pipeline
+    codeTab and the corrected oplog QnA) confirmed rendering live via direct component data
+    inspection; the subtopic page checked individually — correct h1/breadcrumb (all 4 levels
+    confirmed), 860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content
+    confirmed via a direct text search for the tip's own distinctive phrase. **MongoDB hub Phase
+    10: 17 of 21 topics complete.**
+18. **The `replication-sharding` batch found and fixed a genuine cross-QnA inconsistency plus a
+    genuine incompleteness, both self-contained (zero external research needed to CATCH, though
+    external verification was needed to confirm each fix)**: the main page has TWO separate QnAs
+    describing the identical zone-sharding upper-bound technique — one already correctly wrote
+    <code>{ region: "EU~" }</code>; the OTHER wrote <code>{ region: "EU" + "" }</code>, a no-op
+    string concatenation producing an upper bound IDENTICAL to the lower bound, <code>"EU"</code> —
+    a zero-width, invalid zone range. The two QnAs also used different command names for the exact
+    same operation (<code>sh.addShardTag()</code>/<code>sh.addTagRange()</code> vs.
+    <code>sh.addShardToZone()</code>/<code>sh.updateZoneKeyRange()</code>); verified via WebSearch
+    against MongoDB's own documentation that the former pair are legacy aliases for the latter, not
+    a different mechanism. Fixed the broken QnA to use the modern commands and the already-working
+    tilde technique, verified via direct JS string-comparison execution matching the exact claimed
+    ordering behavior. Separately, a QnA's oplog-size default ("5% of disk or 50GB, whichever is
+    smaller") was verified via WebFetch against MongoDB's own Replica Set Oplog documentation to be
+    correct on the UPPER bound only — it omitted the documented 990MB MINIMUM floor entirely,
+    which is the ACTIVE constraint on a small dev-VM disk. Tightened the QnA to state the full
+    two-sided clamp. Three subtopics, each verified via direct Node.js execution: (1)
+    **fix-adjacent** — reproduces the exact string-concatenation bug and the tilde fix, with a Try
+    It applying the identical technique to a "US"-prefixed zone and confirming the tilde is not
+    optional; (2) **fix-adjacent** — models the real two-sided oplog-size formula against a small
+    10GB disk (990MB floor is the active constraint, nearly double a naive 5%-only estimate) and a
+    large 2TB disk (the 50GB cap is the active constraint instead), with a Try It computing the
+    real oplog size for a 5GB dev disk; (3) **gap-closing** — the page names <code>hidden: true</code>,
+    <code>priority: 0</code>, and <code>secondaryDelaySecs</code> across two separate QnAs but never
+    shows the actual <code>rs.reconfig()</code> call that applies them; built and verified the real
+    fetch-mutate-bump-version-reconfig pattern combining all three fields onto one member, with a
+    Try It on why passing a PARTIAL config object to <code>rs.reconfig()</code> is destructive
+    (reconfig replaces the whole config, it does not merge). No `SUBTOPICS` collision for
+    `replication-sharding` (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly,
+    confirmed collision-free, left bare). All three `exercise.solution` fields swept clean of
+    `<code>`/entity contamination; the standing apostrophe-after-letter sweep (run against both the
+    new subtopic files and the main page file itself, after both edits) and the
+    `[prev]`/`[next]`-label straight-apostrophe/double-quote sweeps both found nothing unescaped;
+    bracket-balance and backtick-parity scripts confirmed clean on all three subtopic files and the
+    main page file. Build passed clean on the first attempt (foreground execution, explicit
+    `EXITCODE:$?` capture, zero `ERROR` lines). **The dev server had died outright during a session
+    interruption between batches** (`preview_list` returned an empty array) — resolved with a clean
+    `preview_start` cold-start; a first readiness-poll attempt was moved to the background by the
+    harness rather than timing out outright, and completed successfully moments later, confirming
+    the server came up fine. Browser-verified: no console errors on any of the 4 pages; nav
+    accordion opens with all 3 subtopic links, fresh on the first check; both main-page fixes
+    (targeted precisely — the FIRST, unrelated pre-existing zone-sharding QnA had to be excluded
+    from the match, since it already correctly used the modern commands before this batch)
+    confirmed rendering live via direct component data inspection; the subtopic page checked
+    individually — correct h1/breadcrumb (all 4 levels confirmed), 860px wrapper via
+    `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed via a direct text search
+    for the tip's own distinctive phrase. **MongoDB hub Phase 10: 18 of 21 topics complete.**
+19. **The `security` batch found and fixed TWO genuine issues, one a fabricated-feature citation
+    (the same failure category as prior fabricated-citation catches in this file — RFC 4652,
+    the K8s gRPC-probe version, the Optic tool status) and one a real security anti-pattern in a
+    Challenge presented as the correct reference solution**: a QnA on credential rotation claimed
+    "MongoDB's multiple passwords per user (MongoDB 7.2+)" as a zero-downtime rotation mechanism —
+    verified directly against <code>db.updateUser()</code>'s own reference documentation (a single
+    <code>pwd</code> field that REPLACES the password immediately) and MongoDB's own 8.0 changelog
+    (zero mentions of any such feature) that no such capability exists at all; the QnA's own code
+    example didn't even demonstrate "multiple passwords" — it was a bare, ordinary password change.
+    Fixed to state the real, only zero-downtime pattern: blue/green (create a new user, migrate
+    connections, drop the old user). Separately, the "Secure User System Setup" Challenge — for a
+    HEALTHCARE application — hashed passwords with plain <code>createHash("sha256")</code>, a fast,
+    unsalted, deterministic hash unsuitable for password storage; verified via direct execution that
+    bcrypt produces a DIFFERENT hash for the identical password every time (automatic salting) while
+    SHA-256 always produces the same digest, exactly what makes rainbow-table/brute-force attacks
+    practical. Fixed to bcrypt.hash()/bcrypt.compare(), which also required restructuring the login
+    query (fetch by username only, then compare against the fetched hash, since a salted hash can
+    never be matched via query-level equality). Three subtopics, each verified via direct Node.js
+    execution: (1) **fix-adjacent** — models a naive in-place password change (10 of 10 active
+    connections fail authentication instantly) against blue/green rotation at 60% migrated (0 of 10
+    fail), with a Try It on what happens if the old user is dropped before migration reaches 100%;
+    (2) **fix-adjacent** — the SHA-256-vs-bcrypt fix demonstrated directly (bcrypt's salted output
+    differs on every call; SHA-256's never does), with a Try It on why a precomputed rainbow table
+    that defeats every stolen SHA-256 hash at once does NOT transfer to bcrypt's per-hash salts; (3)
+    **gap-closing** — one of the page's own quiz questions explains deterministic-vs-randomized
+    CSFLE pattern leakage in real technical detail but no codeTab demonstrates it; built an
+    illustrative HMAC-based deterministic scheme (same plaintext -> same ciphertext, verified via
+    execution) contrasted against real AES-256-GCM randomized encryption (different ciphertext every
+    time even for identical plaintext), with a Try It establishing the choice is dictated by whether
+    a field needs server-side equality queries, not a general security-maximizing default. SUBTOPICS
+    key hub-prefixed to `mongo-security` (bare `security` collides with the SQL hub's own topic,
+    matching this hub's own already-`mongo-`-prefixed progress/search key). All three
+    `exercise.solution` fields swept clean of `<code>`/entity contamination (all backtick-delimited,
+    correctly tolerating bare apostrophes in comments); the standing apostrophe-after-letter sweep
+    (run against both the new subtopic files and the main page file itself, after all edits) and the
+    `[prev]`/`[next]`-label straight-apostrophe/double-quote sweeps both found nothing unescaped
+    requiring a fix; bracket-balance and backtick-parity scripts confirmed clean on all three
+    subtopic files and the main page file. Build passed clean on the first attempt (foreground
+    execution, explicit `EXITCODE:$?` capture, zero `ERROR` lines). Browser-verified with a
+    proactive dev-server restart before checking (fresh on the first check, toggle count 19 as
+    expected across the hub): no console errors on any of the 4 pages; nav accordion opens with all
+    3 subtopic links; both main-page fixes confirmed rendering live via direct component data
+    inspection (the bcrypt check also confirmed the OLD `createHash('sha256')` functional call was
+    gone, distinguishing it from a harmless explanatory comment that intentionally still mentions
+    the old approach by name for contrast); the subtopic page checked individually — correct
+    h1/breadcrumb (all 4 levels confirmed), 860px wrapper via `getComputedStyle`, tailored (not
+    DEFAULT) sidebar content confirmed via a direct text search for the tip's own distinctive
+    phrase. **MongoDB hub Phase 10: 19 of 21 topics complete.**
+20. **The `mongodb-nodejs` batch found and fixed TWO genuine, self-contained bugs, both catchable
+    by careful reading alone (zero external research needed to catch, though a short verification
+    pass confirmed the exact Mongoose strict-mode mechanism)**: the aggregation-framework QnA's
+    own "total spent per customer" pipeline showed <code>{ $group: { _id: "", totalSpent: { $sum:
+    "" }, orderCount: { $sum: 1 } } }</code> — both <code>_id</code> and the <code>$sum</code>
+    expression were bare EMPTY-STRING LITERALS (constants), not the <code>$fieldName</code>
+    references the surrounding prose and the pipeline's own stated purpose clearly required.
+    Fixed to <code>_id: "$customerId"</code> and <code>$sum: "$total"</code>, verified via direct
+    Node.js execution that the broken version collapses every document into ONE meaningless group
+    with a totalSpent of 0, while the fixed version correctly groups per customer with real totals.
+    Separately, the "Mongoose Schema (for comparison)" codeTab defined a <code>pre('save')</code>
+    hook specifically to hash a <code>password</code> field — but the schema itself never declared
+    a <code>password</code> field at all, and the hook called an undeclared <code>hashPassword()</code>
+    function. Verified against Mongoose's own strict-mode documentation ("values passed to a model
+    constructor that were not specified in the schema do not get saved to the db") that the
+    original codeTab's hook computed and assigned a hashed value that strict mode would silently
+    discard at save time — the whole point of the example (demonstrating the middleware system)
+    was undermined by its own missing field. Fixed by adding the <code>password</code> field and
+    replacing <code>hashPassword()</code> with a real <code>bcrypt.hash()</code> call, tying back
+    to the sibling Security & Authentication topic's own bcrypt fix. Three subtopics, each verified
+    via direct Node.js execution: (1) **fix-adjacent** — reproduces the broken-vs-fixed
+    <code>$group</code> behavior exactly, with a Try It on why fixing only the <code>_id</code>
+    reference (leaving <code>$sum: ""</code> untouched) still leaves every customer's total at 0,
+    since grouping and summing are independent parts of the same stage; (2) **fix-adjacent** — a
+    pure-JS model of Mongoose's own documented strict-mode behavior (an undeclared path set on a
+    document is never persisted), verified matching the broken-vs-fixed schema exactly, with a Try
+    It establishing that a real application built from the original codeTab would never store any
+    password at all, despite the hashing computation genuinely running; (3) **gap-closing** — the
+    page's own QnA on bulk operations describes ordered-vs-unordered <code>bulkWrite()</code> in
+    real detail ("ordered: stop on first error"; "unordered: continue on errors... combined error
+    list") but no codeTab ever runs both side by side; built and verified both modes against 5
+    operations where #2 and #4 fail — ordered stops after #2 (only op #1 ever succeeds), unordered
+    processes all 5 (ops #1/#3/#5 succeed, both failures collected) — with a Try It on a
+    1,000-row CSV import where ordered bulkWrite silently never attempts 993 of the rows behind a
+    single bad row at position #7; the misconceptions also verified via WebSearch against
+    MongoDB's own documentation that unordered operations "can execute in any order and in
+    parallel" (not guaranteed, but permitted), a real trade-off beyond merely "errors don't stop
+    the batch." No `SUBTOPICS` collision for `mongodb-nodejs` (checked both `subtopics.ts` forms
+    and grepped `app.routes.ts` directly, confirmed collision-free, left bare). All three
+    `exercise.solution` fields swept clean of `<code>`/entity contamination; the standing
+    apostrophe-after-letter sweep (run against both the new subtopic files and the main page file
+    itself, after all edits) and the `[prev]`/`[next]`-label straight-apostrophe/double-quote
+    sweeps both found nothing unescaped; bracket-balance and backtick-parity scripts confirmed
+    clean on all three subtopic files and the main page file, including correctly-escaped
+    <code>\$match</code>/<code>\$group</code>/<code>\$customerId</code> MongoDB operator/field
+    references inside nested driver-code examples (verified via direct Node.js execution that
+    <code>\$</code>-with-no-following-brace renders correctly as a literal <code>$</code>, matching
+    the established convention already used throughout this session). Build passed clean on the
+    first attempt (foreground execution, explicit `EXITCODE:$?` capture, zero `ERROR` lines).
+    Browser-verified with a proactive dev-server restart before checking (fresh on the first
+    check, toggle count 20 as expected across the hub): no console errors on any of the 4 pages;
+    nav accordion opens with all 3 subtopic links; both main-page fixes confirmed rendering live
+    via direct component data inspection; the subtopic page checked individually — correct
+    h1/breadcrumb (all 4 levels confirmed), 860px wrapper via `getComputedStyle`, tailored (not
+    DEFAULT) sidebar content confirmed via a direct text search for the tip's own distinctive
+    phrase. **MongoDB hub Phase 10: 20 of 21 topics complete — only `atlas-search` remains.**
+21. **The `atlas-search` batch — the 21st and FINAL topic — found and fixed a genuine, well-
+    verified fabricated field reference in the "E-commerce Search with Facets" Challenge's own
+    solution**: it requested <code>count: { type: 'total' }</code> inside the <code>$search</code>
+    stage, then read the result back via <code>products[0]?.['$$searchCount']</code> — a field
+    that has never existed on any Atlas Search result document. Verified via WebFetch against
+    MongoDB's own Counting Search Results documentation (including its own worked example output)
+    that the count is exposed exclusively through the <code>$$SEARCH_META</code> SYSTEM VARIABLE,
+    which must be explicitly captured via a <code>$project</code> stage (e.g.
+    <code>meta: '$$SEARCH_META'</code>) before it can be read at all — the original solution's own
+    <code>$project</code> stage never captured it, meaning even fixing the access expression alone
+    would still return nothing. Fixed both halves: added the missing <code>$project</code> field
+    and corrected the access expression to <code>products[0]?.meta?.count?.total</code>. Three
+    subtopics, each verified via direct Node.js execution or WebFetch against MongoDB's own docs:
+    (1) **fix-adjacent** — reproduces the broken-vs-fixed access exactly via a pure-JS model of
+    <code>$$SEARCH_META</code>'s documented per-document behavior (every returned document in one
+    query carries an IDENTICAL metadata snapshot), with a Try It establishing that fixing only ONE
+    of the two halves (access expression OR projection) still returns nothing; (2) **gap-closing**
+    — the page's own "Compound Search with Filters" codeTab also requests
+    <code>count: { type: 'total' }</code> but never captures or reads it at all (a distinct
+    incompleteness from the Challenge's fabricated-field bug, since nothing here is factually
+    wrong, the codeTab just never finishes what it started) — completed it using the exact
+    <code>$$SEARCH_META</code> pattern from the sibling subtopic, reusing the page's own compound
+    query verbatim, with the "total"-vs-"lowerBound" count-type trade-off verified via WebFetch
+    against MongoDB's own documentation (total: exact but expensive; lowerBound: fast but
+    approximate above a configurable threshold, default 1000); (3) **gap-closing** — the page's
+    own QnA describes <code>$vectorSearch</code> (semantic search, hybrid search via
+    <code>$unionWith</code> + reciprocal rank fusion) in real depth, but none of the page's FOUR
+    codeTabs ever builds a working vector search query; built one, verified via WebFetch against
+    MongoDB's own <code>$vectorSearch</code> stage reference (exact field names, and the
+    documented "numCandidates should be at least 20x the limit for good recall" guidance — noting
+    the main page's own QnA example uses only a 10x ratio) and confirmed the distinct
+    <code>vectorSearchScore</code> meta key (not <code>searchScore</code>). **A real, self-caught
+    bug during authoring, not the standing sweep**: an early draft of subtopic 3's own demo code
+    referenced a `limit` variable at the top level of a standalone script where it was never in
+    scope (only declared as a parameter inside an unrelated function earlier in the same codeTab)
+    — caught by extracting and executing the exact code as real JavaScript before publishing,
+    fixed to a literal value. A second self-caught issue: an early draft used a backslash-escaped
+    apostrophe (<code>\\'</code>) inside a DOUBLE-nested single-quoted string within the SAME
+    template literal, risking the exact delimiter-collision this file has documented many times —
+    switched to double quotes for the inner string instead, verified correct by extracting and
+    evaluating the exact backtick span as real JavaScript. A third self-caught issue: a bare single
+    brace (<code>{ type: 'total' }</code>) in one subtopic's own static `.html` page-subtitle text
+    — caught by the standing pre-build sweep and entity-escaped before the build ever ran,
+    confirmed rendering correctly as literal text afterward. No `SUBTOPICS` collision for
+    `atlas-search` (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly,
+    confirmed collision-free, left bare). All three `exercise.solution` fields swept clean of
+    `<code>`/entity contamination; the standing apostrophe-after-letter sweep (run against both the
+    new subtopic files and the main page file itself, after the fix) and the
+    `[prev]`/`[next]`-label straight-apostrophe/double-quote sweeps both found nothing unescaped;
+    bracket-balance and backtick-parity scripts confirmed clean on all three subtopic files and the
+    main page file. Build passed clean on the first attempt (foreground execution, explicit
+    `EXITCODE:$?` capture, zero `ERROR` lines). Browser-verified with a proactive dev-server
+    restart before checking (fresh on the first check): no console errors on any of the 4 pages;
+    nav accordion opens with all 3 subtopic links; the main-page fix confirmed rendering live via
+    direct component data inspection; both gap-closing subtopics' entity-escaped/literal-dollar
+    text confirmed rendering correctly as literal text (not vanished, not raw entity codes); the
+    subtopic pages checked individually — correct h1/breadcrumb (all 4 levels confirmed), 860px
+    wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed via a direct
+    text search for each tip's own distinctive phrase; **a final hub-wide check confirmed exactly
+    21 `.nav-subtopics-toggle` elements render across the entire MongoDB hub, one per topic**.
+    **This completes the MongoDB hub's entire Phase 10 rollout — all 21 topics now have deep-dive
+    subtopic pages, 63 subtopic pages total across the hub, finished 2026-09-06.**
+
+### Redis hub subtopic wiring — first pilot; the 16th `*NavComponent` in a row missing the
+subtopics-accordion structural fix
+
+Confirmed via direct file inspection before the pilot (`/redis/fundamentals`, 2026-09-07) — do
+this same check before any other new hub's first subtopic set:
+
+1. **`RedisNavComponent` (`shared/redis-nav/redis-nav.ts`) had ZERO subtopics-accordion
+   support** — the same structural gap already hit and fixed on every `*NavComponent`-based hub's
+   own pilot before it (Go, DevOps, Containers, AWS, Azure, Linux, Terraform, Service Mesh,
+   System Design, Architecture Patterns, Design Patterns, Security, API Design, Observability,
+   MongoDB — this is the 16th in a row). Fixed identically: added `signal`, `Router`,
+   `NavigationEnd`, `filter` (rxjs), and `SUBTOPICS` (from `../../../data/subtopics`) to the
+   imports, then the same three methods (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`)
+   and constructor-level router subscription, copied directly from `MongoNavComponent`'s own
+   implementation (read directly, not reconstructed from memory, per the established
+   copy-fidelity discipline). Worked correctly on the first browser check — no stale-chunk
+   incident, verified via both `window.ng.getComponent()` direct calls and a live DOM query for
+   `.nav-subtopic-link` elements.
+2. **Real `SUBTOPICS` map bare-key collision**: `fundamentals` was already claimed by the
+   JavaScript hub's own `/javascript/fundamentals` topic (checked both quoted and unquoted forms,
+   per the standing collision-detection discipline). Hub-prefixed to `redis-fundamentals` —
+   matching this hub's own established progress/search key prefix (`redis-`, confirmed via the
+   pre-existing `p.isDone('redis-fundamentals')` nav markup) — with the usual `// NOTE:` comment.
+   The `RedisNavComponent` accordion helper calls (`subtopicsOf`/`isSubtopicsExpanded`/
+   `toggleSubtopics`) all use the prefixed `'redis-fundamentals'` key consistently.
+3. **`REDIS_LABELS` breadcrumb map uses bare keys** (`'fundamentals'`), matching the generic
+   pattern every hub's own dedicated labels map shares — composite subtopic keys there are bare
+   too (`'fundamentals/<slug>'`).
+4. **`SIDEBAR_MAP` keys are FULL-PATH PREFIXED** (`'redis/fundamentals'`, confirmed the base
+   entry — and its own `REDIS_DEFAULT` constant — already existed) — subtopic composite keys
+   follow suit: `'redis/fundamentals/<slug>'`.
+5. **`.redis-page` wrapper rule is NOT global** (confirmed absent from `src/styles.scss`, despite
+   being fully baked into the topic page's OWN component `.scss` with `max-width`/`padding`
+   together) — every subtopic `.scss` needs the standalone
+   `.redis-page { max-width: 860px; margin: 0 auto; }` rule, with `.subtopic-page`'s own padding
+   declared separately, matching the majority non-global-wrapper convention.
+6. **No live playground** — Redis CLI/driver content has no in-browser runtime, following the
+   same `<app-code-block>`-only pattern as every other non-JS-runtime-specific hub — every code
+   tab across all three subtopics uses plain TypeScript (ioredis) driver-shaped snippets, matching
+   the main page's own `codeTabs` style exactly. Icon content: `R` (light tint fill, `$accent:
+   #dc382d`, `$tint: #fff0ef`, dark `#f87171`/`#3d0a0a` — confirmed matching this file's own
+   already-documented Redis theme values against the real `fundamentals.scss`), `tech="javascript"`
+   in `app-page-meta`.
+7. **The `fundamentals` pilot batch found and fixed a genuine version-line-conflation inaccuracy
+   in the main page's own "Can Redis hold more data than available RAM?" QnA**: it claimed "Redis
+   7.x introduced Redis on Flash (enterprise) for tiered storage" — verified via WebSearch against
+   Redis's own 2016 press materials (a Redis Labs + Intel announcement at the AWS Summit in New
+   York) that Redis on Flash was announced in 2016, roughly six years before open-source Redis
+   reached version 7.0 at all (2022). The underlying error is conflating two genuinely separate
+   version lines — open-source Redis's own version numbers versus Redis Enterprise Software's own,
+   completely independent release numbering — which happen to share some of the same digits
+   ("7.x", "8.x") purely by coincidence, not because they're the same axis. Fixed the QnA to state
+   the real timeline and name the conflation explicitly. Three subtopics: (1) **fix-adjacent** — a
+   verified year-by-year timeline model (2016 Enterprise announcement, 2020 OSS Redis 6.0, 2022
+   OSS Redis 7.0, 2024 Enterprise Auto Tiering/Flex rebrand) confirmed via direct execution to sort
+   correctly and expose the real 6-year gap, with a Try It on a DIFFERENT real-world "Redis
+   Software 8.0.2" citation testing whether the reader can now correctly identify which version
+   line it belongs to; (2) **gap-closing** — the page's own QnA names the exact
+   `notify-keyspace-events` config flag and the `__keyevent@db__:event`/`__keyspace@db__:key`
+   channel-naming convention in real detail, but no codeTab ever subscribes to one; built a real
+   ioredis expiration listener plus a verified channel/message-pairing model (confirmed via direct
+   execution that the two channel families swap which piece of information is the channel vs. the
+   message); (3) **gap-closing** — the page's own quiz calls pipelining "not atomic, unlike
+   MULTI/EXEC," easy to misread as "MULTI/EXEC rolls back on error" — verified via WebSearch
+   against Redis's own documented transaction semantics that MULTI/EXEC's real guarantee is
+   ISOLATION (no other client's command interleaves once EXEC begins), NOT rollback of a runtime
+   error in one queued command; built a verified no-rollback demonstration (confirmed via direct
+   execution that two of three queued commands succeed even though the middle one throws) tightening
+   the exact scope of the "atomic" claim. No `SUBTOPICS` collision beyond the `fundamentals`
+   hub-prefix resolved above. All three `exercise.solution` fields swept clean of `<code>`/entity
+   contamination; the standing apostrophe-after-letter sweep found nothing unescaped across all
+   three `.ts` files; angle-bracket placeholder tokens (`<db>`, `<event>`) inside
+   `[innerHTML]`-bound `theory.points` correctly entity-escaped per the established Service-Mesh-hub
+   precedent (`consul` batch); nested template-literal escaping in two subtopics' own codeTabs
+   verified correct by extracting and evaluating the exact backtick spans as real JavaScript before
+   trusting them. Build passed clean (foreground execution, explicit `EXITCODE:$?` capture, zero
+   `ERROR` lines). Browser-verified with a fresh dev-server cold-start (the prior server had died
+   during a session interruption; the compile took ~107 seconds this time, longer than the usual
+   cold-start window, requiring an extra poll cycle before the server responded): no console errors
+   on any of the 4 pages; nav accordion opens with all 3 subtopic links, confirmed via both
+   `window.ng.getComponent()` and a live DOM query, fresh on the first check; the main-page fix
+   confirmed rendering live via direct component data inspection; the entity-escaped placeholder
+   tokens confirmed rendering as literal text (not vanished) on the keyspace-notifications
+   subtopic page; the subtopic pages checked individually — correct h1/breadcrumb (all 4 levels:
+   Redis → Redis Fundamentals → subtopic), 860px wrapper via `getComputedStyle`, tailored (not
+   DEFAULT) sidebar content confirmed via a direct text search for the tip's own distinctive
+   phrase. **Redis hub Phase 10: 1 of 21 topics complete.**
+2. **The `installation-setup` batch found and fixed THREE genuine issues on the main page, one
+   requiring a mid-batch course-correction after a self-verification caught my own first draft
+   being wrong**: (1) a plain typo — `rename-command CONFIG """"` (four double-quote characters)
+   in the "recommended way to run Redis in production" QnA, verified via WebSearch against Redis's
+   own documented `rename-command` syntax that disabling a command takes exactly two quote
+   characters (`""`), fixed to `rename-command CONFIG ""`. (2) A QnA claiming "directives like
+   bind, aof-use-rdb-preamble, and cluster-enabled require a restart" — verified DIRECTLY against
+   Redis's own `src/config.c` (fetched and grepped, not assumed): only `cluster-enabled` is
+   registered `IMMUTABLE_CONFIG`; both `bind` (via `createSpecialConfig`, with its own live
+   `applyBind` handler) and `aof-use-rdb-preamble` are `MODIFIABLE_CONFIG` and change live with
+   `CONFIG SET`. (3) A theory bullet AND a quiz question both claiming protected-mode lifts its
+   restriction "unless (a) a bind address is explicitly configured, or (b) requirepass is set" —
+   verified directly against Redis's own `networking.c` accept-time check
+   (`server.protected_mode && DefaultUser->flags & USER_FLAG_NOPASS`) that bind status plays NO
+   part in the real condition at all; only whether the default user has a password matters. Fixed
+   both the quiz option text and its explanation. **A real self-caught correction during
+   subtopic-writing, not the standing sweep**: the first draft of subtopic 1's own Try It used
+   `port` as a "sounds fundamental, but is it restart-only?" example, asserting it was
+   `IMMUTABLE_CONFIG` — a direct grep of `config.c` before publishing revealed `port` is actually
+   `MODIFIABLE_CONFIG` with its own `updatePort()` handler that genuinely closes and reopens the
+   listening socket live (confirmed by reading `updatePort`'s own body, which calls
+   `changeListener()`). Swapped the example to `databases` (verified `IMMUTABLE_CONFIG`, no apply
+   handler at all) instead of publishing the wrong claim. Three subtopics, each independently
+   verified: (1) **fix-adjacent** — reproduces the three-directive flag lookup directly as a small
+   TypeScript model, verified via execution matching the real `config.c` registrations exactly,
+   with a Try It distinguishing four more directives (`maxmemory`/`appendonly` modifiable,
+   `cluster-enabled`/`databases` immutable) each independently checked against the real source
+   before being used as answer key; (2) **fix-adjacent** — reproduces the exact
+   `networking.c` accept-time condition as a small function, verified via execution across five
+   scenarios including the specific counter-example (bind 0.0.0.0 explicit + no password + external
+   client → still REJECTED, disproving the "explicit bind satisfies protected-mode" claim); (3)
+   **gap-closing** — a real, previously undocumented gap this same verification pass surfaced: the
+   main page's QnA names `CONFIG REWRITE` as how to persist a `CONFIG SET` change but never mentions
+   it can fail outright — verified directly against `configRewriteCommand`'s own
+   `server.configfile == NULL` check (exact error text `"The server is running without a config
+   file"` confirmed from source) and, separately, against the REAL official `redis` Docker image's
+   own `Dockerfile` (`CMD ["redis-server"]`, no config-file argument) and `docker-entrypoint.sh`
+   (never injects one), tying the gap directly to the main page's own three Docker Setup commands —
+   two of the three (no args; `--requirepass` as a bare CLI flag) leave `server.configfile` unset
+   and would fail `CONFIG REWRITE`, only the third (mounting and passing an explicit `.conf` path)
+   would succeed. **Lesson reinforced**: a plausible-sounding WebSearch summary claimed the official
+   image's default CMD points at a config-file path — checking the REAL, primary-source Dockerfile
+   directly (not the summary) showed this was wrong; the summary was itself a stale/incorrect
+   secondary source. No `SUBTOPICS` collision for `installation-setup` (checked both `subtopics.ts`
+   forms AND grepped `app.routes.ts` directly — confirmed the MongoDB hub's own identically-named
+   topic had already been proactively hub-prefixed to `mongo-installation-setup` anticipating this
+   exact moment, per its own inline `// NOTE:` comment — leaving bare `installation-setup` free for
+   this batch). All three `.ts` files swept for stray apostrophes (all matches confirmed safe,
+   inside backtick-delimited `code:`/`solution:` fields); bracket-balance and backtick-parity
+   confirmed clean on all three; no bare `@word`/single-`{` in any `.html` file's static text; no
+   generic/tag mentions needing `<code>&lt;...&gt;</code>` wrapping. Build passed clean (foreground,
+   explicit `EXITCODE:$?` capture, zero real `ERROR` lines). Browser-verified with a proactive
+   dev-server restart before checking: no console errors on any of the 4 pages; nav accordion opens
+   with all 3 subtopic links (2 toggles total across the hub, confirming both `fundamentals` and
+   `installation-setup` now have subtopics); all three main-page fixes confirmed rendering live via
+   direct component-data inspection (`cmp.qna`/`cmp.quiz` read directly, not just DOM text search);
+   all 3 subtopic pages checked individually — correct h1/breadcrumb (all 4 levels), 860px wrapper
+   via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed. **Redis hub Phase 10:
+   2 of 21 topics complete.**
+3. **The `strings` batch found and fixed a genuine, well-verified bug in the main page's own
+   Rate Limiter Challenge — the SAME crash-window mistake the page's own first mistake block
+   warns against, just applied to a different pair of commands**: the mistake block teaches
+   generically that splitting `SET` + `EXPIRE` into two round trips risks a crash leaving a key
+   with no TTL forever — but the Rate Limiter Challenge's own reference solution did exactly this
+   with `INCR` then a separate `EXPIRE`. Verified via WebSearch against multiple independent
+   sources describing this exact pattern for Redis-based rate limiters ("if the client performs
+   the INCR command but does not perform the EXPIRE the key will be leaked") that the standard,
+   documented fix is a Lua script combining both into one atomic round trip — fixed the Challenge's
+   `starterCode`/`solution`/`hints` to use `redis.eval()` with an inline Lua script
+   (`local count = redis.call("INCR", KEYS[1]); if count == 1 then redis.call("EXPIRE", ...) end`),
+   verified via direct execution that the buggy version genuinely leaves a permanently un-expiring
+   key after a simulated crash while the fixed version sets the TTL in the same atomic call.
+   **Two other specific, checkable claims on the same page were verified and confirmed ALREADY
+   CORRECT, no fix needed** — SETNX deprecated since Redis 2.6.12 and GETSET deprecated since
+   Redis 6.2 (both confirmed via WebSearch against Redis's own documentation), and the embstr
+   encoding's 44-byte threshold (confirmed via directly fetching and reading Redis's own current
+   `src/object.c` source — `OBJ_ENCODING_EMBSTR_SIZE_LIMIT` is still a plain, unconditional 44-byte
+   check with no key-length dependency, DIRECTLY CONTRADICTING a plausible-sounding WebSearch
+   summary claiming Redis 8.2 changed it to a "64-byte cache-line heuristic" — the summary was
+   itself wrong, caught only by checking the real primary source instead of trusting it). Three
+   subtopics, each independently verified: (1) **fix-adjacent** — reproduces the exact crash-window
+   leak and the Lua-script fix via a `FakeRedis` simulation, verified via direct execution matching
+   both the buggy (`hasTtl: false`) and fixed (`hasTtl: true`) outputs exactly, with a Try It
+   contrasting the same risk for a raw `MULTI`/`EXEC` transaction instead (genuinely safer in one
+   way — a client-side crash before `EXEC` is ever sent leaves no leaked key at all — but still
+   worse than one `EVAL` round trip for latency); (2) **gap-closing** — the QnA names MSETNX\'s
+   all-or-nothing guarantee in one sentence with zero codeTab ever demonstrating it; built a
+   username+email signup-reservation example showing a naive loop of individual `SETNX` calls can
+   leave ONE key reserved even while the overall function reports failure (verified via direct
+   execution: a second signup attempt with a taken username still successfully reserves a NEW,
+   unrelated email address), contrasted against real `MSETNX` semantics correctly refusing any
+   partial write; (3) **gap-closing** — the quiz explains `GETRANGE` precisely and names `SETRANGE`
+   but no codeTab ever builds anything with either; built a dense fixed-width record store (4-byte
+   integers at computed byte offsets) generalizing the page\'s own `SETBIT`/`BITCOUNT` per-bit
+   pattern to whole-byte fields, verified via direct execution, with a Try It demonstrating a real,
+   concrete data-corruption failure mode (renaming a 15-character value down to 4 characters via
+   `SETRANGE` leaves 11 stale trailing bytes from the old value — verified via direct execution
+   producing the exact corrupted string `"Bob!ander Smith"`). **A real, proactively-resolved
+   cross-hub `SUBTOPICS` collision**: bare `strings` is also a route under the DSA hub
+   (`/dsa/strings`) — confirmed via a direct `app.routes.ts` grep, and confirmed `DsaNavComponent`
+   has zero `subtopicsOf()` calls today (no active collision), but hub-prefixed to `redis-strings`
+   anyway per the established preemptive-collision-fix precedent, matching this hub\'s own already-
+   `redis-`-prefixed progress/search key. All three `.ts` files swept for stray apostrophes (all
+   flagged matches confirmed safe, inside backtick-delimited `code:`/`solution:` fields or already
+   correctly `\'`-escaped in the single-quoted `prompt:` field); bracket-balance and backtick-parity
+   confirmed clean on all three; no bare `@word`/single-`{` in any `.html` file\'s static text; no
+   `SUBTOPICS`-key straight-apostrophe/quote issues in any `[prev]`/`[next]` label. Build passed
+   clean (foreground, explicit `EXITCODE:$?` capture, zero real `ERROR` lines). Browser-verified
+   with a proactive dev-server restart before checking: no console errors on any of the 4 pages;
+   nav accordion opens with all 3 subtopic links (3 toggles total across the hub, confirming
+   `fundamentals`/`installation-setup`/`strings` all now have subtopics); the Challenge fix
+   confirmed rendering live via direct component-data inspection (`cmp.challenge.solution` read
+   directly, confirming both `redis.eval` and `incrAndExpireScript` present); all 3 subtopic pages
+   checked individually — correct h1/breadcrumb (all 4 levels), 860px wrapper via
+   `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed. **Redis hub Phase 10:
+   3 of 21 topics complete.**
+4. **The `hashes` batch found and fixed TWO more genuine, well-verified inaccuracies, the first a
+   real version-drift finding on the same scale as the Strings topic's INCR+EXPIRE bug**: the main
+   page's own mistake block AND QnA both stated, unconditionally, "Redis TTLs apply to the entire
+   key... you cannot expire individual hash fields." Verified directly against the `HEXPIRE`
+   command's own official docs (`"since": "7.4.0"`) that Redis 7.4 (released 2024) added
+   `HEXPIRE`/`HPEXPIRE`/`HEXPIREAT`/`HPEXPIREAT` plus `HTTL`/`HPERSIST` for genuine, independent
+   per-field TTLs — a claim that was true for every version before 7.4 but stopped being true two
+   years ago. Fixed the mistake block, the QnA, the revision `mustKnow` bullet, and the
+   `interviewFocus` bullet (all four repeated or depended on the same now-outdated claim). Second,
+   the theory/quiz stated `hash-max-listpack-entries` defaults to 128 in three separate places —
+   verified directly against Redis's own current `src/config.c` source
+   (`createSizeTConfig("hash-max-listpack-entries", ..., 512, ...)`) that the real current default
+   is 512, confirmed via multiple independent secondary sources that this changed from 128 (Redis
+   6.x) to 512 with the Redis 7.0 release. Fixed all three occurrences (a theory bullet, a quiz
+   question's own title/explanation, and a second quiz explanation), plus two further QnA/sidebar
+   mentions of the stale "128" figure found in the same sweep. Two other specific, checkable claims
+   were verified and confirmed ALREADY CORRECT (no fix needed): HRANDFIELD introduced in Redis 6.2
+   (confirmed via the command's own `"since": "6.2.0"`) and a hash's max field count of 2^32 - 1
+   (confirmed via Redis's own FAQ). Three subtopics, each independently verified: (1) **fix-adjacent**
+   — reproduces HEXPIRE/HTTL/HPERSIST's own documented per-field return codes (-2 no field, -1 no
+   TTL, positive N, 1/2 for HEXPIRE's set/delete codes) via a `FakeRedisHash` simulation, verified
+   via direct execution matching every documented case exactly, plus a second codeTab confirming
+   HSET (not HEXPIRE) clears an existing field TTL, with a Try It on the key-TTL-takes-precedence
+   interaction rule; (2) **fix-adjacent** — a genuine, demonstrable data-integrity gap in the
+   Shopping Cart Challenge's own reference solution: `addItem` calls `HSET` unconditionally for any
+   quantity including 0, leaving a "phantom" zero-quantity field in the cart hash after an entirely
+   ordinary UI action (a quantity stepper's decrement button reaching zero) — verified via direct
+   execution that the buggy version leaves `{ widget: 3, gadget: 0 }` while the fixed version
+   (calling `HDEL` when `qty <= 0`) correctly leaves `{ widget: 3 }`; (3) **gap-closing** — the
+   theory names HRANDFIELD accurately but no codeTab ever calls it; built both a positive-count
+   ("distinct winners, capped at hash size") and negative-count ("exactly N results, repeats
+   allowed") demo, each verified via direct execution matching HRANDFIELD's own documented
+   positive/negative semantics exactly. **A real, self-caught double-backslash escaping mistake
+   caught and fixed before the build, not the standing sweep** — a `codeTabs.label` field (single-
+   quoted, not backtick-delimited) used `\\'` instead of the correct single `\'` for an apostrophe
+   ("HSET clears a field\\'s own TTL"), which would have rendered a visible stray backslash;
+   caught via direct file re-read before ever running the build, fixed to `\'`, confirmed rendering
+   correctly (`"HSET clears a field's own TTL"`) via direct component-data inspection after
+   publishing. No `SUBTOPICS` collision for `hashes` (checked both `subtopics.ts` forms and grepped
+   `app.routes.ts` directly, confirmed collision-free, left bare). Build passed clean (foreground,
+   explicit `EXITCODE:$?` capture, zero real `ERROR` lines). **Hit a fully-dead dev server this
+   batch** (`preview_list` returned zero running servers, all three prior instances long since
+   stopped) — resolved with a clean `preview_start` cold-start, waited out via a backgrounded
+   `until`-loop polling task rather than a fixed sleep. Browser-verified: no console errors on any
+   of the 4 pages; nav accordion opens with all 3 subtopic links (4 toggles total across the hub,
+   confirming `fundamentals`/`installation-setup`/`strings`/`hashes` all now have subtopics); both
+   main-page fixes (the TTL mistake/QnA and the listpack-entries default) confirmed rendering live
+   via direct component-data inspection; the self-caught label-escaping fix confirmed rendering
+   correctly (not as a stray backslash); all 3 subtopic pages checked individually — correct
+   h1/breadcrumb (all 4 levels), 860px wrapper via `getComputedStyle`, tailored (not DEFAULT)
+   sidebar content confirmed. **Redis hub Phase 10: 4 of 21 topics complete.**
+5. **The `lists` batch found and fixed a genuine, well-verified inaccuracy of the same general
+   shape as the Hashes topic's own listpack-threshold fix, but with a subtler mechanism**: the main
+   page's theory, quiz, and QnA all framed `list-max-listpack-size` as an ENTRY-COUNT threshold
+   ("small lists (≤ list-max-listpack-size elements)"), matching how hash-max-listpack-entries
+   genuinely works. Verified directly against Redis's own current `src/config.c` source
+   (`createIntConfig("list-max-listpack-size", ..., -2, ...)`) and corroborated by multiple
+   independent sources: the default value (`-2`) is a per-node BYTE-SIZE cap (8KB), not an entry
+   count at all — negative values mean -1=4KB, -2=8KB, -3=16KB, -4=32KB, -5=64KB; only a POSITIVE
+   value switches the config to a genuine entry-count cap instead. A short list also does not start
+   as "a doubly-linked list" in any sense — it starts as a single, flat listpack with no linking at
+   all, only converting to a genuine quicklist (a doubly-linked list of listpack nodes) once the
+   byte-size threshold is exceeded. Fixed five separate touchpoints restating the same
+   overgeneralization: the opening theory bullet, the dedicated listpack theory bullet, a quiz
+   question's own explanation, a QnA answer, a second QnA/theory bullet describing lists as always
+   "a doubly-linked list," and the revision `oneLiner`. Six other specific, checkable claims were
+   verified and confirmed ALREADY CORRECT (no fix needed): LPUSH's multi-element push order
+   (`LPUSH key a b c` → `[c, b, a, ...]`, confirmed by reading Redis's own `t_list.c` pushGenericCommand
+   loop directly), LMOVE since 6.2.0, RPOPLPUSH deprecated since 6.2.0, LMPOP since 7.0.0, and LPOS
+   since 6.0.6 (all confirmed via each command's own official docs). Three subtopics, each
+   independently verified: (1) **fix-adjacent** — reproduces the byte-size-vs-entry-count
+   distinction directly, with a demo showing 3 large elements (~9000 bytes) converting to quicklist
+   under the default cap while 500 tiny elements stay a flat listpack — the exact counterintuitive
+   consequence of the real byte-size rule; (2) **gap-closing** — the theory names LMPOP in one
+   sentence with zero codeTab ever calling it; built the non-blocking sibling of the main page's
+   own BLPOP-based Priority Job Queue Challenge, verified via direct execution (matching Redis's own
+   documented example exactly) that LMPOP never spills into a second key even when COUNT exceeds
+   the first non-empty key's own length; (3) **gap-closing** — the QnA names LPOS's RANK/COUNT
+   options in one paragraph with zero codeTab ever calling it; built a RANK/COUNT demo matching
+   Redis's own documented example output exactly (`LPOS mylist 3 COUNT 0 RANK 2` → `[8, 9, 10]`),
+   plus a genuinely easy-to-miss gotcha verified against Redis's own docs: LPOS returns nil for "not
+   found" without COUNT, but an empty array (truthy in JS) for "not found" WITH count — a naive
+   truthiness check silently misclassifies the COUNT case. **A real, self-caught house-style
+   violation caught and fixed before the build, not the standing sweep**: a `solution:` field
+   (backtick-delimited, per the established "no markdown backticks inside solution fields" rule)
+   used an escaped backtick-wrapped code span (`` !\`[]\` ``) for emphasis — syntactically safe
+   (properly escaped, would not have broken the build) but inconsistent with house style; caught by
+   direct file re-read and fixed to plain text before the build ever ran. No `SUBTOPICS` collision
+   for `lists` (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed
+   collision-free, left bare). Build passed clean (foreground, explicit `EXITCODE:$?` capture, zero
+   real `ERROR` lines). Browser-verified with a proactive dev-server restart before checking: no
+   console errors on any of the 4 pages; nav accordion opens with all 3 subtopic links (5 toggles
+   total across the hub, confirming `fundamentals`/`installation-setup`/`strings`/`hashes`/`lists`
+   all now have subtopics); all main-page fixes confirmed rendering live via direct component-data
+   inspection; all 3 subtopic pages checked individually — correct h1/breadcrumb (all 4 levels),
+   860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed via a
+   direct text search for the tip's own distinctive phrase. **Redis hub Phase 10: 5 of 21 topics
+   complete.**
+6. **The `sets` batch found and fixed a genuine, previously-unmentioned THIRD encoding tier the
+   main page's theory, quiz, and QnA all omitted — a richer finding than a stale threshold number,
+   since it's a real missing tier, not just a wrong default**: the main page described sets as
+   having exactly two encodings (intset for small integer sets, hashtable for "larger sets or
+   string members"), implying any non-integer set immediately becomes a hashtable. Verified
+   directly against Redis's own current `src/config.c` source: `set-max-listpack-entries` (default
+   128) and `set-max-listpack-value` (default 64) confirm a real listpack tier for small
+   NON-INTEGER sets, added in Redis 7.2 and corroborated by multiple independent sources describing
+   the same three-tier model. Fixed the theory bullet, two separate quiz explanations, and a QnA
+   answer, all four restating the same two-encoding omission. **A related claim was checked and
+   confirmed ALREADY CORRECT, avoiding an unnecessary "fix"**: the quiz's "SISMEMBER is O(1)"
+   answer looked suspect against the QnA's own "intset... binary search" phrasing (binary search is
+   O(log N), not O(1)) — but verified directly against SISMEMBER's own official docs
+   (`"complexity": "O(1)"`), Redis's own documented complexity is unconditionally O(1) regardless of
+   internal encoding, so the quiz answer was left unchanged. Three subtopics, each independently
+   verified: (1) **fix-adjacent** — reproduces the real three-tier encoding decision directly,
+   verified via execution across four representative cases (100 integers → intset, 100 short
+   strings → listpack — the tier the old theory never mentioned, 200 short strings → hashtable, one
+   very long value → hashtable), with a Try It on numeric-looking strings with leading zeros (e.g.
+   `"007"`) correctly failing the integer round-trip check and landing in listpack, not intset; (2)
+   **gap-closing** — the QnA names SMOVE's job-queue state-transition use case in one paragraph
+   with zero codeTab ever calling it; built the actual pending→processing example, verified via
+   execution matching SMOVE's own documented atomicity guarantee and its own documented
+   already-in-destination edge case (still returns 1, no duplicate) exactly; (3) **gap-closing** —
+   a separate QnA names SINTERCARD and its LIMIT option in one sentence with zero codeTab ever
+   calling it; built both a plain SINTERCARD-vs-SINTER comparison and an "at least N mutual
+   interests" threshold check, verified via execution matching Redis's own documented example
+   output exactly (`SINTERCARD 2 key1 key2 LIMIT 1` → `1`). **A real, self-caught bug in my own
+   illustrative code, caught by verifying claimed console output against actual execution, not
+   assumed correct**: the "at least N mutual interests" codeTab declared its helper function
+   `async` but the two `console.log` calls never awaited it, so the ACTUAL output would have been
+   `Promise { true }`/`Promise { false }`, not the claimed bare `true`/`false` — caught by running
+   the exact code before publishing, fixed by adding the missing `await`, re-verified matching the
+   claimed output exactly afterward. No `SUBTOPICS` collision for `sets` (checked both
+   `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed collision-free, left bare).
+   Build passed clean (foreground, explicit `EXITCODE:$?` capture, zero real `ERROR` lines).
+   Browser-verified with a proactive dev-server restart before checking: no console errors on any
+   of the 4 pages; nav accordion opens with all 3 subtopic links (6 toggles total across the hub,
+   confirming `fundamentals`/`installation-setup`/`strings`/`hashes`/`lists`/`sets` all now have
+   subtopics); all main-page fixes and the self-caught `await` fix confirmed rendering live via
+   direct component-data inspection; all 3 subtopic pages checked individually — correct
+   h1/breadcrumb (all 4 levels), 860px wrapper via `getComputedStyle`, tailored (not DEFAULT)
+   sidebar content confirmed. **Redis hub Phase 10: 6 of 21 topics complete.**
+7. **The `sorted-sets` batch found and fixed TWO more genuine, well-verified issues, one a
+   self-contained bug mirroring the Strings topic's own INCR+EXPIRE finding, one a stale-status
+   claim requiring external verification**: the main page's own mistake block explicitly warns
+   against reusing a member string in a sliding-window ZADD — but the SAME page's own "Node.js
+   Patterns" codeTab committed exactly this mistake in its `isAllowedSliding` function, using
+   `` `${now}` `` as BOTH score and member with no added uniqueness. Verified via direct execution
+   that three concurrent requests landing in the same millisecond (a completely realistic burst,
+   since `Date.now()` only has millisecond resolution) collapse into just ONE counted entry —
+   fixed to `` `${now}-${Math.random()}` ``, matching the mistake block's own recommended fix
+   exactly, re-verified to correctly count all 3. Separately, the QnA presented `ZRANGEBYLEX` as a
+   current, recommended command — verified directly against the command's own official docs that
+   it has been DEPRECATED since Redis 6.2.0, in favor of the unified `ZRANGE key min max BYLEX`
+   (the same replacement pattern the page's own quiz explanation already correctly notes for
+   `ZRANGEBYSCORE` elsewhere on the same page) — fixed the QnA to state this. Three subtopics, each
+   independently verified: (1) **fix-adjacent** — reproduces the exact undercount and fix via a
+   `FakeRedisZSet` simulation, verified via direct execution matching both the buggy (1 counted)
+   and fixed (3 counted) outputs exactly, with a Try It on why a proposed `process.hrtime.bigint()`
+   nanosecond-timestamp fix only narrows the collision window probabilistically rather than closing
+   it structurally the way appending `Math.random()` does; (2) **gap-closing** — the QnA names
+   `ZUNIONSTORE`'s `WEIGHTS`/`AGGREGATE SUM|MIN|MAX` in one paragraph with zero codeTab ever
+   calling it; built the exact worked example from Redis's own docs (`WEIGHTS 2 3` on two sets,
+   verified via direct execution matching `one=5, three=9, two=10` precisely), plus a genuinely
+   undocumented-on-the-page fourth AGGREGATE mode, `COUNT` (verified against Redis's own docs),
+   demonstrated as a server-side tag-popularity tally; (3) **fix-adjacent** — builds the modern
+   `ZRANGE ... BYLEX` autocomplete pattern the QnA names but never shows, verified via direct
+   execution matching Redis's own documented `ZRANGEBYLEX` example exactly, with a Try It on why
+   using a non-constant score (e.g. a timestamp) for a lexicographic-only sorted set produces
+   genuinely UNSPECIFIED query results per Redis's own documentation, not merely "less optimal."
+   **A real, self-caught escaping mistake caught and fixed before the build, not the standing
+   sweep**: a `theory.points` bullet used an unnecessary backslash-escaped backtick (`` \\` ``)
+   around an inline code mention already wrapped in `<code>` tags — backticks need no escaping at
+   all inside a single-quoted string, and the redundant escape would have rendered a visible stray
+   backslash; caught by direct file re-read, fixed by removing both the escape and the now-redundant
+   inner backticks entirely (the `<code>` tag alone already provides the styling). No `SUBTOPICS`
+   collision for `sorted-sets` (checked both `subtopics.ts` forms and grepped `app.routes.ts`
+   directly, confirmed collision-free, left bare). Build passed clean (foreground, explicit
+   `EXITCODE:$?` capture, zero real `ERROR` lines). Browser-verified with a proactive dev-server
+   restart before checking: no console errors on any of the 4 pages; nav accordion opens with all 3
+   subtopic links (7 toggles total across the hub, confirming
+   `fundamentals`/`installation-setup`/`strings`/`hashes`/`lists`/`sets`/`sorted-sets` all now have
+   subtopics); both main-page fixes and the self-caught escaping fix confirmed rendering live via
+   direct component-data inspection; all 3 subtopic pages checked individually — correct
+   h1/breadcrumb (all 4 levels), 860px wrapper via `getComputedStyle`, tailored (not DEFAULT)
+   sidebar content confirmed. **Redis hub Phase 10: 7 of 21 topics complete.**
+8. **The `key-commands` batch found and fixed TWO genuine, well-verified issues, both status/
+   version claims requiring external verification rather than self-contained reading**: the QnA on
+   atomically setting a key with an expiry called SETEX "deprecated but still works" — verified
+   directly against SETEX's own official docs, which carry NO deprecation notice at all (unlike
+   SETNX, GETSET, and HMSET on the same command reference site, which all explicitly say
+   "Deprecated as of..."). SETEX is not going away; the real reason to prefer `SET key value EX
+   seconds` is that it composes with NX/XX/GET/KEEPTTL, capabilities SETEX genuinely lacks (it has
+   no conditional variant at all). Separately, a QnA on finding the largest keys attributed
+   `redis-cli --memkeys` to "Redis 7+" — verified via the actual pull request that introduced it
+   (redis/redis#5856), which merged into the unstable branch in February 2019 and shipped in Redis
+   6.0 (April 2020) — two full major versions before 7.0 (2022). A third flagged claim (the
+   `MIGRATE host port key 0 timeout COPY` syntax) was checked against MIGRATE's own official docs
+   and confirmed ALREADY CORRECT — not every checked claim on this page turned out wrong. Three
+   subtopics, each verified via direct Node.js execution: (1) **fix-adjacent** — reproduces the
+   SETEX-cannot-express-a-lock bug concretely (two workers racing for a distributed lock both
+   "succeed" via SETEX with no error, since it has no NX equivalent), contrasted against `SET key
+   value EX seconds NX` correctly rejecting the loser, with a Try It on why a manual
+   EXISTS-then-SETEX check-then-act sequence reintroduces the identical race SET...NX closes
+   atomically — the same "two commands vs. one atomic command" pattern already covered for
+   SET+EXPIRE and INCR+EXPIRE on this hub's own Strings topic; (2) **fix-adjacent** — the verified
+   --memkeys timeline, plus what the flag actually does under the hood (SCAN + MEMORY USAGE,
+   Redis 4.0+, ranked by size) built as a real function and verified against a modeled keyspace
+   matching the claimed ranking exactly, with a Try It distinguishing "the server supports the
+   underlying command" from "the CLI binary you're running has the flag" as two independent
+   version requirements; (3) **gap-closing** — a genuine, well-documented detail the main page's
+   own theory never states outright: DUMP's serialised payload contains only the value, an RDB
+   version marker, and a checksum — no TTL at all, verified via RESTORE's own official docs and a
+   direct execution showing a naive DUMP-then-RESTORE migration silently makes the copied key
+   immortal, with the correct three-step fix (PTTL first, then DUMP, then RESTORE with the read
+   TTL passed explicitly) and a Try It on the non-obvious PTTL "-1" vs. RESTORE "0" translation
+   needed to correctly represent "no expiry" across the two commands' own different vocabularies.
+   No `SUBTOPICS` collision for `key-commands` (checked both `subtopics.ts` forms and grepped
+   `app.routes.ts` directly, confirmed collision-free, left bare). All three `exercise.solution`
+   fields swept clean of `<code>`/entity contamination; the standing apostrophe-after-letter sweep,
+   bracket-balance, and backtick-parity checks all found nothing to fix across all three files; none
+   of the three subtopic titles contained an apostrophe or double quote, so the `[prev]`/`[next]`
+   label delimiter-collision risk didn't apply this batch. Build passed clean (foreground execution,
+   explicit `EXITCODE:$?` capture, zero real `ERROR` lines). Browser-verified with a proactive
+   dev-server restart before checking: no console errors on any of the 4 pages; nav accordion opens
+   with all 3 subtopic links, confirmed via both `window.ng.getComponent()` direct calls (data) and
+   a live DOM click-and-query (rendering); both main-page fixes confirmed rendering live via direct
+   component-data inspection; all 3 subtopic pages checked individually — correct h1/breadcrumb (all
+   4 levels), 860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed
+   on two of the three via direct text search. **Redis hub Phase 10: 8 of 21 topics complete.**
+9. **The `transactions` batch found and fixed the strongest self-contained bug this hub has caught
+   so far, discovered purely by cross-referencing the page's own codeTabs/Challenge against its own
+   third mistake block** — that mistake block explains precisely why a shared connection breaks
+   WATCH under concurrency ("WATCH state is per-connection... use a dedicated connection per
+   optimistic-lock operation"), but the "WATCH / CAS" codeTab AND the Atomic Inventory Decrement
+   Challenge both called `redis.watch(key)` directly on the same module-level `const redis = new
+   Redis()` instance used everywhere else on the page — exactly the anti-pattern the mistake block
+   warns against, committed by the page's own reference examples. Verified via a direct simulation
+   of the real per-connection watch-set semantics: this isn't merely an error risk, it produces TWO
+   distinct failure shapes — an unrelated concurrent transaction can suffer a FALSE ABORT (its own
+   EXEC incorrectly returns null because it now shares a watch set with a different operation's
+   changed key), and — the more dangerous failure — a transaction whose own watched key genuinely
+   changed can still return a SUCCESSFUL EXEC, because a different concurrent caller's EXEC already
+   cleared the shared watch set moments earlier, silently corrupting data with no error at all.
+   Fixed both the codeTab and the Challenge solution to use `redis.duplicate()` for a dedicated
+   per-call connection. Three subtopics: (1) **fix-adjacent** — reproduces the exact interference
+   (false abort + false success) via the same simulation, with a Try It on whether a cheaper
+   "one connection per HTTP request" fix (instead of per-call) is safe — verified it is, AS LONG AS
+   a single request never runs two WATCH-based operations concurrently on that same connection,
+   reducing the real rule to "one connection per concurrently-active WATCH cycle," not literally
+   "one per request"; (2) **gap-closing** — a real, documented Redis error the main page's own
+   "WATCH → MULTI" ordering never states is server-ENFORCED rather than merely conventional:
+   `ERR WATCH inside MULTI is not allowed`, verified via Redis's own mailing-list discussion,
+   including the subtlety that the erroring WATCH is silently discarded at EXEC time rather than
+   aborting the rest of the already-queued transaction — a third category of behavior distinct from
+   both "syntax error aborts everything" and "runtime error only fails that command" already
+   covered elsewhere on the page; a Try It on the related, separately-verified `ERR MULTI calls can
+   not be nested` error; (3) **gap-closing** — the page's own first mistake block illustrates the
+   "no rollback" behavior with raw CLI-style pseudocode, never as code a reader could paste into a
+   real project; turned it into real TypeScript matching ioredis's own documented `.exec()` reply
+   shape (`Array<[Error | null, result]>`, verified via WebSearch against ioredis's own GitHub
+   issues), with a Try It on the correct `results.some(([err]) => err)` check for detecting a
+   partial runtime failure, distinct from the `results === null` check that only detects a WATCH
+   conflict. **A real `SUBTOPICS` map collision, requiring a genuine hub-prefix fix**: bare
+   `transactions` was already claimed by the SQL hub's own `/sql/transactions` topic — hub-prefixed
+   to `redis-transactions`, matching this hub's own progress/search key (which was ALREADY
+   `redis-`-prefixed independent of this fix, confirmed via the pre-existing
+   `p.isDone('redis-transactions')` nav markup) — all three `RedisNavComponent` accordion helper
+   calls use the prefixed key consistently; confirmed via the standing convention that
+   `REDIS_LABELS`/`SIDEBAR_MAP` composite keys carry no cross-hub collision risk (each hub's own
+   map, or full-path-prefixed keys, respectively) and were left unprefixed. All three
+   `exercise.solution` fields swept clean of `<code>`/entity contamination; the standing
+   apostrophe-after-letter sweep, bracket-balance, and backtick-parity checks all found nothing to
+   fix across all three files and the main-page edit. Build passed clean (foreground execution,
+   explicit `EXITCODE:$?` capture, zero real `ERROR` lines). Browser-verified with a proactive
+   dev-server restart before checking: no console errors on any of the 4 pages; nav accordion opens
+   with all 3 subtopic links, confirmed via both `window.ng.getComponent()` and a live DOM
+   click-and-query; both main-page fixes (the codeTab and the Challenge solution) confirmed
+   rendering live via direct component-data inspection; all 3 subtopic pages checked individually —
+   correct h1/breadcrumb (all 4 levels), 860px wrapper via `getComputedStyle`, tailored (not
+   DEFAULT) sidebar content confirmed via direct text search. **Redis hub Phase 10: 9 of 21 topics
+   complete.**
 
 ## Current state (update when it changes!)
 
@@ -6677,6 +8867,41 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
   All 23 cards `available: true` in `data/redis/home/home.ts`. Progress: `redisTotal=21` in progress.service.ts.
   Redis pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. RedisNavComponent at `shared/redis-nav/redis-nav.ts`.
+  Phase 10: 9 of 21 topics have subtopics (`/redis/fundamentals`, pilot batch;
+  `/redis/installation-setup`; `/redis/strings`; `/redis/hashes`; `/redis/lists`; `/redis/sets`;
+  `/redis/sorted-sets`; `/redis/key-commands`; `/redis/transactions`, finished 2026-09-08) — see
+  "Redis hub subtopic wiring" section above for
+  the `RedisNavComponent` accordion structural fix (16th `*NavComponent`-based hub in a row missing
+  it at pilot time), the SUBTOPICS-map collision resolutions (bare `fundamentals` collides with the
+  JavaScript hub's own topic key; `installation-setup` confirmed collision-free since MongoDB's own
+  topic of the same name was proactively hub-prefixed to `mongo-installation-setup`; `strings`
+  proactively hub-prefixed to `redis-strings` against the DSA hub's own bare `strings` route;
+  `hashes`, `lists`, `sets` and `sorted-sets` all confirmed collision-free, left bare; `transactions`
+  hub-prefixed to `redis-transactions` against the SQL hub's own bare `transactions` route), and the
+  genuine inaccuracies found and fixed so far: Redis-on-Flash version-line conflation on the
+  Fundamentals page; a `rename-command` typo plus two source-verified (`config.c`/`networking.c`)
+  restart-requirement/protected-mode inaccuracies on the Installation & Setup page; a crash-window
+  TTL-leak bug in the Rate Limiter Challenge's own INCR+EXPIRE pattern on the Strings page (the
+  same mistake the page's own mistake block warns against for SET+EXPIRE, fixed with an atomic Lua
+  script); on the Hashes page, an outdated "cannot expire individual hash fields" claim (Redis 7.4
+  added real per-field TTL via HEXPIRE, verified against the command's own docs) plus a stale
+  `hash-max-listpack-entries` default of 128 (verified via Redis's own current `config.c` source to
+  be 512 since Redis 7.0); on the Lists page, the same class of stale listpack-threshold claim
+  applied to `list-max-listpack-size` — verified the real default (`-2`) is a per-node BYTE-SIZE
+  cap (8KB), not an entry count, fixed across five separate touchpoints restating the same
+  overgeneralization; on the Sets page, a real THIRD encoding tier (listpack, Redis 7.2+, via
+  `set-max-listpack-entries`/`set-max-listpack-value`) entirely missing from the page's own
+  two-encoding (intset/hashtable) description; and, on the Sorted Sets page, a genuine self-
+  contained member-collision bug in the sliding-window rate limiter codeTab (mirroring the page's
+  own mistake block, undercounting concurrent same-millisecond requests) plus a stale claim that
+  `ZRANGEBYLEX` is current when it has actually been deprecated since Redis 6.2.0 in favor of the
+  unified `ZRANGE ... BYLEX`; and, on the Key Commands & Expiry page, a wrong "SETEX is deprecated"
+  claim (its own official docs carry no deprecation notice at all) and a wrong "Redis 7+" version
+  attribution for `redis-cli --memkeys` (verified via the actual merging PR to have shipped in
+  Redis 6.0, two major versions earlier); and, on the Transactions (MULTI/EXEC) page, the WATCH/CAS
+  codeTab and Atomic Inventory Decrement Challenge both used a single shared connection for WATCH —
+  exactly the anti-pattern the page's own third mistake block warns against — verified via
+  simulation to risk a silent false-success CAS corruption, fixed with `redis.duplicate()`.
 - **GraphQL hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Pink theme `$accent: #e535ab`, `$tint: #fdf2f9`, dark `#f472b6`, dark bg `#3d0a26`. Search prefix `gql-`. Route: `/graphql`.
   CSS classes: `.gql-page`, `.gql-icon`, `.gql-section`. Icon content: `◈` at `font-size: 1.8rem`. `tech="javascript"`.
@@ -7552,13 +9777,72 @@ Confirmed via direct file inspection before the pilot (`/observability/observabi
   All 22 cards `available: true` in `architecture/observability/home/home.ts`. Progress: `obsTotal=20` in progress.service.ts.
   Observability pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ObsNavComponent at `shared/obs-nav/obs-nav.ts`.
-  Phase 10: 4 of 20 topics have subtopics (`/observability/observability-fundamentals`, pilot
-  batch; `/observability/opentelemetry`; `/observability/sli-slo-sla` — Core Concepts nav group
-  fully done; `/observability/prometheus-metrics` — first Metrics nav group topic, 2026-09-01) —
+  Phase 10: **COMPLETE — 20 of 20 topics have subtopics** (`/observability/observability-fundamentals`,
+  pilot batch; `/observability/opentelemetry`; `/observability/sli-slo-sla` — Core Concepts nav
+  group fully done; `/observability/prometheus-metrics`; `/observability/grafana-dashboards`;
+  `/observability/custom-app-metrics`; `/observability/infrastructure-metrics`;
+  `/observability/cloud-native-monitoring` — Metrics nav group fully done;
+  `/observability/structured-logging`; `/observability/log-aggregation`;
+  `/observability/log-best-practices` — Logging nav group fully done;
+  `/observability/distributed-tracing` (SUBTOPICS map key hub-prefixed to
+  `obs-distributed-tracing`); `/observability/opentelemetry-tracing`;
+  `/observability/performance-profiling` — Tracing nav group fully done;
+  `/observability/alerting-design`; `/observability/on-call-incidents`;
+  `/observability/error-budgets-toil` — Alerting & SRE nav group fully done;
+  `/observability/chaos-engineering`; `/observability/ebpf-observability`;
+  `/observability/observability-maturity` — Advanced nav group fully done, finished 2026-09-02,
+  60 subtopic pages total across the hub) —
   see "Observability & SRE hub subtopic wiring" section above for the `ObsNavComponent` accordion
   structural fix, a real self-authored key-mismatch bug caught during browser verification (not a
-  stale-server artifact), and a cross-hub `opentelemetry` SUBTOPICS collision already resolved by
-  the ASP.NET hub's own earlier `aspnet-opentelemetry` prefix.
+  stale-server artifact), a cross-hub `opentelemetry` SUBTOPICS collision already resolved by
+  the ASP.NET hub's own earlier `aspnet-opentelemetry` prefix, and a genuine broken-JSON bug found
+  and fixed in the `grafana-dashboards` main page's own mistake block.
+- **MongoDB hub**: 21 trackable topic pages + 2 reference (23 cards total). Feature-complete.
+  Green theme `$accent: #13aa52`, `$tint: #e8fef4` (corrected 2026-09-03 — previously misdocumented
+  as `#00ed64`; confirmed against the real `fundamentals.scss`). Search prefix `mongo-`. Route: `/mongodb`.
+  CSS classes: `.mongo-page`, `.mongo-icon`, `.mongo-section`. Icon content: `🍃` at `font-size: 1.8rem`. `tech="javascript"`.
+  Nav groups: Foundations, CRUD, Querying, Aggregation, Schema Design, Performance, Transactions &
+  Streaming, Advanced, Reference. All 23 cards `available: true` in `data/mongodb/home/home.ts`.
+  Progress: `mongoTotal=21` in progress.service.ts. MongoDB pages use `app-common-mistakes` AND
+  `app-revision-card`. Reference pages (cheatsheet, interview-prep) have no PageComplete.
+  Challenge.language: `'typescript'`. MongoNavComponent at `shared/mongo-nav/mongo-nav.ts`.
+  Phase 10: **COMPLETE — 21 of 21 topics have subtopics** (`/mongodb/fundamentals`, pilot batch;
+  `/mongodb/installation-setup`; `/mongodb/crud-operations`; `/mongodb/update-operators`;
+  `/mongodb/query-operators`; `/mongodb/array-queries`; `/mongodb/projections-sorting`;
+  `/mongodb/aggregation-pipeline`; `/mongodb/lookup-joins`; `/mongodb/aggregation-expressions`;
+  `/mongodb/schema-design-patterns`; `/mongodb/data-modelling`; `/mongodb/time-series`;
+  `/mongodb/indexes` (SUBTOPICS key hub-prefixed to `mongo-indexes` — bare `indexes` collides
+  with the SQL hub's own topic); `/mongodb/query-performance`; `/mongodb/transactions`
+  (SUBTOPICS key hub-prefixed to `mongo-transactions` — bare `transactions` collides with the
+  SQL hub's own topic); `/mongodb/change-streams`; `/mongodb/replication-sharding`;
+  `/mongodb/security` (SUBTOPICS key hub-prefixed to `mongo-security` — bare `security` collides
+  with the SQL hub's own topic); `/mongodb/mongodb-nodejs`; `/mongodb/atlas-search`, finished
+  2026-09-06, 63 subtopic pages total across the hub) —
+  see "MongoDB hub subtopic wiring" section above for the `MongoNavComponent` accordion structural
+  fix (15th `*NavComponent`-based hub in a row missing it at pilot time), the `mongo-fundamentals`/
+  `mongo-installation-setup` SUBTOPICS-map collision resolutions (the former collided with the
+  JavaScript hub's own bare `fundamentals` topic key; the latter was proactively hub-prefixed
+  against the Redis hub's own bare `installation-setup` route), the genuine driver-vs-server
+  connection-limit inaccuracy found and fixed in the Fundamentals page's own "Not closing the
+  MongoClient" mistake block, the three genuine inaccuracies (a missing authSource=admin, a
+  wrong maxIncomingConnections default, and a backwards auth-bootstrap ordering) found and fixed
+  on the Installation & Setup page, the read-concern-default/1000-write-limit inaccuracies
+  found and fixed on the Transactions page (verified via WebFetch against MongoDB's own
+  Production Considerations page), the pipeline-comment/oplog-retention inaccuracies found
+  and fixed on the Change Streams page (the latter verified via WebFetch against MongoDB's own
+  Replica Set Oplog documentation), the cross-QnA zone-sharding/oplog-size-floor inaccuracies
+  found and fixed on the Replication & Sharding page (the zone-sharding fix catchable by cross-
+  referencing the page's own two QnAs against each other; the oplog-floor fix verified via
+  WebFetch against MongoDB's own Replica Set Oplog documentation), the fabricated "multiple
+  passwords per user" feature claim plus a plain-SHA-256 password-hashing anti-pattern found and
+  fixed on the Security & Authentication page (the fabricated-feature claim verified via WebFetch/
+  WebSearch against MongoDB's own db.updateUser() docs and 8.0 changelog), the broken
+  empty-string aggregation field references plus the Mongoose schema's own missing password
+  field found and fixed on the MongoDB with Node.js page (the Mongoose strict-mode mechanism
+  verified via WebSearch against Mongoose's own documentation), and the fabricated
+  `$$searchCount` field reference (the real mechanism is `$$SEARCH_META`) found and fixed on the
+  Atlas Search & Vector Search page (verified via WebFetch against MongoDB's own Counting Search
+  Results documentation).
 - **Hub home**: Angular, C#, ASP.NET Core, SQL, TypeScript, React, JavaScript, CSS, HTML, Blazor, Go, Node.js, Python, DevOps, AWS, Azure, Linux, Redis, GraphQL, Messaging, Testing, DSA, AI/ML, Containers/K8s, Terraform/IaC, Service Mesh, System Design, Architecture Patterns, Design Patterns, Security, API Design, Observability, Web Performance, and MongoDB are all `available: true`. Everything else "Soon".
 - Progress totals: Angular 58, C# 50, ASP.NET Core 45, SQL 44, TypeScript 20, React 17, JavaScript 22, CSS 22, HTML 23, Web Performance 20, Blazor 20, Go 21, Node.js 23, Python 21, DevOps 21, AWS 21, Azure 22, Linux 19, Redis 21, GraphQL 20, Messaging 20, Testing 19, DSA 21, AI 19, Containers/K8s 22, Terraform 21, Service Mesh 19, System Design 24, Architecture Patterns 22, Design Patterns 36, Security 23, API Design 19, Observability 20, MongoDB 21 (`progress.service.ts`).
 - Hero stat: "933+ Live Pages" (corrected 2026-07-01 — hub-home.ts's Angular card was showing `topics: 63` instead of the actual 68, undercounting the site total by 5).

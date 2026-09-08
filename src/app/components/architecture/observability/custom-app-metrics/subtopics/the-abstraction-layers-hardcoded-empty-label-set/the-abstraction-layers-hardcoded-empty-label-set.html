@@ -1,0 +1,26 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Custom App Metrics" topicRoute="/observability/custom-app-metrics"
+    subtopicLabel="The Abstraction Layer’s Hardcoded Empty Label Set" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">The Abstraction Layer’s Hardcoded Empty Label Set</h1>
+  <p class="page-subtitle">The page's own Metric Abstraction Layer codeTab breaks its own literal usage example — verified against real prom-client, then fixed to match the pattern its sibling methods already use.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic finds a second, separate bug in the same page's very first codeTab — a callback gauge whose collect() function never returns its own promise.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Custom App Metrics" topicRoute="/observability/custom-app-metrics"
+    [next]="{ label: 'The Callback Gauge That Forgets to Return Its Promise', route: '/observability/custom-app-metrics/the-callback-gauge-that-forgets-to-return-its-promise' }" />
+</div>

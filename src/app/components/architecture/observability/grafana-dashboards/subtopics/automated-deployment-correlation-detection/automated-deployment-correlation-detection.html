@@ -1,0 +1,26 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Grafana Dashboards" topicRoute="/observability/grafana-dashboards"
+    subtopicLabel="Automated Deployment-Correlation Detection" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">Automated Deployment-Correlation Detection</h1>
+  <p class="page-subtitle">The mistake block describes correlating a metric spike with a deploy annotation by eye — this subtopic turns it into an actual, testable function, verified across three scenarios.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>This closes the last of the three gaps this topic's own subtopics build: a genuinely broken nested-JSON example, a real-world limit in the page's own trace-ID extraction regex, and a manual correlation workflow turned into runnable, testable code.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Grafana Dashboards" topicRoute="/observability/grafana-dashboards"
+    [prev]="{ label: 'Testing the Loki Trace-ID Regex’s Real Limits', route: '/observability/grafana-dashboards/testing-the-loki-trace-id-regexs-real-limits' }" />
+</div>

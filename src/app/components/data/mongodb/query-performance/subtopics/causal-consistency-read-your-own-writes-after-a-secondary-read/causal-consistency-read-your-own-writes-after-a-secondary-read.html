@@ -1,0 +1,26 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Query Performance" topicRoute="/mongodb/query-performance"
+    subtopicLabel="Causal Consistency: Read-Your-Own-Writes After a Secondary Read" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">Causal Consistency: Read-Your-Own-Writes After a Secondary Read</h1>
+  <p class="page-subtitle">The main page's own QnA on secondary reads names causal consistency in a single clause — but no codeTab anywhere on the page ever builds a real causally consistent session.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>This closes the loop on the main page's own "secondary reads may return slightly stale data" warning — causal consistency is the specific, documented mechanism that removes staleness for the one caller whose own writes need to be immediately visible, without giving up secondary reads for everyone else.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Query Performance" topicRoute="/mongodb/query-performance"
+    [prev]="{ label: 'Compact Stopped Blocking CRUD in MongoDB 4.4', route: '/mongodb/query-performance/compact-stopped-blocking-crud-in-mongodb-4-4' }" />
+</div>

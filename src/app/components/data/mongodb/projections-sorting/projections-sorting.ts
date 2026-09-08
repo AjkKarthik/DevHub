@@ -58,7 +58,7 @@ export class MongoProjectionsSorting {
       heading: 'Sorting',
       points: [
         'Sort by ascending: <code>sort({ price: 1 })</code>. Descending: <code>sort({ price: -1 })</code>. Multiple fields (compound sort): <code>sort({ category: 1, price: -1 })</code> — sort by category ascending, then price descending within each category.',
-        'Sort on a field with an index is very fast (index already sorted). Sort without an index requires MongoDB to sort all results in memory. MongoDB limits in-memory sorts to <strong>32 MB</strong> by default — larger sorts fail with <code>QueryExceededMemoryLimitNoDiskUseAllowed</code>.',
+        'Sort on a field with an index is very fast (index already sorted). Sort without an index requires MongoDB to sort all results in memory. MongoDB limits in-memory sorts to <strong>100 MB</strong> by default — larger sorts fail with <code>QueryExceededMemoryLimitNoDiskUseAllowed</code> (the error itself reports the limit as exactly 104857600 bytes).',
         'Sort on an array field: for ascending sort, MongoDB uses the minimum value in the array; for descending, the maximum. Results may seem counterintuitive for array fields.',
         'For text search results, sort by relevance score: <code>sort({ score: { $meta: "textScore" } })</code> combined with a projection that includes the score: <code>{ score: { $meta: "textScore" } }</code>.',
         'Natural order (<code>$natural: 1</code>) returns documents in insertion order but is not stable — documents can be moved on disk. Never rely on natural order for production sort requirements. Always sort by a meaningful field.',
@@ -377,8 +377,8 @@ async function getUserPage(
       a: 'Two options: (1) <strong>Avoid the count</strong>: return only <code>hasMore</code> (fetch N+1 to detect). This is what most modern APIs (Twitter, Instagram) do. (2) <strong>Estimate the count</strong>: <code>estimatedDocumentCount()</code> is O(1) but includes all documents. <code>countDocuments(filter)</code> runs a full index scan — expensive for large collections. Cache the count with a TTL of 30–60 seconds for non-critical accuracy.',
     },
     {
-      q: 'What is the 32 MB sort memory limit?',
-      a: 'MongoDB\'s in-memory sort is capped at 32 MB per query by default. If the documents being sorted exceed 32 MB, the query fails with <code>QueryExceededMemoryLimitNoDiskUseAllowed</code>. Fix: (1) Create an index matching the sort — indexed sorts don\'t use memory. (2) Project to reduce document size before sorting. (3) Enable <code>allowDiskUse: true</code> in aggregation to spill to disk (slower but no limit).',
+      q: 'What is the 100 MB sort memory limit?',
+      a: 'MongoDB\'s in-memory sort is capped at 100 MB per query by default (the error itself reports the limit as exactly 104857600 bytes). If the documents being sorted exceed that, the query fails with <code>QueryExceededMemoryLimitNoDiskUseAllowed</code>. Fix: (1) Create an index matching the sort — indexed sorts don\'t use memory. (2) Project to reduce document size before sorting. (3) Enable <code>allowDiskUse: true</code> in aggregation to spill to disk (slower but no limit).',
     },
     {
       q: 'What is the positional $ projection and when is it different from $elemMatch in projection?',
@@ -397,13 +397,13 @@ async function getUserPage(
       '$slice: N (first N), -N (last N), [skip, count] (pagination within array)',
       'Positional $ returns first element matched by query; $elemMatch returns first by separate condition',
       'sort({ field: 1 }) ascending, -1 descending; compound sorts for secondary order',
-      'In-memory sort capped at 32 MB — create indexes matching sort fields',
+      'In-memory sort capped at 100 MB — create indexes matching sort fields',
       'skip/limit O(N) at high page numbers; cursor-based O(log n) always',
     ],
     interviewFocus: [
       'Cannot mix inclusion/exclusion in projection',
       'cursor-based vs offset-based pagination (performance and consistency)',
-      'Sort on indexed field vs full in-memory sort (32 MB limit)',
+      'Sort on indexed field vs full in-memory sort (100 MB limit)',
       '$slice for bounded array returns',
       'Why not return all fields to the client (bandwidth, security)',
     ],

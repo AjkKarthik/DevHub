@@ -1,0 +1,26 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Installation &amp; Setup" topicRoute="/redis/installation-setup"
+    subtopicLabel="bind and aof-use-rdb-preamble Are Runtime-Modifiable" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">bind and aof-use-rdb-preamble Are Runtime-Modifiable</h1>
+  <p class="page-subtitle">The main page's own QnA grouped bind, aof-use-rdb-preamble, and cluster-enabled together as "require a restart." Verified directly against Redis's own config.c source: only cluster-enabled genuinely does.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>This is the main-page fix for this topic — the QnA on reloading redis.conf without a restart now correctly distinguishes bind/aof-use-rdb-preamble (live-changeable) from cluster-enabled (restart-only). Next: the closely related fix to the protected-mode quiz question, which the same source-verification pass also caught.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Installation &amp; Setup" topicRoute="/redis/installation-setup"
+    [next]="{ label: 'Protected-Mode Checks for a Password, Not a Bind', route: '/redis/installation-setup/protected-mode-checks-password-not-bind' }" />
+</div>

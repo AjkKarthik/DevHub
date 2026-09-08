@@ -57,7 +57,7 @@ export class MongoArrayQueries {
       points: [
         'When you create an index on an array field, MongoDB automatically creates a <strong>multikey index</strong> — one index entry per array element. <code>createIndex({ tags: 1 })</code> on a document with tags: ["a", "b", "c"] creates three index entries.',
         'Multikey indexes power efficient array element queries: <code>{ tags: "sale" }</code> uses the tags multikey index to find matching documents in O(log n) without scanning all documents.',
-        'Restriction: a compound index cannot have TWO multikey fields from arrays of different sizes. <code>createIndex({ tags: 1, scores: 1 })</code> fails if any document has both tags and scores as arrays (Cartesian product would produce too many entries).',
+        'Restriction: a compound index can have AT MOST ONE field whose value is an array, per document — this is unconditional, not a special case for mismatched array lengths. <code>createIndex({ tags: 1, scores: 1 })</code> fails the moment any single document has BOTH tags and scores as arrays, even if the two arrays happen to be the exact same length (a Cartesian product still forms either way).',
         'Index size consideration: an array with 100 elements creates 100 index entries per document. High-cardinality arrays (unbounded growth) make indexes large and write-heavy. Keep arrays bounded or index only low-cardinality arrays.',
         'You can create a multikey index on an array of embedded documents and query specific sub-fields: <code>createIndex({ "items.productId": 1 })</code> indexes the productId field of each element in the items array.',
       ],

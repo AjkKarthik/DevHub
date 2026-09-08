@@ -1,0 +1,26 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CRUD Operations" topicRoute="/mongodb/crud-operations"
+    subtopicLabel="Why the Soft-Delete Index Needs deletedAt: null, Not $exists" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">Why the Soft-Delete Index Needs deletedAt: null, Not $exists</h1>
+  <p class="page-subtitle">The main page's own soft-delete theory bullet paired a &#123; deletedAt: null &#125; query with a partial index filtered on $exists: true — verified against MongoDB's own partial-index eligibility rule, those two filters cover entirely different documents.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>This is the SAME null-vs-missing distinction the Fundamentals topic's own mistake block already covers for plain query results — here it decides whether a partial index gets used at all, not just what a query returns.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CRUD Operations" topicRoute="/mongodb/crud-operations"
+    [next]="{ label: 'Mixing Operations in a Real bulkWrite Call', route: '/mongodb/crud-operations/mixing-operations-in-a-real-bulkwrite-call' }" />
+</div>

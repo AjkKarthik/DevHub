@@ -1,0 +1,26 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="OTel Tracing Deep Dive" topicRoute="/observability/opentelemetry-tracing"
+    subtopicLabel="context.bind() Rescues a Queued Legacy Callback" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">context.bind() Rescues a Queued Legacy Callback</h1>
+  <p class="page-subtitle">The page's own QnA describes context.bind() as the fix for legacy callback-based code in prose — this subtopic reproduces the exact context loss it's fixing, and verifies the fix against a real OTel SDK.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>Together these three subtopics cover every kind of span-linking failure this topic's own content touches: a span that never ends (the leak), a span with no single parent at all (Links), and a span that ends up with the WRONG parent — or none — because its async context was lost along the way.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="OTel Tracing Deep Dive" topicRoute="/observability/opentelemetry-tracing"
+    [prev]="{ label: 'Span Links for Fan-In Batch Processing', route: '/observability/opentelemetry-tracing/span-links-for-fan-in-batch-processing' }" />
+</div>

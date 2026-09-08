@@ -1,0 +1,26 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="eBPF Observability" topicRoute="/observability/ebpf-observability"
+    subtopicLabel="Measuring Why Aggregate-Only Capture Is Cheaper" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">Measuring Why Aggregate-Only Capture Is Cheaper</h1>
+  <p class="page-subtitle">The page's own mistakes block states "overhead is proportional to work per event" as a bare principle — this subtopic measures it directly with a 200,000-event simulation.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>Together these three subtopics cover the whole page: the exact limits of its own headline TLS-visibility claim, the richer aggregation its own bpftrace example demonstrates but its Challenge doesn't, and a measured reason behind its own overhead-design guidance.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="eBPF Observability" topicRoute="/observability/ebpf-observability"
+    [prev]="{ label: 'Aggregating Events by Process AND Syscall', route: '/observability/ebpf-observability/aggregating-events-by-process-and-syscall' }" />
+</div>

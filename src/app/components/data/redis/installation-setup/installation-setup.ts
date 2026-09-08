@@ -263,9 +263,9 @@ async function checkRedisHealth(): Promise<{ status: 'ok' | 'error'; latencyMs: 
     },
     {
       q: 'What is protected-mode in Redis?',
-      options: ['Encrypts all data at rest', 'A safety measure that rejects all external connections unless bind is configured or requirepass is set', 'Prevents CONFIG SET commands', 'Blocks Lua scripting'],
+      options: ['Encrypts all data at rest', 'A safety measure that rejects all external (non-loopback) connections while no password is set for the default user', 'Prevents CONFIG SET commands', 'Blocks Lua scripting'],
       answer: 1,
-      explanation: 'Protected-mode (default: yes) blocks connections from addresses other than 127.0.0.1 unless: (a) a bind address is explicitly configured, or (b) requirepass is set. Prevents accidentally exposing Redis to the internet.',
+      explanation: 'Protected-mode (default: yes) blocks connections from addresses other than 127.0.0.1 whenever the default user has no password (no requirepass, no ACL password) — verified directly against Redis\'s own networking.c source: the accept-time check tests only server.protected_mode and DefaultUser NOPASS, nothing about whether bind was explicitly configured. Set requirepass (or an ACL password) to lift the restriction, not a bind directive alone.',
     },
     {
       q: 'What does maxmemory-policy default to if not configured?',
@@ -278,7 +278,7 @@ async function checkRedisHealth(): Promise<{ status: 'ok' | 'error'; latencyMs: 
   qna: QnaItem[] = [
     {
       q: 'How do I reload redis.conf without restarting Redis?',
-      a: 'Use CONFIG REWRITE to update the config file from the in-memory config, or CONFIG SET to change individual parameters at runtime (e.g., CONFIG SET maxmemory 512mb). Not all parameters can be changed at runtime — directives like bind, aof-use-rdb-preamble, and cluster-enabled require a restart.',
+      a: 'Use CONFIG REWRITE to update the config file from the in-memory config, or CONFIG SET to change individual parameters at runtime (e.g., CONFIG SET maxmemory 512mb). Not every parameter is runtime-changeable — verified directly against Redis\'s own config.c source: cluster-enabled is registered IMMUTABLE_CONFIG and genuinely needs a restart, but bind and aof-use-rdb-preamble are both MODIFIABLE_CONFIG and can be changed live with CONFIG SET (bind even has its own applyBind live-reconfiguration handler).',
     },
     {
       q: 'What is the difference between redis-server and redis-sentinel?',
@@ -290,7 +290,7 @@ async function checkRedisHealth(): Promise<{ status: 'ok' | 'error'; latencyMs: 
     },
     {
       q: 'What is the recommended way to run Redis in production?',
-      a: 'Run as a <strong>systemd service</strong> (not daemonize yes for systemd-managed). Set <code>maxmemory</code> and <code>maxmemory-policy</code>. Enable AOF + RDB persistence. Set requirepass or ACL. Disable dangerous commands (rename-command CONFIG """"). Run as non-root. Monitor with Redis Exporter + Prometheus.',
+      a: 'Run as a <strong>systemd service</strong> (not daemonize yes for systemd-managed). Set <code>maxmemory</code> and <code>maxmemory-policy</code>. Enable AOF + RDB persistence. Set requirepass or ACL. Disable dangerous commands (rename-command CONFIG ""). Run as non-root. Monitor with Redis Exporter + Prometheus.',
     },
     {
       q: 'How do you persist configuration changes made with CONFIG SET?',

@@ -53,7 +53,7 @@ const theory: TheoryPoint[] = [
     points: [
       'Weekly alert review: look at which alerts fired in the last week. For each: was it actionable? Did on-call respond correctly? Does the threshold need adjusting?',
       'Runbook link in every alert: `annotations: { runbook: "https://wiki.internal/runbooks/..." }`. No runbook = first responder is guessing the correct response at 3am.',
-      'Dead man\'s switch: `ALERTS{alertname="Watchdog"} absent for 5m` fires when Alertmanager stops sending heartbeats. Catches when your alerting pipeline itself is broken.',
+      'Dead man\'s switch: `ALERTS{alertname="Watchdog"} absent for 5m` only catches a broken alerting pipeline if that check runs on a genuinely SEPARATE system — a meta-monitoring Prometheus, or (simpler, and what the code tab below actually shows) an external heartbeat service like Dead Man\'s Snitch. The same Prometheus/Alertmanager instance checking its own absence cannot detect its own total outage — if it\'s down, that rule never evaluates either.',
       'Test your alerts: write tests that generate metric data and verify the expected alert fires. An untested alert rule may have a typo in the PromQL that prevents it from ever firing.',
     ],
   },
@@ -71,7 +71,7 @@ const theory: TheoryPoint[] = [
 const codeTabs: CodeTab[] = [
   {
     label: 'Alert Rules',
-    language: 'typescript',
+    language: 'bash',
     code: `# Prometheus alert rules — tiered severity, symptom-based
 
 groups:
@@ -138,7 +138,7 @@ groups:
   },
   {
     label: 'Alertmanager Config',
-    language: 'typescript',
+    language: 'bash',
     code: `# alertmanager.yml — routing and contact points
 global:
   resolve_timeout: 5m

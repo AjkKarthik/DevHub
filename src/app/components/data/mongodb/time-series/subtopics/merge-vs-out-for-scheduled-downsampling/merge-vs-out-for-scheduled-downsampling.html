@@ -1,0 +1,27 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Time Series Collections" topicRoute="/mongodb/time-series"
+    subtopicLabel="$merge vs. $out for Scheduled Downsampling" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">$merge vs. $out for Scheduled Downsampling</h1>
+  <p class="page-subtitle">The main page's own QnA explains in real detail why $merge is preferred over $out for a scheduled downsampling job — but no codeTab ever runs the two side by side across sequential scheduled runs.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>This directly extends the main page's own downsampling QnA into working, verified code — the $group-by-hour pattern it already shows now has a real target-collection strategy attached, ready to run on a recurring schedule without losing history.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Time Series Collections" topicRoute="/mongodb/time-series"
+    [prev]="{ label: 'Updates Are Allowed, But Only on the metaField', route: '/mongodb/time-series/updates-are-allowed-but-only-on-the-metafield' }"
+    [next]="{ label: '$densify Bounds: Partition vs. Full, Made Concrete', route: '/mongodb/time-series/densify-bounds-partition-vs-full-made-concrete' }" />
+</div>

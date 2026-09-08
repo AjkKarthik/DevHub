@@ -1,0 +1,26 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Log Best Practices" topicRoute="/observability/log-best-practices"
+    subtopicLabel="The Test Logger’s Two Silent Bugs" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">The Test Logger’s Two Silent Bugs</h1>
+  <p class="page-subtitle">The Log Testing codeTab's own createTestLogger() drops any log call after the first, and its own assertions expect a string level pino never produces by default — verified against real pino, then fixed.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic cross-checks the Challenge's own log-level classifier against every event in the page's own Log Contract codeTab, finding real mismatches.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Log Best Practices" topicRoute="/observability/log-best-practices"
+    [next]="{ label: 'The Classifier That Misses a Quarter of the Log Contract', route: '/observability/log-best-practices/the-classifier-that-misses-a-quarter-of-the-log-contract' }" />
+</div>

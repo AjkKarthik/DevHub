@@ -1,0 +1,26 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="MongoDB Fundamentals" topicRoute="/mongodb/fundamentals"
+    subtopicLabel="The 100 Cap Belongs to the Driver, Not the Server" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">The 100 Cap Belongs to the Driver, Not the Server</h1>
+  <p class="page-subtitle">The main page's own mistake block calls 100 "the server's connection limit" — verified against the real driver and server defaults, that number belongs to the driver, and it's a very different figure from the server's own ceiling.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>Closing every MongoClient properly is still the right fix either way — but knowing which number is actually at risk (a driver-side cap on ONE client, not a single shared server total) changes how urgently a team should treat a leak, and sets up the next subtopic's own look at another prose-only mechanism: optimistic concurrency control.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="MongoDB Fundamentals" topicRoute="/mongodb/fundamentals"
+    [next]="{ label: 'Implementing Optimistic Concurrency With a Version Field', route: '/mongodb/fundamentals/implementing-optimistic-concurrency-with-a-version-field' }" />
+</div>

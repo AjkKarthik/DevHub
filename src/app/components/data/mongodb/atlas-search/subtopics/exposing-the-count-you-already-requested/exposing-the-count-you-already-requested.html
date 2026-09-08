@@ -1,0 +1,27 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Atlas Search & Vector Search" topicRoute="/mongodb/atlas-search"
+    subtopicLabel="Exposing the Count You Already Requested" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">Exposing the Count You Already Requested</h1>
+  <p class="page-subtitle">The main page's own "Compound Search with Filters" codeTab requests count: &#123; type: 'total' &#125; but never captures or reads it — the count is computed server-side and then simply discarded.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>This completes the main page's own compound search example using the exact $$SEARCH_META pattern the sibling subtopic already established, and sets up the final subtopic: a real $vectorSearch query for a QnA the page discusses at length but never demonstrates in code.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Atlas Search & Vector Search" topicRoute="/mongodb/atlas-search"
+    [prev]="{ label: 'A Field Name That Was Never Real', route: '/mongodb/atlas-search/search-count-field-was-fabricated-use-search-meta' }"
+    [next]="{ label: 'Building a Real $vectorSearch Query', route: '/mongodb/atlas-search/building-a-real-vectorsearch-query' }" />
+</div>

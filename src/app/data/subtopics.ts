@@ -1535,6 +1535,192 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Nullish Assignment Keeps 0, OR Overwrites It', route: '/javascript/fundamentals/testing-that-nullish-assignment-keeps-zero-while-or-assignment-silently-overwrites-it' },
     { label: 'Object.freeze() Throws in Strict Mode', route: '/javascript/fundamentals/testing-that-mutating-a-frozen-object-throws-in-strict-mode-es-modules-not-silently-fails' },
   ],
+  // NOTE: keyed 'mongo-fundamentals', NOT bare 'fundamentals' — the
+  // JavaScript hub already owns the bare 'fundamentals' key above.
+  'mongo-fundamentals': [
+    { label: 'The 100 Cap Belongs to the Driver, Not the Server', route: '/mongodb/fundamentals/the-100-cap-is-the-drivers-not-the-servers-limit' },
+    { label: 'Implementing Optimistic Concurrency With a Version Field', route: '/mongodb/fundamentals/implementing-optimistic-concurrency-with-a-version-field' },
+    { label: 'Chunking and Reassembling a File With GridFS', route: '/mongodb/fundamentals/chunking-and-reassembling-a-file-with-gridfs' },
+  ],
+  // NOTE: keyed 'mongo-installation-setup' — proactively hub-prefixed even
+  // though no ACTIVE collision exists today, since the Redis hub also has
+  // its own bare 'installation-setup' route and no subtopics-accordion
+  // support in RedisNavComponent yet; matches the established proactive
+  // hub-prefix precedent (Design Patterns' clean-architecture, Security's
+  // sec-api-security).
+  'mongo-installation-setup': [
+    { label: 'Why the Docker Connection String Needs authSource=admin', route: '/mongodb/installation-setup/why-the-docker-connection-string-needs-authsource-admin' },
+    { label: 'The Real Path to Enabling Auth: the Localhost Exception', route: '/mongodb/installation-setup/the-real-path-to-enabling-auth-the-localhost-exception' },
+    { label: 'The Real maxIncomingConnections Default Is 65536', route: '/mongodb/installation-setup/the-real-maxincomingconnections-default-is-65536' },
+  ],
+  'crud-operations': [
+    { label: 'Why the Soft-Delete Index Needs deletedAt: null, Not $exists', route: '/mongodb/crud-operations/why-the-soft-delete-index-needs-deletedat-null-not-exists' },
+    { label: 'Mixing Operations in a Real bulkWrite Call', route: '/mongodb/crud-operations/mixing-operations-in-a-real-bulkwrite-call' },
+    { label: 'Session-Based Causal Consistency for Read-Your-Writes', route: '/mongodb/crud-operations/session-based-causal-consistency-for-read-your-writes' },
+  ],
+  'update-operators': [
+    { label: 'Sorting a Real Top-N List With $push, $sort, and $slice Together', route: '/mongodb/update-operators/sorting-a-real-top-n-with-push-sort-slice-together' },
+    { label: 'Removing an Array Element by Index: $unset Then $pull', route: '/mongodb/update-operators/removing-an-array-element-by-index-unset-then-pull' },
+    { label: 'Optimistic Locking Scoped to One Array Element', route: '/mongodb/update-operators/optimistic-locking-scoped-to-one-array-element' },
+  ],
+  'query-operators': [
+    { label: 'Why tags.1 Needs Its Own Index, Not the Multikey One', route: '/mongodb/query-operators/why-tags-1-needs-its-own-index-not-the-multikey-one' },
+    { label: 'Querying Permission Bitmasks With $bitsAllSet and $bitsAnySet', route: '/mongodb/query-operators/querying-permission-bitmasks-with-bitsallset' },
+    { label: 'Finding Nearby Places With $near and a 2dsphere Index', route: '/mongodb/query-operators/finding-nearby-places-with-near-and-2dsphere' },
+  ],
+  'array-queries': [
+    { label: 'The Compound Multikey Restriction Is Unconditional, Not About Size', route: '/mongodb/array-queries/the-compound-multikey-restriction-is-unconditional' },
+    { label: 'Slicing Arrays With the $slice Projection Operator', route: '/mongodb/array-queries/slicing-arrays-with-the-slice-projection-operator' },
+    { label: 'Sorting by an Array Field Uses Min or Max, Not Average', route: '/mongodb/array-queries/sorting-by-an-array-field-uses-min-or-max' },
+  ],
+  'projections-sorting': [
+    { label: 'The Real Sort Memory Limit Is 100 MB, Not 32', route: '/mongodb/projections-sorting/the-real-sort-memory-limit-is-100mb-not-32' },
+    { label: 'Building a Real Covered Query', route: '/mongodb/projections-sorting/building-a-real-covered-query' },
+    { label: 'Sorting by a Computed Field With $addFields', route: '/mongodb/projections-sorting/sorting-by-a-computed-field-with-addfields' },
+  ],
+  'aggregation-pipeline': [
+    { label: 'A Real $lookup Example, Simple and Pipeline Form', route: '/mongodb/aggregation-pipeline/a-real-lookup-example-simple-and-pipeline-form' },
+    { label: 'Bucketing Prices With $bucket and $bucketAuto', route: '/mongodb/aggregation-pipeline/bucketing-prices-with-bucket-and-bucketauto' },
+    { label: 'Paginating With $facet: Data Plus Total Count', route: '/mongodb/aggregation-pipeline/paginating-with-facet-data-plus-total-count' },
+  ],
+  'lookup-joins': [
+    { label: '$lookup Is Actually Supported Inside $facet Sub-Pipelines', route: '/mongodb/lookup-joins/lookup-is-actually-supported-inside-facet-sub-pipelines' },
+    { label: 'Correlated vs. Uncorrelated $lookup Subqueries', route: '/mongodb/lookup-joins/correlated-vs-uncorrelated-lookup-subqueries' },
+    { label: 'A Real Self-Join: One-Level Org Chart', route: '/mongodb/lookup-joins/a-real-self-join-one-level-org-chart' },
+  ],
+  'aggregation-expressions': [
+    { label: 'A Single $addFields Stage Cannot See Its Own New Fields', route: '/mongodb/aggregation-expressions/a-single-addfields-stage-cant-see-its-own-new-fields' },
+    { label: '$let for Reusing a Sub-Expression Without Recomputing It', route: '/mongodb/aggregation-expressions/let-for-reusing-a-sub-expression-without-recomputing-it' },
+    { label: '$dateTrunc for Grouping Events by Day and Hour', route: '/mongodb/aggregation-expressions/datetrunc-for-grouping-events-by-day-and-hour' },
+  ],
+  'schema-design-patterns': [
+    { label: 'One Atomic Update-Pipeline Call Instead of Two Racy Writes', route: '/mongodb/schema-design-patterns/one-atomic-update-pipeline-call-instead-of-two-racy-writes' },
+    { label: 'The Attribute Pattern Needs $elemMatch to Avoid False Positives', route: '/mongodb/schema-design-patterns/attribute-pattern-needs-elemmatch-to-avoid-false-positives' },
+    { label: 'Materialised Path: Ancestors and Descendants With $regex', route: '/mongodb/schema-design-patterns/materialised-path-ancestors-and-descendants-with-regex' },
+  ],
+  'data-modelling': [
+    { label: 'Array of Ancestors: The Real Fifth Tree Pattern', route: '/mongodb/data-modelling/array-of-ancestors-the-real-fifth-tree-pattern' },
+    { label: 'Nested Sets: A Real Left/Right Boundary Example', route: '/mongodb/data-modelling/nested-sets-a-real-left-right-boundary-example' },
+    { label: 'Building the Workload Matrix Behind the Challenge', route: '/mongodb/data-modelling/building-the-workload-matrix-behind-the-challenge' },
+  ],
+  'time-series': [
+    { label: 'Updates Are Allowed, But Only on the metaField', route: '/mongodb/time-series/updates-are-allowed-but-only-on-the-metafield' },
+    { label: '$merge vs. $out for Scheduled Downsampling', route: '/mongodb/time-series/merge-vs-out-for-scheduled-downsampling' },
+    { label: '$densify Bounds: Partition vs. Full, Made Concrete', route: '/mongodb/time-series/densify-bounds-partition-vs-full-made-concrete' },
+  ],
+  // NOTE: bare 'indexes' is already claimed by the SQL hub's own /sql/indexes topic — hub-prefixed
+  'mongo-indexes': [
+    { label: 'Hybrid Index Builds: The Real 4.2+ Lock Timeline', route: '/mongodb/indexes/hybrid-index-builds-the-real-4-2-lock-timeline' },
+    { label: 'Text and 2dsphere Indexes Can Be Multikey Too', route: '/mongodb/indexes/text-and-2dsphere-indexes-can-be-multikey-too' },
+    { label: 'hideIndex: Testing a Drop Without Actually Dropping', route: '/mongodb/indexes/hideindex-testing-a-drop-without-actually-dropping' },
+  ],
+  'query-performance': [
+    { label: 'reIndex Never Got the Non-Blocking Hybrid Build Fix', route: '/mongodb/query-performance/reindex-never-got-the-hybrid-builds-non-blocking-fix' },
+    { label: 'Compact Stopped Blocking CRUD in MongoDB 4.4', route: '/mongodb/query-performance/compact-stopped-blocking-crud-in-mongodb-4-4' },
+    { label: 'Causal Consistency: Read-Your-Own-Writes After a Secondary Read', route: '/mongodb/query-performance/causal-consistency-read-your-own-writes-after-a-secondary-read' },
+  ],
+  // NOTE: bare 'transactions' is already claimed by the SQL hub's own /sql/transactions topic
+  // (and a Redis hub /redis/transactions route also exists, currently without subtopics) —
+  // hub-prefixed to avoid collision, matching the established pattern.
+  'mongo-transactions': [
+    { label: 'Read Concern Defaults to Local, Not Snapshot', route: '/mongodb/transactions/read-concern-defaults-to-local-not-snapshot' },
+    { label: 'The Real Dual-Retry Loop', route: '/mongodb/transactions/dual-retry-loop-transient-vs-unknown-commit' },
+    { label: 'TransactionTooLargeForCache: The Real Limit', route: '/mongodb/transactions/transactiontoolargeforcache-the-real-limit' },
+  ],
+  'change-streams': [
+    { label: 'The Comment vs. the Actual Pipeline Code', route: '/mongodb/change-streams/status-filter-comment-vs-actual-pipeline-code' },
+    { label: 'Oplog Retention Has No Default Minimum Hours', route: '/mongodb/change-streams/oplog-retention-has-no-default-minimum-hours' },
+    { label: 'updateLookup Plus $match: A Real Resume-Token Risk', route: '/mongodb/change-streams/updatelookup-plus-match-resume-token-not-found-risk' },
+  ],
+  'replication-sharding': [
+    { label: 'The EU Tilde Upper Bound Fixes a Broken Zone Range', route: '/mongodb/replication-sharding/eu-tilde-upper-bound-fixes-the-broken-zone-range' },
+    { label: 'The Oplog Default Has a 990MB Floor', route: '/mongodb/replication-sharding/oplog-default-has-a-990mb-floor-the-page-missed' },
+    { label: 'Reconfig Code for a Hidden, Delayed Backup Member', route: '/mongodb/replication-sharding/reconfig-code-for-a-hidden-delayed-backup-member' },
+  ],
+  // NOTE: bare 'security' is already claimed by the SQL hub's own topic (see the
+  // 'security' entry above and its own NOTE comment) — hub-prefixed to avoid collision.
+  'mongo-security': [
+    { label: 'Blue/Green Rotation, Not a Fabricated Feature', route: '/mongodb/security/blue-green-rotation-not-a-fabricated-feature' },
+    { label: 'bcrypt, Not SHA-256, for Password Hashing', route: '/mongodb/security/bcrypt-not-sha256-for-password-hashing' },
+    { label: 'Deterministic vs. Randomized Encryption, Made Concrete', route: '/mongodb/security/deterministic-vs-randomized-encryption-leakage' },
+  ],
+  'mongodb-nodejs': [
+    { label: 'A Pipeline That Groups By Nothing', route: '/mongodb/mongodb-nodejs/broken-group-by-empty-string-field-references' },
+    { label: 'The Mongoose Schema Was Missing Its Own Password Field', route: '/mongodb/mongodb-nodejs/mongoose-schema-was-missing-its-own-password-field' },
+    { label: 'Ordered vs. Unordered bulkWrite, Demonstrated', route: '/mongodb/mongodb-nodejs/ordered-vs-unordered-bulkwrite-demonstrated' },
+  ],
+  'atlas-search': [
+    { label: 'A Field Name That Was Never Real', route: '/mongodb/atlas-search/search-count-field-was-fabricated-use-search-meta' },
+    { label: 'Exposing the Count You Already Requested', route: '/mongodb/atlas-search/exposing-the-count-you-already-requested' },
+    { label: 'Building a Real $vectorSearch Query', route: '/mongodb/atlas-search/building-a-real-vectorsearch-query' },
+  ],
+  // NOTE: bare 'fundamentals' is already claimed by the JavaScript hub's own topic —
+  // hub-prefixed to avoid collision, matching the established pattern.
+  'redis-fundamentals': [
+    { label: 'Redis on Flash Predates OSS Redis 7 by Years', route: '/redis/fundamentals/redis-on-flash-predates-oss-redis-7-by-years' },
+    { label: 'Keyspace Notifications: A Real Expiration Listener', route: '/redis/fundamentals/keyspace-notifications-a-real-expiration-listener' },
+    { label: 'MULTI/EXEC Real Atomicity: Isolation, Not Rollback', route: '/redis/fundamentals/multi-exec-real-atomicity-is-isolation-not-rollback' },
+  ],
+  // NOTE: bare 'installation-setup' confirmed collision-free -- the MongoDB
+  // hub's own topic of the same name was proactively hub-prefixed to
+  // 'mongo-installation-setup' anticipating exactly this moment.
+  'installation-setup': [
+    { label: 'bind and aof-use-rdb-preamble Are Runtime-Modifiable', route: '/redis/installation-setup/bind-and-aof-preamble-are-runtime-modifiable' },
+    { label: 'Protected-Mode Checks for a Password, Not a Bind', route: '/redis/installation-setup/protected-mode-checks-password-not-bind' },
+    { label: 'CONFIG REWRITE Needs a Config File to Rewrite', route: '/redis/installation-setup/config-rewrite-needs-a-config-file' },
+  ],
+  // NOTE: keyed 'redis-strings' -- proactively hub-prefixed since the DSA
+  // hub also has a bare 'strings' route (DsaNavComponent has no
+  // subtopics-accordion support yet, so no active collision today, but a
+  // future DSA Phase 10 pilot would collide with a bare key here).
+  'redis-strings': [
+    { label: 'Atomic INCR + EXPIRE Fixes the Rate Limiter TTL Leak', route: '/redis/strings/atomic-incr-expire-fixes-the-rate-limiter-ttl-leak' },
+    { label: 'MSETNX Is All-or-Nothing; a Loop of SETNX Calls Is Not', route: '/redis/strings/msetnx-all-or-nothing-vs-a-loop-of-setnx-calls' },
+    { label: 'GETRANGE/SETRANGE: Fixed-Width Records at Byte Offsets', route: '/redis/strings/getrange-setrange-fixed-width-records-at-byte-offsets' },
+  ],
+  // NOTE: bare 'hashes' confirmed collision-free (checked both quoted and
+  // unquoted forms, plus app.routes.ts route paths directly).
+  'hashes': [
+    { label: 'HEXPIRE: Real Per-Field TTL, Since Redis 7.4', route: '/redis/hashes/hexpire-real-per-field-ttl-since-redis-7-4' },
+    { label: 'The Shopping Cart Challenge Leaves Phantom Zero-Quantity Items', route: '/redis/hashes/shopping-cart-phantom-zero-quantity-items' },
+    { label: 'HRANDFIELD: Sampling With and Without Repeats', route: '/redis/hashes/hrandfield-sampling-with-and-without-repeats' },
+  ],
+  // NOTE: bare 'lists' confirmed collision-free (checked both quoted and
+  // unquoted forms, plus app.routes.ts route paths directly).
+  'lists': [
+    { label: 'list-max-listpack-size Is a Byte-Size Cap, Not an Entry Count', route: '/redis/lists/list-max-listpack-size-is-a-byte-size-cap' },
+    { label: 'LMPOP: The Non-Blocking Sibling of BLPOP', route: '/redis/lists/lmpop-the-non-blocking-sibling-of-blpop' },
+    { label: 'LPOS: RANK, COUNT, and the Nil vs. Empty Array Distinction', route: '/redis/lists/lpos-rank-count-and-the-nil-vs-empty-array' },
+  ],
+  // NOTE: bare 'sets' confirmed collision-free (checked both quoted and
+  // unquoted forms, plus app.routes.ts route paths directly).
+  'sets': [
+    { label: 'Sets Have a Third Encoding: listpack (Redis 7.2+)', route: '/redis/sets/sets-have-a-third-encoding-listpack-since-redis-7-2' },
+    { label: 'SMOVE: Atomic State Transitions Between Sets', route: '/redis/sets/smove-atomic-state-transitions-between-sets' },
+    { label: 'SINTERCARD: Counting Overlap Without Fetching It', route: '/redis/sets/sintercard-counting-overlap-without-fetching-it' },
+  ],
+  // NOTE: bare 'sorted-sets' confirmed collision-free (checked both quoted
+  // and unquoted forms, plus app.routes.ts route paths directly).
+  'sorted-sets': [
+    { label: 'The Sliding Window Rate Limiter Has the Same Member-Collision Bug', route: '/redis/sorted-sets/sliding-window-has-the-same-member-collision-bug' },
+    { label: 'ZUNIONSTORE: WEIGHTS, AGGREGATE, and the COUNT Mode', route: '/redis/sorted-sets/zunionstore-weights-aggregate-and-count-mode' },
+    { label: 'ZRANGEBYLEX Is Deprecated — Use ZRANGE ... BYLEX', route: '/redis/sorted-sets/zrangebylex-is-deprecated-use-zrange-bylex' },
+  ],
+  // NOTE: bare 'key-commands' confirmed collision-free (checked both quoted
+  // and unquoted forms, plus app.routes.ts route paths directly).
+  'key-commands': [
+    { label: 'SETEX vs. SET ... EX ... NX Composability', route: '/redis/key-commands/setex-vs-set-ex-nx-composability' },
+    { label: '--memkeys Is Redis 6.0, Not 7 — and What It Actually Does', route: '/redis/key-commands/memkeys-is-redis-6-not-7-and-what-it-does' },
+    { label: 'DUMP Does Not Include the TTL', route: '/redis/key-commands/dump-does-not-include-the-ttl' },
+  ],
+  // NOTE: bare 'transactions' already claimed by the SQL hub's own topic --
+  // hub-prefixed to 'redis-transactions', matching this hub's own established
+  // redis- progress/search key prefix.
+  'redis-transactions': [
+    { label: 'A Shared Connection Breaks WATCH Under Concurrency', route: '/redis/transactions/shared-connection-breaks-watch-under-concurrency' },
+    { label: 'WATCH Inside MULTI Is Not Allowed', route: '/redis/transactions/watch-inside-multi-is-not-allowed' },
+    { label: 'The Partial-Execution Mistake, as Real, Runnable Code', route: '/redis/transactions/the-partial-execution-mistake-as-real-runnable-code' },
+  ],
   closures: [
     { label: 'var Shares One Binding, let Creates One Per Iteration', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
     { label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },
@@ -3680,5 +3866,87 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The activeConnections Gauge Leak on Client Disconnect', route: '/observability/prometheus-metrics/the-activeconnections-gauge-leak-on-client-disconnect' },
     { label: 'The Histogram’s Missing +Inf Bucket', route: '/observability/prometheus-metrics/the-histograms-missing-inf-bucket' },
     { label: 'Verifying the Apdex Query’s Non-Obvious Algebra', route: '/observability/prometheus-metrics/verifying-the-apdex-querys-non-obvious-algebra' },
+  ],
+  'grafana-dashboards': [
+    { label: 'The Broken Nested-JSON Panel Link', route: '/observability/grafana-dashboards/the-broken-nested-json-panel-link' },
+    { label: 'Testing the Loki Trace-ID Regex’s Real Limits', route: '/observability/grafana-dashboards/testing-the-loki-trace-id-regexs-real-limits' },
+    { label: 'Automated Deployment-Correlation Detection', route: '/observability/grafana-dashboards/automated-deployment-correlation-detection' },
+  ],
+  'custom-app-metrics': [
+    { label: 'The Abstraction Layer’s Hardcoded Empty Label Set', route: '/observability/custom-app-metrics/the-abstraction-layers-hardcoded-empty-label-set' },
+    { label: 'The Callback Gauge That Forgets to Return Its Promise', route: '/observability/custom-app-metrics/the-callback-gauge-that-forgets-to-return-its-promise' },
+    { label: 'The Domain-Event Pattern for Decoupled Metrics', route: '/observability/custom-app-metrics/the-domain-event-pattern-for-decoupled-metrics' },
+  ],
+  'infrastructure-metrics': [
+    { label: 'The Missing rate() Wrapper on the CPU Limit Query', route: '/observability/infrastructure-metrics/the-missing-rate-wrapper-on-the-cpu-limit-query' },
+    { label: 'Building the Time-to-Exhaustion Capacity Projection', route: '/observability/infrastructure-metrics/building-the-time-to-exhaustion-capacity-projection' },
+    { label: 'Tracking a Sustained Condition Before Alerting', route: '/observability/infrastructure-metrics/tracking-a-sustained-condition-before-alerting' },
+  ],
+  'cloud-native-monitoring': [
+    { label: 'The command: Override That Drops --config.file', route: '/observability/cloud-native-monitoring/the-command-override-that-drops-config-file' },
+    { label: 'PodMonitor Uses a Different Field Name Than ServiceMonitor', route: '/observability/cloud-native-monitoring/podmonitor-uses-a-different-field-name-than-servicemonitor' },
+    { label: 'Routing the Page’s Own Alert With AlertmanagerConfig', route: '/observability/cloud-native-monitoring/routing-the-pages-own-alert-with-alertmanagerconfig' },
+  ],
+  'structured-logging': [
+    { label: 'The Middleware’s Raw traceparent Header Bug', route: '/observability/structured-logging/the-middlewares-raw-traceparent-header-bug' },
+    { label: 'Building a Log Sampler From the Quiz’s Own Numbers', route: '/observability/structured-logging/building-a-log-sampler-from-the-quizs-own-numbers' },
+    { label: 'The Log-Level Endpoint’s Stale-Timer Race Condition', route: '/observability/structured-logging/the-log-level-endpoints-stale-timer-race-condition' },
+  ],
+  'log-aggregation': [
+    { label: 'Promtail’s Drop Stage Has No Sampling Rate', route: '/observability/log-aggregation/promtails-drop-stage-has-no-sampling-rate' },
+    { label: 'The Dead Man’s Switch Query the QnA Names But Never Shows', route: '/observability/log-aggregation/the-dead-mans-switch-query-the-qna-names-but-never-shows' },
+    { label: 'What Happens When the Parser Meets a Regex Selector', route: '/observability/log-aggregation/what-happens-when-the-parser-meets-a-regex-selector' },
+  ],
+  'log-best-practices': [
+    { label: 'The Test Logger’s Two Silent Bugs', route: '/observability/log-best-practices/the-test-loggers-two-silent-bugs' },
+    { label: 'The Classifier That Misses a Quarter of the Log Contract', route: '/observability/log-best-practices/the-classifier-that-misses-a-quarter-of-the-log-contract' },
+    { label: 'Logging Which Path Correlation-ID Extraction Took', route: '/observability/log-best-practices/logging-which-path-correlation-id-extraction-took' },
+  ],
+  // NOTE: bare 'distributed-tracing' is already claimed by the System Design hub's
+  // own /system-design/distributed-tracing topic -- hub-prefixed here.
+  'obs-distributed-tracing': [
+    { label: 'Baggage Doesn’t Automatically Reach the Tracing Backend', route: '/observability/distributed-tracing/baggage-doesnt-automatically-reach-the-tracing-backend' },
+    { label: 'A Real Kafka Trace-Context Propagation, Verified', route: '/observability/distributed-tracing/a-real-kafka-trace-context-propagation-verified' },
+    { label: 'Building an N+1 Detector From the Span Tree', route: '/observability/distributed-tracing/building-an-n-plus-one-detector-from-the-span-tree' },
+  ],
+  'opentelemetry-tracing': [
+    { label: 'The Kafka Producer Span That Leaks When send() Throws', route: '/observability/opentelemetry-tracing/the-kafka-producer-span-that-leaks-when-send-throws' },
+    { label: 'Span Links for Fan-In Batch Processing', route: '/observability/opentelemetry-tracing/span-links-for-fan-in-batch-processing' },
+    { label: 'context.bind() Rescues a Queued Legacy Callback', route: '/observability/opentelemetry-tracing/context-bind-rescues-a-queued-legacy-callback' },
+  ],
+  'performance-profiling': [
+    { label: 'The lru-cache Default Import Is v6-Era Syntax', route: '/observability/performance-profiling/import-lru-from-lru-cache-is-v6-era-syntax' },
+    { label: 'Offloading Blocking Work to worker_threads, Measured', route: '/observability/performance-profiling/offloading-blocking-work-to-worker-threads-measured' },
+    { label: 'Tracking a Leaked Resource With async_hooks', route: '/observability/performance-profiling/tracking-a-leaked-resource-with-async-hooks' },
+  ],
+  'alerting-design': [
+    { label: 'The Watchdog Rule Needs a Separate Monitoring Stack', route: '/observability/alerting-design/the-watchdog-rule-needs-a-separate-monitoring-stack' },
+    { label: 'Building a Real Escalation-Policy State Machine', route: '/observability/alerting-design/building-a-real-escalation-policy-state-machine' },
+    { label: 'Dynamic Thresholds Catch What a Static One Misses', route: '/observability/alerting-design/dynamic-thresholds-catch-what-a-static-one-misses' },
+  ],
+  'on-call-incidents': [
+    { label: 'Computing the Postmortem’s Own MTTD and MTTR', route: '/observability/on-call-incidents/computing-the-postmortems-own-mttd-and-mttr' },
+    { label: 'Walking the Five Whys to the Real Root Cause', route: '/observability/on-call-incidents/walking-the-five-whys-to-the-real-root-cause' },
+    { label: 'Tracking Postmortem Action Items to Completion', route: '/observability/on-call-incidents/tracking-postmortem-action-items-to-completion' },
+  ],
+  'error-budgets-toil': [
+    { label: 'The Payback-Months Comment Was Off By 60%', route: '/observability/error-budgets-toil/the-payback-months-comment-was-off-by-60-percent' },
+    { label: 'Implementing the Multi-Window Burn Rate Check', route: '/observability/error-budgets-toil/implementing-the-multi-window-burn-rate-check' },
+    { label: 'Budget Exhaustion Time for a Partially-Spent Budget', route: '/observability/error-budgets-toil/budget-exhaustion-time-for-a-partially-spent-budget' },
+  ],
+  'chaos-engineering': [
+    { label: 'The @Injectable Decorator That’s Never Actually Injected', route: '/observability/chaos-engineering/the-injectable-decorator-thats-never-actually-injected' },
+    { label: 'Adding a Real Abort Mechanism to the Scheduler', route: '/observability/chaos-engineering/adding-a-real-abort-mechanism-to-the-scheduler' },
+    { label: 'Verifying the Fault Injector’s Rate and Latency', route: '/observability/chaos-engineering/verifying-the-fault-injectors-rate-and-latency' },
+  ],
+  'ebpf-observability': [
+    { label: 'Why a Go Service Needs a Different Uprobe Than OpenSSL’s', route: '/observability/ebpf-observability/why-a-go-service-needs-a-different-uprobe-than-openssl' },
+    { label: 'Aggregating Events by Process AND Syscall', route: '/observability/ebpf-observability/aggregating-events-by-process-and-syscall' },
+    { label: 'Measuring Why Aggregate-Only Capture Is Cheaper', route: '/observability/ebpf-observability/measuring-why-aggregate-only-capture-is-cheaper' },
+  ],
+  'observability-maturity': [
+    { label: 'The Quiz’s Own Rival Maturity Model', route: '/observability/observability-maturity/the-quizs-own-rival-maturity-model' },
+    { label: 'Combining Overall Score With Named Weakest Areas', route: '/observability/observability-maturity/combining-overall-score-with-named-weakest-areas' },
+    { label: 'Building a Real Anomaly Detector for MTTR', route: '/observability/observability-maturity/building-a-real-anomaly-detector-for-mttr' },
   ],
 };

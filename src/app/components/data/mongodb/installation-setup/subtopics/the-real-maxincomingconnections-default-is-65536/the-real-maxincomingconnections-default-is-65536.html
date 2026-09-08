@@ -1,0 +1,26 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Installation & Setup" topicRoute="/mongodb/installation-setup"
+    subtopicLabel="The Real maxIncomingConnections Default Is 65536" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">The Real maxIncomingConnections Default Is 65536</h1>
+  <p class="page-subtitle">The main page's own QnA cited a default of 1,000,000 for the server's connection ceiling — verified via the same figure already confirmed on the Fundamentals topic's own sibling subtopic, the real default is 65536.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>This is the exact same server-side ceiling the Fundamentals topic's own first subtopic already traced from the OTHER side — the driver's per-client maxPoolSize default. Together they cover both halves of "how many connections can a MongoDB deployment actually sustain."</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Installation & Setup" topicRoute="/mongodb/installation-setup"
+    [prev]="{ label: 'The Real Path to Enabling Auth: the Localhost Exception', route: '/mongodb/installation-setup/the-real-path-to-enabling-auth-the-localhost-exception' }" />
+</div>

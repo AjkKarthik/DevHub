@@ -72,7 +72,7 @@ const theory: TheoryPoint[] = [
 const codeTabs: CodeTab[] = [
   {
     label: 'Chaos Mesh Experiment',
-    language: 'typescript',
+    language: 'bash',
     code: `# Chaos Mesh (Kubernetes) experiment definitions
 
 # ── POD KILL EXPERIMENT ───────────────────────────────────────────
@@ -151,10 +151,9 @@ spec:
     language: 'typescript',
     code: `// Application-level fault injection via feature flags
 // Safe for production — can toggle per-request via header
+// (a plain class — every member below is static, so there's
+// nothing here for a DI container to construct or inject)
 
-import { Injectable } from '@angular/core';
-
-@Injectable({ providedIn: 'root' })
 export class FaultInjectionMiddleware {
   // Enable via env var or LaunchDarkly feature flag
   private static faultConfig = {

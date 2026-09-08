@@ -1,0 +1,26 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Query Operators" topicRoute="/mongodb/query-operators"
+    subtopicLabel="Why tags.1 Needs Its Own Index, Not the Multikey One" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">Why tags.1 Needs Its Own Index, Not the Multikey One</h1>
+  <p class="page-subtitle">The main page's own QnA claimed a position-based array query can use a multikey index on the bare array field — verified against MongoDB's own docs, a position query needs a completely separate, non-multikey index instead.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>The Indexes topic elsewhere in this hub covers multikey indexes in general — this subtopic is the specific edge case where "there's an index on this array field" turns out not to be enough on its own.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Query Operators" topicRoute="/mongodb/query-operators"
+    [next]="{ label: 'Querying Permission Bitmasks With $bitsAllSet and $bitsAnySet', route: '/mongodb/query-operators/querying-permission-bitmasks-with-bitsallset' }" />
+</div>

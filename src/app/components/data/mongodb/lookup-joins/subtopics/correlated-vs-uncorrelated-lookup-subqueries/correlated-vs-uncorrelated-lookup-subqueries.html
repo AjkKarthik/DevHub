@@ -1,0 +1,27 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="$lookup &amp; Joins" topicRoute="/mongodb/lookup-joins"
+    subtopicLabel="Correlated vs. Uncorrelated $lookup Subqueries" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">Correlated vs. Uncorrelated $lookup Subqueries</h1>
+  <p class="page-subtitle">The main page's own theory section originally called the let/pipeline form "uncorrelated" — verified against MongoDB's own documentation that this is backwards: the let/pipeline form is exactly what MongoDB calls correlated.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>Getting this terminology right matters beyond a vocabulary quiz — recognizing whether a sub-pipeline is correlated or uncorrelated tells you whether MongoDB can potentially cache and reuse the sub-pipeline's result across documents, which is a real, checkable performance lever on a pipeline with many joined documents.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="$lookup &amp; Joins" topicRoute="/mongodb/lookup-joins"
+    [prev]="{ label: '$lookup Is Actually Supported Inside $facet Sub-Pipelines', route: '/mongodb/lookup-joins/lookup-is-actually-supported-inside-facet-sub-pipelines' }"
+    [next]="{ label: 'A Real Self-Join: One-Level Org Chart', route: '/mongodb/lookup-joins/a-real-self-join-one-level-org-chart' }" />
+</div>

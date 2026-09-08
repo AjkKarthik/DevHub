@@ -139,7 +139,12 @@ async function isAllowedSliding(userId: string, limit: number, windowMs: number)
   const now = Date.now();
   const key = \`ratelimit:sliding:\${userId}\`;
   await redis.zremrangebyscore(key, 0, now - windowMs);
-  await redis.zadd(key, now, \`\${now}\`);
+  // Member must be unique per request, not just per millisecond -- two
+  // requests landing in the same ms would otherwise collide on the same
+  // \${now} member and ZADD would update one entry instead of adding a
+  // second one, silently undercounting (the exact mistake the "Sliding
+  // window" mistake block above warns against).
+  await redis.zadd(key, now, \`\${now}-\${Math.random()}\`);
   await redis.expire(key, Math.ceil(windowMs / 1000) + 1);
   const count = await redis.zcard(key);
   return count <= limit;
@@ -271,7 +276,7 @@ async function getTopN(n: number): Promise<Array<{userId: string; score: number}
     },
     {
       q: 'What does ZRANGEBYLEX do?',
-      a: 'When all members have the same score, ZRANGEBYLEX key [min [max performs lexicographic range queries. Example: ZRANGEBYLEX dict [a [b returns all entries starting with a or b. Uses - and + for negative/positive infinity. Useful for autocomplete (ZRANGEBYLEX prefix [searchterm [searchterm\xff) and alphabetical pagination.',
+      a: 'When all members have the same score, ZRANGEBYLEX key [min [max performs lexicographic range queries. Example: ZRANGEBYLEX dict [a [b returns all entries starting with a or b. Uses - and + for negative/positive infinity. Useful for autocomplete (ZRANGEBYLEX prefix [searchterm [searchterm\xff) and alphabetical pagination. Verified against Redis\'s own docs: ZRANGEBYLEX is deprecated as of Redis 6.2.0 -- the modern equivalent is the unified <code>ZRANGE key min max BYLEX</code>, the same command that also replaced ZRANGEBYSCORE.',
     },
     {
       q: 'How do you use ZUNIONSTORE for aggregating scores across sorted sets?',

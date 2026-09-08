@@ -1,0 +1,27 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Grafana Dashboards" topicRoute="/observability/grafana-dashboards"
+    subtopicLabel="Testing the Loki Trace-ID Regex’s Real Limits" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">Testing the Loki Trace-ID Regex’s Real Limits</h1>
+  <p class="page-subtitle">The derivedField matcherRegex has zero understanding of JSON structure — verified via concrete log lines that it can silently grab the wrong trace ID, or miss one entirely.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>The page's own mistake block on missing deployment annotations describes correlating a metric spike with a deploy manually — the final subtopic builds an automated correlation detector.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Grafana Dashboards" topicRoute="/observability/grafana-dashboards"
+    [prev]="{ label: 'The Broken Nested-JSON Panel Link', route: '/observability/grafana-dashboards/the-broken-nested-json-panel-link' }"
+    [next]="{ label: 'Automated Deployment-Correlation Detection', route: '/observability/grafana-dashboards/automated-deployment-correlation-detection' }" />
+</div>

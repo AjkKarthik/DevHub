@@ -1,0 +1,26 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Array Queries" topicRoute="/mongodb/array-queries"
+    subtopicLabel="Sorting by an Array Field Uses Min or Max, Not Average" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">Sorting by an Array Field Uses Min or Max, Not Average</h1>
+  <p class="page-subtitle">The main page's own QnA states this precisely in prose — this subtopic verifies it with a concrete, genuinely counter-intuitive example: one document sorting first in BOTH ascending and descending order.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>This rule interacts directly with the $elemMatch section elsewhere on the main page — knowing whether a document's array-field sort key came from its min or max element matters just as much as knowing which single element a multi-condition query actually matched.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Array Queries" topicRoute="/mongodb/array-queries"
+    [prev]="{ label: 'Slicing Arrays With the $slice Projection Operator', route: '/mongodb/array-queries/slicing-arrays-with-the-slice-projection-operator' }" />
+</div>

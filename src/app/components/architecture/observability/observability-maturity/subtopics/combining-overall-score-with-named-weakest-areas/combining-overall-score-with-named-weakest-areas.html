@@ -1,0 +1,27 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Observability Maturity" topicRoute="/observability/observability-maturity"
+    subtopicLabel="Combining Overall Score With Named Weakest Areas" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">Combining Overall Score With Named Weakest Areas</h1>
+  <p class="page-subtitle">The page's own Challenge only returns an overall score — the page's own "Maturity Assessment" code tab shows named weakest areas separately. This subtopic combines both into one function.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic makes the AIOps QnA's anomaly-detection claim concrete with a real, verified z-score detector applied to MTTR data — a natural fit for a Level 4 team already tracking maturity the way this subtopic's own function does.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Observability Maturity" topicRoute="/observability/observability-maturity"
+    [prev]="{ label: 'The Quiz’s Own Rival Maturity Model', route: '/observability/observability-maturity/the-quizs-own-rival-maturity-model' }"
+    [next]="{ label: 'Building a Real Anomaly Detector for MTTR', route: '/observability/observability-maturity/building-a-real-anomaly-detector-for-mttr' }" />
+</div>

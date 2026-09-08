@@ -1,0 +1,26 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Data Modelling" topicRoute="/mongodb/data-modelling"
+    subtopicLabel="Building the Workload Matrix Behind the Challenge" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">Building the Workload Matrix Behind the Challenge</h1>
+  <p class="page-subtitle">The main page's own theory names the workload matrix as the first step in schema design, but the Challenge itself never shows one — this subtopic builds it for the Challenge's own Social Media Feed scenario and traces which row justifies which design choice.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>This closes the loop on the main page's own theory section — "workload-driven design" stops being an abstract slogan once it's applied to the exact schema the Challenge already builds, showing the numbers that make extended reference and the computed pattern the right calls specifically for THIS workload, not universally.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Data Modelling" topicRoute="/mongodb/data-modelling"
+    [prev]="{ label: 'Nested Sets: A Real Left/Right Boundary Example', route: '/mongodb/data-modelling/nested-sets-a-real-left-right-boundary-example' }" />
+</div>

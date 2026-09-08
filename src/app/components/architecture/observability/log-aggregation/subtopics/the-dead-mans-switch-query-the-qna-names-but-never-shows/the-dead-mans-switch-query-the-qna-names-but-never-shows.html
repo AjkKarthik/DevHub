@@ -1,0 +1,27 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Log Aggregation" topicRoute="/observability/log-aggregation"
+    subtopicLabel="The Dead Man’s Switch Query the QnA Names But Never Shows" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">The Dead Man’s Switch Query the QnA Names But Never Shows</h1>
+  <p class="page-subtitle">The log-based alerting QnA names this pattern in one clause — verified against Loki's own absent_over_time() docs, then built as a real alert rule matching the page's own existing alert-rule style.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic extends the Challenge's own parseStreamSelector to handle the regex selector syntax the page's own QnA example uses, which the naive solution silently garbles instead of rejecting cleanly.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Log Aggregation" topicRoute="/observability/log-aggregation"
+    [prev]="{ label: 'Promtail’s Drop Stage Has No Sampling Rate', route: '/observability/log-aggregation/promtails-drop-stage-has-no-sampling-rate' }"
+    [next]="{ label: 'What Happens When the Parser Meets a Regex Selector', route: '/observability/log-aggregation/what-happens-when-the-parser-meets-a-regex-selector' }" />
+</div>

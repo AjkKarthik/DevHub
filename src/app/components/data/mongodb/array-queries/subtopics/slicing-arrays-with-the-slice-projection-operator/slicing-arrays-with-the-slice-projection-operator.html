@@ -1,0 +1,27 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Array Queries" topicRoute="/mongodb/array-queries"
+    subtopicLabel="Slicing Arrays With the $slice Projection Operator" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">Slicing Arrays With the $slice Projection Operator</h1>
+  <p class="page-subtitle">$slice (projection) is a QuickRef entry and gets a detailed QnA — but no code tab on the main page ever shows it. This subtopic builds and verifies all three of its forms.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>The main page's own QuickRef lists $slice (projection) right alongside $elemMatch (projection) — but only $elemMatch actually gets a codeTab. This subtopic closes that gap for its neighbor.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Array Queries" topicRoute="/mongodb/array-queries"
+    [prev]="{ label: 'The Compound Multikey Restriction Is Unconditional, Not About Size', route: '/mongodb/array-queries/the-compound-multikey-restriction-is-unconditional' }"
+    [next]="{ label: 'Sorting by an Array Field Uses Min or Max, Not Average', route: '/mongodb/array-queries/sorting-by-an-array-field-uses-min-or-max' }" />
+</div>

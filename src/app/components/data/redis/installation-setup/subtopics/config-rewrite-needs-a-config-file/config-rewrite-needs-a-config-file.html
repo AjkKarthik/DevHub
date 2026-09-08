@@ -1,0 +1,26 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Installation &amp; Setup" topicRoute="/redis/installation-setup"
+    subtopicLabel="CONFIG REWRITE Needs a Config File to Rewrite" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">CONFIG REWRITE Needs a Config File to Rewrite</h1>
+  <p class="page-subtitle">The main page's QnA names CONFIG REWRITE as how to persist runtime changes — but two of its own three Docker Setup commands start Redis with no config file at all, so CONFIG REWRITE fails outright on them.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>This closes the topic's arc: the first two subtopics corrected which redis.conf directives are actually restart-only and what protected-mode actually checks; this one closes a real gap in the main page's own "how do I persist a CONFIG SET" advice by tying it directly back to the page's own Docker Setup examples.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Installation &amp; Setup" topicRoute="/redis/installation-setup"
+    [prev]="{ label: 'Protected-Mode Checks for a Password, Not a Bind', route: '/redis/installation-setup/protected-mode-checks-password-not-bind' }" />
+</div>

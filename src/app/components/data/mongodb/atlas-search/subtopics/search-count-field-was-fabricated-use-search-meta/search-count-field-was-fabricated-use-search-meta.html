@@ -1,0 +1,26 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Atlas Search & Vector Search" topicRoute="/mongodb/atlas-search"
+    subtopicLabel="A Field Name That Was Never Real" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">A Field Name That Was Never Real</h1>
+  <p class="page-subtitle">The main page's own Challenge solution read a total count via products[0]?.['$$searchCount'] — a field that has never existed on any Atlas Search result document. The real mechanism is the $$SEARCH_META system variable.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>This directly corrects the main page's own Challenge solution, and sets up the topic's remaining subtopics: a code tab that requests a count it never shows how to retrieve, and a real $vectorSearch query for a QnA the page discusses at length but never demonstrates in code.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Atlas Search & Vector Search" topicRoute="/mongodb/atlas-search"
+    [next]="{ label: 'Exposing the Count You Already Requested', route: '/mongodb/atlas-search/exposing-the-count-you-already-requested' }" />
+</div>

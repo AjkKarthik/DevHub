@@ -1,0 +1,27 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Hashes" topicRoute="/redis/hashes"
+    subtopicLabel="The Shopping Cart Challenge Leaves Phantom Zero-Quantity Items" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">The Shopping Cart Challenge Leaves Phantom Zero-Quantity Items</h1>
+  <p class="page-subtitle">The main page's own Shopping Cart Challenge solution stores a quantity-0 field instead of removing it — a realistic UI action (decrementing an item to zero) leaves a phantom line item sitting in the cart.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>This is the second main-page finding for this topic — a real data-integrity gap in the Challenge's own reference solution, fixed by deleting the field at write time rather than filtering it out on read. Next: HRANDFIELD, named in the theory but never demonstrated in any codeTab.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Hashes" topicRoute="/redis/hashes"
+    [prev]="{ label: 'HEXPIRE: Real Per-Field TTL, Since Redis 7.4', route: '/redis/hashes/hexpire-real-per-field-ttl-since-redis-7-4' }"
+    [next]="{ label: 'HRANDFIELD: Sampling With and Without Repeats', route: '/redis/hashes/hrandfield-sampling-with-and-without-repeats' }" />
+</div>

@@ -1,0 +1,27 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Sets" topicRoute="/redis/sets"
+    subtopicLabel="SMOVE: Atomic State Transitions Between Sets" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">SMOVE: Atomic State Transitions Between Sets</h1>
+  <p class="page-subtitle">The main page's own QnA describes SMOVE's job-queue state-transition use case in one paragraph — here it builds the actual job-queue example, plus a real, easy-to-miss edge case: what happens when the member is already in the destination set.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>This closes a real gap the main page's own QnA leaves open — SMOVE is described but never demonstrated. Next: SINTERCARD, named in a separate QnA but also never shown in any codeTab.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Sets" topicRoute="/redis/sets"
+    [prev]="{ label: 'Sets Have a Third Encoding: listpack (Redis 7.2+)', route: '/redis/sets/sets-have-a-third-encoding-listpack-since-redis-7-2' }"
+    [next]="{ label: 'SINTERCARD: Counting Overlap Without Fetching It', route: '/redis/sets/sintercard-counting-overlap-without-fetching-it' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Grafana Dashboards" topicRoute="/observability/grafana-dashboards"
+    subtopicLabel="The Broken Nested-JSON Panel Link" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">The Broken Nested-JSON Panel Link</h1>
+  <p class="page-subtitle">A mistake block's own "right" example failed to parse as valid JSON once embedded in its real context — verified, and fixed by building the URL programmatically instead of hand-escaping it.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>The Loki + Tempo Linking codeTab's own trace-ID extraction regex has zero understanding of JSON structure — the next subtopic tests its real limits with concrete log lines.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Grafana Dashboards" topicRoute="/observability/grafana-dashboards"
+    [next]="{ label: 'Testing the Loki Trace-ID Regex’s Real Limits', route: '/observability/grafana-dashboards/testing-the-loki-trace-id-regexs-real-limits' }" />
+</div>

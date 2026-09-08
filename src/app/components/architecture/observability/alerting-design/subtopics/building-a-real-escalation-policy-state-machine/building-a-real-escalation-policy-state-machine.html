@@ -1,0 +1,27 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Alerting Design" topicRoute="/observability/alerting-design"
+    subtopicLabel="Building a Real Escalation-Policy State Machine" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">Building a Real Escalation-Policy State Machine</h1>
+  <p class="page-subtitle">The page's own QnA describes a 3-tier escalation policy in prose — this subtopic builds and verifies it across all three real outcomes: on-time ack, late ack, and total silence.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic tackles a different part of the alerting pipeline entirely — choosing the right THRESHOLD in the first place, contrasting a flat static number against a dynamic, seasonally-aware one.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Alerting Design" topicRoute="/observability/alerting-design"
+    [prev]="{ label: 'The Watchdog Rule Needs a Separate Monitoring Stack', route: '/observability/alerting-design/the-watchdog-rule-needs-a-separate-monitoring-stack' }"
+    [next]="{ label: 'Dynamic Thresholds Catch What a Static One Misses', route: '/observability/alerting-design/dynamic-thresholds-catch-what-a-static-one-misses' }" />
+</div>

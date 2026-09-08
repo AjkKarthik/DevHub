@@ -1,0 +1,27 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Performance Profiling" topicRoute="/observability/performance-profiling"
+    subtopicLabel="Offloading Blocking Work to worker_threads, Measured" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">Offloading Blocking Work to worker_threads, Measured</h1>
+  <p class="page-subtitle">The page's own theory names worker_threads as the fix for event-loop blocking in one sentence, with no demonstration — this subtopic measures it directly against a live timer.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic builds a working async_hooks-based resource-leak tracker — the technique the page's own QnA names in prose ("async_hooks: trace async resource creation and destruction to find resource leaks") but never shows in code.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Performance Profiling" topicRoute="/observability/performance-profiling"
+    [prev]="{ label: 'The lru-cache Default Import Is v6-Era Syntax', route: '/observability/performance-profiling/import-lru-from-lru-cache-is-v6-era-syntax' }"
+    [next]="{ label: 'Tracking a Leaked Resource With async_hooks', route: '/observability/performance-profiling/tracking-a-leaked-resource-with-async-hooks' }" />
+</div>

@@ -1,0 +1,27 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Transactions (MULTI/EXEC)" topicRoute="/redis/transactions"
+    subtopicLabel="WATCH Inside MULTI Is Not Allowed" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">WATCH Inside MULTI Is Not Allowed</h1>
+  <p class="page-subtitle">The main page's own WATCH → MULTI ordering is presented as a pattern to follow — it's actually a hard, server-enforced restriction. Getting the order wrong doesn't just look sloppy, it triggers a real Redis error.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>This closes a real documentation gap — the main page never states that WATCH-after-MULTI is a genuine server error, not just a stylistic convention. Next: the "runtime error" mistake block turned into real, runnable code with the actual reply array.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Transactions (MULTI/EXEC)" topicRoute="/redis/transactions"
+    [prev]="{ label: 'A Shared Connection Breaks WATCH Under Concurrency', route: '/redis/transactions/shared-connection-breaks-watch-under-concurrency' }"
+    [next]="{ label: 'The Partial-Execution Mistake, as Real, Runnable Code', route: '/redis/transactions/the-partial-execution-mistake-as-real-runnable-code' }" />
+</div>

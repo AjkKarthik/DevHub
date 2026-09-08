@@ -1,0 +1,27 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="eBPF Observability" topicRoute="/observability/ebpf-observability"
+    subtopicLabel="Aggregating Events by Process AND Syscall" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">Aggregating Events by Process AND Syscall</h1>
+  <p class="page-subtitle">The page's own bpftrace example aggregates events by process AND syscall in one pass — the page's own Challenge only ever aggregates by process, discarding the syscall dimension entirely.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic returns to the page's own mistakes block, measuring directly why "capture aggregates, not per-event data" is genuinely the cheaper choice the page recommends.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="eBPF Observability" topicRoute="/observability/ebpf-observability"
+    [prev]="{ label: 'Why a Go Service Needs a Different Uprobe Than OpenSSL’s', route: '/observability/ebpf-observability/why-a-go-service-needs-a-different-uprobe-than-openssl' }"
+    [next]="{ label: 'Measuring Why Aggregate-Only Capture Is Cheaper', route: '/observability/ebpf-observability/measuring-why-aggregate-only-capture-is-cheaper' }" />
+</div>

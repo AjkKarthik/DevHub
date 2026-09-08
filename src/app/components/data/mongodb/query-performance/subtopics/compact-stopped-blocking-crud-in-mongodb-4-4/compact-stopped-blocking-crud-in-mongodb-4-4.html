@@ -1,0 +1,27 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Query Performance" topicRoute="/mongodb/query-performance"
+    subtopicLabel="Compact Stopped Blocking CRUD in MongoDB 4.4" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">Compact Stopped Blocking CRUD in MongoDB 4.4</h1>
+  <p class="page-subtitle">The main page's own QnA claimed compact "blocks all operations on the collection during compaction" as a blanket rule — verified against MongoDB's own documented version history that this was true only before 4.4.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="MongoDB 4.4+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>This is the same category of fix as the sibling subtopic on reIndex — a version-history detail that stayed stale on the main page even as the underlying command's own behavior genuinely improved.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Query Performance" topicRoute="/mongodb/query-performance"
+    [prev]="{ label: 'reIndex Never Got the Non-Blocking Hybrid Build Fix', route: '/mongodb/query-performance/reindex-never-got-the-hybrid-builds-non-blocking-fix' }"
+    [next]="{ label: 'Causal Consistency: Read-Your-Own-Writes After a Secondary Read', route: '/mongodb/query-performance/causal-consistency-read-your-own-writes-after-a-secondary-read' }" />
+</div>

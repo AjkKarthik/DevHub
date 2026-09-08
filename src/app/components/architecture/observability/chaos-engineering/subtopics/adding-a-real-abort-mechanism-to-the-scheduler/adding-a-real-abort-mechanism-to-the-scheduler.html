@@ -1,0 +1,27 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Chaos Engineering" topicRoute="/observability/chaos-engineering"
+    subtopicLabel="Adding a Real Abort Mechanism to the Scheduler" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">Adding a Real Abort Mechanism to the Scheduler</h1>
+  <p class="page-subtitle">The page's own mistakes block calls an abort mechanism mandatory — but the page's own Challenge scheduler has none at all, just a fixed wait.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic turns to the other real, runnable code on the page — statistically verifying that the fault injector's configured error rate and latency actually match what it produces in practice.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Chaos Engineering" topicRoute="/observability/chaos-engineering"
+    [prev]="{ label: 'The @Injectable Decorator That’s Never Actually Injected', route: '/observability/chaos-engineering/the-injectable-decorator-thats-never-actually-injected' }"
+    [next]="{ label: 'Verifying the Fault Injector’s Rate and Latency', route: '/observability/chaos-engineering/verifying-the-fault-injectors-rate-and-latency' }" />
+</div>

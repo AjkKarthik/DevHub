@@ -117,7 +117,13 @@ export function loggingMiddleware(
   res: express.Response,
   next: express.NextFunction,
 ) {
-  const traceId = req.headers['traceparent'] as string ?? crypto.randomUUID();
+  // Extract just the trace-id segment (32 hex chars) from a W3C traceparent
+  // header ("version-trace_id-parent_id-trace_flags") -- storing the ENTIRE
+  // raw header string would put the version/parent-id/flags segments into
+  // every log line too, contradicting the Log Schema codeTab's own example
+  // (a bare 32-hex traceId, e.g. "4bf92f3577b34da6a3ce929d0e0e4736").
+  const traceparent = req.headers['traceparent'] as string | undefined;
+  const traceId = traceparent?.split('-')[1] ?? crypto.randomUUID();
   const requestId = crypto.randomUUID();
 
   const ctx: RequestContext = { traceId, requestId };

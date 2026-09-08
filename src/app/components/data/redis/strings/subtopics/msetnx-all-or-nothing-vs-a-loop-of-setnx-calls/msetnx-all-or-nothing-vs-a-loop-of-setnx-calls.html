@@ -1,0 +1,27 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Strings" topicRoute="/redis/strings"
+    subtopicLabel="MSETNX Is All-or-Nothing; a Loop of SETNX Calls Is Not" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">MSETNX Is All-or-Nothing; a Loop of SETNX Calls Is Not</h1>
+  <p class="page-subtitle">The main page's own QnA names MSETNX's all-or-nothing guarantee in one sentence but never shows what it protects against — or what breaks when you approximate it with individual SETNX calls instead.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>This closes a real gap the main page's own QnA leaves open — the "all-or-nothing" claim is correct, but only MSETNX itself provides it; nothing built from separate calls does, no matter how many existence checks are added. Next: a different gap-closing subtopic on GETRANGE/SETRANGE for compact fixed-width record storage.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Strings" topicRoute="/redis/strings"
+    [prev]="{ label: 'Atomic INCR + EXPIRE Fixes the Rate Limiter TTL Leak', route: '/redis/strings/atomic-incr-expire-fixes-the-rate-limiter-ttl-leak' }"
+    [next]="{ label: 'GETRANGE/SETRANGE: Fixed-Width Records at Byte Offsets', route: '/redis/strings/getrange-setrange-fixed-width-records-at-byte-offsets' }" />
+</div>

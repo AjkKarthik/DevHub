@@ -1,0 +1,26 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Replication & Sharding" topicRoute="/mongodb/replication-sharding"
+    subtopicLabel="The EU Tilde Upper Bound Fixes a Broken Zone Range" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">The EU Tilde Upper Bound Fixes a Broken Zone Range</h1>
+  <p class="page-subtitle">The main page's own zone-sharding QnA used "EU" + "" as an upper bound — a no-op concatenation identical to the lower bound — while a sibling QnA on the same page already correctly uses "EU~" for the exact same purpose.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>This directly corrects the main page's own QnA, and sets up the topic's remaining subtopics: the oplog-size default the page also stated incompletely, and the actual reconfig code for a hidden/delayed backup member the page only ever describes in prose.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Replication & Sharding" topicRoute="/mongodb/replication-sharding"
+    [next]="{ label: 'The Oplog Default Has a 990MB Floor', route: '/mongodb/replication-sharding/oplog-default-has-a-990mb-floor-the-page-missed' }" />
+</div>

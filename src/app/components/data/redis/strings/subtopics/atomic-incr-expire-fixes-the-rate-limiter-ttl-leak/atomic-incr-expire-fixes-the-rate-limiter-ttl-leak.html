@@ -1,0 +1,26 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Strings" topicRoute="/redis/strings"
+    subtopicLabel="Atomic INCR + EXPIRE Fixes the Rate Limiter TTL Leak" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">Atomic INCR + EXPIRE Fixes the Rate Limiter TTL Leak</h1>
+  <p class="page-subtitle">The main page's own mistake block warns against splitting SET and EXPIRE into two calls — but its own Rate Limiter Challenge solution split INCR and EXPIRE the exact same way, with the same crash-window risk.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>This is the main-page fix for this topic — the Rate Limiter Challenge's reference solution now uses a single atomic Lua script instead of two separate round trips. Next: MSETNX's real all-or-nothing guarantee, contrasted against a naive loop of individually-atomic SETNX calls.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Strings" topicRoute="/redis/strings"
+    [next]="{ label: 'MSETNX Is All-or-Nothing; a Loop of SETNX Calls Is Not', route: '/redis/strings/msetnx-all-or-nothing-vs-a-loop-of-setnx-calls' }" />
+</div>

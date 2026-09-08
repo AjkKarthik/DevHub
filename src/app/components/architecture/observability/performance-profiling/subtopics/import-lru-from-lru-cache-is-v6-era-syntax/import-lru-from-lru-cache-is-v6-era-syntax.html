@@ -1,0 +1,26 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Performance Profiling" topicRoute="/observability/performance-profiling"
+    subtopicLabel="The lru-cache Default Import Is v6-Era Syntax" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">The lru-cache Default Import Is v6-Era Syntax</h1>
+  <p class="page-subtitle">The page's own "Memory Leak Detection" fix uses `import LRU from 'lru-cache'` — verified against the real, currently-published package that this throws "LRU is not a constructor" at runtime.</p>
+  <app-page-meta [readingTime]="5" difficulty="advanced" since="lru-cache v7+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic builds the worker_threads offload the page's own theory names but never demonstrates, then the final subtopic uses async_hooks to track a leaked resource — the technique the page's own QnA names for finding resource leaks in production.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Performance Profiling" topicRoute="/observability/performance-profiling"
+    [next]="{ label: 'Offloading Blocking Work to worker_threads, Measured', route: '/observability/performance-profiling/offloading-blocking-work-to-worker-threads-measured' }" />
+</div>

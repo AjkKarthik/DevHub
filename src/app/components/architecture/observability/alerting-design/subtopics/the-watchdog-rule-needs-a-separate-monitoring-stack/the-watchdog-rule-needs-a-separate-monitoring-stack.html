@@ -1,0 +1,26 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Alerting Design" topicRoute="/observability/alerting-design"
+    subtopicLabel="The Watchdog Rule Needs a Separate Monitoring Stack" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">The Watchdog Rule Needs a Separate Monitoring Stack</h1>
+  <p class="page-subtitle">The page's own theory names a PromQL absent() rule as the dead man's switch mechanism without stating where it must run — its own quiz explains exactly why that constraint is load-bearing.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic builds a real escalation-policy state machine — the QnA's own paging/escalation description, verified in code — then the final subtopic contrasts static and dynamic alert thresholds against synthetic seasonal data.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Alerting Design" topicRoute="/observability/alerting-design"
+    [next]="{ label: 'Building a Real Escalation-Policy State Machine', route: '/observability/alerting-design/building-a-real-escalation-policy-state-machine' }" />
+</div>

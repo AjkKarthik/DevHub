@@ -1,0 +1,26 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Observability Maturity" topicRoute="/observability/observability-maturity"
+    subtopicLabel="The Quiz's Own Rival Maturity Model" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">The Quiz's Own Rival Maturity Model</h1>
+  <p class="page-subtitle">One quiz question introduced a completely different 4-level maturity model — using the same level numbers to mean different things than every other section of the page.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic extends the page's own Challenge with the richer, named weakest-areas prioritization its own "Maturity Assessment" code tab already demonstrates, then the final subtopic makes the AIOps QnA's anomaly-detection claim concrete with a real, verified detector.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Observability Maturity" topicRoute="/observability/observability-maturity"
+    [next]="{ label: 'Combining Overall Score With Named Weakest Areas', route: '/observability/observability-maturity/combining-overall-score-with-named-weakest-areas' }" />
+</div>

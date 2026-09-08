@@ -1,0 +1,27 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Structured Logging" topicRoute="/observability/structured-logging"
+    subtopicLabel="Building a Log Sampler From the Quiz’s Own Numbers" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">Building a Log Sampler From the Quiz’s Own Numbers</h1>
+  <p class="page-subtitle">The quiz explains head-based probabilistic sampling and its statistical-validity property in real depth, but no codeTab ever implements it — this subtopic builds and verifies one against the quiz's own exact sample rates.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic finds and fixes a real race condition in the mistake block's own dynamic log-level endpoint fix code.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Structured Logging" topicRoute="/observability/structured-logging"
+    [prev]="{ label: 'The Middleware’s Raw traceparent Header Bug', route: '/observability/structured-logging/the-middlewares-raw-traceparent-header-bug' }"
+    [next]="{ label: 'The Log-Level Endpoint’s Stale-Timer Race Condition', route: '/observability/structured-logging/the-log-level-endpoints-stale-timer-race-condition' }" />
+</div>

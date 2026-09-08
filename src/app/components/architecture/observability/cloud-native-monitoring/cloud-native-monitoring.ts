@@ -71,7 +71,7 @@ const theory: TheoryPoint[] = [
 const codeTabs: CodeTab[] = [
   {
     label: 'Prometheus Operator CRDs',
-    language: 'typescript',
+    language: 'bash',
     code: `# ServiceMonitor — tells Prometheus to scrape the order-service
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
@@ -121,7 +121,7 @@ spec:
   },
   {
     label: 'Thanos Setup',
-    language: 'typescript',
+    language: 'bash',
     code: `# docker-compose.yml — Thanos sidecar + querier setup
 services:
   prometheus:
@@ -130,6 +130,11 @@ services:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus-data:/prometheus
     command:
+      # command: REPLACES the image's default CMD entirely (not appended) --
+      # --config.file must be listed explicitly or Prometheus falls back to
+      # its own compiled-in default ("prometheus.yml", a relative path), never
+      # finding the config mounted above at /etc/prometheus/prometheus.yml.
+      - --config.file=/etc/prometheus/prometheus.yml
       - --storage.tsdb.path=/prometheus
       - --storage.tsdb.retention.time=2h    # Thanos handles long-term
       - --storage.tsdb.min-block-duration=2h

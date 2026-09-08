@@ -1,0 +1,27 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Projections & Sorting" topicRoute="/mongodb/projections-sorting"
+    subtopicLabel="Building a Real Covered Query" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">Building a Real Covered Query</h1>
+  <p class="page-subtitle">The main page's own "Covered Queries" theory section states the exact requirements in detail — including the easy-to-miss _id exclusion rule — but no code tab ever builds one. This subtopic does.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>A covered query never triggers the in-memory sort at all — it's the most complete answer to the memory-limit subtopic right before this one, avoiding the whole problem rather than staying under the (correct) 100 MB ceiling.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Projections & Sorting" topicRoute="/mongodb/projections-sorting"
+    [prev]="{ label: 'The Real Sort Memory Limit Is 100 MB, Not 32', route: '/mongodb/projections-sorting/the-real-sort-memory-limit-is-100mb-not-32' }"
+    [next]="{ label: 'Sorting by a Computed Field With $addFields', route: '/mongodb/projections-sorting/sorting-by-a-computed-field-with-addfields' }" />
+</div>

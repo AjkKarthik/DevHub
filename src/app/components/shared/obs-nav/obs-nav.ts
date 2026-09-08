@@ -95,38 +95,326 @@ import { SUBTOPICS } from '../../../data/subtopics';
       </div>
     }
   }
-  <a routerLink="/observability/grafana-dashboards"        routerLinkActive="active"><span class="nl-text">Grafana Dashboards</span>@if(progress.isDone('obs-grafana-dashboards')){<span class="nl-done">✓</span>}</a>
-  <a routerLink="/observability/custom-app-metrics"        routerLinkActive="active"><span class="nl-text">Custom App Metrics</span>@if(progress.isDone('obs-custom-app-metrics')){<span class="nl-done">✓</span>}</a>
-  <a routerLink="/observability/infrastructure-metrics"    routerLinkActive="active"><span class="nl-text">Infrastructure Metrics</span>@if(progress.isDone('obs-infrastructure-metrics')){<span class="nl-done">✓</span>}</a>
-  <a routerLink="/observability/cloud-native-monitoring"   routerLinkActive="active"><span class="nl-text">Cloud-Native Monitoring</span>@if(progress.isDone('obs-cloud-native-monitoring')){<span class="nl-done">✓</span>}</a>
+  <a routerLink="/observability/grafana-dashboards" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+    <span class="nl-text">Grafana Dashboards</span>
+    @if(progress.isDone('obs-grafana-dashboards')){<span class="nl-done">✓</span>}
+    @if (subtopicsOf('grafana-dashboards')) {
+      <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('grafana-dashboards')"
+              (click)="toggleSubtopics('grafana-dashboards', $event)" aria-label="Toggle subtopics">›</button>
+    }
+  </a>
+  @if (subtopicsOf('grafana-dashboards'); as gdSubs) {
+    @if (isSubtopicsExpanded('grafana-dashboards')) {
+      <div class="nav-subtopics">
+        @for (s of gdSubs; track s.route) {
+          <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+            <span class="nl-text">{{ s.label }}</span>
+          </a>
+        }
+      </div>
+    }
+  }
+  <a routerLink="/observability/custom-app-metrics" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+    <span class="nl-text">Custom App Metrics</span>
+    @if(progress.isDone('obs-custom-app-metrics')){<span class="nl-done">✓</span>}
+    @if (subtopicsOf('custom-app-metrics')) {
+      <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('custom-app-metrics')"
+              (click)="toggleSubtopics('custom-app-metrics', $event)" aria-label="Toggle subtopics">›</button>
+    }
+  </a>
+  @if (subtopicsOf('custom-app-metrics'); as camSubs) {
+    @if (isSubtopicsExpanded('custom-app-metrics')) {
+      <div class="nav-subtopics">
+        @for (s of camSubs; track s.route) {
+          <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+            <span class="nl-text">{{ s.label }}</span>
+          </a>
+        }
+      </div>
+    }
+  }
+  <a routerLink="/observability/infrastructure-metrics" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+    <span class="nl-text">Infrastructure Metrics</span>
+    @if(progress.isDone('obs-infrastructure-metrics')){<span class="nl-done">✓</span>}
+    @if (subtopicsOf('infrastructure-metrics')) {
+      <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('infrastructure-metrics')"
+              (click)="toggleSubtopics('infrastructure-metrics', $event)" aria-label="Toggle subtopics">›</button>
+    }
+  </a>
+  @if (subtopicsOf('infrastructure-metrics'); as imSubs) {
+    @if (isSubtopicsExpanded('infrastructure-metrics')) {
+      <div class="nav-subtopics">
+        @for (s of imSubs; track s.route) {
+          <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+            <span class="nl-text">{{ s.label }}</span>
+          </a>
+        }
+      </div>
+    }
+  }
+  <a routerLink="/observability/cloud-native-monitoring" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+    <span class="nl-text">Cloud-Native Monitoring</span>
+    @if(progress.isDone('obs-cloud-native-monitoring')){<span class="nl-done">✓</span>}
+    @if (subtopicsOf('cloud-native-monitoring')) {
+      <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('cloud-native-monitoring')"
+              (click)="toggleSubtopics('cloud-native-monitoring', $event)" aria-label="Toggle subtopics">›</button>
+    }
+  </a>
+  @if (subtopicsOf('cloud-native-monitoring'); as cnmSubs) {
+    @if (isSubtopicsExpanded('cloud-native-monitoring')) {
+      <div class="nav-subtopics">
+        @for (s of cnmSubs; track s.route) {
+          <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+            <span class="nl-text">{{ s.label }}</span>
+          </a>
+        }
+      </div>
+    }
+  }
 </div>
 
 <div class="nav-group">
   <p class="nav-group-label">Logging</p>
-  <a routerLink="/observability/structured-logging"   routerLinkActive="active"><span class="nl-text">Structured Logging</span>@if(progress.isDone('obs-structured-logging')){<span class="nl-done">✓</span>}</a>
-  <a routerLink="/observability/log-aggregation"      routerLinkActive="active"><span class="nl-text">Log Aggregation</span>@if(progress.isDone('obs-log-aggregation')){<span class="nl-done">✓</span>}</a>
-  <a routerLink="/observability/log-best-practices"   routerLinkActive="active"><span class="nl-text">Log Best Practices</span>@if(progress.isDone('obs-log-best-practices')){<span class="nl-done">✓</span>}</a>
+  <a routerLink="/observability/structured-logging" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+    <span class="nl-text">Structured Logging</span>
+    @if(progress.isDone('obs-structured-logging')){<span class="nl-done">✓</span>}
+    @if (subtopicsOf('structured-logging')) {
+      <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('structured-logging')"
+              (click)="toggleSubtopics('structured-logging', $event)" aria-label="Toggle subtopics">›</button>
+    }
+  </a>
+  @if (subtopicsOf('structured-logging'); as slSubs) {
+    @if (isSubtopicsExpanded('structured-logging')) {
+      <div class="nav-subtopics">
+        @for (s of slSubs; track s.route) {
+          <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+            <span class="nl-text">{{ s.label }}</span>
+          </a>
+        }
+      </div>
+    }
+  }
+  <a routerLink="/observability/log-aggregation" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+    <span class="nl-text">Log Aggregation</span>
+    @if(progress.isDone('obs-log-aggregation')){<span class="nl-done">✓</span>}
+    @if (subtopicsOf('log-aggregation')) {
+      <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('log-aggregation')"
+              (click)="toggleSubtopics('log-aggregation', $event)" aria-label="Toggle subtopics">›</button>
+    }
+  </a>
+  @if (subtopicsOf('log-aggregation'); as laSubs) {
+    @if (isSubtopicsExpanded('log-aggregation')) {
+      <div class="nav-subtopics">
+        @for (s of laSubs; track s.route) {
+          <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+            <span class="nl-text">{{ s.label }}</span>
+          </a>
+        }
+      </div>
+    }
+  }
+  <a routerLink="/observability/log-best-practices" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+    <span class="nl-text">Log Best Practices</span>
+    @if(progress.isDone('obs-log-best-practices')){<span class="nl-done">✓</span>}
+    @if (subtopicsOf('log-best-practices')) {
+      <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('log-best-practices')"
+              (click)="toggleSubtopics('log-best-practices', $event)" aria-label="Toggle subtopics">›</button>
+    }
+  </a>
+  @if (subtopicsOf('log-best-practices'); as lbpSubs) {
+    @if (isSubtopicsExpanded('log-best-practices')) {
+      <div class="nav-subtopics">
+        @for (s of lbpSubs; track s.route) {
+          <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+            <span class="nl-text">{{ s.label }}</span>
+          </a>
+        }
+      </div>
+    }
+  }
 </div>
 
 <div class="nav-group">
   <p class="nav-group-label">Tracing</p>
-  <a routerLink="/observability/distributed-tracing"    routerLinkActive="active"><span class="nl-text">Distributed Tracing</span>@if(progress.isDone('obs-distributed-tracing')){<span class="nl-done">✓</span>}</a>
-  <a routerLink="/observability/opentelemetry-tracing"  routerLinkActive="active"><span class="nl-text">OTel Tracing Deep Dive</span>@if(progress.isDone('obs-opentelemetry-tracing')){<span class="nl-done">✓</span>}</a>
-  <a routerLink="/observability/performance-profiling"  routerLinkActive="active"><span class="nl-text">Performance Profiling</span>@if(progress.isDone('obs-performance-profiling')){<span class="nl-done">✓</span>}</a>
+  <a routerLink="/observability/distributed-tracing" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+    <span class="nl-text">Distributed Tracing</span>
+    @if(progress.isDone('obs-distributed-tracing')){<span class="nl-done">✓</span>}
+    @if (subtopicsOf('obs-distributed-tracing')) {
+      <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('obs-distributed-tracing')"
+              (click)="toggleSubtopics('obs-distributed-tracing', $event)" aria-label="Toggle subtopics">›</button>
+    }
+  </a>
+  @if (subtopicsOf('obs-distributed-tracing'); as dtSubs) {
+    @if (isSubtopicsExpanded('obs-distributed-tracing')) {
+      <div class="nav-subtopics">
+        @for (s of dtSubs; track s.route) {
+          <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+            <span class="nl-text">{{ s.label }}</span>
+          </a>
+        }
+      </div>
+    }
+  }
+  <a routerLink="/observability/opentelemetry-tracing" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+    <span class="nl-text">OTel Tracing Deep Dive</span>
+    @if(progress.isDone('obs-opentelemetry-tracing')){<span class="nl-done">✓</span>}
+    @if (subtopicsOf('opentelemetry-tracing')) {
+      <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('opentelemetry-tracing')"
+              (click)="toggleSubtopics('opentelemetry-tracing', $event)" aria-label="Toggle subtopics">›</button>
+    }
+  </a>
+  @if (subtopicsOf('opentelemetry-tracing'); as otSubs) {
+    @if (isSubtopicsExpanded('opentelemetry-tracing')) {
+      <div class="nav-subtopics">
+        @for (s of otSubs; track s.route) {
+          <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+            <span class="nl-text">{{ s.label }}</span>
+          </a>
+        }
+      </div>
+    }
+  }
+  <a routerLink="/observability/performance-profiling" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+    <span class="nl-text">Performance Profiling</span>
+    @if(progress.isDone('obs-performance-profiling')){<span class="nl-done">✓</span>}
+    @if (subtopicsOf('performance-profiling')) {
+      <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('performance-profiling')"
+              (click)="toggleSubtopics('performance-profiling', $event)" aria-label="Toggle subtopics">›</button>
+    }
+  </a>
+  @if (subtopicsOf('performance-profiling'); as ppSubs) {
+    @if (isSubtopicsExpanded('performance-profiling')) {
+      <div class="nav-subtopics">
+        @for (s of ppSubs; track s.route) {
+          <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+            <span class="nl-text">{{ s.label }}</span>
+          </a>
+        }
+      </div>
+    }
+  }
 </div>
 
 <div class="nav-group">
   <p class="nav-group-label">Alerting &amp; SRE</p>
-  <a routerLink="/observability/alerting-design"      routerLinkActive="active"><span class="nl-text">Alerting Design</span>@if(progress.isDone('obs-alerting-design')){<span class="nl-done">✓</span>}</a>
-  <a routerLink="/observability/on-call-incidents"    routerLinkActive="active"><span class="nl-text">On-Call &amp; Incidents</span>@if(progress.isDone('obs-on-call-incidents')){<span class="nl-done">✓</span>}</a>
-  <a routerLink="/observability/error-budgets-toil"   routerLinkActive="active"><span class="nl-text">Error Budgets &amp; Toil</span>@if(progress.isDone('obs-error-budgets-toil')){<span class="nl-done">✓</span>}</a>
+  <a routerLink="/observability/alerting-design" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+    <span class="nl-text">Alerting Design</span>
+    @if(progress.isDone('obs-alerting-design')){<span class="nl-done">✓</span>}
+    @if (subtopicsOf('alerting-design')) {
+      <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('alerting-design')"
+              (click)="toggleSubtopics('alerting-design', $event)" aria-label="Toggle subtopics">›</button>
+    }
+  </a>
+  @if (subtopicsOf('alerting-design'); as adSubs) {
+    @if (isSubtopicsExpanded('alerting-design')) {
+      <div class="nav-subtopics">
+        @for (s of adSubs; track s.route) {
+          <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+            <span class="nl-text">{{ s.label }}</span>
+          </a>
+        }
+      </div>
+    }
+  }
+  <a routerLink="/observability/on-call-incidents" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+    <span class="nl-text">On-Call &amp; Incidents</span>
+    @if(progress.isDone('obs-on-call-incidents')){<span class="nl-done">✓</span>}
+    @if (subtopicsOf('on-call-incidents')) {
+      <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('on-call-incidents')"
+              (click)="toggleSubtopics('on-call-incidents', $event)" aria-label="Toggle subtopics">›</button>
+    }
+  </a>
+  @if (subtopicsOf('on-call-incidents'); as ociSubs) {
+    @if (isSubtopicsExpanded('on-call-incidents')) {
+      <div class="nav-subtopics">
+        @for (s of ociSubs; track s.route) {
+          <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+            <span class="nl-text">{{ s.label }}</span>
+          </a>
+        }
+      </div>
+    }
+  }
+  <a routerLink="/observability/error-budgets-toil" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+    <span class="nl-text">Error Budgets &amp; Toil</span>
+    @if(progress.isDone('obs-error-budgets-toil')){<span class="nl-done">✓</span>}
+    @if (subtopicsOf('error-budgets-toil')) {
+      <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('error-budgets-toil')"
+              (click)="toggleSubtopics('error-budgets-toil', $event)" aria-label="Toggle subtopics">›</button>
+    }
+  </a>
+  @if (subtopicsOf('error-budgets-toil'); as ebtSubs) {
+    @if (isSubtopicsExpanded('error-budgets-toil')) {
+      <div class="nav-subtopics">
+        @for (s of ebtSubs; track s.route) {
+          <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+            <span class="nl-text">{{ s.label }}</span>
+          </a>
+        }
+      </div>
+    }
+  }
 </div>
 
 <div class="nav-group">
   <p class="nav-group-label">Advanced</p>
-  <a routerLink="/observability/chaos-engineering"      routerLinkActive="active"><span class="nl-text">Chaos Engineering</span>@if(progress.isDone('obs-chaos-engineering')){<span class="nl-done">✓</span>}</a>
-  <a routerLink="/observability/ebpf-observability"     routerLinkActive="active"><span class="nl-text">eBPF Observability</span>@if(progress.isDone('obs-ebpf-observability')){<span class="nl-done">✓</span>}</a>
-  <a routerLink="/observability/observability-maturity" routerLinkActive="active"><span class="nl-text">Observability Maturity</span>@if(progress.isDone('obs-observability-maturity')){<span class="nl-done">✓</span>}</a>
+  <a routerLink="/observability/chaos-engineering" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+    <span class="nl-text">Chaos Engineering</span>
+    @if(progress.isDone('obs-chaos-engineering')){<span class="nl-done">✓</span>}
+    @if (subtopicsOf('chaos-engineering')) {
+      <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('chaos-engineering')"
+              (click)="toggleSubtopics('chaos-engineering', $event)" aria-label="Toggle subtopics">›</button>
+    }
+  </a>
+  @if (subtopicsOf('chaos-engineering'); as ceSubs) {
+    @if (isSubtopicsExpanded('chaos-engineering')) {
+      <div class="nav-subtopics">
+        @for (s of ceSubs; track s.route) {
+          <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+            <span class="nl-text">{{ s.label }}</span>
+          </a>
+        }
+      </div>
+    }
+  }
+  <a routerLink="/observability/ebpf-observability" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+    <span class="nl-text">eBPF Observability</span>
+    @if(progress.isDone('obs-ebpf-observability')){<span class="nl-done">✓</span>}
+    @if (subtopicsOf('ebpf-observability')) {
+      <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('ebpf-observability')"
+              (click)="toggleSubtopics('ebpf-observability', $event)" aria-label="Toggle subtopics">›</button>
+    }
+  </a>
+  @if (subtopicsOf('ebpf-observability'); as eoSubs) {
+    @if (isSubtopicsExpanded('ebpf-observability')) {
+      <div class="nav-subtopics">
+        @for (s of eoSubs; track s.route) {
+          <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+            <span class="nl-text">{{ s.label }}</span>
+          </a>
+        }
+      </div>
+    }
+  }
+  <a routerLink="/observability/observability-maturity" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+    <span class="nl-text">Observability Maturity</span>
+    @if(progress.isDone('obs-observability-maturity')){<span class="nl-done">✓</span>}
+    @if (subtopicsOf('observability-maturity')) {
+      <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('observability-maturity')"
+              (click)="toggleSubtopics('observability-maturity', $event)" aria-label="Toggle subtopics">›</button>
+    }
+  </a>
+  @if (subtopicsOf('observability-maturity'); as omSubs) {
+    @if (isSubtopicsExpanded('observability-maturity')) {
+      <div class="nav-subtopics">
+        @for (s of omSubs; track s.route) {
+          <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+            <span class="nl-text">{{ s.label }}</span>
+          </a>
+        }
+      </div>
+    }
+  }
 </div>
 
 <div class="nav-group">

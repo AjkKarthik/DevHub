@@ -1,0 +1,26 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Log Aggregation" topicRoute="/observability/log-aggregation"
+    subtopicLabel="Promtail’s Drop Stage Has No Sampling Rate" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">Promtail’s Drop Stage Has No Sampling Rate</h1>
+  <p class="page-subtitle">The Promtail Config codeTab claimed to sample 10% of health check logs — verified against Loki's own docs that the drop stage has no percentage parameter at all, and that the page's own later mistake block correctly frames the identical config as a full drop.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic builds the dead man's switch alert the QnA names in prose but never shows as an actual LogQL query.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Log Aggregation" topicRoute="/observability/log-aggregation"
+    [next]="{ label: 'The Dead Man’s Switch Query the QnA Names But Never Shows', route: '/observability/log-aggregation/the-dead-mans-switch-query-the-qna-names-but-never-shows' }" />
+</div>

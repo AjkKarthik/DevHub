@@ -1,0 +1,27 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CRUD Operations" topicRoute="/mongodb/crud-operations"
+    subtopicLabel="Mixing Operations in a Real bulkWrite Call" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">Mixing Operations in a Real bulkWrite Call</h1>
+  <p class="page-subtitle">bulkWrite is a quickRef entry and gets an entire theory section plus two QnAs on this page — but no code tab anywhere ever shows the actual bulkWrite() syntax. This subtopic builds it.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>The main page's own QnA on ordered bulkWrite failures explains WHAT a partial failure looks like in prose — this subtopic shows the actual result object shape that lets calling code tell which operations from a mixed batch actually succeeded.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CRUD Operations" topicRoute="/mongodb/crud-operations"
+    [prev]="{ label: 'Why the Soft-Delete Index Needs deletedAt: null, Not $exists', route: '/mongodb/crud-operations/why-the-soft-delete-index-needs-deletedat-null-not-exists' }"
+    [next]="{ label: 'Session-Based Causal Consistency for Read-Your-Writes', route: '/mongodb/crud-operations/session-based-causal-consistency-for-read-your-writes' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Redis Fundamentals" topicRoute="/redis/fundamentals"
+    subtopicLabel="MULTI/EXEC Real Atomicity: Isolation, Not Rollback" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">MULTI/EXEC Real Atomicity: Isolation, Not Rollback</h1>
+  <p class="page-subtitle">The main page's own quiz calls pipelining "not atomic, unlike MULTI/EXEC" — accurate, but easy to misread. MULTI/EXEC never rolls back a runtime error in one of its queued commands; its real guarantee is isolation from other clients.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>This closes the topic's arc: the Redis-on-Flash fix and the keyspace-notification build-out both extended main-page content, while this subtopic tightens a genuinely easy-to-misread claim the page's own quiz already makes about pipelining vs. MULTI/EXEC.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Redis Fundamentals" topicRoute="/redis/fundamentals"
+    [prev]="{ label: 'Keyspace Notifications: A Real Expiration Listener', route: '/redis/fundamentals/keyspace-notifications-a-real-expiration-listener' }" />
+</div>

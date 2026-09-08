@@ -1,0 +1,26 @@
+<div class="obs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Infrastructure Metrics" topicRoute="/observability/infrastructure-metrics"
+    subtopicLabel="Tracking a Sustained Condition Before Alerting" />
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">Tracking a Sustained Condition Before Alerting</h1>
+  <p class="page-subtitle">The mistake block's own fix says to alert when the connection pool's waiting count is non-zero for more than 30 seconds — but the gauge itself has no notion of duration. This subtopic builds and verifies that missing piece.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="obs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="obs-section">
+    <h2>Where this fits</h2>
+    <p>This closes the last of the three gaps this topic's own subtopics build: a genuinely broken PromQL query, the time-to-exhaustion projection the QnA describes but never codes, and the sustained-duration logic a leading-indicator alert actually needs.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Infrastructure Metrics" topicRoute="/observability/infrastructure-metrics"
+    [prev]="{ label: 'Building the Time-to-Exhaustion Capacity Projection', route: '/observability/infrastructure-metrics/building-the-time-to-exhaustion-capacity-projection' }" />
+</div>

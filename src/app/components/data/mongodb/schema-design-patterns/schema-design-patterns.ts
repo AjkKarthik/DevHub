@@ -375,30 +375,35 @@ async function addReview(productId: ObjectId, userId: ObjectId, rating: number, 
   // Insert review
   await db.collection('reviews').insertOne(review);
 
-  // Update product stats + subset
-  const updateResult = await db.collection('products').findOneAndUpdate(
+  // Update product stats + subset + avgRating in ONE atomic call, using
+  // an update-with-aggregation-pipeline (an array of $set stages) rather
+  // than a separate findOneAndUpdate + updateOne. A LATER $set stage in
+  // this array CAN reference a field set by an earlier stage in the SAME
+  // array (unlike a single $addFields stage's sibling fields) -- so
+  // avgRating is computed from the freshly-incremented reviewCount/
+  // ratingSum, atomically, with no separate write that could read a
+  // stale snapshot if another addReview() runs concurrently in between.
+  await db.collection('products').updateOne(
     { _id: productId },
-    {
-      $inc: { reviewCount: 1, ratingSum: rating },
-      $push: {
+    [
+      { $set: {
+        reviewCount: { $add: ['$reviewCount', 1] },
+        ratingSum:   { $add: ['$ratingSum', rating] },
         recentReviews: {
-          $each: [{ userId, rating, text, createdAt: new Date() }],
-          $slice: -3,
-          $sort: { createdAt: -1 },
+          $slice: [
+            { $sortArray: {
+              input: { $concatArrays: ['$recentReviews', [{ userId, rating, text, createdAt: new Date() }]] },
+              sortBy: { createdAt: -1 },
+            }},
+            3,
+          ],
         },
-      },
-    },
-    { returnDocument: 'after' }
+      }},
+      { $set: {
+        avgRating: { $round: [{ $divide: ['$ratingSum', '$reviewCount'] }, 1] },
+      }},
+    ]
   );
-
-  // Recompute avgRating
-  if (updateResult) {
-    const { reviewCount, ratingSum } = updateResult as any;
-    await db.collection('products').updateOne(
-      { _id: productId },
-      { $set: { avgRating: Math.round((ratingSum / reviewCount) * 10) / 10 } }
-    );
-  }
 }`,
   };
 

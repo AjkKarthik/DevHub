@@ -71,7 +71,7 @@ const theory: TheoryPoint[] = [
 const codeTabs: CodeTab[] = [
   {
     label: 'Error Budget Tracking',
-    language: 'typescript',
+    language: 'bash',
     code: `# PromQL queries for error budget tracking
 
 # ── REMAINING ERROR BUDGET (%) for a 99.9% SLO ──────────────────
@@ -174,9 +174,9 @@ toilInventory.forEach(item => {
   const roi = computeToilRoi(item);
   console.log(\`\${item.name}: \${roi.monthlyHours}h/month, payback \${roi.paybackMonths} months\`);
 });
-// OOM restart: 3h/month, payback 13 months
-// Deployment gate: 6.7h/month, payback 6 months  ← automate first!
-// TLS renewal: 0.67h/month, payback 36 months`,
+// OOM restart: 3h/month, payback 13.3 months
+// Deployment gate: 6.7h/month, payback 9.6 months  ← automate first!
+// TLS renewal: 0.7h/month, payback 36.4 months`,
   },
 ];
 

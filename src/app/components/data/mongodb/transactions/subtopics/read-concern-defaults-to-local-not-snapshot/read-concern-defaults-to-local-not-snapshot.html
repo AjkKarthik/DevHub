@@ -1,0 +1,26 @@
+<div class="mongo-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Transactions" topicRoute="/mongodb/transactions"
+    subtopicLabel="Read Concern Defaults to Local, Not Snapshot" />
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">Read Concern Defaults to Local, Not Snapshot</h1>
+  <p class="page-subtitle">The main page's own QnA on read concern "snapshot" called it the default for a transaction — verified against MongoDB's own documentation that the real default, if nothing is set, is "local".</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mongo-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mongo-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the main page's own QnA directly, and sets up the distinction the rest of this topic's subtopics build on: the read concern LEVEL a transaction runs under is one setting (with its own precedence chain), while snapshot isolation is a completely separate, always-on guarantee every transaction gets regardless.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Transactions" topicRoute="/mongodb/transactions"
+    [next]="{ label: 'The Real Dual-Retry Loop', route: '/mongodb/transactions/dual-retry-loop-transient-vs-unknown-commit' }" />
+</div>

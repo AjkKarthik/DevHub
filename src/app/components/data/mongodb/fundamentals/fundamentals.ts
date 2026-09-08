@@ -236,7 +236,7 @@ await client.connect();
 } finally {
   await client.close();
 }`,
-      explanation: 'Each MongoClient maintains a connection pool. Forgetting to close it leaks connections and can exhaust the server\'s connection limit (default 100 per mongod). Always close in a finally block or use a connection manager.',
+      explanation: 'Each MongoClient maintains its own connection pool, capped by maxPoolSize — which defaults to 100. That 100 is the DRIVER\'s own per-client cap, not "the server\'s connection limit": the mongod server\'s own default ceiling (net.maxIncomingConnections) is 65536, a very different number. The real risk of leaking clients is that each one opens its own pool of up to 100 connections — leak enough clients and their combined total can still climb toward the server\'s own much larger ceiling. Always close in a finally block or use a connection manager.',
     },
     {
       title: 'Creating a new MongoClient per request',

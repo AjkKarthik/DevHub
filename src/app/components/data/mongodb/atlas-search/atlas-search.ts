@@ -414,12 +414,14 @@ async function searchProducts(params: SearchParams): Promise<SearchResult> {
   };
 
   const [products, facetData] = await Promise.all([
-    // 1. Products
+    // 1. Products -- \$\$SEARCH_META is the system variable carrying the
+    // count metadata requested by count: { type: 'total' } above; it is
+    // NOT a plain field name embedded directly on each document.
     db.collection('products').aggregate([
       searchStage,
       { $skip: (page - 1) * pageSize },
       { $limit: pageSize },
-      { $project: { name: 1, price: 1, category: 1, score: { $meta: 'searchScore' } } },
+      { $project: { name: 1, price: 1, category: 1, score: { $meta: 'searchScore' }, meta: '\$\$SEARCH_META' } },
     ]).toArray(),
 
     // 2. Facets
@@ -440,7 +442,7 @@ async function searchProducts(params: SearchParams): Promise<SearchResult> {
   return {
     products,
     categoryFacets: buckets.map((b: any) => ({ name: b._id, count: b.count })),
-    total: products[0]?.['\$\$searchCount'] ?? 0,
+    total: products[0]?.meta?.count?.total ?? 0,
   };
 }`,
   };
