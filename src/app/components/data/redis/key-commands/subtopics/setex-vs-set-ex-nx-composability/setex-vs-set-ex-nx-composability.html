@@ -1,0 +1,26 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Key Commands & Expiry" topicRoute="/redis/key-commands"
+    subtopicLabel="SETEX vs. SET ... EX ... NX Composability" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">SETEX vs. SET ... EX ... NX Composability</h1>
+  <p class="page-subtitle">The main page's own QnA originally called SETEX "deprecated" — it isn't. The real reason to prefer SET ... EX is that it composes with NX/XX, a capability SETEX genuinely lacks. Here's the exact bug that gap causes.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>This corrects a genuine main-page inaccuracy (SETEX was wrongly called deprecated) and explains what the correction actually means in practice. Next: the main page's other correction — the real version <code>--memkeys</code> shipped in.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Key Commands & Expiry" topicRoute="/redis/key-commands"
+    [next]="{ label: '--memkeys Is Redis 6.0, Not 7 — and What It Actually Does', route: '/redis/key-commands/memkeys-is-redis-6-not-7-and-what-it-does' }" />
+</div>

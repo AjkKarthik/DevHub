@@ -2768,7 +2768,12 @@ export const routes: Routes = [
       { path: 'zunionstore-weights-aggregate-and-count-mode', loadComponent: () => import('./components/data/redis/sorted-sets/subtopics/zunionstore-weights-aggregate-and-count-mode/zunionstore-weights-aggregate-and-count-mode').then(m => m.ZunionstoreWeightsAggregateAndCountModeSubtopic) },
       { path: 'zrangebylex-is-deprecated-use-zrange-bylex', loadComponent: () => import('./components/data/redis/sorted-sets/subtopics/zrangebylex-is-deprecated-use-zrange-bylex/zrangebylex-is-deprecated-use-zrange-bylex').then(m => m.ZrangebylexIsDeprecatedUseZrangeBylexSubtopic) },
     ] },
-    { path: 'key-commands',         loadComponent: () => import('./components/data/redis/key-commands/key-commands').then(m => m.RedisKeyCommands) },
+    { path: 'key-commands', children: [
+      { path: '', loadComponent: () => import('./components/data/redis/key-commands/key-commands').then(m => m.RedisKeyCommands) },
+      { path: 'setex-vs-set-ex-nx-composability', loadComponent: () => import('./components/data/redis/key-commands/subtopics/setex-vs-set-ex-nx-composability/setex-vs-set-ex-nx-composability').then(m => m.SetexVsSetExNxComposabilitySubtopic) },
+      { path: 'memkeys-is-redis-6-not-7-and-what-it-does', loadComponent: () => import('./components/data/redis/key-commands/subtopics/memkeys-is-redis-6-not-7-and-what-it-does/memkeys-is-redis-6-not-7-and-what-it-does').then(m => m.MemkeysIsRedis6Not7AndWhatItActuallyDoesSubtopic) },
+      { path: 'dump-does-not-include-the-ttl', loadComponent: () => import('./components/data/redis/key-commands/subtopics/dump-does-not-include-the-ttl/dump-does-not-include-the-ttl').then(m => m.DumpDoesNotIncludeTheTtlSubtopic) },
+    ] },
     { path: 'transactions',         loadComponent: () => import('./components/data/redis/transactions/transactions').then(m => m.RedisTransactions) },
     { path: 'lua-scripting',        loadComponent: () => import('./components/data/redis/lua-scripting/lua-scripting').then(m => m.RedisLuaScripting) },
     { path: 'persistence',          loadComponent: () => import('./components/data/redis/persistence/persistence').then(m => m.RedisPersistence) },

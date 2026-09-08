@@ -1706,6 +1706,13 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'ZUNIONSTORE: WEIGHTS, AGGREGATE, and the COUNT Mode', route: '/redis/sorted-sets/zunionstore-weights-aggregate-and-count-mode' },
     { label: 'ZRANGEBYLEX Is Deprecated — Use ZRANGE ... BYLEX', route: '/redis/sorted-sets/zrangebylex-is-deprecated-use-zrange-bylex' },
   ],
+  // NOTE: bare 'key-commands' confirmed collision-free (checked both quoted
+  // and unquoted forms, plus app.routes.ts route paths directly).
+  'key-commands': [
+    { label: 'SETEX vs. SET ... EX ... NX Composability', route: '/redis/key-commands/setex-vs-set-ex-nx-composability' },
+    { label: '--memkeys Is Redis 6.0, Not 7 — and What It Actually Does', route: '/redis/key-commands/memkeys-is-redis-6-not-7-and-what-it-does' },
+    { label: 'DUMP Does Not Include the TTL', route: '/redis/key-commands/dump-does-not-include-the-ttl' },
+  ],
   closures: [
     { label: 'var Shares One Binding, let Creates One Per Iteration', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
     { label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },

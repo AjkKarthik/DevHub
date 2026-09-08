@@ -157,7 +157,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
 
     <div class="nav-group">
       <p class="nav-group-label">Commands</p>
-      <a routerLink="/redis/key-commands" routerLinkActive="active"><span class="nl-text">Key Commands</span>@if(p.isDone('redis-key-commands')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/redis/key-commands" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Key Commands</span>
+        @if(p.isDone('redis-key-commands')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('key-commands')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('key-commands')"
+                  (click)="toggleSubtopics('key-commands', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('key-commands'); as keyCommandsSubs) {
+        @if (isSubtopicsExpanded('key-commands')) {
+          <div class="nav-subtopics">
+            @for (s of keyCommandsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/redis/transactions" routerLinkActive="active"><span class="nl-text">Transactions (MULTI/EXEC)</span>@if(p.isDone('redis-transactions')){<span class="nl-done">✓</span>}</a>
       <a routerLink="/redis/lua-scripting" routerLinkActive="active"><span class="nl-text">Lua Scripting</span>@if(p.isDone('redis-lua-scripting')){<span class="nl-done">✓</span>}</a>
     </div>

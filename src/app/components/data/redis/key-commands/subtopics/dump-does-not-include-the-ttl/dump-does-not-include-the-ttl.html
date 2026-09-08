@@ -1,0 +1,26 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Key Commands & Expiry" topicRoute="/redis/key-commands"
+    subtopicLabel="DUMP Does Not Include the TTL" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">DUMP Does Not Include the TTL</h1>
+  <p class="page-subtitle">The main page names DUMP, RESTORE, and MIGRATE at length but never states this plainly: DUMP's payload has no expiry info at all. A naive migration silently makes every copied key immortal.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>This closes a real gap between what the main page names (DUMP, RESTORE, MIGRATE) and what it actually demonstrates in code — none of the three ever appear in a codeTab. Back to the topic overview to continue with a different subtopic path.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Key Commands & Expiry" topicRoute="/redis/key-commands"
+    [prev]="{ label: '--memkeys Is Redis 6.0, Not 7 — and What It Actually Does', route: '/redis/key-commands/memkeys-is-redis-6-not-7-and-what-it-does' }" />
+</div>

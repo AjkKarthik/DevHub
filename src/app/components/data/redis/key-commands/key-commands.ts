@@ -267,7 +267,7 @@ async function auditKeys(pattern: string) {
   qna: QnaItem[] = [
     {
       q: 'How do I find which keys are using the most memory?',
-      a: 'Use `redis-cli --bigkeys` which scans all keys and reports the largest by data type. For more granular analysis, use `redis-cli --memkeys` (Redis 7+) to sort all keys by memory usage. In production, run during low-traffic periods since it uses SCAN internally.',
+      a: 'Use `redis-cli --bigkeys` which scans all keys and reports the largest by data type. For more granular analysis, use `redis-cli --memkeys` (added in Redis 6.0, not 7 — it landed via a 2019 PR that predates the 7.0 release by years) to sort all keys by memory usage. In production, run during low-traffic periods since it uses SCAN internally.',
     },
     {
       q: 'How do you check the remaining TTL of a key?',
@@ -283,7 +283,7 @@ async function auditKeys(pattern: string) {
     },
     {
       q: 'How do you atomically set a key with an expiry?',
-      a: 'Use <code>SET key value EX seconds</code> or <code>SET key value PX milliseconds</code> — atomically sets value and expiry. Old pattern (SETNX + EXPIRE) was non-atomic: a crash between the two commands left immortal keys. The modern SET options are the correct approach. Also: SETEX (deprecated but still works), GETSET (replaced by SET ... GET).',
+      a: 'Use <code>SET key value EX seconds</code> or <code>SET key value PX milliseconds</code> — atomically sets value and expiry. Old pattern (SETNX + EXPIRE) was non-atomic: a crash between the two commands left immortal keys. The modern SET options are the correct approach. Note SETEX is NOT actually deprecated (its own official docs carry no deprecation notice at all) — it is simply redundant with <code>SET key value EX seconds</code>, which is preferred for consistency since it composes with other SET options (NX, GET, KEEPTTL). GETSET, unlike SETEX, genuinely IS deprecated — replaced by SET ... GET.',
     },
     {
       q: 'If OBJECT ENCODING reports a key has already converted from a compact encoding (e.g. listpack) to a less efficient one (e.g. hashtable), can it ever convert back down automatically?',

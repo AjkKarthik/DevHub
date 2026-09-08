@@ -37638,6 +37638,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'DEL on a very large collection value (a huge list/set) can also block briefly — UNLINK performs the deallocation asynchronously instead.',
     ],
   },
+  'redis/key-commands/setex-vs-set-ex-nx-composability': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Key Commands & Expiry', route: '/redis/key-commands' },
+      { label: '--memkeys Is Redis 6.0, Not 7', route: '/redis/key-commands/memkeys-is-redis-6-not-7-and-what-it-does' },
+    ],
+    tip: 'SETEX carries no deprecation notice in its own official docs — the real reason to prefer SET key value EX seconds is that it composes with NX/XX/GET/KEEPTTL, capabilities SETEX has no equivalent for at all.',
+    gotchas: [
+      'A distributed lock built on SETEX has no way to say "only if nobody already holds it" — two racing workers can both silently overwrite each other with no error at all.',
+    ],
+  },
+  'redis/key-commands/memkeys-is-redis-6-not-7-and-what-it-does': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Key Commands & Expiry', route: '/redis/key-commands' },
+      { label: 'SETEX vs. SET ... EX ... NX Composability', route: '/redis/key-commands/setex-vs-set-ex-nx-composability' },
+      { label: 'DUMP Does Not Include the TTL', route: '/redis/key-commands/dump-does-not-include-the-ttl' },
+    ],
+    tip: 'redis-cli --memkeys shipped in Redis 6.0 (2020), not "7+" — checked directly against the PR that introduced it, which merged in February 2019, before Redis 6.0 itself was even released.',
+    gotchas: [
+      '--memkeys is a client-side redis-cli convenience built on SCAN + MEMORY USAGE (Redis 4.0+) — there is no new server-side command behind it at all.',
+    ],
+  },
+  'redis/key-commands/dump-does-not-include-the-ttl': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Key Commands & Expiry', route: '/redis/key-commands' },
+      { label: '--memkeys Is Redis 6.0, Not 7', route: '/redis/key-commands/memkeys-is-redis-6-not-7-and-what-it-does' },
+    ],
+    tip: 'DUMP\'s payload contains only the value, an RDB version marker, and a checksum — never the TTL. A migration that forgets to read PTTL before DUMPing silently makes the copied key immortal.',
+    gotchas: [
+      'RESTORE\'s ttl argument of 0 means "no expiry" — it is NOT the same thing as PTTL\'s "-1" return value, even though both represent "never expires." A correct migration helper must translate -1 to 0 explicitly.',
+    ],
+  },
   'redis/strings': {
     apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
     related: [

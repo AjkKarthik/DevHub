@@ -1,0 +1,27 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Key Commands & Expiry" topicRoute="/redis/key-commands"
+    subtopicLabel="--memkeys Is Redis 6.0, Not 7" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">--memkeys Is Redis 6.0, Not 7 — and What It Actually Does</h1>
+  <p class="page-subtitle">The main page's own QnA attributed this CLI flag to "Redis 7+" — checked against the PR that introduced it, it actually shipped in Redis 6.0. Here's the real timeline, plus the SCAN + MEMORY USAGE mechanism the flag wraps.</p>
+  <app-page-meta [readingTime]="6" difficulty="beginner" since="Redis 6.0" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the second of two genuine version/status inaccuracies found on the main page this batch. Next: a real gap the main page's own DUMP/RESTORE theory never states outright — DUMP's payload does not include the key's TTL.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Key Commands & Expiry" topicRoute="/redis/key-commands"
+    [prev]="{ label: 'SETEX vs. SET ... EX ... NX Composability', route: '/redis/key-commands/setex-vs-set-ex-nx-composability' }"
+    [next]="{ label: 'DUMP Does Not Include the TTL', route: '/redis/key-commands/dump-does-not-include-the-ttl' }" />
+</div>
