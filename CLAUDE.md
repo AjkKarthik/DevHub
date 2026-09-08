@@ -8777,6 +8777,47 @@ this same check before any other new hub's first subtopic set:
     individually — correct h1/breadcrumb (all 4 levels), 860px wrapper via `getComputedStyle`,
     tailored (not DEFAULT) sidebar content confirmed via direct text search. **Redis hub Phase 10:
     11 of 21 topics complete.**
+12. **The `pub-sub` batch found and fixed a genuine self-contained internal contradiction between
+    two DIFFERENT sections of the same page — plus a real RESP3 exception neither section
+    mentioned at all**: the theory listed the allowed subscribe-mode commands as "SUBSCRIBE,
+    UNSUBSCRIBE, PSUBSCRIBE, PUNSUBSCRIBE, PING, and QUIT" while a SEPARATE quiz question on the
+    same page listed a DIFFERENT list ending in "PING, and RESET" instead of QUIT — the two
+    sections directly disagreed with each other, and neither was the complete list. Verified
+    directly against Redis's own official SUBSCRIBE command docs (fetched directly, not a
+    secondary summary): the real, complete list is SUBSCRIBE, SSUBSCRIBE, PSUBSCRIBE,
+    UNSUBSCRIBE, SUNSUBSCRIBE, PUNSUBSCRIBE, PING, RESET, AND QUIT — both RESET and QUIT are
+    genuinely allowed simultaneously, not one or the other, plus the sharded-pub/sub command
+    variants neither section mentioned. The SAME official docs page adds a further exception the
+    main page never covered at all: "if RESP3 is used (see HELLO) it is possible for a client to
+    issue any commands while in subscribed state" — directly undermining the theory's own separate,
+    flatly-stated claim that "two separate connections are needed per client" for Pub/Sub, which is
+    actually a RESP2-specific limitation. Fixed both the theory bullet and the quiz question/
+    explanation to state the complete, verified list plus the RESP3 exception. Separately, verified
+    the theory's "Sharded Pub/Sub (introduced in Redis 7, using SSUBSCRIBE)" claim and confirmed it
+    ALREADY CORRECT — not every checked version claim in this hub turns out wrong. Three subtopics,
+    each verified via direct Node.js execution: (1) **fix-adjacent** — models the RESP2-vs-RESP3
+    command-allowlist distinction directly, with a Try It on why a client-side "fail fast" helper
+    checking this list must use the COMPLETE version, since an incomplete list becomes an executable
+    bug rejecting operations the real server would accept; (2) **fix-adjacent** — explores the RESP3
+    exception in depth, including a genuine single-connection subscribe+regular-command pattern,
+    with a Try It reasoning through why the two-connection pattern remains a reasonable DEFAULT even
+    on RESP3 (simplicity vs. real added client-side routing complexity) rather than something the
+    fix makes obsolete; (3) **gap-closing** — Sharded Pub/Sub is named and correctly explained in
+    the main page's own theory but never demonstrated in any codeTab; built and verified a slot-hash
+    routing model matching the documented distinction exactly (classic PUBLISH reaches every shard;
+    SPUBLISH reaches exactly the one shard owning the channel's slot), plus real SSUBSCRIBE/SPUBLISH
+    usage against a Cluster client. No `SUBTOPICS` collision for `pub-sub` (checked both
+    `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed collision-free, left bare).
+    All three `exercise.solution` fields swept clean of `<code>`/entity contamination; the standing
+    apostrophe-after-letter sweep, bracket-balance, and backtick-parity checks all found nothing to
+    fix across all three files and both main-page edits. Build passed clean (foreground execution,
+    explicit `EXITCODE:$?` capture, zero real `ERROR` lines). Browser-verified with a proactive
+    dev-server restart before checking: no console errors on any of the 4 pages; nav accordion opens
+    with all 3 subtopic links, confirmed via both `window.ng.getComponent()` and a live DOM
+    click-and-query; both main-page fixes confirmed rendering live via direct component-data
+    inspection; all 3 subtopic pages checked individually — correct h1/breadcrumb (all 4 levels),
+    860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed via direct
+    text search. **Redis hub Phase 10: 12 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -8960,10 +9001,10 @@ this same check before any other new hub's first subtopic set:
   All 23 cards `available: true` in `data/redis/home/home.ts`. Progress: `redisTotal=21` in progress.service.ts.
   Redis pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. RedisNavComponent at `shared/redis-nav/redis-nav.ts`.
-  Phase 10: 11 of 21 topics have subtopics (`/redis/fundamentals`, pilot batch;
+  Phase 10: 12 of 21 topics have subtopics (`/redis/fundamentals`, pilot batch;
   `/redis/installation-setup`; `/redis/strings`; `/redis/hashes`; `/redis/lists`; `/redis/sets`;
   `/redis/sorted-sets`; `/redis/key-commands`; `/redis/transactions`; `/redis/lua-scripting`;
-  `/redis/persistence`,
+  `/redis/persistence`; `/redis/pub-sub`,
   finished 2026-09-08) — see
   "Redis hub subtopic wiring" section above for
   the `RedisNavComponent` accordion structural fix (16th `*NavComponent`-based hub in a row missing
@@ -8971,8 +9012,8 @@ this same check before any other new hub's first subtopic set:
   JavaScript hub's own topic key; `installation-setup` confirmed collision-free since MongoDB's own
   topic of the same name was proactively hub-prefixed to `mongo-installation-setup`; `strings`
   proactively hub-prefixed to `redis-strings` against the DSA hub's own bare `strings` route;
-  `hashes`, `lists`, `sets`, `sorted-sets`, `key-commands`, `lua-scripting` and `persistence` all
-  confirmed collision-free, left bare; `transactions`
+  `hashes`, `lists`, `sets`, `sorted-sets`, `key-commands`, `lua-scripting`, `persistence` and
+  `pub-sub` all confirmed collision-free, left bare; `transactions`
   hub-prefixed to `redis-transactions` against the SQL hub's own bare `transactions` route), and the
   genuine inaccuracies found and fixed so far: Redis-on-Flash version-line conflation on the
   Fundamentals page; a `rename-command` typo plus two source-verified (`config.c`/`networking.c`)
@@ -9005,7 +9046,12 @@ this same check before any other new hub's first subtopic set:
   the Persistence: RDB & AOF page, a Quick Reference entry named `DEBUG SLEEP 0` but described
   SAVE's own behavior, plus `aof-use-rdb-preamble`'s default wrongly attributed to "Redis 7+" —
   verified via Redis's own shipped `redis.conf` at two tagged releases to have actually defaulted
-  to yes since Redis 5.0.
+  to yes since Redis 5.0; and, on the Pub/Sub Messaging page, the theory and a quiz question each
+  listed a DIFFERENT, incomplete version of the subscribe-mode allowed-command list (one ending in
+  QUIT, the other in RESET) — verified via Redis's own docs that both are genuinely allowed
+  simultaneously, alongside a RESP3 exception (any command is allowed while subscribed) neither
+  section mentioned at all, directly undermining the page's own separate "two connections always
+  needed" claim.
 - **GraphQL hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Pink theme `$accent: #e535ab`, `$tint: #fdf2f9`, dark `#f472b6`, dark bg `#3d0a26`. Search prefix `gql-`. Route: `/graphql`.
   CSS classes: `.gql-page`, `.gql-icon`, `.gql-section`. Icon content: `◈` at `font-size: 1.8rem`. `tech="javascript"`.

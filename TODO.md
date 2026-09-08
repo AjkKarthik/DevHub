@@ -9389,7 +9389,22 @@ off here with a date.
   all 3 links; all three main-page fixes confirmed live via direct component-data
   inspection; all 3 subtopic pages checked — breadcrumb (all 4 levels), 860px wrapper,
   tailored sidebar content, no console errors.
-- [ ] `/redis/pub-sub` — Pub/Sub Messaging
+- [x] 2026-09-08 — `/redis/pub-sub` — Pub/Sub Messaging: 3 subtopics (the complete
+  subscribe-mode command list, RESP3 removes the subscribe-mode restriction, sharded
+  Pub/Sub actually demonstrated). Found and fixed a genuine internal contradiction: the
+  theory listed the allowed subscribe-mode commands ending in "PING, and QUIT" while a
+  separate quiz question listed a different list ending in "PING, and RESET" — verified
+  against Redis's own official docs that BOTH RESET and QUIT are genuinely allowed
+  simultaneously (plus SSUBSCRIBE/SUNSUBSCRIBE, neither section mentioned). The same docs
+  also state a RESP3 exception the page never covered: under RESP3, any command can be
+  issued while subscribed, directly undermining the page's own separate "two connections
+  always needed" claim (a RESP2-specific limitation, not fundamental). Also verified the
+  "Sharded Pub/Sub introduced in Redis 7" claim and confirmed it already correct.
+  SUBTOPICS key left bare (confirmed collision-free). Build clean on first attempt.
+  Browser-verified with a proactive dev-server restart: nav accordion opens with all 3
+  links; both main-page fixes confirmed live via direct component-data inspection; all 3
+  subtopic pages checked — breadcrumb (all 4 levels), 860px wrapper, tailored sidebar
+  content, no console errors.
 - [ ] `/redis/streams` — Streams
 - [ ] `/redis/caching-patterns` — Caching Patterns
 - [ ] `/redis/eviction-policies` — Eviction Policies
