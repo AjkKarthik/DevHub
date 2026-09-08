@@ -176,7 +176,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/redis/transactions" routerLinkActive="active"><span class="nl-text">Transactions (MULTI/EXEC)</span>@if(p.isDone('redis-transactions')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/redis/transactions" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Transactions (MULTI/EXEC)</span>
+        @if(p.isDone('redis-transactions')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('redis-transactions')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('redis-transactions')"
+                  (click)="toggleSubtopics('redis-transactions', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('redis-transactions'); as transactionsSubs) {
+        @if (isSubtopicsExpanded('redis-transactions')) {
+          <div class="nav-subtopics">
+            @for (s of transactionsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/redis/lua-scripting" routerLinkActive="active"><span class="nl-text">Lua Scripting</span>@if(p.isDone('redis-lua-scripting')){<span class="nl-done">✓</span>}</a>
     </div>
 

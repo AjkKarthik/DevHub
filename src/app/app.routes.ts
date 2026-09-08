@@ -2774,7 +2774,12 @@ export const routes: Routes = [
       { path: 'memkeys-is-redis-6-not-7-and-what-it-does', loadComponent: () => import('./components/data/redis/key-commands/subtopics/memkeys-is-redis-6-not-7-and-what-it-does/memkeys-is-redis-6-not-7-and-what-it-does').then(m => m.MemkeysIsRedis6Not7AndWhatItActuallyDoesSubtopic) },
       { path: 'dump-does-not-include-the-ttl', loadComponent: () => import('./components/data/redis/key-commands/subtopics/dump-does-not-include-the-ttl/dump-does-not-include-the-ttl').then(m => m.DumpDoesNotIncludeTheTtlSubtopic) },
     ] },
-    { path: 'transactions',         loadComponent: () => import('./components/data/redis/transactions/transactions').then(m => m.RedisTransactions) },
+    { path: 'transactions', children: [
+      { path: '', loadComponent: () => import('./components/data/redis/transactions/transactions').then(m => m.RedisTransactions) },
+      { path: 'shared-connection-breaks-watch-under-concurrency', loadComponent: () => import('./components/data/redis/transactions/subtopics/shared-connection-breaks-watch-under-concurrency/shared-connection-breaks-watch-under-concurrency').then(m => m.SharedConnectionBreaksWatchUnderConcurrencySubtopic) },
+      { path: 'watch-inside-multi-is-not-allowed', loadComponent: () => import('./components/data/redis/transactions/subtopics/watch-inside-multi-is-not-allowed/watch-inside-multi-is-not-allowed').then(m => m.WatchInsideMultiIsNotAllowedSubtopic) },
+      { path: 'the-partial-execution-mistake-as-real-runnable-code', loadComponent: () => import('./components/data/redis/transactions/subtopics/the-partial-execution-mistake-as-real-runnable-code/the-partial-execution-mistake-as-real-runnable-code').then(m => m.ThePartialExecutionMistakeAsRealRunnableCodeSubtopic) },
+    ] },
     { path: 'lua-scripting',        loadComponent: () => import('./components/data/redis/lua-scripting/lua-scripting').then(m => m.RedisLuaScripting) },
     { path: 'persistence',          loadComponent: () => import('./components/data/redis/persistence/persistence').then(m => m.RedisPersistence) },
     { path: 'pub-sub',              loadComponent: () => import('./components/data/redis/pub-sub/pub-sub').then(m => m.RedisPubSub) },

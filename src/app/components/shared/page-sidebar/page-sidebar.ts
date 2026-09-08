@@ -37934,6 +37934,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'For genuinely complex conditional logic, a Lua script (atomic by nature, since Redis is single-threaded) is often a cleaner fit than MULTI/EXEC with WATCH.',
     ],
   },
+  'redis/transactions/shared-connection-breaks-watch-under-concurrency': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Transactions (MULTI/EXEC)', route: '/redis/transactions' },
+      { label: 'WATCH Inside MULTI Is Not Allowed', route: '/redis/transactions/watch-inside-multi-is-not-allowed' },
+    ],
+    tip: 'A single shared Redis client instance used for WATCH by concurrent callers doesn\'t just risk an error — verified via simulation, one caller\'s EXEC can silently clear another caller\'s watch set, letting a genuinely stale compare-and-swap succeed with no error at all.',
+    gotchas: [
+      'The fix is a dedicated connection per WATCH-based operation (redis.duplicate()), not just "be careful" — the shared module-level Redis client used elsewhere on this page is unsafe specifically for WATCH.',
+    ],
+  },
+  'redis/transactions/watch-inside-multi-is-not-allowed': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Transactions (MULTI/EXEC)', route: '/redis/transactions' },
+      { label: 'A Shared Connection Breaks WATCH Under Concurrency', route: '/redis/transactions/shared-connection-breaks-watch-under-concurrency' },
+      { label: 'The Partial-Execution Mistake, as Real, Runnable Code', route: '/redis/transactions/the-partial-execution-mistake-as-real-runnable-code' },
+    ],
+    tip: 'WATCH after MULTI has already begun is not just bad style — Redis returns a real "ERR WATCH inside MULTI is not allowed" error, and the erroring WATCH is silently discarded rather than aborting the rest of the queued transaction.',
+    gotchas: [
+      'Calling MULTI a second time before the first block is closed is a related, separately-documented error: "ERR MULTI calls can not be nested."',
+    ],
+  },
+  'redis/transactions/the-partial-execution-mistake-as-real-runnable-code': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Transactions (MULTI/EXEC)', route: '/redis/transactions' },
+      { label: 'WATCH Inside MULTI Is Not Allowed', route: '/redis/transactions/watch-inside-multi-is-not-allowed' },
+    ],
+    tip: 'ioredis\'s own documented EXEC reply shape is Array<[Error | null, result]> — a failed command still occupies its own position in the array with an error in the first slot, it is never simply omitted.',
+    gotchas: [
+      'A non-null EXEC result only rules out a WATCH conflict — it says nothing about whether an individual queued command failed at runtime. Check results.some(([err]) => err) separately.',
+    ],
+  },
   'redis/lua-scripting': {
     apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
     related: [

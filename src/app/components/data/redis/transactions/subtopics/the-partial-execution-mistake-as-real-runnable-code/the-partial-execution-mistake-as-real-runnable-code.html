@@ -1,0 +1,26 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Transactions (MULTI/EXEC)" topicRoute="/redis/transactions"
+    subtopicLabel="The Partial-Execution Mistake, as Real, Runnable Code" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">The Partial-Execution Mistake, as Real, Runnable Code</h1>
+  <p class="page-subtitle">The main page's first mistake block shows the "no rollback" behavior as raw CLI pseudocode. Here it becomes real code matching ioredis's own documented reply shape — and a check for detecting the failure a caller can actually paste into a project.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>This turns the main page's own pseudocode mistake block into verified, runnable TypeScript matching ioredis's real reply shape, closing the gap between "here's the concept" and "here's what to actually check in your own code." Back to the topic overview to continue with a different subtopic path.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Transactions (MULTI/EXEC)" topicRoute="/redis/transactions"
+    [prev]="{ label: 'WATCH Inside MULTI Is Not Allowed', route: '/redis/transactions/watch-inside-multi-is-not-allowed' }" />
+</div>

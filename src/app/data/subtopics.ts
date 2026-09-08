@@ -1713,6 +1713,14 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: '--memkeys Is Redis 6.0, Not 7 — and What It Actually Does', route: '/redis/key-commands/memkeys-is-redis-6-not-7-and-what-it-does' },
     { label: 'DUMP Does Not Include the TTL', route: '/redis/key-commands/dump-does-not-include-the-ttl' },
   ],
+  // NOTE: bare 'transactions' already claimed by the SQL hub's own topic --
+  // hub-prefixed to 'redis-transactions', matching this hub's own established
+  // redis- progress/search key prefix.
+  'redis-transactions': [
+    { label: 'A Shared Connection Breaks WATCH Under Concurrency', route: '/redis/transactions/shared-connection-breaks-watch-under-concurrency' },
+    { label: 'WATCH Inside MULTI Is Not Allowed', route: '/redis/transactions/watch-inside-multi-is-not-allowed' },
+    { label: 'The Partial-Execution Mistake, as Real, Runnable Code', route: '/redis/transactions/the-partial-execution-mistake-as-real-runnable-code' },
+  ],
   closures: [
     { label: 'var Shares One Binding, let Creates One Per Iteration', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
     { label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },

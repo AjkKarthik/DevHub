@@ -106,23 +106,30 @@ const redis = new Redis();
 
 // Optimistic locking: increment only if below limit
 async function incrementWithLimit(key: string, limit: number): Promise<number | null> {
-  const MAX_RETRIES = 5;
-  for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
-    await redis.watch(key);
-    const current = parseInt(await redis.get(key) ?? '0', 10);
-    if (current >= limit) {
-      await redis.unwatch();
-      return null; // limit reached
+  // WATCH state is per-CONNECTION -- a dedicated connection per call keeps this
+  // request's watch set isolated from every other concurrent caller's own WATCH.
+  const conn = redis.duplicate();
+  try {
+    const MAX_RETRIES = 5;
+    for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
+      await conn.watch(key);
+      const current = parseInt(await conn.get(key) ?? '0', 10);
+      if (current >= limit) {
+        await conn.unwatch();
+        return null; // limit reached
+      }
+      const result = await conn
+        .multi()
+        .set(key, current + 1)
+        .exec();
+      if (result !== null) return current + 1; // success
+      // result === null means WATCH detected a conflict — retry
+      await new Promise(r => setTimeout(r, Math.random() * 50));
     }
-    const result = await redis
-      .multi()
-      .set(key, current + 1)
-      .exec();
-    if (result !== null) return current + 1; // success
-    // result === null means WATCH detected a conflict — retry
-    await new Promise(r => setTimeout(r, Math.random() * 50));
+    throw new Error('Transaction aborted after retries');
+  } finally {
+    conn.disconnect();
   }
-  throw new Error('Transaction aborted after retries');
 }`,
     },
   ];
@@ -173,15 +180,24 @@ const redis = new Redis();
 
 async function reserveItem(itemId: string, qty: number): Promise<boolean> {
   const key = \`inventory:\${itemId}\`;
-  for (let i = 0; i < 3; i++) {
-    await redis.watch(key);
-    const stock = parseInt(await redis.get(key) ?? '0', 10);
-    if (stock < qty) { await redis.unwatch(); return false; }
-    const result = await redis.multi().decrby(key, qty).exec();
-    if (result !== null) return true;
-    await new Promise(r => setTimeout(r, 10 * (i + 1)));
+  // A dedicated connection per call -- WATCH state is per-connection, so two
+  // concurrent reserveItem() calls sharing the module-level redis instance would
+  // interfere with each other's watch sets (this page's own "shared connection"
+  // mistake block, applied directly to this Challenge).
+  const conn = redis.duplicate();
+  try {
+    for (let i = 0; i < 3; i++) {
+      await conn.watch(key);
+      const stock = parseInt(await conn.get(key) ?? '0', 10);
+      if (stock < qty) { await conn.unwatch(); return false; }
+      const result = await conn.multi().decrby(key, qty).exec();
+      if (result !== null) return true;
+      await new Promise(r => setTimeout(r, 10 * (i + 1)));
+    }
+    return false;
+  } finally {
+    conn.disconnect();
   }
-  return false;
 }`,
   };
 

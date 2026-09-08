@@ -1,0 +1,26 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Transactions (MULTI/EXEC)" topicRoute="/redis/transactions"
+    subtopicLabel="A Shared Connection Breaks WATCH Under Concurrency" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">A Shared Connection Breaks WATCH Under Concurrency</h1>
+  <p class="page-subtitle">The main page's own WATCH/CAS codeTab and Challenge both used a single shared connection — exactly the anti-pattern its own third mistake block warns against. Verified via simulation: this doesn't just risk an error, it can silently corrupt data.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>This fixes a genuine bug in the main page's own reference examples, now corrected to use <code>redis.duplicate()</code>. Next: a real, documented Redis error the main page never mentions — calling WATCH after MULTI has already begun.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Transactions (MULTI/EXEC)" topicRoute="/redis/transactions"
+    [next]="{ label: 'WATCH Inside MULTI Is Not Allowed', route: '/redis/transactions/watch-inside-multi-is-not-allowed' }" />
+</div>
