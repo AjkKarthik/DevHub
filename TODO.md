@@ -9339,7 +9339,24 @@ off here with a date.
   proactive dev-server restart: nav accordion opens with all 3 links; both main-page fixes
   confirmed live via direct component-data inspection; all 3 subtopic pages checked — breadcrumb
   (all 4 levels), 860px wrapper, tailored sidebar content, no console errors.
-- [ ] `/redis/transactions` — Transactions (MULTI/EXEC)
+- [x] 2026-09-08 — `/redis/transactions` — Transactions (MULTI/EXEC): 3 subtopics (a
+  shared-connection WATCH-interference bug, WATCH-inside-MULTI-is-not-allowed, the
+  partial-execution mistake turned into real code). Found and fixed the strongest
+  self-contained bug in this hub so far: the WATCH/CAS codeTab and Atomic Inventory
+  Decrement Challenge both used a single shared `redis` connection for WATCH — exactly
+  the anti-pattern the page's OWN third mistake block warns against. Verified via
+  simulation this isn't just an error risk: a concurrent caller's EXEC can clear another
+  caller's watch set, letting a genuinely stale compare-and-swap silently succeed (data
+  corruption, no error at all). Fixed both with `redis.duplicate()`. Also verified two
+  real, documented Redis errors the page never mentions (`ERR WATCH inside MULTI is not
+  allowed`, `ERR MULTI calls can not be nested`) and turned the "no rollback" mistake
+  block's CLI pseudocode into real TypeScript matching ioredis's own documented
+  `Array<[Error | null, result]>` reply shape. SUBTOPICS key hub-prefixed to
+  `redis-transactions` (bare `transactions` collides with the SQL hub's own topic). Build
+  clean on first attempt. Browser-verified with a proactive dev-server restart: nav
+  accordion opens with all 3 links; both main-page fixes confirmed live via direct
+  component-data inspection; all 3 subtopic pages checked — breadcrumb (all 4 levels),
+  860px wrapper, tailored sidebar content, no console errors.
 - [ ] `/redis/lua-scripting` — Lua Scripting
 - [ ] `/redis/persistence` — Persistence (RDB & AOF)
 - [ ] `/redis/pub-sub` — Pub/Sub Messaging

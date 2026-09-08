@@ -8632,6 +8632,58 @@ this same check before any other new hub's first subtopic set:
    component-data inspection; all 3 subtopic pages checked individually — correct h1/breadcrumb (all
    4 levels), 860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed
    on two of the three via direct text search. **Redis hub Phase 10: 8 of 21 topics complete.**
+9. **The `transactions` batch found and fixed the strongest self-contained bug this hub has caught
+   so far, discovered purely by cross-referencing the page's own codeTabs/Challenge against its own
+   third mistake block** — that mistake block explains precisely why a shared connection breaks
+   WATCH under concurrency ("WATCH state is per-connection... use a dedicated connection per
+   optimistic-lock operation"), but the "WATCH / CAS" codeTab AND the Atomic Inventory Decrement
+   Challenge both called `redis.watch(key)` directly on the same module-level `const redis = new
+   Redis()` instance used everywhere else on the page — exactly the anti-pattern the mistake block
+   warns against, committed by the page's own reference examples. Verified via a direct simulation
+   of the real per-connection watch-set semantics: this isn't merely an error risk, it produces TWO
+   distinct failure shapes — an unrelated concurrent transaction can suffer a FALSE ABORT (its own
+   EXEC incorrectly returns null because it now shares a watch set with a different operation's
+   changed key), and — the more dangerous failure — a transaction whose own watched key genuinely
+   changed can still return a SUCCESSFUL EXEC, because a different concurrent caller's EXEC already
+   cleared the shared watch set moments earlier, silently corrupting data with no error at all.
+   Fixed both the codeTab and the Challenge solution to use `redis.duplicate()` for a dedicated
+   per-call connection. Three subtopics: (1) **fix-adjacent** — reproduces the exact interference
+   (false abort + false success) via the same simulation, with a Try It on whether a cheaper
+   "one connection per HTTP request" fix (instead of per-call) is safe — verified it is, AS LONG AS
+   a single request never runs two WATCH-based operations concurrently on that same connection,
+   reducing the real rule to "one connection per concurrently-active WATCH cycle," not literally
+   "one per request"; (2) **gap-closing** — a real, documented Redis error the main page's own
+   "WATCH → MULTI" ordering never states is server-ENFORCED rather than merely conventional:
+   `ERR WATCH inside MULTI is not allowed`, verified via Redis's own mailing-list discussion,
+   including the subtlety that the erroring WATCH is silently discarded at EXEC time rather than
+   aborting the rest of the already-queued transaction — a third category of behavior distinct from
+   both "syntax error aborts everything" and "runtime error only fails that command" already
+   covered elsewhere on the page; a Try It on the related, separately-verified `ERR MULTI calls can
+   not be nested` error; (3) **gap-closing** — the page's own first mistake block illustrates the
+   "no rollback" behavior with raw CLI-style pseudocode, never as code a reader could paste into a
+   real project; turned it into real TypeScript matching ioredis's own documented `.exec()` reply
+   shape (`Array<[Error | null, result]>`, verified via WebSearch against ioredis's own GitHub
+   issues), with a Try It on the correct `results.some(([err]) => err)` check for detecting a
+   partial runtime failure, distinct from the `results === null` check that only detects a WATCH
+   conflict. **A real `SUBTOPICS` map collision, requiring a genuine hub-prefix fix**: bare
+   `transactions` was already claimed by the SQL hub's own `/sql/transactions` topic — hub-prefixed
+   to `redis-transactions`, matching this hub's own progress/search key (which was ALREADY
+   `redis-`-prefixed independent of this fix, confirmed via the pre-existing
+   `p.isDone('redis-transactions')` nav markup) — all three `RedisNavComponent` accordion helper
+   calls use the prefixed key consistently; confirmed via the standing convention that
+   `REDIS_LABELS`/`SIDEBAR_MAP` composite keys carry no cross-hub collision risk (each hub's own
+   map, or full-path-prefixed keys, respectively) and were left unprefixed. All three
+   `exercise.solution` fields swept clean of `<code>`/entity contamination; the standing
+   apostrophe-after-letter sweep, bracket-balance, and backtick-parity checks all found nothing to
+   fix across all three files and the main-page edit. Build passed clean (foreground execution,
+   explicit `EXITCODE:$?` capture, zero real `ERROR` lines). Browser-verified with a proactive
+   dev-server restart before checking: no console errors on any of the 4 pages; nav accordion opens
+   with all 3 subtopic links, confirmed via both `window.ng.getComponent()` and a live DOM
+   click-and-query; both main-page fixes (the codeTab and the Challenge solution) confirmed
+   rendering live via direct component-data inspection; all 3 subtopic pages checked individually —
+   correct h1/breadcrumb (all 4 levels), 860px wrapper via `getComputedStyle`, tailored (not
+   DEFAULT) sidebar content confirmed via direct text search. **Redis hub Phase 10: 9 of 21 topics
+   complete.**
 
 ## Current state (update when it changes!)
 
@@ -8815,15 +8867,17 @@ this same check before any other new hub's first subtopic set:
   All 23 cards `available: true` in `data/redis/home/home.ts`. Progress: `redisTotal=21` in progress.service.ts.
   Redis pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. RedisNavComponent at `shared/redis-nav/redis-nav.ts`.
-  Phase 10: 8 of 21 topics have subtopics (`/redis/fundamentals`, pilot batch;
+  Phase 10: 9 of 21 topics have subtopics (`/redis/fundamentals`, pilot batch;
   `/redis/installation-setup`; `/redis/strings`; `/redis/hashes`; `/redis/lists`; `/redis/sets`;
-  `/redis/sorted-sets`; `/redis/key-commands`, finished 2026-09-08) — see "Redis hub subtopic wiring" section above for
+  `/redis/sorted-sets`; `/redis/key-commands`; `/redis/transactions`, finished 2026-09-08) — see
+  "Redis hub subtopic wiring" section above for
   the `RedisNavComponent` accordion structural fix (16th `*NavComponent`-based hub in a row missing
   it at pilot time), the SUBTOPICS-map collision resolutions (bare `fundamentals` collides with the
   JavaScript hub's own topic key; `installation-setup` confirmed collision-free since MongoDB's own
   topic of the same name was proactively hub-prefixed to `mongo-installation-setup`; `strings`
   proactively hub-prefixed to `redis-strings` against the DSA hub's own bare `strings` route;
-  `hashes`, `lists`, `sets` and `sorted-sets` all confirmed collision-free, left bare), and the
+  `hashes`, `lists`, `sets` and `sorted-sets` all confirmed collision-free, left bare; `transactions`
+  hub-prefixed to `redis-transactions` against the SQL hub's own bare `transactions` route), and the
   genuine inaccuracies found and fixed so far: Redis-on-Flash version-line conflation on the
   Fundamentals page; a `rename-command` typo plus two source-verified (`config.c`/`networking.c`)
   restart-requirement/protected-mode inaccuracies on the Installation & Setup page; a crash-window
@@ -8844,7 +8898,10 @@ this same check before any other new hub's first subtopic set:
   unified `ZRANGE ... BYLEX`; and, on the Key Commands & Expiry page, a wrong "SETEX is deprecated"
   claim (its own official docs carry no deprecation notice at all) and a wrong "Redis 7+" version
   attribution for `redis-cli --memkeys` (verified via the actual merging PR to have shipped in
-  Redis 6.0, two major versions earlier).
+  Redis 6.0, two major versions earlier); and, on the Transactions (MULTI/EXEC) page, the WATCH/CAS
+  codeTab and Atomic Inventory Decrement Challenge both used a single shared connection for WATCH —
+  exactly the anti-pattern the page's own third mistake block warns against — verified via
+  simulation to risk a silent false-success CAS corruption, fixed with `redis.duplicate()`.
 - **GraphQL hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Pink theme `$accent: #e535ab`, `$tint: #fdf2f9`, dark `#f472b6`, dark bg `#3d0a26`. Search prefix `gql-`. Route: `/graphql`.
   CSS classes: `.gql-page`, `.gql-icon`, `.gql-section`. Icon content: `◈` at `font-size: 1.8rem`. `tech="javascript"`.
