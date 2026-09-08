@@ -8588,6 +8588,50 @@ this same check before any other new hub's first subtopic set:
    direct component-data inspection; all 3 subtopic pages checked individually — correct
    h1/breadcrumb (all 4 levels), 860px wrapper via `getComputedStyle`, tailored (not DEFAULT)
    sidebar content confirmed. **Redis hub Phase 10: 7 of 21 topics complete.**
+8. **The `key-commands` batch found and fixed TWO genuine, well-verified issues, both status/
+   version claims requiring external verification rather than self-contained reading**: the QnA on
+   atomically setting a key with an expiry called SETEX "deprecated but still works" — verified
+   directly against SETEX's own official docs, which carry NO deprecation notice at all (unlike
+   SETNX, GETSET, and HMSET on the same command reference site, which all explicitly say
+   "Deprecated as of..."). SETEX is not going away; the real reason to prefer `SET key value EX
+   seconds` is that it composes with NX/XX/GET/KEEPTTL, capabilities SETEX genuinely lacks (it has
+   no conditional variant at all). Separately, a QnA on finding the largest keys attributed
+   `redis-cli --memkeys` to "Redis 7+" — verified via the actual pull request that introduced it
+   (redis/redis#5856), which merged into the unstable branch in February 2019 and shipped in Redis
+   6.0 (April 2020) — two full major versions before 7.0 (2022). A third flagged claim (the
+   `MIGRATE host port key 0 timeout COPY` syntax) was checked against MIGRATE's own official docs
+   and confirmed ALREADY CORRECT — not every checked claim on this page turned out wrong. Three
+   subtopics, each verified via direct Node.js execution: (1) **fix-adjacent** — reproduces the
+   SETEX-cannot-express-a-lock bug concretely (two workers racing for a distributed lock both
+   "succeed" via SETEX with no error, since it has no NX equivalent), contrasted against `SET key
+   value EX seconds NX` correctly rejecting the loser, with a Try It on why a manual
+   EXISTS-then-SETEX check-then-act sequence reintroduces the identical race SET...NX closes
+   atomically — the same "two commands vs. one atomic command" pattern already covered for
+   SET+EXPIRE and INCR+EXPIRE on this hub's own Strings topic; (2) **fix-adjacent** — the verified
+   --memkeys timeline, plus what the flag actually does under the hood (SCAN + MEMORY USAGE,
+   Redis 4.0+, ranked by size) built as a real function and verified against a modeled keyspace
+   matching the claimed ranking exactly, with a Try It distinguishing "the server supports the
+   underlying command" from "the CLI binary you're running has the flag" as two independent
+   version requirements; (3) **gap-closing** — a genuine, well-documented detail the main page's
+   own theory never states outright: DUMP's serialised payload contains only the value, an RDB
+   version marker, and a checksum — no TTL at all, verified via RESTORE's own official docs and a
+   direct execution showing a naive DUMP-then-RESTORE migration silently makes the copied key
+   immortal, with the correct three-step fix (PTTL first, then DUMP, then RESTORE with the read
+   TTL passed explicitly) and a Try It on the non-obvious PTTL "-1" vs. RESTORE "0" translation
+   needed to correctly represent "no expiry" across the two commands' own different vocabularies.
+   No `SUBTOPICS` collision for `key-commands` (checked both `subtopics.ts` forms and grepped
+   `app.routes.ts` directly, confirmed collision-free, left bare). All three `exercise.solution`
+   fields swept clean of `<code>`/entity contamination; the standing apostrophe-after-letter sweep,
+   bracket-balance, and backtick-parity checks all found nothing to fix across all three files; none
+   of the three subtopic titles contained an apostrophe or double quote, so the `[prev]`/`[next]`
+   label delimiter-collision risk didn't apply this batch. Build passed clean (foreground execution,
+   explicit `EXITCODE:$?` capture, zero real `ERROR` lines). Browser-verified with a proactive
+   dev-server restart before checking: no console errors on any of the 4 pages; nav accordion opens
+   with all 3 subtopic links, confirmed via both `window.ng.getComponent()` direct calls (data) and
+   a live DOM click-and-query (rendering); both main-page fixes confirmed rendering live via direct
+   component-data inspection; all 3 subtopic pages checked individually — correct h1/breadcrumb (all
+   4 levels), 860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed
+   on two of the three via direct text search. **Redis hub Phase 10: 8 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -8771,9 +8815,9 @@ this same check before any other new hub's first subtopic set:
   All 23 cards `available: true` in `data/redis/home/home.ts`. Progress: `redisTotal=21` in progress.service.ts.
   Redis pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. RedisNavComponent at `shared/redis-nav/redis-nav.ts`.
-  Phase 10: 7 of 21 topics have subtopics (`/redis/fundamentals`, pilot batch;
+  Phase 10: 8 of 21 topics have subtopics (`/redis/fundamentals`, pilot batch;
   `/redis/installation-setup`; `/redis/strings`; `/redis/hashes`; `/redis/lists`; `/redis/sets`;
-  `/redis/sorted-sets`, finished 2026-09-08) — see "Redis hub subtopic wiring" section above for
+  `/redis/sorted-sets`; `/redis/key-commands`, finished 2026-09-08) — see "Redis hub subtopic wiring" section above for
   the `RedisNavComponent` accordion structural fix (16th `*NavComponent`-based hub in a row missing
   it at pilot time), the SUBTOPICS-map collision resolutions (bare `fundamentals` collides with the
   JavaScript hub's own topic key; `installation-setup` confirmed collision-free since MongoDB's own
@@ -8797,7 +8841,10 @@ this same check before any other new hub's first subtopic set:
   contained member-collision bug in the sliding-window rate limiter codeTab (mirroring the page's
   own mistake block, undercounting concurrent same-millisecond requests) plus a stale claim that
   `ZRANGEBYLEX` is current when it has actually been deprecated since Redis 6.2.0 in favor of the
-  unified `ZRANGE ... BYLEX`.
+  unified `ZRANGE ... BYLEX`; and, on the Key Commands & Expiry page, a wrong "SETEX is deprecated"
+  claim (its own official docs carry no deprecation notice at all) and a wrong "Redis 7+" version
+  attribution for `redis-cli --memkeys` (verified via the actual merging PR to have shipped in
+  Redis 6.0, two major versions earlier).
 - **GraphQL hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Pink theme `$accent: #e535ab`, `$tint: #fdf2f9`, dark `#f472b6`, dark bg `#3d0a26`. Search prefix `gql-`. Route: `/graphql`.
   CSS classes: `.gql-page`, `.gql-icon`, `.gql-section`. Icon content: `◈` at `font-size: 1.8rem`. `tech="javascript"`.

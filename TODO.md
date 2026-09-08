@@ -9323,7 +9323,22 @@ off here with a date.
   total across the hub); both main-page fixes and the self-caught escaping fix confirmed live via
   direct component-data inspection; all 3 subtopic pages checked — breadcrumb, 860px wrapper,
   tailored sidebar content, no console errors.
-- [ ] `/redis/key-commands` — Key Commands & Patterns
+- [x] 2026-09-08 — `/redis/key-commands` — Key Commands & Patterns: 3 subtopics
+  (SETEX vs. SET ... EX ... NX composability, --memkeys version/mechanism, DUMP-does-not-
+  include-the-TTL). Fixed two genuine main-page inaccuracies: a QnA wrongly called SETEX
+  "deprecated" (its own official docs carry no deprecation notice at all — SETNX/GETSET/HMSET
+  do, SETEX doesn't); a QnA wrongly attributed `redis-cli --memkeys` to "Redis 7+" (verified via
+  the actual merging PR, redis/redis#5856, merged Feb 2019, shipped in Redis 6.0 — two major
+  versions earlier). A third flagged claim (MIGRATE syntax) was checked and confirmed already
+  correct. All three subtopics verified via direct Node.js execution: the SETEX-cannot-express-
+  a-lock bug (two workers racing both "succeed" with no NX equivalent to reject either), the
+  --memkeys SCAN+MEMORY USAGE mechanism matched against a modeled keyspace ranking, and the
+  DUMP/RESTORE TTL gap (a naive migration silently makes the copied key immortal; correct fix
+  reads PTTL before DUMPing and translates PTTL's "-1" to RESTORE's "0"). SUBTOPICS key left
+  bare (confirmed collision-free). Build clean on first attempt. Browser-verified with a
+  proactive dev-server restart: nav accordion opens with all 3 links; both main-page fixes
+  confirmed live via direct component-data inspection; all 3 subtopic pages checked — breadcrumb
+  (all 4 levels), 860px wrapper, tailored sidebar content, no console errors.
 - [ ] `/redis/transactions` — Transactions (MULTI/EXEC)
 - [ ] `/redis/lua-scripting` — Lua Scripting
 - [ ] `/redis/persistence` — Persistence (RDB & AOF)
