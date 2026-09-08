@@ -2780,7 +2780,12 @@ export const routes: Routes = [
       { path: 'watch-inside-multi-is-not-allowed', loadComponent: () => import('./components/data/redis/transactions/subtopics/watch-inside-multi-is-not-allowed/watch-inside-multi-is-not-allowed').then(m => m.WatchInsideMultiIsNotAllowedSubtopic) },
       { path: 'the-partial-execution-mistake-as-real-runnable-code', loadComponent: () => import('./components/data/redis/transactions/subtopics/the-partial-execution-mistake-as-real-runnable-code/the-partial-execution-mistake-as-real-runnable-code').then(m => m.ThePartialExecutionMistakeAsRealRunnableCodeSubtopic) },
     ] },
-    { path: 'lua-scripting',        loadComponent: () => import('./components/data/redis/lua-scripting/lua-scripting').then(m => m.RedisLuaScripting) },
+    { path: 'lua-scripting', children: [
+      { path: '', loadComponent: () => import('./components/data/redis/lua-scripting/lua-scripting').then(m => m.RedisLuaScripting) },
+      { path: 'redis-rejects-global-variables-it-doesnt-leak-them', loadComponent: () => import('./components/data/redis/lua-scripting/subtopics/redis-rejects-global-variables-it-doesnt-leak-them/redis-rejects-global-variables-it-doesnt-leak-them').then(m => m.RedisRejectsGlobalVariablesItDoesntLeakThemSubtopic) },
+      { path: 'scripts-no-longer-need-to-be-deterministic', loadComponent: () => import('./components/data/redis/lua-scripting/subtopics/scripts-no-longer-need-to-be-deterministic/scripts-no-longer-need-to-be-deterministic').then(m => m.ScriptsNoLongerNeedToBeDeterministicSubtopic) },
+      { path: 'set-repl-skipping-replication-for-throwaway-writes', loadComponent: () => import('./components/data/redis/lua-scripting/subtopics/set-repl-skipping-replication-for-throwaway-writes/set-repl-skipping-replication-for-throwaway-writes').then(m => m.SetReplSkippingReplicationForThrowawayWritesSubtopic) },
+    ] },
     { path: 'persistence',          loadComponent: () => import('./components/data/redis/persistence/persistence').then(m => m.RedisPersistence) },
     { path: 'pub-sub',              loadComponent: () => import('./components/data/redis/pub-sub/pub-sub').then(m => m.RedisPubSub) },
     { path: 'streams',              loadComponent: () => import('./components/data/redis/streams/streams').then(m => m.RedisStreams) },

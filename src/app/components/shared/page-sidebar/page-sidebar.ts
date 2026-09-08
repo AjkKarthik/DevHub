@@ -37979,6 +37979,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Script caching (EVALSHA after the first EVAL) avoids re-transmitting the full script body on every subsequent invocation.',
     ],
   },
+  'redis/lua-scripting/redis-rejects-global-variables-it-doesnt-leak-them': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Lua Scripting', route: '/redis/lua-scripting' },
+      { label: 'Since Redis 7.0, Scripts No Longer Need to Be Deterministic', route: '/redis/lua-scripting/scripts-no-longer-need-to-be-deterministic' },
+    ],
+    tip: 'Assigning to an undeclared (global) Lua variable doesn\'t silently persist shared state — Redis rejects it outright with "Script attempted to create global variable \'name\'" and aborts the script immediately, every single time.',
+    gotchas: [
+      'SCRIPT LOAD only compiles and caches a script — it does not execute it, so a global-variable mistake hiding in a rarely-taken branch can go undetected until that branch actually runs in production.',
+    ],
+  },
+  'redis/lua-scripting/scripts-no-longer-need-to-be-deterministic': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Lua Scripting', route: '/redis/lua-scripting' },
+      { label: 'Redis Rejects Global Variables — It Doesn’t Leak Them', route: '/redis/lua-scripting/redis-rejects-global-variables-it-doesnt-leak-them' },
+      { label: 'redis.set_repl(): Skipping Replication for Throwaway Writes', route: '/redis/lua-scripting/set-repl-skipping-replication-for-throwaway-writes' },
+    ],
+    tip: 'Verbatim script replication (which required deterministic scripts) was removed entirely in Redis 7.0 — effects replication is now the only mode, so math.random, TIME, and SRANDMEMBER are all safe to use freely inside a script.',
+    gotchas: [
+      'redis.replicate_commands() still exists for backward compatibility but is documented as "Until version: 7.0.0" — calling it on a current server does nothing meaningful, since there is no longer a verbatim mode to opt out of.',
+    ],
+  },
+  'redis/lua-scripting/set-repl-skipping-replication-for-throwaway-writes': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Lua Scripting', route: '/redis/lua-scripting' },
+      { label: 'Since Redis 7.0, Scripts No Longer Need to Be Deterministic', route: '/redis/lua-scripting/scripts-no-longer-need-to-be-deterministic' },
+    ],
+    tip: 'redis.set_repl(redis.REPL_NONE) lets a script skip replicating genuinely throwaway intermediate writes (like a temporary SUNIONSTORE result) while still replicating the real final write — every new script execution resets back to REPL_ALL automatically.',
+    gotchas: [
+      'REPL_NONE still applies the write on the PRIMARY exactly like any other command — it only controls whether that write is also sent to the AOF file and/or replicas.',
+    ],
+  },
   'redis/eviction-policies': {
     apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
     related: [

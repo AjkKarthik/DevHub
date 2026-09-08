@@ -1721,6 +1721,13 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'WATCH Inside MULTI Is Not Allowed', route: '/redis/transactions/watch-inside-multi-is-not-allowed' },
     { label: 'The Partial-Execution Mistake, as Real, Runnable Code', route: '/redis/transactions/the-partial-execution-mistake-as-real-runnable-code' },
   ],
+  // NOTE: bare 'lua-scripting' confirmed collision-free (checked both quoted
+  // and unquoted forms in this file, plus app.routes.ts route paths directly).
+  'lua-scripting': [
+    { label: 'Redis Rejects Global Variables — It Doesn’t Leak Them', route: '/redis/lua-scripting/redis-rejects-global-variables-it-doesnt-leak-them' },
+    { label: 'Since Redis 7.0, Scripts No Longer Need to Be Deterministic', route: '/redis/lua-scripting/scripts-no-longer-need-to-be-deterministic' },
+    { label: 'redis.set_repl(): Skipping Replication for Throwaway Writes', route: '/redis/lua-scripting/set-repl-skipping-replication-for-throwaway-writes' },
+  ],
   closures: [
     { label: 'var Shares One Binding, let Creates One Per Iteration', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
     { label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },

@@ -150,16 +150,16 @@ console.log(swapped); // true — atomically updated`,
 
   mistakes: CommonMistake[] = [
     {
-      title: 'Using global variables in Lua scripts',
+      title: 'Assuming a Lua global variable silently persists shared state',
       wrong: `local script = \`
-count = count + 1    -- global: persists between EVAL calls on same server!
+count = count + 1    -- assigning to a global -- what actually happens?
 return count
 \``,
       right: `local script = \`
 local count = redis.call('INCR', KEYS[1])
 return count
 \``,
-      explanation: 'Lua global variables in Redis scripts persist for the lifetime of the Redis process. This causes shared mutable state between script invocations — a serious bug. Always use local variables.',
+      explanation: 'Redis\'s Lua sandbox blocks global variable creation outright — this script does NOT silently persist shared state; it fails immediately with "Script attempted to create global variable \'count\'" and never returns anything. The real danger here isn\'t a subtle bug, it\'s a hard crash on first execution. Always use local variables — not because globals leak state undetected, but because Redis refuses to run a script that tries to create one at all.',
     },
     {
       title: 'Hardcoding key names inside the script body',
@@ -284,7 +284,7 @@ async function consume(bucketKey: string, rate: number, capacity: number): Promi
     },
     {
       q: 'What are the limitations of Lua scripts in Redis?',
-      a: 'Limitations: (1) Scripts block the event loop — keep them short; (2) No global state between calls (use Redis keys); (3) Cannot use SUBSCRIBE/PUBLISH; (4) No external network calls; (5) No access to file system; (6) Deterministic required (no math.random without seed — use RANDOM workarounds). Scripts must be deterministic for AOF/replication.',
+      a: 'Limitations: (1) Scripts block the event loop — keep them short; (2) No global state between calls — Redis rejects global variable creation outright, it does not merely discourage it (use Redis keys for state instead); (3) Cannot use SUBSCRIBE/PUBLISH; (4) No external network calls; (5) No access to file system. Determinism is NOT required anymore: since Redis 5.0 (default) and exclusively since Redis 7.0 (verbatim replication was removed entirely), Redis replicates only a script\'s write EFFECTS, not its source code — so math.random, TIME, and SRANDMEMBER are all usable freely inside a script with no seeding workaround needed.',
     },
     {
       q: 'How do you handle errors in Redis Lua scripts?',

@@ -1,0 +1,26 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Lua Scripting" topicRoute="/redis/lua-scripting"
+    subtopicLabel="redis.set_repl(): Skipping Replication for Throwaway Writes" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">redis.set_repl(): Skipping Replication for Throwaway Writes</h1>
+  <p class="page-subtitle">The main page covers effects replication but never mentions a script can take fine-grained control over which of its own writes actually replicate. Built from Redis's own documented worked example.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Redis 3.2+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>This closes a real gap-closing angle building directly on the effects-replication correction from the prior subtopic — now with a genuinely useful, documented technique the main page never covers at all. Back to the topic overview to continue with a different subtopic path.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Lua Scripting" topicRoute="/redis/lua-scripting"
+    [prev]="{ label: 'Since Redis 7.0, Scripts No Longer Need to Be Deterministic', route: '/redis/lua-scripting/scripts-no-longer-need-to-be-deterministic' }" />
+</div>
