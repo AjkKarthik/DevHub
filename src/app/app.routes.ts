@@ -2786,7 +2786,12 @@ export const routes: Routes = [
       { path: 'scripts-no-longer-need-to-be-deterministic', loadComponent: () => import('./components/data/redis/lua-scripting/subtopics/scripts-no-longer-need-to-be-deterministic/scripts-no-longer-need-to-be-deterministic').then(m => m.ScriptsNoLongerNeedToBeDeterministicSubtopic) },
       { path: 'set-repl-skipping-replication-for-throwaway-writes', loadComponent: () => import('./components/data/redis/lua-scripting/subtopics/set-repl-skipping-replication-for-throwaway-writes/set-repl-skipping-replication-for-throwaway-writes').then(m => m.SetReplSkippingReplicationForThrowawayWritesSubtopic) },
     ] },
-    { path: 'persistence',          loadComponent: () => import('./components/data/redis/persistence/persistence').then(m => m.RedisPersistence) },
+    { path: 'persistence', children: [
+      { path: '', loadComponent: () => import('./components/data/redis/persistence/persistence').then(m => m.RedisPersistence) },
+      { path: 'aof-use-rdb-preamble-default-since-redis-5-0', loadComponent: () => import('./components/data/redis/persistence/subtopics/aof-use-rdb-preamble-default-since-redis-5-0/aof-use-rdb-preamble-default-since-redis-5-0').then(m => m.AofUseRdbPreambleDefaultSinceRedis50Subtopic) },
+      { path: 'debug-sleep-vs-save-two-different-commands', loadComponent: () => import('./components/data/redis/persistence/subtopics/debug-sleep-vs-save-two-different-commands/debug-sleep-vs-save-two-different-commands').then(m => m.DebugSleepVsSaveTwoDifferentCommandsSubtopic) },
+      { path: 'monitoring-bgsave-cow-memory-growth', loadComponent: () => import('./components/data/redis/persistence/subtopics/monitoring-bgsave-cow-memory-growth/monitoring-bgsave-cow-memory-growth').then(m => m.MonitoringBgsaveCowMemoryGrowthSubtopic) },
+    ] },
     { path: 'pub-sub',              loadComponent: () => import('./components/data/redis/pub-sub/pub-sub').then(m => m.RedisPubSub) },
     { path: 'streams',              loadComponent: () => import('./components/data/redis/streams/streams').then(m => m.RedisStreams) },
     { path: 'caching-patterns',     loadComponent: () => import('./components/data/redis/caching-patterns/caching-patterns').then(m => m.RedisCachingPatterns) },

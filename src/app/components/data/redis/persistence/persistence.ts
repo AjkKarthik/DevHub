@@ -28,7 +28,7 @@ export class RedisPersistence {
     { name: 'appendonly yes', type: 'syntax', desc: 'Enable AOF persistence in redis.conf' },
     { name: 'appendfsync always|everysec|no', type: 'syntax', desc: 'AOF fsync policy: durability vs performance' },
     { name: 'aof-use-rdb-preamble yes', type: 'syntax', desc: 'Hybrid mode: RDB header + AOF tail for fast load' },
-    { name: 'DEBUG SLEEP 0', type: 'keyword', desc: 'Used in testing; SAVE forces synchronous RDB write' },
+    { name: 'SAVE', type: 'keyword', desc: 'Synchronous RDB write — blocks Redis until complete; avoid in production' },
   ];
 
   theory: TheoryPoint[] = [
@@ -55,7 +55,7 @@ export class RedisPersistence {
     {
       heading: 'Hybrid Persistence (Recommended)',
       points: [
-        'aof-use-rdb-preamble yes (default in Redis 7+) combines both: the AOF file starts with an RDB snapshot followed by AOF commands written after the snapshot. Fast to load (binary RDB preamble) + durable (minimal AOF tail).',
+        'aof-use-rdb-preamble yes (default since Redis 5.0 — introduced in 4.0 as an opt-in, but only defaulted to yes starting with 5.0) combines both: the AOF file starts with an RDB snapshot followed by AOF commands written after the snapshot. Fast to load (binary RDB preamble) + durable (minimal AOF tail).',
         'This is the recommended mode for production — it provides the restart speed of RDB with the durability of AOF.',
         'When BGREWRITEAOF runs in hybrid mode, it generates the RDB preamble + AOF tail atomically, then atomically replaces the old AOF file.',
       ],
@@ -97,7 +97,7 @@ appendfilename "appendonly.aof"
 appendfsync everysec         # recommended: 1s max data loss
 no-appendfsync-on-rewrite yes  # don't fsync during BGSAVE/BGREWRITEAOF
 
-# --- Hybrid (recommended, default in Redis 7+) ---
+# --- Hybrid (recommended, default since Redis 5.0) ---
 aof-use-rdb-preamble yes
 
 # --- Auto AOF rewrite ---

@@ -1728,6 +1728,13 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Since Redis 7.0, Scripts No Longer Need to Be Deterministic', route: '/redis/lua-scripting/scripts-no-longer-need-to-be-deterministic' },
     { label: 'redis.set_repl(): Skipping Replication for Throwaway Writes', route: '/redis/lua-scripting/set-repl-skipping-replication-for-throwaway-writes' },
   ],
+  // NOTE: bare 'persistence' confirmed collision-free (checked both quoted
+  // and unquoted forms in this file, plus app.routes.ts route paths directly).
+  'persistence': [
+    { label: 'aof-use-rdb-preamble Has Defaulted to Yes Since Redis 5.0', route: '/redis/persistence/aof-use-rdb-preamble-default-since-redis-5-0' },
+    { label: 'DEBUG SLEEP vs. SAVE: Two Completely Different Commands', route: '/redis/persistence/debug-sleep-vs-save-two-different-commands' },
+    { label: 'Monitoring BGSAVE’s Copy-on-Write Memory Growth', route: '/redis/persistence/monitoring-bgsave-cow-memory-growth' },
+  ],
   closures: [
     { label: 'var Shares One Binding, let Creates One Per Iteration', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
     { label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },

@@ -218,7 +218,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
 
     <div class="nav-group">
       <p class="nav-group-label">Persistence</p>
-      <a routerLink="/redis/persistence" routerLinkActive="active"><span class="nl-text">Persistence: RDB &amp; AOF</span>@if(p.isDone('redis-persistence')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/redis/persistence" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Persistence: RDB &amp; AOF</span>
+        @if(p.isDone('redis-persistence')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('persistence')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('persistence')"
+                  (click)="toggleSubtopics('persistence', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('persistence'); as persistenceSubs) {
+        @if (isSubtopicsExpanded('persistence')) {
+          <div class="nav-subtopics">
+            @for (s of persistenceSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

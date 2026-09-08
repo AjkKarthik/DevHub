@@ -38081,6 +38081,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'AOF rewrite (compacting the log) still requires enough disk space for both the old and new file during the rewrite process.',
     ],
   },
+  'redis/persistence/aof-use-rdb-preamble-default-since-redis-5-0': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Persistence: RDB & AOF', route: '/redis/persistence' },
+      { label: 'DEBUG SLEEP vs. SAVE: Two Completely Different Commands', route: '/redis/persistence/debug-sleep-vs-save-two-different-commands' },
+    ],
+    tip: 'aof-use-rdb-preamble was introduced opt-in (default no) in Redis 4.0 and only became the default (yes) starting at Redis 5.0 — verified directly against Redis\'s own redis.conf template at both tagged releases, not "Redis 7+" as often assumed.',
+    gotchas: [
+      'A Redis instance strictly older than 5.0 still ships with the original opt-in default — the corrected "since 5.0" claim is a floor, not a statement about every earlier version too.',
+    ],
+  },
+  'redis/persistence/debug-sleep-vs-save-two-different-commands': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Persistence: RDB & AOF', route: '/redis/persistence' },
+      { label: 'aof-use-rdb-preamble Has Defaulted to Yes Since Redis 5.0', route: '/redis/persistence/aof-use-rdb-preamble-default-since-redis-5-0' },
+      { label: 'Monitoring BGSAVE’s Copy-on-Write Memory Growth', route: '/redis/persistence/monitoring-bgsave-cow-memory-growth' },
+    ],
+    tip: 'DEBUG SLEEP has nothing to do with persistence — it blocks the entire server for a caller-specified duration, purely to test client timeout/retry/alerting logic in a controlled environment.',
+    gotchas: [
+      'Never run DEBUG SLEEP against production — even a few seconds can trigger client timeouts, replication lag, and potential failovers. It belongs in staging only.',
+    ],
+  },
+  'redis/persistence/monitoring-bgsave-cow-memory-growth': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Persistence: RDB & AOF', route: '/redis/persistence' },
+      { label: 'DEBUG SLEEP vs. SAVE: Two Completely Different Commands', route: '/redis/persistence/debug-sleep-vs-save-two-different-commands' },
+    ],
+    tip: 'BGSAVE\'s copy-on-write memory growth tracks how many pages the PARENT process writes WHILE the child snapshot is in progress — not the dataset\'s total size. A large, mostly-idle dataset can see almost no growth at all.',
+    gotchas: [
+      'The extra memory is genuinely temporary — it returns to baseline once BGSAVE finishes and the copy-on-write pages release, not something that lingers until a restart.',
+    ],
+  },
   'redis/redis-nodejs': {
     apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
     related: [

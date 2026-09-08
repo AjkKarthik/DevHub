@@ -1,0 +1,26 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Persistence: RDB & AOF" topicRoute="/redis/persistence"
+    subtopicLabel="Monitoring BGSAVE's Copy-on-Write Memory Growth" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">Monitoring BGSAVE's Copy-on-Write Memory Growth</h1>
+  <p class="page-subtitle">The main page's QnA describes BGSAVE's copy-on-write memory doubling in real detail, and even names the exact INFO fields to watch — but never shows them read together in a working monitor. Here's the actual script.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>This closes a real gap between the main page's own detailed COW explanation and what it actually demonstrates in code, reusing the same INFO-parsing pattern the main page's own Challenge already establishes. Back to the topic overview to continue with a different subtopic path.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Persistence: RDB & AOF" topicRoute="/redis/persistence"
+    [prev]="{ label: 'DEBUG SLEEP vs. SAVE: Two Completely Different Commands', route: '/redis/persistence/debug-sleep-vs-save-two-different-commands' }" />
+</div>

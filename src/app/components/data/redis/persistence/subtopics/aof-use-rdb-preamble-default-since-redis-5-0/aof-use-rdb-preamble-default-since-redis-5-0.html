@@ -1,0 +1,26 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Persistence: RDB & AOF" topicRoute="/redis/persistence"
+    subtopicLabel="aof-use-rdb-preamble Has Defaulted to Yes Since Redis 5.0" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">aof-use-rdb-preamble Has Defaulted to Yes Since Redis 5.0</h1>
+  <p class="page-subtitle">The main page originally attributed this default to "Redis 7+" — checked directly against Redis's own redis.conf template at two tagged versions, the default actually flipped to yes two major versions earlier, at Redis 5.0.</p>
+  <app-page-meta [readingTime]="6" difficulty="beginner" since="Redis 4.0" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>This corrects a version-attribution inaccuracy that appeared twice on the main page (once in the theory, once in a codeTab comment). Next: a second, unrelated main-page fix — the quick reference's own DEBUG SLEEP entry actually described a different command entirely.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Persistence: RDB & AOF" topicRoute="/redis/persistence"
+    [next]="{ label: 'DEBUG SLEEP vs. SAVE: Two Completely Different Commands', route: '/redis/persistence/debug-sleep-vs-save-two-different-commands' }" />
+</div>

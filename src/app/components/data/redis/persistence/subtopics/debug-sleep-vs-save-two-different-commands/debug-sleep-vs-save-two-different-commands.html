@@ -1,0 +1,27 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Persistence: RDB & AOF" topicRoute="/redis/persistence"
+    subtopicLabel="DEBUG SLEEP vs. SAVE: Two Different Commands" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">DEBUG SLEEP vs. SAVE: Two Completely Different Commands</h1>
+  <p class="page-subtitle">The main page's own Quick Reference labeled an entry "DEBUG SLEEP 0" but described what SAVE actually does. Here's what each command genuinely does, and a real use for DEBUG SLEEP the main page never covers.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the second of two genuine main-page inaccuracies this batch found. Next: a real gap-closing subtopic building on the page's own BGSAVE copy-on-write theory — turning a prose-only QnA into an actual monitoring script.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Persistence: RDB & AOF" topicRoute="/redis/persistence"
+    [prev]="{ label: 'aof-use-rdb-preamble Has Defaulted to Yes Since Redis 5.0', route: '/redis/persistence/aof-use-rdb-preamble-default-since-redis-5-0' }"
+    [next]="{ label: 'Monitoring BGSAVE’s Copy-on-Write Memory Growth', route: '/redis/persistence/monitoring-bgsave-cow-memory-growth' }" />
+</div>
