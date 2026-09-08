@@ -8732,6 +8732,51 @@ this same check before any other new hub's first subtopic set:
     component-data inspection; all 3 subtopic pages checked individually — correct h1/breadcrumb
     (all 4 levels), 860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content
     confirmed via direct text search. **Redis hub Phase 10: 10 of 21 topics complete.**
+11. **The `persistence` batch found and fixed TWO genuine, well-verified inaccuracies, one a
+    self-contained content mismatch requiring zero research and one a version-attribution error
+    confirmed against Redis's own shipped config files at two tagged releases**: the Quick
+    Reference's own entry named `DEBUG SLEEP 0` but described it as "Used in testing; SAVE forces
+    synchronous RDB write" — a description naming a completely different command, DEBUG SLEEP has
+    nothing to do with RDB/persistence at all, it simply blocks the whole server for a
+    caller-specified duration for testing timeout/retry/alerting logic. Fixed the entry's `name`
+    to `SAVE` (the command the description was actually describing). Separately, both the theory
+    and a codeTab comment attributed `aof-use-rdb-preamble yes` to "default in Redis 7+" — verified
+    by fetching Redis's own `redis.conf` template directly from GitHub at two tagged versions: 4.0
+    (the version that INTRODUCED the option) shipped `aof-use-rdb-preamble no`, with the config
+    file's own comment explaining the conservative opt-in-first rollout ("to avoid the surprise of
+    a format change, but will at some point be used as the default"); 5.0 shipped `yes` — two full
+    major versions before the "7+" the page claimed. Fixed both occurrences to "default since Redis
+    5.0". Three subtopics, each verified via direct execution: (1) **fix-adjacent** — a version-
+    timeline model matching the two GitHub-verified data points exactly, with a Try It on why the
+    corrected claim is a FLOOR, not a blanket statement about every earlier version too (a
+    hypothetical pre-5.0 instance still ships with the original opt-in default); (2) **fix-adjacent**
+    — contrasts what SAVE and DEBUG SLEEP actually do side by side, plus a real, documented use for
+    DEBUG SLEEP the main page never covers at all (simulating a BGSAVE fork()-latency spike in a
+    controlled test to verify a client's own timeout/retry logic actually works, tying directly back
+    to the main page's own fork()-latency theory point); (3) **gap-closing** — the main page's own
+    QnA describes BGSAVE's copy-on-write memory-doubling risk in real, accurate detail and even names
+    the exact INFO fields to watch (`rdb_current_bgsave_type`, `used_memory`) but never shows them
+    read together in one working script; built a real `monitorBgsaveMemory()` function reusing the
+    same `INFO`-parsing technique the main page's own Persistence Health Check Challenge already
+    establishes, verified via a modeled COW pattern matching the documented growth-then-release
+    behavior exactly. No `SUBTOPICS` collision for `persistence` (checked both `subtopics.ts` forms
+    and grepped `app.routes.ts` directly, confirmed collision-free, left bare). A nested-escaping
+    detail in subtopic 1's own codeTab (a doubled-backslash `\\'` surviving the outer template
+    literal to produce a correctly-escaped `\'` in the displayed inner TS string) was verified
+    correct by extracting and evaluating the exact backtick span as real JavaScript — an earlier,
+    flawed attempt at this same check via a bash heredoc silently collapsed the doubled backslash to
+    a single one, a reminder that reconstructing a test via shell quoting is less reliable than
+    extracting and evaluating the REAL file's own bytes directly. All three `exercise.solution`
+    fields swept clean of `<code>`/entity contamination; the standing apostrophe-after-letter sweep,
+    bracket-balance, and backtick-parity checks all found nothing to fix across all three files and
+    both main-page edits. Build passed clean (foreground execution, explicit `EXITCODE:$?` capture,
+    zero real `ERROR` lines). Browser-verified with a proactive dev-server restart before checking:
+    no console errors on any of the 4 pages; nav accordion opens with all 3 subtopic links, confirmed
+    via both `window.ng.getComponent()` and a live DOM click-and-query; all three main-page fixes
+    confirmed rendering live via direct component-data inspection; all 3 subtopic pages checked
+    individually — correct h1/breadcrumb (all 4 levels), 860px wrapper via `getComputedStyle`,
+    tailored (not DEFAULT) sidebar content confirmed via direct text search. **Redis hub Phase 10:
+    11 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -8915,9 +8960,10 @@ this same check before any other new hub's first subtopic set:
   All 23 cards `available: true` in `data/redis/home/home.ts`. Progress: `redisTotal=21` in progress.service.ts.
   Redis pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. RedisNavComponent at `shared/redis-nav/redis-nav.ts`.
-  Phase 10: 10 of 21 topics have subtopics (`/redis/fundamentals`, pilot batch;
+  Phase 10: 11 of 21 topics have subtopics (`/redis/fundamentals`, pilot batch;
   `/redis/installation-setup`; `/redis/strings`; `/redis/hashes`; `/redis/lists`; `/redis/sets`;
-  `/redis/sorted-sets`; `/redis/key-commands`; `/redis/transactions`; `/redis/lua-scripting`,
+  `/redis/sorted-sets`; `/redis/key-commands`; `/redis/transactions`; `/redis/lua-scripting`;
+  `/redis/persistence`,
   finished 2026-09-08) — see
   "Redis hub subtopic wiring" section above for
   the `RedisNavComponent` accordion structural fix (16th `*NavComponent`-based hub in a row missing
@@ -8925,8 +8971,8 @@ this same check before any other new hub's first subtopic set:
   JavaScript hub's own topic key; `installation-setup` confirmed collision-free since MongoDB's own
   topic of the same name was proactively hub-prefixed to `mongo-installation-setup`; `strings`
   proactively hub-prefixed to `redis-strings` against the DSA hub's own bare `strings` route;
-  `hashes`, `lists`, `sets`, `sorted-sets`, `key-commands` and `lua-scripting` all confirmed
-  collision-free, left bare; `transactions`
+  `hashes`, `lists`, `sets`, `sorted-sets`, `key-commands`, `lua-scripting` and `persistence` all
+  confirmed collision-free, left bare; `transactions`
   hub-prefixed to `redis-transactions` against the SQL hub's own bare `transactions` route), and the
   genuine inaccuracies found and fixed so far: Redis-on-Flash version-line conflation on the
   Fundamentals page; a `rename-command` typo plus two source-verified (`config.c`/`networking.c`)
@@ -8955,7 +9001,11 @@ this same check before any other new hub's first subtopic set:
   on the Lua Scripting page, the "Using global variables" mistake block had the sandbox's actual
   behavior exactly backwards (Redis rejects a global-variable assignment outright with a hard
   error, it does not silently persist shared state) plus a stale "scripts must be deterministic"
-  QnA claim describing verbatim replication, which was removed entirely as of Redis 7.0.
+  QnA claim describing verbatim replication, which was removed entirely as of Redis 7.0; and, on
+  the Persistence: RDB & AOF page, a Quick Reference entry named `DEBUG SLEEP 0` but described
+  SAVE's own behavior, plus `aof-use-rdb-preamble`'s default wrongly attributed to "Redis 7+" —
+  verified via Redis's own shipped `redis.conf` at two tagged releases to have actually defaulted
+  to yes since Redis 5.0.
 - **GraphQL hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Pink theme `$accent: #e535ab`, `$tint: #fdf2f9`, dark `#f472b6`, dark bg `#3d0a26`. Search prefix `gql-`. Route: `/graphql`.
   CSS classes: `.gql-page`, `.gql-icon`, `.gql-section`. Icon content: `◈` at `font-size: 1.8rem`. `tech="javascript"`.

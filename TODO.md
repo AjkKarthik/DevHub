@@ -9375,7 +9375,20 @@ off here with a date.
   Browser-verified: nav accordion opens with all 3 links; both main-page fixes confirmed
   live via direct component-data inspection; all 3 subtopic pages checked — breadcrumb
   (all 4 levels), 860px wrapper, tailored sidebar content, no console errors.
-- [ ] `/redis/persistence` — Persistence (RDB & AOF)
+- [x] 2026-09-08 — `/redis/persistence` — Persistence (RDB & AOF): 3 subtopics
+  (aof-use-rdb-preamble's real default-version timeline, DEBUG SLEEP vs. SAVE, monitoring
+  BGSAVE's copy-on-write memory growth). Found and fixed two genuine main-page
+  inaccuracies: a Quick Reference entry named "DEBUG SLEEP 0" but described what SAVE
+  actually does (DEBUG SLEEP has nothing to do with persistence at all — it's a pure
+  server-freeze testing tool); and `aof-use-rdb-preamble`'s default wrongly attributed to
+  "Redis 7+" in both the theory AND a codeTab comment — verified by fetching Redis's own
+  redis.conf template directly from GitHub at two tagged releases (4.0: default no,
+  introduced as opt-in; 5.0: default flipped to yes) — two major versions earlier than
+  claimed. SUBTOPICS key left bare (confirmed collision-free). Build clean on first
+  attempt. Browser-verified with a proactive dev-server restart: nav accordion opens with
+  all 3 links; all three main-page fixes confirmed live via direct component-data
+  inspection; all 3 subtopic pages checked — breadcrumb (all 4 levels), 860px wrapper,
+  tailored sidebar content, no console errors.
 - [ ] `/redis/pub-sub` — Pub/Sub Messaging
 - [ ] `/redis/streams` — Streams
 - [ ] `/redis/caching-patterns` — Caching Patterns
