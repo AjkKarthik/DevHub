@@ -1768,6 +1768,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Implementing Leaky Bucket with a Bounded Queue', route: '/redis/rate-limiting/implementing-leaky-bucket-with-a-bounded-queue' },
     { label: 'Fail-Open vs. Fail-Closed When Redis Is Unreachable', route: '/redis/rate-limiting/fail-open-vs-fail-closed-when-redis-is-unreachable' },
   ],
+  'replication-sentinel': [
+    { label: 'Why Diskless Sync Needs a Delay to Batch Replicas', route: '/redis/replication-sentinel/why-diskless-sync-needs-a-delay-to-batch-replicas' },
+    { label: 'Sentinel’s Replica-Selection Tiebreaker, Implemented', route: '/redis/replication-sentinel/sentinel-replica-selection-tiebreaker-implemented' },
+    { label: 'Using WAIT for Selective Write Durability', route: '/redis/replication-sentinel/using-wait-for-selective-write-durability' },
+  ],
   closures: [
     { label: 'var Shares One Binding, let Creates One Per Iteration', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
     { label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },

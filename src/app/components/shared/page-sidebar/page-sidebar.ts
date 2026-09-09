@@ -38227,6 +38227,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Replicas are read-only by default — writing directly to a replica requires explicitly enabling it, which usually indicates a design that should instead write to the primary.',
     ],
   },
+  'redis/replication-sentinel/why-diskless-sync-needs-a-delay-to-batch-replicas': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Replication & Sentinel', route: '/redis/replication-sentinel' },
+      { label: 'Sentinel’s Replica-Selection Tiebreaker, Implemented', route: '/redis/replication-sentinel/sentinel-replica-selection-tiebreaker-implemented' },
+    ],
+    tip: 'repl-diskless-sync-delay (default 5s) exists because diskless sync cannot admit a new replica once a transfer has already started — the delay batches near-simultaneous arrivals into one shared transfer instead of one transfer per replica.',
+    gotchas: [
+      'Setting the delay to 0 does not make replication faster overall — it makes the FIRST replica sync marginally sooner while forcing every other near-simultaneous replica to pay for its own separate full transfer.',
+    ],
+  },
+  'redis/replication-sentinel/sentinel-replica-selection-tiebreaker-implemented': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Why Diskless Sync Needs a Delay to Batch Replicas', route: '/redis/replication-sentinel/why-diskless-sync-needs-a-delay-to-batch-replicas' },
+      { label: 'Using WAIT for Selective Write Durability', route: '/redis/replication-sentinel/using-wait-for-selective-write-durability' },
+    ],
+    tip: 'Sentinel\'s replica-promotion tiebreaker is sequential, not a single comparison — priority is checked first and can decide the winner outright, offset is only consulted on a priority tie, and run ID only on a tie of both.',
+    gotchas: [
+      'priority: 0 means "never promote this replica" — it is excluded from selection entirely, regardless of how current its offset is.',
+    ],
+  },
+  'redis/replication-sentinel/using-wait-for-selective-write-durability': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Sentinel’s Replica-Selection Tiebreaker, Implemented', route: '/redis/replication-sentinel/sentinel-replica-selection-tiebreaker-implemented' },
+      { label: 'Replication & Sentinel', route: '/redis/replication-sentinel' },
+    ],
+    tip: 'WAIT is a per-call opt-in, not a global durability setting — call it selectively for genuinely critical writes and leave everyday writes on Redis\'s default asynchronous replication.',
+    gotchas: [
+      'A WAIT count lower than requested does not mean the write failed — the write already succeeded on the primary; WAIT only reports whether replication acknowledgment arrived within the timeout.',
+    ],
+  },
   'redis/redis-cluster': {
     apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
     related: [

@@ -2822,7 +2822,12 @@ export const routes: Routes = [
       { path: 'implementing-leaky-bucket-with-a-bounded-queue', loadComponent: () => import('./components/data/redis/rate-limiting/subtopics/implementing-leaky-bucket-with-a-bounded-queue/implementing-leaky-bucket-with-a-bounded-queue').then(m => m.ImplementingLeakyBucketWithABoundedQueueSubtopic) },
       { path: 'fail-open-vs-fail-closed-when-redis-is-unreachable', loadComponent: () => import('./components/data/redis/rate-limiting/subtopics/fail-open-vs-fail-closed-when-redis-is-unreachable/fail-open-vs-fail-closed-when-redis-is-unreachable').then(m => m.FailOpenVsFailClosedWhenRedisIsUnreachableSubtopic) },
     ] },
-    { path: 'replication-sentinel', loadComponent: () => import('./components/data/redis/replication-sentinel/replication-sentinel').then(m => m.RedisReplicationSentinel) },
+    { path: 'replication-sentinel', children: [
+      { path: '', loadComponent: () => import('./components/data/redis/replication-sentinel/replication-sentinel').then(m => m.RedisReplicationSentinel) },
+      { path: 'why-diskless-sync-needs-a-delay-to-batch-replicas', loadComponent: () => import('./components/data/redis/replication-sentinel/subtopics/why-diskless-sync-needs-a-delay-to-batch-replicas/why-diskless-sync-needs-a-delay-to-batch-replicas').then(m => m.WhyDisklessSyncNeedsADelayToBatchReplicasSubtopic) },
+      { path: 'sentinel-replica-selection-tiebreaker-implemented', loadComponent: () => import('./components/data/redis/replication-sentinel/subtopics/sentinel-replica-selection-tiebreaker-implemented/sentinel-replica-selection-tiebreaker-implemented').then(m => m.SentinelReplicaSelectionTiebreakerImplementedSubtopic) },
+      { path: 'using-wait-for-selective-write-durability', loadComponent: () => import('./components/data/redis/replication-sentinel/subtopics/using-wait-for-selective-write-durability/using-wait-for-selective-write-durability').then(m => m.UsingWaitForSelectiveWriteDurabilitySubtopic) },
+    ] },
     { path: 'redis-cluster',        loadComponent: () => import('./components/data/redis/redis-cluster/redis-cluster').then(m => m.RedisCluster) },
     { path: 'redis-stack',          loadComponent: () => import('./components/data/redis/redis-stack/redis-stack').then(m => m.RedisStack) },
     { path: 'redis-nodejs',         loadComponent: () => import('./components/data/redis/redis-nodejs/redis-nodejs').then(m => m.RedisNodejs) },

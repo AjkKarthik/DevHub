@@ -37,7 +37,7 @@ export class RedisReplicationSentinel {
       heading: 'Redis Replication',
       points: [
         'Redis replication is asynchronous and single-direction: one master, N replicas. Replicas receive a stream of write commands from the master and apply them in order.',
-        'Initial sync: the master forks and performs BGSAVE (RDB snapshot), sends the RDB to the replica, then sends buffered commands. After initial sync, incremental replication via the replication backlog continues.',
+        'Initial sync (full resync): the master transfers an RDB snapshot to the replica, then sends buffered commands from the replication backlog. Before Redis 7.0, this snapshot was disk-based by default (repl-diskless-sync no — the master forks and performs BGSAVE, writing the RDB to disk before transferring it); since Redis 7.0, diskless replication is the default (repl-diskless-sync yes — the RDB is streamed directly to the replica\'s socket, never touching disk on the master). After initial sync, incremental replication via the replication backlog continues.',
         'Replication is asynchronous by default — the master does not wait for replicas to acknowledge writes. This means a small amount of data can be lost if the master crashes before a write propagates.',
         'min-replicas-to-write N + min-replicas-max-lag S: master refuses writes if fewer than N replicas are within S seconds of replication lag. Increases durability at the cost of availability.',
         'Replicas can serve read traffic to scale read throughput — useful for heavy-read workloads. But be aware of replication lag: replicas may be slightly behind the master.',
@@ -258,9 +258,9 @@ async function getReplicationLag(redis: Redis) {
     },
     {
       q: 'How does Redis replication handle data on a new replica?',
-      options: ['Replication starts from a specific OFFSET provided by the master', 'Master performs BGSAVE, sends the RDB file to the replica, then streams the write backlog', 'Replica copies keys one by one over time', 'Replication requires manual data export and import'],
+      options: ['Replication starts from a specific OFFSET provided by the master', 'Master generates an RDB snapshot, transfers it to the replica, then streams the write backlog', 'Replica copies keys one by one over time', 'Replication requires manual data export and import'],
       answer: 1,
-      explanation: 'Full sync: master generates RDB snapshot (BGSAVE) and streams it to the replica while buffering new writes. Replica loads RDB then applies the buffered commands. Subsequent incremental replication uses a replication offset and backlog.',
+      explanation: 'Full sync: master generates an RDB snapshot and transfers it to the replica while buffering new writes. Before Redis 7.0 this snapshot was written to disk first (BGSAVE); since Redis 7.0, diskless replication is the default, streaming the RDB directly to the replica\'s socket. Replica loads the RDB then applies the buffered commands. Subsequent incremental replication uses a replication offset and backlog.',
     },
   ];
 
@@ -271,7 +271,7 @@ async function getReplicationLag(redis: Redis) {
     },
     {
       q: 'How does Redis replication work at a high level?',
-      a: 'Replica connects to master and requests replication. Master forks (BGSAVE), streams the RDB snapshot to replica, then sends the replication backlog (buffered writes since fork). Replica loads RDB and applies backlog. Ongoing: replica receives a replication stream. On reconnect, replica uses replication offset to request only missed commands (partial sync).',
+      a: 'Replica connects to master and requests replication. Master transfers an RDB snapshot to the replica (via a disk-based BGSAVE fork before Redis 7.0, or diskless streaming directly to the replica\'s socket since Redis 7.0, now the default), then sends the replication backlog (buffered writes since the snapshot started). Replica loads the RDB and applies the backlog. Ongoing: replica receives a replication stream. On reconnect, replica uses replication offset to request only missed commands (partial sync).',
     },
     {
       q: 'What is the replication backlog in Redis?',

@@ -344,7 +344,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
 
     <div class="nav-group">
       <p class="nav-group-label">Cluster &amp; HA</p>
-      <a routerLink="/redis/replication-sentinel" routerLinkActive="active"><span class="nl-text">Replication &amp; Sentinel</span>@if(p.isDone('redis-replication-sentinel')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/redis/replication-sentinel" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Replication &amp; Sentinel</span>
+        @if(p.isDone('redis-replication-sentinel')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('replication-sentinel')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('replication-sentinel')"
+                  (click)="toggleSubtopics('replication-sentinel', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('replication-sentinel'); as replicationSentinelSubs) {
+        @if (isSubtopicsExpanded('replication-sentinel')) {
+          <div class="nav-subtopics">
+            @for (s of replicationSentinelSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/redis/redis-cluster" routerLinkActive="active"><span class="nl-text">Redis Cluster</span>@if(p.isDone('redis-redis-cluster')){<span class="nl-done">✓</span>}</a>
     </div>
 
