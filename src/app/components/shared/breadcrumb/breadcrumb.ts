@@ -3039,6 +3039,9 @@ const REDIS_LABELS: Record<string, string> = {
   'redis-nodejs/typed-definecommand-without-as-any': 'Typed defineCommand(), Without the as any Cast',
   'redis-nodejs/a-real-health-check-endpoint-with-ping-timeout': 'A Real Health-Check Endpoint with a PING Timeout',
   'security':              'Redis Security',
+  'security/parsing-acl-logs-object-field-correctly': 'Parsing ACL LOG’s object Field Correctly',
+  'security/restricting-eval-access-via-acl-scripting': 'Restricting EVAL Access via ACL -@scripting',
+  'security/acl-save-requires-an-aclfile': 'ACL SAVE Requires an aclfile',
   'cheatsheet':            'Redis Cheat Sheet',
   'interview-prep':        'Redis Interview Prep',
 };

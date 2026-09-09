@@ -1882,6 +1882,9 @@ export const SEARCH_INDEX: SearchEntry[] = [
   { route: 'redis-redis-nodejs/typed-definecommand-without-as-any', title: 'Typed defineCommand(), Without as any', section: 'Redis', difficulty: 'intermediate', keywords: 'ioredis defineCommand typescript declaration merging RedisCommander lua custom command types' },
   { route: 'redis-redis-nodejs/a-real-health-check-endpoint-with-ping-timeout', title: 'A Real Health-Check Endpoint with a PING Timeout', section: 'Redis', difficulty: 'intermediate', keywords: 'redis ping health check timeout express liveness readiness probe promise race' },
   { route: 'redis-security',             title: 'Redis Security',               section: 'Redis', difficulty: 'intermediate', keywords: 'redis security ACL users permissions requirepass TLS encryption in-transit bind localhost protected-mode production hardening' },
+  { route: 'redis-security/parsing-acl-logs-object-field-correctly', title: 'Parsing ACL LOG object Field Correctly', section: 'Redis', difficulty: 'advanced', keywords: 'redis ACL LOG object field reason cmd client-info regex audit logger parse' },
+  { route: 'redis-security/restricting-eval-access-via-acl-scripting', title: 'Restricting EVAL Access via ACL -@scripting', section: 'Redis', difficulty: 'intermediate', keywords: 'redis lua-time-limit eval evalsha acl scripting deny defineCommand busy script' },
+  { route: 'redis-security/acl-save-requires-an-aclfile', title: 'ACL SAVE Requires an aclfile', section: 'Redis', difficulty: 'intermediate', keywords: 'redis acl save config rewrite aclfile persistence inline redis.conf user directives' },
 
   // ── GraphQL (keys prefixed 'gql-') ────────────────────────────────────────
   { route: 'gql-fundamentals',              title: 'GraphQL Fundamentals',         section: 'GraphQL', difficulty: 'beginner',     keywords: 'graphql query language api type system schema single endpoint over-fetching under-fetching REST comparison SDL operations' },

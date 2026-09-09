@@ -2846,7 +2846,12 @@ export const routes: Routes = [
       { path: 'typed-definecommand-without-as-any', loadComponent: () => import('./components/data/redis/redis-nodejs/subtopics/typed-definecommand-without-as-any/typed-definecommand-without-as-any').then(m => m.TypedDefineCommandWithoutAsAnySubtopic) },
       { path: 'a-real-health-check-endpoint-with-ping-timeout', loadComponent: () => import('./components/data/redis/redis-nodejs/subtopics/a-real-health-check-endpoint-with-ping-timeout/a-real-health-check-endpoint-with-ping-timeout').then(m => m.ARealHealthCheckEndpointWithPingTimeoutSubtopic) },
     ] },
-    { path: 'security',             loadComponent: () => import('./components/data/redis/security/security').then(m => m.RedisSecurity) },
+    { path: 'security', children: [
+      { path: '', loadComponent: () => import('./components/data/redis/security/security').then(m => m.RedisSecurity) },
+      { path: 'parsing-acl-logs-object-field-correctly', loadComponent: () => import('./components/data/redis/security/subtopics/parsing-acl-logs-object-field-correctly/parsing-acl-logs-object-field-correctly').then(m => m.ParsingAclLogsObjectFieldCorrectlySubtopic) },
+      { path: 'restricting-eval-access-via-acl-scripting', loadComponent: () => import('./components/data/redis/security/subtopics/restricting-eval-access-via-acl-scripting/restricting-eval-access-via-acl-scripting').then(m => m.RestrictingEvalAccessViaAclScriptingSubtopic) },
+      { path: 'acl-save-requires-an-aclfile', loadComponent: () => import('./components/data/redis/security/subtopics/acl-save-requires-an-aclfile/acl-save-requires-an-aclfile').then(m => m.AclSaveRequiresAnAclfileSubtopic) },
+    ] },
     { path: 'cheatsheet',           loadComponent: () => import('./components/data/redis/cheatsheet/cheatsheet').then(m => m.RedisCheatsheet) },
     { path: 'interview-prep',       loadComponent: () => import('./components/data/redis/interview-prep/interview-prep').then(m => m.RedisInterviewPrep) },
   ] },

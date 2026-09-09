@@ -1788,6 +1788,12 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Typed defineCommand(), Without the as any Cast', route: '/redis/redis-nodejs/typed-definecommand-without-as-any' },
     { label: 'A Real Health-Check Endpoint with a PING Timeout', route: '/redis/redis-nodejs/a-real-health-check-endpoint-with-ping-timeout' },
   ],
+  // NOTE: hub-prefixed — bare 'security' is already claimed by the SQL hub's own topic.
+  'redis-security': [
+    { label: 'Parsing ACL LOG’s object Field Correctly', route: '/redis/security/parsing-acl-logs-object-field-correctly' },
+    { label: 'Restricting EVAL Access via ACL -@scripting', route: '/redis/security/restricting-eval-access-via-acl-scripting' },
+    { label: 'ACL SAVE Requires an aclfile', route: '/redis/security/acl-save-requires-an-aclfile' },
+  ],
   closures: [
     { label: 'var Shares One Binding, let Creates One Per Iteration', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
     { label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },

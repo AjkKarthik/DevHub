@@ -38449,6 +38449,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'TLS support must be explicitly enabled and configured — Redis connections are unencrypted by default, a real risk for traffic crossing untrusted networks.',
     ],
   },
+  'redis/security/parsing-acl-logs-object-field-correctly': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Redis Security', route: '/redis/security' },
+      { label: 'Restricting EVAL Access via ACL -@scripting', route: '/redis/security/restricting-eval-access-via-acl-scripting' },
+    ],
+    tip: 'ACL LOG\'s object field is a single-purpose field whose meaning depends on the reason field — parse the client-info string\'s own cmd= token for the failed command instead of splitting object on a "|" that was never there.',
+    gotchas: [
+      'A regex like /(?:^|\\s)cmd=(\\S+)/ against client-info is the reliable way to recover the attempted command — object alone is not enough.',
+    ],
+  },
+  'redis/security/restricting-eval-access-via-acl-scripting': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Parsing ACL LOG’s object Field Correctly', route: '/redis/security/parsing-acl-logs-object-field-correctly' },
+      { label: 'ACL SAVE Requires an aclfile', route: '/redis/security/acl-save-requires-an-aclfile' },
+    ],
+    tip: 'lua-time-limit 0 disables the busy-script warning mechanism entirely — it does not disable scripting. The real way to restrict who can run EVAL/EVALSHA is denying the @scripting ACL category.',
+    gotchas: [
+      'A defineCommand()-registered custom Lua command still sends a real EVALSHA over the wire — -@scripting blocks it too, regardless of how friendly the client-side method name looks.',
+    ],
+  },
+  'redis/security/acl-save-requires-an-aclfile': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Restricting EVAL Access via ACL -@scripting', route: '/redis/security/restricting-eval-access-via-acl-scripting' },
+      { label: 'Redis Security', route: '/redis/security' },
+    ],
+    tip: 'CONFIG REWRITE and ACL SAVE are not interchangeable — inline redis.conf user directives persist via CONFIG REWRITE; an external aclfile persists only via ACL SAVE. Using the wrong one for the configured mode either errors loudly (no aclfile) or silently does nothing (aclfile mode, CONFIG REWRITE only).',
+    gotchas: [
+      'The two storage modes are mutually incompatible — a deployment picks exactly one, never both at once.',
+    ],
+  },
 
   // ── GraphQL: per-page entries ────────────────────────────────────────────────
   'graphql/fundamentals': {

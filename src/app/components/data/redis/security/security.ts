@@ -69,7 +69,7 @@ export class RedisSecurity {
         'FLUSHALL, FLUSHDB, KEYS, DEBUG, CONFIG can be catastrophic if called accidentally or by a compromised service. Restrict or disable them in production.',
         '`rename-command FLUSHALL ""` in redis.conf disables the command entirely. `rename-command KEYS _KEYS_INTERNAL_ONLY` renames it to something secret.',
         'With ACL, use `-@dangerous` in user rules to block the dangerous command category. This is cleaner than rename-command in Redis 6+.',
-        'Lua scripts: disable if not needed with `lua-time-limit 0`. Scripts can execute arbitrary Redis commands, so limit who has access to EVAL.',
+        'Lua scripts can execute arbitrary Redis commands, so restrict who has access to EVAL/EVALSHA — via ACL (`-EVAL -EVALSHA -@scripting`) or rename-command. `lua-time-limit` is unrelated to disabling scripts at all: it is a maximum execution time (default 5000ms) before Redis starts responding BUSY to other clients while the script keeps running — setting it to 0 (per Redis\'s own redis.conf comment) actually DISABLES that busy-detection mechanism, allowing fully uninterrupted execution, the opposite of restricting anything.',
       ],
     },
     {
@@ -212,6 +212,7 @@ ACL SETUSER background-job on >JobPass ~job:* +@read +@write -@dangerous`,
     hints: [
       'redis.acl("LOG") returns an array of raw log entries (nested arrays)',
       'Each entry has fields: count, reason, object, username, age, client-info',
+      'object is EITHER a command name, a key name, or a channel name depending on reason — never a combined "command|key" string. The client-info field\'s own cmd= token is the reliable source for the actual command.',
     ],
     starterCode: `import Redis from 'ioredis';
 
@@ -225,11 +226,18 @@ async function auditAclViolations(redis: Redis) {
   return raw
     .map(entry => {
       const kv = Object.fromEntries(entry.reduce<[string, string][]>((acc, v, i) => i % 2 === 0 ? [...acc, [v, entry[i + 1]]] : acc, []));
+      const reason = kv['reason'] ?? '';
+      const object = kv['object'] ?? '';
+      // object holds the denied resource for THIS reason only (a command name for
+      // reason=command, a key for reason=key, a channel for reason=channel) --
+      // client-info's own cmd= token is what reliably gives the actual command
+      // that was running, regardless of which reason triggered the entry.
+      const cmdMatch = (kv['client-info'] ?? '').match(/(?:^|\\s)cmd=(\\S+)/);
       return {
         username: kv['username'] ?? 'unknown',
-        command: (kv['object'] ?? '').split('|')[0],
-        key: (kv['object'] ?? '').split('|')[1] ?? '',
-        reason: kv['reason'] ?? '',
+        command: cmdMatch ? cmdMatch[1] : (reason === 'command' ? object : ''),
+        key: (reason === 'key' || reason === 'channel') ? object : '',
+        reason,
         count: parseInt(kv['count'] ?? '1', 10),
       };
     })
@@ -301,7 +309,7 @@ async function auditAclViolations(redis: Redis) {
     },
     {
       q: 'What is the Redis RESET command used for?',
-      a: 'RESET (Redis 6+) resets the connection state: exits subscriber/monitor mode, resets MULTI/EXEC, unsubscribes from all channels, resets AUTH state. Useful for connection pool implementations to clean up client state without disconnecting and reconnecting. More efficient than a full reconnect.',
+      a: 'RESET (Redis 6.2+, not 6.0) resets the connection state: exits subscriber/monitor mode, resets MULTI/EXEC, unsubscribes from all channels, resets AUTH state. Useful for connection pool implementations to clean up client state without disconnecting and reconnecting. More efficient than a full reconnect.',
     },
     {
       q: 'How do you use Redis ACL to restrict key access per user?',
@@ -309,7 +317,7 @@ async function auditAclViolations(redis: Redis) {
     },
     {
       q: 'What is Redis protected-mode and when does it trigger?',
-      a: 'Protected-mode (default on) blocks external connections unless: (a) a bind directive explicitly configures an external interface, OR (b) requirepass is set. When triggered, clients from non-loopback addresses receive an error explaining how to disable protected-mode. This prevents accidental internet exposure of a default Redis install.',
+      a: 'Protected-mode (default on) blocks external connections whenever the default user has no password set — verified directly against Redis\'s own accept-time source, this is the ONLY condition checked. Bind status plays no part: even an explicit bind to a non-loopback interface still gets rejected without a password. It is lifted once requirepass/ACL removes the default user\'s NOPASS flag. When triggered, clients from non-loopback addresses receive an error explaining how to disable protected-mode. This prevents accidental internet exposure of a default Redis install left with no password configured.',
     },
   ];
 
