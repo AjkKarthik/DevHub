@@ -9457,7 +9457,27 @@ off here with a date.
   all 3 links; the main-page fix confirmed live via direct component-data inspection; all
   3 subtopic pages checked — breadcrumb (all 4 levels), 860px wrapper, tailored sidebar
   content, no console errors.
-- [ ] `/redis/rate-limiting` — Rate Limiting
+- [x] 2026-09-09 — `/redis/rate-limiting` — Rate Limiting: 3 subtopics (the off-by-one
+  in remaining after an allowed request, implementing leaky bucket with a bounded queue,
+  fail-open vs. fail-closed when Redis is unreachable). Found and fixed a genuine
+  off-by-one bug in the Sliding Window Counter Challenge's own reference solution: its
+  Lua script's remaining calculation added +1 only in the REJECTED branch instead of the
+  ALLOWED branch, so every allowed request reported one MORE remaining than the true
+  value — verified by tracing exactly `limit` (10) requests through the reference
+  solution, showing the 10th (last allowed) request reports remaining:1 when the true
+  value is 0. Fixed the flipped ternary. Self-caught and fixed a real build failure
+  during authoring: a markdown-style bare backtick pair around a word inside a
+  backtick-delimited codeTab field prematurely closed the outer template literal (the
+  standing documented gotcha) — caught by the build's own confusing error cascade, fixed
+  by removing the backticks. SUBTOPICS key left bare (confirmed collision-free — both
+  ASP.NET's and API Design's own `rate-limiting` topics were already proactively
+  hub-prefixed in earlier sessions anticipating this exact moment). Build clean on the
+  second attempt. Browser-verified against the already-running dev server (no restart
+  needed): nav accordion opens with all 3 links; the main-page fix confirmed live via
+  direct component-data inspection; all 3 subtopic pages checked — breadcrumb (all 4
+  levels), 860px wrapper, tailored sidebar content, no console errors. This completes
+  the Redis hub's entire Caching nav group (caching-patterns, eviction-policies,
+  rate-limiting all now have subtopics).
 - [ ] `/redis/replication-sentinel` — Replication & Sentinel
 - [ ] `/redis/redis-cluster` — Redis Cluster
 - [ ] `/redis/redis-stack` — Redis Stack & Modules

@@ -8946,6 +8946,60 @@ this same check before any other new hub's first subtopic set:
     sidebar content confirmed via direct text search, generic-looking identifiers (`allkeys-lrm`,
     `LFU_INIT_VAL`) confirmed rendering as literal text, not vanished.
     **Redis hub Phase 10: 15 of 21 topics complete.**
+16. **The `rate-limiting` batch — the third and final topic in the Caching nav group — found and
+    fixed a genuine, self-contained off-by-one bug in the main page's own Sliding Window Counter
+    Challenge, findable purely by tracing several requests through the same state (no external
+    research needed)**: the reference solution's Lua script computes `total` (the weighted count
+    BEFORE deciding whether to allow the current request), then returns a `remaining` value adding
+    `+1` only in the REJECTED branch — `total + (allowed == 1 and 0 or 1)` — the exact opposite of
+    what's needed. Verified via a direct trace of exactly `limit` (10) requests through the
+    reference solution's own logic: the 10th request (the LAST one actually allowed, bringing the
+    true count to precisely the limit) reports `remaining: 1`, telling the caller one more request
+    is available when the true remaining is 0 — directly undermining the page's own third mistake
+    block, which insists accurate rate-limit headers are essential so clients can back off
+    correctly. Fixed the flipped ternary to `allowed == 1 and 1 or 0`, re-verified matching the
+    true state exactly for all 11 requests (10 allowed + 1 rejected). Three subtopics: (1)
+    **fix-adjacent** — reproduces the exact off-by-one and fix side by side, verified via direct
+    execution matching the claimed buggy-vs-fixed output exactly, with a Try It establishing the
+    bug is systematic across every allowed request, not confined to the boundary case; (2)
+    **gap-closing** — Leaky Bucket is named twice on the main page (Quick Reference and QnA:
+    "LPUSH requests; background consumer drains at fixed rate... excess dropped") but no codeTab
+    ever builds one; built a bounded-Redis-list implementation with a separate fixed-rate drain
+    function, verified via direct execution that a burst of 10 against a capacity-5 bucket
+    produces exactly 5 accepted/5 rejected, with a Try It distinguishing Leaky Bucket's rate-of-
+    processing control from Token Bucket's accept/reject control; (3) **gap-closing** — the main
+    page's own QnA on distributed rate limiting mentions "fail open... or fail closed" in one
+    clause, with no codeTab ever wrapping a rate-limit check with either behavior; built a generic
+    `checkRateLimitSafely` wrapper, verified via direct execution matching both failure-mode
+    outputs during a simulated Redis outage, with a Try It reasoning through why a login endpoint
+    should default to fail-CLOSED (fail-open specifically benefits an attacker running a
+    brute-force attack during the exact outage window). **A real, self-caught build failure,
+    caught and fixed before the batch was considered done**: the first subtopic's own codeTab
+    comment used markdown-style bare backticks around "limit" (`` `limit` ``) inside the outer
+    backtick-delimited `code:` field — the exact documented "markdown-style inline-code backtick
+    inside a backtick-delimited field" gotcha — caught by the build itself (`TS1128`/`Unexpected
+    "]"`, the classic unrelated-error cascade far from the actual line), fixed by removing the
+    backticks, confirmed via a second clean build and a re-verification of the codeTab's exact
+    console output. Confirmed `rate-limiting` collision-free via both `subtopics.ts` forms and a
+    direct `app.routes.ts` grep — bare `rate-limiting` was already free because both the ASP.NET
+    hub's own topic (`aspnet-rate-limiting`) and the API Design hub's own topic
+    (`api-rate-limiting`) had been proactively hub-prefixed in earlier sessions anticipating this
+    exact moment, confirmed via each hub's own inline `// NOTE:` comment. All three
+    `exercise.solution` fields swept clean of `<code>`/entity contamination; the standing
+    apostrophe-after-letter sweep, bracket-balance, and backtick-parity checks all found nothing
+    to fix in the OTHER two subtopic files (this session's own bracket/backtick-parity sweep can
+    give a false sense of safety when SOME backticks are legitimately escaped and others are
+    illegitimately bare — a raw character-count parity check passing does not guarantee the
+    delimiter STRUCTURE is correct, confirmed the hard way by this exact batch's own build
+    failure). Build passed clean on the second attempt (foreground execution, explicit
+    `EXITCODE:$?` capture, zero real `ERROR` lines). Browser-verified against the already-running
+    dev server (no restart needed): no console errors; nav accordion opens with all 3 subtopic
+    links on the first check; the main-page fix confirmed rendering live via direct component-data
+    inspection; all 3 subtopic pages checked individually — correct h1/breadcrumb (all 4 levels),
+    860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed via
+    direct text search. **This completes the Redis hub's entire Caching nav group**
+    (caching-patterns, eviction-policies, rate-limiting — all 3 of 3 topics now have subtopics).
+    **Redis hub Phase 10: 16 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -9129,12 +9183,13 @@ this same check before any other new hub's first subtopic set:
   All 23 cards `available: true` in `data/redis/home/home.ts`. Progress: `redisTotal=21` in progress.service.ts.
   Redis pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. RedisNavComponent at `shared/redis-nav/redis-nav.ts`.
-  Phase 10: 15 of 21 topics have subtopics (`/redis/fundamentals`, pilot batch;
+  Phase 10: 16 of 21 topics have subtopics (`/redis/fundamentals`, pilot batch;
   `/redis/installation-setup`; `/redis/strings`; `/redis/hashes`; `/redis/lists`; `/redis/sets`;
   `/redis/sorted-sets`; `/redis/key-commands`; `/redis/transactions`; `/redis/lua-scripting`;
   `/redis/persistence`; `/redis/pub-sub`; `/redis/streams` (SUBTOPICS key hub-prefixed to
   `redis-streams` — bare `streams` collides with the Node.js hub's own topic);
-  `/redis/caching-patterns`; `/redis/eviction-policies`,
+  `/redis/caching-patterns`; `/redis/eviction-policies`; `/redis/rate-limiting` — Caching nav
+  group fully done,
   finished 2026-09-09) — see
   "Redis hub subtopic wiring" section above for
   the `RedisNavComponent` accordion structural fix (16th `*NavComponent`-based hub in a row missing
@@ -9191,7 +9246,11 @@ this same check before any other new hub's first subtopic set:
   theory teaches how to prevent, just relocated into the SWR refresh path itself, fixed with the
   same mutex-lock pattern already shown elsewhere on the same page; and, on the Eviction Policies
   page, an entirely missing eviction-policy family — LRM (Least Recently Modified), added in Redis
-  8.6 — verified via Redis's own official docs and added to the Quick Reference and theory.
+  8.6 — verified via Redis's own official docs and added to the Quick Reference and theory; and,
+  on the Rate Limiting page, the Sliding Window Counter Challenge's own reference solution had a
+  flipped ternary reporting `remaining` one HIGHER than the true value on every allowed request —
+  verified via a direct trace showing the last allowed request in a window reports 1 remaining
+  when the true value is 0.
 - **GraphQL hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Pink theme `$accent: #e535ab`, `$tint: #fdf2f9`, dark `#f472b6`, dark bg `#3d0a26`. Search prefix `gql-`. Route: `/graphql`.
   CSS classes: `.gql-page`, `.gql-icon`, `.gql-section`. Icon content: `◈` at `font-size: 1.8rem`. `tech="javascript"`.
