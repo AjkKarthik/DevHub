@@ -9511,7 +9511,25 @@ off here with a date.
   nav accordion opens with all 3 links; the merged-theory fix confirmed live (the
   duplicate heading fully absent); all 3 subtopic pages checked — breadcrumb (all 4
   levels), 860px wrapper, tailored sidebar content, no console errors.
-- [ ] `/redis/redis-stack` — Redis Stack & Modules
+- [x] 2026-09-09 — `/redis/redis-stack` — Redis Stack & Modules: 3 subtopics (when
+  modules are built in Redis 8.0+ vs. still need Stack; the FT.INFO indexing field is
+  a truthy string, not a boolean; co-locating a search index on one Cluster node with
+  hash tags). Found and fixed two genuine main-page issues: a version inaccuracy (a
+  theory bullet attributed the Stack-modules-into-core-Redis merge to "Redis 7.4+" —
+  verified via Redis's own official 8.0 Release Notes that this happened at Redis
+  8.0.0, GA May 2025, the same release that renamed Redis Community Edition to Redis
+  Open Source) and a duplicate theory section (matching the recurring pattern already
+  found on `caching-patterns`/`redis-cluster` this hub — merged 3 genuinely new
+  bullets into the originals and deleted the duplicate fifth section). Subtopics
+  verified via direct Node.js execution: the Redis 8.0 timeline; a real JS
+  truthiness trap in FT.INFO's `indexing` field (a literal `"0"`/`"1"` string, so a
+  naive `!info.indexing` check is broken for both states); and per-tenant hash-tag
+  co-location reusing the `extractHashTagSubstring` function from the sibling
+  redis-cluster batch. SUBTOPICS key left bare (confirmed collision-free). Build
+  clean. Browser-verified against the already-running dev server: nav accordion
+  opens with all 3 links; both main-page fixes confirmed live; all 3 subtopic pages
+  checked — breadcrumb (all 4 levels), 860px wrapper, tailored sidebar content, no
+  console errors.
 - [ ] `/redis/redis-nodejs` — Redis with Node.js
 - [ ] `/redis/security` — Redis Security
 

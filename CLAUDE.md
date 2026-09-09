@@ -9078,6 +9078,35 @@ this same check before any other new hub's first subtopic set:
     subtopic pages checked individually — correct h1/breadcrumb (all 4 levels), 860px wrapper via
     `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed via direct text search.
     **Redis hub Phase 10: 18 of 21 topics complete.**
+19. **The `redis-stack` batch found and fixed TWO genuine issues on the main page**: a version
+    inaccuracy (a theory bullet claimed "In Redis 7.4+ (Cloud), many Stack capabilities are
+    available as part of Redis Community Edition" — verified via WebFetch against Redis's own
+    official 8.0 Release Notes that the actual merge of RediSearch/RedisJSON/RedisTimeSeries/
+    RedisBloom into core Redis happened at Redis 8.0.0 (GA May 2025), the SAME release that
+    renamed Redis Community Edition to Redis Open Source, not 7.4), and a duplicate theory
+    section (matching the recurring authoring pattern already found on `caching-patterns` and
+    `redis-cluster` this hub — "What is Redis Stack?" and "Redis Stack Modules Beyond Core Data
+    Structures" overlapped substantially; merged 3 genuinely new bullets into the originals and
+    deleted the duplicate fifth section entirely). Three subtopics: (1) **fix-adjacent** — verifies
+    the Redis 8.0 timeline via a `needsRedisStackPackage(version)` function tested against
+    7.4/7.2/8.0/8.6; (2) **gap-closing** — a genuine JS truthiness trap: `FT.INFO`'s `indexing`
+    field returns the literal string `"0"`/`"1"`, so a naive `while (!info.indexing)` readiness
+    poll is silently broken for BOTH states since any non-empty string is truthy — verified via
+    direct execution, fixed with `Number(info.indexing) === 0`; (3) **gap-closing** — reuses the
+    `extractHashTagSubstring` function from the sibling `redis-cluster` batch to demonstrate
+    per-tenant hash-tagging for co-locating a search index on one Cluster node, verified via
+    execution that per-tenant tags produce distinct extracted substrings. No `SUBTOPICS`
+    collision for `redis-stack` (checked both `subtopics.ts` forms, confirmed collision-free,
+    left bare). All three `exercise.solution` fields swept clean of `<code>`/entity
+    contamination; brace balance (23/23, 26/26, 26/26) and backtick-parity confirmed correct on
+    all three files; no bare `@word` in any `.html` file; no unescaped apostrophes in any
+    single-quoted field body. Build passed clean (foreground execution, explicit `EXITCODE:$?`
+    capture, zero real `ERROR` lines). Browser-verified against the already-running dev server:
+    no console errors on any of the 4 pages; nav accordion opens with all 3 subtopic links on the
+    first check; both main-page fixes confirmed rendering live (the version-fix text and the
+    merged-theory section, duplicate heading absent); all 3 subtopic pages checked individually —
+    correct h1/breadcrumb (all 4 levels), 860px wrapper via `getComputedStyle`, tailored (not
+    DEFAULT) sidebar content confirmed. **Redis hub Phase 10: 19 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -9261,14 +9290,14 @@ this same check before any other new hub's first subtopic set:
   All 23 cards `available: true` in `data/redis/home/home.ts`. Progress: `redisTotal=21` in progress.service.ts.
   Redis pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. RedisNavComponent at `shared/redis-nav/redis-nav.ts`.
-  Phase 10: 18 of 21 topics have subtopics (`/redis/fundamentals`, pilot batch;
+  Phase 10: 19 of 21 topics have subtopics (`/redis/fundamentals`, pilot batch;
   `/redis/installation-setup`; `/redis/strings`; `/redis/hashes`; `/redis/lists`; `/redis/sets`;
   `/redis/sorted-sets`; `/redis/key-commands`; `/redis/transactions`; `/redis/lua-scripting`;
   `/redis/persistence`; `/redis/pub-sub`; `/redis/streams` (SUBTOPICS key hub-prefixed to
   `redis-streams` — bare `streams` collides with the Node.js hub's own topic);
   `/redis/caching-patterns`; `/redis/eviction-policies`; `/redis/rate-limiting` — Caching nav
-  group fully done; `/redis/replication-sentinel`; `/redis/redis-cluster` — Cluster & HA nav
-  group in progress,
+  group fully done; `/redis/replication-sentinel`; `/redis/redis-cluster`; `/redis/redis-stack` —
+  Cluster & HA/Ecosystem groups in progress,
   finished 2026-09-09) — see
   "Redis hub subtopic wiring" section above for
   the `RedisNavComponent` accordion structural fix (16th `*NavComponent`-based hub in a row missing
@@ -9334,7 +9363,12 @@ this same check before any other new hub's first subtopic set:
   qualifier — verified via Redis's own shipped `redis.conf` at two tagged releases that diskless
   replication has been the default since Redis 7.0; and, on the Redis Cluster page, the theory array
   had two genuine duplicate sections (near-identical content authored twice under different
-  headings), merged into the originals with their two unique bullets preserved.
+  headings), merged into the originals with their two unique bullets preserved; and, on the Redis
+  Stack & Modules page, a theory bullet wrongly attributed the Stack-modules-into-core-Redis merge
+  to "Redis 7.4+" — verified via Redis's own official 8.0 Release Notes that this happened at
+  Redis 8.0.0 (GA May 2025), the same release that renamed Redis Community Edition to Redis Open
+  Source — plus another genuine duplicate theory section matching the same recurring authoring
+  pattern already found on `caching-patterns` and `redis-cluster`.
 - **GraphQL hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Pink theme `$accent: #e535ab`, `$tint: #fdf2f9`, dark `#f472b6`, dark bg `#3d0a26`. Search prefix `gql-`. Route: `/graphql`.
   CSS classes: `.gql-page`, `.gql-icon`, `.gql-section`. Icon content: `◈` at `font-size: 1.8rem`. `tech="javascript"`.
