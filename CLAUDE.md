@@ -8818,6 +8818,47 @@ this same check before any other new hub's first subtopic set:
     inspection; all 3 subtopic pages checked individually — correct h1/breadcrumb (all 4 levels),
     860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed via direct
     text search. **Redis hub Phase 10: 12 of 21 topics complete.**
+13. **The `streams` batch found and fixed a genuine, self-contained bug in the main page's own
+    Stream Metrics Aggregator Challenge, findable purely by comparing the Challenge's own hint
+    text against the shape of the command it actually called**: the Challenge's `getStreamStats`
+    reference solution called `redis.xpending(streamKey, groupName, '-', '+', 1)` — the EXTENDED
+    form of XPENDING, taking start/end/count args and returning one `[id, consumer, idleMs,
+    deliveryCount]` tuple per pending entry — but its own hint claimed this "returns summary with
+    pending count." Verified directly against XPENDING's own official docs that the SUMMARY form
+    (`XPENDING key group`, no args) is what actually returns `[totalPendingCount, minId, maxId,
+    consumers[]]`; the buggy code read `pending[0]?.[3]` — one entry's own delivery count — and
+    treated it as the TOTAL pending count. Verified via a concrete Node.js simulation of a
+    realistic 50-entry PEL that this produces a reported count of 3 against a real total of 50, a
+    94% undercount. Fixed both the misleading hint and the function body to call the summary form
+    with no args and read index 0 as the total. Three subtopics: (1) **fix-adjacent** — reproduces
+    the exact summary-vs-extended reply-shape confusion via `fakeXpendingSummary`/
+    `fakeXpendingExtended` models matching Redis's own documented reply shapes exactly, with a Try
+    It on why index `[3]` means something completely different in each form; (2) **gap-closing** —
+    the main page names XCLAIM alongside XAUTOCLAIM in its own theory but only ever demonstrates
+    XAUTOCLAIM; built a targeted-XPENDING-then-manual-XCLAIM workflow, verified via research that
+    XCLAIM requires explicit IDs (found via a prior XPENDING call) while XAUTOCLAIM scans
+    automatically, with a Try It on when each is the right tool; (3) **gap-closing** — builds a
+    dead-letter routing pattern using the extended XPENDING form's own delivery-count field (the
+    same field the sibling subtopic traced the bug around) to route messages exceeding a
+    `MAX_DELIVERY_ATTEMPTS` threshold to a separate dead-letter stream via XADD+XACK. Real
+    `SUBTOPICS` map collision: bare `streams` was already claimed by the Node.js hub's own
+    `/node/streams` topic — hub-prefixed to `redis-streams`, matching this hub's own established
+    `redis-` progress/search key prefix, with all five `RedisNavComponent` accordion helper calls
+    (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`) and the search-index composite keys
+    using the prefixed key consistently. All three `exercise.solution` fields swept clean of
+    `<code>`/entity contamination; the standing apostrophe-after-letter sweep, bracket-balance, and
+    backtick-parity checks all found nothing to fix across all three subtopic files and the
+    main-page edit. Build passed clean (foreground execution, explicit `EXITCODE:$?` capture, zero
+    real `ERROR` lines). Browser-verified with a fresh dev-server cold-start before checking: no
+    console errors; nav accordion opens with all 3 subtopic links, confirmed via both
+    `window.ng.getComponent()` direct calls and a live DOM click-and-query (had to query the
+    toggle as a CHILD of the topic's own `<a>` specifically — a naive
+    `parentElement.querySelector()` on the shared `.nav-group` div picks up a DIFFERENT, already-
+    open sibling topic's own toggle instead); the Challenge fix confirmed rendering live via direct
+    component-data inspection (`challenge.hints`/`challenge.solution` read directly); all 3
+    subtopic pages checked individually — correct h1/breadcrumb (all 4 levels), 860px wrapper via
+    `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed via direct text search.
+    **Redis hub Phase 10: 13 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -9001,11 +9042,12 @@ this same check before any other new hub's first subtopic set:
   All 23 cards `available: true` in `data/redis/home/home.ts`. Progress: `redisTotal=21` in progress.service.ts.
   Redis pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. RedisNavComponent at `shared/redis-nav/redis-nav.ts`.
-  Phase 10: 12 of 21 topics have subtopics (`/redis/fundamentals`, pilot batch;
+  Phase 10: 13 of 21 topics have subtopics (`/redis/fundamentals`, pilot batch;
   `/redis/installation-setup`; `/redis/strings`; `/redis/hashes`; `/redis/lists`; `/redis/sets`;
   `/redis/sorted-sets`; `/redis/key-commands`; `/redis/transactions`; `/redis/lua-scripting`;
-  `/redis/persistence`; `/redis/pub-sub`,
-  finished 2026-09-08) — see
+  `/redis/persistence`; `/redis/pub-sub`; `/redis/streams` (SUBTOPICS key hub-prefixed to
+  `redis-streams` — bare `streams` collides with the Node.js hub's own topic),
+  finished 2026-09-09) — see
   "Redis hub subtopic wiring" section above for
   the `RedisNavComponent` accordion structural fix (16th `*NavComponent`-based hub in a row missing
   it at pilot time), the SUBTOPICS-map collision resolutions (bare `fundamentals` collides with the
@@ -9051,7 +9093,11 @@ this same check before any other new hub's first subtopic set:
   QUIT, the other in RESET) — verified via Redis's own docs that both are genuinely allowed
   simultaneously, alongside a RESP3 exception (any command is allowed while subscribed) neither
   section mentioned at all, directly undermining the page's own separate "two connections always
-  needed" claim.
+  needed" claim; and, on the Streams page, the Stream Metrics Aggregator Challenge's own reference
+  solution called XPENDING's extended form but its own hint claimed it returns the summary form —
+  verified via XPENDING's official docs and a concrete 50-entry-PEL simulation that the buggy code
+  undercounted a real total of 50 down to 3 (94% undercount), fixed to call the summary form
+  correctly.
 - **GraphQL hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Pink theme `$accent: #e535ab`, `$tint: #fdf2f9`, dark `#f472b6`, dark bg `#3d0a26`. Search prefix `gql-`. Route: `/graphql`.
   CSS classes: `.gql-page`, `.gql-icon`, `.gql-section`. Icon content: `◈` at `font-size: 1.8rem`. `tech="javascript"`.

@@ -9405,7 +9405,21 @@ off here with a date.
   links; both main-page fixes confirmed live via direct component-data inspection; all 3
   subtopic pages checked — breadcrumb (all 4 levels), 860px wrapper, tailored sidebar
   content, no console errors.
-- [ ] `/redis/streams` — Streams
+- [x] 2026-09-09 — `/redis/streams` — Streams: 3 subtopics (XPENDING's summary vs.
+  extended form, XCLAIM vs. XAUTOCLAIM manual vs. scan, dead-letter routing by delivery
+  count). Found and fixed a genuine bug in the Stream Metrics Aggregator Challenge's own
+  reference solution: it called XPENDING's extended form (`start end count` args) but its
+  own hint claimed the reply "returns summary with pending count" — verified against
+  XPENDING's official docs and a concrete 50-entry PEL simulation that the buggy
+  `pending[0]?.[3]` read (one entry's own delivery count) undercounted a real total of 50
+  down to 3, a 94% undercount. Fixed to call the summary form (`XPENDING key group`, no
+  args) and read index 0 as the total. SUBTOPICS key hub-prefixed to `redis-streams` (bare
+  `streams` collides with the Node.js hub's own `/node/streams` topic). Build clean on
+  first attempt. Browser-verified with a fresh dev-server cold-start: nav accordion opens
+  with all 3 links (confirmed via both direct component calls and a live DOM
+  click-and-query); the Challenge fix confirmed live via direct component-data inspection;
+  all 3 subtopic pages checked — breadcrumb (all 4 levels), 860px wrapper, tailored
+  sidebar content, no console errors.
 - [ ] `/redis/caching-patterns` — Caching Patterns
 - [ ] `/redis/eviction-policies` — Eviction Policies
 - [ ] `/redis/rate-limiting` — Rate Limiting
