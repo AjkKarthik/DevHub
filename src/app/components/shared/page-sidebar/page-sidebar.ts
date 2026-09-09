@@ -38360,6 +38360,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Pipelining multiple commands (sending them without waiting for each response) meaningfully reduces round-trip overhead for batch operations.',
     ],
   },
+  'redis/redis-nodejs/watch-retry-loops-need-a-dedicated-connection': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Redis with Node.js', route: '/redis/redis-nodejs' },
+      { label: 'Typed defineCommand(), Without the as any Cast', route: '/redis/redis-nodejs/typed-definecommand-without-as-any' },
+      { label: 'Transactions & Optimistic Locking', route: '/redis/transactions' },
+    ],
+    tip: 'WATCH state lives on the connection, not the client — the main page\'s own WATCH/MULTI/EXEC retry-loop sketch needs redis.duplicate() to stay isolated from every other concurrent caller, matching the fix already established on the Transactions topic.',
+    gotchas: [
+      'Two logical operations sharing one connection can produce BOTH a false abort AND a silent false success — the more dangerous failure, since a wrongly-succeeded EXEC leaves no error anywhere to catch it.',
+    ],
+  },
+  'redis/redis-nodejs/typed-definecommand-without-as-any': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'WATCH Retry Loops Need a Dedicated Connection', route: '/redis/redis-nodejs/watch-retry-loops-need-a-dedicated-connection' },
+      { label: 'A Real Health-Check Endpoint with a PING Timeout', route: '/redis/redis-nodejs/a-real-health-check-endpoint-with-ping-timeout' },
+    ],
+    tip: 'Extend ioredis\'s own RedisCommander<Context> interface via TypeScript declaration merging to give a defineCommand()-registered method real types — the same interface Redis/Cluster already mix in for get/set/incr — instead of casting the client with as any.',
+    gotchas: [
+      'The declaration only types the call site — it is a contract the developer must keep in sync with the Lua script by hand; TypeScript cannot check Lua source at all.',
+    ],
+  },
+  'redis/redis-nodejs/a-real-health-check-endpoint-with-ping-timeout': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Typed defineCommand(), Without the as any Cast', route: '/redis/redis-nodejs/typed-definecommand-without-as-any' },
+      { label: 'Redis with Node.js', route: '/redis/redis-nodejs' },
+    ],
+    tip: 'Race redis.ping() against its own short setTimeout, separate from the client\'s own command-timeout/retry settings — a health endpoint needs to report unhealthy fast, not wait out a retry budget tuned for ordinary user traffic.',
+    gotchas: [
+      'A passing PING only confirms the connection is alive — it says nothing about AUTH/ACL permissions or the correct database being selected for the operations the app actually performs.',
+    ],
+  },
   'redis/redis-stack': {
     apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
     related: [

@@ -404,7 +404,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
 
     <div class="nav-group">
       <p class="nav-group-label">Ecosystem</p>
-      <a routerLink="/redis/redis-nodejs" routerLinkActive="active"><span class="nl-text">Redis with Node.js</span>@if(p.isDone('redis-redis-nodejs')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/redis/redis-nodejs" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Redis with Node.js</span>
+        @if(p.isDone('redis-redis-nodejs')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('redis-nodejs')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('redis-nodejs')"
+                  (click)="toggleSubtopics('redis-nodejs', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('redis-nodejs'); as redisNodejsSubs) {
+        @if (isSubtopicsExpanded('redis-nodejs')) {
+          <div class="nav-subtopics">
+            @for (s of redisNodejsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/redis/security" routerLinkActive="active"><span class="nl-text">Redis Security</span>@if(p.isDone('redis-security')){<span class="nl-done">✓</span>}</a>
     </div>
 

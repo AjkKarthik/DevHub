@@ -2840,7 +2840,12 @@ export const routes: Routes = [
       { path: 'the-ft-info-indexing-field-is-a-truthy-string-not-a-boolean', loadComponent: () => import('./components/data/redis/redis-stack/subtopics/the-ft-info-indexing-field-is-a-truthy-string-not-a-boolean/the-ft-info-indexing-field-is-a-truthy-string-not-a-boolean').then(m => m.TheFtInfoIndexingFieldIsATruthyStringNotABooleanSubtopic) },
       { path: 'co-locating-a-search-index-on-one-cluster-node-with-hash-tags', loadComponent: () => import('./components/data/redis/redis-stack/subtopics/co-locating-a-search-index-on-one-cluster-node-with-hash-tags/co-locating-a-search-index-on-one-cluster-node-with-hash-tags').then(m => m.CoLocatingASearchIndexOnOneClusterNodeWithHashTagsSubtopic) },
     ] },
-    { path: 'redis-nodejs',         loadComponent: () => import('./components/data/redis/redis-nodejs/redis-nodejs').then(m => m.RedisNodejs) },
+    { path: 'redis-nodejs', children: [
+      { path: '', loadComponent: () => import('./components/data/redis/redis-nodejs/redis-nodejs').then(m => m.RedisNodejs) },
+      { path: 'watch-retry-loops-need-a-dedicated-connection', loadComponent: () => import('./components/data/redis/redis-nodejs/subtopics/watch-retry-loops-need-a-dedicated-connection/watch-retry-loops-need-a-dedicated-connection').then(m => m.WatchRetryLoopsNeedADedicatedConnectionSubtopic) },
+      { path: 'typed-definecommand-without-as-any', loadComponent: () => import('./components/data/redis/redis-nodejs/subtopics/typed-definecommand-without-as-any/typed-definecommand-without-as-any').then(m => m.TypedDefineCommandWithoutAsAnySubtopic) },
+      { path: 'a-real-health-check-endpoint-with-ping-timeout', loadComponent: () => import('./components/data/redis/redis-nodejs/subtopics/a-real-health-check-endpoint-with-ping-timeout/a-real-health-check-endpoint-with-ping-timeout').then(m => m.ARealHealthCheckEndpointWithPingTimeoutSubtopic) },
+    ] },
     { path: 'security',             loadComponent: () => import('./components/data/redis/security/security').then(m => m.RedisSecurity) },
     { path: 'cheatsheet',           loadComponent: () => import('./components/data/redis/cheatsheet/cheatsheet').then(m => m.RedisCheatsheet) },
     { path: 'interview-prep',       loadComponent: () => import('./components/data/redis/interview-prep/interview-prep').then(m => m.RedisInterviewPrep) },

@@ -1,0 +1,26 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Redis with Node.js" topicRoute="/redis/redis-nodejs"
+    subtopicLabel="A Real Health-Check Endpoint with a PING Timeout" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">A Real Health-Check Endpoint with a PING Timeout</h1>
+  <p class="page-subtitle">The main page names client-side timeouts and PING-based health checks as two separate best practices — but never shows the one endpoint where they actually depend on each other.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>This is the last subtopic for Redis with Node.js — from isolating WATCH-based retry loops onto their own connection, to giving a custom Lua command real TypeScript types, to making the main page's own "verify actual connectivity" health-check advice into a working, timeout-bounded endpoint.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Redis with Node.js" topicRoute="/redis/redis-nodejs"
+    [prev]="{ label: 'Typed defineCommand(), Without the as any Cast', route: '/redis/redis-nodejs/typed-definecommand-without-as-any' }" />
+</div>

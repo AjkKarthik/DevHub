@@ -1783,6 +1783,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The FT.INFO indexing Field Is a Truthy String, Not a Boolean', route: '/redis/redis-stack/the-ft-info-indexing-field-is-a-truthy-string-not-a-boolean' },
     { label: 'Co-Locating a Search Index on One Cluster Node with Hash Tags', route: '/redis/redis-stack/co-locating-a-search-index-on-one-cluster-node-with-hash-tags' },
   ],
+  'redis-nodejs': [
+    { label: 'WATCH Retry Loops Need a Dedicated Connection', route: '/redis/redis-nodejs/watch-retry-loops-need-a-dedicated-connection' },
+    { label: 'Typed defineCommand(), Without the as any Cast', route: '/redis/redis-nodejs/typed-definecommand-without-as-any' },
+    { label: 'A Real Health-Check Endpoint with a PING Timeout', route: '/redis/redis-nodejs/a-real-health-check-endpoint-with-ping-timeout' },
+  ],
   closures: [
     { label: 'var Shares One Binding, let Creates One Per Iteration', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
     { label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },
