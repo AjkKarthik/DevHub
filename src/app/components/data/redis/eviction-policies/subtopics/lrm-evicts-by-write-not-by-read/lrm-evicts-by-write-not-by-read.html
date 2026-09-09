@@ -1,0 +1,26 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Eviction Policies" topicRoute="/redis/eviction-policies"
+    subtopicLabel="LRM Evicts by Write, Not by Read" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">LRM Evicts by Write, Not by Read</h1>
+  <p class="page-subtitle">Redis 8.6 added a fourth eviction family — allkeys-lrm / volatile-lrm — completely absent from the main page's Quick Reference. Here's what makes it genuinely different from LRU, not just a rename.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Redis 8.6+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>LRM tracks modification recency, not access recency — a genuinely different signal from every other approximated-recency policy on the main page. Next: the actual probabilistic counter formula behind LFU, verified against Redis's own source.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Eviction Policies" topicRoute="/redis/eviction-policies"
+    [next]="{ label: 'The LFU Morris Counter, Verified Against Real Redis Source', route: '/redis/eviction-policies/the-lfu-morris-counter-formula-verified' }" />
+</div>

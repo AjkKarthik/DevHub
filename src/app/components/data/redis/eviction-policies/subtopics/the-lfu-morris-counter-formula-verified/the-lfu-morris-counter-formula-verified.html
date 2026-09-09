@@ -1,0 +1,27 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Eviction Policies" topicRoute="/redis/eviction-policies"
+    subtopicLabel="The LFU Morris Counter, Verified Against Real Redis Source" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">The LFU Morris Counter, Verified Against Real Redis Source</h1>
+  <p class="page-subtitle">The main page names the Morris counter mechanism but never shows the formula — fetched directly from Redis's own evict.c, plus the fact that every key's counter secretly starts at 5, not 0.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Redis 4.0+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>lfu-log-factor is the tunable knob controlling how quickly the counter saturates for a given real access volume. Next: reading the right INFO fields to know how badly — and for how long — memory pressure has actually been happening.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Eviction Policies" topicRoute="/redis/eviction-policies"
+    [prev]="{ label: 'LRM Evicts by Write, Not by Read', route: '/redis/eviction-policies/lrm-evicts-by-write-not-by-read' }"
+    [next]="{ label: 'current_eviction_exceeded_time and Other INFO Fields', route: '/redis/eviction-policies/current-eviction-exceeded-time-and-other-info-fields' }" />
+</div>

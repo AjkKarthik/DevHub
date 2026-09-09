@@ -1755,6 +1755,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Implementing Read-Through in Application Code', route: '/redis/caching-patterns/implementing-read-through-in-application-code' },
     { label: 'Tag-Based Invalidation with Redis Sets', route: '/redis/caching-patterns/tag-based-invalidation-with-redis-sets' },
   ],
+  'eviction-policies': [
+    { label: 'LRM Evicts by Write, Not by Read', route: '/redis/eviction-policies/lrm-evicts-by-write-not-by-read' },
+    { label: 'The LFU Morris Counter, Verified Against Real Redis Source', route: '/redis/eviction-policies/the-lfu-morris-counter-formula-verified' },
+    { label: 'current_eviction_exceeded_time and Other INFO Fields', route: '/redis/eviction-policies/current-eviction-exceeded-time-and-other-info-fields' },
+  ],
   closures: [
     { label: 'var Shares One Binding, let Creates One Per Iteration', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
     { label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },

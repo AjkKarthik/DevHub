@@ -2810,7 +2810,12 @@ export const routes: Routes = [
       { path: 'implementing-read-through-in-application-code', loadComponent: () => import('./components/data/redis/caching-patterns/subtopics/implementing-read-through-in-application-code/implementing-read-through-in-application-code').then(m => m.ImplementingReadThroughInApplicationCodeSubtopic) },
       { path: 'tag-based-invalidation-with-redis-sets', loadComponent: () => import('./components/data/redis/caching-patterns/subtopics/tag-based-invalidation-with-redis-sets/tag-based-invalidation-with-redis-sets').then(m => m.TagBasedInvalidationWithRedisSetsSubtopic) },
     ] },
-    { path: 'eviction-policies',    loadComponent: () => import('./components/data/redis/eviction-policies/eviction-policies').then(m => m.RedisEvictionPolicies) },
+    { path: 'eviction-policies', children: [
+      { path: '', loadComponent: () => import('./components/data/redis/eviction-policies/eviction-policies').then(m => m.RedisEvictionPolicies) },
+      { path: 'lrm-evicts-by-write-not-by-read', loadComponent: () => import('./components/data/redis/eviction-policies/subtopics/lrm-evicts-by-write-not-by-read/lrm-evicts-by-write-not-by-read').then(m => m.LrmEvictsByWriteNotByReadSubtopic) },
+      { path: 'the-lfu-morris-counter-formula-verified', loadComponent: () => import('./components/data/redis/eviction-policies/subtopics/the-lfu-morris-counter-formula-verified/the-lfu-morris-counter-formula-verified').then(m => m.TheLfuMorrisCounterFormulaVerifiedSubtopic) },
+      { path: 'current-eviction-exceeded-time-and-other-info-fields', loadComponent: () => import('./components/data/redis/eviction-policies/subtopics/current-eviction-exceeded-time-and-other-info-fields/current-eviction-exceeded-time-and-other-info-fields').then(m => m.CurrentEvictionExceededTimeAndOtherInfoFieldsSubtopic) },
+    ] },
     { path: 'rate-limiting',        loadComponent: () => import('./components/data/redis/rate-limiting/rate-limiting').then(m => m.RedisRateLimiting) },
     { path: 'replication-sentinel', loadComponent: () => import('./components/data/redis/replication-sentinel/replication-sentinel').then(m => m.RedisReplicationSentinel) },
     { path: 'redis-cluster',        loadComponent: () => import('./components/data/redis/redis-cluster/redis-cluster').then(m => m.RedisCluster) },

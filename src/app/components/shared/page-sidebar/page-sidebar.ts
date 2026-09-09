@@ -38092,6 +38092,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'LRU (least recently used) is approximated, not exact, in Redis for performance reasons — don\'t assume perfectly precise LRU ordering.',
     ],
   },
+  'redis/eviction-policies/lrm-evicts-by-write-not-by-read': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Eviction Policies', route: '/redis/eviction-policies' },
+      { label: 'The LFU Morris Counter, Verified Against Real Redis Source', route: '/redis/eviction-policies/the-lfu-morris-counter-formula-verified' },
+    ],
+    tip: 'LRM (Redis 8.6+) only updates a key\'s recency timestamp on WRITE — unlike LRU, which updates on both reads and writes. Verified via simulation: the same 100-tick access pattern produces the OPPOSITE eviction choice under LRU vs LRM.',
+    gotchas: [
+      'LRM is not "a better LRU" — it answers a different question entirely (recently modified vs. recently accessed) and is the wrong choice for a workload that cares about read recency, like most caches do.',
+    ],
+  },
+  'redis/eviction-policies/the-lfu-morris-counter-formula-verified': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Eviction Policies', route: '/redis/eviction-policies' },
+      { label: 'LRM Evicts by Write, Not by Read', route: '/redis/eviction-policies/lrm-evicts-by-write-not-by-read' },
+    ],
+    tip: 'Verified directly against Redis\'s own evict.c: every key\'s LFU counter starts at LFU_INIT_VAL (5), not 0, and each increment fires with probability 1/(baseval*lfu_log_factor+1) — a HIGHER lfu-log-factor makes the counter LESS sensitive, needing more real hits to reach the same reading.',
+    gotchas: [
+      'lfu-log-factor 0 makes every hit increment the counter unconditionally, turning LFU into something closer to a raw (8-bit-capped) hit counter that saturates almost immediately for any moderately-accessed key.',
+    ],
+  },
+  'redis/eviction-policies/current-eviction-exceeded-time-and-other-info-fields': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Eviction Policies', route: '/redis/eviction-policies' },
+      { label: 'The LFU Morris Counter, Verified Against Real Redis Source', route: '/redis/eviction-policies/the-lfu-morris-counter-formula-verified' },
+    ],
+    tip: 'current_eviction_exceeded_time (INFO stats, in MILLISECONDS) reports how long the server has been continuously over maxmemory right now — distinct from total_eviction_exceeded_time, which accumulates across the entire uptime and never resets except on restart.',
+    gotchas: [
+      'A bare usedPct > 80 check treats a server that just tipped over budget identically to one that has been stuck there for hours — only current_eviction_exceeded_time distinguishes the two.',
+    ],
+  },
   'redis/caching-patterns': {
     apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
     related: [

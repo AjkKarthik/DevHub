@@ -302,7 +302,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/redis/eviction-policies" routerLinkActive="active"><span class="nl-text">Eviction Policies</span>@if(p.isDone('redis-eviction-policies')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/redis/eviction-policies" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Eviction Policies</span>
+        @if(p.isDone('redis-eviction-policies')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('eviction-policies')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('eviction-policies')"
+                  (click)="toggleSubtopics('eviction-policies', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('eviction-policies'); as evictionSubs) {
+        @if (isSubtopicsExpanded('eviction-policies')) {
+          <div class="nav-subtopics">
+            @for (s of evictionSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/redis/rate-limiting" routerLinkActive="active"><span class="nl-text">Rate Limiting</span>@if(p.isDone('redis-rate-limiting')){<span class="nl-done">✓</span>}</a>
     </div>
 
