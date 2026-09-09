@@ -9158,6 +9158,60 @@ this same check before any other new hub's first subtopic set:
     `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed, generic syntax
     (`RedisCommander<Context>`) confirmed rendering as literal text, not vanished. **Redis hub
     Phase 10: 20 of 21 topics complete — only `security` remains to finish the entire hub.**
+21. **The `security` batch — the 21st and FINAL Redis hub topic — found and fixed FOUR genuine
+    issues on the main page, all verified against Redis's own primary sources rather than assumed**:
+    (1) the Challenge's own `auditAclViolations()` reference solution parsed ACL LOG's `object`
+    field as `"command|key"` via a naive `split('|')` — verified directly against Redis's own ACL
+    LOG documentation that `object` is a single-purpose field whose meaning depends entirely on the
+    `reason` field (a command name for `reason: 'command'`, a key/channel name for `reason: 'key'`/
+    `'channel'`, never a pipe-delimited compound), fixed by extracting the real command from
+    `client-info`'s own `cmd=` token via regex and using `object` for `key` only when `reason`
+    warrants it, verified via direct Node.js execution matching real `client-info` strings; (2) a
+    QnA claimed protected-mode's restriction lifts when either "a bind address is explicitly
+    configured" OR "requirepass is set" — verified directly against Redis's own `networking.c`
+    accept-time check that bind status plays NO part in the real condition at all, only whether the
+    default user has NOPASS set matters, matching the same misconception already debunked once this
+    session on the Installation & Setup page, reused here rather than re-derived; (3) a theory
+    bullet recommended `lua-time-limit 0` to "disable Lua scripts if not needed" — verified against
+    Redis's own `redis.conf` source comments that 0 actually DISABLES the busy-script-detection
+    mechanism entirely (uninterrupted execution, no warning to other clients), the opposite of
+    restricting anything — the real fix is denying the `@scripting` ACL category, fixed the theory
+    bullet and added a matching subtopic; (4) a RESET QnA's "(Redis 6+)" version claim was tightened
+    to "(Redis 6.2+, not 6.0)" after verification. Three subtopics: (1) **fix-adjacent** — the
+    ACL LOG `object`-field parsing fix, verified via direct Node.js execution against real
+    `client-info` strings, with a Try It on the `reason: 'auth'` case the naive parser also mishandles;
+    (2) **fix-adjacent** — the protected-mode/`@scripting` fixes combined: traces the verified
+    accept-time condition precisely, and demonstrates that a `defineCommand()`-registered custom Lua
+    command still sends a real EVALSHA over the wire, so `-@scripting` blocks it too regardless of
+    how the client-side call site looks; (3) **gap-closing** — the main page's own theory says
+    runtime ACL changes "must be saved (ACL SAVE or CONFIG REWRITE)" as if interchangeable; verified
+    against Redis's own ACL documentation that inline `redis.conf` `user` directives persist via
+    `CONFIG REWRITE` while an external `aclfile` persists only via `ACL SAVE` — the two storage
+    modes are "mutually incompatible" per Redis's own docs, and `CONFIG REWRITE` alone in aclfile
+    mode silently reports success while never touching the ACL file at all; the title's own straight
+    apostrophe was proactively swapped for the typographic curly quote before any sibling page could
+    reference it. No `SUBTOPICS` collision for `security` under the `redis` prefix — bare `security`
+    already claimed by the SQL hub's own topic, hub-prefixed to `redis-security` matching this hub's
+    established `redis-` search/progress prefix; all `RedisNavComponent` accordion helper calls use
+    the prefixed key consistently. All three `exercise.solution` fields swept clean of `<code>`/
+    entity contamination; brace balance and backtick-parity confirmed even on all three files; no
+    bare `@word` in static `.html` text outside bound attributes; no unescaped straight apostrophes
+    in any `[prev]`/`[next]` label. **Hit the documented `NG2008: Could not find template file`
+    failure mid-batch — subtopic 3's `.ts` file was written and wired before its own `.html`/`.scss`
+    files existed**, caught by the production build itself; written immediately, then the local
+    `ng serve` dev server needed a full `preview_stop`/`preview_start` restart (a forced marker-add-
+    then-remove file touch was insufficient — the route kept silently redirecting to `/` via the
+    wildcard route even after the touch) before the new route resolved live, matching the
+    established stale-dev-server-artifact family. Build passed clean (foreground execution, zero
+    real `ERROR` lines). Browser-verified after the restart: no console errors on any of the 4
+    pages; nav accordion opens with all 3 subtopic links (21 toggles total across the hub — every
+    Redis-hub topic now has subtopics); all four main-page fixes confirmed rendering live via
+    direct component-data inspection; all 3 subtopic pages checked individually — correct
+    h1/breadcrumb (all 4 levels), 860px wrapper via `getComputedStyle`, the `@scripting` entity-
+    escaped h1 and the curly-quote title both confirmed rendering as literal text; tailored (not
+    DEFAULT) sidebar content confirmed. **This completes the Redis hub's entire Phase 10 rollout —
+    all 21 topics now have deep-dive subtopic pages, 63 subtopic pages total across the hub,
+    finished 2026-09-09.**
 
 ## Current state (update when it changes!)
 
@@ -9341,15 +9395,16 @@ this same check before any other new hub's first subtopic set:
   All 23 cards `available: true` in `data/redis/home/home.ts`. Progress: `redisTotal=21` in progress.service.ts.
   Redis pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. RedisNavComponent at `shared/redis-nav/redis-nav.ts`.
-  Phase 10: 20 of 21 topics have subtopics (`/redis/fundamentals`, pilot batch;
+  Phase 10: **COMPLETE — 21 of 21 topics have subtopics** (`/redis/fundamentals`, pilot batch;
   `/redis/installation-setup`; `/redis/strings`; `/redis/hashes`; `/redis/lists`; `/redis/sets`;
   `/redis/sorted-sets`; `/redis/key-commands`; `/redis/transactions`; `/redis/lua-scripting`;
   `/redis/persistence`; `/redis/pub-sub`; `/redis/streams` (SUBTOPICS key hub-prefixed to
   `redis-streams` — bare `streams` collides with the Node.js hub's own topic);
   `/redis/caching-patterns`; `/redis/eviction-policies`; `/redis/rate-limiting` — Caching nav
   group fully done; `/redis/replication-sentinel`; `/redis/redis-cluster`; `/redis/redis-stack`;
-  `/redis/redis-nodejs` — Cluster & HA/Ecosystem groups fully done,
-  finished 2026-09-09) — see
+  `/redis/redis-nodejs`; `/redis/security` (SUBTOPICS key hub-prefixed to `redis-security` —
+  bare `security` collides with the SQL hub's own topic) — every nav group fully done,
+  finished 2026-09-09, 63 subtopic pages total across the hub) — see
   "Redis hub subtopic wiring" section above for
   the `RedisNavComponent` accordion structural fix (16th `*NavComponent`-based hub in a row missing
   it at pilot time), the SUBTOPICS-map collision resolutions (bare `fundamentals` collides with the
@@ -9425,7 +9480,14 @@ this same check before any other new hub's first subtopic set:
   verified via the npm registry's own version timestamps that the API changed twice since, to a
   named-export pattern current as of v8 through the latest v10), plus a quiz explanation repeating
   the same incomplete Pub/Sub allowed-command list already found and fixed on this hub's own
-  `pub-sub` page earlier this session.
+  `pub-sub` page earlier this session; and, on the Security page (the hub's 21st and FINAL topic),
+  the Challenge's own ACL LOG `object`-field parsing bug (naive `"command|key"` split instead of
+  the real `reason`-dependent single-purpose field, verified against Redis's own ACL LOG docs), a
+  recurring protected-mode misconception (bind status plays no part — reused the same
+  `networking.c`-verified finding already debunked once on the Installation & Setup page), and a
+  genuinely backwards `lua-time-limit 0` claim (verified via Redis's own `redis.conf` source
+  comments that 0 DISABLES the busy-script-detection mechanism rather than disabling scripting).
+  **This completes the Redis hub's entire Phase 10 rollout.**
 - **GraphQL hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Pink theme `$accent: #e535ab`, `$tint: #fdf2f9`, dark `#f472b6`, dark bg `#3d0a26`. Search prefix `gql-`. Route: `/graphql`.
   CSS classes: `.gql-page`, `.gql-icon`, `.gql-section`. Icon content: `◈` at `font-size: 1.8rem`. `tech="javascript"`.

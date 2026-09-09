@@ -9550,7 +9550,27 @@ off here with a date.
   freshly-started dev server: nav accordion opens with all 3 links; all three
   main-page fixes confirmed live; all 3 subtopic pages checked — breadcrumb (all
   4 levels), 860px wrapper, tailored sidebar content, no console errors.
-- [ ] `/redis/security` — Redis Security
+- [x] 2026-09-09 — `/redis/security` — Redis Security. Fixed 4 genuine main-page
+  issues: the ACL LOG Challenge's `object`-field parsing bug (naive
+  `"command|key"` split — real field is `reason`-dependent, verified against
+  Redis's own ACL LOG docs); a recurring protected-mode misconception (bind
+  status plays no part, reused the `networking.c`-verified finding from
+  Installation & Setup); a backwards `lua-time-limit 0` claim (verified via
+  redis.conf source comments it DISABLES busy-script detection, not
+  scripting); and a RESET version-precision fix (6.2+, not 6.0). 3 subtopics:
+  ACL LOG object-field parsing (fix-adjacent), restricting EVAL via ACL
+  -@scripting (fix-adjacent), ACL SAVE requires an aclfile (gap-closing —
+  CONFIG REWRITE/ACL SAVE are mode-specific, not interchangeable, verified
+  via Redis's own ACL docs). SUBTOPICS key hub-prefixed to `redis-security`
+  (bare `security` collides with the SQL hub's own topic). Hit the
+  documented NG2008 template-file-missing failure (subtopic 3's .html/.scss
+  written after the .ts) and a stale dev-server route needing a full
+  preview_stop/preview_start restart. Build clean. Browser-verified: nav
+  accordion opens with all 3 links (21 toggles total across the hub); all 4
+  main-page fixes confirmed live; all 3 subtopic pages checked — breadcrumb
+  (all 4 levels), 860px wrapper, tailored sidebar content, no console
+  errors. **This completes the Redis hub's entire Phase 10 rollout — all 21
+  topics now have subtopics, 63 subtopic pages total across the hub.**
 
 #### GraphQL — 20 topic pages
 
