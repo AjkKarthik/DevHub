@@ -1778,6 +1778,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Hash Tag Extraction Algorithm, Verified Against Real Edge Cases', route: '/redis/redis-cluster/the-hash-tag-extraction-algorithm-verified-against-real-edge-cases' },
     { label: 'ASK Is a One-Time Redirect, Not a Permanent Slot-Map Update', route: '/redis/redis-cluster/ask-is-a-one-time-redirect-not-a-permanent-slot-map-update' },
   ],
+  'redis-stack': [
+    { label: 'When Modules Are Built In (Redis 8.0+) vs. Still Need Stack', route: '/redis/redis-stack/when-modules-are-built-in-redis-8-vs-still-need-stack' },
+    { label: 'The FT.INFO indexing Field Is a Truthy String, Not a Boolean', route: '/redis/redis-stack/the-ft-info-indexing-field-is-a-truthy-string-not-a-boolean' },
+    { label: 'Co-Locating a Search Index on One Cluster Node with Hash Tags', route: '/redis/redis-stack/co-locating-a-search-index-on-one-cluster-node-with-hash-tags' },
+  ],
   closures: [
     { label: 'var Shares One Binding, let Creates One Per Iteration', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
     { label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },

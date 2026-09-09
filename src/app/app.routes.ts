@@ -2834,7 +2834,12 @@ export const routes: Routes = [
       { path: 'the-hash-tag-extraction-algorithm-verified-against-real-edge-cases', loadComponent: () => import('./components/data/redis/redis-cluster/subtopics/the-hash-tag-extraction-algorithm-verified-against-real-edge-cases/the-hash-tag-extraction-algorithm-verified-against-real-edge-cases').then(m => m.TheHashTagExtractionAlgorithmVerifiedAgainstRealEdgeCasesSubtopic) },
       { path: 'ask-is-a-one-time-redirect-not-a-permanent-slot-map-update', loadComponent: () => import('./components/data/redis/redis-cluster/subtopics/ask-is-a-one-time-redirect-not-a-permanent-slot-map-update/ask-is-a-one-time-redirect-not-a-permanent-slot-map-update').then(m => m.AskIsAOneTimeRedirectNotAPermanentSlotMapUpdateSubtopic) },
     ] },
-    { path: 'redis-stack',          loadComponent: () => import('./components/data/redis/redis-stack/redis-stack').then(m => m.RedisStack) },
+    { path: 'redis-stack', children: [
+      { path: '', loadComponent: () => import('./components/data/redis/redis-stack/redis-stack').then(m => m.RedisStack) },
+      { path: 'when-modules-are-built-in-redis-8-vs-still-need-stack', loadComponent: () => import('./components/data/redis/redis-stack/subtopics/when-modules-are-built-in-redis-8-vs-still-need-stack/when-modules-are-built-in-redis-8-vs-still-need-stack').then(m => m.WhenModulesAreBuiltInRedis8VsStillNeedStackSubtopic) },
+      { path: 'the-ft-info-indexing-field-is-a-truthy-string-not-a-boolean', loadComponent: () => import('./components/data/redis/redis-stack/subtopics/the-ft-info-indexing-field-is-a-truthy-string-not-a-boolean/the-ft-info-indexing-field-is-a-truthy-string-not-a-boolean').then(m => m.TheFtInfoIndexingFieldIsATruthyStringNotABooleanSubtopic) },
+      { path: 'co-locating-a-search-index-on-one-cluster-node-with-hash-tags', loadComponent: () => import('./components/data/redis/redis-stack/subtopics/co-locating-a-search-index-on-one-cluster-node-with-hash-tags/co-locating-a-search-index-on-one-cluster-node-with-hash-tags').then(m => m.CoLocatingASearchIndexOnOneClusterNodeWithHashTagsSubtopic) },
+    ] },
     { path: 'redis-nodejs',         loadComponent: () => import('./components/data/redis/redis-nodejs/redis-nodejs').then(m => m.RedisNodejs) },
     { path: 'security',             loadComponent: () => import('./components/data/redis/security/security').then(m => m.RedisSecurity) },
     { path: 'cheatsheet',           loadComponent: () => import('./components/data/redis/cheatsheet/cheatsheet').then(m => m.RedisCheatsheet) },

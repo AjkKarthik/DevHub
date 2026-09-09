@@ -38371,6 +38371,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'RediSearch\'s vector similarity search capability has made Redis Stack a viable, lower-latency alternative to a dedicated vector database for some RAG use cases.',
     ],
   },
+  'redis/redis-stack/when-modules-are-built-in-redis-8-vs-still-need-stack': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Redis Stack & Modules', route: '/redis/redis-stack' },
+      { label: 'The FT.INFO indexing Field Is a Truthy String, Not a Boolean', route: '/redis/redis-stack/the-ft-info-indexing-field-is-a-truthy-string-not-a-boolean' },
+    ],
+    tip: 'The RediSearch/RedisJSON/RedisTimeSeries/RedisBloom modules merged into core Redis at 8.0.0 (GA May 2025), the same release that renamed Redis Community Edition to Redis Open Source — not at 7.4 as commonly assumed.',
+    gotchas: [
+      'On any Redis version earlier than 8.0, the Stack package or individual module loading is still required — these capabilities are not built in by default.',
+    ],
+  },
+  'redis/redis-stack/the-ft-info-indexing-field-is-a-truthy-string-not-a-boolean': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'When Modules Are Built In (Redis 8.0+) vs. Still Need Stack', route: '/redis/redis-stack/when-modules-are-built-in-redis-8-vs-still-need-stack' },
+      { label: 'Co-Locating a Search Index on One Cluster Node with Hash Tags', route: '/redis/redis-stack/co-locating-a-search-index-on-one-cluster-node-with-hash-tags' },
+    ],
+    tip: 'FT.INFO\'s indexing field is documented as returning the literal string "0" or "1" — a naive JS `while (!info.indexing)` readiness poll is silently broken for both states, since any non-empty string is truthy.',
+    gotchas: [
+      'Use `Number(info.indexing) === 0` or a direct `info.indexing !== \'0\'` string check — never a bare truthiness check on this field.',
+    ],
+  },
+  'redis/redis-stack/co-locating-a-search-index-on-one-cluster-node-with-hash-tags': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'The FT.INFO indexing Field Is a Truthy String, Not a Boolean', route: '/redis/redis-stack/the-ft-info-indexing-field-is-a-truthy-string-not-a-boolean' },
+      { label: 'Redis Cluster', route: '/redis/redis-cluster' },
+    ],
+    tip: 'RediSearch indexes are per-node in Cluster mode — giving every key in a searchable dataset the SAME hash tag forces them onto one node, so that node\'s local index sees the complete document set without needing a coordinator.',
+    gotchas: [
+      'This caps that index\'s capacity/throughput at what a single node can hold — fine for a bounded per-tenant dataset, not a substitute for a genuinely distributed search backend.',
+    ],
+  },
   'redis/security': {
     apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
     related: [

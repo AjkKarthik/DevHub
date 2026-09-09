@@ -152,7 +152,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/redis/redis-stack" routerLinkActive="active"><span class="nl-text">Redis Stack &amp; Modules</span>@if(p.isDone('redis-redis-stack')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/redis/redis-stack" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Redis Stack &amp; Modules</span>
+        @if(p.isDone('redis-redis-stack')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('redis-stack')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('redis-stack')"
+                  (click)="toggleSubtopics('redis-stack', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('redis-stack'); as redisStackSubs) {
+        @if (isSubtopicsExpanded('redis-stack')) {
+          <div class="nav-subtopics">
+            @for (s of redisStackSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

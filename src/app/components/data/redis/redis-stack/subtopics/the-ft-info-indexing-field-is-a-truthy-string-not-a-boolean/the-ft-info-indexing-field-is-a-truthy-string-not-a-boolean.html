@@ -1,0 +1,27 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Redis Stack" topicRoute="/redis/redis-stack"
+    subtopicLabel="The FT.INFO indexing Field Is a Truthy String, Not a Boolean" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">The FT.INFO indexing Field Is a Truthy String, Not a Boolean</h1>
+  <p class="page-subtitle">The main page's own mistake block names FT.INFO as the readiness check but never shows one — the naive version has a real, easy-to-miss JavaScript truthiness bug.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>A ready index is only useful if the right documents actually landed on the node being searched — in Cluster mode, that means deliberately co-locating them, which the final subtopic covers.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Redis Stack" topicRoute="/redis/redis-stack"
+    [prev]="{ label: 'When Modules Are Built In (Redis 8.0+) vs. Still Need Stack', route: '/redis/redis-stack/when-modules-are-built-in-redis-8-vs-still-need-stack' }"
+    [next]="{ label: 'Co-Locating a Search Index on One Cluster Node with Hash Tags', route: '/redis/redis-stack/co-locating-a-search-index-on-one-cluster-node-with-hash-tags' }" />
+</div>
