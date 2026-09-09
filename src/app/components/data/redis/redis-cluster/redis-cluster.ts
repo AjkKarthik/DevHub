@@ -43,13 +43,14 @@ export class RedisCluster {
         'Hash tags: if a key name contains `{...}`, only the content inside the braces is hashed. `user:{42}:session` and `user:{42}:profile` both hash to the same slot, guaranteeing they land on the same node.',
         'Hash tags are essential for multi-key commands (MGET, MSET, SUNION, Lua scripts) that must access multiple keys on the same node.',
         'CLUSTER KEYSLOT mykey returns the exact slot (0–16383) for a key — useful for debugging co-location issues.',
+        'Cluster resharding (moving hash slots between nodes) can happen live without downtime — client libraries handle MOVED and ASK redirection responses transparently, redirecting requests to the correct node as slots migrate, though this does add a brief redirection overhead during active resharding.',
       ],
     },
     {
       heading: 'MOVED and ASK Redirects',
       points: [
         'When a client sends a command to the wrong node, the node replies with MOVED slot host:port. The client must retry the command on the correct node.',
-        'ASK is a temporary redirect during slot migration. Unlike MOVED, ASK means "go to this node for this command only" — the slot assignment is not yet complete.',
+        'ASK is a temporary redirect during slot migration. Unlike MOVED, ASK means "go to this node for this command only" — the slot assignment is not yet complete, so the client should send the one-time ASKING command immediately before the redirected command and NOT permanently update its cached slot map.',
         'Smart clients (like ioredis) maintain a slot map, route commands to the correct node automatically, and update the map on MOVED responses. This eliminates extra round-trips in normal operation.',
         'A single CROSSSLOT error occurs when a command addresses multiple keys from different slots — multi-key commands require all keys to be in the same slot (use hash tags).',
       ],
@@ -61,24 +62,7 @@ export class RedisCluster {
         'Minimum viable cluster: 3 masters + 3 replicas (6 nodes total). A cluster can tolerate at most one master failure per slot range at a time.',
         'Cluster state: CLUSTER INFO shows `cluster_state:ok` (healthy) or `cluster_state:fail` (some slots unassigned). Writes are rejected during cluster failure.',
         'node.conf is auto-generated and maintained by Redis Cluster — do not edit manually. It records cluster membership and slot assignments persistently.',
-      ],
-    },
-    {
-      heading: 'Hash Slots and Data Distribution',
-      points: [
-        'Redis Cluster divides the keyspace into 16384 hash slots, with each master node owning a subset of these slots — a key\'s slot is determined by CRC16(key) mod 16384, deterministically routing any given key to a specific node without needing a separate lookup service.',
-        'Hash tags (curly braces in a key name, like {user1000}.profile and {user1000}.orders) force multiple related keys to hash to the same slot — necessary for multi-key operations (like a transaction spanning several keys) to work correctly, since Cluster only supports multi-key commands when all keys map to the same slot.',
-        'Cluster resharding (moving hash slots between nodes) can happen live without downtime — client libraries handle MOVED and ASK redirection responses transparently, redirecting requests to the correct node as slots migrate, though this does add a brief redirection overhead during active resharding.',
         'Redis Cluster is the right tool when the dataset genuinely exceeds what a single node\'s memory can hold, or when write throughput needs to scale beyond a single node\'s capacity — for datasets that fit comfortably on one node, the added operational complexity of Cluster is usually not justified over a simpler primary-replica setup.',
-      ],
-    },
-    {
-      heading: 'Client-Side Cluster Awareness and Redirection Handling',
-      points: [
-        'Cluster-aware client libraries maintain a local cache of the slot-to-node mapping, routing each command directly to the correct node based on the key\'s computed hash slot — avoiding an extra network hop through an intermediary node for every single command.',
-        'A MOVED response indicates the client\'s cached slot mapping is stale (the slot has permanently moved to a different node, typically after a resharding operation) — the client should update its local mapping and redirect the request, then use the updated mapping for future requests to that slot.',
-        'An ASK response indicates a slot is in the middle of being migrated between nodes — the client should redirect just this one request (using the ASKING command) without permanently updating its cached mapping, since the migration is still in progress and the final resting node is not yet certain.',
-        'Applications should never assume all their keys can be operated on in a single multi-key command without verifying they share a hash slot (via hash tags) — a multi-key command spanning keys in different slots returns a CROSSSLOT error, a common integration mistake when migrating from a single-node Redis deployment to Cluster.',
       ],
     },
   ];

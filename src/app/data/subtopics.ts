@@ -1773,6 +1773,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Sentinel’s Replica-Selection Tiebreaker, Implemented', route: '/redis/replication-sentinel/sentinel-replica-selection-tiebreaker-implemented' },
     { label: 'Using WAIT for Selective Write Durability', route: '/redis/replication-sentinel/using-wait-for-selective-write-durability' },
   ],
+  'redis-cluster': [
+    { label: 'The Live Resharding State Machine: MIGRATING, IMPORTING, ASK, MOVED', route: '/redis/redis-cluster/the-live-resharding-state-machine-migrating-importing-ask-moved' },
+    { label: 'The Hash Tag Extraction Algorithm, Verified Against Real Edge Cases', route: '/redis/redis-cluster/the-hash-tag-extraction-algorithm-verified-against-real-edge-cases' },
+    { label: 'ASK Is a One-Time Redirect, Not a Permanent Slot-Map Update', route: '/redis/redis-cluster/ask-is-a-one-time-redirect-not-a-permanent-slot-map-update' },
+  ],
   closures: [
     { label: 'var Shares One Binding, let Creates One Per Iteration', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
     { label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },

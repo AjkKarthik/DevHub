@@ -1,0 +1,26 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Redis Cluster" topicRoute="/redis/redis-cluster"
+    subtopicLabel="ASK Is a One-Time Redirect, Not a Permanent Slot-Map Update" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">ASK Is a One-Time Redirect, Not a Permanent Slot-Map Update</h1>
+  <p class="page-subtitle">The main page's own QnA names the fix — send ASKING and retry once — but never shows a client actually doing it, or what happens when a client gets this wrong.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>This is the last subtopic for Redis Cluster — between the migration state machine, the hash-tag algorithm that decides which slot a key lands on, and the client-side ASKING protocol, resharding a live cluster with zero downtime is no longer just a one-line theory claim.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Redis Cluster" topicRoute="/redis/redis-cluster"
+    [prev]="{ label: 'The Hash Tag Extraction Algorithm, Verified Against Real Edge Cases', route: '/redis/redis-cluster/the-hash-tag-extraction-algorithm-verified-against-real-edge-cases' }" />
+</div>

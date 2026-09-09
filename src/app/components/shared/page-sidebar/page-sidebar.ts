@@ -38271,6 +38271,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Cluster mode changes client behavior significantly (MOVED/ASK redirections) — most client libraries handle this, but it is a meaningfully different operational model than a single-node or replicated setup.',
     ],
   },
+  'redis/redis-cluster/the-live-resharding-state-machine-migrating-importing-ask-moved': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Redis Cluster', route: '/redis/redis-cluster' },
+      { label: 'The Hash Tag Extraction Algorithm, Verified Against Real Edge Cases', route: '/redis/redis-cluster/the-hash-tag-extraction-algorithm-verified-against-real-edge-cases' },
+    ],
+    tip: 'A node with a slot marked MIGRATING still serves existing keys locally — only a query for a key not found there gets ASK-redirected to the target node, verified against Redis\'s own documented protocol.',
+    gotchas: [
+      'A node with a slot marked IMPORTING rejects any query for that slot unless the client sent ASKING immediately before it — otherwise it MOVED-redirects right back to the source node.',
+    ],
+  },
+  'redis/redis-cluster/the-hash-tag-extraction-algorithm-verified-against-real-edge-cases': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'The Live Resharding State Machine: MIGRATING, IMPORTING, ASK, MOVED', route: '/redis/redis-cluster/the-live-resharding-state-machine-migrating-importing-ask-moved' },
+      { label: 'ASK Is a One-Time Redirect, Not a Permanent Slot-Map Update', route: '/redis/redis-cluster/ask-is-a-one-time-redirect-not-a-permanent-slot-map-update' },
+    ],
+    tip: 'An EMPTY hash tag ({}) does the opposite of what it looks like — it falls back to hashing the whole key, a documented escape hatch for binary key names, not a bug.',
+    gotchas: [
+      'Only the FIRST valid {tag} in a key is ever consulted — a key with multiple {tag} pairs never combines or picks the "best" one.',
+    ],
+  },
+  'redis/redis-cluster/ask-is-a-one-time-redirect-not-a-permanent-slot-map-update': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'The Hash Tag Extraction Algorithm, Verified Against Real Edge Cases', route: '/redis/redis-cluster/the-hash-tag-extraction-algorithm-verified-against-real-edge-cases' },
+      { label: 'Redis Cluster', route: '/redis/redis-cluster' },
+    ],
+    tip: 'ASKING must be resent on EVERY query to an importing node, not just once — it is a per-request opt-in flag, not a one-time handshake that unlocks unrestricted future access.',
+    gotchas: [
+      'A client that updates its slot map early on a single ASK response does not corrupt data — the target node still rejects un-ASKING\'d queries with MOVED, so the mistake self-corrects into extra redirects, not wrong reads.',
+    ],
+  },
   'redis/persistence': {
     apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
     related: [

@@ -363,7 +363,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/redis/redis-cluster" routerLinkActive="active"><span class="nl-text">Redis Cluster</span>@if(p.isDone('redis-redis-cluster')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/redis/redis-cluster" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Redis Cluster</span>
+        @if(p.isDone('redis-redis-cluster')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('redis-cluster')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('redis-cluster')"
+                  (click)="toggleSubtopics('redis-cluster', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('redis-cluster'); as redisClusterSubs) {
+        @if (isSubtopicsExpanded('redis-cluster')) {
+          <div class="nav-subtopics">
+            @for (s of redisClusterSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

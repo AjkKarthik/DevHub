@@ -1,0 +1,27 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Redis Cluster" topicRoute="/redis/redis-cluster"
+    subtopicLabel="The Hash Tag Extraction Algorithm, Verified Against Real Edge Cases" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">The Hash Tag Extraction Algorithm, Verified Against Real Edge Cases</h1>
+  <p class="page-subtitle">The main page only shows the clean hash-tag example — this walks through Redis's own documented edge cases, including one where the tag syntax silently does the opposite of what it looks like it should do.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>Getting the hash tag right decides which slot a key lands on — but a client also needs to correctly follow the ASK redirect that fires when that slot happens to be mid-migration, which is exactly what the final subtopic covers.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Redis Cluster" topicRoute="/redis/redis-cluster"
+    [prev]="{ label: 'The Live Resharding State Machine: MIGRATING, IMPORTING, ASK, MOVED', route: '/redis/redis-cluster/the-live-resharding-state-machine-migrating-importing-ask-moved' }"
+    [next]="{ label: 'ASK Is a One-Time Redirect, Not a Permanent Slot-Map Update', route: '/redis/redis-cluster/ask-is-a-one-time-redirect-not-a-permanent-slot-map-update' }" />
+</div>
