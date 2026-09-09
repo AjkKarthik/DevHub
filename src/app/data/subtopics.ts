@@ -1750,6 +1750,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'XCLAIM vs. XAUTOCLAIM: Manual IDs vs. Scan-Based Reassignment', route: '/redis/streams/xclaim-vs-xautoclaim-manual-vs-scan' },
     { label: 'Dead-Letter Routing by Delivery Count', route: '/redis/streams/dead-letter-routing-by-delivery-count' },
   ],
+  'caching-patterns': [
+    { label: 'Locking the Stale-While-Revalidate Refresh', route: '/redis/caching-patterns/stale-while-revalidate-refresh-needs-its-own-lock' },
+    { label: 'Implementing Read-Through in Application Code', route: '/redis/caching-patterns/implementing-read-through-in-application-code' },
+    { label: 'Tag-Based Invalidation with Redis Sets', route: '/redis/caching-patterns/tag-based-invalidation-with-redis-sets' },
+  ],
   closures: [
     { label: 'var Shares One Binding, let Creates One Per Iteration', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
     { label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },

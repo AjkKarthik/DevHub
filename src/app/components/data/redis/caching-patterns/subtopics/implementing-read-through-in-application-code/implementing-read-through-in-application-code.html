@@ -1,0 +1,27 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Caching Patterns" topicRoute="/redis/caching-patterns"
+    subtopicLabel="Implementing Read-Through in Application Code" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">Implementing Read-Through in Application Code</h1>
+  <p class="page-subtitle">Read-Through appears in the main page's own Quick Reference and QnA, but neither codeTab ever builds one — here's what "a caching library or proxy layer" actually looks like as plain application code.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>Read-Through centralizes the check-miss-load-populate sequence Cache-Aside repeats at every call site. Next: a different theory bullet the main page names but never shows in code — invalidating multiple related cache keys at once by tag.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Caching Patterns" topicRoute="/redis/caching-patterns"
+    [prev]="{ label: 'Locking the Stale-While-Revalidate Refresh', route: '/redis/caching-patterns/stale-while-revalidate-refresh-needs-its-own-lock' }"
+    [next]="{ label: 'Tag-Based Invalidation with Redis Sets', route: '/redis/caching-patterns/tag-based-invalidation-with-redis-sets' }" />
+</div>

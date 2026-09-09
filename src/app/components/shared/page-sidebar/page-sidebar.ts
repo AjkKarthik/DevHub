@@ -38104,6 +38104,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Setting a random JITTER on TTLs prevents many keys expiring simultaneously (a "thundering herd" against the backing database).',
     ],
   },
+  'redis/caching-patterns/stale-while-revalidate-refresh-needs-its-own-lock': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Caching Patterns', route: '/redis/caching-patterns' },
+      { label: 'Implementing Read-Through in Application Code', route: '/redis/caching-patterns/implementing-read-through-in-application-code' },
+    ],
+    tip: 'Verified via a direct simulation: 20 concurrent stale-hit requests against the main page\'s own unlocked refreshInBackground triggered 20 DB calls — the exact stampede this whole page teaches how to prevent, just moved into the stale-while-revalidate refresh path.',
+    gotchas: [
+      'The refresh lock only needs to gate the background refresh itself — never the response returned to the caller, which already has a stale value to return immediately regardless of lock state.',
+    ],
+  },
+  'redis/caching-patterns/implementing-read-through-in-application-code': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Caching Patterns', route: '/redis/caching-patterns' },
+      { label: 'Locking the Stale-While-Revalidate Refresh', route: '/redis/caching-patterns/stale-while-revalidate-refresh-needs-its-own-lock' },
+      { label: 'Tag-Based Invalidation with Redis Sets', route: '/redis/caching-patterns/tag-based-invalidation-with-redis-sets' },
+    ],
+    tip: 'Read-Through and Cache-Aside run the identical check-miss-load-populate sequence — the only difference is WHERE that logic lives: repeated at every call site (Cache-Aside) vs. centralized in one wrapper class every call site calls through (Read-Through).',
+    gotchas: [
+      'A Read-Through wrapper does not stop a call site from bypassing it entirely — it only guarantees the SEQUENCE is correct once a call site does go through it.',
+    ],
+  },
+  'redis/caching-patterns/tag-based-invalidation-with-redis-sets': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Caching Patterns', route: '/redis/caching-patterns' },
+      { label: 'Implementing Read-Through in Application Code', route: '/redis/caching-patterns/implementing-read-through-in-application-code' },
+    ],
+    tip: 'A tag Set (tag:user:42) is an INDEX of key names, never the cached data itself — invalidating a tag means SMEMBERS to read every registered key, UNLINK all of them, then UNLINK the tag set too, or it keeps referencing keys that no longer exist.',
+    gotchas: [
+      'A key that gets SET but crashes before its matching SADD call is invisible to tag-based invalidation entirely — its own TTL is the only thing that eventually cleans it up.',
+    ],
+  },
   'redis/rate-limiting': {
     apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
     related: [

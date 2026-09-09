@@ -2804,7 +2804,12 @@ export const routes: Routes = [
       { path: 'xclaim-vs-xautoclaim-manual-vs-scan', loadComponent: () => import('./components/data/redis/streams/subtopics/xclaim-vs-xautoclaim-manual-vs-scan/xclaim-vs-xautoclaim-manual-vs-scan').then(m => m.XclaimVsXautoclaimManualVsScanSubtopic) },
       { path: 'dead-letter-routing-by-delivery-count', loadComponent: () => import('./components/data/redis/streams/subtopics/dead-letter-routing-by-delivery-count/dead-letter-routing-by-delivery-count').then(m => m.DeadLetterRoutingByDeliveryCountSubtopic) },
     ] },
-    { path: 'caching-patterns',     loadComponent: () => import('./components/data/redis/caching-patterns/caching-patterns').then(m => m.RedisCachingPatterns) },
+    { path: 'caching-patterns', children: [
+      { path: '', loadComponent: () => import('./components/data/redis/caching-patterns/caching-patterns').then(m => m.RedisCachingPatterns) },
+      { path: 'stale-while-revalidate-refresh-needs-its-own-lock', loadComponent: () => import('./components/data/redis/caching-patterns/subtopics/stale-while-revalidate-refresh-needs-its-own-lock/stale-while-revalidate-refresh-needs-its-own-lock').then(m => m.StaleWhileRevalidateRefreshNeedsItsOwnLockSubtopic) },
+      { path: 'implementing-read-through-in-application-code', loadComponent: () => import('./components/data/redis/caching-patterns/subtopics/implementing-read-through-in-application-code/implementing-read-through-in-application-code').then(m => m.ImplementingReadThroughInApplicationCodeSubtopic) },
+      { path: 'tag-based-invalidation-with-redis-sets', loadComponent: () => import('./components/data/redis/caching-patterns/subtopics/tag-based-invalidation-with-redis-sets/tag-based-invalidation-with-redis-sets').then(m => m.TagBasedInvalidationWithRedisSetsSubtopic) },
+    ] },
     { path: 'eviction-policies',    loadComponent: () => import('./components/data/redis/eviction-policies/eviction-policies').then(m => m.RedisEvictionPolicies) },
     { path: 'rate-limiting',        loadComponent: () => import('./components/data/redis/rate-limiting/rate-limiting').then(m => m.RedisRateLimiting) },
     { path: 'replication-sentinel', loadComponent: () => import('./components/data/redis/replication-sentinel/replication-sentinel').then(m => m.RedisReplicationSentinel) },

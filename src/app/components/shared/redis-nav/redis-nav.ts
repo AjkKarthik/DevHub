@@ -283,7 +283,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
 
     <div class="nav-group">
       <p class="nav-group-label">Caching</p>
-      <a routerLink="/redis/caching-patterns" routerLinkActive="active"><span class="nl-text">Caching Patterns</span>@if(p.isDone('redis-caching-patterns')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/redis/caching-patterns" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Caching Patterns</span>
+        @if(p.isDone('redis-caching-patterns')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('caching-patterns')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('caching-patterns')"
+                  (click)="toggleSubtopics('caching-patterns', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('caching-patterns'); as cachingSubs) {
+        @if (isSubtopicsExpanded('caching-patterns')) {
+          <div class="nav-subtopics">
+            @for (s of cachingSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/redis/eviction-policies" routerLinkActive="active"><span class="nl-text">Eviction Policies</span>@if(p.isDone('redis-eviction-policies')){<span class="nl-done">✓</span>}</a>
       <a routerLink="/redis/rate-limiting" routerLinkActive="active"><span class="nl-text">Rate Limiting</span>@if(p.isDone('redis-rate-limiting')){<span class="nl-done">✓</span>}</a>
     </div>
