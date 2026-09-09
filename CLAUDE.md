@@ -9107,6 +9107,57 @@ this same check before any other new hub's first subtopic set:
     merged-theory section, duplicate heading absent); all 3 subtopic pages checked individually —
     correct h1/breadcrumb (all 4 levels), 860px wrapper via `getComputedStyle`, tailored (not
     DEFAULT) sidebar content confirmed. **Redis hub Phase 10: 19 of 21 topics complete.**
+20. **The `redis-nodejs` batch found and fixed THREE genuine main-page issues, one of them a
+    real npm-package API staleness verified end to end (not just a Redis-server-specific fact)**:
+    (1) a duplicate theory section — matching the recurring authoring pattern already found on
+    `caching-patterns`/`redis-cluster`/`redis-stack` this hub — "Connection Pooling and Client
+    Configuration Best Practices" restated most of "Connection Management" and "Pipelining for
+    Throughput" nearly verbatim; merged its one genuinely new bullet (TypeScript type safety via a
+    typed repository layer) into the "ioredis vs node-redis" section and deleted the duplicate;
+    (2) the Session Store (Express) codeTab used the obsolete `connect-redis` factory-function API
+    (`connectRedis(session)`), current as of v6 only — verified via a dedicated research pass
+    against the live npm README, GitHub release notes, and the npm registry's own raw version
+    timestamps that the API changed twice since (v7: plain default export, no session arg; v8+:
+    named export) and the CURRENT major version (v10, published 2026-07-24) uses `import {
+    RedisStore } from 'connect-redis'` with `new RedisStore({ client: redisClient })` directly —
+    fixed the codeTab to the current pattern; (3) the quiz's own Pub/Sub-allowed-command-list
+    explanation repeated the SAME incomplete list this hub's own `pub-sub` batch already found and
+    fixed earlier this session (missing SSUBSCRIBE/SUNSUBSCRIBE/RESET and the RESP3 exception) —
+    recognizing the duplicate stale fact and reusing the prior verified research, rather than
+    re-deriving it, fixed the quiz explanation to match. Three subtopics: (1) **fix-adjacent** — the
+    main page's own QnA sketches a WATCH/MULTI/EXEC retry loop with no mention of which connection
+    to run it on; extends this hub's own already-published Transactions topic finding (WATCH state
+    is per-connection) directly to the Node.js client, verified via a `FakeConnection` simulation
+    matching BOTH failure modes exactly (a false abort AND, more dangerously, a false success where
+    a genuinely-conflicting write silently goes through); (2) **gap-closing** — the main page's own
+    theory argues for typed Redis access over unsafe casts, then its own `defineCommand()` example
+    can only be called via `(redis as any)`; built the properly-typed version via TypeScript
+    declaration merging on ioredis's own `RedisCommander<Context>` interface, verified against
+    ioredis's own official TypeScript example (fetched directly, not guessed) rather than the
+    plausible-but-wrong shape assumed on a first pass; (3) **gap-closing** — the main page states
+    "client-side timeouts should be configured explicitly" and "health checks should verify actual
+    connectivity via PING" as two separate bullets with no code connecting them; built a real
+    `checkRedisHealth()` racing PING against its own short timeout, verified via direct Node.js
+    execution across healthy/hung/down cases that only the genuinely-hung case ever needs the race
+    to fire. No `SUBTOPICS` collision for `redis-nodejs` (checked both `subtopics.ts` forms and
+    grepped `app.routes.ts` directly, confirmed collision-free, left bare). All three
+    `exercise.solution` fields swept clean of `<code>`/entity contamination; brace balance and
+    backtick-parity confirmed even on all three files; no bare `@word` in any `.html` file; no
+    unescaped apostrophes in any single-quoted field body; a stray backtick used for markdown-style
+    emphasis inside a plain-interpolation sidebar `tip` field (not `[innerHTML]`) was caught and
+    removed before the build, since it would have rendered as a literal backtick character to the
+    reader. Build passed clean (foreground execution, explicit `EXITCODE:$?` capture, zero real
+    `ERROR` lines). **Hit a fully-dead dev server this batch** (`preview_list` returned an empty
+    array) — resolved with a clean `preview_start` cold-start plus polling for a 200 response.
+    Browser-verified: no console errors on any of the 4 pages; nav accordion opens with all 3
+    subtopic links on the first check; all three main-page fixes confirmed rendering live (the
+    connect-redis fix required switching the code-block's own tab selector to "Session Store
+    (Express)" specifically after expanding the collapsed "View Code" toggle; the duplicate-theory
+    fix and the quiz fix both confirmed via direct component-data inspection); all 3 subtopic pages
+    checked individually — correct h1/breadcrumb (all 4 levels), 860px wrapper via
+    `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed, generic syntax
+    (`RedisCommander<Context>`) confirmed rendering as literal text, not vanished. **Redis hub
+    Phase 10: 20 of 21 topics complete — only `security` remains to finish the entire hub.**
 
 ## Current state (update when it changes!)
 
@@ -9290,14 +9341,14 @@ this same check before any other new hub's first subtopic set:
   All 23 cards `available: true` in `data/redis/home/home.ts`. Progress: `redisTotal=21` in progress.service.ts.
   Redis pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. RedisNavComponent at `shared/redis-nav/redis-nav.ts`.
-  Phase 10: 19 of 21 topics have subtopics (`/redis/fundamentals`, pilot batch;
+  Phase 10: 20 of 21 topics have subtopics (`/redis/fundamentals`, pilot batch;
   `/redis/installation-setup`; `/redis/strings`; `/redis/hashes`; `/redis/lists`; `/redis/sets`;
   `/redis/sorted-sets`; `/redis/key-commands`; `/redis/transactions`; `/redis/lua-scripting`;
   `/redis/persistence`; `/redis/pub-sub`; `/redis/streams` (SUBTOPICS key hub-prefixed to
   `redis-streams` — bare `streams` collides with the Node.js hub's own topic);
   `/redis/caching-patterns`; `/redis/eviction-policies`; `/redis/rate-limiting` — Caching nav
-  group fully done; `/redis/replication-sentinel`; `/redis/redis-cluster`; `/redis/redis-stack` —
-  Cluster & HA/Ecosystem groups in progress,
+  group fully done; `/redis/replication-sentinel`; `/redis/redis-cluster`; `/redis/redis-stack`;
+  `/redis/redis-nodejs` — Cluster & HA/Ecosystem groups fully done,
   finished 2026-09-09) — see
   "Redis hub subtopic wiring" section above for
   the `RedisNavComponent` accordion structural fix (16th `*NavComponent`-based hub in a row missing
@@ -9368,7 +9419,13 @@ this same check before any other new hub's first subtopic set:
   to "Redis 7.4+" — verified via Redis's own official 8.0 Release Notes that this happened at
   Redis 8.0.0 (GA May 2025), the same release that renamed Redis Community Edition to Redis Open
   Source — plus another genuine duplicate theory section matching the same recurring authoring
-  pattern already found on `caching-patterns` and `redis-cluster`.
+  pattern already found on `caching-patterns` and `redis-cluster`; and, on the Redis with Node.js
+  page, a third instance of the same duplicate-theory-section pattern, plus an obsolete
+  `connect-redis` factory-function API in the Session Store codeTab (current as of v6 only —
+  verified via the npm registry's own version timestamps that the API changed twice since, to a
+  named-export pattern current as of v8 through the latest v10), plus a quiz explanation repeating
+  the same incomplete Pub/Sub allowed-command list already found and fixed on this hub's own
+  `pub-sub` page earlier this session.
 - **GraphQL hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Pink theme `$accent: #e535ab`, `$tint: #fdf2f9`, dark `#f472b6`, dark bg `#3d0a26`. Search prefix `gql-`. Route: `/graphql`.
   CSS classes: `.gql-page`, `.gql-icon`, `.gql-section`. Icon content: `◈` at `font-size: 1.8rem`. `tech="javascript"`.

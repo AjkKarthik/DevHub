@@ -9530,7 +9530,26 @@ off here with a date.
   opens with all 3 links; both main-page fixes confirmed live; all 3 subtopic pages
   checked — breadcrumb (all 4 levels), 860px wrapper, tailored sidebar content, no
   console errors.
-- [ ] `/redis/redis-nodejs` — Redis with Node.js
+- [x] 2026-09-09 — `/redis/redis-nodejs` — Redis with Node.js: 3 subtopics (WATCH
+  retry loops need a dedicated connection; typed defineCommand() without the as any
+  cast; a real health-check endpoint with a PING timeout). Found and fixed three
+  genuine main-page issues: a duplicate theory section (same recurring pattern as
+  caching-patterns/redis-cluster/redis-stack); an obsolete connect-redis
+  factory-function API in the Session Store codeTab (current as of v6 only —
+  verified via the npm registry's own version timestamps that the API changed
+  twice since, to a named-export pattern current through v10); and a quiz
+  explanation repeating the same incomplete Pub/Sub allowed-command list already
+  fixed on this hub's own pub-sub page earlier this session. Subtopics verified
+  via direct Node.js execution: a FakeConnection simulation reproducing both a
+  false abort and a false success (the dangerous one) from sharing one connection
+  across concurrent WATCH operations, matching the fix already established on
+  the Transactions topic; ioredis's own official TypeScript declaration-merging
+  pattern for defineCommand(), verified via research rather than guessed; and a
+  PING-vs-timeout race verified across healthy/hung/down cases. SUBTOPICS key
+  left bare (confirmed collision-free). Build clean. Browser-verified against a
+  freshly-started dev server: nav accordion opens with all 3 links; all three
+  main-page fixes confirmed live; all 3 subtopic pages checked — breadcrumb (all
+  4 levels), 860px wrapper, tailored sidebar content, no console errors.
 - [ ] `/redis/security` — Redis Security
 
 #### GraphQL — 20 topic pages
