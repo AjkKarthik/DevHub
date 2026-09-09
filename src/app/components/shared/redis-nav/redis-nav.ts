@@ -260,7 +260,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/redis/streams" routerLinkActive="active"><span class="nl-text">Redis Streams</span>@if(p.isDone('redis-streams')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/redis/streams" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Redis Streams</span>
+        @if(p.isDone('redis-streams')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('redis-streams')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('redis-streams')"
+                  (click)="toggleSubtopics('redis-streams', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('redis-streams'); as streamsSubs) {
+        @if (isSubtopicsExpanded('redis-streams')) {
+          <div class="nav-subtopics">
+            @for (s of streamsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

@@ -37912,6 +37912,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Streams need explicit trimming (XTRIM or MAXLEN) or they grow unbounded, unlike Pub/Sub which has no persistence to manage at all.',
     ],
   },
+  'redis/streams/xpending-summary-vs-extended-form': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Redis Streams', route: '/redis/streams' },
+      { label: 'XCLAIM vs. XAUTOCLAIM: Manual IDs vs. Scan-Based Reassignment', route: '/redis/streams/xclaim-vs-xautoclaim-manual-vs-scan' },
+    ],
+    tip: 'XPENDING key group (no args) returns a SUMMARY [totalCount, minId, maxId, consumers[]] — XPENDING key group start end count returns the EXTENDED form, one [id, consumer, idleMs, deliveryCount] tuple per entry. They are not smaller/larger versions of the same shape.',
+    gotchas: [
+      'Reading index [3] from the extended form gives one entry\'s own delivery count, not a total pending count — a real bug this hub\'s own Stream Metrics Aggregator Challenge had until this batch fixed it.',
+    ],
+  },
+  'redis/streams/xclaim-vs-xautoclaim-manual-vs-scan': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Redis Streams', route: '/redis/streams' },
+      { label: 'XPENDING’s Summary vs. Extended Form', route: '/redis/streams/xpending-summary-vs-extended-form' },
+      { label: 'Dead-Letter Routing by Delivery Count', route: '/redis/streams/dead-letter-routing-by-delivery-count' },
+    ],
+    tip: 'XCLAIM requires knowing the exact entry IDs to reclaim in advance; XAUTOCLAIM (Redis 6.2+) scans the PEL itself for anything idle beyond a threshold and reassigns it in one atomic call — pick XCLAIM only when you already have specific IDs from elsewhere.',
+    gotchas: [
+      'A generic periodic recovery sweep with no prior ID knowledge should always use XAUTOCLAIM — reaching for XPENDING+XCLAIM there is strictly more round trips for the same result.',
+    ],
+  },
+  'redis/streams/dead-letter-routing-by-delivery-count': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Redis Streams', route: '/redis/streams' },
+      { label: 'XCLAIM vs. XAUTOCLAIM: Manual IDs vs. Scan-Based Reassignment', route: '/redis/streams/xclaim-vs-xautoclaim-manual-vs-scan' },
+    ],
+    tip: 'A message that keeps failing every redelivery would otherwise cycle through claim-fail-reclaim forever — checking the extended XPENDING form\'s delivery-count field against a threshold and routing to a separate dead-letter stream (via XADD + XACK) breaks that cycle.',
+    gotchas: [
+      'Dead-lettering XACKs the original entry, permanently removing it from the main PEL — set the threshold high enough to absorb genuinely transient failures, not just one unlucky retry.',
+    ],
+  },
   'redis/pub-sub': {
     apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
     related: [

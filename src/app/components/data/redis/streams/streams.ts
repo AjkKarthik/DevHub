@@ -221,7 +221,7 @@ await redis.xgroup('CREATE', 'events', 'processors', '$', 'MKSTREAM');`,
     description: 'Write `getStreamStats(streamKey, groupName)` that returns `{ length, pendingCount, consumerCount }` for a stream. Use XLEN for length, XPENDING for pending count, and XINFO GROUPS for consumer count.',
     hints: [
       'redis.xlen(key) → number',
-      'redis.xpending(key, group, "-", "+", 1) returns summary with pending count',
+      'redis.xpending(key, group) with NO start/end/count args returns the summary form: [totalPending, minId, maxId, consumers[]]',
       'redis.xinfo("GROUPS", key) returns array of group info objects',
     ],
     starterCode: `import Redis from 'ioredis';
@@ -236,13 +236,14 @@ const redis = new Redis();
 async function getStreamStats(streamKey: string, groupName: string) {
   const [length, pending, groups] = await Promise.all([
     redis.xlen(streamKey),
-    redis.xpending(streamKey, groupName, '-', '+', 1),
+    redis.xpending(streamKey, groupName), // summary form -- no start/end/count args
     redis.xinfo('GROUPS', streamKey),
   ]);
   const groupInfo = (groups as string[][]).find(g => g.includes(groupName));
   const consumerIdx = groupInfo ? groupInfo.indexOf('consumers') : -1;
   const consumerCount = consumerIdx !== -1 ? parseInt(groupInfo![consumerIdx + 1], 10) : 0;
-  const pendingCount = Array.isArray(pending) ? (pending as unknown[][])[0]?.[3] as number ?? 0 : 0;
+  // Summary form reply: [totalPendingCount, minId, maxId, consumers[]] -- index 0 is the total.
+  const pendingCount = Array.isArray(pending) ? (pending as unknown[])[0] as number ?? 0 : 0;
   return { length, pendingCount, consumerCount };
 }`,
   };

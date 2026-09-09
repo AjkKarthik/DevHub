@@ -2798,7 +2798,12 @@ export const routes: Routes = [
       { path: 'resp3-removes-the-subscribe-mode-restriction', loadComponent: () => import('./components/data/redis/pub-sub/subtopics/resp3-removes-the-subscribe-mode-restriction/resp3-removes-the-subscribe-mode-restriction').then(m => m.Resp3RemovesTheSubscribeModeRestrictionSubtopic) },
       { path: 'sharded-pubsub-ssubscribe-and-spublish', loadComponent: () => import('./components/data/redis/pub-sub/subtopics/sharded-pubsub-ssubscribe-and-spublish/sharded-pubsub-ssubscribe-and-spublish').then(m => m.ShardedPubsubSsubscribeAndSpublishSubtopic) },
     ] },
-    { path: 'streams',              loadComponent: () => import('./components/data/redis/streams/streams').then(m => m.RedisStreams) },
+    { path: 'streams', children: [
+      { path: '', loadComponent: () => import('./components/data/redis/streams/streams').then(m => m.RedisStreams) },
+      { path: 'xpending-summary-vs-extended-form', loadComponent: () => import('./components/data/redis/streams/subtopics/xpending-summary-vs-extended-form/xpending-summary-vs-extended-form').then(m => m.XpendingSummaryVsExtendedFormSubtopic) },
+      { path: 'xclaim-vs-xautoclaim-manual-vs-scan', loadComponent: () => import('./components/data/redis/streams/subtopics/xclaim-vs-xautoclaim-manual-vs-scan/xclaim-vs-xautoclaim-manual-vs-scan').then(m => m.XclaimVsXautoclaimManualVsScanSubtopic) },
+      { path: 'dead-letter-routing-by-delivery-count', loadComponent: () => import('./components/data/redis/streams/subtopics/dead-letter-routing-by-delivery-count/dead-letter-routing-by-delivery-count').then(m => m.DeadLetterRoutingByDeliveryCountSubtopic) },
+    ] },
     { path: 'caching-patterns',     loadComponent: () => import('./components/data/redis/caching-patterns/caching-patterns').then(m => m.RedisCachingPatterns) },
     { path: 'eviction-policies',    loadComponent: () => import('./components/data/redis/eviction-policies/eviction-policies').then(m => m.RedisEvictionPolicies) },
     { path: 'rate-limiting',        loadComponent: () => import('./components/data/redis/rate-limiting/rate-limiting').then(m => m.RedisRateLimiting) },

@@ -1,0 +1,26 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Redis Streams" topicRoute="/redis/streams"
+    subtopicLabel="Dead-Letter Routing by Delivery Count" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">Dead-Letter Routing by Delivery Count</h1>
+  <p class="page-subtitle">The main page's own mistake block says failed messages should be left for XAUTOCLAIM to re-deliver — but never addresses what happens when a message fails every single time. Here's the standard dead-letter pattern, built on the same delivery-count field a sibling subtopic traced a real bug around.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>This closes a real gap in the main page's own failure-handling guidance, tying together the delivery-count field from both sibling subtopics into one complete, production-ready pattern. Back to the topic overview to continue with a different subtopic path.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Redis Streams" topicRoute="/redis/streams"
+    [prev]="{ label: 'XCLAIM vs. XAUTOCLAIM: Manual IDs vs. Scan-Based Reassignment', route: '/redis/streams/xclaim-vs-xautoclaim-manual-vs-scan' }" />
+</div>
