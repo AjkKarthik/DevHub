@@ -9000,6 +9000,46 @@ this same check before any other new hub's first subtopic set:
     direct text search. **This completes the Redis hub's entire Caching nav group**
     (caching-patterns, eviction-policies, rate-limiting — all 3 of 3 topics now have subtopics).
     **Redis hub Phase 10: 16 of 21 topics complete.**
+17. **The `replication-sentinel` batch — the first topic in the Cluster & HA nav group — found and
+    fixed a genuine, well-verified inaccuracy repeated across THREE touchpoints on the same
+    page**: the theory bullet, a QnA, and a quiz question's own correct answer/explanation all
+    described Redis's full-resync replication as unconditionally disk-based (the master forks and
+    runs BGSAVE, writing an RDB file to disk before transferring it), with no version qualifier at
+    all. Verified via WebFetch against Redis's own shipped `redis.conf` at two tagged GitHub
+    releases that `repl-diskless-sync` defaulted to `no` at Redis 6.2.6 and to `yes` at Redis
+    7.0.0 — diskless replication (streaming the RDB directly to the replica's socket, never
+    touching disk on the master) has been the default for every version since 7.0, not a niche
+    opt-in. Fixed all three touchpoints to state both mechanisms and their version boundary. Three
+    subtopics, all verified via direct Node.js execution rather than assumed: (1) **fix-adjacent**
+    — a `countTransfersNeeded` simulation (disk-based: always 1 transfer regardless of arrival
+    spread; diskless with close arrivals: 1 transfer; diskless with arrivals >5s apart: 2
+    transfers) explaining WHY `repl-diskless-sync-delay` (default 5s, verified via WebFetch against
+    Redis's current `redis.conf`) exists at all — disk-based sync lets a saved RDB file serve
+    replicas that queue up during the save, but diskless sync cannot admit a new replica once a
+    transfer starts, so the delay batches near-simultaneous arrivals into one shared transfer
+    instead of one transfer each; (2) **gap-closing** — the main page's own QnA names Sentinel's
+    exact 3-tier replica-promotion tiebreaker (priority, then offset, then run ID) in prose but no
+    codeTab ever runs it; built `selectBestReplica`, verified via direct execution that a
+    lower-priority replica wins even against a higher-offset competitor (priority 50 beats priority
+    100 regardless of offset), confirming the tiers are checked in a fixed sequential order, not a
+    single flat comparison; (3) **gap-closing** — the main page's own theory names `WAIT` once
+    ("used selectively for genuinely critical writes needing stronger durability") but never shows
+    it in code; built `criticalWrite`/`confirmPayment` wrapping `redis.wait(numreplicas,
+    timeoutMs)`, with a Try It establishing that calling WAIT on EVERY write adds real, constant
+    latency without making the genuinely risky writes any safer than calling it selectively would.
+    No `SUBTOPICS` collision for `replication-sentinel` (checked both `subtopics.ts` forms and
+    grepped `app.routes.ts` directly, confirmed collision-free, left bare). All three
+    `exercise.solution`/`theory.points` fields swept clean of stray unescaped apostrophes (matches
+    found were all safely inside backtick-delimited `code:`/`solution:` fields); brace balance and
+    backtick parity confirmed even on all three files; no bare `@word` in any `.html` file; the
+    `[prev]`/`[next]` label for "Sentinel's" correctly used the typographic curly quote (`'`), not
+    a straight apostrophe. Build passed clean (foreground execution, explicit `EXITCODE:$?`
+    capture, zero real `ERROR` lines). Browser-verified against a freshly-started dev server: no
+    console errors on any of the 4 pages; nav accordion opens with all 3 subtopic links on the
+    first check; the main-page diskless/7.0 fix confirmed rendering live; all 3 subtopic pages
+    checked individually — correct h1/breadcrumb (all 4 levels), 860px wrapper via
+    `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed via direct text search.
+    **Redis hub Phase 10: 17 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -9183,13 +9223,13 @@ this same check before any other new hub's first subtopic set:
   All 23 cards `available: true` in `data/redis/home/home.ts`. Progress: `redisTotal=21` in progress.service.ts.
   Redis pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. RedisNavComponent at `shared/redis-nav/redis-nav.ts`.
-  Phase 10: 16 of 21 topics have subtopics (`/redis/fundamentals`, pilot batch;
+  Phase 10: 17 of 21 topics have subtopics (`/redis/fundamentals`, pilot batch;
   `/redis/installation-setup`; `/redis/strings`; `/redis/hashes`; `/redis/lists`; `/redis/sets`;
   `/redis/sorted-sets`; `/redis/key-commands`; `/redis/transactions`; `/redis/lua-scripting`;
   `/redis/persistence`; `/redis/pub-sub`; `/redis/streams` (SUBTOPICS key hub-prefixed to
   `redis-streams` — bare `streams` collides with the Node.js hub's own topic);
   `/redis/caching-patterns`; `/redis/eviction-policies`; `/redis/rate-limiting` — Caching nav
-  group fully done,
+  group fully done; `/redis/replication-sentinel` — Cluster & HA nav group started,
   finished 2026-09-09) — see
   "Redis hub subtopic wiring" section above for
   the `RedisNavComponent` accordion structural fix (16th `*NavComponent`-based hub in a row missing
@@ -9250,7 +9290,10 @@ this same check before any other new hub's first subtopic set:
   on the Rate Limiting page, the Sliding Window Counter Challenge's own reference solution had a
   flipped ternary reporting `remaining` one HIGHER than the true value on every allowed request —
   verified via a direct trace showing the last allowed request in a window reports 1 remaining
-  when the true value is 0.
+  when the true value is 0; and, on the Replication & Sentinel page, the theory, a QnA, and a quiz
+  question all described full-resync replication as unconditionally disk-based with no version
+  qualifier — verified via Redis's own shipped `redis.conf` at two tagged releases that diskless
+  replication has been the default since Redis 7.0.
 - **GraphQL hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Pink theme `$accent: #e535ab`, `$tint: #fdf2f9`, dark `#f472b6`, dark bg `#3d0a26`. Search prefix `gql-`. Route: `/graphql`.
   CSS classes: `.gql-page`, `.gql-icon`, `.gql-section`. Icon content: `◈` at `font-size: 1.8rem`. `tech="javascript"`.

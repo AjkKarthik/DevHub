@@ -9478,7 +9478,22 @@ off here with a date.
   levels), 860px wrapper, tailored sidebar content, no console errors. This completes
   the Redis hub's entire Caching nav group (caching-patterns, eviction-policies,
   rate-limiting all now have subtopics).
-- [ ] `/redis/replication-sentinel` — Replication & Sentinel
+- [x] 2026-09-09 — `/redis/replication-sentinel` — Replication & Sentinel: 3 subtopics
+  (why diskless sync needs a delay to batch replicas, Sentinel's replica-selection
+  tiebreaker implemented, using WAIT for selective write durability). Found and fixed a
+  genuine inaccuracy repeated across three touchpoints (a theory bullet, a QnA, and a
+  quiz question): full-resync replication was described as unconditionally disk-based
+  with no version qualifier — verified via Redis's own shipped `redis.conf` at two
+  tagged GitHub releases that diskless replication has been the default since Redis
+  7.0.0 (was `no` at 6.2.6). Fixed all three touchpoints. Also verified the exact
+  `repl-diskless-sync-delay` (default 5s) and `repl-diskless-sync-max-replicas` (default
+  0) directives and the mechanical reason the delay exists (diskless sync cannot admit a
+  new replica once a transfer starts, so the delay batches near-simultaneous arrivals
+  into one shared transfer). SUBTOPICS key left bare (confirmed collision-free). Build
+  clean. Browser-verified against a freshly-started dev server: nav accordion opens with
+  all 3 links; the main-page diskless/7.0 fix confirmed live; all 3 subtopic pages
+  checked — breadcrumb (all 4 levels), 860px wrapper, tailored sidebar content, no
+  console errors.
 - [ ] `/redis/redis-cluster` — Redis Cluster
 - [ ] `/redis/redis-stack` — Redis Stack & Modules
 - [ ] `/redis/redis-nodejs` — Redis with Node.js
