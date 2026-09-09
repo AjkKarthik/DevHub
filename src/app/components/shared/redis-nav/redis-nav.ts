@@ -321,7 +321,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/redis/rate-limiting" routerLinkActive="active"><span class="nl-text">Rate Limiting</span>@if(p.isDone('redis-rate-limiting')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/redis/rate-limiting" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Rate Limiting</span>
+        @if(p.isDone('redis-rate-limiting')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('rate-limiting')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('rate-limiting')"
+                  (click)="toggleSubtopics('rate-limiting', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('rate-limiting'); as rateLimitingSubs) {
+        @if (isSubtopicsExpanded('rate-limiting')) {
+          <div class="nav-subtopics">
+            @for (s of rateLimitingSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

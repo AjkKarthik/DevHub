@@ -1,0 +1,26 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Rate Limiting" topicRoute="/redis/rate-limiting"
+    subtopicLabel="Fail-Open vs. Fail-Closed When Redis Is Unreachable" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">Fail-Open vs. Fail-Closed When Redis Is Unreachable</h1>
+  <p class="page-subtitle">The main page's own QnA names this choice in one clause, but every codeTab on the page assumes Redis is always reachable — here's what happens when it isn't, and why the right default depends on which endpoint you're protecting.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>Fail-open and fail-closed are orthogonal to which rate-limiting algorithm is used — they decide what happens when Redis itself is the problem, not when a caller exceeds the limit. This closes out the Rate Limiting subtopics — back to the topic overview to review fixed window, sliding window, and token bucket as a whole.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Rate Limiting" topicRoute="/redis/rate-limiting"
+    [prev]="{ label: 'Implementing Leaky Bucket with a Bounded Queue', route: '/redis/rate-limiting/implementing-leaky-bucket-with-a-bounded-queue' }" />
+</div>

@@ -2816,7 +2816,12 @@ export const routes: Routes = [
       { path: 'the-lfu-morris-counter-formula-verified', loadComponent: () => import('./components/data/redis/eviction-policies/subtopics/the-lfu-morris-counter-formula-verified/the-lfu-morris-counter-formula-verified').then(m => m.TheLfuMorrisCounterFormulaVerifiedSubtopic) },
       { path: 'current-eviction-exceeded-time-and-other-info-fields', loadComponent: () => import('./components/data/redis/eviction-policies/subtopics/current-eviction-exceeded-time-and-other-info-fields/current-eviction-exceeded-time-and-other-info-fields').then(m => m.CurrentEvictionExceededTimeAndOtherInfoFieldsSubtopic) },
     ] },
-    { path: 'rate-limiting',        loadComponent: () => import('./components/data/redis/rate-limiting/rate-limiting').then(m => m.RedisRateLimiting) },
+    { path: 'rate-limiting', children: [
+      { path: '', loadComponent: () => import('./components/data/redis/rate-limiting/rate-limiting').then(m => m.RedisRateLimiting) },
+      { path: 'the-off-by-one-in-remaining-after-an-allowed-request', loadComponent: () => import('./components/data/redis/rate-limiting/subtopics/the-off-by-one-in-remaining-after-an-allowed-request/the-off-by-one-in-remaining-after-an-allowed-request').then(m => m.TheOffByOneInRemainingAfterAnAllowedRequestSubtopic) },
+      { path: 'implementing-leaky-bucket-with-a-bounded-queue', loadComponent: () => import('./components/data/redis/rate-limiting/subtopics/implementing-leaky-bucket-with-a-bounded-queue/implementing-leaky-bucket-with-a-bounded-queue').then(m => m.ImplementingLeakyBucketWithABoundedQueueSubtopic) },
+      { path: 'fail-open-vs-fail-closed-when-redis-is-unreachable', loadComponent: () => import('./components/data/redis/rate-limiting/subtopics/fail-open-vs-fail-closed-when-redis-is-unreachable/fail-open-vs-fail-closed-when-redis-is-unreachable').then(m => m.FailOpenVsFailClosedWhenRedisIsUnreachableSubtopic) },
+    ] },
     { path: 'replication-sentinel', loadComponent: () => import('./components/data/redis/replication-sentinel/replication-sentinel').then(m => m.RedisReplicationSentinel) },
     { path: 'redis-cluster',        loadComponent: () => import('./components/data/redis/redis-cluster/redis-cluster').then(m => m.RedisCluster) },
     { path: 'redis-stack',          loadComponent: () => import('./components/data/redis/redis-stack/redis-stack').then(m => m.RedisStack) },

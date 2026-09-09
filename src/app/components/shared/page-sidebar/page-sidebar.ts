@@ -38182,6 +38182,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A fixed-window counter is simpler to implement and reason about, and often "good enough" — reach for sliding-window only when the boundary-burst behavior genuinely matters.',
     ],
   },
+  'redis/rate-limiting/the-off-by-one-in-remaining-after-an-allowed-request': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Rate Limiting', route: '/redis/rate-limiting' },
+      { label: 'Implementing Leaky Bucket with a Bounded Queue', route: '/redis/rate-limiting/implementing-leaky-bucket-with-a-bounded-queue' },
+    ],
+    tip: 'Verified via direct trace: the main page\'s own Sliding Window Counter Challenge reports remaining one HIGHER than the true value on every allowed request — on the LAST allowed request in a window, it tells the caller one more request is available when the true remaining is 0.',
+    gotchas: [
+      'The bug is a flipped ternary in a compact one-line return expression — atomicity alone never guarantees the arithmetic inside a Lua script is correct, only that it runs without racing other clients.',
+    ],
+  },
+  'redis/rate-limiting/implementing-leaky-bucket-with-a-bounded-queue': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Rate Limiting', route: '/redis/rate-limiting' },
+      { label: 'Fail-Open vs. Fail-Closed When Redis Is Unreachable', route: '/redis/rate-limiting/fail-open-vs-fail-closed-when-redis-is-unreachable' },
+    ],
+    tip: 'Leaky Bucket and Token Bucket both involve a "bucket," but control different things: Token Bucket decides how many requests are ALLOWED THROUGH; Leaky Bucket decides the RATE at which already-accepted requests get PROCESSED, via a bounded queue drained at a fixed rate.',
+    gotchas: [
+      'A full leaky bucket silently drops excess requests with no error returned to the caller — this is documented, correct behavior, not a bug, per the main page\'s own QnA ("excess dropped").',
+    ],
+  },
+  'redis/rate-limiting/fail-open-vs-fail-closed-when-redis-is-unreachable': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Rate Limiting', route: '/redis/rate-limiting' },
+      { label: 'Implementing Leaky Bucket with a Bounded Queue', route: '/redis/rate-limiting/implementing-leaky-bucket-with-a-bounded-queue' },
+    ],
+    tip: 'Fail-open (let requests through) and fail-closed (reject everything) are orthogonal to which rate-limiting algorithm is used — they only decide what happens when Redis itself becomes unreachable, and the right default depends on which endpoint is being protected.',
+    gotchas: [
+      'A login endpoint protecting against brute-force should generally fail CLOSED — fail-open silently removes rate limiting for the entire outage window, which specifically benefits an attacker running an automated attack.',
+    ],
+  },
   'redis/replication-sentinel': {
     apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
     related: [

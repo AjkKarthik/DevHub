@@ -1760,6 +1760,14 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The LFU Morris Counter, Verified Against Real Redis Source', route: '/redis/eviction-policies/the-lfu-morris-counter-formula-verified' },
     { label: 'current_eviction_exceeded_time and Other INFO Fields', route: '/redis/eviction-policies/current-eviction-exceeded-time-and-other-info-fields' },
   ],
+  // NOTE: bare 'rate-limiting' was already proactively hub-prefixed by both the
+  // ASP.NET hub (aspnet-rate-limiting) and the API Design hub (api-rate-limiting)
+  // anticipating this exact moment -- left bare here for the Redis hub's own topic.
+  'rate-limiting': [
+    { label: 'The Off-by-One in Remaining After an Allowed Request', route: '/redis/rate-limiting/the-off-by-one-in-remaining-after-an-allowed-request' },
+    { label: 'Implementing Leaky Bucket with a Bounded Queue', route: '/redis/rate-limiting/implementing-leaky-bucket-with-a-bounded-queue' },
+    { label: 'Fail-Open vs. Fail-Closed When Redis Is Unreachable', route: '/redis/rate-limiting/fail-open-vs-fail-closed-when-redis-is-unreachable' },
+  ],
   closures: [
     { label: 'var Shares One Binding, let Creates One Per Iteration', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
     { label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },

@@ -256,7 +256,7 @@ if total < limit then
 end
 redis.call('HMSET', key, 'cur', cur, 'prev', prev, 'win', winStart)
 redis.call('EXPIRE', key, window * 2)
-return { allowed, math.max(0, limit - math.floor(total + (allowed == 1 and 0 or 1))), window - elapsed }
+return { allowed, math.max(0, limit - math.floor(total + (allowed == 1 and 1 or 0))), window - elapsed }
 \`;
 
 let sha: string;

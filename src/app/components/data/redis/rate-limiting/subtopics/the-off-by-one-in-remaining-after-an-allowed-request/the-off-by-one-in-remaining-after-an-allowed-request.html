@@ -1,0 +1,26 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Rate Limiting" topicRoute="/redis/rate-limiting"
+    subtopicLabel="The Off-by-One in Remaining After an Allowed Request" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">The Off-by-One in Remaining After an Allowed Request</h1>
+  <p class="page-subtitle">The main page's own Sliding Window Counter Challenge solution reports the WRONG remaining count on the exact request that matters most — the last one that's actually allowed.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>An accurate X-RateLimit-Remaining header is only as good as the arithmetic behind it — atomicity alone doesn't guarantee correctness. Next: a rate-limiting algorithm named in the Quick Reference but never actually built anywhere on the main page.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Rate Limiting" topicRoute="/redis/rate-limiting"
+    [next]="{ label: 'Implementing Leaky Bucket with a Bounded Queue', route: '/redis/rate-limiting/implementing-leaky-bucket-with-a-bounded-queue' }" />
+</div>
