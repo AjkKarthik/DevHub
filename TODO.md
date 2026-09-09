@@ -9494,7 +9494,23 @@ off here with a date.
   all 3 links; the main-page diskless/7.0 fix confirmed live; all 3 subtopic pages
   checked — breadcrumb (all 4 levels), 860px wrapper, tailored sidebar content, no
   console errors.
-- [ ] `/redis/redis-cluster` — Redis Cluster
+- [x] 2026-09-09 — `/redis/redis-cluster` — Redis Cluster: 3 subtopics (the live
+  resharding state machine: MIGRATING, IMPORTING, ASK, MOVED; the hash tag extraction
+  algorithm verified against real edge cases; ASK is a one-time redirect, not a
+  permanent slot-map update). Found and fixed a genuine authoring bug on the main page:
+  the theory array had two duplicate sections (near-identical content, same core points
+  rephrased under different headings) — merged the two genuinely new bullets into the
+  originals and deleted the duplicates. All three subtopics verified via direct Node.js
+  execution against Redis's own official Cluster Specification (fetched via WebFetch):
+  a two-node MIGRATING/IMPORTING state machine matching the documented SETSLOT
+  ordering exactly; the exact hash-tag substring-extraction rule matching all four of
+  Redis's own documented edge cases byte-for-byte (including the empty-`{}`
+  whole-key-hash fallback); and a client simulation confirming ASK never permanently
+  updates the slot map. SUBTOPICS key left bare (confirmed collision-free). Build
+  clean. Browser-verified with a hard reload against the already-running dev server:
+  nav accordion opens with all 3 links; the merged-theory fix confirmed live (the
+  duplicate heading fully absent); all 3 subtopic pages checked — breadcrumb (all 4
+  levels), 860px wrapper, tailored sidebar content, no console errors.
 - [ ] `/redis/redis-stack` — Redis Stack & Modules
 - [ ] `/redis/redis-nodejs` — Redis with Node.js
 - [ ] `/redis/security` — Redis Security

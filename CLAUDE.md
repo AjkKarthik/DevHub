@@ -9040,6 +9040,44 @@ this same check before any other new hub's first subtopic set:
     checked individually — correct h1/breadcrumb (all 4 levels), 860px wrapper via
     `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed via direct text search.
     **Redis hub Phase 10: 17 of 21 topics complete.**
+18. **The `redis-cluster` batch found and fixed a genuine, self-contained authoring bug on the main
+    page: the theory array had FIVE sections when it should have had THREE — "Hash Slots and Data
+    Distribution" and "MOVED and ASK Redirects" each appeared TWICE, the second occurrence
+    ("Client-Side Cluster Awareness and Redirection Handling") reading as a near-duplicate of the
+    first with mostly the same points rephrased**. Matching the exact pattern already documented
+    once before in this hub (the Caching Patterns batch's own duplicate theory heading), merged the
+    two genuinely NEW bullets from the duplicates (live resharding with no downtime; when Cluster is
+    the right tool vs. a simpler primary-replica setup) into the first two sections, and deleted the
+    two duplicate sections entirely. Three subtopics, all verified via direct Node.js execution
+    against Redis's own official Cluster Specification (fetched via WebFetch) rather than assumed:
+    (1) **fix-adjacent** — a two-node `MockNode` state machine reproducing the EXACT documented slot-
+    migration protocol (`CLUSTER SETSLOT 8 IMPORTING A` sent to B first, then `CLUSTER SETSLOT 8
+    MIGRATING B` sent to A second), verified that a MIGRATING node still serves existing keys locally
+    and only ASK-redirects on missing ones, and that an IMPORTING node REJECTS any query lacking the
+    ASKING flag with a MOVED redirect back to the source — extending the main page's own "resharding
+    can happen live without downtime" claim into the actual mechanism that makes it true; (2)
+    **gap-closing** — the exact hash-tag substring-extraction algorithm, verified against all four of
+    Redis's own documented edge cases byte-for-byte (`{user1000}.following` → `user1000`;
+    `foo{}{bar}` → the WHOLE key, since an empty `{}` falls back to hashing everything; `foo{{bar}}zap`
+    → `{bar`; `foo{bar}{zap}` → `bar`, only the first valid tag ever matters); (3) **gap-closing** —
+    the QnA names the ASK fix ("send ASKING to the new node and retry once") but no codeTab ever
+    shows a client doing it; built a `ClusterClient` verified via direct execution that the slot map
+    is NEVER permanently updated by an ASK response — every subsequent query for that slot still
+    routes through the OLD node first, every single time, until a real MOVED eventually arrives. No
+    `SUBTOPICS` collision for `redis-cluster` (checked both `subtopics.ts` forms and grepped
+    `app.routes.ts` directly, confirmed collision-free, left bare). All three `exercise.solution`
+    fields swept clean of `<code>`/entity contamination; brace balance and backtick-parity confirmed
+    even and STRUCTURALLY correct (verified via the actual paired line numbers, not just a raw
+    character count, per the Rate Limiting batch's own documented false-sense-of-safety lesson) on
+    all three files; no bare `@word` in any `.html` file; no unescaped apostrophes in any
+    single-quoted field body. Build passed clean (foreground execution, explicit `EXITCODE:$?`
+    capture, zero real `ERROR` lines). Browser-verified against the already-running dev server with
+    a hard reload first: no console errors on any of the 4 pages; nav accordion opens with all 3
+    subtopic links on the first check; the merged-theory fix confirmed rendering live (the duplicate
+    "Client-Side Cluster Awareness" heading fully absent, the two preserved bullets present); all 3
+    subtopic pages checked individually — correct h1/breadcrumb (all 4 levels), 860px wrapper via
+    `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed via direct text search.
+    **Redis hub Phase 10: 18 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -9223,13 +9261,14 @@ this same check before any other new hub's first subtopic set:
   All 23 cards `available: true` in `data/redis/home/home.ts`. Progress: `redisTotal=21` in progress.service.ts.
   Redis pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. RedisNavComponent at `shared/redis-nav/redis-nav.ts`.
-  Phase 10: 17 of 21 topics have subtopics (`/redis/fundamentals`, pilot batch;
+  Phase 10: 18 of 21 topics have subtopics (`/redis/fundamentals`, pilot batch;
   `/redis/installation-setup`; `/redis/strings`; `/redis/hashes`; `/redis/lists`; `/redis/sets`;
   `/redis/sorted-sets`; `/redis/key-commands`; `/redis/transactions`; `/redis/lua-scripting`;
   `/redis/persistence`; `/redis/pub-sub`; `/redis/streams` (SUBTOPICS key hub-prefixed to
   `redis-streams` — bare `streams` collides with the Node.js hub's own topic);
   `/redis/caching-patterns`; `/redis/eviction-policies`; `/redis/rate-limiting` — Caching nav
-  group fully done; `/redis/replication-sentinel` — Cluster & HA nav group started,
+  group fully done; `/redis/replication-sentinel`; `/redis/redis-cluster` — Cluster & HA nav
+  group in progress,
   finished 2026-09-09) — see
   "Redis hub subtopic wiring" section above for
   the `RedisNavComponent` accordion structural fix (16th `*NavComponent`-based hub in a row missing
@@ -9293,7 +9332,9 @@ this same check before any other new hub's first subtopic set:
   when the true value is 0; and, on the Replication & Sentinel page, the theory, a QnA, and a quiz
   question all described full-resync replication as unconditionally disk-based with no version
   qualifier — verified via Redis's own shipped `redis.conf` at two tagged releases that diskless
-  replication has been the default since Redis 7.0.
+  replication has been the default since Redis 7.0; and, on the Redis Cluster page, the theory array
+  had two genuine duplicate sections (near-identical content authored twice under different
+  headings), merged into the originals with their two unique bullets preserved.
 - **GraphQL hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Pink theme `$accent: #e535ab`, `$tint: #fdf2f9`, dark `#f472b6`, dark bg `#3d0a26`. Search prefix `gql-`. Route: `/graphql`.
   CSS classes: `.gql-page`, `.gql-icon`, `.gql-section`. Icon content: `◈` at `font-size: 1.8rem`. `tech="javascript"`.
