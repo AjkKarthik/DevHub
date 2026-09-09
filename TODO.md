@@ -9437,7 +9437,26 @@ off here with a date.
   (no restart needed): nav accordion opens with all 3 links; both main-page fixes
   confirmed live via direct component-data inspection; all 3 subtopic pages checked —
   breadcrumb (all 4 levels), 860px wrapper, tailored sidebar content, no console errors.
-- [ ] `/redis/eviction-policies` — Eviction Policies
+- [x] 2026-09-09 — `/redis/eviction-policies` — Eviction Policies: 3 subtopics (LRM
+  evicts by write not by read, the LFU Morris counter formula verified,
+  current_eviction_exceeded_time and other INFO fields). Found a genuinely valuable gap
+  via research rather than a self-contained reading catch: Redis 8.6 added an entirely
+  new eviction policy family, LRM (Least Recently Modified) — allkeys-lrm/volatile-lrm —
+  completely absent from the main page's own Quick Reference, theory, and quiz, all of
+  which presented exactly 3 families (LRU, LFU, random) plus TTL as if that were
+  complete. Verified directly against Redis's own official Key Eviction docs and added
+  quickRef entries plus a theory bullet. Subtopics also fetched Redis's own evict.c
+  directly to verify the real LFULogIncr formula and LFU_INIT_VAL=5 starting point (new
+  keys don't start their counter at 0), and Redis's own INFO docs to verify
+  current_eviction_exceeded_time is reported in milliseconds with a separate
+  total_eviction_exceeded_time lifetime-total field. SUBTOPICS key left bare (confirmed
+  collision-free). Build clean (after wiring — an initial build run before wiring the 6
+  touchpoints never actually validated the new files, since they weren't reachable from
+  the compiled bundle yet; the real check is the one after wiring). Browser-verified
+  against the already-running dev server (no restart needed): nav accordion opens with
+  all 3 links; the main-page fix confirmed live via direct component-data inspection; all
+  3 subtopic pages checked — breadcrumb (all 4 levels), 860px wrapper, tailored sidebar
+  content, no console errors.
 - [ ] `/redis/rate-limiting` — Rate Limiting
 - [ ] `/redis/replication-sentinel` — Replication & Sentinel
 - [ ] `/redis/redis-cluster` — Redis Cluster

@@ -8903,6 +8903,49 @@ this same check before any other new hub's first subtopic set:
     all 3 subtopic pages checked individually — correct h1/breadcrumb (all 4 levels), 860px wrapper
     via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed via direct text search.
     **Redis hub Phase 10: 14 of 21 topics complete.**
+15. **The `eviction-policies` batch found a genuinely valuable gap via direct research rather than
+    a self-contained reading catch: Redis 8.6 added an entirely new eviction policy family, LRM
+    (Least Recently Modified) — `allkeys-lrm`/`volatile-lrm` — completely absent from the main
+    page's own Quick Reference, theory, and quiz, all of which present exactly 3 families (LRU,
+    LFU, random) plus TTL as if that were the complete set**. Verified directly against Redis's own
+    official Key Eviction docs, quoted precisely: "LRM is similar to LRU but only updates the
+    timestamp on write operations, not read operations." Fixed by adding both quickRef entries and
+    a theory bullet naming the new family and its distinguishing mechanism. Three subtopics, the
+    first two verified against Redis's own real source code rather than just its prose docs: (1)
+    **gap-closing** — builds the missing LRM family out fully, with a concrete access-pattern
+    simulation (a key read constantly but never rewritten, vs. one written once mid-simulation but
+    barely read after) verified via direct execution to make LRU and LRM choose the OPPOSITE
+    eviction victim for the identical access pattern; (2) **gap-closing** — the main page names the
+    LFU "Morris counter (8-bit logarithmic counter)" and `lfu-decay-time`/`lfu-log-factor` but never
+    shows the actual increment formula; fetched Redis's own `evict.c` directly and verified via
+    simulation that the real `LFULogIncr` formula (`p = 1/(baseval*lfu_log_factor+1)`) reproduces
+    Redis's own documented saturation table closely, plus the further-verified fact that
+    `LFU_INIT_VAL` is hardcoded to 5 — every new key's counter starts at 5, not 0, specifically so
+    it isn't the very first thing evicted before it has any access history; (3) **gap-closing** —
+    the main page's own Memory Pressure Alert Challenge only ever checks `usedPct` as a single
+    snapshot, unable to distinguish a server that just tipped over budget from one that's been over
+    budget for hours; verified via Redis's own INFO documentation that `current_eviction_exceeded_
+    time` (milliseconds, not seconds — a distinction worth getting right) answers exactly this,
+    with a separate, verified `total_eviction_exceeded_time` field tracking the cumulative lifetime
+    total instead of the current streak. No `SUBTOPICS` collision for `eviction-policies` (checked
+    both `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed collision-free, left
+    bare). All three `exercise.solution` fields swept clean of `<code>`/entity contamination; the
+    standing apostrophe-after-letter sweep, bracket-balance, and backtick-parity checks all found
+    nothing to fix across all three subtopic files and the main-page edits; nested template-literal
+    escaping in all three subtopics' own codeTabs verified correct by extracting and evaluating the
+    exact backtick spans as real JavaScript, matching each subtopic's own claimed console output.
+    Build passed clean (foreground execution, explicit `EXITCODE:$?` capture, zero real `ERROR`
+    lines) — note the build was run once BEFORE wiring the 6 touchpoints as a process slip (the new
+    subtopic files aren't reachable from the compiled bundle until routed, so that first build
+    never actually validated them); re-ran clean after wiring, which is the one that counts.
+    Browser-verified against the already-running dev server (no restart needed): no console errors;
+    nav accordion opens with all 3 subtopic links on the first check; the main-page fix confirmed
+    rendering live via direct component-data inspection (`quickRef` now includes both LRM entries,
+    `theory` contains the new bullet); all 3 subtopic pages checked individually — correct
+    h1/breadcrumb (all 4 levels), 860px wrapper via `getComputedStyle`, tailored (not DEFAULT)
+    sidebar content confirmed via direct text search, generic-looking identifiers (`allkeys-lrm`,
+    `LFU_INIT_VAL`) confirmed rendering as literal text, not vanished.
+    **Redis hub Phase 10: 15 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -9086,12 +9129,12 @@ this same check before any other new hub's first subtopic set:
   All 23 cards `available: true` in `data/redis/home/home.ts`. Progress: `redisTotal=21` in progress.service.ts.
   Redis pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. RedisNavComponent at `shared/redis-nav/redis-nav.ts`.
-  Phase 10: 14 of 21 topics have subtopics (`/redis/fundamentals`, pilot batch;
+  Phase 10: 15 of 21 topics have subtopics (`/redis/fundamentals`, pilot batch;
   `/redis/installation-setup`; `/redis/strings`; `/redis/hashes`; `/redis/lists`; `/redis/sets`;
   `/redis/sorted-sets`; `/redis/key-commands`; `/redis/transactions`; `/redis/lua-scripting`;
   `/redis/persistence`; `/redis/pub-sub`; `/redis/streams` (SUBTOPICS key hub-prefixed to
   `redis-streams` — bare `streams` collides with the Node.js hub's own topic);
-  `/redis/caching-patterns`,
+  `/redis/caching-patterns`; `/redis/eviction-policies`,
   finished 2026-09-09) — see
   "Redis hub subtopic wiring" section above for
   the `RedisNavComponent` accordion structural fix (16th `*NavComponent`-based hub in a row missing
@@ -9146,7 +9189,9 @@ this same check before any other new hub's first subtopic set:
   `refreshInBackground` had no lock at all — verified via simulation that 20 concurrent stale-hit
   requests produced 20 independent DB calls, reproducing the exact cache stampede the page's own
   theory teaches how to prevent, just relocated into the SWR refresh path itself, fixed with the
-  same mutex-lock pattern already shown elsewhere on the same page.
+  same mutex-lock pattern already shown elsewhere on the same page; and, on the Eviction Policies
+  page, an entirely missing eviction-policy family — LRM (Least Recently Modified), added in Redis
+  8.6 — verified via Redis's own official docs and added to the Quick Reference and theory.
 - **GraphQL hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Pink theme `$accent: #e535ab`, `$tint: #fdf2f9`, dark `#f472b6`, dark bg `#3d0a26`. Search prefix `gql-`. Route: `/graphql`.
   CSS classes: `.gql-page`, `.gql-icon`, `.gql-section`. Icon content: `◈` at `font-size: 1.8rem`. `tech="javascript"`.
