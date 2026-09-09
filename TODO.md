@@ -9420,7 +9420,23 @@ off here with a date.
   click-and-query); the Challenge fix confirmed live via direct component-data inspection;
   all 3 subtopic pages checked — breadcrumb (all 4 levels), 860px wrapper, tailored
   sidebar content, no console errors.
-- [ ] `/redis/caching-patterns` — Caching Patterns
+- [x] 2026-09-09 — `/redis/caching-patterns` — Caching Patterns: 3 subtopics (locking
+  the stale-while-revalidate refresh, implementing read-through in application code,
+  tag-based invalidation with Redis sets). Found and fixed a genuine bug in the main
+  page's own Stale-While-Revalidate codeTab: `refreshInBackground` called `fetcher()`
+  with no lock at all — verified via direct Node.js simulation that 20 concurrent
+  stale-hit requests triggered 20 independent DB calls, reproducing the exact cache
+  stampede the page's own "Cache Stampede Prevention" theory section exists to teach how
+  to prevent, just relocated into the SWR refresh path. Fixed with the same SET NX EX
+  mutex-lock pattern already demonstrated elsewhere on the page — re-verified the fix
+  produces exactly 1 DB call for the same 20 concurrent requests. Also merged a genuine
+  duplicate: the theory array had two separate sections both headed "Cache Stampede
+  Prevention" with substantially overlapping bullets — merged the one new bullet into the
+  first and removed the duplicate. SUBTOPICS key left bare (confirmed collision-free).
+  Build clean on first attempt. Browser-verified against the already-running dev server
+  (no restart needed): nav accordion opens with all 3 links; both main-page fixes
+  confirmed live via direct component-data inspection; all 3 subtopic pages checked —
+  breadcrumb (all 4 levels), 860px wrapper, tailored sidebar content, no console errors.
 - [ ] `/redis/eviction-policies` — Eviction Policies
 - [ ] `/redis/rate-limiting` — Rate Limiting
 - [ ] `/redis/replication-sentinel` — Replication & Sentinel

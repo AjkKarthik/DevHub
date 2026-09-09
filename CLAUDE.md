@@ -8859,6 +8859,50 @@ this same check before any other new hub's first subtopic set:
     subtopic pages checked individually — correct h1/breadcrumb (all 4 levels), 860px wrapper via
     `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed via direct text search.
     **Redis hub Phase 10: 13 of 21 topics complete.**
+14. **The `caching-patterns` batch found and fixed a genuine, self-contained bug found by tracing
+    concurrency through the main page's own "Stale-While-Revalidate" codeTab, plus a duplicate
+    theory-heading cleanup**: `getWithSWR` correctly serves a stale value immediately on a
+    stale-but-not-expired read, then calls `refreshInBackground(key, fetcher)` to repopulate the
+    cache — but the original `refreshInBackground` called `fetcher()` completely unconditionally,
+    with no lock or coordination between concurrent callers at all. Verified via a direct Node.js
+    simulation that 20 concurrent stale-hit requests in the same brief window produce 20 independent
+    DB calls — reproducing, inside the SWR refresh path itself, the exact cache stampede the whole
+    page's own "Cache Stampede Prevention" theory section exists to teach how to prevent. Fixed by
+    adding the SAME `SET key 1 NX EX ttl` mutex-lock pattern the page's own mutex-lock codeTab
+    already demonstrates, gating only the background refresh (never the already-returned stale
+    response) — re-verified via simulation that the fixed version produces exactly 1 DB call for
+    the identical 20 concurrent requests. Also found and fixed a genuine authoring duplication: the
+    `theory` array had TWO separate sections both headed "Cache Stampede Prevention," with
+    substantially overlapping bullets — merged the one genuinely new bullet from the second section
+    (server-side in-memory cache layering) into the first, then removed the duplicate section
+    entirely. Three subtopics: (1) **fix-adjacent** — reproduces the exact stampede and fix via the
+    same simulation, verified via direct execution matching both the buggy (20 DB calls) and fixed
+    (1 DB call) outputs exactly, with a Try It on why an under-sized lock TTL (shorter than
+    `fetcher()`'s real duration) reintroduces a partial version of the same stampede; (2)
+    **gap-closing** — Read-Through is named in the page's own Quick Reference and QnA ("the cache
+    sits in front of the DB and handles misses automatically... Redis does not natively implement
+    read-through; you need a caching library or proxy layer") but no codeTab ever builds one; built
+    a small `ReadThroughCache` wrapper class, verified via direct execution, contrasting the SAME
+    check-miss-load-populate sequence Cache-Aside repeats at every call site against Read-Through's
+    single centralized implementation; (3) **gap-closing** — tag-based invalidation is named in one
+    "Cache Key Design" theory bullet ("store a set of keys per tag... UNLINK all keys in the set on
+    data change") but never demonstrated; built the SADD/SMEMBERS/UNLINK mechanism (including the
+    easy-to-miss step of also deleting the tag Set itself, not just its member keys), verified via
+    direct execution matching the exact invalidated-keys output. No `SUBTOPICS` collision for
+    `caching-patterns` (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly,
+    confirmed collision-free, left bare). All three `exercise.solution` fields swept clean of
+    `<code>`/entity contamination; the standing apostrophe-after-letter sweep, bracket-balance, and
+    backtick-parity checks all found nothing to fix across all three subtopic files and the
+    main-page edits; nested template-literal escaping in two of the three subtopics' own codeTabs
+    verified correct by extracting and evaluating the exact backtick spans as real JavaScript. Build
+    passed clean (foreground execution, explicit `EXITCODE:$?` capture, zero real `ERROR` lines).
+    Browser-verified against the already-running dev server (picked up the file-watcher changes
+    normally, no restart needed): no console errors; nav accordion opens with all 3 subtopic links
+    on the first check; both main-page fixes confirmed rendering live via direct component-data
+    inspection (`theory.length` dropped from 5 to 4, the fixed codeTab contains the new lock logic);
+    all 3 subtopic pages checked individually — correct h1/breadcrumb (all 4 levels), 860px wrapper
+    via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed via direct text search.
+    **Redis hub Phase 10: 14 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -9042,11 +9086,12 @@ this same check before any other new hub's first subtopic set:
   All 23 cards `available: true` in `data/redis/home/home.ts`. Progress: `redisTotal=21` in progress.service.ts.
   Redis pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. RedisNavComponent at `shared/redis-nav/redis-nav.ts`.
-  Phase 10: 13 of 21 topics have subtopics (`/redis/fundamentals`, pilot batch;
+  Phase 10: 14 of 21 topics have subtopics (`/redis/fundamentals`, pilot batch;
   `/redis/installation-setup`; `/redis/strings`; `/redis/hashes`; `/redis/lists`; `/redis/sets`;
   `/redis/sorted-sets`; `/redis/key-commands`; `/redis/transactions`; `/redis/lua-scripting`;
   `/redis/persistence`; `/redis/pub-sub`; `/redis/streams` (SUBTOPICS key hub-prefixed to
-  `redis-streams` — bare `streams` collides with the Node.js hub's own topic),
+  `redis-streams` — bare `streams` collides with the Node.js hub's own topic);
+  `/redis/caching-patterns`,
   finished 2026-09-09) — see
   "Redis hub subtopic wiring" section above for
   the `RedisNavComponent` accordion structural fix (16th `*NavComponent`-based hub in a row missing
@@ -9097,7 +9142,11 @@ this same check before any other new hub's first subtopic set:
   solution called XPENDING's extended form but its own hint claimed it returns the summary form —
   verified via XPENDING's official docs and a concrete 50-entry-PEL simulation that the buggy code
   undercounted a real total of 50 down to 3 (94% undercount), fixed to call the summary form
-  correctly.
+  correctly; and, on the Caching Patterns page, the Stale-While-Revalidate codeTab's own
+  `refreshInBackground` had no lock at all — verified via simulation that 20 concurrent stale-hit
+  requests produced 20 independent DB calls, reproducing the exact cache stampede the page's own
+  theory teaches how to prevent, just relocated into the SWR refresh path itself, fixed with the
+  same mutex-lock pattern already shown elsewhere on the same page.
 - **GraphQL hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Pink theme `$accent: #e535ab`, `$tint: #fdf2f9`, dark `#f472b6`, dark bg `#3d0a26`. Search prefix `gql-`. Route: `/graphql`.
   CSS classes: `.gql-page`, `.gql-icon`, `.gql-section`. Icon content: `◈` at `font-size: 1.8rem`. `tech="javascript"`.
