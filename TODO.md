@@ -9621,7 +9621,21 @@ off here with a date.
   (graphql-armor / Apollo hideSchemaDetailsFromClientErrors) + an operation allowlist
   (verified via WebSearch). SUBTOPICS key `type-system` (collision-free, left bare).
   GqlNavComponent toggle wired. All 6 touchpoints wired.
-- [ ] `/graphql/queries` — GraphQL Queries
+- [x] 2026-09-10 — `/graphql/queries` — GraphQL Queries. Fixed one genuine main-page
+  inaccuracy: the Directives theory bullet said "@skip and @include take effect on the client
+  side — the server only receives the final included/excluded selection." Verified via WebSearch
+  that these directives are evaluated SERVER-side during field collection, before any resolver
+  runs; the client sends the full query text unchanged (this also contradicted the page's own
+  codeTab and QnA). 3 subtopics, each verified via direct Node execution: (1) @skip/@include
+  modelled at field collection, with a Try It on using @include(if: $isAdmin) as access control
+  (it is not — the client owns the variable); the combined skip+include rule (kept iff skip
+  false AND include true); (2) the "Fields in set can merge" validation rule behind "aliases are
+  required" — same response key needs same field + identical args, and it fires through
+  flattened fragments you did not write; (3) the Lone Anonymous Operation rule + operationName
+  selection — an anonymous op is only valid as the sole op in a document, so merging query
+  files breaks unless every op is named. SUBTOPICS key `queries` (collision-free, left bare).
+  GqlNavComponent toggle wired. `@` escaped as `&#64;` in subtopic 1's `.html` text nodes.
+  All 6 touchpoints wired.
 - [ ] `/graphql/variables-arguments` — Variables & Arguments
 - [ ] `/graphql/directives` — Directives
 - [ ] `/graphql/mutations` — Mutations

@@ -9373,6 +9373,47 @@ this same check before any other new hub's first subtopic set:
    860px wrapper via `getComputedStyle`, no entity leaks, `<code>` mentions in misconceptions
    render as styled code, tailored (not DEFAULT) sidebar content confirmed on the final subtopic.
    **GraphQL hub Phase 10: 3 of 20 topics complete.**
+11. **The `queries` batch fixed one genuine main-page inaccuracy, verified via WebSearch and
+   contradicted by the page's own other sections**: the Directives theory bullet said
+   "Directives take effect on the client side — the server only receives the final
+   included/excluded selection." Verified that `@skip`/`@include` are evaluated SERVER-side
+   during the execution engine's field-collection step, before any resolver runs — the client
+   sends the full query text (directives and all) unchanged; the server reads the variable
+   values and drops the non-included fields. This already matched the page's own "Directives"
+   codeTab (comment: "Variables sent alongside the query") and QnA. Rewrote the bullet. Three
+   subtopics, each verified via direct Node execution: (1) **fix-adjacent** — `@skip`/`@include`
+   modelled at the field-collection step (a `collectFields(selection, variables)` applying both
+   directives), with the spec's combined rule (kept iff `@skip` false AND `@include` true) and a
+   Try It on `ssn @include(if: $isAdmin)` as a supposed access-control mechanism — it is not,
+   because the client supplies the variable and any caller can send `isAdmin: true`; (2)
+   **gap-closing** — the spec's *Fields in set can merge* validation rule behind "an alias is
+   required for the same field with different arguments": two selections sharing a response key
+   (alias, else field name) must have the same field and identical arguments; the check runs on
+   the *flattened* selection set, so two fragments each selecting the same field with different
+   args conflict even though the query text never repeats the field, with a Try It on
+   `...CardFields` + `...ListFields` both selecting `coverImage` at different widths; (3)
+   **gap-closing** — the Lone Anonymous Operation validation rule (an unnamed operation is valid
+   only as the single operation in a document) plus the request-time `operationName` requirement
+   for multi-operation documents, with a Try It on a build step that bundles `*.graphql` files
+   into one document and two of them have anonymous `{ ... }` queries — the whole request fails
+   validation, which is why "always name your operations" is a correctness rule, not just a
+   logging nicety. `SUBTOPICS` key `queries` checked collision-free (both `subtopics.ts` forms +
+   a direct `app.routes.ts` grep), left bare; the `GqlNavComponent` toggle markup was added to
+   the topic's own Queries-group nav link. **Gotcha handled**: subtopic 1's own title/subject is
+   `@skip`/`@include`, so its `.html` h1, page-subtitle, and "Where this fits" text needed the
+   `@` escaped as `&#64;` (bare `@word` in a static template text node → `NG5002`); the same
+   `@skip` mentions inside the `.ts` `[innerHTML]`-bound theory/misconception fields and inside
+   `[prev]`/`[next]` bound attributes needed no escaping, per the established rule. Also
+   self-caught and fixed an over-escaped `\\"posts\\"` inside a single-quoted `.ts` theory
+   string during authoring (double quotes never need escaping in a single-quoted string —
+   rephrased to avoid the nested quote). Build passed clean (`EXITCODE:0`, no `NG5002`).
+   Browser-verified: no console errors on any of the 4 pages; nav accordion opens with all 3
+   subtopic links (confirmed via `window.ng.getComponent()` + a live `.nav-subtopic-link` DOM
+   query); the main-page fix confirmed live via `cmp.theory` inspection; all 3 subtopic pages
+   checked individually — correct h1/breadcrumb (all 4 levels, the `&#64;` decoding to `@` in
+   both the h1 and the breadcrumb), 860px wrapper via `getComputedStyle`, no entity leaks in
+   rendered text, tailored (not DEFAULT) sidebar content confirmed on two of the subtopics.
+   **GraphQL hub Phase 10: 4 of 20 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -9656,18 +9697,19 @@ this same check before any other new hub's first subtopic set:
   All 22 cards `available: true` in `data/graphql/home/home.ts`. Progress: `gqlTotal=20` in progress.service.ts.
   GraphQL pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. GqlNavComponent at `shared/gql-nav/gql-nav.ts`.
-  Phase 10: **3 of 20 topics have subtopics** (`/graphql/fundamentals`, pilot batch, 2026-09-10;
-  `/graphql/schema-definition-language`, 2026-09-10; `/graphql/type-system`, 2026-09-10) — see
-  "GraphQL hub subtopic wiring" section above for the `GqlNavComponent` accordion structural fix
-  (17th `*NavComponent`-based hub in a row missing it at pilot time), the `gql-fundamentals`
-  SUBTOPICS-map collision resolution (collided with the JavaScript hub's own bare `fundamentals`
-  topic key; `schema-definition-language` and `type-system` are both collision-free and left
-  bare), the no-live-playground note, and the genuine main-page fixes: the cross-codeTab
-  undeclared-`Post.author`-field bug (Fundamentals); the "non-null argument = required" theory
-  bullet omitting the default-value carve-out, and a wrong "crashes if result is a User"
-  union-query mistake comment (SDL); and a wrong "falls back to instanceof checks" abstract-type
-  resolution claim (Type System — graphql-js has no instanceof path; the default is
-  `__typename` → `isTypeOf` → error).
+  Phase 10: **4 of 20 topics have subtopics** (`/graphql/fundamentals`, pilot batch, 2026-09-10;
+  `/graphql/schema-definition-language`, 2026-09-10; `/graphql/type-system`, 2026-09-10;
+  `/graphql/queries`, 2026-09-10) — see "GraphQL hub subtopic wiring" section above for the
+  `GqlNavComponent` accordion structural fix (17th `*NavComponent`-based hub in a row missing it
+  at pilot time), the `gql-fundamentals` SUBTOPICS-map collision resolution (collided with the
+  JavaScript hub's own bare `fundamentals` topic key; `schema-definition-language`, `type-system`
+  and `queries` are all collision-free and left bare), the no-live-playground note, and the
+  genuine main-page fixes: the cross-codeTab undeclared-`Post.author`-field bug (Fundamentals);
+  the "non-null argument = required" theory bullet omitting the default-value carve-out, and a
+  wrong "crashes if result is a User" union-query mistake comment (SDL); a wrong "falls back to
+  instanceof checks" abstract-type resolution claim (Type System); and a wrong "directives take
+  effect on the client side" claim (Queries — `@skip`/`@include` are evaluated server-side during
+  field collection, the client sends the full query).
 - **Messaging/Kafka hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Burnt-orange theme `$accent: #9a3412`, `$tint: #fff7ed`, dark `#fdba74`, dark bg `#2d1a0e`. Search prefix `kafka-`. Route: `/messaging`.
   CSS classes: `.kafka-page`, `.kafka-icon`, `.kafka-section`. Icon content: `⇄` at `font-size: 1.8rem`. `tech="javascript"`.
