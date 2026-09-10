@@ -9636,7 +9636,20 @@ off here with a date.
   files breaks unless every op is named. SUBTOPICS key `queries` (collision-free, left bare).
   GqlNavComponent toggle wired. `@` escaped as `&#64;` in subtopic 1's `.html` text nodes.
   All 6 touchpoints wired.
-- [ ] `/graphql/variables-arguments` — Variables & Arguments
+- [x] 2026-09-10 — `/graphql/variables-arguments` — Variables & Arguments. Tightened two
+  imprecise theory bullets in the "Variable Types & Defaults" section: (a) "Non-null variables
+  must always be provided" contradicted the same section's bullet 3 + quiz Q6 (a non-null
+  variable WITH a default may be omitted); (b) "Variable types must match the argument type
+  exactly" — the spec's All Variable Usages Are Allowed rule is compatibility, not identity.
+  3 subtopics, each verified via direct Node execution: (1) IsVariableUsageAllowed modelled —
+  a non-null variable fits a nullable slot; a nullable variable fits a non-null slot only if
+  the variable or argument has a default (verified vs the spec via WebSearch); (2) enum values
+  bare inline (EnumValue token) vs string in the variables JSON, with the validation errors
+  each wrong form produces (quoted inline = StringValue rejected; wrong-case string = "does not
+  exist in enum"); (3) GET vs POST — GET is query-only per GraphQL-over-HTTP (safe method), and
+  real GET caching needs Automatic Persisted Queries for URL length (verified via WebSearch).
+  SUBTOPICS key `variables-arguments` (collision-free, left bare). GqlNavComponent toggle
+  wired. All 6 touchpoints wired.
 - [ ] `/graphql/directives` — Directives
 - [ ] `/graphql/mutations` — Mutations
 - [ ] `/graphql/error-handling` — Mutation Error Handling

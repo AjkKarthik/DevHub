@@ -9414,6 +9414,43 @@ this same check before any other new hub's first subtopic set:
    both the h1 and the breadcrumb), 860px wrapper via `getComputedStyle`, no entity leaks in
    rendered text, tailored (not DEFAULT) sidebar content confirmed on two of the subtopics.
    **GraphQL hub Phase 10: 4 of 20 topics complete.**
+12. **The `variables-arguments` batch tightened two imprecise theory bullets in the "Variable
+   Types &amp; Defaults" section, both verified**: (a) "Non-null variables (`$id: ID!`) must
+   always be provided" contradicted the same section's own next bullet and quiz Q6 — a non-null
+   variable that HAS a default may be omitted (the default is used); rewrote it to cover the
+   no-default case, the with-default case, and that an explicit `null` for any non-null variable
+   is always a validation error. (b) "Variable types must match the argument type exactly" —
+   verified via WebSearch against the spec's *All Variable Usages Are Allowed* rule
+   (`IsVariableUsageAllowed`) that this is compatibility, not identity: same named type required,
+   but a non-null variable fits a nullable location, and a nullable variable fits a non-null
+   location when the variable OR the argument has a default value; rewrote the bullet. Three
+   subtopics, each verified via direct Node execution: (1) **fix-adjacent** —
+   `IsVariableUsageAllowed` modelled across every nullability combination, with a Try It on
+   `$q: String` used at a `String!` argument (two schema-free fixes: make `$q` non-null, or give
+   it a default — only the default keeps `$q` optional for the caller); (2) **gap-closing** —
+   enum values: a bare `EnumValue` identifier inline in the query vs a JSON string in the
+   variables object, with the validation errors each wrong form produces (quoted inline = a
+   `StringValue` rejected at validation; wrong-case string in variables = "value does not exist
+   in the enum"; case-sensitive), and why hand-built query strings trip on this; (3)
+   **gap-closing** — GET vs POST: verified via WebSearch against the GraphQL-over-HTTP spec that
+   GET may run query operations ONLY (a mutation over GET is rejected — GET is a "safe" method),
+   and that real GET/CDN caching needs Automatic Persisted Queries because full query text
+   exceeds URL length limits, with a Try It on a team flipping everything to GET and mutations
+   breaking. `SUBTOPICS` key `variables-arguments` checked collision-free (both `subtopics.ts`
+   forms + a direct `app.routes.ts` grep), left bare; the `GqlNavComponent` toggle markup was
+   added to the topic's own Queries-group nav link. **Gotcha handled**: the enum subtopic
+   discusses `${value}` string-templating as prose — inside a single-quoted `.ts`
+   `[innerHTML]`-bound field, `${value}` is literal text (no interpolation), and raw `{ }` in
+   `[innerHTML]` fields is safe (confirmed rendering correctly). Also self-caught an
+   over-escaped `\\"posts\\"`-style nested double-quote during the SDL-batch pattern and avoided
+   repeating it here (double quotes need no escaping in a single-quoted string). Build passed
+   clean (`EXITCODE:0`, no `NG5002`). Browser-verified: no console errors on any of the 4 pages;
+   nav accordion opens with all 3 subtopic links (confirmed via `window.ng.getComponent()` + a
+   live `.nav-subtopic-link` DOM query); both main-page fixes confirmed live via `cmp.theory`
+   inspection; all 3 subtopic pages checked individually — correct h1/breadcrumb (all 4 levels),
+   860px wrapper via `getComputedStyle`, no entity leaks, `${value}` rendering as literal text,
+   tailored (not DEFAULT) sidebar content confirmed. **GraphQL hub Phase 10: 5 of 20 topics
+   complete.**
 
 ## Current state (update when it changes!)
 
@@ -9697,19 +9734,21 @@ this same check before any other new hub's first subtopic set:
   All 22 cards `available: true` in `data/graphql/home/home.ts`. Progress: `gqlTotal=20` in progress.service.ts.
   GraphQL pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. GqlNavComponent at `shared/gql-nav/gql-nav.ts`.
-  Phase 10: **4 of 20 topics have subtopics** (`/graphql/fundamentals`, pilot batch, 2026-09-10;
+  Phase 10: **5 of 20 topics have subtopics** (`/graphql/fundamentals`, pilot batch, 2026-09-10;
   `/graphql/schema-definition-language`, 2026-09-10; `/graphql/type-system`, 2026-09-10;
-  `/graphql/queries`, 2026-09-10) — see "GraphQL hub subtopic wiring" section above for the
-  `GqlNavComponent` accordion structural fix (17th `*NavComponent`-based hub in a row missing it
-  at pilot time), the `gql-fundamentals` SUBTOPICS-map collision resolution (collided with the
-  JavaScript hub's own bare `fundamentals` topic key; `schema-definition-language`, `type-system`
-  and `queries` are all collision-free and left bare), the no-live-playground note, and the
-  genuine main-page fixes: the cross-codeTab undeclared-`Post.author`-field bug (Fundamentals);
-  the "non-null argument = required" theory bullet omitting the default-value carve-out, and a
-  wrong "crashes if result is a User" union-query mistake comment (SDL); a wrong "falls back to
-  instanceof checks" abstract-type resolution claim (Type System); and a wrong "directives take
-  effect on the client side" claim (Queries — `@skip`/`@include` are evaluated server-side during
-  field collection, the client sends the full query).
+  `/graphql/queries`, 2026-09-10; `/graphql/variables-arguments`, 2026-09-10) — see "GraphQL hub
+  subtopic wiring" section above for the `GqlNavComponent` accordion structural fix (17th
+  `*NavComponent`-based hub in a row missing it at pilot time), the `gql-fundamentals`
+  SUBTOPICS-map collision resolution (collided with the JavaScript hub's own bare `fundamentals`
+  topic key; `schema-definition-language`, `type-system`, `queries` and `variables-arguments` are
+  all collision-free and left bare), the no-live-playground note, and the genuine main-page
+  fixes: the cross-codeTab undeclared-`Post.author`-field bug (Fundamentals); the "non-null
+  argument = required" theory bullet omitting the default-value carve-out, and a wrong "crashes
+  if result is a User" union-query mistake comment (SDL); a wrong "falls back to instanceof
+  checks" abstract-type resolution claim (Type System); a wrong "directives take effect on the
+  client side" claim (Queries); and two imprecise variable-type bullets — "non-null variables
+  must always be provided" (ignores the default carve-out) and "variable types must match
+  exactly" (the spec's rule is compatibility, not identity) (Variables & Arguments).
 - **Messaging/Kafka hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Burnt-orange theme `$accent: #9a3412`, `$tint: #fff7ed`, dark `#fdba74`, dark bg `#2d1a0e`. Search prefix `kafka-`. Route: `/messaging`.
   CSS classes: `.kafka-page`, `.kafka-icon`, `.kafka-section`. Icon content: `⇄` at `font-size: 1.8rem`. `tech="javascript"`.
