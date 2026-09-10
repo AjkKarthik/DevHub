@@ -9213,6 +9213,84 @@ this same check before any other new hub's first subtopic set:
     all 21 topics now have deep-dive subtopic pages, 63 subtopic pages total across the hub,
     finished 2026-09-09.**
 
+### GraphQL hub subtopic wiring — first pilot; the 17th `*NavComponent` in a row missing the
+subtopics-accordion structural fix
+
+Confirmed via direct file inspection before the pilot (`/graphql/fundamentals`, 2026-09-10) — do
+this same check before any other new hub's first subtopic set:
+
+1. **`GqlNavComponent` (`shared/gql-nav/gql-nav.ts`) had ZERO subtopics-accordion support** — the
+   same structural gap already hit and fixed on every `*NavComponent`-based hub's own pilot before
+   it (Go, DevOps, Containers, AWS, Azure, Linux, Terraform, Service Mesh, System Design,
+   Architecture Patterns, Design Patterns, Security, API Design, Observability, MongoDB, Redis —
+   this is the 17th in a row). Fixed identically: added `signal` to the `@angular/core` import,
+   `Router`/`NavigationEnd` (+ existing `RouterLink`/`RouterLinkActive`) from `@angular/router`,
+   `filter` from `rxjs`, and `SUBTOPICS` from `../../../data/subtopics`; then the same three
+   methods (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`) reading a private
+   `expandedTopics = signal<Set<string>>(new Set())`, plus a constructor router subscription
+   calling an EXACT-match `autoExpandForCurrentUrl()` — copied directly from `RedisNavComponent`'s
+   own implementation (read directly, not reconstructed from memory, per the established
+   copy-fidelity discipline). Worked correctly on the first browser check — no stale-chunk incident
+   after the fresh dev-server cold-start, verified via `window.ng.getComponent()` direct calls and
+   a live `.nav-subtopic-link` DOM query.
+2. **Real `SUBTOPICS` map bare-key collision**: `fundamentals` was already claimed by the
+   JavaScript hub's own `/javascript/fundamentals` topic (checked both quoted and unquoted forms,
+   per the standing collision-detection discipline). Hub-prefixed to `gql-fundamentals` — matching
+   this hub's own established progress/search key prefix (`gql-`, confirmed via the pre-existing
+   `p.isDone('gql-fundamentals')` nav markup) — with the usual `// NOTE:` comment. All four
+   `GqlNavComponent` accordion touchpoints (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`
+   calls + the `@if (subtopicsOf('gql-fundamentals'); as fundSubs)` binding) use the prefixed
+   `'gql-fundamentals'` key consistently.
+3. **`GQL_LABELS` breadcrumb map uses bare keys** (`'fundamentals'`), matching the generic pattern
+   every hub's own dedicated labels map shares — composite subtopic keys there are bare too
+   (`'fundamentals/<slug>'`).
+4. **`SIDEBAR_MAP` keys are FULL-PATH PREFIXED** (`'graphql/fundamentals'`, confirmed the base
+   entry — and its own `GQL_DEFAULT` constant — already existed) — subtopic composite keys follow
+   suit: `'graphql/fundamentals/<slug>'`, each with `apis`/`docs`/`resources` reused from
+   `GQL_DEFAULT` and tailored `related`/`tip`/`gotchas`.
+5. **Search-index keys are hub-prefixed composite** (`'gql-fundamentals/<slug>'`) — `search.ts`'s
+   own `url()` has a dedicated `gql-` → `/graphql/` prefix-strip rule that already handles the
+   composite subtopic routes correctly with no special-casing needed.
+6. **`.gql-page` wrapper rule is NOT global** (confirmed absent from `src/styles.scss`) — every
+   subtopic `.scss` needs the standalone `.gql-page { max-width: 860px; margin: 0 auto; }` rule,
+   with `.subtopic-page`'s own padding declared separately. `$accent: #e535ab`, `$tint: #fdf2f9`,
+   dark `#f472b6`, dark icon bg `#3d0a26`. Icon content: `◈` at `font-size: 1.8rem`.
+   `tech="javascript"` in `app-page-meta`.
+7. **No live playground** — GraphQL has no in-browser runtime worth embedding — every subtopic's
+   "Code Examples" section uses a plain `<section class="gql-section"><h2>Code Examples</h2>
+   <app-code-block [tabs]="codeTabs" /></section>`, matching the established non-JS-runtime hub
+   pattern.
+8. **The `fundamentals` pilot batch found and fixed a genuine cross-codeTab undeclared-field bug
+   on the main page**: the "First Query" codeTab's schema declared `type Post { id, title,
+   published }` with no `author` field, but the "Mutation & Subscription" codeTab's own
+   `subscription OnPostPublished { postPublished { id title author { name } } }` selects
+   `Post.author` — GraphQL rejects an unknown query field at schema-validation time (before any
+   resolver runs) with `Cannot query field "author" on type "Post"`. Verified via a mini schema
+   validator that the broken schema produces exactly that error and the fixed schema produces
+   `[]`. Fixed by adding `author: User!` to the "First Query" codeTab's `Post` type, matching the
+   Challenge solution's own `Post` type which already declared it. Three subtopics: (1)
+   **fix-adjacent** — the mismatch made executable, with the resolver that pairs with the fixed
+   schema and a Try It on the "delete the offending selection instead" alternative fix; (2)
+   **gap-closing** — non-null (`!`) error propagation / "null bubbling" / "kills parent on
+   exception" (a non-null field resolving null throws a field error AND pushes the null up
+   through non-null ancestors until a nullable field absorbs it or the root's `data` becomes
+   null; the original error stays in `errors` with its full `path`), cross-checked against the
+   GraphQL spec's own "error propagation" wording via WebSearch, with all 3 claimed executor
+   output comments verified via direct Node execution; (3) **gap-closing** — aliases as the
+   client-side response-key rename that is invisible to resolvers and the only tool that rescues
+   a same-field-different-args conflict (distinct from arguments, which change what is fetched,
+   and fragments, which reuse a selection set), with the `{"users":[{"id":9}]}` vs.
+   `{"active":...,"inactive":...}` outputs verified via direct Node execution.
+   Build passed clean (`EXITCODE:0`, only harmless warnings — unused imports, bundle budget).
+   Browser-verified after a fresh dev-server cold-start: no console errors on any of the 4 pages;
+   nav accordion opens with all 3 subtopic links (this is `GqlNavComponent`'s FIRST accordion —
+   confirmed via both `window.ng.getComponent()` and a live `.nav-subtopic-link` DOM query); the
+   main-page `author: User!` fix confirmed live via direct component-data inspection of the "First
+   Query" codeTab; all 3 subtopic pages checked individually — correct h1/breadcrumb (all 4
+   levels), 860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed
+   on the final subtopic (alias-specific `tip`, `related` links to the prev subtopic + topic
+   overview, gotchas present). **GraphQL hub Phase 10: 1 of 20 topics complete.**
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
@@ -9495,6 +9573,12 @@ this same check before any other new hub's first subtopic set:
   All 22 cards `available: true` in `data/graphql/home/home.ts`. Progress: `gqlTotal=20` in progress.service.ts.
   GraphQL pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. GqlNavComponent at `shared/gql-nav/gql-nav.ts`.
+  Phase 10: **1 of 20 topics have subtopics** (`/graphql/fundamentals`, pilot batch, 2026-09-10)
+  — see "GraphQL hub subtopic wiring" section above for the `GqlNavComponent` accordion structural
+  fix (17th `*NavComponent`-based hub in a row missing it at pilot time), the `gql-fundamentals`
+  SUBTOPICS-map collision resolution (collided with the JavaScript hub's own bare `fundamentals`
+  topic key), the no-live-playground note, and the genuine cross-codeTab undeclared-`Post.author`-
+  field bug found and fixed on the Fundamentals page's own "First Query" schema.
 - **Messaging/Kafka hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Burnt-orange theme `$accent: #9a3412`, `$tint: #fff7ed`, dark `#fdba74`, dark bg `#2d1a0e`. Search prefix `kafka-`. Route: `/messaging`.
   CSS classes: `.kafka-page`, `.kafka-icon`, `.kafka-section`. Icon content: `⇄` at `font-size: 1.8rem`. `tech="javascript"`.

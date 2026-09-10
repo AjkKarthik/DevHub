@@ -9574,7 +9574,25 @@ off here with a date.
 
 #### GraphQL — 20 topic pages
 
-- [ ] `/graphql/fundamentals` — GraphQL Fundamentals
+- [x] 2026-09-10 — `/graphql/fundamentals` — GraphQL Fundamentals. Pilot batch.
+  Fixed one genuine main-page bug: the "First Query" code tab's schema
+  declared `Post` with no `author` field, but the "Mutation & Subscription"
+  tab's subscription selects `postPublished { ... author { name } }` — a
+  cross-code-tab undeclared-field mismatch (GraphQL rejects it at validation
+  before any resolver runs). Fixed by adding `author: User!` to the schema,
+  matching the page's own Challenge solution. 3 subtopics: the schema/query
+  mismatch (fix-adjacent, verified via a mini validator); non-null error
+  propagation / null bubbling (gap-closing — the main page says "crashes the
+  response at that node" but never explains the bubble; verified via a
+  minimal bubbling executor); aliases resolving field-name collisions
+  (gap-closing — named in one line on the main page, never shown in code;
+  verified via a collision demo). `GqlNavComponent` had ZERO
+  subtopics-accordion support (17th `*NavComponent` hub in a row) — added
+  the standard `signal`/`Router`/`filter`/`SUBTOPICS` fix. SUBTOPICS key
+  hub-prefixed to `gql-fundamentals` (bare `fundamentals` collides with the
+  JavaScript hub's own topic). Wired all 6 touchpoints. Null-bubbling rule
+  cross-checked against the GraphQL spec's own "error propagation" /
+  "kills parent on exception" behavior via WebSearch.
 - [ ] `/graphql/schema-definition-language` — Schema Definition Language
 - [ ] `/graphql/type-system` — Type System Deep Dive
 - [ ] `/graphql/queries` — GraphQL Queries
