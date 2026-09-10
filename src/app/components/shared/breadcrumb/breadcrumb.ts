@@ -3048,6 +3048,9 @@ const REDIS_LABELS: Record<string, string> = {
 
 const GQL_LABELS: Record<string, string> = {
   'fundamentals':               'GraphQL Fundamentals',
+  'fundamentals/post-type-missing-author-field': 'The Post Type Never Declared Its Own author Field',
+  'fundamentals/non-null-error-propagation': 'Non-Null Field Errors Bubble Up',
+  'fundamentals/aliases-resolve-field-collisions': 'Aliases Resolve Field-Name Collisions',
   'schema-definition-language': 'Schema Definition Language',
   'type-system':                'Type System Deep Dive',
   'queries':                    'Queries',

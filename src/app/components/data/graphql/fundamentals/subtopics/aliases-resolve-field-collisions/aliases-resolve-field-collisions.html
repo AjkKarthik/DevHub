@@ -1,0 +1,26 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="GraphQL Fundamentals" topicRoute="/graphql/fundamentals"
+    subtopicLabel="Aliases Resolve Field-Name Collisions" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">Aliases Resolve Field-Name Collisions</h1>
+  <p class="page-subtitle">The main page shows the alias syntax in one line and moves on. Here is the collision aliases actually exist to solve, and why nothing else on the page can solve it.</p>
+  <app-page-meta [readingTime]="6" difficulty="beginner" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>Aliases, arguments, and fragments are the three selection-set tools the main page lists together — this subtopic pins down what each one uniquely does. With the schema mismatch fixed, null-bubbling understood, and aliases demystified, the fundamentals page's own Type System and Selection Sets sections all now have a worked example behind them.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="GraphQL Fundamentals" topicRoute="/graphql/fundamentals"
+    [prev]="{ label: 'Non-Null Field Errors Bubble Up', route: '/graphql/fundamentals/non-null-error-propagation' }" />
+</div>

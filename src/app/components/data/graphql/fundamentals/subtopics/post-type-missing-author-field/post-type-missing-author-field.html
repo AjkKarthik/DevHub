@@ -1,0 +1,26 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="GraphQL Fundamentals" topicRoute="/graphql/fundamentals"
+    subtopicLabel="The Post Type Never Declared Its Own author Field" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">The Post Type Never Declared Its Own author Field</h1>
+  <p class="page-subtitle">The main page's first code tab defines a Post type with no author field — then a later code tab's subscription queries exactly that field. GraphQL rejects it at validation, before any resolver runs.</p>
+  <app-page-meta [readingTime]="6" difficulty="beginner" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This is the exact fix now applied to the main page's own "First Query" schema. Next: adding <code>author: User!</code> as a non-null field has a real execution consequence — if that resolver ever returns null, the error does not stay local. It propagates up and can null the entire response.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="GraphQL Fundamentals" topicRoute="/graphql/fundamentals"
+    [next]="{ label: 'Non-Null Field Errors Bubble Up', route: '/graphql/fundamentals/non-null-error-propagation' }" />
+</div>

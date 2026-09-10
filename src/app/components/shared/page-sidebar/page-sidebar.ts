@@ -38496,6 +38496,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'GraphQL is a QUERY LANGUAGE and execution model, not a database or storage technology — it sits in front of whatever data sources already exist.',
     ],
   },
+  'graphql/fundamentals/post-type-missing-author-field': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'GraphQL Fundamentals', route: '/graphql/fundamentals' },
+      { label: 'Non-Null Field Errors Bubble Up', route: '/graphql/fundamentals/non-null-error-propagation' },
+    ],
+    tip: 'GraphQL runs a full validation pass against the schema BEFORE execution — a query field the schema never declared fails with "Cannot query field X on type Y" and no resolver is ever invoked. Keep every code sample\'s query in sync with the schema shown alongside it.',
+    gotchas: [
+      'Docs code tabs presented as one running example share a schema — a field a later tab queries must be declared by the earlier tab\'s schema, even though each tab compiles alone.',
+      'The reverse edge of a relationship (Post.author for User.posts) is easy to leave out; object graphs are usually navigable both ways.',
+    ],
+  },
+  'graphql/fundamentals/non-null-error-propagation': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'The Post Type Never Declared Its Own author Field', route: '/graphql/fundamentals/post-type-missing-author-field' },
+      { label: 'Aliases Resolve Field-Name Collisions', route: '/graphql/fundamentals/aliases-resolve-field-collisions' },
+    ],
+    tip: 'A non-null (!) field that resolves null throws a field error AND pushes the null up to its parent. If the parent is also non-null the null keeps bubbling — up to a nullable field, or to the root (data becomes null). Reserve ! for values that genuinely cannot fail.',
+    gotchas: [
+      'Marking a fragile, downstream-backed field non-null converts a local recoverable null into a cascading one that can erase the whole response.',
+      'The original error stays in the errors array with its full path, so the failing leaf is still identifiable even when the visible null sits higher up.',
+    ],
+  },
+  'graphql/fundamentals/aliases-resolve-field-collisions': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Non-Null Field Errors Bubble Up', route: '/graphql/fundamentals/non-null-error-propagation' },
+      { label: 'GraphQL Fundamentals', route: '/graphql/fundamentals' },
+    ],
+    tip: 'A response object is keyed by field name. Selecting the same field twice with different arguments and no alias is a validation error (field conflict) — an alias renames each selection\'s output key so both results land in their own slot, still in one request.',
+    gotchas: [
+      'Aliases are client-side only: the resolver never sees the alias, just the real field name and its arguments.',
+      'An alias renames one field\'s output key; a fragment reuses a selection set. Different problems, often used together.',
+    ],
+  },
   'graphql/type-system': {
     apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
     related: [

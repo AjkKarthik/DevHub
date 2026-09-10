@@ -2857,7 +2857,12 @@ export const routes: Routes = [
   ] },
   { path: 'graphql', children: [
     { path: '', loadComponent: () => import('./components/data/graphql/home/home').then(m => m.GraphqlHome) },
-    { path: 'fundamentals',               loadComponent: () => import('./components/data/graphql/fundamentals/fundamentals').then(m => m.GqlFundamentals) },
+    { path: 'fundamentals', children: [
+      { path: '', loadComponent: () => import('./components/data/graphql/fundamentals/fundamentals').then(m => m.GqlFundamentals) },
+      { path: 'post-type-missing-author-field', loadComponent: () => import('./components/data/graphql/fundamentals/subtopics/post-type-missing-author-field/post-type-missing-author-field').then(m => m.PostTypeMissingAuthorFieldSubtopic) },
+      { path: 'non-null-error-propagation', loadComponent: () => import('./components/data/graphql/fundamentals/subtopics/non-null-error-propagation/non-null-error-propagation').then(m => m.NonNullErrorPropagationSubtopic) },
+      { path: 'aliases-resolve-field-collisions', loadComponent: () => import('./components/data/graphql/fundamentals/subtopics/aliases-resolve-field-collisions/aliases-resolve-field-collisions').then(m => m.AliasesResolveFieldCollisionsSubtopic) },
+    ] },
     { path: 'schema-definition-language', loadComponent: () => import('./components/data/graphql/schema-definition-language/schema-definition-language').then(m => m.GqlSchemaDefinitionLanguage) },
     { path: 'type-system',                loadComponent: () => import('./components/data/graphql/type-system/type-system').then(m => m.GqlTypeSystem) },
     { path: 'queries',                    loadComponent: () => import('./components/data/graphql/queries/queries').then(m => m.GqlQueries) },

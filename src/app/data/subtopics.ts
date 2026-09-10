@@ -4022,4 +4022,10 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Combining Overall Score With Named Weakest Areas', route: '/observability/observability-maturity/combining-overall-score-with-named-weakest-areas' },
     { label: 'Building a Real Anomaly Detector for MTTR', route: '/observability/observability-maturity/building-a-real-anomaly-detector-for-mttr' },
   ],
+  // NOTE: hub-prefixed — bare 'fundamentals' is already claimed by the JavaScript hub's own topic.
+  'gql-fundamentals': [
+    { label: 'The Post Type Never Declared Its Own author Field', route: '/graphql/fundamentals/post-type-missing-author-field' },
+    { label: 'Non-Null Field Errors Bubble Up', route: '/graphql/fundamentals/non-null-error-propagation' },
+    { label: 'Aliases Resolve Field-Name Collisions', route: '/graphql/fundamentals/aliases-resolve-field-collisions' },
+  ],
 };
