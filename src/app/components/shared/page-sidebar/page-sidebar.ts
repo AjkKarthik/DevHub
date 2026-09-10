@@ -38709,6 +38709,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Default values on variables let a query be called with fewer explicit arguments while still having sensible fallback behavior.',
     ],
   },
+  'graphql/variables-arguments/variable-usage-type-compatibility': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Variables & Arguments', route: '/graphql/variables-arguments' },
+      { label: 'Enum Values: Bare in the Query, String in the Variables JSON', route: '/graphql/variables-arguments/enum-inline-vs-variables' },
+    ],
+    tip: 'The spec\'s All Variable Usages Are Allowed rule: the variable and argument must share a named type, but nullability only needs to be compatible. A non-null variable fits a nullable slot; a nullable variable fits a non-null slot only if the variable or the argument has a default value.',
+    gotchas: [
+      '$id: ID! CAN be passed where the schema declares a plain nullable ID — non-null trivially satisfies "may be null".',
+      'A type mismatch is a validation error, not a runtime oddity — the operation never executes.',
+    ],
+  },
+  'graphql/variables-arguments/enum-inline-vs-variables': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'When a Variable Can Be Used Where a Different Type Is Expected', route: '/graphql/variables-arguments/variable-usage-type-compatibility' },
+      { label: 'GET vs POST, and Why GET Is Query-Only', route: '/graphql/variables-arguments/graphql-get-vs-post' },
+    ],
+    tip: 'An enum value is a bare identifier inline in the query (status: PUBLISHED) but a JSON string in the variables object ("PUBLISHED"). Quoting it inline makes it a StringValue, which a schema enum position rejects at validation. Enum value names are case-sensitive.',
+    gotchas: [
+      'Hand-built query strings tend to quote the interpolated enum value — wrong inline. Use a variable so the enum-as-string lives in the variables object, not the query text.',
+      '"published" in the variables JSON does not coerce to PUBLISHED — it fails as "value does not exist in the enum".',
+    ],
+  },
+  'graphql/variables-arguments/graphql-get-vs-post': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Enum Values: Bare in the Query, String in the Variables JSON', route: '/graphql/variables-arguments/enum-inline-vs-variables' },
+      { label: 'Variables & Arguments', route: '/graphql/variables-arguments' },
+    ],
+    tip: 'Per the GraphQL-over-HTTP spec, GET may run query operations ONLY — mutations must POST, because GET is a safe method. GET queries are CDN-cacheable, but real queries exceed URL length limits, so production GET caching pairs GET with Automatic Persisted Queries (a short stable hash instead of the full text).',
+    gotchas: [
+      'A mutation over GET is rejected: "Can only perform a mutation operation from a POST request." Route by operation type, do not switch everything to GET.',
+      'CDNs do not cache POST in practice — edge caching of GraphQL reads means GET plus a persisted query, not cache headers on a POST.',
+    ],
+  },
   'graphql/directives': {
     apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
     related: [

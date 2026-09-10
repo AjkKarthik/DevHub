@@ -2881,7 +2881,12 @@ export const routes: Routes = [
       { path: 'field-merging-conflicts', loadComponent: () => import('./components/data/graphql/queries/subtopics/field-merging-conflicts/field-merging-conflicts').then(m => m.FieldMergingConflictsSubtopic) },
       { path: 'lone-anonymous-operation', loadComponent: () => import('./components/data/graphql/queries/subtopics/lone-anonymous-operation/lone-anonymous-operation').then(m => m.LoneAnonymousOperationSubtopic) },
     ] },
-    { path: 'variables-arguments',        loadComponent: () => import('./components/data/graphql/variables-arguments/variables-arguments').then(m => m.GqlVariablesArguments) },
+    { path: 'variables-arguments', children: [
+      { path: '', loadComponent: () => import('./components/data/graphql/variables-arguments/variables-arguments').then(m => m.GqlVariablesArguments) },
+      { path: 'variable-usage-type-compatibility', loadComponent: () => import('./components/data/graphql/variables-arguments/subtopics/variable-usage-type-compatibility/variable-usage-type-compatibility').then(m => m.VariableUsageTypeCompatibilitySubtopic) },
+      { path: 'enum-inline-vs-variables', loadComponent: () => import('./components/data/graphql/variables-arguments/subtopics/enum-inline-vs-variables/enum-inline-vs-variables').then(m => m.EnumInlineVsVariablesSubtopic) },
+      { path: 'graphql-get-vs-post', loadComponent: () => import('./components/data/graphql/variables-arguments/subtopics/graphql-get-vs-post/graphql-get-vs-post').then(m => m.GraphqlGetVsPostSubtopic) },
+    ] },
     { path: 'directives',                 loadComponent: () => import('./components/data/graphql/directives/directives').then(m => m.GqlDirectives) },
     { path: 'mutations',                  loadComponent: () => import('./components/data/graphql/mutations/mutations').then(m => m.GqlMutations) },
     { path: 'error-handling',             loadComponent: () => import('./components/data/graphql/error-handling/error-handling').then(m => m.GqlErrorHandling) },

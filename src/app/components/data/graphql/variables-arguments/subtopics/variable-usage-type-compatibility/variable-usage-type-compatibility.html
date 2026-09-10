@@ -1,0 +1,26 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Variables & Arguments" topicRoute="/graphql/variables-arguments"
+    subtopicLabel="When a Variable Can Be Used Where a Different Type Is Expected" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">When a Variable Can Be Used Where a Different Type Is Expected</h1>
+  <p class="page-subtitle">The main page said a variable's type must "match the argument type exactly". The spec's rule is compatibility, not identity — a non-null variable fits a nullable slot, and a nullable variable fits a non-null slot when a default exists.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This is the spec's <em>All Variable Usages Are Allowed</em> rule behind the main page's tightened "types must be compatible" line. Next: the Coercion section says enum values are bare identifiers in the query but strings in the variables JSON — here is that round-trip, and the validation errors when you get it backwards.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Variables & Arguments" topicRoute="/graphql/variables-arguments"
+    [next]="{ label: 'Enum Values: Bare in the Query, String in the Variables JSON', route: '/graphql/variables-arguments/enum-inline-vs-variables' }" />
+</div>

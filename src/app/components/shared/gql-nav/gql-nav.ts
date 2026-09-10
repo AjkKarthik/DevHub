@@ -95,7 +95,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/graphql/variables-arguments" routerLinkActive="active"><span class="nl-text">Variables &amp; Arguments</span>@if(p.isDone('gql-variables-arguments')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/graphql/variables-arguments" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Variables &amp; Arguments</span>
+        @if(p.isDone('gql-variables-arguments')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('variables-arguments')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('variables-arguments')"
+                  (click)="toggleSubtopics('variables-arguments', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('variables-arguments'); as varArgsSubs) {
+        @if (isSubtopicsExpanded('variables-arguments')) {
+          <div class="nav-subtopics">
+            @for (s of varArgsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/graphql/directives" routerLinkActive="active"><span class="nl-text">Directives</span>@if(p.isDone('gql-directives')){<span class="nl-done">✓</span>}</a>
     </div>
 

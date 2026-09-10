@@ -4043,4 +4043,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Field Merging: Two Selections of the Same Field Must Be Compatible', route: '/graphql/queries/field-merging-conflicts' },
     { label: 'The Lone Anonymous Operation Rule', route: '/graphql/queries/lone-anonymous-operation' },
   ],
+  'variables-arguments': [
+    { label: 'When a Variable Can Be Used Where a Different Type Is Expected', route: '/graphql/variables-arguments/variable-usage-type-compatibility' },
+    { label: 'Enum Values: Bare in the Query, String in the Variables JSON', route: '/graphql/variables-arguments/enum-inline-vs-variables' },
+    { label: 'GET vs POST, and Why GET Is Query-Only', route: '/graphql/variables-arguments/graphql-get-vs-post' },
+  ],
 };
