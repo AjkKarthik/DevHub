@@ -9336,6 +9336,43 @@ this same check before any other new hub's first subtopic set:
    (9 pre-existing bullets do this) — the edited bullet matches that existing house-style
    quirk and was left as-is rather than "improved". **GraphQL hub Phase 10: 2 of 20 topics
    complete.**
+10. **The `type-system` batch fixed one genuine main-page inaccuracy, verified via WebSearch and
+   contradicted by the page's own other sections**: the "Abstract Types &amp; resolveType" theory
+   bullet said "Without __resolveType, GraphQL falls back to instanceof checks (only works with
+   class instances, not plain objects)" — verified that graphql-js has NO <code>instanceof</code>
+   anywhere in type resolution. The real default: (1) read a <code>__typename</code> string off
+   the resolved value if present; (2) otherwise call each possible type's <code>isTypeOf(value)</code>
+   in definition order, first match wins; (3) if neither resolves, throw <code>Abstract type "X"
+   must resolve to an Object type at runtime</code>. This already matched the page's own mistakes
+   block ("GraphQL throws...") and QnA (which describes <code>isTypeOf</code>) — only the theory
+   bullet was wrong. Rewrote it. Three subtopics, each verified via direct Node execution: (1)
+   **fix-adjacent** — the real default modelled as <code>defaultResolveType(value, possibleTypes)</code>,
+   across a <code>__typename</code>-carrying value, a plain object with <code>isTypeOf</code>
+   registered, and a class instance with neither (throws — graphql-js never checks the
+   constructor), with a Try It on an ORM returning class instances (still needs
+   <code>isTypeOf</code> or a stamped <code>__typename</code>); (2) **gap-closing** — unwrapping
+   introspection <code>ofType</code>: <code>NON_NULL</code>/<code>LIST</code> nodes have
+   <code>name: null</code> and an <code>ofType</code>; only named kinds carry a name; a recursive
+   <code>renderType</code> turns the nested tree back into <code>[Post!]!</code> /
+   <code>[[Int!]!]!</code>, and <code>namedType</code> walks <code>ofType</code> while
+   <code>name</code> is null, with a Try It on a <code>LIST → NON_NULL → OBJECT("User")</code>
+   tree; (3) **gap-closing** — "disable introspection in production" (repeated in the theory, a
+   mistakes entry, and a QnA) does NOT hide the schema: graphql-js validation errors still emit
+   "Did you mean" field-name suggestions from the live schema, and the <em>clairvoyance</em> tool
+   (Nikita Stupin / Escape) automates schema reconstruction from those alone with introspection
+   fully off (verified via WebSearch) — the real fixes are blocking field suggestions
+   (graphql-armor's <code>blockFieldSuggestions</code> or Apollo Server v4+
+   <code>hideSchemaDetailsFromClientErrors: true</code>) plus an operation allowlist, with a Try
+   It modelling the wordlist-against-error-suggestions enumeration. `SUBTOPICS` key `type-system`
+   checked collision-free (both `subtopics.ts` forms + a direct `app.routes.ts` grep), left bare;
+   the `GqlNavComponent` toggle markup was added to the topic's own Foundations-group nav link.
+   Build passed clean (`EXITCODE:0`). Browser-verified: no console errors on any of the 4 pages;
+   nav accordion opens with all 3 subtopic links (confirmed via `window.ng.getComponent()` + a
+   live `.nav-subtopic-link` DOM query); the main-page fix confirmed live via `cmp.theory`
+   inspection; all 3 subtopic pages checked individually — correct h1/breadcrumb (all 4 levels),
+   860px wrapper via `getComputedStyle`, no entity leaks, `<code>` mentions in misconceptions
+   render as styled code, tailored (not DEFAULT) sidebar content confirmed on the final subtopic.
+   **GraphQL hub Phase 10: 3 of 20 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -9619,16 +9656,18 @@ this same check before any other new hub's first subtopic set:
   All 22 cards `available: true` in `data/graphql/home/home.ts`. Progress: `gqlTotal=20` in progress.service.ts.
   GraphQL pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. GqlNavComponent at `shared/gql-nav/gql-nav.ts`.
-  Phase 10: **2 of 20 topics have subtopics** (`/graphql/fundamentals`, pilot batch, 2026-09-10;
-  `/graphql/schema-definition-language`, 2026-09-10) — see "GraphQL hub subtopic wiring" section
-  above for the `GqlNavComponent` accordion structural fix (17th `*NavComponent`-based hub in a
-  row missing it at pilot time), the `gql-fundamentals` SUBTOPICS-map collision resolution
-  (collided with the JavaScript hub's own bare `fundamentals` topic key; `schema-definition-language`
-  is collision-free and left bare), the no-live-playground note, the genuine cross-codeTab
-  undeclared-`Post.author`-field bug fixed on the Fundamentals page, and the two tightened
-  main-page inaccuracies on the SDL page (the "non-null argument = required" theory bullet, which
-  omits the default-value carve-out; and a "crashes if result is a User" union-query mistake
-  comment, which is wrong — an unmatched fragment yields an empty object, not a crash).
+  Phase 10: **3 of 20 topics have subtopics** (`/graphql/fundamentals`, pilot batch, 2026-09-10;
+  `/graphql/schema-definition-language`, 2026-09-10; `/graphql/type-system`, 2026-09-10) — see
+  "GraphQL hub subtopic wiring" section above for the `GqlNavComponent` accordion structural fix
+  (17th `*NavComponent`-based hub in a row missing it at pilot time), the `gql-fundamentals`
+  SUBTOPICS-map collision resolution (collided with the JavaScript hub's own bare `fundamentals`
+  topic key; `schema-definition-language` and `type-system` are both collision-free and left
+  bare), the no-live-playground note, and the genuine main-page fixes: the cross-codeTab
+  undeclared-`Post.author`-field bug (Fundamentals); the "non-null argument = required" theory
+  bullet omitting the default-value carve-out, and a wrong "crashes if result is a User"
+  union-query mistake comment (SDL); and a wrong "falls back to instanceof checks" abstract-type
+  resolution claim (Type System — graphql-js has no instanceof path; the default is
+  `__typename` → `isTypeOf` → error).
 - **Messaging/Kafka hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Burnt-orange theme `$accent: #9a3412`, `$tint: #fff7ed`, dark `#fdba74`, dark bg `#2d1a0e`. Search prefix `kafka-`. Route: `/messaging`.
   CSS classes: `.kafka-page`, `.kafka-icon`, `.kafka-section`. Icon content: `⇄` at `font-size: 1.8rem`. `tech="javascript"`.

@@ -9606,7 +9606,21 @@ off here with a date.
   inline vs. variable values, and why parseLiteral (an AST node) must delegate to
   parseValue. SUBTOPICS key `schema-definition-language` (collision-free, left bare).
   GqlNavComponent toggle wired for the topic. All 6 touchpoints wired.
-- [ ] `/graphql/type-system` — Type System Deep Dive
+- [x] 2026-09-10 — `/graphql/type-system` — Type System Deep Dive. Fixed one genuine
+  main-page inaccuracy: the "Abstract Types & resolveType" theory bullet claimed GraphQL
+  "falls back to instanceof checks" without __resolveType — verified via WebSearch that
+  graphql-js has NO instanceof path; the default reads __typename off the value, then calls
+  each member's isTypeOf, then throws "must resolve to an Object type at runtime" (this also
+  contradicted the page's own mistakes block and QnA). 3 subtopics, each verified via direct
+  Node execution: (1) the real default-resolveType order modelled, with a Try It on an ORM
+  returning class instances (still needs isTypeOf/__typename — no instanceof); (2) unwrapping
+  introspection ofType — NON_NULL/LIST nodes have name: null, walk ofType to the named node;
+  render [Post!]! / [[Int!]!]! back to SDL; (3) disabling introspection ≠ hiding the schema —
+  "Did you mean" field suggestions still leak real names even with introspection off; the
+  clairvoyance tool automates schema reconstruction; fixes are blockFieldSuggestions
+  (graphql-armor / Apollo hideSchemaDetailsFromClientErrors) + an operation allowlist
+  (verified via WebSearch). SUBTOPICS key `type-system` (collision-free, left bare).
+  GqlNavComponent toggle wired. All 6 touchpoints wired.
 - [ ] `/graphql/queries` — GraphQL Queries
 - [ ] `/graphql/variables-arguments` — Variables & Arguments
 - [ ] `/graphql/directives` — Directives
