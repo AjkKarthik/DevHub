@@ -1,0 +1,26 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="GraphQL Queries" topicRoute="/graphql/queries"
+    subtopicLabel="The Lone Anonymous Operation Rule" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">The Lone Anonymous Operation Rule</h1>
+  <p class="page-subtitle">The theory and QnA both say "name your operations" and "send operationName for multi-operation documents". Here are the two exact rules, the errors each one produces, and why merging query files makes naming a correctness requirement.</p>
+  <app-page-meta [readingTime]="6" difficulty="beginner" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This makes concrete the main page's "name your operations" and "specify operationName" advice — the Lone Anonymous Operation validation rule plus the request-time operation-selection check. Back to the topic overview for the full query picture.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="GraphQL Queries" topicRoute="/graphql/queries"
+    [prev]="{ label: 'Field Merging: Two Selections of the Same Field Must Be Compatible', route: '/graphql/queries/field-merging-conflicts' }" />
+</div>

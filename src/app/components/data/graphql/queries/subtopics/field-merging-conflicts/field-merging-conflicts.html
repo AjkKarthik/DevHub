@@ -1,0 +1,27 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="GraphQL Queries" topicRoute="/graphql/queries"
+    subtopicLabel="Field Merging: Two Selections of the Same Field Must Be Compatible" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">Field Merging: Two Selections of the Same Field Must Be Compatible</h1>
+  <p class="page-subtitle">The Aliases section says an alias is "required" for the same field with different arguments. Here is the validation rule that makes it required — and why it also fires through fragments you did not write.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This is the rule behind the main page's "aliases are required" line — the spec's "Fields in set can merge" validation, applied to the flattened selection set. Next: the "name your operations" advice the theory and QnA both give — and the validation error a multi-operation document throws when you skip it.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="GraphQL Queries" topicRoute="/graphql/queries"
+    [prev]="{ label: '@skip and @include Run on the Server, Not the Client', route: '/graphql/queries/skip-include-run-on-the-server' }"
+    [next]="{ label: 'The Lone Anonymous Operation Rule', route: '/graphql/queries/lone-anonymous-operation' }" />
+</div>

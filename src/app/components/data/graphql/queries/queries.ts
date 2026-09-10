@@ -71,8 +71,8 @@ export class GqlQueries {
     {
       heading: 'Directives',
       points: [
-        '@skip(if: Boolean) and @include(if: Boolean) control whether a field is included at query time.',
-        'Directives take effect on the client side — the server only receives the final included/excluded selection.',
+        '@skip(if: Boolean) and @include(if: Boolean) control whether a field is included in the result.',
+        '@skip and @include are evaluated on the SERVER, while it collects the fields to execute, before any resolver runs. The full query text (directives included) is sent as-is; the server reads the variable values and decides which fields to run. The client does not strip fields before sending.',
         'You can use variables in directive arguments: `@skip(if: $skipDetails)` for dynamic queries.',
         'Custom directives can be defined in the schema for server-side logic (auth, caching, transformation).'
       ]

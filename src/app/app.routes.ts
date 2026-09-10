@@ -2875,7 +2875,12 @@ export const routes: Routes = [
       { path: 'unwrapping-oftype', loadComponent: () => import('./components/data/graphql/type-system/subtopics/unwrapping-oftype/unwrapping-oftype').then(m => m.UnwrappingOftypeSubtopic) },
       { path: 'disabling-introspection-vs-hiding-schema', loadComponent: () => import('./components/data/graphql/type-system/subtopics/disabling-introspection-vs-hiding-schema/disabling-introspection-vs-hiding-schema').then(m => m.DisablingIntrospectionVsHidingSchemaSubtopic) },
     ] },
-    { path: 'queries',                    loadComponent: () => import('./components/data/graphql/queries/queries').then(m => m.GqlQueries) },
+    { path: 'queries', children: [
+      { path: '', loadComponent: () => import('./components/data/graphql/queries/queries').then(m => m.GqlQueries) },
+      { path: 'skip-include-run-on-the-server', loadComponent: () => import('./components/data/graphql/queries/subtopics/skip-include-run-on-the-server/skip-include-run-on-the-server').then(m => m.SkipIncludeRunOnTheServerSubtopic) },
+      { path: 'field-merging-conflicts', loadComponent: () => import('./components/data/graphql/queries/subtopics/field-merging-conflicts/field-merging-conflicts').then(m => m.FieldMergingConflictsSubtopic) },
+      { path: 'lone-anonymous-operation', loadComponent: () => import('./components/data/graphql/queries/subtopics/lone-anonymous-operation/lone-anonymous-operation').then(m => m.LoneAnonymousOperationSubtopic) },
+    ] },
     { path: 'variables-arguments',        loadComponent: () => import('./components/data/graphql/variables-arguments/variables-arguments').then(m => m.GqlVariablesArguments) },
     { path: 'directives',                 loadComponent: () => import('./components/data/graphql/directives/directives').then(m => m.GqlDirectives) },
     { path: 'mutations',                  loadComponent: () => import('./components/data/graphql/mutations/mutations').then(m => m.GqlMutations) },

@@ -38639,6 +38639,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Aliases let the same field be queried multiple times with different arguments in one request — without them, field name collisions in the response would be unavoidable.',
     ],
   },
+  'graphql/queries/skip-include-run-on-the-server': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Queries', route: '/graphql/queries' },
+      { label: 'Field Merging: Two Selections of the Same Field Must Be Compatible', route: '/graphql/queries/field-merging-conflicts' },
+    ],
+    tip: '@skip and @include are evaluated on the SERVER during field collection, before any resolver runs. The client sends the full query; a field behind @include(if: $x) with $x=false genuinely never executes. They shape the response — they are not access control, because the client owns the variable.',
+    gotchas: [
+      '@include(if: $isAdmin) does not protect a field — a non-admin client just sends isAdmin: true. Put authorization in the resolver or a server-backed schema directive.',
+      'Both directives on one field is spec-defined, not undefined: the field is kept only if @skip is false AND @include is true.',
+    ],
+  },
+  'graphql/queries/field-merging-conflicts': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: '@skip and @include Run on the Server, Not the Client', route: '/graphql/queries/skip-include-run-on-the-server' },
+      { label: 'The Lone Anonymous Operation Rule', route: '/graphql/queries/lone-anonymous-operation' },
+    ],
+    tip: 'The spec\'s "Fields in set can merge" rule: two selections sharing a response key (alias, or field name) must have the same field and identical arguments. Same field + different args with no alias is a validation error — that is why an alias is "required" for that case.',
+    gotchas: [
+      'The check runs on the flattened selection set, so two fragments each selecting the same field with different arguments conflict even though the query text never repeats the field.',
+      'Two selections of the same field with identical arguments (or none) merge cleanly — that is the normal case, not a conflict.',
+    ],
+  },
+  'graphql/queries/lone-anonymous-operation': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Field Merging: Two Selections of the Same Field Must Be Compatible', route: '/graphql/queries/field-merging-conflicts' },
+      { label: 'Queries', route: '/graphql/queries' },
+    ],
+    tip: 'Two rules: (1) Lone Anonymous Operation — an unnamed operation is only valid as the single operation in a document; (2) a multi-operation document requires operationName on the request. Naming every operation is a correctness rule for any tooling that merges query files, not just a logging nicety.',
+    gotchas: [
+      'A multi-operation document with no operationName returns "Must provide operation name..." — there is no implicit "run the first one".',
+      'A document with exactly one operation runs it with or without operationName, named or anonymous.',
+    ],
+  },
   'graphql/mutations': {
     apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
     related: [

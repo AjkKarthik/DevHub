@@ -4038,4 +4038,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Unwrapping Introspection Types: Following ofType', route: '/graphql/type-system/unwrapping-oftype' },
     { label: 'Disabling Introspection Is Not the Same as Hiding Your Schema', route: '/graphql/type-system/disabling-introspection-vs-hiding-schema' },
   ],
+  'queries': [
+    { label: '@skip and @include Run on the Server, Not the Client', route: '/graphql/queries/skip-include-run-on-the-server' },
+    { label: 'Field Merging: Two Selections of the Same Field Must Be Compatible', route: '/graphql/queries/field-merging-conflicts' },
+    { label: 'The Lone Anonymous Operation Rule', route: '/graphql/queries/lone-anonymous-operation' },
+  ],
 };
