@@ -38555,6 +38555,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Comments and descriptions in SDL become part of the auto-generated documentation exposed via introspection — worth keeping meaningful, not just placeholder text.',
     ],
   },
+  'graphql/schema-definition-language/non-null-arg-with-default-not-required': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Schema Definition Language', route: '/graphql/schema-definition-language' },
+      { label: 'Only Fragments and __typename Can Select From a Union', route: '/graphql/schema-definition-language/union-selection-sets' },
+    ],
+    tip: 'An argument is "required" only when it is Non-Null AND has no default value. Add a default and the same ! argument becomes optional to supply — the ! still bans null as a value, it just no longer forces the caller to mention the argument.',
+    gotchas: [
+      'A default value fills in for a MISSING argument only. Passing explicit null to a Non-Null argument is always a validation error, default or not.',
+      'For a nullable argument with a default, omitting it and passing explicit null are genuinely different — the resolver can tell "not asked" from "asked for null".',
+    ],
+  },
+  'graphql/schema-definition-language/union-selection-sets': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'A Non-Null Argument With a Default Value Is Not Required', route: '/graphql/schema-definition-language/non-null-arg-with-default-not-required' },
+      { label: 'Custom Scalars: serialize, parseValue, and parseLiteral', route: '/graphql/schema-definition-language/custom-scalar-hooks' },
+    ],
+    tip: 'A union type declares no fields of its own — the only thing selectable directly on it is the built-in __typename. Every other field must be reached through an inline or named fragment, one per member type.',
+    gotchas: [
+      'When the runtime type matches no fragment, that result comes back as an empty object {} — no server error. The client just cannot discriminate it.',
+      'An interface CAN expose shared fields for direct selection; a union cannot. That is the practical reason to prefer an interface when members share meaningful fields.',
+    ],
+  },
+  'graphql/schema-definition-language/custom-scalar-hooks': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Only Fragments and __typename Can Select From a Union', route: '/graphql/schema-definition-language/union-selection-sets' },
+      { label: 'Schema Definition Language', route: '/graphql/schema-definition-language' },
+    ],
+    tip: 'serialize runs on the output path (resolver return value to JSON). parseValue handles a value that arrived as a query variable. parseLiteral handles a value written inline in the query document — and receives an AST node, not a raw value.',
+    gotchas: [
+      'parseLiteral gets a node like { kind: "StringValue", value: "..." }; read ast.value and check ast.kind rather than converting the node directly.',
+      'If parseValue and parseLiteral disagree, the same query behaves differently depending on whether the client inlined the value or passed it as a variable. Have parseLiteral delegate to parseValue.',
+    ],
+  },
   'graphql/queries': {
     apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
     related: [

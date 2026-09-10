@@ -34,7 +34,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/graphql/schema-definition-language" routerLinkActive="active"><span class="nl-text">Schema Definition Language</span>@if(p.isDone('gql-schema-definition-language')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/graphql/schema-definition-language" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Schema Definition Language</span>
+        @if(p.isDone('gql-schema-definition-language')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('schema-definition-language')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('schema-definition-language')"
+                  (click)="toggleSubtopics('schema-definition-language', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('schema-definition-language'); as sdlSubs) {
+        @if (isSubtopicsExpanded('schema-definition-language')) {
+          <div class="nav-subtopics">
+            @for (s of sdlSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/graphql/type-system" routerLinkActive="active"><span class="nl-text">Type System Deep Dive</span>@if(p.isDone('gql-type-system')){<span class="nl-done">✓</span>}</a>
     </div>
 

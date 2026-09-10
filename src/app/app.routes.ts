@@ -2863,7 +2863,12 @@ export const routes: Routes = [
       { path: 'non-null-error-propagation', loadComponent: () => import('./components/data/graphql/fundamentals/subtopics/non-null-error-propagation/non-null-error-propagation').then(m => m.NonNullErrorPropagationSubtopic) },
       { path: 'aliases-resolve-field-collisions', loadComponent: () => import('./components/data/graphql/fundamentals/subtopics/aliases-resolve-field-collisions/aliases-resolve-field-collisions').then(m => m.AliasesResolveFieldCollisionsSubtopic) },
     ] },
-    { path: 'schema-definition-language', loadComponent: () => import('./components/data/graphql/schema-definition-language/schema-definition-language').then(m => m.GqlSchemaDefinitionLanguage) },
+    { path: 'schema-definition-language', children: [
+      { path: '', loadComponent: () => import('./components/data/graphql/schema-definition-language/schema-definition-language').then(m => m.GqlSchemaDefinitionLanguage) },
+      { path: 'non-null-arg-with-default-not-required', loadComponent: () => import('./components/data/graphql/schema-definition-language/subtopics/non-null-arg-with-default-not-required/non-null-arg-with-default-not-required').then(m => m.NonNullArgWithDefaultNotRequiredSubtopic) },
+      { path: 'union-selection-sets', loadComponent: () => import('./components/data/graphql/schema-definition-language/subtopics/union-selection-sets/union-selection-sets').then(m => m.UnionSelectionSetsSubtopic) },
+      { path: 'custom-scalar-hooks', loadComponent: () => import('./components/data/graphql/schema-definition-language/subtopics/custom-scalar-hooks/custom-scalar-hooks').then(m => m.CustomScalarHooksSubtopic) },
+    ] },
     { path: 'type-system',                loadComponent: () => import('./components/data/graphql/type-system/type-system').then(m => m.GqlTypeSystem) },
     { path: 'queries',                    loadComponent: () => import('./components/data/graphql/queries/queries').then(m => m.GqlQueries) },
     { path: 'variables-arguments',        loadComponent: () => import('./components/data/graphql/variables-arguments/variables-arguments').then(m => m.GqlVariablesArguments) },

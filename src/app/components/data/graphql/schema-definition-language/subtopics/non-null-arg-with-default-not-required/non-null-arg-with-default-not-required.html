@@ -1,0 +1,26 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Schema Definition Language" topicRoute="/graphql/schema-definition-language"
+    subtopicLabel="A Non-Null Argument With a Default Is Not Required" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">A Non-Null Argument With a Default Value Is Not Required</h1>
+  <p class="page-subtitle">The main page says "non-null on an argument means the argument is required." The spec's real rule is narrower: an argument is required only when it is Non-Null <em>and</em> has no default value.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This sharpens the main page's one-line claim about required arguments into the spec's two-part rule, and separates "must pass a value" from "value may not be null" — two properties that <code>!</code> and a default control independently. Next: another spot where the main page's guidance is close but not exact — what a client is actually allowed to select on a union type.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Schema Definition Language" topicRoute="/graphql/schema-definition-language"
+    [next]="{ label: 'Only Fragments and __typename Can Select From a Union', route: '/graphql/schema-definition-language/union-selection-sets' }" />
+</div>

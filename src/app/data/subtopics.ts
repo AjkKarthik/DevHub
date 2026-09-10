@@ -4028,4 +4028,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Non-Null Field Errors Bubble Up', route: '/graphql/fundamentals/non-null-error-propagation' },
     { label: 'Aliases Resolve Field-Name Collisions', route: '/graphql/fundamentals/aliases-resolve-field-collisions' },
   ],
+  'schema-definition-language': [
+    { label: 'A Non-Null Argument With a Default Value Is Not Required', route: '/graphql/schema-definition-language/non-null-arg-with-default-not-required' },
+    { label: 'Only Fragments and __typename Can Select From a Union', route: '/graphql/schema-definition-language/union-selection-sets' },
+    { label: 'Custom Scalars: serialize, parseValue, and parseLiteral', route: '/graphql/schema-definition-language/custom-scalar-hooks' },
+  ],
 };
