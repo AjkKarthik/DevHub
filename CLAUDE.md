@@ -9290,6 +9290,52 @@ this same check before any other new hub's first subtopic set:
    levels), 860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed
    on the final subtopic (alias-specific `tip`, `related` links to the prev subtopic + topic
    overview, gotchas present). **GraphQL hub Phase 10: 1 of 20 topics complete.**
+9. **The `schema-definition-language` batch found and tightened TWO genuine main-page
+   inaccuracies during subtopic authoring, both verified**: (a) the "Nullability &amp; Lists"
+   theory bullet said "Non-null on an argument means the argument is required. <code>userId:
+   ID!</code> must be provided by the caller" — verified via WebSearch against the GraphQL
+   spec's own <em>Required Arguments</em> / <em>Input Object Required Fields</em> rule that an
+   argument is required only when it is Non-Null <strong>and has no default value</strong>;
+   <code>limit: Int! = 10</code> may be omitted (the default applies), though an explicit
+   <code>null</code> is still rejected either way. Rewrote the bullet to state both halves.
+   (b) The "Forgetting <code>__typename</code> in union queries" mistake's <code>wrong</code>
+   example was commented "crashes if result is a User" — verified (WebSearch + a plain-JS
+   field-collection model) that no crash occurs: a fragment whose type condition does not
+   match the runtime object contributes nothing, so an unmatched union member comes back as
+   an empty object <code>{}</code>, not a server error. Corrected the comment and the
+   explanation. Three subtopics, each verified via direct Node execution: (1) **fix-adjacent**
+   — the two-part required-argument rule as an is-this-provision-valid model, across
+   Non-Null-with-default (omitted OK, explicit null rejected, concrete value OK) and
+   Non-Null-no-default (omitted rejected), with a Try It on a dynamic query passing a
+   <code>null</code> variable to a defaulted Non-Null argument; (2) **gap-closing** — union
+   selection sets: an unmatched member yields <code>{}</code> (verified), and a union type
+   declares no fields of its own — only <code>__typename</code> plus inline/named fragments
+   are selectable (verified against the spec via WebSearch; contrasted with an
+   <code>interface</code>, which CAN expose shared fields for direct selection), with a Try It
+   on "why can't I select <code>url</code> straight off a <code>union Media</code> when both
+   members have it"; (3) **gap-closing** — custom scalar <code>serialize</code> /
+   <code>parseValue</code> / <code>parseLiteral</code> (named in one QnA sentence, never shown
+   in code): a working <code>DateTime</code> scalar, which hook runs for an inline literal
+   (<code>parseLiteral</code>, receiving an AST node like <code>{ kind: "StringValue", value:
+   "..." }</code>) vs. a query variable (<code>parseValue</code>, receiving an
+   already-parsed primitive) vs. the resolver return value (<code>serialize</code>), and why
+   <code>parseLiteral</code> should read <code>ast.value</code> and delegate to
+   <code>parseValue</code> so the inline and variable paths accept the same inputs; verified
+   the "pass parseLiteral a raw string like parseValue" mistake throws. `SUBTOPICS` key
+   `schema-definition-language` checked collision-free (both `subtopics.ts` forms + a direct
+   `app.routes.ts` grep — only GraphQL's own route uses the slug), left bare; the
+   `GqlNavComponent` toggle markup was added to the topic's own nav link. Build passed clean
+   (`EXITCODE:0`) both before and after the two main-page edits. Browser-verified: no console
+   errors on any of the 4 pages; nav accordion opens with all 3 subtopic links (confirmed via
+   `window.ng.getComponent()` + a live `.nav-subtopic-link` DOM query); both main-page fixes
+   confirmed live via direct component-data inspection (`cmp.theory` bullet and
+   `cmp.mistakes` entry); all 3 subtopic pages checked individually — correct h1/breadcrumb
+   (all 4 levels), 860px wrapper via `getComputedStyle`, no entity leaks in rendered text,
+   tailored (not DEFAULT) sidebar content confirmed on the final subtopic. **Note**: this
+   page's own theory bullets already render markdown-style backticks as literal characters
+   (9 pre-existing bullets do this) — the edited bullet matches that existing house-style
+   quirk and was left as-is rather than "improved". **GraphQL hub Phase 10: 2 of 20 topics
+   complete.**
 
 ## Current state (update when it changes!)
 
@@ -9573,12 +9619,16 @@ this same check before any other new hub's first subtopic set:
   All 22 cards `available: true` in `data/graphql/home/home.ts`. Progress: `gqlTotal=20` in progress.service.ts.
   GraphQL pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. GqlNavComponent at `shared/gql-nav/gql-nav.ts`.
-  Phase 10: **1 of 20 topics have subtopics** (`/graphql/fundamentals`, pilot batch, 2026-09-10)
-  — see "GraphQL hub subtopic wiring" section above for the `GqlNavComponent` accordion structural
-  fix (17th `*NavComponent`-based hub in a row missing it at pilot time), the `gql-fundamentals`
-  SUBTOPICS-map collision resolution (collided with the JavaScript hub's own bare `fundamentals`
-  topic key), the no-live-playground note, and the genuine cross-codeTab undeclared-`Post.author`-
-  field bug found and fixed on the Fundamentals page's own "First Query" schema.
+  Phase 10: **2 of 20 topics have subtopics** (`/graphql/fundamentals`, pilot batch, 2026-09-10;
+  `/graphql/schema-definition-language`, 2026-09-10) — see "GraphQL hub subtopic wiring" section
+  above for the `GqlNavComponent` accordion structural fix (17th `*NavComponent`-based hub in a
+  row missing it at pilot time), the `gql-fundamentals` SUBTOPICS-map collision resolution
+  (collided with the JavaScript hub's own bare `fundamentals` topic key; `schema-definition-language`
+  is collision-free and left bare), the no-live-playground note, the genuine cross-codeTab
+  undeclared-`Post.author`-field bug fixed on the Fundamentals page, and the two tightened
+  main-page inaccuracies on the SDL page (the "non-null argument = required" theory bullet, which
+  omits the default-value carve-out; and a "crashes if result is a User" union-query mistake
+  comment, which is wrong — an unmatched fragment yields an empty object, not a crash).
 - **Messaging/Kafka hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Burnt-orange theme `$accent: #9a3412`, `$tint: #fff7ed`, dark `#fdba74`, dark bg `#2d1a0e`. Search prefix `kafka-`. Route: `/messaging`.
   CSS classes: `.kafka-page`, `.kafka-icon`, `.kafka-section`. Icon content: `⇄` at `font-size: 1.8rem`. `tech="javascript"`.

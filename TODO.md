@@ -9593,7 +9593,19 @@ off here with a date.
   JavaScript hub's own topic). Wired all 6 touchpoints. Null-bubbling rule
   cross-checked against the GraphQL spec's own "error propagation" /
   "kills parent on exception" behavior via WebSearch.
-- [ ] `/graphql/schema-definition-language` — Schema Definition Language
+- [x] 2026-09-10 — `/graphql/schema-definition-language` — Schema Definition Language.
+  Tightened two genuine main-page inaccuracies found during authoring: the "non-null
+  argument means the argument is required" theory bullet (spec rule: required only when
+  Non-Null AND no default value; explicit null still rejected either way), and the
+  "Forgetting __typename in union queries" mistake's "crashes if result is a User" claim
+  (no crash — an unmatched fragment yields an empty object). 3 subtopics, each verified
+  via direct Node execution: (1) the two-part required-argument rule with an is-this-valid
+  model; (2) union selection sets — an unmatched member returns {}, and a union declares
+  no directly-selectable fields except __typename (verified against the GraphQL spec via
+  WebSearch); (3) custom scalar serialize/parseValue/parseLiteral — which hook runs for
+  inline vs. variable values, and why parseLiteral (an AST node) must delegate to
+  parseValue. SUBTOPICS key `schema-definition-language` (collision-free, left bare).
+  GqlNavComponent toggle wired for the topic. All 6 touchpoints wired.
 - [ ] `/graphql/type-system` — Type System Deep Dive
 - [ ] `/graphql/queries` — GraphQL Queries
 - [ ] `/graphql/variables-arguments` — Variables & Arguments
