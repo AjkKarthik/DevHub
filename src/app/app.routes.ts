@@ -2869,7 +2869,12 @@ export const routes: Routes = [
       { path: 'union-selection-sets', loadComponent: () => import('./components/data/graphql/schema-definition-language/subtopics/union-selection-sets/union-selection-sets').then(m => m.UnionSelectionSetsSubtopic) },
       { path: 'custom-scalar-hooks', loadComponent: () => import('./components/data/graphql/schema-definition-language/subtopics/custom-scalar-hooks/custom-scalar-hooks').then(m => m.CustomScalarHooksSubtopic) },
     ] },
-    { path: 'type-system',                loadComponent: () => import('./components/data/graphql/type-system/type-system').then(m => m.GqlTypeSystem) },
+    { path: 'type-system', children: [
+      { path: '', loadComponent: () => import('./components/data/graphql/type-system/type-system').then(m => m.GqlTypeSystem) },
+      { path: 'abstract-type-no-instanceof-fallback', loadComponent: () => import('./components/data/graphql/type-system/subtopics/abstract-type-no-instanceof-fallback/abstract-type-no-instanceof-fallback').then(m => m.AbstractTypeNoInstanceofFallbackSubtopic) },
+      { path: 'unwrapping-oftype', loadComponent: () => import('./components/data/graphql/type-system/subtopics/unwrapping-oftype/unwrapping-oftype').then(m => m.UnwrappingOftypeSubtopic) },
+      { path: 'disabling-introspection-vs-hiding-schema', loadComponent: () => import('./components/data/graphql/type-system/subtopics/disabling-introspection-vs-hiding-schema/disabling-introspection-vs-hiding-schema').then(m => m.DisablingIntrospectionVsHidingSchemaSubtopic) },
+    ] },
     { path: 'queries',                    loadComponent: () => import('./components/data/graphql/queries/queries').then(m => m.GqlQueries) },
     { path: 'variables-arguments',        loadComponent: () => import('./components/data/graphql/variables-arguments/variables-arguments').then(m => m.GqlVariablesArguments) },
     { path: 'directives',                 loadComponent: () => import('./components/data/graphql/directives/directives').then(m => m.GqlDirectives) },

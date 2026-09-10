@@ -1,0 +1,26 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Type System Deep Dive" topicRoute="/graphql/type-system"
+    subtopicLabel="Disabling Introspection Is Not the Same as Hiding Your Schema" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">Disabling Introspection Is Not the Same as Hiding Your Schema</h1>
+  <p class="page-subtitle">The theory, mistakes block, and QnA all say "disable introspection in production for security". It helps a little — but validation error suggestions still leak real field names, and tools automate reconstructing the schema anyway.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This completes the picture the main page's introspection advice starts: disabling introspection is one thin layer, and blocking field suggestions plus an operation allowlist are what actually reduce schema disclosure. Back to the topic overview for the full type-system picture.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Type System Deep Dive" topicRoute="/graphql/type-system"
+    [prev]="{ label: 'Unwrapping Introspection Types: Following ofType', route: '/graphql/type-system/unwrapping-oftype' }" />
+</div>

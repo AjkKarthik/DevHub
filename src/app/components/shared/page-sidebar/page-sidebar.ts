@@ -38544,6 +38544,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Interfaces and unions let a field return one of several possible types, requiring clients to use fragments to access type-specific fields.',
     ],
   },
+  'graphql/type-system/abstract-type-no-instanceof-fallback': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Type System Deep Dive', route: '/graphql/type-system' },
+      { label: 'Unwrapping Introspection Types: Following ofType', route: '/graphql/type-system/unwrapping-oftype' },
+    ],
+    tip: 'graphql-js has NO instanceof fallback for abstract types. Without a resolveType function, the default reads a __typename off the value, then calls each member type\'s isTypeOf in definition order, then throws "must resolve to an Object type at runtime". Class identity means nothing to it.',
+    gotchas: [
+      'An ORM that returns class instances does not make abstract fields "just work" — you still need __typename on the value, isTypeOf per type, or resolveType on the abstract type.',
+      'Returning null from resolveType is not a safe no-op; it produces the same runtime error as having no resolver at all.',
+    ],
+  },
+  'graphql/type-system/unwrapping-oftype': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'There Is No instanceof Fallback for Abstract Types', route: '/graphql/type-system/abstract-type-no-instanceof-fallback' },
+      { label: 'Disabling Introspection Is Not the Same as Hiding Your Schema', route: '/graphql/type-system/disabling-introspection-vs-hiding-schema' },
+    ],
+    tip: 'In an introspection type reference, NON_NULL and LIST nodes have name: null and an ofType pointing at what they wrap. Only named kinds (SCALAR/OBJECT/INTERFACE/UNION/ENUM/INPUT_OBJECT) carry a real name, and they never have an ofType. Walk ofType while name is null.',
+    gotchas: [
+      'Reading field.type.name directly returns null for any wrapped type — the real name is one or more ofType hops deeper.',
+      'Nested lists ([[Int!]!]!) are legal, so an unwrapper must recurse rather than assume a fixed wrapper depth.',
+    ],
+  },
+  'graphql/type-system/disabling-introspection-vs-hiding-schema': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Unwrapping Introspection Types: Following ofType', route: '/graphql/type-system/unwrapping-oftype' },
+      { label: 'Type System Deep Dive', route: '/graphql/type-system' },
+    ],
+    tip: 'Disabling introspection does not hide your schema. Validation errors still name real fields via "Did you mean" suggestions; tools like clairvoyance reconstruct the schema from those alone. Block field suggestions (graphql-armor / Apollo hideSchemaDetailsFromClientErrors) and add an operation allowlist.',
+    gotchas: [
+      'An attacker does not need __schema — a wordlist run against suggestion-enabled errors recovers most field and argument names.',
+      'Neither suppressing suggestions nor an allowlist makes the schema truly secret; they raise the cost of blind automated enumeration, which is the realistic threat.',
+    ],
+  },
   'graphql/schema-definition-language': {
     apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
     related: [

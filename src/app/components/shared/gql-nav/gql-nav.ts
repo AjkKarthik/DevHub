@@ -53,7 +53,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/graphql/type-system" routerLinkActive="active"><span class="nl-text">Type System Deep Dive</span>@if(p.isDone('gql-type-system')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/graphql/type-system" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Type System Deep Dive</span>
+        @if(p.isDone('gql-type-system')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('type-system')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('type-system')"
+                  (click)="toggleSubtopics('type-system', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('type-system'); as tsSubs) {
+        @if (isSubtopicsExpanded('type-system')) {
+          <div class="nav-subtopics">
+            @for (s of tsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

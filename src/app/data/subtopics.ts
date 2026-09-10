@@ -4033,4 +4033,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Only Fragments and __typename Can Select From a Union', route: '/graphql/schema-definition-language/union-selection-sets' },
     { label: 'Custom Scalars: serialize, parseValue, and parseLiteral', route: '/graphql/schema-definition-language/custom-scalar-hooks' },
   ],
+  'type-system': [
+    { label: 'There Is No instanceof Fallback for Abstract Types', route: '/graphql/type-system/abstract-type-no-instanceof-fallback' },
+    { label: 'Unwrapping Introspection Types: Following ofType', route: '/graphql/type-system/unwrapping-oftype' },
+    { label: 'Disabling Introspection Is Not the Same as Hiding Your Schema', route: '/graphql/type-system/disabling-introspection-vs-hiding-schema' },
+  ],
 };
