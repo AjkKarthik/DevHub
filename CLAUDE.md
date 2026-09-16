@@ -9498,6 +9498,54 @@ this same check before any other new hub's first subtopic set:
    completes the GraphQL hub's Queries nav group entirely (queries, variables-arguments,
    directives — all 3 of 3 topics now have subtopics). **GraphQL hub Phase 10: 6 of 20 topics
    complete.**
+14. **The `mutations` batch — the first topic in the Mutations & Subscriptions nav group — found
+   and fixed a genuine, well-verified staleness issue in the main page's own file-upload QnA**:
+   it claimed "Apollo Server supports it [multipart file uploads] via graphql-upload" — true for
+   Apollo Server 2 only. Verified via WebSearch/WebFetch against Apollo's own blog ("File Upload
+   Best Practices") that Apollo Server 3 (2021) removed the BUILT-IN multipart-request
+   integration entirely, and Apollo Server 4 never restored it — `graphql-multipart-request-spec`
+   is a community convention, not part of the official GraphQL spec, and never went away; only
+   Apollo's built-in wiring for it did. The deeper reason: `multipart/form-data` is one of the
+   HTTP content types a plain cross-origin `<form>` can POST without triggering a CORS preflight
+   — a real CSRF loophole — which is why Apollo's own current guidance is "we really really don't
+   think you should use multipart uploads with GraphQL," recommending signed URLs (upload direct
+   to S3/cloud storage, bypassing the GraphQL server entirely) instead. Rewrote the QnA to state
+   the version history, the CSRF mechanism, and the modern recommendation. Three subtopics, each
+   verified via direct Node.js execution: (1) **fix-adjacent** — the Apollo Server 2-vs-3+ history
+   traced precisely, contrasting the old (now-manual-only) `graphql-upload` pattern against the
+   signed-URL pattern, with a Try It on the exact CSRF attack shape and both real fixes (Apollo
+   Server 3.7+'s own opt-in CSRF-prevention options, or removing multipart entirely); (2)
+   **gap-closing** — the theory names "mutations execute serially" and quiz Q1 tests it, but no
+   codeTab on the page shows the mechanism running; built a small model of graphql-js's own
+   `executeFieldsSerially` (verified via direct execution: a faster second field still waits for a
+   slower first field to FULLY complete before starting, unlike the parallel query-style
+   equivalent, which starts both immediately and finishes out of order), plus the genuinely
+   uncovered caveat the page's own mistake block #3 never mentions — serial execution guarantees
+   ORDER only, not atomicity, so an earlier field's already-committed side effect is never rolled
+   back if a later field throws (verified via a `chargeCard` + `createOrder` simulation: the
+   charge's side effect survives the second field's failure with zero automatic rollback); (3)
+   **gap-closing** — the QnA says destructive mutations "should be guarded with deduplication
+   tokens" in one sentence with zero code; built a real idempotency-key resolver, verified via
+   direct execution across three cases (first attempt charges for real, a retry with the SAME key
+   replays the cached result with zero double-charge, a genuinely different key charges again),
+   with a Try It on why keying on an entity ID like `orderId` instead of a client-generated
+   attempt ID incorrectly conflates a legitimate retry with a deliberate new attempt against the
+   same entity. No `SUBTOPICS` collision for `mutations` (checked both `subtopics.ts` forms and
+   grepped `app.routes.ts` directly, confirmed collision-free, left bare). All three `.ts` files
+   swept clean via the standing bracket-balance/backtick-parity/apostrophe scripts; every flagged
+   apostrophe match confirmed safe (inside backtick-delimited `code:`/`solution:` fields or `//`
+   comments); `page-sidebar.ts`'s three new `tip:` fields (single-quoted, not backtick-delimited)
+   correctly used `\'` for their own possessive apostrophes. Build passed clean (`EXITCODE:0`, no
+   real `ERROR` lines). Browser-verified against the already-running dev server (picked up the
+   file-watcher changes normally, no restart needed): no console errors on any of the 4 pages; nav
+   accordion opens with all 3 subtopic links (7 toggles total across the hub, confirming Mutations
+   is the 7th GraphQL topic with subtopics); the main-page QnA fix confirmed rendering live via
+   direct component-data inspection; all 3 subtopic pages checked individually — correct
+   h1/breadcrumb (all 4 levels), 860px wrapper via `getComputedStyle`, tailored (not DEFAULT)
+   sidebar content confirmed; a code-tab text-search initially came back as a false alarm because
+   the code block's own "View Code" toggle was still collapsed — clicking it through confirmed the
+   generic-syntax code sample renders correctly, not a real bug. **GraphQL hub Phase 10: 7 of 20
+   topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -9781,26 +9829,29 @@ this same check before any other new hub's first subtopic set:
   All 22 cards `available: true` in `data/graphql/home/home.ts`. Progress: `gqlTotal=20` in progress.service.ts.
   GraphQL pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. GqlNavComponent at `shared/gql-nav/gql-nav.ts`.
-  Phase 10: **6 of 20 topics have subtopics** (`/graphql/fundamentals`, pilot batch, 2026-09-10;
+  Phase 10: **7 of 20 topics have subtopics** (`/graphql/fundamentals`, pilot batch, 2026-09-10;
   `/graphql/schema-definition-language`, 2026-09-10; `/graphql/type-system`, 2026-09-10;
   `/graphql/queries`, 2026-09-10; `/graphql/variables-arguments`, 2026-09-10;
-  `/graphql/directives`, 2026-09-10 — Queries nav group fully done) — see "GraphQL hub
+  `/graphql/directives`, 2026-09-10 — Queries nav group fully done; `/graphql/mutations`,
+  2026-09-10 — first topic in the Mutations & Subscriptions nav group) — see "GraphQL hub
   subtopic wiring" section above for the `GqlNavComponent` accordion structural fix (17th
   `*NavComponent`-based hub in a row missing it at pilot time), the `gql-fundamentals`/
   `gql-directives` SUBTOPICS-map collision resolutions (`gql-fundamentals` collided with the
   JavaScript hub's own bare `fundamentals` topic key; `gql-directives` collided with the Angular
   hub's own `directives-demo` topic's unquoted bare `directives` key; `schema-definition-language`,
-  `type-system`, `queries` and `variables-arguments` are all collision-free and left bare), the
-  no-live-playground note, and the genuine main-page fixes: the cross-codeTab undeclared-
-  `Post.author`-field bug (Fundamentals); the "non-null argument = required" theory bullet
-  omitting the default-value carve-out, and a wrong "crashes if result is a User" union-query
-  mistake comment (SDL); a wrong "falls back to instanceof checks" abstract-type resolution claim
-  (Type System); a wrong "directives take effect on the client side" claim (Queries); two
-  imprecise variable-type bullets — "non-null variables must always be provided" (ignores the
-  default carve-out) and "variable types must match exactly" (the spec's rule is compatibility,
-  not identity) (Variables & Arguments); and an incomplete `@deprecated` locations bullet missing
-  the 2021-spec `ARGUMENT_DEFINITION`/`INPUT_FIELD_DEFINITION` expansion and the required-argument
-  restriction (Directives).
+  `type-system`, `queries`, `variables-arguments`, and `mutations` are all collision-free and left
+  bare), the no-live-playground note, and the genuine main-page fixes: the cross-codeTab
+  undeclared-`Post.author`-field bug (Fundamentals); the "non-null argument = required" theory
+  bullet omitting the default-value carve-out, and a wrong "crashes if result is a User"
+  union-query mistake comment (SDL); a wrong "falls back to instanceof checks" abstract-type
+  resolution claim (Type System); a wrong "directives take effect on the client side" claim
+  (Queries); two imprecise variable-type bullets — "non-null variables must always be provided"
+  (ignores the default carve-out) and "variable types must match exactly" (the spec's rule is
+  compatibility, not identity) (Variables & Arguments); an incomplete `@deprecated` locations
+  bullet missing the 2021-spec `ARGUMENT_DEFINITION`/`INPUT_FIELD_DEFINITION` expansion and the
+  required-argument restriction (Directives); and a stale file-upload QnA claiming Apollo Server
+  "supports" graphql-upload, when Apollo Server 3+ (2021) removed built-in support over a CSRF
+  loophole and now recommends signed URLs instead (Mutations).
 - **Messaging/Kafka hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Burnt-orange theme `$accent: #9a3412`, `$tint: #fff7ed`, dark `#fdba74`, dark bg `#2d1a0e`. Search prefix `kafka-`. Route: `/messaging`.
   CSS classes: `.kafka-page`, `.kafka-icon`, `.kafka-section`. Icon content: `⇄` at `font-size: 1.8rem`. `tech="javascript"`.

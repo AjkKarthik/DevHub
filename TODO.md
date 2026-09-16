@@ -9662,7 +9662,18 @@ off here with a date.
   key for the Angular hub's own directives-demo topic (missed by a quoted-only grep) — hub-prefixed
   to `gql-directives`. `@auth`/`@deprecated` escaped as `&#64;` in `.html` static text nodes. All
   6 touchpoints wired. This completes the GraphQL hub's Queries nav group entirely.
-- [ ] `/graphql/mutations` — Mutations
+- [x] 2026-09-10 — `/graphql/mutations` — Mutations. Fixed a stale file-upload QnA: "Apollo
+  Server supports it via graphql-upload" was true for Apollo Server 2 only — Apollo Server 3
+  (2021) removed built-in multipart support over a CSRF loophole (multipart/form-data skips the
+  CORS preflight), and Apollo's own current guidance recommends signed URLs instead (verified via
+  WebFetch against Apollo's own "File Upload Best Practices" post). 3 subtopics, each verified via
+  direct Node execution: (1) the Apollo Server 2-vs-3+ history and the CSRF mechanism, with both
+  real fixes (opt-in CSRF prevention, or signed URLs); (2) `executeFieldsSerially` modelled with
+  real timing (a faster second root field still waits for a slower first to FULLY finish) plus the
+  uncovered caveat — serial guarantees order, not atomicity, so an earlier field's committed side
+  effect is never rolled back if a later one throws; (3) an idempotency-key resolver for the QnA's
+  own "deduplication tokens" advice, verified across first-attempt/retry/genuinely-new-key cases.
+  SUBTOPICS key `mutations` (collision-free, left bare). All 6 touchpoints wired.
 - [ ] `/graphql/error-handling` — Mutation Error Handling
 - [ ] `/graphql/subscriptions` — Subscriptions
 - [ ] `/graphql/resolvers` — Resolvers
