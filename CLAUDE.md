@@ -9593,6 +9593,56 @@ this same check before any other new hub's first subtopic set:
    h1/breadcrumb (all 4 levels), 860px wrapper via `getComputedStyle`, tailored (not DEFAULT)
    sidebar content confirmed on two of the three. **GraphQL hub Phase 10: 8 of 20 topics
    complete.**
+16. **The `subscriptions` batch — the third and final topic in the Mutations & Subscriptions nav
+   group — tightened the main page's own federation QnA and produced this hub's most surprising
+   verified finding to date, discovered by actually installing and running real `graphql`
+   (v16.11.0) in the scratchpad rather than trusting a WebFetch summary**: the QnA said federating
+   subscriptions "requires careful design and Apollo Federation v2+." Verified via WebSearch
+   against Apollo's own GraphOS docs that the real version floor is Federation `2.4` specifically
+   (2.0-2.3 do not support subscription composition at all), and — never mentioned on the page —
+   serving federated subscriptions through a self-hosted Apollo Router additionally requires a
+   GraphOS **Enterprise** plan, validated at the router via `APOLLO_KEY`/`APOLLO_GRAPH_REF`; a
+   schema can compose perfectly and still be refused at the router on a lower-tier plan. Rewrote
+   the QnA to state both. Three subtopics: (1) **fix-adjacent** — the version/plan gap above,
+   with a Try It distinguishing the build-time composition failure (Federation < 2.4) from the
+   separate runtime entitlement gate; (2) **gap-closing, and the real find of this batch** — the
+   page names "a subscription can only have one root field" with no mechanism; verified directly
+   against `graphql-js`'s `SingleFieldSubscriptionsRule` (via `npm install graphql` in the
+   scratchpad, not just reading docs) that two literal fields, and a fragment spread introducing a
+   second field, both correctly produce a clean `"must select only one top level field"` error —
+   but a LITERAL `@skip(if: true/false)` on the single field validates cleanly with zero errors,
+   while a VARIABLE-driven `@skip(if: $flag)` on that SAME single field makes `validate()` throw
+   an uncaught exception instead of returning one, because `validate()`'s own public signature
+   (confirmed via direct inspection of the function) has no `variableValues` parameter at all, yet
+   the rule still tries to resolve the variable to decide whether to count the field. An initial,
+   unverified assumption for this subtopic ("still rejected regardless of directive value") was
+   discarded once the real test contradicted it — confirmed the discipline of running the actual
+   code before publishing a claim, not just reasoning about it; (3) **gap-closing** — the theory
+   names the `resolve` function but not one of the page's 3 codeTabs, the mistakes block, or the
+   Challenge ever writes one; verified end-to-end via `graphql-js`'s own `subscribe()` with two
+   independently-`contextValue`'d subscribers on the identical broadcast event that `resolve`
+   genuinely runs once PER SUBSCRIBER, each with its own `context`, producing a different
+   `isOwn` boolean per subscriber from the SAME underlying event — real proof, not inference.
+   `SUBTOPICS` key `subscriptions` checked collision-free (both `subtopics.ts` forms and a direct
+   `app.routes.ts` grep), left bare. **Gotcha handled**: the second subtopic's own subject is
+   literally `@skip`/`@include`, so its `.html` h1/page-subtitle/"Where this fits" text needed
+   `&#64;` escaping — caught one instance missed on the first pass (a "Where this fits" paragraph
+   on a DIFFERENT subtopic file, referencing this one) via the standard post-write sweep; the same
+   mentions inside `[innerHTML]`-bound `.ts` fields and `[prev]`/`[next]` bound attributes needed
+   no escaping, per the established rule. All three `.ts` files swept clean via the standing
+   bracket-balance/backtick-parity/apostrophe scripts (every flagged match confirmed safe — inside
+   backtick-delimited `code:`/`solution:` fields); the pre-existing base `graphql/subscriptions`
+   sidebar entry's own gotcha text was also tightened for consistency with subtopic 3's verified
+   finding (from "once per published event" to "once per SUBSCRIBER per published event"). Build
+   passed clean (`EXITCODE:0`, no real `ERROR` lines). Browser-verified against the already-running
+   dev server (picked up the file-watcher changes normally, no restart needed): no console errors
+   on any of the 4 pages; the toggle rendered and all 3 subtopic links expanded on the first click;
+   the main-page QnA fix confirmed live via direct component-data inspection; both subtopic pages
+   checked individually — correct h1/breadcrumb (all 4 levels, `&#64;` decoding to `@` correctly),
+   860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on both.
+   This completes the GraphQL hub's Mutations & Subscriptions nav group entirely (mutations,
+   error-handling, subscriptions — all 3 of 3 topics now have subtopics). **GraphQL hub Phase 10:
+   9 of 20 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -9876,34 +9926,36 @@ this same check before any other new hub's first subtopic set:
   All 22 cards `available: true` in `data/graphql/home/home.ts`. Progress: `gqlTotal=20` in progress.service.ts.
   GraphQL pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. GqlNavComponent at `shared/gql-nav/gql-nav.ts`.
-  Phase 10: **8 of 20 topics have subtopics** (`/graphql/fundamentals`, pilot batch, 2026-09-10;
+  Phase 10: **9 of 20 topics have subtopics** (`/graphql/fundamentals`, pilot batch, 2026-09-10;
   `/graphql/schema-definition-language`, 2026-09-10; `/graphql/type-system`, 2026-09-10;
   `/graphql/queries`, 2026-09-10; `/graphql/variables-arguments`, 2026-09-10;
   `/graphql/directives`, 2026-09-10 — Queries nav group fully done; `/graphql/mutations`,
-  2026-09-10; `/graphql/error-handling`, 2026-09-16 — Mutations & Subscriptions nav group
-  in progress) — see "GraphQL hub
+  2026-09-10; `/graphql/error-handling`, 2026-09-16; `/graphql/subscriptions`, 2026-09-16 —
+  Mutations & Subscriptions nav group fully done) — see "GraphQL hub
   subtopic wiring" section above for the `GqlNavComponent` accordion structural fix (17th
   `*NavComponent`-based hub in a row missing it at pilot time), the `gql-fundamentals`/
   `gql-directives`/`gql-error-handling` SUBTOPICS-map collision resolutions (`gql-fundamentals`
   collided with the JavaScript hub's own bare `fundamentals` topic key; `gql-directives` collided
   with the Angular hub's own `directives-demo` topic's unquoted bare `directives` key;
   `gql-error-handling` collided with the JavaScript hub's own bare `error-handling` topic key;
-  `schema-definition-language`, `type-system`, `queries`, `variables-arguments`, and `mutations`
-  are all collision-free and left bare), the no-live-playground note, and the genuine main-page
-  fixes: the cross-codeTab undeclared-`Post.author`-field bug (Fundamentals); the "non-null
-  argument = required" theory bullet omitting the default-value carve-out, and a wrong "crashes
-  if result is a User" union-query mistake comment (SDL); a wrong "falls back to instanceof
-  checks" abstract-type resolution claim (Type System); a wrong "directives take effect on the
-  client side" claim (Queries); two imprecise variable-type bullets — "non-null variables must
-  always be provided" (ignores the default carve-out) and "variable types must match exactly"
+  `schema-definition-language`, `type-system`, `queries`, `variables-arguments`, `mutations`, and
+  `subscriptions` are all collision-free and left bare), the no-live-playground note, and the
+  genuine main-page fixes: the cross-codeTab undeclared-`Post.author`-field bug (Fundamentals);
+  the "non-null argument = required" theory bullet omitting the default-value carve-out, and a
+  wrong "crashes if result is a User" union-query mistake comment (SDL); a wrong "falls back to
+  instanceof checks" abstract-type resolution claim (Type System); a wrong "directives take effect
+  on the client side" claim (Queries); two imprecise variable-type bullets — "non-null variables
+  must always be provided" (ignores the default carve-out) and "variable types must match exactly"
   (the spec's rule is compatibility, not identity) (Variables & Arguments); an incomplete
   `@deprecated` locations bullet missing the 2021-spec `ARGUMENT_DEFINITION`/
   `INPUT_FIELD_DEFINITION` expansion and the required-argument restriction (Directives); a stale
   file-upload QnA claiming Apollo Server "supports" graphql-upload, when Apollo Server 3+ (2021)
   removed built-in support over a CSRF loophole and now recommends signed URLs instead
-  (Mutations); and a Quick Reference + theory bullet still listing `AuthenticationError`/
+  (Mutations); a Quick Reference + theory bullet still listing `AuthenticationError`/
   `ForbiddenError`/`UserInputError`/`ApolloError` as importable, when Apollo Server 4 removed all
-  four entirely (Error Handling).
+  four entirely (Error Handling); and an imprecise federation QnA saying "Federation v2+" for
+  subscriptions when the real floor is 2.4 and serving them additionally requires a paid GraphOS
+  Enterprise entitlement, never mentioned at all (Subscriptions).
 - **Messaging/Kafka hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Burnt-orange theme `$accent: #9a3412`, `$tint: #fff7ed`, dark `#fdba74`, dark bg `#2d1a0e`. Search prefix `kafka-`. Route: `/messaging`.
   CSS classes: `.kafka-page`, `.kafka-icon`, `.kafka-section`. Icon content: `⇄` at `font-size: 1.8rem`. `tech="javascript"`.

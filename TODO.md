@@ -9685,8 +9685,21 @@ off here with a date.
   genuinely server-side failures, not Apollo's own pre-execution rejections. SUBTOPICS key
   hub-prefixed to `gql-error-handling` (bare `error-handling` already claimed by the JavaScript
   hub). All 6 touchpoints wired.
-- [ ] `/graphql/subscriptions` — Subscriptions
-- [ ] `/graphql/subscriptions` — Subscriptions
+- [x] 2026-09-16 — `/graphql/subscriptions` — Subscriptions. Tightened the federation QnA: it
+  said "Federation v2+" — verified via Apollo's own GraphOS docs that the real floor is
+  Federation 2.4, and that serving federated subscriptions through a self-hosted router
+  additionally requires a GraphOS Enterprise plan entitlement (APOLLO_KEY/APOLLO_GRAPH_REF),
+  never mentioned on the page at all. 3 subtopics, each verified via direct execution against
+  real `graphql` (npm-installed in the scratchpad, not just docs): (1) the version/plan gap
+  above; (2) a genuinely surprising find — a subscription's single top-level field guarded by a
+  VARIABLE-driven `@skip`/`@include` makes graphql-js's `validate()` throw an UNCAUGHT exception
+  instead of a clean error, since `validate()`'s own signature has no variableValues parameter at
+  all (a literal `@skip(if: true/false)` validates cleanly — the crash is specific to the
+  variable form); (3) the `resolve` function the theory names but no codeTab ever writes —
+  confirmed via `subscribe()` with two independently-contexted subscribers on the same broadcast
+  event that it runs once per SUBSCRIBER per event, each producing a different result from their
+  own context. SUBTOPICS key `subscriptions` collision-free, left bare. All 6 touchpoints wired.
+  This completes the GraphQL hub's Mutations & Subscriptions nav group entirely.
 - [ ] `/graphql/resolvers` — Resolvers
 - [ ] `/graphql/dataloader` — DataLoader & N+1 Problem
 - [ ] `/graphql/auth` — Authentication & Authorization
