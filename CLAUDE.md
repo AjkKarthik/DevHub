@@ -9451,6 +9451,53 @@ this same check before any other new hub's first subtopic set:
    860px wrapper via `getComputedStyle`, no entity leaks, `${value}` rendering as literal text,
    tailored (not DEFAULT) sidebar content confirmed. **GraphQL hub Phase 10: 5 of 20 topics
    complete.**
+13. **The `directives` batch — the third and final topic in the Queries nav group — fixed one
+   genuine main-page inaccuracy, verified via WebSearch**: the `@deprecated` theory bullet said
+   "marks a field or enum value as deprecated without removing it from the schema" — omitting
+   the 2021-spec-release expansion of valid locations. Verified via WebSearch against the current
+   GraphQL spec that `@deprecated`'s valid locations are `FIELD_DEFINITION`, `ENUM_VALUE`, and —
+   since 2021 — `ARGUMENT_DEFINITION` and `INPUT_FIELD_DEFINITION`, and that a required (non-null,
+   no default) argument or input field cannot be deprecated at all (would make a client-required
+   value officially discouraged, a contradiction the spec forbids). Rewrote the bullet to state
+   both. Three subtopics, each verified via a small TypeScript model: (1) **fix-adjacent** — a
+   `checkDeprecatedUsage(location, target)` model over all four valid locations plus the
+   required-argument restriction, with a Try It on renaming a required `token: String!` argument
+   — `@deprecated` is rejected until it is made optional; (2) **gap-closing** — the mistake and a
+   quiz question both say declaring a custom directive in SDL "does nothing" without further
+   detail; built the full before (declared but never applied) / after
+   (`schema = authDirectiveTransformer(schema)`) comparison, plus the transformer-composition-order
+   rule (last-applied wraps outermost, runs first) neither section mentions; (3) **gap-closing** —
+   a quiz question notes `FIELD` and `FIELD_DEFINITION` are different without explaining why;
+   built `canUseDirective(declaredLocations, context)` demonstrating the two location namespaces
+   are fully disjoint (`FIELD`-family executable locations for query documents vs.
+   `FIELD_DEFINITION`-family type-system locations for the SDL), and that `FIELD_DEFINITION` needs
+   a build-time schema transformer while `FIELD` needs execution-time inspection of `info` — two
+   different implementations, not a cosmetic choice. **Real `SUBTOPICS` map collision, found while
+   converting the route to a `children` array** — grepping `app.routes.ts` for `path: 'directives'`
+   turned up a SECOND match: the Angular hub's own pre-existing `directives-demo` topic, which
+   already owns an UNQUOTED bare key `directives:` in `subtopics.ts` (invisible to a quoted-only
+   grep — the same collision-detection gap this file has documented before). Hub-prefixed the
+   GraphQL entry to `gql-directives`, matching this hub's own established `gql-` progress/search
+   prefix, with the usual `// NOTE:` comment; all four `GqlNavComponent` accordion touchpoints
+   (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics` + the `@if (subtopicsOf('gql-directives');
+   as directivesSubs)` binding) use the prefixed key consistently. Bare `@auth`/`@deprecated`
+   mentions in `.html` static text nodes (h1/subtitle/"Where this fits") entity-escaped as
+   `&#64;`; the same mentions inside `[innerHTML]`-bound `.ts` theory/misconception fields and
+   `[prev]`/`[next]` bound attributes needed no escaping, per the established rule. All three
+   `.ts` files swept clean via the standing bracket-balance/backtick-parity/apostrophe scripts. No
+   `SUBTOPICS` collision beyond the resolved `gql-directives` prefix. Build passed clean
+   (`EXITCODE:0`, no real `ERROR` lines). Browser-verified after a fresh dev-server cold-start
+   (the prior server hit a transient `EACCES` port-bind failure on port 4200 and was retried on an
+   auto-assigned port): no console errors on any of the 4 pages; nav accordion opens with all 3
+   `gql-directives` subtopic links (6 toggles total across the hub, confirming all 6 Queries+
+   Foundations-group topics now have subtopics); the main-page `@deprecated` fix confirmed
+   rendering live via direct component-data inspection; all 3 subtopic pages checked individually
+   — correct h1/breadcrumb (all 4 levels), 860px wrapper via `getComputedStyle`, no entity leaks,
+   tailored (not DEFAULT) sidebar content confirmed; the Angular hub's own `/angular/directives`
+   (directives-demo) cross-hub isolation check passed, rendering completely unaffected. This
+   completes the GraphQL hub's Queries nav group entirely (queries, variables-arguments,
+   directives — all 3 of 3 topics now have subtopics). **GraphQL hub Phase 10: 6 of 20 topics
+   complete.**
 
 ## Current state (update when it changes!)
 
@@ -9734,21 +9781,26 @@ this same check before any other new hub's first subtopic set:
   All 22 cards `available: true` in `data/graphql/home/home.ts`. Progress: `gqlTotal=20` in progress.service.ts.
   GraphQL pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. GqlNavComponent at `shared/gql-nav/gql-nav.ts`.
-  Phase 10: **5 of 20 topics have subtopics** (`/graphql/fundamentals`, pilot batch, 2026-09-10;
+  Phase 10: **6 of 20 topics have subtopics** (`/graphql/fundamentals`, pilot batch, 2026-09-10;
   `/graphql/schema-definition-language`, 2026-09-10; `/graphql/type-system`, 2026-09-10;
-  `/graphql/queries`, 2026-09-10; `/graphql/variables-arguments`, 2026-09-10) — see "GraphQL hub
+  `/graphql/queries`, 2026-09-10; `/graphql/variables-arguments`, 2026-09-10;
+  `/graphql/directives`, 2026-09-10 — Queries nav group fully done) — see "GraphQL hub
   subtopic wiring" section above for the `GqlNavComponent` accordion structural fix (17th
-  `*NavComponent`-based hub in a row missing it at pilot time), the `gql-fundamentals`
-  SUBTOPICS-map collision resolution (collided with the JavaScript hub's own bare `fundamentals`
-  topic key; `schema-definition-language`, `type-system`, `queries` and `variables-arguments` are
-  all collision-free and left bare), the no-live-playground note, and the genuine main-page
-  fixes: the cross-codeTab undeclared-`Post.author`-field bug (Fundamentals); the "non-null
-  argument = required" theory bullet omitting the default-value carve-out, and a wrong "crashes
-  if result is a User" union-query mistake comment (SDL); a wrong "falls back to instanceof
-  checks" abstract-type resolution claim (Type System); a wrong "directives take effect on the
-  client side" claim (Queries); and two imprecise variable-type bullets — "non-null variables
-  must always be provided" (ignores the default carve-out) and "variable types must match
-  exactly" (the spec's rule is compatibility, not identity) (Variables & Arguments).
+  `*NavComponent`-based hub in a row missing it at pilot time), the `gql-fundamentals`/
+  `gql-directives` SUBTOPICS-map collision resolutions (`gql-fundamentals` collided with the
+  JavaScript hub's own bare `fundamentals` topic key; `gql-directives` collided with the Angular
+  hub's own `directives-demo` topic's unquoted bare `directives` key; `schema-definition-language`,
+  `type-system`, `queries` and `variables-arguments` are all collision-free and left bare), the
+  no-live-playground note, and the genuine main-page fixes: the cross-codeTab undeclared-
+  `Post.author`-field bug (Fundamentals); the "non-null argument = required" theory bullet
+  omitting the default-value carve-out, and a wrong "crashes if result is a User" union-query
+  mistake comment (SDL); a wrong "falls back to instanceof checks" abstract-type resolution claim
+  (Type System); a wrong "directives take effect on the client side" claim (Queries); two
+  imprecise variable-type bullets — "non-null variables must always be provided" (ignores the
+  default carve-out) and "variable types must match exactly" (the spec's rule is compatibility,
+  not identity) (Variables & Arguments); and an incomplete `@deprecated` locations bullet missing
+  the 2021-spec `ARGUMENT_DEFINITION`/`INPUT_FIELD_DEFINITION` expansion and the required-argument
+  restriction (Directives).
 - **Messaging/Kafka hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Burnt-orange theme `$accent: #9a3412`, `$tint: #fff7ed`, dark `#fdba74`, dark bg `#2d1a0e`. Search prefix `kafka-`. Route: `/messaging`.
   CSS classes: `.kafka-page`, `.kafka-icon`, `.kafka-section`. Icon content: `⇄` at `font-size: 1.8rem`. `tech="javascript"`.

@@ -9650,7 +9650,18 @@ off here with a date.
   real GET caching needs Automatic Persisted Queries for URL length (verified via WebSearch).
   SUBTOPICS key `variables-arguments` (collision-free, left bare). GqlNavComponent toggle
   wired. All 6 touchpoints wired.
-- [ ] `/graphql/directives` — Directives
+- [x] 2026-09-10 — `/graphql/directives` — Directives. Fixed the `@deprecated` theory bullet:
+  omitted the 2021-spec-added ARGUMENT_DEFINITION/INPUT_FIELD_DEFINITION locations and the
+  required-argument (non-null, no default) deprecation restriction (verified via WebSearch).
+  3 subtopics: (1) checkDeprecatedUsage(location, target) model over all 4 valid locations plus
+  the required-argument restriction; (2) declaring a custom directive in SDL does nothing without
+  a schema transformer applied — full before/after plus transformer-composition-order rule; (3)
+  FIELD vs FIELD_DEFINITION are disjoint location namespaces (executable vs type-system), needing
+  different implementations (build-time transformer vs execution-time `info` inspection). Real
+  SUBTOPICS collision found while converting the route: `directives` is already an UNQUOTED bare
+  key for the Angular hub's own directives-demo topic (missed by a quoted-only grep) — hub-prefixed
+  to `gql-directives`. `@auth`/`@deprecated` escaped as `&#64;` in `.html` static text nodes. All
+  6 touchpoints wired. This completes the GraphQL hub's Queries nav group entirely.
 - [ ] `/graphql/mutations` — Mutations
 - [ ] `/graphql/error-handling` — Mutation Error Handling
 - [ ] `/graphql/subscriptions` — Subscriptions
