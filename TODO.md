@@ -9700,7 +9700,18 @@ off here with a date.
   event that it runs once per SUBSCRIBER per event, each producing a different result from their
   own context. SUBTOPICS key `subscriptions` collision-free, left bare. All 6 touchpoints wired.
   This completes the GraphQL hub's Mutations & Subscriptions nav group entirely.
-- [ ] `/graphql/resolvers` — Resolvers
+- [x] 2026-09-17 — `/graphql/resolvers` — Resolvers. Fixed a stale theory bullet + QnA
+  recommending graphql-middleware/graphql-shield with no maintenance-status caveat — verified
+  neither has shipped a release in 3+ years; @envelop/graphql-middleware (useGraphQLMiddleware)
+  wraps the same shield()/rule() API on the actively-maintained envelop pipeline, and envelop v3
+  moved onResolverCalled into its own package (@envelop/on-resolve, via useOnResolve). 3
+  subtopics, all verified via direct execution against a real, npm-installed `graphql` package:
+  (1) the unmaintained-package finding + the v2-vs-v3 envelop migration; (2) a genuine, verified
+  correctness bug — a naive `info.fieldNodes` `kind === 'Field'`-only filter silently misses
+  fields selected via a FragmentSpread node, under-selecting columns for fragment-based client
+  requests; (3) `info.path` is a linked list, not a plain array — walking it produces an array
+  byte-for-byte identical to the response's own `errors[].path`, confirmed via a real executed
+  query. SUBTOPICS key `resolvers` collision-free, left bare. All 6 touchpoints wired.
 - [ ] `/graphql/dataloader` — DataLoader & N+1 Problem
 - [ ] `/graphql/auth` — Authentication & Authorization
 - [ ] `/graphql/apollo-server` — Apollo Server

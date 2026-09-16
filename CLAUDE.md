@@ -9643,6 +9643,41 @@ this same check before any other new hub's first subtopic set:
    This completes the GraphQL hub's Mutations & Subscriptions nav group entirely (mutations,
    error-handling, subscriptions — all 3 of 3 topics now have subtopics). **GraphQL hub Phase 10:
    9 of 20 topics complete.**
+17. **The `resolvers` batch — the first topic in the Resolvers & Data nav group — found and fixed
+   a genuine staleness issue verified via WebSearch/WebFetch**: a theory bullet and a QnA answer
+   both described graphql-middleware/graphql-shield as the standard way to wrap resolvers with
+   cross-cutting logic, with no mention of their maintenance status. Verified that neither package
+   (both from the same original maintainer) has shipped a release in 3+ years — confirmed
+   effectively unmaintained, not formally deprecated — and that `@envelop/graphql-middleware`
+   (`useGraphQLMiddleware`) wraps the SAME `shield()`/`rule()` API on top of the actively-maintained
+   envelop plugin pipeline, requiring no rewrite of existing permission rules. Also verified,
+   researching envelop's own migration guide, that envelop v3 moved `onResolverCalled` out of core
+   into a separate package (`@envelop/on-resolve`, via `useOnResolve`) — a custom plugin defining
+   `onResolverCalled` directly is the older v2-only pattern. Fixed the theory bullet and QnA to
+   state the current, verified guidance. Three subtopics, all verified via direct Node.js execution
+   against a real, installed `graphql` package: (1) **fix-adjacent** — the unmaintained-package
+   finding plus the v2-vs-v3 envelop migration, contrasting the old `onResolverCalled`-in-a-custom-
+   plugin pattern against the current `useOnResolve` import; (2) **gap-closing** — a genuine,
+   verified correctness bug: `info.fieldNodes[0].selectionSet.selections` correctly extracts
+   requested field names for literal-field queries, but a naive `kind === 'Field'`-only filter
+   silently misses fields selected via a `FragmentSpread` node — the fix requires also resolving
+   `info.fragments[spreadName]` and reading that fragment's own selections, verified via a real
+   executed query that a naive filter under-selects columns for a fragment-based client request;
+   (3) **gap-closing** — `info.path` is a linked-list structure (`{ key, typename, prev }`), not a
+   plain array; walking `.prev` and unshifting each `.key` produces an array byte-for-byte
+   identical to the final response's own `errors[].path` array, including representing list
+   indices as plain numbers (not stringified) — confirmed via a real executed query comparing the
+   two arrays directly. No `SUBTOPICS` collision for `resolvers` (checked both `subtopics.ts` forms
+   and grepped `app.routes.ts` directly, confirmed collision-free, left bare). All three
+   `.ts` files swept clean via the standing bracket-balance/backtick-parity/apostrophe scripts.
+   Build passed clean (`EXITCODE:0`, zero real `ERROR` lines) after a fresh dev-server cold-start.
+   Browser-verified: no console errors on any of the 4 pages; nav accordion opens with all 3
+   subtopic links (confirmed via both `window.ng.getComponent()` and a live DOM click-and-query);
+   both main-page fixes (theory bullet + QnA) confirmed rendering live via direct component-data
+   inspection; both subtopic pages checked individually — correct h1/breadcrumb (all 4 levels, the
+   curly-quote possessive "Response’s Own" rendering correctly), 860px wrapper via
+   `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on both. **GraphQL hub
+   Phase 10: 10 of 20 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -9926,20 +9961,22 @@ this same check before any other new hub's first subtopic set:
   All 22 cards `available: true` in `data/graphql/home/home.ts`. Progress: `gqlTotal=20` in progress.service.ts.
   GraphQL pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. GqlNavComponent at `shared/gql-nav/gql-nav.ts`.
-  Phase 10: **9 of 20 topics have subtopics** (`/graphql/fundamentals`, pilot batch, 2026-09-10;
+  Phase 10: **10 of 20 topics have subtopics** (`/graphql/fundamentals`, pilot batch, 2026-09-10;
   `/graphql/schema-definition-language`, 2026-09-10; `/graphql/type-system`, 2026-09-10;
   `/graphql/queries`, 2026-09-10; `/graphql/variables-arguments`, 2026-09-10;
   `/graphql/directives`, 2026-09-10 — Queries nav group fully done; `/graphql/mutations`,
   2026-09-10; `/graphql/error-handling`, 2026-09-16; `/graphql/subscriptions`, 2026-09-16 —
-  Mutations & Subscriptions nav group fully done) — see "GraphQL hub
+  Mutations & Subscriptions nav group fully done; `/graphql/resolvers`, 2026-09-17 — first
+  topic in the Resolvers & Data nav group) — see "GraphQL hub
   subtopic wiring" section above for the `GqlNavComponent` accordion structural fix (17th
   `*NavComponent`-based hub in a row missing it at pilot time), the `gql-fundamentals`/
   `gql-directives`/`gql-error-handling` SUBTOPICS-map collision resolutions (`gql-fundamentals`
   collided with the JavaScript hub's own bare `fundamentals` topic key; `gql-directives` collided
   with the Angular hub's own `directives-demo` topic's unquoted bare `directives` key;
   `gql-error-handling` collided with the JavaScript hub's own bare `error-handling` topic key;
-  `schema-definition-language`, `type-system`, `queries`, `variables-arguments`, `mutations`, and
-  `subscriptions` are all collision-free and left bare), the no-live-playground note, and the
+  `schema-definition-language`, `type-system`, `queries`, `variables-arguments`, `mutations`,
+  `subscriptions`, and `resolvers` are all collision-free and left bare), the no-live-playground
+  note, and the
   genuine main-page fixes: the cross-codeTab undeclared-`Post.author`-field bug (Fundamentals);
   the "non-null argument = required" theory bullet omitting the default-value carve-out, and a
   wrong "crashes if result is a User" union-query mistake comment (SDL); a wrong "falls back to
@@ -9953,9 +9990,12 @@ this same check before any other new hub's first subtopic set:
   removed built-in support over a CSRF loophole and now recommends signed URLs instead
   (Mutations); a Quick Reference + theory bullet still listing `AuthenticationError`/
   `ForbiddenError`/`UserInputError`/`ApolloError` as importable, when Apollo Server 4 removed all
-  four entirely (Error Handling); and an imprecise federation QnA saying "Federation v2+" for
+  four entirely (Error Handling); an imprecise federation QnA saying "Federation v2+" for
   subscriptions when the real floor is 2.4 and serving them additionally requires a paid GraphOS
-  Enterprise entitlement, never mentioned at all (Subscriptions).
+  Enterprise entitlement, never mentioned at all (Subscriptions); and a theory bullet/QnA
+  recommending graphql-middleware/graphql-shield with no mention that both are effectively
+  unmaintained (no release in 3+ years), with @envelop/graphql-middleware as the verified modern
+  replacement (Resolvers).
 - **Messaging/Kafka hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Burnt-orange theme `$accent: #9a3412`, `$tint: #fff7ed`, dark `#fdba74`, dark bg `#2d1a0e`. Search prefix `kafka-`. Route: `/messaging`.
   CSS classes: `.kafka-page`, `.kafka-icon`, `.kafka-section`. Icon content: `⇄` at `font-size: 1.8rem`. `tech="javascript"`.
