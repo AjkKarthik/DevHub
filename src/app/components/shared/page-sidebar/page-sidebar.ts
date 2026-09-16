@@ -38924,6 +38924,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Batching only works if the underlying data-fetching function accepts an ARRAY of keys and returns results in the SAME order — mismatched ordering silently returns wrong data to the wrong resolver.',
     ],
   },
+  'graphql/dataloader/default-scheduler-microtask-then-nexttick': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'cacheKeyFn Is Required to Deduplicate Object Keys', route: '/graphql/dataloader/cachekeyfn-required-for-object-keys' },
+      { label: 'DataLoader & N+1 Problem', route: '/graphql/dataloader' },
+    ],
+    tip: 'DataLoader\'s default batchScheduleFn is not a bare process.nextTick call — it\'s a microtask that then schedules the process.nextTick job, so load() calls after any number of microtask-only awaits still join the same batch.',
+    gotchas: [
+      'Only a genuine macrotask (setImmediate, setTimeout, real I/O) breaks out of the current batch — a resolver awaiting an already-resolved value stays in the same batch regardless of how many microtask hops it takes.',
+      'Confirmed by reading the installed dataloader package\'s own source directly, not just its docs — the exact mechanism is resolvedPromise.then(() => process.nextTick(fn)).',
+    ],
+  },
+  'graphql/dataloader/cachekeyfn-required-for-object-keys': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'The Default Batch Scheduler Is a Microtask, Not a Bare process.nextTick', route: '/graphql/dataloader/default-scheduler-microtask-then-nexttick' },
+      { label: 'maxBatchSize Splits One Tick Into Multiple Batch Calls', route: '/graphql/dataloader/maxbatchsize-splits-large-batches' },
+    ],
+    tip: 'The default cacheKeyFn is the identity function, and the internal cache is a plain Map — two structurally-identical object keys built separately are treated as DIFFERENT keys unless you supply a cacheKeyFn.',
+    gotchas: [
+      'Without cacheKeyFn, structurally-equal composite keys (like {tenantId, userId}) are sent to the batch function as separate entries even within the SAME batch call — verified via direct execution.',
+      'JSON.stringify works as a cacheKeyFn for simple, consistently-shaped keys, but is order-sensitive for property enumeration and drops undefined-valued properties on less predictable shapes.',
+    ],
+  },
+  'graphql/dataloader/maxbatchsize-splits-large-batches': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'cacheKeyFn Is Required to Deduplicate Object Keys', route: '/graphql/dataloader/cachekeyfn-required-for-object-keys' },
+      { label: 'DataLoader & N+1 Problem', route: '/graphql/dataloader' },
+    ],
+    tip: 'maxBatchSize does not throw or drop keys once exceeded — DataLoader automatically splits a single tick\'s worth of loads into multiple, separately-dispatched batch function calls, each capped at maxBatchSize.',
+    gotchas: [
+      'maxBatchSize caps each individual batch CALL, not the loader\'s lifetime total — verified via execution that 7 keys with maxBatchSize:3 chunk into 3 separate calls, and every load() still resolves correctly.',
+      'This is what keeps a large resolved list from generating one giant WHERE id IN (...) clause with thousands of values, which many databases reject outright.',
+    ],
+  },
   'graphql/error-handling': {
     apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
     related: [

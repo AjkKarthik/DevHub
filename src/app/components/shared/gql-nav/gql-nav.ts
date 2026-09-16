@@ -217,7 +217,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/graphql/dataloader" routerLinkActive="active"><span class="nl-text">DataLoader &amp; N+1</span>@if(p.isDone('gql-dataloader')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/graphql/dataloader" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">DataLoader &amp; N+1</span>
+        @if(p.isDone('gql-dataloader')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('dataloader')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('dataloader')"
+                  (click)="toggleSubtopics('dataloader', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('dataloader'); as dataloaderSubs) {
+        @if (isSubtopicsExpanded('dataloader')) {
+          <div class="nav-subtopics">
+            @for (s of dataloaderSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/graphql/auth" routerLinkActive="active"><span class="nl-text">Auth &amp; Authorization</span>@if(p.isDone('gql-auth')){<span class="nl-done">✓</span>}</a>
     </div>
 

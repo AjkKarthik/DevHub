@@ -4075,4 +4075,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Preventing Overfetching With info.fieldNodes', route: '/graphql/resolvers/preventing-overfetch-with-info-fieldnodes' },
     { label: 'info.path Matches the Response’s Own errors[].path Array Exactly', route: '/graphql/resolvers/info-path-matches-response-errors-path' },
   ],
+  'dataloader': [
+    { label: 'The Default Batch Scheduler Is a Microtask, Not a Bare process.nextTick', route: '/graphql/dataloader/default-scheduler-microtask-then-nexttick' },
+    { label: 'cacheKeyFn Is Required to Deduplicate Object Keys', route: '/graphql/dataloader/cachekeyfn-required-for-object-keys' },
+    { label: 'maxBatchSize Splits One Tick Into Multiple Batch Calls', route: '/graphql/dataloader/maxbatchsize-splits-large-batches' },
+  ],
 };

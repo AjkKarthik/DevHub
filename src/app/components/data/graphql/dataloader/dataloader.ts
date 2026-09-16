@@ -73,7 +73,7 @@ export class GqlDataloader {
       points: [
         '`cacheKeyFn`: customize how cache keys are compared — useful for complex/object keys.',
         '`maxBatchSize`: limits how many keys are sent to the batch function at once (prevents oversized queries).',
-        '`batchScheduleFn`: controls when batching fires — by default uses process.nextTick.',
+        '`batchScheduleFn`: controls when batching fires. By default it is NOT a bare process.nextTick call — it is a microtask (`Promise.resolve().then(...)`) that then schedules the process.nextTick job, specifically so loads issued during any pending promise-chain flush still land in the same batch.',
         '`cache: false`: disable caching for loaders where freshness matters more than deduplication.'
       ]
     }

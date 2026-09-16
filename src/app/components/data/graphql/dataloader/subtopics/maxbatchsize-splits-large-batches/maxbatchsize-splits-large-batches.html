@@ -1,0 +1,26 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="DataLoader & N+1 Problem" topicRoute="/graphql/dataloader"
+    subtopicLabel="maxBatchSize Splits One Tick Into Multiple Batch Calls" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">maxBatchSize Splits One Tick Into Multiple Batch Calls</h1>
+  <p class="page-subtitle">The QnA says DataLoader "splits large batches automatically into chunks of the specified size" — verified the exact chunking behavior, and why it matters for a real WHERE ... IN (...) query at scale.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This closes the third gap in the main page's own Advanced Options section — a QnA claim about maxBatchSize's chunking behavior verified precisely, extending the same N+1-fix codeTab's own IN (...) query concern to real scale.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="DataLoader & N+1 Problem" topicRoute="/graphql/dataloader"
+    [prev]="{ label: 'cacheKeyFn Is Required to Deduplicate Object Keys', route: '/graphql/dataloader/cachekeyfn-required-for-object-keys' }" />
+</div>
