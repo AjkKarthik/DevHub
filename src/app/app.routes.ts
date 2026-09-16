@@ -2923,7 +2923,12 @@ export const routes: Routes = [
       { path: 'cachekeyfn-required-for-object-keys', loadComponent: () => import('./components/data/graphql/dataloader/subtopics/cachekeyfn-required-for-object-keys/cachekeyfn-required-for-object-keys').then(m => m.CachekeyfnRequiredForObjectKeysSubtopic) },
       { path: 'maxbatchsize-splits-large-batches', loadComponent: () => import('./components/data/graphql/dataloader/subtopics/maxbatchsize-splits-large-batches/maxbatchsize-splits-large-batches').then(m => m.MaxbatchsizeSplitsLargeBatchesSubtopic) },
     ] },
-    { path: 'auth',                       loadComponent: () => import('./components/data/graphql/auth/auth').then(m => m.GqlAuth) },
+    { path: 'auth', children: [
+      { path: '', loadComponent: () => import('./components/data/graphql/auth/auth').then(m => m.GqlAuth) },
+      { path: 'no-cache-is-the-real-shield-default', loadComponent: () => import('./components/data/graphql/auth/subtopics/no-cache-is-the-real-shield-default/no-cache-is-the-real-shield-default').then(m => m.NoCacheIsTheRealShieldDefaultSubtopic) },
+      { path: 'contextual-vs-strict-cache-modes', loadComponent: () => import('./components/data/graphql/auth/subtopics/contextual-vs-strict-cache-modes/contextual-vs-strict-cache-modes').then(m => m.ContextualVsStrictCacheModesSubtopic) },
+      { path: 'graphql-shield-unmaintained-envelop-fix', loadComponent: () => import('./components/data/graphql/auth/subtopics/graphql-shield-unmaintained-envelop-fix/graphql-shield-unmaintained-envelop-fix').then(m => m.GraphqlShieldUnmaintainedEnvelopFixSubtopic) },
+    ] },
     { path: 'apollo-server',              loadComponent: () => import('./components/data/graphql/apollo-server/apollo-server').then(m => m.GqlApolloServer) },
     { path: 'pagination',                 loadComponent: () => import('./components/data/graphql/pagination/pagination').then(m => m.GqlPagination) },
     { path: 'apollo-client',              loadComponent: () => import('./components/data/graphql/apollo-client/apollo-client').then(m => m.GqlApolloClient) },

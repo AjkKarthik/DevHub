@@ -4080,4 +4080,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'cacheKeyFn Is Required to Deduplicate Object Keys', route: '/graphql/dataloader/cachekeyfn-required-for-object-keys' },
     { label: 'maxBatchSize Splits One Tick Into Multiple Batch Calls', route: '/graphql/dataloader/maxbatchsize-splits-large-batches' },
   ],
+  'auth': [
+    { label: 'graphql-shield Rules Are NOT Memoized by Default', route: '/graphql/auth/no-cache-is-the-real-shield-default' },
+    { label: 'Contextual vs. Strict: Which Cache Mode Does a Rule Actually Need?', route: '/graphql/auth/contextual-vs-strict-cache-modes' },
+    { label: 'graphql-shield Is Effectively Unmaintained — Use @envelop/graphql-middleware', route: '/graphql/auth/graphql-shield-unmaintained-envelop-fix' },
+  ],
 };

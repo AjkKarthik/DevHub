@@ -236,7 +236,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/graphql/auth" routerLinkActive="active"><span class="nl-text">Auth &amp; Authorization</span>@if(p.isDone('gql-auth')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/graphql/auth" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Auth &amp; Authorization</span>
+        @if(p.isDone('gql-auth')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('auth')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('auth')"
+                  (click)="toggleSubtopics('auth', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('auth'); as authSubs) {
+        @if (isSubtopicsExpanded('auth')) {
+          <div class="nav-subtopics">
+            @for (s of authSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

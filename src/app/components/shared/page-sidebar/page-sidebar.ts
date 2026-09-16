@@ -39018,6 +39018,44 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Returning null vs throwing an authorization error for an unauthorized field are different UX/security tradeoffs — decide deliberately, not by default.',
     ],
   },
+  'graphql/auth/no-cache-is-the-real-shield-default': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Contextual vs. Strict Cache Modes', route: '/graphql/auth/contextual-vs-strict-cache-modes' },
+      { label: 'Authentication & Authorization', route: '/graphql/auth' },
+    ],
+    tip: 'Verified directly against the installed graphql-shield@7.6.5 source: rule()\'s real default cache mode is no_cache, not memoization. Every rule with no cache option re-runs its check function on every call.',
+    gotchas: [
+      'A rule with an expensive check (a real database lookup, like isOwner) and no cache option pays that cost on every single field it guards in a request, not once.',
+      'cache: true is a legacy shorthand for \'strict\', and cache: false for \'no_cache\' — there is no boolean shorthand for \'contextual\'.',
+    ],
+  },
+  'graphql/auth/contextual-vs-strict-cache-modes': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'graphql-shield Rules Are NOT Memoized by Default', route: '/graphql/auth/no-cache-is-the-real-shield-default' },
+      { label: 'graphql-shield Is Effectively Unmaintained', route: '/graphql/auth/graphql-shield-unmaintained-envelop-fix' },
+      { label: 'Authentication & Authorization', route: '/graphql/auth' },
+    ],
+    tip: 'contextual caches by rule NAME only (once per request, ignores args) — safe when a rule only reads ctx. strict caches by a hash of parent+args — required when a rule\'s result depends on which object is being checked, like isOwner.',
+    gotchas: [
+      'Using contextual on a rule that depends on args.id (like ownership) caches the FIRST checked object\'s result and silently reuses it for every other object in the same request.',
+      'strict is not "always safer" — it costs more (a hash computation per unique args) and is only needed when a rule genuinely depends on parent/args.',
+    ],
+  },
+  'graphql/auth/graphql-shield-unmaintained-envelop-fix': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Contextual vs. Strict Cache Modes', route: '/graphql/auth/contextual-vs-strict-cache-modes' },
+      { label: 'graphql-middleware and graphql-shield Are Effectively Unmaintained', route: '/graphql/resolvers/graphql-middleware-shield-unmaintained' },
+      { label: 'Authentication & Authorization', route: '/graphql/auth' },
+    ],
+    tip: 'graphql-shield and graphql-middleware (same original author) have had no release in 3+ years. @envelop/graphql-middleware (useGraphQLMiddleware) wraps the identical rule()/shield() API and is actively maintained.',
+    gotchas: [
+      'Migrating only changes how the permission map is wired onto the schema — every rule()/shield() call, including the cache option, stays exactly the same.',
+      'Switching wiring layers does not make graphql-shield itself maintained — useGraphQLMiddleware still depends on the unmaintained graphql-shield package for the rule/shield API.',
+    ],
+  },
   'graphql/pagination': {
     apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
     related: [

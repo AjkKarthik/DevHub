@@ -1,0 +1,27 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Authentication & Authorization" topicRoute="/graphql/auth"
+    subtopicLabel="Contextual vs. Strict: Which Cache Mode Does a Rule Actually Need?" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">Contextual vs. Strict: Which Cache Mode Does a Rule Actually Need?</h1>
+  <p class="page-subtitle">The main page's own codeTab uses cache: 'contextual' for isAuthenticated/isAdmin and cache: 'strict' for isOwner with zero explanation of what distinguishes them — verified against graphql-shield's own source for the exact cache-key mechanics behind each mode.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This closes a real gap: the main page's own codeTab already uses both cache modes correctly, but never explains what distinguishes them. Next: the graphql-shield/graphql-middleware maintenance status and the modern replacement worth knowing about before adopting either in a new project.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Authentication & Authorization" topicRoute="/graphql/auth"
+    [prev]="{ label: 'graphql-shield Rules Are NOT Memoized by Default', route: '/graphql/auth/no-cache-is-the-real-shield-default' }"
+    [next]="{ label: 'graphql-shield Is Effectively Unmaintained — Use @envelop/graphql-middleware', route: '/graphql/auth/graphql-shield-unmaintained-envelop-fix' }" />
+</div>
