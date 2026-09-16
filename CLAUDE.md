@@ -9726,6 +9726,48 @@ this same check before any other new hub's first subtopic set:
    DEFAULT) sidebar content confirmed on all three, and the corrected sidebar `tip` entity fix
    confirmed rendering as a literal `=>` arrow, not the raw entity text. **GraphQL hub Phase 10:
    11 of 20 topics complete.**
+19. **The `auth` batch — the third topic in the Resolvers & Data nav group — found and fixed a
+   genuine, well-verified inaccuracy in the main page's own graphql-shield theory bullet**: it
+   claimed "Rules are memoized per request by default — the same rule called multiple times in
+   one request only executes once." Verified by installing `graphql-shield@7.6.5` directly and
+   reading its real compiled source: `rule(name, options)` in `cjs/constructors.js` passes
+   `options.cache` straight through with no default applied at that layer, and `Rule`'s own
+   `normalizeOptions()` method in `cjs/rules.js` confirms the real default (when `cache` is
+   undefined) is `'no_cache'` — genuinely NOT memoized. `executeRule()`'s own switch statement
+   was also read directly to confirm the exact per-mode mechanics: `'strict'` keys on a hash of
+   `{ parent, args }` (cached per unique combination); `'contextual'` keys on the rule's own name
+   only (cached once per request, ignoring args); `'no_cache'` calls the check function directly
+   every time. This directly contradicted the page's own codeTab, which already correctly opts
+   into `cache: 'contextual'` for `isAuthenticated`/`isAdmin` and `cache: 'strict'` for `isOwner`
+   — an internal tension (why explicitly configure caching if it were already the unconditional
+   default?) matching the established main-page-code-vs-main-page-prose contradiction pattern.
+   Fixed the theory bullet to state the verified real default. Also added the already-verified
+   graphql-middleware/graphql-shield-unmaintained caveat (reused from the sibling `/graphql/
+   resolvers` finding, not re-derived) to the QnA comparing `@auth` directive vs. graphql-shield,
+   which previously recommended graphql-shield for "complex permission logic" with zero
+   maintenance caveat. Three subtopics: (1) **fix-adjacent** — the verified `'no_cache'` default
+   and why the page's own codeTab opts into explicit caching, with a Try It on the real DB-call
+   cost difference (`isOwner` calling `ctx.db.posts.findById` on every guarded field vs. once) an
+   unguarded default would introduce; (2) **gap-closing** — the precise mechanical distinction
+   between `'contextual'` and `'strict'` the page's own codeTab uses on different rules but never
+   explains, with a Try It testing whether the reader can correctly pick the right mode for a
+   new hypothetical rule depending on both `ctx` and `args`; (3) **fix-adjacent/reused** — the
+   graphql-shield/graphql-middleware unmaintained finding applied specifically to this page's own
+   `@auth` vs. graphql-shield QnA, with a before/after codeTab showing the identical `rule()`/
+   `shield()` code migrating from `graphql-middleware`'s `applyMiddleware` to the actively
+   maintained `@envelop/graphql-middleware`'s `useGraphQLMiddleware`. No `SUBTOPICS` collision for
+   `auth` (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly for any other
+   hub's route path literally `auth` — none found, left bare). All three `.ts` files swept clean
+   via the standing bracket-balance/backtick-parity/apostrophe scripts (the two flagged apostrophe
+   matches confirmed safe — inside backtick-delimited `code:` fields). Build passed clean
+   (`EXITCODE:0`, zero real `ERROR` lines). Browser-verified: no console errors on either subtopic
+   page checked; nav accordion opens with all 3 subtopic links (toggle count 12 across the hub,
+   confirming `auth` is now the hub's 12th topic with subtopics); both main-page fixes (theory
+   bullet + QnA) confirmed rendering live via direct text search; the entity-escaped `&#64;` in
+   the final subtopic's own h1 title ("...Use @envelop/graphql-middleware") confirmed rendering
+   as literal text; breadcrumb showed all 4 levels; 860px wrapper confirmed via
+   `getComputedStyle`; tailored (not DEFAULT) sidebar content confirmed on the first subtopic
+   checked. **GraphQL hub Phase 10: 12 of 20 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -10009,13 +10051,14 @@ this same check before any other new hub's first subtopic set:
   All 22 cards `available: true` in `data/graphql/home/home.ts`. Progress: `gqlTotal=20` in progress.service.ts.
   GraphQL pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. GqlNavComponent at `shared/gql-nav/gql-nav.ts`.
-  Phase 10: **11 of 20 topics have subtopics** (`/graphql/fundamentals`, pilot batch, 2026-09-10;
+  Phase 10: **12 of 20 topics have subtopics** (`/graphql/fundamentals`, pilot batch, 2026-09-10;
   `/graphql/schema-definition-language`, 2026-09-10; `/graphql/type-system`, 2026-09-10;
   `/graphql/queries`, 2026-09-10; `/graphql/variables-arguments`, 2026-09-10;
   `/graphql/directives`, 2026-09-10 — Queries nav group fully done; `/graphql/mutations`,
   2026-09-10; `/graphql/error-handling`, 2026-09-16; `/graphql/subscriptions`, 2026-09-16 —
   Mutations & Subscriptions nav group fully done; `/graphql/resolvers`, 2026-09-17;
-  `/graphql/dataloader`, 2026-09-17 — second topic in the Resolvers & Data nav group) —
+  `/graphql/dataloader`, 2026-09-17; `/graphql/auth`, 2026-09-17 — third topic in the
+  Resolvers & Data nav group) —
   see "GraphQL hub
   subtopic wiring" section above for the `GqlNavComponent` accordion structural fix (17th
   `*NavComponent`-based hub in a row missing it at pilot time), the `gql-fundamentals`/
@@ -10024,7 +10067,9 @@ this same check before any other new hub's first subtopic set:
   with the Angular hub's own `directives-demo` topic's unquoted bare `directives` key;
   `gql-error-handling` collided with the JavaScript hub's own bare `error-handling` topic key;
   `schema-definition-language`, `type-system`, `queries`, `variables-arguments`, `mutations`,
-  `subscriptions`, `resolvers`, and `dataloader` are all collision-free and left bare), the
+  `subscriptions`, `resolvers`, `dataloader`, and `auth` are all collision-free and left bare — the
+  latter confirmed via a direct grep that no other hub's `app.routes.ts` route path is literally
+  `auth`), the
   no-live-playground
   note, and the
   genuine main-page fixes: the cross-codeTab undeclared-`Post.author`-field bug (Fundamentals);
@@ -10045,9 +10090,15 @@ this same check before any other new hub's first subtopic set:
   Enterprise entitlement, never mentioned at all (Subscriptions); a theory bullet/QnA
   recommending graphql-middleware/graphql-shield with no mention that both are effectively
   unmaintained (no release in 3+ years), with @envelop/graphql-middleware as the verified modern
-  replacement (Resolvers); and an imprecise batchScheduleFn bullet claiming the default "uses
+  replacement (Resolvers); an imprecise batchScheduleFn bullet claiming the default "uses
   process.nextTick," when the real, source-verified default is a microtask that THEN schedules
-  the process.nextTick job (DataLoader & N+1 Problem).
+  the process.nextTick job (DataLoader & N+1 Problem); and a theory bullet claiming graphql-shield
+  rules "are memoized per request by default," when the real, source-verified default (read
+  directly from the installed graphql-shield@7.6.5 package's own `normalizeOptions()`) is
+  `'no_cache'` — no memoization at all unless a rule explicitly opts in via `cache: 'contextual'`
+  or `cache: 'strict'`, exactly as the page's own codeTab already does; plus the reused
+  graphql-shield/graphql-middleware-unmaintained caveat applied to this page's own
+  `@auth` vs. graphql-shield QnA (Auth & Authorization).
 - **Messaging/Kafka hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Burnt-orange theme `$accent: #9a3412`, `$tint: #fff7ed`, dark `#fdba74`, dark bg `#2d1a0e`. Search prefix `kafka-`. Route: `/messaging`.
   CSS classes: `.kafka-page`, `.kafka-icon`, `.kafka-section`. Icon content: `⇄` at `font-size: 1.8rem`. `tech="javascript"`.

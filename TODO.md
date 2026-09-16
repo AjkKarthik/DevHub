@@ -9724,7 +9724,19 @@ off here with a date.
   tick's loads into multiple batch calls — verified 7 keys/maxBatchSize:3 -> 3 calls, every
   load() still correct. SUBTOPICS key `dataloader` collision-free, left bare. All 6 touchpoints
   wired.
-- [ ] `/graphql/auth` — Authentication & Authorization
+- [x] 2026-09-17 — `/graphql/auth` — Authentication & Authorization. Fixed a stale theory bullet
+  claiming graphql-shield rules "are memoized per request by default" — verified by installing
+  graphql-shield@7.6.5 directly and reading its real source (`normalizeOptions()` in
+  `cjs/rules.js`) that the true default is `'no_cache'` (no memoization at all), directly
+  contradicting the page's own codeTab, which already opts into `cache: 'contextual'`/`'strict'`
+  explicitly. Also added the reused graphql-middleware/graphql-shield-unmaintained caveat to the
+  `@auth` vs. graphql-shield QnA. 3 subtopics: (1) the verified `'no_cache'` default and why the
+  page's own codeTab opts into caching; (2) the precise mechanical distinction between
+  `'contextual'` (cached by rule name, once per request) and `'strict'` (cached by a hash of
+  `{ parent, args }`), verified directly from `executeRule()`'s own switch statement; (3) the
+  reused unmaintained finding, tailored with a before/after migration to
+  `@envelop/graphql-middleware`. SUBTOPICS key `auth` collision-free (checked both forms + a
+  direct `app.routes.ts` route-path grep), left bare. All 6 touchpoints wired.
 - [ ] `/graphql/apollo-server` — Apollo Server
 - [ ] `/graphql/pagination` — Pagination Patterns
 - [ ] `/graphql/apollo-client` — Apollo Client
