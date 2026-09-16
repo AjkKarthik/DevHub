@@ -1,0 +1,26 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Resolvers" topicRoute="/graphql/resolvers"
+    subtopicLabel="info.path Matches the Response’s Own errors[].path Array Exactly" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">info.path Matches the Response’s Own errors[].path Array Exactly</h1>
+  <p class="page-subtitle">The QnA names "the field path for error reporting" in passing — no codeTab ever reads it. Verified end to end against real graphql-js: a resolver's own info.path is byte-for-byte identical to what the client sees in errors[].path.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the Resolvers topic by finally putting info.path to use — correlating a resolver's own internal error logs with the exact path the client sees in their own response, verified against real graphql-js execution rather than assumed.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Resolvers" topicRoute="/graphql/resolvers"
+    [prev]="{ label: 'Preventing Overfetching With info.fieldNodes', route: '/graphql/resolvers/preventing-overfetch-with-info-fieldnodes' }" />
+</div>

@@ -38876,6 +38876,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A resolver throwing an error partially fails the response (that field becomes null with an error) rather than failing the entire query, unless the field is non-null.',
     ],
   },
+  'graphql/resolvers/graphql-middleware-shield-unmaintained': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Preventing Overfetching With info.fieldNodes', route: '/graphql/resolvers/preventing-overfetch-with-info-fieldnodes' },
+      { label: 'Resolvers', route: '/graphql/resolvers' },
+    ],
+    tip: 'graphql-middleware and graphql-shield are both effectively unmaintained (no release in 3+ years) — @envelop/graphql-middleware wraps the SAME shield()/rule() API on top of the actively-maintained envelop plugin pipeline, so existing permission rules don\'t need rewriting.',
+    gotchas: [
+      'Neither package is formally deprecated on npm — the existing code keeps running, the risk is the absence of future patches and compatibility fixes, not an imminent break.',
+      'envelop v3 moved onResolverCalled into its own package (@envelop/on-resolve, via useOnResolve) — a custom plugin defining onResolverCalled directly is the older v2 pattern.',
+    ],
+  },
+  'graphql/resolvers/preventing-overfetch-with-info-fieldnodes': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'graphql-middleware and graphql-shield Are Effectively Unmaintained', route: '/graphql/resolvers/graphql-middleware-shield-unmaintained' },
+      { label: 'info.path Matches the Response\'s Own errors[].path Array Exactly', route: '/graphql/resolvers/info-path-matches-response-errors-path' },
+    ],
+    tip: 'info.fieldNodes[0].selectionSet.selections gives the requested field names for a targeted DB SELECT — but a naive Field-only filter silently misses fields selected through a fragment spread, since those appear as a separate FragmentSpread node kind.',
+    gotchas: [
+      'A FragmentSpread node has no .name.value the way a Field node does — resolve it via info.fragments[spreadName] and read that fragment\'s own selections too, or you silently under-select.',
+      'This is a correctness bug, not just a performance one — the client gets null back for fields it legitimately requested through a fragment, with no error anywhere.',
+    ],
+  },
+  'graphql/resolvers/info-path-matches-response-errors-path': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Preventing Overfetching With info.fieldNodes', route: '/graphql/resolvers/preventing-overfetch-with-info-fieldnodes' },
+      { label: 'Resolvers', route: '/graphql/resolvers' },
+    ],
+    tip: 'info.path is a linked list ({ key, typename, prev }), not a plain array — walking it via .prev and unshifting each .key produces an array byte-for-byte identical to the final response\'s own errors[].path, confirmed via a real executed query.',
+    gotchas: [
+      'A list index appears as a plain NUMBER in both info.path and errors[].path, never a stringified index — comparing against a string index silently never matches.',
+      'Tagging an internal error log with pathToArray(info.path) lets you correlate it with the exact client-visible error, with no separate path-tracking logic needed.',
+    ],
+  },
   'graphql/dataloader': {
     apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
     related: [

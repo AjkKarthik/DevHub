@@ -2911,7 +2911,12 @@ export const routes: Routes = [
       { path: 'skip-include-crashes-subscription-validation', loadComponent: () => import('./components/data/graphql/subscriptions/subtopics/skip-include-crashes-subscription-validation/skip-include-crashes-subscription-validation').then(m => m.SkipIncludeCrashesSubscriptionValidationSubtopic) },
       { path: 'resolve-runs-per-subscriber-with-their-context', loadComponent: () => import('./components/data/graphql/subscriptions/subtopics/resolve-runs-per-subscriber-with-their-context/resolve-runs-per-subscriber-with-their-context').then(m => m.ResolveRunsPerSubscriberWithTheirContextSubtopic) },
     ] },
-    { path: 'resolvers',                  loadComponent: () => import('./components/data/graphql/resolvers/resolvers').then(m => m.GqlResolvers) },
+    { path: 'resolvers', children: [
+      { path: '', loadComponent: () => import('./components/data/graphql/resolvers/resolvers').then(m => m.GqlResolvers) },
+      { path: 'graphql-middleware-shield-unmaintained', loadComponent: () => import('./components/data/graphql/resolvers/subtopics/graphql-middleware-shield-unmaintained/graphql-middleware-shield-unmaintained').then(m => m.GraphqlMiddlewareShieldUnmaintainedSubtopic) },
+      { path: 'preventing-overfetch-with-info-fieldnodes', loadComponent: () => import('./components/data/graphql/resolvers/subtopics/preventing-overfetch-with-info-fieldnodes/preventing-overfetch-with-info-fieldnodes').then(m => m.PreventingOverfetchWithInfoFieldnodesSubtopic) },
+      { path: 'info-path-matches-response-errors-path', loadComponent: () => import('./components/data/graphql/resolvers/subtopics/info-path-matches-response-errors-path/info-path-matches-response-errors-path').then(m => m.InfoPathMatchesResponseErrorsPathSubtopic) },
+    ] },
     { path: 'dataloader',                 loadComponent: () => import('./components/data/graphql/dataloader/dataloader').then(m => m.GqlDataloader) },
     { path: 'auth',                       loadComponent: () => import('./components/data/graphql/auth/auth').then(m => m.GqlAuth) },
     { path: 'apollo-server',              loadComponent: () => import('./components/data/graphql/apollo-server/apollo-server').then(m => m.GqlApolloServer) },

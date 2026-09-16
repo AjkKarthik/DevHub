@@ -4070,4 +4070,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: '@skip and @include Can Crash Subscription Validation, Not Just Reject It', route: '/graphql/subscriptions/skip-include-crashes-subscription-validation' },
     { label: 'resolve Runs Once Per Subscriber, With Their Own Context', route: '/graphql/subscriptions/resolve-runs-per-subscriber-with-their-context' },
   ],
+  'resolvers': [
+    { label: 'graphql-middleware and graphql-shield Are Effectively Unmaintained', route: '/graphql/resolvers/graphql-middleware-shield-unmaintained' },
+    { label: 'Preventing Overfetching With info.fieldNodes', route: '/graphql/resolvers/preventing-overfetch-with-info-fieldnodes' },
+    { label: 'info.path Matches the Response’s Own errors[].path Array Exactly', route: '/graphql/resolvers/info-path-matches-response-errors-path' },
+  ],
 };
