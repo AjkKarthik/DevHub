@@ -9674,7 +9674,18 @@ off here with a date.
   effect is never rolled back if a later one throws; (3) an idempotency-key resolver for the QnA's
   own "deduplication tokens" advice, verified across first-attempt/retry/genuinely-new-key cases.
   SUBTOPICS key `mutations` (collision-free, left bare). All 6 touchpoints wired.
-- [ ] `/graphql/error-handling` — Mutation Error Handling
+- [x] 2026-09-16 — `/graphql/error-handling` — Mutation Error Handling. Fixed a stale Quick
+  Reference + theory bullet: AuthenticationError, ForbiddenError, UserInputError, and ApolloError
+  were listed as importable, but Apollo Server 4 (Sept 2022) removed all four entirely — not
+  deprecated, gone (verified via WebSearch). 3 subtopics: (1) the v3-vs-v4 removal, with a Try It
+  on whether a local wrapper-function replacement reintroduces the problem (it doesn't); (2) the
+  payload `userErrors: [UserError!]!` pattern the page's own QnA names but never builds — schema,
+  resolver, and client; (3) the `ApolloServerErrorCode` enum (never mentioned on the page, verified
+  via WebFetch against Apollo's own docs — 8 members) for routing formatError alerting to only
+  genuinely server-side failures, not Apollo's own pre-execution rejections. SUBTOPICS key
+  hub-prefixed to `gql-error-handling` (bare `error-handling` already claimed by the JavaScript
+  hub). All 6 touchpoints wired.
+- [ ] `/graphql/subscriptions` — Subscriptions
 - [ ] `/graphql/subscriptions` — Subscriptions
 - [ ] `/graphql/resolvers` — Resolvers
 - [ ] `/graphql/dataloader` — DataLoader & N+1 Problem

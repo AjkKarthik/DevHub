@@ -9546,6 +9546,53 @@ this same check before any other new hub's first subtopic set:
    the code block's own "View Code" toggle was still collapsed — clicking it through confirmed the
    generic-syntax code sample renders correctly, not a real bug. **GraphQL hub Phase 10: 7 of 20
    topics complete.**
+15. **The `error-handling` batch — the second topic in the Mutations & Subscriptions nav group —
+   found and fixed a genuine, well-verified staleness issue in the main page's own Quick Reference
+   and a theory bullet**: both listed `ApolloError`, `AuthenticationError`, `ForbiddenError`, and
+   `UserInputError` as if still importable, with the theory bullet saying "Apollo Server provides
+   pre-built classes... each sets the correct code." Verified via WebSearch that Apollo Server 4
+   (September 2022) removed all four entirely — not deprecated, gone; `@apollo/server` never
+   exports those names, so a v3 import fails outright rather than printing a warning. Rewrote the
+   four QuickRef descriptions and the theory bullet to state the removal and the only supported
+   replacement (`throw new GraphQLError(msg, { extensions: { code: '...' } })`). Three subtopics,
+   the last two built around a real, previously-undocumented API verified via WebFetch against
+   Apollo's own docs: (1) **fix-adjacent** — a v3-vs-v4 codeTab comparison and a Try It on whether
+   a local wrapper function replacing the removed classes reintroduces the problem Apollo removed
+   them to solve (it does not — the classes never did more than call `new GraphQLError(...)`
+   internally); (2) **gap-closing** — the page's own QnA draws the exact line between throwing
+   `GraphQLError` (unexpected/system errors) and a payload `userErrors: [UserError!]!` list
+   (expected domain validation, Shopify/GitHub's own convention) but no codeTab ever writes the
+   schema; built the full type, a resolver checking auth-via-throw and three field validations
+   via `userErrors`, and the client-side handling, with a Try It distinguishing "the caller
+   doesn't own the account" (throw, FORBIDDEN — not a normal form-fill outcome) from "malformed
+   email" (userErrors — a real user can legitimately typo an email); (3) **gap-closing** — Apollo
+   Server 4 also stopped exporting its own internal error subclasses (`SyntaxError`,
+   `ValidationError`); verified via WebFetch against Apollo's docs that the replacement is a
+   single enum, `ApolloServerErrorCode` (from `@apollo/server/errors`, 8 members:
+   `GRAPHQL_PARSE_FAILED`, `GRAPHQL_VALIDATION_FAILED`, `BAD_USER_INPUT`,
+   `PERSISTED_QUERY_NOT_FOUND`, `PERSISTED_QUERY_NOT_SUPPORTED`, `OPERATION_RESOLUTION_FAILURE`,
+   `BAD_REQUEST`, `INTERNAL_SERVER_ERROR`) — never mentioned anywhere on the main page; built a
+   `formatError` that routes Apollo's own pre-execution codes to quiet metrics and everything else
+   (including the developer's own resolver-thrown codes) to logging/alerting, with a Try It on a
+   typo'd field name in a query producing `GRAPHQL_VALIDATION_FAILED` and confirming no resolver
+   ever ran, so the alerting branch correctly never fires. `SUBTOPICS` key hub-prefixed to
+   `gql-error-handling` (bare `error-handling` already claimed by the JavaScript hub, confirmed via
+   both quoted and unquoted `subtopics.ts` forms), matching this hub's own established `gql-`
+   progress/search prefix; the `GqlNavComponent` toggle markup was added to the topic's own
+   Mutations & Subscriptions nav link (a plain link with no toggle before this batch, unlike
+   `mutations`/`directives`, which already had the accordion pattern from earlier batches). All
+   three `.ts` files swept clean via the standing bracket-balance/backtick-parity/apostrophe
+   scripts (every flagged apostrophe match confirmed safe — inside backtick-delimited
+   `code:`/`solution:` fields or `//` comments); no bare `@word` or single-`{` needed escaping in
+   any `.html` file this batch. Build passed clean (`EXITCODE:0`, no real `ERROR` lines).
+   Browser-verified against the already-running dev server (picked up the file-watcher changes
+   normally, no restart needed): no console errors on any of the 4 pages; the toggle rendered
+   correctly and all 3 subtopic links expanded on the first click, confirmed via both
+   `window.ng.getComponent()` and a live DOM query; both main-page fixes (QuickRef + theory
+   bullet) confirmed rendering live; all 3 subtopic pages checked individually — correct
+   h1/breadcrumb (all 4 levels), 860px wrapper via `getComputedStyle`, tailored (not DEFAULT)
+   sidebar content confirmed on two of the three. **GraphQL hub Phase 10: 8 of 20 topics
+   complete.**
 
 ## Current state (update when it changes!)
 
@@ -9829,29 +9876,34 @@ this same check before any other new hub's first subtopic set:
   All 22 cards `available: true` in `data/graphql/home/home.ts`. Progress: `gqlTotal=20` in progress.service.ts.
   GraphQL pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. GqlNavComponent at `shared/gql-nav/gql-nav.ts`.
-  Phase 10: **7 of 20 topics have subtopics** (`/graphql/fundamentals`, pilot batch, 2026-09-10;
+  Phase 10: **8 of 20 topics have subtopics** (`/graphql/fundamentals`, pilot batch, 2026-09-10;
   `/graphql/schema-definition-language`, 2026-09-10; `/graphql/type-system`, 2026-09-10;
   `/graphql/queries`, 2026-09-10; `/graphql/variables-arguments`, 2026-09-10;
   `/graphql/directives`, 2026-09-10 — Queries nav group fully done; `/graphql/mutations`,
-  2026-09-10 — first topic in the Mutations & Subscriptions nav group) — see "GraphQL hub
+  2026-09-10; `/graphql/error-handling`, 2026-09-16 — Mutations & Subscriptions nav group
+  in progress) — see "GraphQL hub
   subtopic wiring" section above for the `GqlNavComponent` accordion structural fix (17th
   `*NavComponent`-based hub in a row missing it at pilot time), the `gql-fundamentals`/
-  `gql-directives` SUBTOPICS-map collision resolutions (`gql-fundamentals` collided with the
-  JavaScript hub's own bare `fundamentals` topic key; `gql-directives` collided with the Angular
-  hub's own `directives-demo` topic's unquoted bare `directives` key; `schema-definition-language`,
-  `type-system`, `queries`, `variables-arguments`, and `mutations` are all collision-free and left
-  bare), the no-live-playground note, and the genuine main-page fixes: the cross-codeTab
-  undeclared-`Post.author`-field bug (Fundamentals); the "non-null argument = required" theory
-  bullet omitting the default-value carve-out, and a wrong "crashes if result is a User"
-  union-query mistake comment (SDL); a wrong "falls back to instanceof checks" abstract-type
-  resolution claim (Type System); a wrong "directives take effect on the client side" claim
-  (Queries); two imprecise variable-type bullets — "non-null variables must always be provided"
-  (ignores the default carve-out) and "variable types must match exactly" (the spec's rule is
-  compatibility, not identity) (Variables & Arguments); an incomplete `@deprecated` locations
-  bullet missing the 2021-spec `ARGUMENT_DEFINITION`/`INPUT_FIELD_DEFINITION` expansion and the
-  required-argument restriction (Directives); and a stale file-upload QnA claiming Apollo Server
-  "supports" graphql-upload, when Apollo Server 3+ (2021) removed built-in support over a CSRF
-  loophole and now recommends signed URLs instead (Mutations).
+  `gql-directives`/`gql-error-handling` SUBTOPICS-map collision resolutions (`gql-fundamentals`
+  collided with the JavaScript hub's own bare `fundamentals` topic key; `gql-directives` collided
+  with the Angular hub's own `directives-demo` topic's unquoted bare `directives` key;
+  `gql-error-handling` collided with the JavaScript hub's own bare `error-handling` topic key;
+  `schema-definition-language`, `type-system`, `queries`, `variables-arguments`, and `mutations`
+  are all collision-free and left bare), the no-live-playground note, and the genuine main-page
+  fixes: the cross-codeTab undeclared-`Post.author`-field bug (Fundamentals); the "non-null
+  argument = required" theory bullet omitting the default-value carve-out, and a wrong "crashes
+  if result is a User" union-query mistake comment (SDL); a wrong "falls back to instanceof
+  checks" abstract-type resolution claim (Type System); a wrong "directives take effect on the
+  client side" claim (Queries); two imprecise variable-type bullets — "non-null variables must
+  always be provided" (ignores the default carve-out) and "variable types must match exactly"
+  (the spec's rule is compatibility, not identity) (Variables & Arguments); an incomplete
+  `@deprecated` locations bullet missing the 2021-spec `ARGUMENT_DEFINITION`/
+  `INPUT_FIELD_DEFINITION` expansion and the required-argument restriction (Directives); a stale
+  file-upload QnA claiming Apollo Server "supports" graphql-upload, when Apollo Server 3+ (2021)
+  removed built-in support over a CSRF loophole and now recommends signed URLs instead
+  (Mutations); and a Quick Reference + theory bullet still listing `AuthenticationError`/
+  `ForbiddenError`/`UserInputError`/`ApolloError` as importable, when Apollo Server 4 removed all
+  four entirely (Error Handling).
 - **Messaging/Kafka hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Burnt-orange theme `$accent: #9a3412`, `$tint: #fff7ed`, dark `#fdba74`, dark bg `#2d1a0e`. Search prefix `kafka-`. Route: `/messaging`.
   CSS classes: `.kafka-page`, `.kafka-icon`, `.kafka-section`. Icon content: `⇄` at `font-size: 1.8rem`. `tech="javascript"`.
