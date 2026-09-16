@@ -9712,7 +9712,18 @@ off here with a date.
   requests; (3) `info.path` is a linked list, not a plain array — walking it produces an array
   byte-for-byte identical to the response's own `errors[].path`, confirmed via a real executed
   query. SUBTOPICS key `resolvers` collision-free, left bare. All 6 touchpoints wired.
-- [ ] `/graphql/dataloader` — DataLoader & N+1 Problem
+- [x] 2026-09-17 — `/graphql/dataloader` — DataLoader & N+1 Problem. Fixed an imprecise theory
+  bullet: batchScheduleFn "by default uses process.nextTick" — verified by reading the installed
+  dataloader v2.2.3 package's own source that the real default is a microtask
+  (resolvedPromise.then()) that THEN schedules the process.nextTick job, not a bare call. 3
+  subtopics, all verified via direct execution against the real, npm-installed package: (1) the
+  scheduler mechanism, with the practical consequence that even 50 chained microtask-only await
+  hops still join the same batch, only a real macrotask breaks out; (2) cacheKeyFn's default
+  identity function never deduplicates structurally-equal object keys — verified batch size 2
+  without it vs. 1 with JSON.stringify as the key fn; (3) maxBatchSize automatically chunks a
+  tick's loads into multiple batch calls — verified 7 keys/maxBatchSize:3 -> 3 calls, every
+  load() still correct. SUBTOPICS key `dataloader` collision-free, left bare. All 6 touchpoints
+  wired.
 - [ ] `/graphql/auth` — Authentication & Authorization
 - [ ] `/graphql/apollo-server` — Apollo Server
 - [ ] `/graphql/pagination` — Pagination Patterns

@@ -9678,6 +9678,54 @@ this same check before any other new hub's first subtopic set:
    curly-quote possessive "Response’s Own" rendering correctly), 860px wrapper via
    `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on both. **GraphQL hub
    Phase 10: 10 of 20 topics complete.**
+18. **The `dataloader` batch — the second topic in the Resolvers & Data nav group — found and
+   fixed a genuine, well-verified precision issue in the main page's own Advanced Options theory
+   bullet**: it said `batchScheduleFn`, "by default uses process.nextTick" — verified by reading
+   the installed `dataloader` v2.2.3 package's own source directly (not just its docs) that the
+   real default is `resolvedPromise.then(() => process.nextTick(fn))` — a shared, cached
+   `Promise.resolve()` whose `.then()` callback is what actually schedules the dispatch as a
+   `process.nextTick` job. The package's own source comment explains why: a bare
+   `process.nextTick(fn)` risks dispatching BEFORE pending `.then()` continuations from the
+   current tick get a chance to call `load()` — the extra microtask hop guarantees the dispatch
+   happens after the current microtask queue has been given a chance to enqueue more loads.
+   Tightened the theory bullet to state the real two-step mechanism. Three subtopics, all
+   verified via direct execution against the real, npm-installed package rather than assumed: (1)
+   **fix-adjacent** — the verified scheduler mechanism, with a Try It establishing the practical
+   consequence: a `load()` call issued synchronously, one from inside `Promise.resolve().then()`,
+   and even one after 50 chained `await Promise.resolve()` hops all land in the SAME batch call —
+   only a genuine macrotask (`setImmediate`, `setTimeout`, real I/O) breaks out; (2)
+   **gap-closing** — the QnA names `cacheKeyFn` for composite object keys in one line ("use
+   cacheKeyFn... JSON.stringify") but never shows what breaks without it; verified directly
+   against the package's own source that the default `cacheKeyFn` is the identity function, and
+   confirmed via execution that two structurally-identical-but-separately-created objects are
+   sent to the batch function as SEPARATE entries (batch size 2) without a `cacheKeyFn`, collapsing
+   to one (batch size 1, identical cached result) with `JSON.stringify` as the key function; (3)
+   **gap-closing** — the QnA claims maxBatchSize "splits large batches automatically into chunks"
+   with zero codeTab demonstrating it; verified via direct execution that 7 keys against
+   `maxBatchSize: 3` chunk into exactly 3 separate batch function calls (`[1,2,3]`, `[4,5,6]`,
+   `[7]`), with every individual `.load()` call still resolving correctly regardless of which
+   chunk produced it — directly extending the main page's own N+1-fix codeTab's `WHERE id IN
+   (...)` query-size concern to real scale. **A real, self-caught mistake caught and fixed before
+   the build, not the standing sweep**: an early draft of a `page-sidebar.ts` `tip` field used the
+   HTML entity `&gt;` for a literal `=>` inside `resolvedPromise.then(() => process.nextTick(fn))`
+   — checking the real sidebar template (`page-sidebar.html`) confirmed `tip`/`gotchas` bind via
+   PLAIN interpolation (`{{ data().tip }}`), not `[innerHTML]`, so the entity would have rendered
+   as the literal raw text `&gt;` to the reader instead of `>`; fixed to the raw, unescaped
+   character. No `SUBTOPICS` collision for `dataloader` (checked both `subtopics.ts` forms and
+   grepped `app.routes.ts` directly, confirmed collision-free, left bare). All three `.ts` files
+   swept clean via the standing bracket-balance/backtick-parity/apostrophe scripts (every flagged
+   apostrophe match confirmed safe — inside backtick-delimited `code:`/`solution:` fields). Build
+   passed clean (`EXITCODE:0`, zero real `ERROR` lines) against the already-running dev server
+   (picked up the file-watcher changes normally, no restart needed). Browser-verified: no console
+   errors on any of the 4 pages; nav accordion opens with all 3 subtopic links (confirmed via both
+   `window.ng.getComponent()` and a live DOM click-and-query); the main-page theory fix confirmed
+   rendering live via direct component-data inspection; all 3 subtopic pages checked individually
+   — correct h1/breadcrumb (all 4 levels), 860px wrapper via `getComputedStyle`, the `{tenantId,
+   userId}` brace-containing prose mention confirmed rendering as literal text (not vanished,
+   confirming single braces are safe inside `[innerHTML]`-bound TS string fields), tailored (not
+   DEFAULT) sidebar content confirmed on all three, and the corrected sidebar `tip` entity fix
+   confirmed rendering as a literal `=>` arrow, not the raw entity text. **GraphQL hub Phase 10:
+   11 of 20 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -9961,13 +10009,14 @@ this same check before any other new hub's first subtopic set:
   All 22 cards `available: true` in `data/graphql/home/home.ts`. Progress: `gqlTotal=20` in progress.service.ts.
   GraphQL pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. GqlNavComponent at `shared/gql-nav/gql-nav.ts`.
-  Phase 10: **10 of 20 topics have subtopics** (`/graphql/fundamentals`, pilot batch, 2026-09-10;
+  Phase 10: **11 of 20 topics have subtopics** (`/graphql/fundamentals`, pilot batch, 2026-09-10;
   `/graphql/schema-definition-language`, 2026-09-10; `/graphql/type-system`, 2026-09-10;
   `/graphql/queries`, 2026-09-10; `/graphql/variables-arguments`, 2026-09-10;
   `/graphql/directives`, 2026-09-10 — Queries nav group fully done; `/graphql/mutations`,
   2026-09-10; `/graphql/error-handling`, 2026-09-16; `/graphql/subscriptions`, 2026-09-16 —
-  Mutations & Subscriptions nav group fully done; `/graphql/resolvers`, 2026-09-17 — first
-  topic in the Resolvers & Data nav group) — see "GraphQL hub
+  Mutations & Subscriptions nav group fully done; `/graphql/resolvers`, 2026-09-17;
+  `/graphql/dataloader`, 2026-09-17 — second topic in the Resolvers & Data nav group) —
+  see "GraphQL hub
   subtopic wiring" section above for the `GqlNavComponent` accordion structural fix (17th
   `*NavComponent`-based hub in a row missing it at pilot time), the `gql-fundamentals`/
   `gql-directives`/`gql-error-handling` SUBTOPICS-map collision resolutions (`gql-fundamentals`
@@ -9975,7 +10024,8 @@ this same check before any other new hub's first subtopic set:
   with the Angular hub's own `directives-demo` topic's unquoted bare `directives` key;
   `gql-error-handling` collided with the JavaScript hub's own bare `error-handling` topic key;
   `schema-definition-language`, `type-system`, `queries`, `variables-arguments`, `mutations`,
-  `subscriptions`, and `resolvers` are all collision-free and left bare), the no-live-playground
+  `subscriptions`, `resolvers`, and `dataloader` are all collision-free and left bare), the
+  no-live-playground
   note, and the
   genuine main-page fixes: the cross-codeTab undeclared-`Post.author`-field bug (Fundamentals);
   the "non-null argument = required" theory bullet omitting the default-value carve-out, and a
@@ -9992,10 +10042,12 @@ this same check before any other new hub's first subtopic set:
   `ForbiddenError`/`UserInputError`/`ApolloError` as importable, when Apollo Server 4 removed all
   four entirely (Error Handling); an imprecise federation QnA saying "Federation v2+" for
   subscriptions when the real floor is 2.4 and serving them additionally requires a paid GraphOS
-  Enterprise entitlement, never mentioned at all (Subscriptions); and a theory bullet/QnA
+  Enterprise entitlement, never mentioned at all (Subscriptions); a theory bullet/QnA
   recommending graphql-middleware/graphql-shield with no mention that both are effectively
   unmaintained (no release in 3+ years), with @envelop/graphql-middleware as the verified modern
-  replacement (Resolvers).
+  replacement (Resolvers); and an imprecise batchScheduleFn bullet claiming the default "uses
+  process.nextTick," when the real, source-verified default is a microtask that THEN schedules
+  the process.nextTick job (DataLoader & N+1 Problem).
 - **Messaging/Kafka hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Burnt-orange theme `$accent: #9a3412`, `$tint: #fff7ed`, dark `#fdba74`, dark bg `#2d1a0e`. Search prefix `kafka-`. Route: `/messaging`.
   CSS classes: `.kafka-page`, `.kafka-icon`, `.kafka-section`. Icon content: `⇄` at `font-size: 1.8rem`. `tech="javascript"`.
