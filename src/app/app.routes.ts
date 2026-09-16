@@ -2893,7 +2893,12 @@ export const routes: Routes = [
       { path: 'directive-declaration-vs-transformer', loadComponent: () => import('./components/data/graphql/directives/subtopics/directive-declaration-vs-transformer/directive-declaration-vs-transformer').then(m => m.DirectiveDeclarationVsTransformerSubtopic) },
       { path: 'field-vs-field-definition-locations', loadComponent: () => import('./components/data/graphql/directives/subtopics/field-vs-field-definition-locations/field-vs-field-definition-locations').then(m => m.FieldVsFieldDefinitionLocationsSubtopic) },
     ] },
-    { path: 'mutations',                  loadComponent: () => import('./components/data/graphql/mutations/mutations').then(m => m.GqlMutations) },
+    { path: 'mutations', children: [
+      { path: '', loadComponent: () => import('./components/data/graphql/mutations/mutations').then(m => m.GqlMutations) },
+      { path: 'apollo-server-dropped-upload-support', loadComponent: () => import('./components/data/graphql/mutations/subtopics/apollo-server-dropped-upload-support/apollo-server-dropped-upload-support').then(m => m.ApolloServerDroppedUploadSupportSubtopic) },
+      { path: 'serial-execution-is-not-a-transaction', loadComponent: () => import('./components/data/graphql/mutations/subtopics/serial-execution-is-not-a-transaction/serial-execution-is-not-a-transaction').then(m => m.SerialExecutionIsNotATransactionSubtopic) },
+      { path: 'idempotency-keys-for-destructive-mutations', loadComponent: () => import('./components/data/graphql/mutations/subtopics/idempotency-keys-for-destructive-mutations/idempotency-keys-for-destructive-mutations').then(m => m.IdempotencyKeysForDestructiveMutationsSubtopic) },
+    ] },
     { path: 'error-handling',             loadComponent: () => import('./components/data/graphql/error-handling/error-handling').then(m => m.GqlErrorHandling) },
     { path: 'subscriptions',              loadComponent: () => import('./components/data/graphql/subscriptions/subscriptions').then(m => m.GqlSubscriptions) },
     { path: 'resolvers',                  loadComponent: () => import('./components/data/graphql/resolvers/resolvers').then(m => m.GqlResolvers) },

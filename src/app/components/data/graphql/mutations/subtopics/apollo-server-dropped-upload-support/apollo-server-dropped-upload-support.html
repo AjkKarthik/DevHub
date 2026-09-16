@@ -1,0 +1,26 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Mutations" topicRoute="/graphql/mutations"
+    subtopicLabel="Apollo Server Dropped Built-In Upload Support in v3" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">Apollo Server Dropped Built-In Upload Support in v3</h1>
+  <p class="page-subtitle">The main page said "Apollo Server supports it via graphql-upload." That was true for Apollo Server 2 — Apollo Server 3 (2021) removed the built-in integration, and it never came back. Here is why, and what Apollo recommends instead.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the main page's file-upload QnA and explains the CSRF reasoning behind Apollo's own current recommendation. Next: the "mutations execute serially" claim, made concrete with real timing — plus the important caveat that serial execution is not a transaction.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Mutations" topicRoute="/graphql/mutations"
+    [next]="{ label: 'Serial Execution Is Not a Transaction', route: '/graphql/mutations/serial-execution-is-not-a-transaction' }" />
+</div>

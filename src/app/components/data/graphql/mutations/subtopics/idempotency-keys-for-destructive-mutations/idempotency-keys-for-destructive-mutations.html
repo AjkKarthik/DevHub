@@ -1,0 +1,26 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Mutations" topicRoute="/graphql/mutations"
+    subtopicLabel="Guarding a Destructive Mutation With an Idempotency Key" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">Guarding a Destructive Mutation With an Idempotency Key</h1>
+  <p class="page-subtitle">The QnA says destructive mutations "should be guarded with deduplication tokens" in one sentence, with no code anywhere on the page. Here is the actual pattern, verified end to end.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This turns the main page's one-line "deduplication tokens" advice into a working resolver, and distinguishes it from the previous subtopic's serial-execution ordering guarantee — the two are separate mechanisms for separate problems. Back to the topic overview for the full mutations picture.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Mutations" topicRoute="/graphql/mutations"
+    [prev]="{ label: 'Serial Execution Is Not a Transaction', route: '/graphql/mutations/serial-execution-is-not-a-transaction' }" />
+</div>

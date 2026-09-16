@@ -4054,4 +4054,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Declaring a Directive Does Nothing — the Transformer Is the Behavior', route: '/graphql/directives/directive-declaration-vs-transformer' },
     { label: 'FIELD vs FIELD_DEFINITION: Two Different Location Namespaces', route: '/graphql/directives/field-vs-field-definition-locations' },
   ],
+  'mutations': [
+    { label: 'Apollo Server Dropped Built-In Upload Support in v3', route: '/graphql/mutations/apollo-server-dropped-upload-support' },
+    { label: 'Serial Execution Is Not a Transaction', route: '/graphql/mutations/serial-execution-is-not-a-transaction' },
+    { label: 'Guarding a Destructive Mutation With an Idempotency Key', route: '/graphql/mutations/idempotency-keys-for-destructive-mutations' },
+  ],
 };

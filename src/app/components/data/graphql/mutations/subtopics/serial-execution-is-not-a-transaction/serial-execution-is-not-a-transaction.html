@@ -1,0 +1,27 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Mutations" topicRoute="/graphql/mutations"
+    subtopicLabel="Serial Execution Is Not a Transaction" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">Serial Execution Is Not a Transaction</h1>
+  <p class="page-subtitle">The main page states root mutation fields execute serially and the quiz tests it — but nothing shows the mechanism running, or the trap: serial guarantees order, not all-or-nothing.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This makes the main page's "serially, not in parallel" claim concrete with real timing, and closes the gap it never mentions — serial order is not a transaction. Next: the QnA's own one-line "guard destructive mutations with deduplication tokens" advice, built out into a real idempotency-key implementation.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Mutations" topicRoute="/graphql/mutations"
+    [prev]="{ label: 'Apollo Server Dropped Built-In Upload Support in v3', route: '/graphql/mutations/apollo-server-dropped-upload-support' }"
+    [next]="{ label: 'Guarding a Destructive Mutation With an Idempotency Key', route: '/graphql/mutations/idempotency-keys-for-destructive-mutations' }" />
+</div>

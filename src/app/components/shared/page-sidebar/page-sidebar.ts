@@ -38687,6 +38687,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'GraphQL has no built-in transactional guarantee across multiple mutations in one request — that must be handled at the resolver/business-logic layer if needed.',
     ],
   },
+  'graphql/mutations/apollo-server-dropped-upload-support': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Mutations', route: '/graphql/mutations' },
+      { label: 'Serial Execution Is Not a Transaction', route: '/graphql/mutations/serial-execution-is-not-a-transaction' },
+    ],
+    tip: 'Apollo Server removed BUILT-IN graphql-upload support in v3 (2021) -- multipart/form-data is a CSRF loophole. Apollo\'s current recommendation is a signed URL: upload straight to cloud storage, bypassing GraphQL entirely.',
+    gotchas: [
+      '`graphql-upload` still exists as a standalone package, but is not wired in by default anymore -- and needs explicit CSRF prevention if used.',
+      'The multipart request spec is a community convention, not part of the official GraphQL spec.',
+    ],
+  },
+  'graphql/mutations/serial-execution-is-not-a-transaction': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Apollo Server Dropped Built-In Upload Support in v3', route: '/graphql/mutations/apollo-server-dropped-upload-support' },
+      { label: 'Guarding a Destructive Mutation With an Idempotency Key', route: '/graphql/mutations/idempotency-keys-for-destructive-mutations' },
+    ],
+    tip: 'Root mutation fields execute via executeFieldsSerially -- each one fully finishes (including nested resolution) before the next starts. That guarantees ORDER only, not atomicity: an earlier field\'s committed side effect is never rolled back if a later field throws.',
+    gotchas: [
+      'Serial execution applies to TOP-LEVEL mutation fields only -- anything nested underneath resolves normally, concurrently where possible.',
+      'A faster second root field still waits for a slower first one to fully complete before it even starts.',
+    ],
+  },
+  'graphql/mutations/idempotency-keys-for-destructive-mutations': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Serial Execution Is Not a Transaction', route: '/graphql/mutations/serial-execution-is-not-a-transaction' },
+      { label: 'Mutations', route: '/graphql/mutations' },
+    ],
+    tip: 'An idempotency key is a client-generated ID sent inside a mutation\'s input, reused across retries of the SAME logical attempt. The resolver checks it before doing the real work and returns the cached result on a replay -- no second charge, no second email.',
+    gotchas: [
+      'Key on the client-generated attempt ID, not on an entity ID like orderId -- entity IDs conflate a retry with a genuinely new attempt against the same entity.',
+      'A production key store needs to survive restarts and be shared across instances -- a database row or Redis key with a TTL, not in-process memory.',
+    ],
+  },
   'graphql/subscriptions': {
     apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
     related: [
