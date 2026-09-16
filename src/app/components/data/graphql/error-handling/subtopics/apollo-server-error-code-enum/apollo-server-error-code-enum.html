@@ -1,0 +1,26 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Mutation Error Handling" topicRoute="/graphql/error-handling"
+    subtopicLabel="ApolloServerErrorCode: Recognizing Apollo’s Own Errors" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">ApolloServerErrorCode: Recognizing Apollo’s Own Errors</h1>
+  <p class="page-subtitle">With the built-in error classes gone, how do you tell "Apollo rejected a malformed query" apart from "my own resolver threw"? A dedicated enum — never mentioned on the main page.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the error-handling topic: the removed classes (first subtopic), the payload pattern for expected domain failures (second subtopic), and now the enum that lets formatError distinguish Apollo's own pre-execution failures from resolver-thrown ones — routing alerting to only the errors that actually deserve it.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Mutation Error Handling" topicRoute="/graphql/error-handling"
+    [prev]="{ label: 'The Payload UserErrors Pattern, Built Out', route: '/graphql/error-handling/payload-user-errors-pattern' }" />
+</div>

@@ -4059,4 +4059,10 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Serial Execution Is Not a Transaction', route: '/graphql/mutations/serial-execution-is-not-a-transaction' },
     { label: 'Guarding a Destructive Mutation With an Idempotency Key', route: '/graphql/mutations/idempotency-keys-for-destructive-mutations' },
   ],
+  // NOTE: hub-prefixed -- bare 'error-handling' is already claimed by the JavaScript hub's own topic.
+  'gql-error-handling': [
+    { label: 'Apollo Server v4 Removed Its Built-In Error Classes', route: '/graphql/error-handling/apollo-server-v4-removed-error-classes' },
+    { label: 'The Payload UserErrors Pattern, Built Out', route: '/graphql/error-handling/payload-user-errors-pattern' },
+    { label: 'ApolloServerErrorCode: Recognizing Apollo’s Own Errors', route: '/graphql/error-handling/apollo-server-error-code-enum' },
+  ],
 };

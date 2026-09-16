@@ -2899,7 +2899,12 @@ export const routes: Routes = [
       { path: 'serial-execution-is-not-a-transaction', loadComponent: () => import('./components/data/graphql/mutations/subtopics/serial-execution-is-not-a-transaction/serial-execution-is-not-a-transaction').then(m => m.SerialExecutionIsNotATransactionSubtopic) },
       { path: 'idempotency-keys-for-destructive-mutations', loadComponent: () => import('./components/data/graphql/mutations/subtopics/idempotency-keys-for-destructive-mutations/idempotency-keys-for-destructive-mutations').then(m => m.IdempotencyKeysForDestructiveMutationsSubtopic) },
     ] },
-    { path: 'error-handling',             loadComponent: () => import('./components/data/graphql/error-handling/error-handling').then(m => m.GqlErrorHandling) },
+    { path: 'error-handling', children: [
+      { path: '', loadComponent: () => import('./components/data/graphql/error-handling/error-handling').then(m => m.GqlErrorHandling) },
+      { path: 'apollo-server-v4-removed-error-classes', loadComponent: () => import('./components/data/graphql/error-handling/subtopics/apollo-server-v4-removed-error-classes/apollo-server-v4-removed-error-classes').then(m => m.ApolloServerV4RemovedErrorClassesSubtopic) },
+      { path: 'payload-user-errors-pattern', loadComponent: () => import('./components/data/graphql/error-handling/subtopics/payload-user-errors-pattern/payload-user-errors-pattern').then(m => m.PayloadUserErrorsPatternSubtopic) },
+      { path: 'apollo-server-error-code-enum', loadComponent: () => import('./components/data/graphql/error-handling/subtopics/apollo-server-error-code-enum/apollo-server-error-code-enum').then(m => m.ApolloServerErrorCodeEnumSubtopic) },
+    ] },
     { path: 'subscriptions',              loadComponent: () => import('./components/data/graphql/subscriptions/subscriptions').then(m => m.GqlSubscriptions) },
     { path: 'resolvers',                  loadComponent: () => import('./components/data/graphql/resolvers/resolvers').then(m => m.GqlResolvers) },
     { path: 'dataloader',                 loadComponent: () => import('./components/data/graphql/dataloader/dataloader').then(m => m.GqlDataloader) },

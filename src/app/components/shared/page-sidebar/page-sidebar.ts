@@ -38863,6 +38863,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Leaking internal error details (stack traces, database errors) in the errors array is the same security risk as leaking them in a REST error response.',
     ],
   },
+  'graphql/error-handling/apollo-server-v4-removed-error-classes': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'The Payload UserErrors Pattern, Built Out', route: '/graphql/error-handling/payload-user-errors-pattern' },
+      { label: 'Mutation Error Handling', route: '/graphql/error-handling' },
+    ],
+    tip: 'Apollo Server 4 removed AuthenticationError, ForbiddenError, UserInputError, and ApolloError entirely — not deprecated, gone. The only supported form now is throwing GraphQLError directly with your own extensions.code string.',
+    gotchas: [
+      'A v3 codebase importing these classes under @apollo/server (v4) fails at the import itself — there is nothing equivalent to migrate to except writing the extensions object by hand.',
+      'A local wrapper function that calls new GraphQLError(...) internally is a fine replacement — it is functionally identical to what the removed classes did.',
+    ],
+  },
+  'graphql/error-handling/payload-user-errors-pattern': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Apollo Server v4 Removed Its Built-In Error Classes', route: '/graphql/error-handling/apollo-server-v4-removed-error-classes' },
+      { label: 'ApolloServerErrorCode: Recognizing Apollo\'s Own Errors', route: '/graphql/error-handling/apollo-server-error-code-enum' },
+    ],
+    tip: 'Throw GraphQLError for the genuinely unexpected (auth, system failures). Return a userErrors: [UserError!]! list in the payload for expected domain validation — a single throw can only report one problem, but a form can have several at once.',
+    gotchas: [
+      'userErrors is an ordinary schema-typed field the client selects like any other — it lives in data, not in the separate top-level errors array.',
+      'Give each UserError its own machine-readable code, not just a message string, so clients can branch on the failure reason without string-matching.',
+    ],
+  },
+  'graphql/error-handling/apollo-server-error-code-enum': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'The Payload UserErrors Pattern, Built Out', route: '/graphql/error-handling/payload-user-errors-pattern' },
+      { label: 'Mutation Error Handling', route: '/graphql/error-handling' },
+    ],
+    tip: 'ApolloServerErrorCode (from @apollo/server/errors) covers ONLY errors Apollo Server generates before a resolver ever runs — parse failures, validation failures, persisted-query issues. Your own resolver-thrown codes never appear in this enum.',
+    gotchas: [
+      'GRAPHQL_VALIDATION_FAILED means zero resolvers ran at all — safe to log quietly and skip on-call alerting for.',
+      'INTERNAL_SERVER_ERROR is the fallback for anything unclassified, including your own uncaught resolver exceptions — that one is worth alerting on.',
+    ],
+  },
   'graphql/auth': {
     apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
     related: [

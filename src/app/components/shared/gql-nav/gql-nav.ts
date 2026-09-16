@@ -156,7 +156,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/graphql/error-handling" routerLinkActive="active"><span class="nl-text">Mutation Error Handling</span>@if(p.isDone('gql-error-handling')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/graphql/error-handling" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Mutation Error Handling</span>
+        @if(p.isDone('gql-error-handling')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('gql-error-handling')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('gql-error-handling')"
+                  (click)="toggleSubtopics('gql-error-handling', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('gql-error-handling'); as errHandlingSubs) {
+        @if (isSubtopicsExpanded('gql-error-handling')) {
+          <div class="nav-subtopics">
+            @for (s of errHandlingSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/graphql/subscriptions" routerLinkActive="active"><span class="nl-text">Subscriptions</span>@if(p.isDone('gql-subscriptions')){<span class="nl-done">✓</span>}</a>
     </div>
 
