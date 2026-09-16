@@ -38756,6 +38756,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       '@deprecated on a schema field surfaces a warning in tooling/introspection without breaking existing clients still using that field.',
     ],
   },
+  'graphql/directives/where-deprecated-can-go': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Directives', route: '/graphql/directives' },
+      { label: 'Declaring a Directive Does Nothing — the Transformer Is the Behavior', route: '/graphql/directives/directive-declaration-vs-transformer' },
+    ],
+    tip: '@deprecated has four valid locations since the 2021 spec release: FIELD_DEFINITION, ENUM_VALUE, ARGUMENT_DEFINITION, and INPUT_FIELD_DEFINITION. A required (non-null, no default) argument or input field cannot be deprecated until it is made optional.',
+    gotchas: [
+      'Assuming @deprecated only applies to fields and enum values misses that individual arguments and input-object fields can be deprecated too.',
+      'Attempting to deprecate a required argument fails validation — make it optional (add a default, or widen to nullable) first.',
+    ],
+  },
+  'graphql/directives/directive-declaration-vs-transformer': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Where @deprecated Can Actually Go', route: '/graphql/directives/where-deprecated-can-go' },
+      { label: 'FIELD vs FIELD_DEFINITION: Two Different Location Namespaces', route: '/graphql/directives/field-vs-field-definition-locations' },
+    ],
+    tip: 'Declaring a custom directive in SDL (directive @auth on FIELD_DEFINITION) is inert on its own — a schema transformer (mapSchema + getDirective) has to be applied to actually wrap the resolvers it annotates.',
+    gotchas: [
+      'Forgetting the schema = authDirectiveTransformer(schema) line leaves every @auth annotation silently doing nothing, with no error anywhere.',
+      'When composing multiple transformers, the LAST-applied one wraps outermost and runs first at request time.',
+    ],
+  },
+  'graphql/directives/field-vs-field-definition-locations': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Declaring a Directive Does Nothing — the Transformer Is the Behavior', route: '/graphql/directives/directive-declaration-vs-transformer' },
+      { label: 'Directives', route: '/graphql/directives' },
+    ],
+    tip: 'Executable directive locations (FIELD, FRAGMENT_SPREAD, etc.) and type-system directive locations (FIELD_DEFINITION, ARGUMENT_DEFINITION, etc.) are two disjoint sets. A directive declared for one cannot be used in the other.',
+    gotchas: [
+      'FIELD_DEFINITION means schema-controlled behavior via a transformer; FIELD means a client-controlled per-query switch — they need different implementations entirely.',
+      'A directive listing both locations still needs separate handling code for each usage site — one code path never serves both.',
+    ],
+  },
   'graphql/resolvers': {
     apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
     related: [

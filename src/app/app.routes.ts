@@ -2887,7 +2887,12 @@ export const routes: Routes = [
       { path: 'enum-inline-vs-variables', loadComponent: () => import('./components/data/graphql/variables-arguments/subtopics/enum-inline-vs-variables/enum-inline-vs-variables').then(m => m.EnumInlineVsVariablesSubtopic) },
       { path: 'graphql-get-vs-post', loadComponent: () => import('./components/data/graphql/variables-arguments/subtopics/graphql-get-vs-post/graphql-get-vs-post').then(m => m.GraphqlGetVsPostSubtopic) },
     ] },
-    { path: 'directives',                 loadComponent: () => import('./components/data/graphql/directives/directives').then(m => m.GqlDirectives) },
+    { path: 'directives', children: [
+      { path: '', loadComponent: () => import('./components/data/graphql/directives/directives').then(m => m.GqlDirectives) },
+      { path: 'where-deprecated-can-go', loadComponent: () => import('./components/data/graphql/directives/subtopics/where-deprecated-can-go/where-deprecated-can-go').then(m => m.WhereDeprecatedCanGoSubtopic) },
+      { path: 'directive-declaration-vs-transformer', loadComponent: () => import('./components/data/graphql/directives/subtopics/directive-declaration-vs-transformer/directive-declaration-vs-transformer').then(m => m.DirectiveDeclarationVsTransformerSubtopic) },
+      { path: 'field-vs-field-definition-locations', loadComponent: () => import('./components/data/graphql/directives/subtopics/field-vs-field-definition-locations/field-vs-field-definition-locations').then(m => m.FieldVsFieldDefinitionLocationsSubtopic) },
+    ] },
     { path: 'mutations',                  loadComponent: () => import('./components/data/graphql/mutations/mutations').then(m => m.GqlMutations) },
     { path: 'error-handling',             loadComponent: () => import('./components/data/graphql/error-handling/error-handling').then(m => m.GqlErrorHandling) },
     { path: 'subscriptions',              loadComponent: () => import('./components/data/graphql/subscriptions/subscriptions').then(m => m.GqlSubscriptions) },

@@ -4048,4 +4048,10 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Enum Values: Bare in the Query, String in the Variables JSON', route: '/graphql/variables-arguments/enum-inline-vs-variables' },
     { label: 'GET vs POST, and Why GET Is Query-Only', route: '/graphql/variables-arguments/graphql-get-vs-post' },
   ],
+  // NOTE: hub-prefixed -- bare 'directives' is already claimed by the Angular hub's own topic (directives-demo).
+  'gql-directives': [
+    { label: 'Where @deprecated Can Actually Go', route: '/graphql/directives/where-deprecated-can-go' },
+    { label: 'Declaring a Directive Does Nothing — the Transformer Is the Behavior', route: '/graphql/directives/directive-declaration-vs-transformer' },
+    { label: 'FIELD vs FIELD_DEFINITION: Two Different Location Namespaces', route: '/graphql/directives/field-vs-field-definition-locations' },
+  ],
 };
