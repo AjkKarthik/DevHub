@@ -4065,4 +4065,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Payload UserErrors Pattern, Built Out', route: '/graphql/error-handling/payload-user-errors-pattern' },
     { label: 'ApolloServerErrorCode: Recognizing Apollo’s Own Errors', route: '/graphql/error-handling/apollo-server-error-code-enum' },
   ],
+  'subscriptions': [
+    { label: 'Federated Subscriptions Need More Than Federation v2+', route: '/graphql/subscriptions/federated-subscriptions-need-enterprise-graphos' },
+    { label: '@skip and @include Can Crash Subscription Validation, Not Just Reject It', route: '/graphql/subscriptions/skip-include-crashes-subscription-validation' },
+    { label: 'resolve Runs Once Per Subscriber, With Their Own Context', route: '/graphql/subscriptions/resolve-runs-per-subscriber-with-their-context' },
+  ],
 };

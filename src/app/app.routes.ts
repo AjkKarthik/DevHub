@@ -2905,7 +2905,12 @@ export const routes: Routes = [
       { path: 'payload-user-errors-pattern', loadComponent: () => import('./components/data/graphql/error-handling/subtopics/payload-user-errors-pattern/payload-user-errors-pattern').then(m => m.PayloadUserErrorsPatternSubtopic) },
       { path: 'apollo-server-error-code-enum', loadComponent: () => import('./components/data/graphql/error-handling/subtopics/apollo-server-error-code-enum/apollo-server-error-code-enum').then(m => m.ApolloServerErrorCodeEnumSubtopic) },
     ] },
-    { path: 'subscriptions',              loadComponent: () => import('./components/data/graphql/subscriptions/subscriptions').then(m => m.GqlSubscriptions) },
+    { path: 'subscriptions', children: [
+      { path: '', loadComponent: () => import('./components/data/graphql/subscriptions/subscriptions').then(m => m.GqlSubscriptions) },
+      { path: 'federated-subscriptions-need-enterprise-graphos', loadComponent: () => import('./components/data/graphql/subscriptions/subtopics/federated-subscriptions-need-enterprise-graphos/federated-subscriptions-need-enterprise-graphos').then(m => m.FederatedSubscriptionsNeedEnterpriseGraphosSubtopic) },
+      { path: 'skip-include-crashes-subscription-validation', loadComponent: () => import('./components/data/graphql/subscriptions/subtopics/skip-include-crashes-subscription-validation/skip-include-crashes-subscription-validation').then(m => m.SkipIncludeCrashesSubscriptionValidationSubtopic) },
+      { path: 'resolve-runs-per-subscriber-with-their-context', loadComponent: () => import('./components/data/graphql/subscriptions/subtopics/resolve-runs-per-subscriber-with-their-context/resolve-runs-per-subscriber-with-their-context').then(m => m.ResolveRunsPerSubscriberWithTheirContextSubtopic) },
+    ] },
     { path: 'resolvers',                  loadComponent: () => import('./components/data/graphql/resolvers/resolvers').then(m => m.GqlResolvers) },
     { path: 'dataloader',                 loadComponent: () => import('./components/data/graphql/dataloader/dataloader').then(m => m.GqlDataloader) },
     { path: 'auth',                       loadComponent: () => import('./components/data/graphql/auth/auth').then(m => m.GqlAuth) },

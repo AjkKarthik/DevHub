@@ -1,0 +1,26 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Subscriptions" topicRoute="/graphql/subscriptions"
+    subtopicLabel="Federated Subscriptions Need More Than Federation v2+" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">Federated Subscriptions Need More Than Federation v2+</h1>
+  <p class="page-subtitle">The QnA says "careful design and Apollo Federation v2+." Verified against Apollo's own GraphOS docs: the real floor is Federation 2.4, and there's a paid GraphOS Enterprise entitlement gate the page never mentions at all.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This tightens the main page's own federation QnA with the exact version floor and the paid entitlement gate it omits. Next: a surprising, verified graphql-js finding about how the single-root-field rule handles &#64;skip/&#64;include on a subscription — it doesn't always reject cleanly.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Subscriptions" topicRoute="/graphql/subscriptions"
+    [next]="{ label: '@skip and @include Can Crash Subscription Validation, Not Just Reject It', route: '/graphql/subscriptions/skip-include-crashes-subscription-validation' }" />
+</div>

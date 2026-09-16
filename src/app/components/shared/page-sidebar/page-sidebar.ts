@@ -38730,8 +38730,44 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
     tip: 'Subscriptions typically run over WebSockets (not plain HTTP like queries/mutations) — this transport difference means subscription support requires additional server and infrastructure configuration beyond a standard HTTP GraphQL endpoint.',
     gotchas: [
-      'A subscription resolver runs once per PUBLISHED event, not once per client request — understanding this execution model is essential for correct subscription implementation.',
+      'A subscription\'s resolve function runs once PER SUBSCRIBER per published event, not once per event overall — each active subscriber gets its own execution, with its own context.',
       'Scaling subscriptions across multiple server instances requires a shared pub/sub backend (Redis, for example) so an event published on one instance reaches subscribers connected to another.',
+    ],
+  },
+  'graphql/subscriptions/federated-subscriptions-need-enterprise-graphos': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: '@skip and @include Can Crash Subscription Validation', route: '/graphql/subscriptions/skip-include-crashes-subscription-validation' },
+      { label: 'Subscriptions', route: '/graphql/subscriptions' },
+    ],
+    tip: 'Federation v2.4+ is the real floor for subscription composition (not just "v2+"), and serving federated subscriptions through a self-hosted Apollo Router additionally requires a GraphOS ENTERPRISE plan, validated via APOLLO_KEY/APOLLO_GRAPH_REF — a schema can compose fine and still be refused at the router.',
+    gotchas: [
+      'Composing against Federation 2.0-2.3 fails outright for a schema with a Subscription type — this is a build-time failure, separate from the runtime entitlement gate.',
+      'Each subgraph still needs its own working subscription server (graphql-ws) — the Enterprise Router feature aggregates across already-working subgraphs, it does not replace them.',
+    ],
+  },
+  'graphql/subscriptions/skip-include-crashes-subscription-validation': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Federated Subscriptions Need More Than Federation v2+', route: '/graphql/subscriptions/federated-subscriptions-need-enterprise-graphos' },
+      { label: 'resolve Runs Once Per Subscriber, With Their Own Context', route: '/graphql/subscriptions/resolve-runs-per-subscriber-with-their-context' },
+    ],
+    tip: 'graphql-js\'s own validate() has no variableValues parameter at all. A subscription\'s single top-level field guarded by a variable-driven @skip/@include can make SingleFieldSubscriptionsRule throw an uncaught exception instead of returning a clean validation error.',
+    gotchas: [
+      'A literal @skip(if: true)/@skip(if: false) on a subscription field validates cleanly — the crash is specific to a VARIABLE-driven directive value, not directives in general.',
+      'A fragment spread introducing a second subscription field is rejected the same as writing that field inline — fields are collected after fragment expansion.',
+    ],
+  },
+  'graphql/subscriptions/resolve-runs-per-subscriber-with-their-context': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: '@skip and @include Can Crash Subscription Validation', route: '/graphql/subscriptions/skip-include-crashes-subscription-validation' },
+      { label: 'Subscriptions', route: '/graphql/subscriptions' },
+    ],
+    tip: 'A subscription field\'s resolve function is an ordinary field resolver — it runs once per subscriber per event, with that subscriber\'s own context, letting the SAME broadcast payload be shaped differently for each listener with no per-subscriber publish call.',
+    gotchas: [
+      'resolve decides WHAT SHAPE an event takes once delivered — withFilter decides WHETHER it is delivered at all. The two compose; they are not alternatives.',
+      'Omitting resolve is completely valid — the raw published payload (for the field key) is returned as-is, with no per-subscriber shaping.',
     ],
   },
   'graphql/variables-arguments': {

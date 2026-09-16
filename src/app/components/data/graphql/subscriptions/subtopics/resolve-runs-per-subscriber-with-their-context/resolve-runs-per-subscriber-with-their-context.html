@@ -1,0 +1,26 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Subscriptions" topicRoute="/graphql/subscriptions"
+    subtopicLabel="resolve Runs Once Per Subscriber, With Their Own Context" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">resolve Runs Once Per Subscriber, With Their Own Context</h1>
+  <p class="page-subtitle">The theory names the resolve function — none of the page's codeTabs ever write one. Verified against graphql-js directly: two subscribers on the same broadcast event, each getting genuinely different output from their own context.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the subscriptions topic by finally building the resolve function the main page's own theory names but never demonstrates, verified against real graphql-js execution semantics — showing exactly how per-subscriber personalization works without a separate publish per listener.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Subscriptions" topicRoute="/graphql/subscriptions"
+    [prev]="{ label: '@skip and @include Can Crash Subscription Validation, Not Just Reject It', route: '/graphql/subscriptions/skip-include-crashes-subscription-validation' }" />
+</div>
