@@ -9768,6 +9768,37 @@ this same check before any other new hub's first subtopic set:
    as literal text; breadcrumb showed all 4 levels; 860px wrapper confirmed via
    `getComputedStyle`; tailored (not DEFAULT) sidebar content confirmed on the first subtopic
    checked. **GraphQL hub Phase 10: 12 of 20 topics complete.**
+20. **The `apollo-server` batch — the first topic in the Server nav group — found and fixed one
+   genuine main-page inaccuracy, plus two verified research angles**: a QnA claimed introspection
+   changed to "on in all environments" as a v4 change — verified via WebFetch against Apollo's own
+   docs that the default is UNCHANGED between v3 and v4 (still gated on `NODE_ENV=production`) and
+   was never a v3→v4 change at all. Also researched the real, current (2026-09-17) status of
+   `@defer`/`@stream` incremental delivery in `graphql-js` — confirmed still alpha-only, requiring
+   explicit SDL opt-in even on that alpha install — explaining why the main page's own
+   `response.body.kind === 'single'` type-narrow in its Testing codeTab is correct future-proofing,
+   not dead code. A third finding came from actually installing `@apollo/server@5.5.1` fresh and
+   running a live plugin test: `executeOperation()`'s `contextValue` option is shallow-cloned
+   internally (`cloneObject()` via `Object.assign(Object.create(proto), object)` in the real
+   compiled source), confirmed via direct execution that a plugin's mutation of
+   `requestContext.contextValue` is invisible on the caller's original object afterward — even
+   though other plugin-visible effects (a response header) work correctly within the same request.
+   Three subtopics: (1) **fix-adjacent** — the verified NODE_ENV-gated default, with a Try It on a
+   PaaS deployment that never sets NODE_ENV at all (resolves to introspection ENABLED); (2)
+   **gap-closing** — the `'single'`/`'incremental'` discriminated union and why the alternate
+   branch essentially never fires today; (3) **gap-closing** — the shallow-clone finding, with a
+   codeTab contrasting a NEW top-level property (never leaks out) against mutating an ALREADY
+   nested object like a shared `db` connection (does leak out, since the clone is shallow). A
+   backtick-vs-`<code>` house-style slip was self-caught and fixed in the third subtopic's own
+   `exercise.hint` field before the build (backticks around `fakeDb` converted to `<code>` tags,
+   matching the `misconceptions` fields in the same file). No `SUBTOPICS` collision for
+   `apollo-server` (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly,
+   confirmed collision-free, left bare). Build passed clean (`EXITCODE:0`, zero real `ERROR`
+   lines). Browser-verified: no console errors on any of the 4 pages; nav accordion opens with all
+   3 subtopic links (toggle count 13 across the hub); the main-page QnA fix confirmed rendering
+   live via direct component-data inspection; all 3 subtopic pages checked individually — correct
+   h1/breadcrumb (all 4 levels, curly-quote titles rendering correctly), 860px wrapper via
+   `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on all three. **GraphQL
+   hub Phase 10: 13 of 20 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -10051,14 +10082,14 @@ this same check before any other new hub's first subtopic set:
   All 22 cards `available: true` in `data/graphql/home/home.ts`. Progress: `gqlTotal=20` in progress.service.ts.
   GraphQL pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. GqlNavComponent at `shared/gql-nav/gql-nav.ts`.
-  Phase 10: **12 of 20 topics have subtopics** (`/graphql/fundamentals`, pilot batch, 2026-09-10;
+  Phase 10: **13 of 20 topics have subtopics** (`/graphql/fundamentals`, pilot batch, 2026-09-10;
   `/graphql/schema-definition-language`, 2026-09-10; `/graphql/type-system`, 2026-09-10;
   `/graphql/queries`, 2026-09-10; `/graphql/variables-arguments`, 2026-09-10;
   `/graphql/directives`, 2026-09-10 — Queries nav group fully done; `/graphql/mutations`,
   2026-09-10; `/graphql/error-handling`, 2026-09-16; `/graphql/subscriptions`, 2026-09-16 —
   Mutations & Subscriptions nav group fully done; `/graphql/resolvers`, 2026-09-17;
-  `/graphql/dataloader`, 2026-09-17; `/graphql/auth`, 2026-09-17 — third topic in the
-  Resolvers & Data nav group) —
+  `/graphql/dataloader`, 2026-09-17; `/graphql/auth`, 2026-09-17; `/graphql/apollo-server`,
+  2026-09-17 — second topic in the Server nav group) —
   see "GraphQL hub
   subtopic wiring" section above for the `GqlNavComponent` accordion structural fix (17th
   `*NavComponent`-based hub in a row missing it at pilot time), the `gql-fundamentals`/
@@ -10067,9 +10098,9 @@ this same check before any other new hub's first subtopic set:
   with the Angular hub's own `directives-demo` topic's unquoted bare `directives` key;
   `gql-error-handling` collided with the JavaScript hub's own bare `error-handling` topic key;
   `schema-definition-language`, `type-system`, `queries`, `variables-arguments`, `mutations`,
-  `subscriptions`, `resolvers`, `dataloader`, and `auth` are all collision-free and left bare — the
-  latter confirmed via a direct grep that no other hub's `app.routes.ts` route path is literally
-  `auth`), the
+  `subscriptions`, `resolvers`, `dataloader`, `auth`, and `apollo-server` are all collision-free
+  and left bare — the latter confirmed via a direct grep that no other hub's `app.routes.ts`
+  route path is literally `auth`/`apollo-server`), the
   no-live-playground
   note, and the
   genuine main-page fixes: the cross-codeTab undeclared-`Post.author`-field bug (Fundamentals);
@@ -10098,7 +10129,13 @@ this same check before any other new hub's first subtopic set:
   `'no_cache'` — no memoization at all unless a rule explicitly opts in via `cache: 'contextual'`
   or `cache: 'strict'`, exactly as the page's own codeTab already does; plus the reused
   graphql-shield/graphql-middleware-unmaintained caveat applied to this page's own
-  `@auth` vs. graphql-shield QnA (Auth & Authorization).
+  `@auth` vs. graphql-shield QnA (Auth & Authorization); a QnA wrongly claiming introspection's
+  default changed to "on in all environments" in v4, when it is actually unchanged from v3 and
+  still `NODE_ENV`-gated (Apollo Server); plus two verified research angles on the same page — the
+  real (still-alpha, still-SDL-opt-in) status of `@defer`/`@stream` incremental delivery in
+  `graphql-js`, and a live-verified finding (via a real `@apollo/server@5.5.1` install) that
+  `executeOperation()`'s `contextValue` is shallow-cloned via `cloneObject()`, never shared by
+  reference with the caller's original object (Apollo Server).
 - **Messaging/Kafka hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Burnt-orange theme `$accent: #9a3412`, `$tint: #fff7ed`, dark `#fdba74`, dark bg `#2d1a0e`. Search prefix `kafka-`. Route: `/messaging`.
   CSS classes: `.kafka-page`, `.kafka-icon`, `.kafka-section`. Icon content: `⇄` at `font-size: 1.8rem`. `tech="javascript"`.

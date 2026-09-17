@@ -9737,7 +9737,18 @@ off here with a date.
   reused unmaintained finding, tailored with a before/after migration to
   `@envelop/graphql-middleware`. SUBTOPICS key `auth` collision-free (checked both forms + a
   direct `app.routes.ts` route-path grep), left bare. All 6 touchpoints wired.
-- [ ] `/graphql/apollo-server` — Apollo Server
+- [x] 2026-09-17 — `/graphql/apollo-server` — Apollo Server. Fixed a QnA claiming introspection's
+  default changed to "on in all environments" in v4 — verified against Apollo's own docs it is
+  unchanged from v3, still `NODE_ENV`-gated, and was never a v3-to-v4 change at all. 3 subtopics:
+  (1) the verified NODE_ENV-gated default, with a Try It on a PaaS deployment that never sets
+  NODE_ENV (resolves to introspection ENABLED); (2) `response.body.kind`'s `'single'`/
+  `'incremental'` discriminated union and why the alternate branch essentially never fires today
+  (`@defer`/`@stream` still alpha-only, still SDL-opt-in); (3) a live-verified finding — installed
+  `@apollo/server@5.5.1` fresh and confirmed via a real plugin test that `executeOperation()`'s
+  `contextValue` is shallow-cloned via `cloneObject()` (`Object.assign(Object.create(proto),
+  object)`), never shared by reference with the caller's original object. SUBTOPICS key
+  `apollo-server` collision-free (checked both forms + a direct `app.routes.ts` route-path grep),
+  left bare. All 6 touchpoints wired.
 - [ ] `/graphql/pagination` — Pagination Patterns
 - [ ] `/graphql/apollo-client` — Apollo Client
 - [ ] `/graphql/client-caching` — Client-Side Caching
