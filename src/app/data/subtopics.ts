@@ -4100,4 +4100,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Reactive Variables for Global Client-Side State', route: '/graphql/apollo-client/reactive-variables-global-state' },
     { label: 'The update Function for Manual Cache Writes', route: '/graphql/apollo-client/manual-cache-updates' },
   ],
+  'client-caching': [
+    { label: 'INVALIDATE Alone Doesn’t Force a Refetch', route: '/graphql/client-caching/invalidate-does-not-force-refetch' },
+    { label: 'Unnormalized Objects Are Embedded, Never Referenced', route: '/graphql/client-caching/embedded-vs-normalized-objects' },
+    { label: 'Persisting the Cache with apollo3-cache-persist', route: '/graphql/client-caching/persisting-cache-apollo3' },
+  ],
 };

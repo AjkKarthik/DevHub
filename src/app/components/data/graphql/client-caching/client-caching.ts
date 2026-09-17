@@ -37,7 +37,7 @@ export class GqlClientCaching {
       points: [
         'Apollo Client normalizes every response: objects are extracted by __typename + id and stored flat in a lookup table.',
         'Multiple queries that return the same User (by id) share one cache entry — updating it updates all queries automatically.',
-        'Without __typename or id, objects cannot be normalized and are stored by reference under their parent object.',
+        'Without __typename or id (or an explicit `keyFields: false` policy), objects cannot be normalized — they are stored EMBEDDED (inline, duplicated) inside their parent\'s own cache entry, the OPPOSITE of "by reference." Apollo\'s own `Reference` type (a `{ __ref: \'Type:id\' }` pointer) specifically represents a NORMALIZED entity — the case where an id-less/keyFields:false object never becomes.',
         'Normalization is why Apollo components stay in sync — editing a user in one component reflects everywhere that user appears.'
       ]
     },
@@ -56,7 +56,7 @@ export class GqlClientCaching {
         'cache.modify surgically updates individual fields on a cached object without replacing the entire object.',
         'Receives a fields object: each key is a field name, value is a function receiving the current cached value.',
         'Use readField to read other fields from the same cached object within the modify call.',
-        'Use INVALIDATE sentinel to force a refetch of a field: `fields: { posts: (_, { INVALIDATE }) => INVALIDATE }`.'
+        'INVALIDATE marks a field stale but does NOT itself change its cached value or force a network fetch — with the default cache-first fetchPolicy, a query re-reading that field sees the SAME value and typically decides not to hit the network at all. The documented way to make it actually trigger a refetch is wrapping the modify call inside client.refetchQueries({ updateCache }).'
       ]
     },
     {
@@ -300,7 +300,7 @@ posts: { merge(existing = [], incoming) { return [...existing, ...incoming]; } }
     { q: 'How does Apollo handle queries that return the same object?', a: 'Through normalization. If two queries return User { id: "1", name: "Alice" }, both write to the same cache entry (User:1). When any query updates that entry, all components reading from it re-render with the new data.' },
     { q: 'What is cache.identify()?', a: 'cache.identify(obj) returns the cache key for a given object: `User:1` for { __typename: "User", id: "1" }. Use it with cache.evict({ id: cache.identify(obj) }) to evict a specific object.' },
     { q: 'How do I reset the Apollo cache on logout?', a: 'Use client.resetStore() — it clears the cache and re-runs all active queries. Or client.clearStore() to clear without re-running queries. Call it after clearing auth tokens on logout.' },
-    { q: 'What is the INVALIDATE sentinel in cache.modify?', a: '`INVALIDATE` is a special sentinel value from the modify helpers. Setting a field to INVALIDATE marks it as stale, causing Apollo to re-fetch it from the network on the next read without evicting the entire object.' },
+    { q: 'What is the INVALIDATE sentinel in cache.modify?', a: '`INVALIDATE` is a special sentinel value from the modify helpers. Returning it from a field modifier marks that field as stale WITHOUT changing its cached value or evicting anything -- verified against Apollo\'s own documentation that on its own, with the default cache-first fetchPolicy, an invalidated field re-reads as the SAME unchanged value, so a watching query typically does NOT perform a network request. The documented way to actually force a refetch is client.refetchQueries({ updateCache(cache) { cache.modify({ fields: { someField: (_, { INVALIDATE }) => INVALIDATE } }); } }).' },
     { q: 'Can the cache persist between sessions?', a: 'Yes — apollo3-cache-persist serializes the InMemoryCache to localStorage or AsyncStorage and restores it on page load. Useful for offline-first apps and faster initial loads.' }
   ];
 

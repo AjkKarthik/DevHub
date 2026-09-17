@@ -2947,7 +2947,12 @@ export const routes: Routes = [
       { path: 'reactive-variables-global-state', loadComponent: () => import('./components/data/graphql/apollo-client/subtopics/reactive-variables-global-state/reactive-variables-global-state').then(m => m.ReactiveVariablesGlobalStateSubtopic) },
       { path: 'manual-cache-updates', loadComponent: () => import('./components/data/graphql/apollo-client/subtopics/manual-cache-updates/manual-cache-updates').then(m => m.ManualCacheUpdatesSubtopic) },
     ] },
-    { path: 'client-caching',             loadComponent: () => import('./components/data/graphql/client-caching/client-caching').then(m => m.GqlClientCaching) },
+    { path: 'client-caching', children: [
+      { path: '', loadComponent: () => import('./components/data/graphql/client-caching/client-caching').then(m => m.GqlClientCaching) },
+      { path: 'invalidate-does-not-force-refetch', loadComponent: () => import('./components/data/graphql/client-caching/subtopics/invalidate-does-not-force-refetch/invalidate-does-not-force-refetch').then(m => m.InvalidateDoesNotForceRefetchSubtopic) },
+      { path: 'embedded-vs-normalized-objects', loadComponent: () => import('./components/data/graphql/client-caching/subtopics/embedded-vs-normalized-objects/embedded-vs-normalized-objects').then(m => m.EmbeddedVsNormalizedObjectsSubtopic) },
+      { path: 'persisting-cache-apollo3', loadComponent: () => import('./components/data/graphql/client-caching/subtopics/persisting-cache-apollo3/persisting-cache-apollo3').then(m => m.PersistingCacheApollo3Subtopic) },
+    ] },
     { path: 'code-generation',            loadComponent: () => import('./components/data/graphql/code-generation/code-generation').then(m => m.GqlCodeGeneration) },
     { path: 'performance',                loadComponent: () => import('./components/data/graphql/performance/performance').then(m => m.GqlPerformance) },
     { path: 'federation',                 loadComponent: () => import('./components/data/graphql/federation/federation').then(m => m.GqlFederation) },

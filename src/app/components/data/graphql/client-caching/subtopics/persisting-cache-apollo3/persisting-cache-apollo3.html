@@ -1,0 +1,26 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Client-Side Caching" topicRoute="/graphql/client-caching"
+    subtopicLabel="Persisting the Cache with apollo3-cache-persist" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">Persisting the Cache with apollo3-cache-persist</h1>
+  <p class="page-subtitle">The main page names this library in one QnA sentence and never shows it in code -- built, with the real await-before-client-construction requirement that avoids a race with the app's first render.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This is the last subtopic in this batch -- it builds out the cache-persistence technique the main page's own QnA names but never demonstrates. Return to the Client-Side Caching topic overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Client-Side Caching" topicRoute="/graphql/client-caching"
+    [prev]="{ label: 'Unnormalized Objects Are Embedded, Never Referenced', route: '/graphql/client-caching/embedded-vs-normalized-objects' }" />
+</div>

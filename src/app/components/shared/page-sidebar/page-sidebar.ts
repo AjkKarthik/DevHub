@@ -39117,6 +39117,43 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Reactive variables and useQuery are two independent reactivity systems until a field policy explicitly connects them.',
     ],
   },
+  'graphql/client-caching/invalidate-does-not-force-refetch': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Embedded vs. Normalized Objects', route: '/graphql/client-caching/embedded-vs-normalized-objects' },
+      { label: 'Client-Side Caching', route: '/graphql/client-caching' },
+    ],
+    tip: 'INVALIDATE marks a field stale without changing its cached value -- with the default cache-first fetchPolicy, a watching query re-reads the SAME unchanged value and has no reason to hit the network. Wrap the call in client.refetchQueries({ updateCache }) to actually force a refetch.',
+    gotchas: [
+      'A component using cache-and-network WILL still hit the network after an INVALIDATE call -- but only because that fetchPolicy always fetches on every render, not because INVALIDATE did its documented job.',
+      'INVALIDATE and cache.evict() are not equivalent -- evict() genuinely removes the value (a real cache miss), INVALIDATE only marks it stale.',
+    ],
+  },
+  'graphql/client-caching/embedded-vs-normalized-objects': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'INVALIDATE Doesn’t Force a Refetch', route: '/graphql/client-caching/invalidate-does-not-force-refetch' },
+      { label: 'Persisting the Cache', route: '/graphql/client-caching/persisting-cache-apollo3' },
+      { label: 'Client-Side Caching', route: '/graphql/client-caching' },
+    ],
+    tip: 'A Reference ({ __ref: \'Type:id\' }) is Apollo\'s own term for a NORMALIZED entity. An object without a usable id (or keyFields: false) is the OPPOSITE -- embedded inline, duplicated wherever it appears, never referenced.',
+    gotchas: [
+      'Two queries returning the SAME normalized object share one cache entry (updates sync); two queries returning the SAME embedded object get two independent copies (updates never sync).',
+      'keyFields: false is a deliberate opt-out of normalization -- not a fallback that still gets some form of sharing.',
+    ],
+  },
+  'graphql/client-caching/persisting-cache-apollo3': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Embedded vs. Normalized Objects', route: '/graphql/client-caching/embedded-vs-normalized-objects' },
+      { label: 'Client-Side Caching', route: '/graphql/client-caching' },
+    ],
+    tip: 'persistCache({ cache, storage }) must be awaited BEFORE constructing ApolloClient -- creating the client first risks a component reading from the still-empty cache before restoration finishes.',
+    gotchas: [
+      'Gate the app\'s first render behind the persistCache() await (or show a splash screen) -- do not construct ApolloClient and render the tree in parallel with the restore.',
+      'The exact same API works for both web (LocalStorageWrapper) and React Native (an AsyncStorage-backed wrapper) -- it is not mobile-only.',
+    ],
+  },
   'graphql/apollo-client/manual-cache-updates': {
     apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
     related: [

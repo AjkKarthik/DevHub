@@ -320,7 +320,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/graphql/client-caching" routerLinkActive="active"><span class="nl-text">Client Caching</span>@if(p.isDone('gql-client-caching')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/graphql/client-caching" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Client Caching</span>
+        @if(p.isDone('gql-client-caching')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('client-caching')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('client-caching')"
+                  (click)="toggleSubtopics('client-caching', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('client-caching'); as clientCachingSubs) {
+        @if (isSubtopicsExpanded('client-caching')) {
+          <div class="nav-subtopics">
+            @for (s of clientCachingSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/graphql/code-generation" routerLinkActive="active"><span class="nl-text">Code Generation</span>@if(p.isDone('gql-code-generation')){<span class="nl-done">✓</span>}</a>
     </div>
 

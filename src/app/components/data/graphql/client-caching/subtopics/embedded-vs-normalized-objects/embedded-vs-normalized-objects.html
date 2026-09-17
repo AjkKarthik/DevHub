@@ -1,0 +1,27 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Client-Side Caching" topicRoute="/graphql/client-caching"
+    subtopicLabel="Unnormalized Objects Are Embedded, Never Referenced" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">Unnormalized Objects Are Embedded, Never Referenced</h1>
+  <p class="page-subtitle">The main page's own theory bullet had this exactly backwards -- verified against Apollo's own docs and its own Reference type, which the page's own codeTab already imports and uses correctly for the OPPOSITE case.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This corrects a backwards theory bullet with the real, documented storage mechanism. Next: the QnA's one-sentence mention of apollo3-cache-persist, built out as real code.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Client-Side Caching" topicRoute="/graphql/client-caching"
+    [prev]="{ label: 'INVALIDATE Alone Doesn’t Force a Refetch', route: '/graphql/client-caching/invalidate-does-not-force-refetch' }"
+    [next]="{ label: 'Persisting the Cache with apollo3-cache-persist', route: '/graphql/client-caching/persisting-cache-apollo3' }" />
+</div>
