@@ -2941,7 +2941,12 @@ export const routes: Routes = [
       { path: 'composite-cursor-tie-breaking', loadComponent: () => import('./components/data/graphql/pagination/subtopics/composite-cursor-tie-breaking/composite-cursor-tie-breaking').then(m => m.CompositeCursorTieBreakingSubtopic) },
       { path: 'backward-pagination-last-before', loadComponent: () => import('./components/data/graphql/pagination/subtopics/backward-pagination-last-before/backward-pagination-last-before').then(m => m.BackwardPaginationLastBeforeSubtopic) },
     ] },
-    { path: 'apollo-client',              loadComponent: () => import('./components/data/graphql/apollo-client/apollo-client').then(m => m.GqlApolloClient) },
+    { path: 'apollo-client', children: [
+      { path: '', loadComponent: () => import('./components/data/graphql/apollo-client/apollo-client').then(m => m.GqlApolloClient) },
+      { path: 'aborting-inflight-queries', loadComponent: () => import('./components/data/graphql/apollo-client/subtopics/aborting-inflight-queries/aborting-inflight-queries').then(m => m.AbortingInflightQueriesSubtopic) },
+      { path: 'reactive-variables-global-state', loadComponent: () => import('./components/data/graphql/apollo-client/subtopics/reactive-variables-global-state/reactive-variables-global-state').then(m => m.ReactiveVariablesGlobalStateSubtopic) },
+      { path: 'manual-cache-updates', loadComponent: () => import('./components/data/graphql/apollo-client/subtopics/manual-cache-updates/manual-cache-updates').then(m => m.ManualCacheUpdatesSubtopic) },
+    ] },
     { path: 'client-caching',             loadComponent: () => import('./components/data/graphql/client-caching/client-caching').then(m => m.GqlClientCaching) },
     { path: 'code-generation',            loadComponent: () => import('./components/data/graphql/code-generation/code-generation').then(m => m.GqlCodeGeneration) },
     { path: 'performance',                loadComponent: () => import('./components/data/graphql/performance/performance').then(m => m.GqlPerformance) },

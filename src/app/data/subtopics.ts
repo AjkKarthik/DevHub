@@ -4095,4 +4095,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Composite Cursors Prevent Skipped Rows When Sort Keys Tie', route: '/graphql/pagination/composite-cursor-tie-breaking' },
     { label: 'Implementing Backward Pagination with last and before', route: '/graphql/pagination/backward-pagination-last-before' },
   ],
+  'apollo-client': [
+    { label: 'The Real Way to Abort an In-Flight Apollo Query', route: '/graphql/apollo-client/aborting-inflight-queries' },
+    { label: 'Reactive Variables for Global Client-Side State', route: '/graphql/apollo-client/reactive-variables-global-state' },
+    { label: 'The update Function for Manual Cache Writes', route: '/graphql/apollo-client/manual-cache-updates' },
+  ],
 };

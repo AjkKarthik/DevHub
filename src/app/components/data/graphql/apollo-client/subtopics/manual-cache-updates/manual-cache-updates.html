@@ -1,0 +1,26 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Apollo Client" topicRoute="/graphql/apollo-client"
+    subtopicLabel="The update Function for Manual Cache Writes" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">The update Function for Manual Cache Writes</h1>
+  <p class="page-subtitle">The main page's own QnA correctly prefers update over refetchQueries in prose -- but every codeTab on the page actually uses refetchQueries. Built the missing update function, with the __typename/id requirement that makes it work.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This is the last subtopic in this batch -- it closes the gap between the main page's own stated preference (update over refetchQueries) and its own working examples, which only ever demonstrate the more expensive option. Return to the Apollo Client topic overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Apollo Client" topicRoute="/graphql/apollo-client"
+    [prev]="{ label: 'Reactive Variables for Global Client-Side State', route: '/graphql/apollo-client/reactive-variables-global-state' }" />
+</div>

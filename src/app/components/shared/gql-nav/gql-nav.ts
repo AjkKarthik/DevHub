@@ -301,7 +301,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
 
     <div class="nav-group">
       <p class="nav-group-label">Client</p>
-      <a routerLink="/graphql/apollo-client" routerLinkActive="active"><span class="nl-text">Apollo Client</span>@if(p.isDone('gql-apollo-client')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/graphql/apollo-client" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Apollo Client</span>
+        @if(p.isDone('gql-apollo-client')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('apollo-client')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('apollo-client')"
+                  (click)="toggleSubtopics('apollo-client', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('apollo-client'); as apolloClientSubs) {
+        @if (isSubtopicsExpanded('apollo-client')) {
+          <div class="nav-subtopics">
+            @for (s of apolloClientSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/graphql/client-caching" routerLinkActive="active"><span class="nl-text">Client Caching</span>@if(p.isDone('gql-client-caching')){<span class="nl-done">✓</span>}</a>
       <a routerLink="/graphql/code-generation" routerLinkActive="active"><span class="nl-text">Code Generation</span>@if(p.isDone('gql-code-generation')){<span class="nl-done">✓</span>}</a>
     </div>

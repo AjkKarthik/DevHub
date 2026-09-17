@@ -39092,6 +39092,43 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The fix needs THREE coordinated changes: a compound orderBy, a compound WHERE comparison, and a cursor that encodes both fields -- not just one of the three.',
     ],
   },
+  'graphql/apollo-client/aborting-inflight-queries': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Reactive Variables for Global State', route: '/graphql/apollo-client/reactive-variables-global-state' },
+      { label: 'Apollo Client', route: '/graphql/apollo-client' },
+    ],
+    tip: 'The main page\'s own QnA was wrong on three counts. The real mechanism: pass an AbortController signal via context.fetchOptions.signal -- Apollo forwards it straight through to the underlying fetch() call.',
+    gotchas: [
+      'fetchPolicy has nothing to do with aborting a request -- it only controls cache read/write behavior.',
+      'Apollo Client\'s own request deduplication can make a re-run of the identical query+variables shortly after an abort resolve against the already-aborted in-flight request instead of firing a genuinely new one.',
+    ],
+  },
+  'graphql/apollo-client/reactive-variables-global-state': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Aborting In-Flight Queries', route: '/graphql/apollo-client/aborting-inflight-queries' },
+      { label: 'Manual Cache Updates', route: '/graphql/apollo-client/manual-cache-updates' },
+      { label: 'Apollo Client', route: '/graphql/apollo-client' },
+    ],
+    tip: 'makeVar() returns one function used for both reading and writing. useReactiveVar() re-renders on every change -- but a useQuery-driven component only re-renders too if the query touches a field policy whose read() function reads the same variable.',
+    gotchas: [
+      'Declaring a reactive variable does NOT automatically wire it into useQuery reactivity -- that requires reading it inside a cache field policy\'s read() function.',
+      'Reactive variables and useQuery are two independent reactivity systems until a field policy explicitly connects them.',
+    ],
+  },
+  'graphql/apollo-client/manual-cache-updates': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Reactive Variables for Global State', route: '/graphql/apollo-client/reactive-variables-global-state' },
+      { label: 'Apollo Client', route: '/graphql/apollo-client' },
+    ],
+    tip: 'The main page\'s own QnA correctly prefers update over refetchQueries in prose (no extra round-trip) -- but every codeTab on the page only ever uses refetchQueries. cache.modify() with toReference() is the real tool for appending a new item to a cached list.',
+    gotchas: [
+      'toReference() can only build a reference to an object with __typename and id already present in the mutation response -- without both, it silently returns undefined.',
+      'cache.modify() updates cached REFERENCES; it never fetches or fabricates data the mutation response never returned.',
+    ],
+  },
   'graphql/pagination/backward-pagination-last-before': {
     apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
     related: [

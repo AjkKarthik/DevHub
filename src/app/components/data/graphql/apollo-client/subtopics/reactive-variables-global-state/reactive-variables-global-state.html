@@ -1,0 +1,27 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Apollo Client" topicRoute="/graphql/apollo-client"
+    subtopicLabel="Reactive Variables for Global Client-Side State" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">Reactive Variables for Global Client-Side State</h1>
+  <p class="page-subtitle">The main page names makeVar in one QnA sentence and never shows it in code -- built, with the precise condition under which it actually integrates with useQuery.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This builds out the reactive-variables technique the main page's own QnA names but never demonstrates, and corrects the implicit assumption that useReactiveVar and useQuery reactivity are automatically connected. Next: the update function for manual cache writes after a mutation.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Apollo Client" topicRoute="/graphql/apollo-client"
+    [prev]="{ label: 'The Real Way to Abort an In-Flight Apollo Query', route: '/graphql/apollo-client/aborting-inflight-queries' }"
+    [next]="{ label: 'The update Function for Manual Cache Writes', route: '/graphql/apollo-client/manual-cache-updates' }" />
+</div>
