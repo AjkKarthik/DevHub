@@ -1,0 +1,27 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Mutation Error Handling" topicRoute="/graphql/error-handling"
+    subtopicLabel="The Payload UserErrors Pattern, Built Out" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">The Payload UserErrors Pattern, Built Out</h1>
+  <p class="page-subtitle">The QnA draws the line between top-level errors and payload UserErrors in one paragraph, but no codeTab ever writes the schema. Here it is: the type, the resolver, and the client — plus why a single throw can't replace it.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This builds out the QnA's throw-vs-userErrors distinction into a working schema, resolver, and client. Next: the ApolloServerErrorCode enum that lets formatError distinguish Apollo's own built-in errors (parse/validation failures) from resolver-thrown ones.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Mutation Error Handling" topicRoute="/graphql/error-handling"
+    [prev]="{ label: 'Apollo Server v4 Removed Its Built-In Error Classes', route: '/graphql/error-handling/apollo-server-v4-removed-error-classes' }"
+    [next]="{ label: 'ApolloServerErrorCode: Recognizing Apollo’s Own Errors', route: '/graphql/error-handling/apollo-server-error-code-enum' }" />
+</div>

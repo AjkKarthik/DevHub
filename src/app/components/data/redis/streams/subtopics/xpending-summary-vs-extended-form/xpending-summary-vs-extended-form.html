@@ -1,0 +1,26 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Redis Streams" topicRoute="/redis/streams"
+    subtopicLabel="XPENDING's Summary vs. Extended Form" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">XPENDING's Summary vs. Extended Form — The Challenge Mixed Them Up</h1>
+  <p class="page-subtitle">The main page's own Stream Metrics Aggregator Challenge called XPENDING's extended form but treated the reply as if it were the summary form — a bug that silently undercounted a real 50-entry backlog down to 3.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>This fixes a genuine, severe bug in the main page's own Challenge reference solution. Next: the legitimate use case for the extended form this fix required understanding — finding specific stuck entries to manually XCLAIM.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Redis Streams" topicRoute="/redis/streams"
+    [next]="{ label: 'XCLAIM vs. XAUTOCLAIM: Manual IDs vs. Scan-Based Reassignment', route: '/redis/streams/xclaim-vs-xautoclaim-manual-vs-scan' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Authentication & Authorization" topicRoute="/graphql/auth"
+    subtopicLabel="graphql-shield Is Effectively Unmaintained — Use @envelop/graphql-middleware" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">graphql-shield Is Effectively Unmaintained — Use &#64;envelop/graphql-middleware</h1>
+  <p class="page-subtitle">The main page's own QnA recommends graphql-shield for "complex permission logic" with no maintenance caveat — graphql-shield and graphql-middleware have had no release in 3+ years, and this page's own codeTab pattern maps directly onto the maintained &#64;envelop/graphql-middleware replacement.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This reuses and extends an already-verified finding from this hub's sibling /graphql/resolvers page, applied here to the specific "graphql-shield for complex permission logic" recommendation this page's own QnA makes. This is the last subtopic in this batch — back to the topic overview for the rest of the Authentication & Authorization content.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Authentication & Authorization" topicRoute="/graphql/auth"
+    [prev]="{ label: 'Contextual vs. Strict: Which Cache Mode Does a Rule Actually Need?', route: '/graphql/auth/contextual-vs-strict-cache-modes' }" />
+</div>

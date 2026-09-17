@@ -37912,6 +37912,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Streams need explicit trimming (XTRIM or MAXLEN) or they grow unbounded, unlike Pub/Sub which has no persistence to manage at all.',
     ],
   },
+  'redis/streams/xpending-summary-vs-extended-form': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Redis Streams', route: '/redis/streams' },
+      { label: 'XCLAIM vs. XAUTOCLAIM: Manual IDs vs. Scan-Based Reassignment', route: '/redis/streams/xclaim-vs-xautoclaim-manual-vs-scan' },
+    ],
+    tip: 'XPENDING key group (no args) returns a SUMMARY [totalCount, minId, maxId, consumers[]] — XPENDING key group start end count returns the EXTENDED form, one [id, consumer, idleMs, deliveryCount] tuple per entry. They are not smaller/larger versions of the same shape.',
+    gotchas: [
+      'Reading index [3] from the extended form gives one entry\'s own delivery count, not a total pending count — a real bug this hub\'s own Stream Metrics Aggregator Challenge had until this batch fixed it.',
+    ],
+  },
+  'redis/streams/xclaim-vs-xautoclaim-manual-vs-scan': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Redis Streams', route: '/redis/streams' },
+      { label: 'XPENDING’s Summary vs. Extended Form', route: '/redis/streams/xpending-summary-vs-extended-form' },
+      { label: 'Dead-Letter Routing by Delivery Count', route: '/redis/streams/dead-letter-routing-by-delivery-count' },
+    ],
+    tip: 'XCLAIM requires knowing the exact entry IDs to reclaim in advance; XAUTOCLAIM (Redis 6.2+) scans the PEL itself for anything idle beyond a threshold and reassigns it in one atomic call — pick XCLAIM only when you already have specific IDs from elsewhere.',
+    gotchas: [
+      'A generic periodic recovery sweep with no prior ID knowledge should always use XAUTOCLAIM — reaching for XPENDING+XCLAIM there is strictly more round trips for the same result.',
+    ],
+  },
+  'redis/streams/dead-letter-routing-by-delivery-count': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Redis Streams', route: '/redis/streams' },
+      { label: 'XCLAIM vs. XAUTOCLAIM: Manual IDs vs. Scan-Based Reassignment', route: '/redis/streams/xclaim-vs-xautoclaim-manual-vs-scan' },
+    ],
+    tip: 'A message that keeps failing every redelivery would otherwise cycle through claim-fail-reclaim forever — checking the extended XPENDING form\'s delivery-count field against a threshold and routing to a separate dead-letter stream (via XADD + XACK) breaks that cycle.',
+    gotchas: [
+      'Dead-lettering XACKs the original entry, permanently removing it from the main PEL — set the threshold high enough to absorb genuinely transient failures, not just one unlucky retry.',
+    ],
+  },
   'redis/pub-sub': {
     apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
     related: [
@@ -37921,6 +37955,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Pub/Sub is appropriate for ephemeral, real-time-only signals (like invalidation notifications) where missing a message occasionally is acceptable — not for anything requiring delivery guarantees.',
       'A slow subscriber can be disconnected by Redis (client-output-buffer-limit) if it can\'t keep up with the message rate.',
+    ],
+  },
+  'redis/pub-sub/the-complete-subscribe-mode-command-list': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Pub/Sub Messaging', route: '/redis/pub-sub' },
+      { label: 'RESP3 Removes the Subscribe-Mode Restriction Entirely', route: '/redis/pub-sub/resp3-removes-the-subscribe-mode-restriction' },
+    ],
+    tip: 'Verified directly against Redis\'s own docs: BOTH RESET and QUIT are allowed on a subscribed connection, alongside SUBSCRIBE/SSUBSCRIBE/PSUBSCRIBE/UNSUBSCRIBE/SUNSUBSCRIBE/PUNSUBSCRIBE/PING — not just one or the other, as two different sections of the main page each partially claimed.',
+    gotchas: [
+      'RESET is comparatively new to this list (Redis 6.2+) — a client written against older Redis-version documentation may not expect it to be allowed here.',
+    ],
+  },
+  'redis/pub-sub/resp3-removes-the-subscribe-mode-restriction': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Pub/Sub Messaging', route: '/redis/pub-sub' },
+      { label: 'The Complete Subscribe-Mode Command List', route: '/redis/pub-sub/the-complete-subscribe-mode-command-list' },
+      { label: 'Sharded Pub/Sub: SSUBSCRIBE and SPUBLISH, Actually Demonstrated', route: '/redis/pub-sub/sharded-pubsub-ssubscribe-and-spublish' },
+    ],
+    tip: 'The "two connections needed for Pub/Sub" rule is a RESP2-specific limitation, not a fundamental one — verified directly against Redis\'s own docs, a client that has opted into RESP3 via HELLO can issue any command while subscribed on the same connection.',
+    gotchas: [
+      'This is a genuine capability, not a recommendation to abandon two connections by default — mixing subscription and regular traffic adds real client-side routing complexity, and library support for it varies.',
+    ],
+  },
+  'redis/pub-sub/sharded-pubsub-ssubscribe-and-spublish': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Pub/Sub Messaging', route: '/redis/pub-sub' },
+      { label: 'RESP3 Removes the Subscribe-Mode Restriction Entirely', route: '/redis/pub-sub/resp3-removes-the-subscribe-mode-restriction' },
+    ],
+    tip: 'SPUBLISH routes a message to exactly ONE shard — the one owning the channel name\'s cluster slot, via the same slot-hashing algorithm used for regular keys — instead of broadcasting to every node the way classic PUBLISH does in Cluster mode.',
+    gotchas: [
+      'A channel name always hashes to the same slot, so SPUBLISH routing is fully deterministic — there is no load-based or random splitting across shards for a given channel.',
     ],
   },
   'redis/transactions': {
@@ -37979,6 +38047,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Script caching (EVALSHA after the first EVAL) avoids re-transmitting the full script body on every subsequent invocation.',
     ],
   },
+  'redis/lua-scripting/redis-rejects-global-variables-it-doesnt-leak-them': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Lua Scripting', route: '/redis/lua-scripting' },
+      { label: 'Since Redis 7.0, Scripts No Longer Need to Be Deterministic', route: '/redis/lua-scripting/scripts-no-longer-need-to-be-deterministic' },
+    ],
+    tip: 'Assigning to an undeclared (global) Lua variable doesn\'t silently persist shared state — Redis rejects it outright with "Script attempted to create global variable \'name\'" and aborts the script immediately, every single time.',
+    gotchas: [
+      'SCRIPT LOAD only compiles and caches a script — it does not execute it, so a global-variable mistake hiding in a rarely-taken branch can go undetected until that branch actually runs in production.',
+    ],
+  },
+  'redis/lua-scripting/scripts-no-longer-need-to-be-deterministic': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Lua Scripting', route: '/redis/lua-scripting' },
+      { label: 'Redis Rejects Global Variables — It Doesn’t Leak Them', route: '/redis/lua-scripting/redis-rejects-global-variables-it-doesnt-leak-them' },
+      { label: 'redis.set_repl(): Skipping Replication for Throwaway Writes', route: '/redis/lua-scripting/set-repl-skipping-replication-for-throwaway-writes' },
+    ],
+    tip: 'Verbatim script replication (which required deterministic scripts) was removed entirely in Redis 7.0 — effects replication is now the only mode, so math.random, TIME, and SRANDMEMBER are all safe to use freely inside a script.',
+    gotchas: [
+      'redis.replicate_commands() still exists for backward compatibility but is documented as "Until version: 7.0.0" — calling it on a current server does nothing meaningful, since there is no longer a verbatim mode to opt out of.',
+    ],
+  },
+  'redis/lua-scripting/set-repl-skipping-replication-for-throwaway-writes': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Lua Scripting', route: '/redis/lua-scripting' },
+      { label: 'Since Redis 7.0, Scripts No Longer Need to Be Deterministic', route: '/redis/lua-scripting/scripts-no-longer-need-to-be-deterministic' },
+    ],
+    tip: 'redis.set_repl(redis.REPL_NONE) lets a script skip replicating genuinely throwaway intermediate writes (like a temporary SUNIONSTORE result) while still replicating the real final write — every new script execution resets back to REPL_ALL automatically.',
+    gotchas: [
+      'REPL_NONE still applies the write on the PRIMARY exactly like any other command — it only controls whether that write is also sent to the AOF file and/or replicas.',
+    ],
+  },
   'redis/eviction-policies': {
     apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
     related: [
@@ -37988,6 +38090,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'volatile-* policies only evict keys that HAVE a TTL set — keys without a TTL are never evicted under these policies, potentially leaving a cache full of permanent keys with no room for new entries.',
       'LRU (least recently used) is approximated, not exact, in Redis for performance reasons — don\'t assume perfectly precise LRU ordering.',
+    ],
+  },
+  'redis/eviction-policies/lrm-evicts-by-write-not-by-read': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Eviction Policies', route: '/redis/eviction-policies' },
+      { label: 'The LFU Morris Counter, Verified Against Real Redis Source', route: '/redis/eviction-policies/the-lfu-morris-counter-formula-verified' },
+    ],
+    tip: 'LRM (Redis 8.6+) only updates a key\'s recency timestamp on WRITE — unlike LRU, which updates on both reads and writes. Verified via simulation: the same 100-tick access pattern produces the OPPOSITE eviction choice under LRU vs LRM.',
+    gotchas: [
+      'LRM is not "a better LRU" — it answers a different question entirely (recently modified vs. recently accessed) and is the wrong choice for a workload that cares about read recency, like most caches do.',
+    ],
+  },
+  'redis/eviction-policies/the-lfu-morris-counter-formula-verified': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Eviction Policies', route: '/redis/eviction-policies' },
+      { label: 'LRM Evicts by Write, Not by Read', route: '/redis/eviction-policies/lrm-evicts-by-write-not-by-read' },
+    ],
+    tip: 'Verified directly against Redis\'s own evict.c: every key\'s LFU counter starts at LFU_INIT_VAL (5), not 0, and each increment fires with probability 1/(baseval*lfu_log_factor+1) — a HIGHER lfu-log-factor makes the counter LESS sensitive, needing more real hits to reach the same reading.',
+    gotchas: [
+      'lfu-log-factor 0 makes every hit increment the counter unconditionally, turning LFU into something closer to a raw (8-bit-capped) hit counter that saturates almost immediately for any moderately-accessed key.',
+    ],
+  },
+  'redis/eviction-policies/current-eviction-exceeded-time-and-other-info-fields': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Eviction Policies', route: '/redis/eviction-policies' },
+      { label: 'The LFU Morris Counter, Verified Against Real Redis Source', route: '/redis/eviction-policies/the-lfu-morris-counter-formula-verified' },
+    ],
+    tip: 'current_eviction_exceeded_time (INFO stats, in MILLISECONDS) reports how long the server has been continuously over maxmemory right now — distinct from total_eviction_exceeded_time, which accumulates across the entire uptime and never resets except on restart.',
+    gotchas: [
+      'A bare usedPct > 80 check treats a server that just tipped over budget identically to one that has been stuck there for hours — only current_eviction_exceeded_time distinguishes the two.',
     ],
   },
   'redis/caching-patterns': {
@@ -38002,6 +38137,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Setting a random JITTER on TTLs prevents many keys expiring simultaneously (a "thundering herd" against the backing database).',
     ],
   },
+  'redis/caching-patterns/stale-while-revalidate-refresh-needs-its-own-lock': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Caching Patterns', route: '/redis/caching-patterns' },
+      { label: 'Implementing Read-Through in Application Code', route: '/redis/caching-patterns/implementing-read-through-in-application-code' },
+    ],
+    tip: 'Verified via a direct simulation: 20 concurrent stale-hit requests against the main page\'s own unlocked refreshInBackground triggered 20 DB calls — the exact stampede this whole page teaches how to prevent, just moved into the stale-while-revalidate refresh path.',
+    gotchas: [
+      'The refresh lock only needs to gate the background refresh itself — never the response returned to the caller, which already has a stale value to return immediately regardless of lock state.',
+    ],
+  },
+  'redis/caching-patterns/implementing-read-through-in-application-code': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Caching Patterns', route: '/redis/caching-patterns' },
+      { label: 'Locking the Stale-While-Revalidate Refresh', route: '/redis/caching-patterns/stale-while-revalidate-refresh-needs-its-own-lock' },
+      { label: 'Tag-Based Invalidation with Redis Sets', route: '/redis/caching-patterns/tag-based-invalidation-with-redis-sets' },
+    ],
+    tip: 'Read-Through and Cache-Aside run the identical check-miss-load-populate sequence — the only difference is WHERE that logic lives: repeated at every call site (Cache-Aside) vs. centralized in one wrapper class every call site calls through (Read-Through).',
+    gotchas: [
+      'A Read-Through wrapper does not stop a call site from bypassing it entirely — it only guarantees the SEQUENCE is correct once a call site does go through it.',
+    ],
+  },
+  'redis/caching-patterns/tag-based-invalidation-with-redis-sets': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Caching Patterns', route: '/redis/caching-patterns' },
+      { label: 'Implementing Read-Through in Application Code', route: '/redis/caching-patterns/implementing-read-through-in-application-code' },
+    ],
+    tip: 'A tag Set (tag:user:42) is an INDEX of key names, never the cached data itself — invalidating a tag means SMEMBERS to read every registered key, UNLINK all of them, then UNLINK the tag set too, or it keeps referencing keys that no longer exist.',
+    gotchas: [
+      'A key that gets SET but crashes before its matching SADD call is invisible to tag-based invalidation entirely — its own TTL is the only thing that eventually cleans it up.',
+    ],
+  },
   'redis/rate-limiting': {
     apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
     related: [
@@ -38011,6 +38180,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Redis\'s atomicity (via Lua scripting or MULTI/EXEC) is essential for a correct rate limiter — a naive read-then-write in application code races under concurrent requests.',
       'A fixed-window counter is simpler to implement and reason about, and often "good enough" — reach for sliding-window only when the boundary-burst behavior genuinely matters.',
+    ],
+  },
+  'redis/rate-limiting/the-off-by-one-in-remaining-after-an-allowed-request': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Rate Limiting', route: '/redis/rate-limiting' },
+      { label: 'Implementing Leaky Bucket with a Bounded Queue', route: '/redis/rate-limiting/implementing-leaky-bucket-with-a-bounded-queue' },
+    ],
+    tip: 'Verified via direct trace: the main page\'s own Sliding Window Counter Challenge reports remaining one HIGHER than the true value on every allowed request — on the LAST allowed request in a window, it tells the caller one more request is available when the true remaining is 0.',
+    gotchas: [
+      'The bug is a flipped ternary in a compact one-line return expression — atomicity alone never guarantees the arithmetic inside a Lua script is correct, only that it runs without racing other clients.',
+    ],
+  },
+  'redis/rate-limiting/implementing-leaky-bucket-with-a-bounded-queue': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Rate Limiting', route: '/redis/rate-limiting' },
+      { label: 'Fail-Open vs. Fail-Closed When Redis Is Unreachable', route: '/redis/rate-limiting/fail-open-vs-fail-closed-when-redis-is-unreachable' },
+    ],
+    tip: 'Leaky Bucket and Token Bucket both involve a "bucket," but control different things: Token Bucket decides how many requests are ALLOWED THROUGH; Leaky Bucket decides the RATE at which already-accepted requests get PROCESSED, via a bounded queue drained at a fixed rate.',
+    gotchas: [
+      'A full leaky bucket silently drops excess requests with no error returned to the caller — this is documented, correct behavior, not a bug, per the main page\'s own QnA ("excess dropped").',
+    ],
+  },
+  'redis/rate-limiting/fail-open-vs-fail-closed-when-redis-is-unreachable': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Rate Limiting', route: '/redis/rate-limiting' },
+      { label: 'Implementing Leaky Bucket with a Bounded Queue', route: '/redis/rate-limiting/implementing-leaky-bucket-with-a-bounded-queue' },
+    ],
+    tip: 'Fail-open (let requests through) and fail-closed (reject everything) are orthogonal to which rate-limiting algorithm is used — they only decide what happens when Redis itself becomes unreachable, and the right default depends on which endpoint is being protected.',
+    gotchas: [
+      'A login endpoint protecting against brute-force should generally fail CLOSED — fail-open silently removes rate limiting for the entire outage window, which specifically benefits an attacker running an automated attack.',
     ],
   },
   'redis/replication-sentinel': {
@@ -38025,6 +38227,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Replicas are read-only by default — writing directly to a replica requires explicitly enabling it, which usually indicates a design that should instead write to the primary.',
     ],
   },
+  'redis/replication-sentinel/why-diskless-sync-needs-a-delay-to-batch-replicas': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Replication & Sentinel', route: '/redis/replication-sentinel' },
+      { label: 'Sentinel’s Replica-Selection Tiebreaker, Implemented', route: '/redis/replication-sentinel/sentinel-replica-selection-tiebreaker-implemented' },
+    ],
+    tip: 'repl-diskless-sync-delay (default 5s) exists because diskless sync cannot admit a new replica once a transfer has already started — the delay batches near-simultaneous arrivals into one shared transfer instead of one transfer per replica.',
+    gotchas: [
+      'Setting the delay to 0 does not make replication faster overall — it makes the FIRST replica sync marginally sooner while forcing every other near-simultaneous replica to pay for its own separate full transfer.',
+    ],
+  },
+  'redis/replication-sentinel/sentinel-replica-selection-tiebreaker-implemented': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Why Diskless Sync Needs a Delay to Batch Replicas', route: '/redis/replication-sentinel/why-diskless-sync-needs-a-delay-to-batch-replicas' },
+      { label: 'Using WAIT for Selective Write Durability', route: '/redis/replication-sentinel/using-wait-for-selective-write-durability' },
+    ],
+    tip: 'Sentinel\'s replica-promotion tiebreaker is sequential, not a single comparison — priority is checked first and can decide the winner outright, offset is only consulted on a priority tie, and run ID only on a tie of both.',
+    gotchas: [
+      'priority: 0 means "never promote this replica" — it is excluded from selection entirely, regardless of how current its offset is.',
+    ],
+  },
+  'redis/replication-sentinel/using-wait-for-selective-write-durability': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Sentinel’s Replica-Selection Tiebreaker, Implemented', route: '/redis/replication-sentinel/sentinel-replica-selection-tiebreaker-implemented' },
+      { label: 'Replication & Sentinel', route: '/redis/replication-sentinel' },
+    ],
+    tip: 'WAIT is a per-call opt-in, not a global durability setting — call it selectively for genuinely critical writes and leave everyday writes on Redis\'s default asynchronous replication.',
+    gotchas: [
+      'A WAIT count lower than requested does not mean the write failed — the write already succeeded on the primary; WAIT only reports whether replication acknowledgment arrived within the timeout.',
+    ],
+  },
   'redis/redis-cluster': {
     apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
     related: [
@@ -38034,6 +38269,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'A poorly distributed hash-tag scheme can create hot shards, just like a poor partition key in any sharded system.',
       'Cluster mode changes client behavior significantly (MOVED/ASK redirections) — most client libraries handle this, but it is a meaningfully different operational model than a single-node or replicated setup.',
+    ],
+  },
+  'redis/redis-cluster/the-live-resharding-state-machine-migrating-importing-ask-moved': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Redis Cluster', route: '/redis/redis-cluster' },
+      { label: 'The Hash Tag Extraction Algorithm, Verified Against Real Edge Cases', route: '/redis/redis-cluster/the-hash-tag-extraction-algorithm-verified-against-real-edge-cases' },
+    ],
+    tip: 'A node with a slot marked MIGRATING still serves existing keys locally — only a query for a key not found there gets ASK-redirected to the target node, verified against Redis\'s own documented protocol.',
+    gotchas: [
+      'A node with a slot marked IMPORTING rejects any query for that slot unless the client sent ASKING immediately before it — otherwise it MOVED-redirects right back to the source node.',
+    ],
+  },
+  'redis/redis-cluster/the-hash-tag-extraction-algorithm-verified-against-real-edge-cases': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'The Live Resharding State Machine: MIGRATING, IMPORTING, ASK, MOVED', route: '/redis/redis-cluster/the-live-resharding-state-machine-migrating-importing-ask-moved' },
+      { label: 'ASK Is a One-Time Redirect, Not a Permanent Slot-Map Update', route: '/redis/redis-cluster/ask-is-a-one-time-redirect-not-a-permanent-slot-map-update' },
+    ],
+    tip: 'An EMPTY hash tag ({}) does the opposite of what it looks like — it falls back to hashing the whole key, a documented escape hatch for binary key names, not a bug.',
+    gotchas: [
+      'Only the FIRST valid {tag} in a key is ever consulted — a key with multiple {tag} pairs never combines or picks the "best" one.',
+    ],
+  },
+  'redis/redis-cluster/ask-is-a-one-time-redirect-not-a-permanent-slot-map-update': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'The Hash Tag Extraction Algorithm, Verified Against Real Edge Cases', route: '/redis/redis-cluster/the-hash-tag-extraction-algorithm-verified-against-real-edge-cases' },
+      { label: 'Redis Cluster', route: '/redis/redis-cluster' },
+    ],
+    tip: 'ASKING must be resent on EVERY query to an importing node, not just once — it is a per-request opt-in flag, not a one-time handshake that unlocks unrestricted future access.',
+    gotchas: [
+      'A client that updates its slot map early on a single ASK response does not corrupt data — the target node still rejects un-ASKING\'d queries with MOVED, so the mistake self-corrects into extra redirects, not wrong reads.',
     ],
   },
   'redis/persistence': {
@@ -38047,6 +38315,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'AOF rewrite (compacting the log) still requires enough disk space for both the old and new file during the rewrite process.',
     ],
   },
+  'redis/persistence/aof-use-rdb-preamble-default-since-redis-5-0': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Persistence: RDB & AOF', route: '/redis/persistence' },
+      { label: 'DEBUG SLEEP vs. SAVE: Two Completely Different Commands', route: '/redis/persistence/debug-sleep-vs-save-two-different-commands' },
+    ],
+    tip: 'aof-use-rdb-preamble was introduced opt-in (default no) in Redis 4.0 and only became the default (yes) starting at Redis 5.0 — verified directly against Redis\'s own redis.conf template at both tagged releases, not "Redis 7+" as often assumed.',
+    gotchas: [
+      'A Redis instance strictly older than 5.0 still ships with the original opt-in default — the corrected "since 5.0" claim is a floor, not a statement about every earlier version too.',
+    ],
+  },
+  'redis/persistence/debug-sleep-vs-save-two-different-commands': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Persistence: RDB & AOF', route: '/redis/persistence' },
+      { label: 'aof-use-rdb-preamble Has Defaulted to Yes Since Redis 5.0', route: '/redis/persistence/aof-use-rdb-preamble-default-since-redis-5-0' },
+      { label: 'Monitoring BGSAVE’s Copy-on-Write Memory Growth', route: '/redis/persistence/monitoring-bgsave-cow-memory-growth' },
+    ],
+    tip: 'DEBUG SLEEP has nothing to do with persistence — it blocks the entire server for a caller-specified duration, purely to test client timeout/retry/alerting logic in a controlled environment.',
+    gotchas: [
+      'Never run DEBUG SLEEP against production — even a few seconds can trigger client timeouts, replication lag, and potential failovers. It belongs in staging only.',
+    ],
+  },
+  'redis/persistence/monitoring-bgsave-cow-memory-growth': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Persistence: RDB & AOF', route: '/redis/persistence' },
+      { label: 'DEBUG SLEEP vs. SAVE: Two Completely Different Commands', route: '/redis/persistence/debug-sleep-vs-save-two-different-commands' },
+    ],
+    tip: 'BGSAVE\'s copy-on-write memory growth tracks how many pages the PARENT process writes WHILE the child snapshot is in progress — not the dataset\'s total size. A large, mostly-idle dataset can see almost no growth at all.',
+    gotchas: [
+      'The extra memory is genuinely temporary — it returns to baseline once BGSAVE finishes and the copy-on-write pages release, not something that lingers until a restart.',
+    ],
+  },
   'redis/redis-nodejs': {
     apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
     related: [
@@ -38056,6 +38358,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Node.js Redis clients queue commands during a reconnect by default — understand this buffering behavior before assuming a command either succeeds immediately or fails immediately.',
       'Pipelining multiple commands (sending them without waiting for each response) meaningfully reduces round-trip overhead for batch operations.',
+    ],
+  },
+  'redis/redis-nodejs/watch-retry-loops-need-a-dedicated-connection': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Redis with Node.js', route: '/redis/redis-nodejs' },
+      { label: 'Typed defineCommand(), Without the as any Cast', route: '/redis/redis-nodejs/typed-definecommand-without-as-any' },
+      { label: 'Transactions & Optimistic Locking', route: '/redis/transactions' },
+    ],
+    tip: 'WATCH state lives on the connection, not the client — the main page\'s own WATCH/MULTI/EXEC retry-loop sketch needs redis.duplicate() to stay isolated from every other concurrent caller, matching the fix already established on the Transactions topic.',
+    gotchas: [
+      'Two logical operations sharing one connection can produce BOTH a false abort AND a silent false success — the more dangerous failure, since a wrongly-succeeded EXEC leaves no error anywhere to catch it.',
+    ],
+  },
+  'redis/redis-nodejs/typed-definecommand-without-as-any': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'WATCH Retry Loops Need a Dedicated Connection', route: '/redis/redis-nodejs/watch-retry-loops-need-a-dedicated-connection' },
+      { label: 'A Real Health-Check Endpoint with a PING Timeout', route: '/redis/redis-nodejs/a-real-health-check-endpoint-with-ping-timeout' },
+    ],
+    tip: 'Extend ioredis\'s own RedisCommander<Context> interface via TypeScript declaration merging to give a defineCommand()-registered method real types — the same interface Redis/Cluster already mix in for get/set/incr — instead of casting the client with as any.',
+    gotchas: [
+      'The declaration only types the call site — it is a contract the developer must keep in sync with the Lua script by hand; TypeScript cannot check Lua source at all.',
+    ],
+  },
+  'redis/redis-nodejs/a-real-health-check-endpoint-with-ping-timeout': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Typed defineCommand(), Without the as any Cast', route: '/redis/redis-nodejs/typed-definecommand-without-as-any' },
+      { label: 'Redis with Node.js', route: '/redis/redis-nodejs' },
+    ],
+    tip: 'Race redis.ping() against its own short setTimeout, separate from the client\'s own command-timeout/retry settings — a health endpoint needs to report unhealthy fast, not wait out a retry budget tuned for ordinary user traffic.',
+    gotchas: [
+      'A passing PING only confirms the connection is alive — it says nothing about AUTH/ACL permissions or the correct database being selected for the operations the app actually performs.',
     ],
   },
   'redis/redis-stack': {
@@ -38069,6 +38405,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'RediSearch\'s vector similarity search capability has made Redis Stack a viable, lower-latency alternative to a dedicated vector database for some RAG use cases.',
     ],
   },
+  'redis/redis-stack/when-modules-are-built-in-redis-8-vs-still-need-stack': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Redis Stack & Modules', route: '/redis/redis-stack' },
+      { label: 'The FT.INFO indexing Field Is a Truthy String, Not a Boolean', route: '/redis/redis-stack/the-ft-info-indexing-field-is-a-truthy-string-not-a-boolean' },
+    ],
+    tip: 'The RediSearch/RedisJSON/RedisTimeSeries/RedisBloom modules merged into core Redis at 8.0.0 (GA May 2025), the same release that renamed Redis Community Edition to Redis Open Source — not at 7.4 as commonly assumed.',
+    gotchas: [
+      'On any Redis version earlier than 8.0, the Stack package or individual module loading is still required — these capabilities are not built in by default.',
+    ],
+  },
+  'redis/redis-stack/the-ft-info-indexing-field-is-a-truthy-string-not-a-boolean': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'When Modules Are Built In (Redis 8.0+) vs. Still Need Stack', route: '/redis/redis-stack/when-modules-are-built-in-redis-8-vs-still-need-stack' },
+      { label: 'Co-Locating a Search Index on One Cluster Node with Hash Tags', route: '/redis/redis-stack/co-locating-a-search-index-on-one-cluster-node-with-hash-tags' },
+    ],
+    tip: 'FT.INFO\'s indexing field is documented as returning the literal string "0" or "1" — a naive JS `while (!info.indexing)` readiness poll is silently broken for both states, since any non-empty string is truthy.',
+    gotchas: [
+      'Use `Number(info.indexing) === 0` or a direct `info.indexing !== \'0\'` string check — never a bare truthiness check on this field.',
+    ],
+  },
+  'redis/redis-stack/co-locating-a-search-index-on-one-cluster-node-with-hash-tags': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'The FT.INFO indexing Field Is a Truthy String, Not a Boolean', route: '/redis/redis-stack/the-ft-info-indexing-field-is-a-truthy-string-not-a-boolean' },
+      { label: 'Redis Cluster', route: '/redis/redis-cluster' },
+    ],
+    tip: 'RediSearch indexes are per-node in Cluster mode — giving every key in a searchable dataset the SAME hash tag forces them onto one node, so that node\'s local index sees the complete document set without needing a coordinator.',
+    gotchas: [
+      'This caps that index\'s capacity/throughput at what a single node can hold — fine for a bounded per-tenant dataset, not a substitute for a genuinely distributed search backend.',
+    ],
+  },
   'redis/security': {
     apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
     related: [
@@ -38078,6 +38447,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Renaming or disabling genuinely dangerous commands (FLUSHALL, CONFIG, KEYS) in production reduces the blast radius of a compromised or misused client.',
       'TLS support must be explicitly enabled and configured — Redis connections are unencrypted by default, a real risk for traffic crossing untrusted networks.',
+    ],
+  },
+  'redis/security/parsing-acl-logs-object-field-correctly': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Redis Security', route: '/redis/security' },
+      { label: 'Restricting EVAL Access via ACL -@scripting', route: '/redis/security/restricting-eval-access-via-acl-scripting' },
+    ],
+    tip: 'ACL LOG\'s object field is a single-purpose field whose meaning depends on the reason field — parse the client-info string\'s own cmd= token for the failed command instead of splitting object on a "|" that was never there.',
+    gotchas: [
+      'A regex like /(?:^|\\s)cmd=(\\S+)/ against client-info is the reliable way to recover the attempted command — object alone is not enough.',
+    ],
+  },
+  'redis/security/restricting-eval-access-via-acl-scripting': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Parsing ACL LOG’s object Field Correctly', route: '/redis/security/parsing-acl-logs-object-field-correctly' },
+      { label: 'ACL SAVE Requires an aclfile', route: '/redis/security/acl-save-requires-an-aclfile' },
+    ],
+    tip: 'lua-time-limit 0 disables the busy-script warning mechanism entirely — it does not disable scripting. The real way to restrict who can run EVAL/EVALSHA is denying the @scripting ACL category.',
+    gotchas: [
+      'A defineCommand()-registered custom Lua command still sends a real EVALSHA over the wire — -@scripting blocks it too, regardless of how friendly the client-side method name looks.',
+    ],
+  },
+  'redis/security/acl-save-requires-an-aclfile': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Restricting EVAL Access via ACL -@scripting', route: '/redis/security/restricting-eval-access-via-acl-scripting' },
+      { label: 'Redis Security', route: '/redis/security' },
+    ],
+    tip: 'CONFIG REWRITE and ACL SAVE are not interchangeable — inline redis.conf user directives persist via CONFIG REWRITE; an external aclfile persists only via ACL SAVE. Using the wrong one for the configured mode either errors loudly (no aclfile) or silently does nothing (aclfile mode, CONFIG REWRITE only).',
+    gotchas: [
+      'The two storage modes are mutually incompatible — a deployment picks exactly one, never both at once.',
     ],
   },
 
@@ -38094,6 +38496,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'GraphQL is a QUERY LANGUAGE and execution model, not a database or storage technology — it sits in front of whatever data sources already exist.',
     ],
   },
+  'graphql/fundamentals/post-type-missing-author-field': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'GraphQL Fundamentals', route: '/graphql/fundamentals' },
+      { label: 'Non-Null Field Errors Bubble Up', route: '/graphql/fundamentals/non-null-error-propagation' },
+    ],
+    tip: 'GraphQL runs a full validation pass against the schema BEFORE execution — a query field the schema never declared fails with "Cannot query field X on type Y" and no resolver is ever invoked. Keep every code sample\'s query in sync with the schema shown alongside it.',
+    gotchas: [
+      'Docs code tabs presented as one running example share a schema — a field a later tab queries must be declared by the earlier tab\'s schema, even though each tab compiles alone.',
+      'The reverse edge of a relationship (Post.author for User.posts) is easy to leave out; object graphs are usually navigable both ways.',
+    ],
+  },
+  'graphql/fundamentals/non-null-error-propagation': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'The Post Type Never Declared Its Own author Field', route: '/graphql/fundamentals/post-type-missing-author-field' },
+      { label: 'Aliases Resolve Field-Name Collisions', route: '/graphql/fundamentals/aliases-resolve-field-collisions' },
+    ],
+    tip: 'A non-null (!) field that resolves null throws a field error AND pushes the null up to its parent. If the parent is also non-null the null keeps bubbling — up to a nullable field, or to the root (data becomes null). Reserve ! for values that genuinely cannot fail.',
+    gotchas: [
+      'Marking a fragile, downstream-backed field non-null converts a local recoverable null into a cascading one that can erase the whole response.',
+      'The original error stays in the errors array with its full path, so the failing leaf is still identifiable even when the visible null sits higher up.',
+    ],
+  },
+  'graphql/fundamentals/aliases-resolve-field-collisions': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Non-Null Field Errors Bubble Up', route: '/graphql/fundamentals/non-null-error-propagation' },
+      { label: 'GraphQL Fundamentals', route: '/graphql/fundamentals' },
+    ],
+    tip: 'A response object is keyed by field name. Selecting the same field twice with different arguments and no alias is a validation error (field conflict) — an alias renames each selection\'s output key so both results land in their own slot, still in one request.',
+    gotchas: [
+      'Aliases are client-side only: the resolver never sees the alias, just the real field name and its arguments.',
+      'An alias renames one field\'s output key; a fragment reuses a selection set. Different problems, often used together.',
+    ],
+  },
   'graphql/type-system': {
     apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
     related: [
@@ -38106,6 +38544,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Interfaces and unions let a field return one of several possible types, requiring clients to use fragments to access type-specific fields.',
     ],
   },
+  'graphql/type-system/abstract-type-no-instanceof-fallback': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Type System Deep Dive', route: '/graphql/type-system' },
+      { label: 'Unwrapping Introspection Types: Following ofType', route: '/graphql/type-system/unwrapping-oftype' },
+    ],
+    tip: 'graphql-js has NO instanceof fallback for abstract types. Without a resolveType function, the default reads a __typename off the value, then calls each member type\'s isTypeOf in definition order, then throws "must resolve to an Object type at runtime". Class identity means nothing to it.',
+    gotchas: [
+      'An ORM that returns class instances does not make abstract fields "just work" — you still need __typename on the value, isTypeOf per type, or resolveType on the abstract type.',
+      'Returning null from resolveType is not a safe no-op; it produces the same runtime error as having no resolver at all.',
+    ],
+  },
+  'graphql/type-system/unwrapping-oftype': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'There Is No instanceof Fallback for Abstract Types', route: '/graphql/type-system/abstract-type-no-instanceof-fallback' },
+      { label: 'Disabling Introspection Is Not the Same as Hiding Your Schema', route: '/graphql/type-system/disabling-introspection-vs-hiding-schema' },
+    ],
+    tip: 'In an introspection type reference, NON_NULL and LIST nodes have name: null and an ofType pointing at what they wrap. Only named kinds (SCALAR/OBJECT/INTERFACE/UNION/ENUM/INPUT_OBJECT) carry a real name, and they never have an ofType. Walk ofType while name is null.',
+    gotchas: [
+      'Reading field.type.name directly returns null for any wrapped type — the real name is one or more ofType hops deeper.',
+      'Nested lists ([[Int!]!]!) are legal, so an unwrapper must recurse rather than assume a fixed wrapper depth.',
+    ],
+  },
+  'graphql/type-system/disabling-introspection-vs-hiding-schema': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Unwrapping Introspection Types: Following ofType', route: '/graphql/type-system/unwrapping-oftype' },
+      { label: 'Type System Deep Dive', route: '/graphql/type-system' },
+    ],
+    tip: 'Disabling introspection does not hide your schema. Validation errors still name real fields via "Did you mean" suggestions; tools like clairvoyance reconstruct the schema from those alone. Block field suggestions (graphql-armor / Apollo hideSchemaDetailsFromClientErrors) and add an operation allowlist.',
+    gotchas: [
+      'An attacker does not need __schema — a wordlist run against suggestion-enabled errors recovers most field and argument names.',
+      'Neither suppressing suggestions nor an allowlist makes the schema truly secret; they raise the cost of blind automated enumeration, which is the realistic threat.',
+    ],
+  },
   'graphql/schema-definition-language': {
     apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
     related: [
@@ -38115,6 +38589,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'A schema is a living contract — removing or changing a field\'s type is a breaking change for any client that queries it, same as a breaking change in a REST API.',
       'Comments and descriptions in SDL become part of the auto-generated documentation exposed via introspection — worth keeping meaningful, not just placeholder text.',
+    ],
+  },
+  'graphql/schema-definition-language/non-null-arg-with-default-not-required': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Schema Definition Language', route: '/graphql/schema-definition-language' },
+      { label: 'Only Fragments and __typename Can Select From a Union', route: '/graphql/schema-definition-language/union-selection-sets' },
+    ],
+    tip: 'An argument is "required" only when it is Non-Null AND has no default value. Add a default and the same ! argument becomes optional to supply — the ! still bans null as a value, it just no longer forces the caller to mention the argument.',
+    gotchas: [
+      'A default value fills in for a MISSING argument only. Passing explicit null to a Non-Null argument is always a validation error, default or not.',
+      'For a nullable argument with a default, omitting it and passing explicit null are genuinely different — the resolver can tell "not asked" from "asked for null".',
+    ],
+  },
+  'graphql/schema-definition-language/union-selection-sets': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'A Non-Null Argument With a Default Value Is Not Required', route: '/graphql/schema-definition-language/non-null-arg-with-default-not-required' },
+      { label: 'Custom Scalars: serialize, parseValue, and parseLiteral', route: '/graphql/schema-definition-language/custom-scalar-hooks' },
+    ],
+    tip: 'A union type declares no fields of its own — the only thing selectable directly on it is the built-in __typename. Every other field must be reached through an inline or named fragment, one per member type.',
+    gotchas: [
+      'When the runtime type matches no fragment, that result comes back as an empty object {} — no server error. The client just cannot discriminate it.',
+      'An interface CAN expose shared fields for direct selection; a union cannot. That is the practical reason to prefer an interface when members share meaningful fields.',
+    ],
+  },
+  'graphql/schema-definition-language/custom-scalar-hooks': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Only Fragments and __typename Can Select From a Union', route: '/graphql/schema-definition-language/union-selection-sets' },
+      { label: 'Schema Definition Language', route: '/graphql/schema-definition-language' },
+    ],
+    tip: 'serialize runs on the output path (resolver return value to JSON). parseValue handles a value that arrived as a query variable. parseLiteral handles a value written inline in the query document — and receives an AST node, not a raw value.',
+    gotchas: [
+      'parseLiteral gets a node like { kind: "StringValue", value: "..." }; read ast.value and check ast.kind rather than converting the node directly.',
+      'If parseValue and parseLiteral disagree, the same query behaves differently depending on whether the client inlined the value or passed it as a variable. Have parseLiteral delegate to parseValue.',
     ],
   },
   'graphql/queries': {
@@ -38129,6 +38639,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Aliases let the same field be queried multiple times with different arguments in one request — without them, field name collisions in the response would be unavoidable.',
     ],
   },
+  'graphql/queries/skip-include-run-on-the-server': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Queries', route: '/graphql/queries' },
+      { label: 'Field Merging: Two Selections of the Same Field Must Be Compatible', route: '/graphql/queries/field-merging-conflicts' },
+    ],
+    tip: '@skip and @include are evaluated on the SERVER during field collection, before any resolver runs. The client sends the full query; a field behind @include(if: $x) with $x=false genuinely never executes. They shape the response — they are not access control, because the client owns the variable.',
+    gotchas: [
+      '@include(if: $isAdmin) does not protect a field — a non-admin client just sends isAdmin: true. Put authorization in the resolver or a server-backed schema directive.',
+      'Both directives on one field is spec-defined, not undefined: the field is kept only if @skip is false AND @include is true.',
+    ],
+  },
+  'graphql/queries/field-merging-conflicts': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: '@skip and @include Run on the Server, Not the Client', route: '/graphql/queries/skip-include-run-on-the-server' },
+      { label: 'The Lone Anonymous Operation Rule', route: '/graphql/queries/lone-anonymous-operation' },
+    ],
+    tip: 'The spec\'s "Fields in set can merge" rule: two selections sharing a response key (alias, or field name) must have the same field and identical arguments. Same field + different args with no alias is a validation error — that is why an alias is "required" for that case.',
+    gotchas: [
+      'The check runs on the flattened selection set, so two fragments each selecting the same field with different arguments conflict even though the query text never repeats the field.',
+      'Two selections of the same field with identical arguments (or none) merge cleanly — that is the normal case, not a conflict.',
+    ],
+  },
+  'graphql/queries/lone-anonymous-operation': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Field Merging: Two Selections of the Same Field Must Be Compatible', route: '/graphql/queries/field-merging-conflicts' },
+      { label: 'Queries', route: '/graphql/queries' },
+    ],
+    tip: 'Two rules: (1) Lone Anonymous Operation — an unnamed operation is only valid as the single operation in a document; (2) a multi-operation document requires operationName on the request. Naming every operation is a correctness rule for any tooling that merges query files, not just a logging nicety.',
+    gotchas: [
+      'A multi-operation document with no operationName returns "Must provide operation name..." — there is no implicit "run the first one".',
+      'A document with exactly one operation runs it with or without operationName, named or anonymous.',
+    ],
+  },
   'graphql/mutations': {
     apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
     related: [
@@ -38141,6 +38687,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'GraphQL has no built-in transactional guarantee across multiple mutations in one request — that must be handled at the resolver/business-logic layer if needed.',
     ],
   },
+  'graphql/mutations/apollo-server-dropped-upload-support': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Mutations', route: '/graphql/mutations' },
+      { label: 'Serial Execution Is Not a Transaction', route: '/graphql/mutations/serial-execution-is-not-a-transaction' },
+    ],
+    tip: 'Apollo Server removed BUILT-IN graphql-upload support in v3 (2021) -- multipart/form-data is a CSRF loophole. Apollo\'s current recommendation is a signed URL: upload straight to cloud storage, bypassing GraphQL entirely.',
+    gotchas: [
+      '`graphql-upload` still exists as a standalone package, but is not wired in by default anymore -- and needs explicit CSRF prevention if used.',
+      'The multipart request spec is a community convention, not part of the official GraphQL spec.',
+    ],
+  },
+  'graphql/mutations/serial-execution-is-not-a-transaction': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Apollo Server Dropped Built-In Upload Support in v3', route: '/graphql/mutations/apollo-server-dropped-upload-support' },
+      { label: 'Guarding a Destructive Mutation With an Idempotency Key', route: '/graphql/mutations/idempotency-keys-for-destructive-mutations' },
+    ],
+    tip: 'Root mutation fields execute via executeFieldsSerially -- each one fully finishes (including nested resolution) before the next starts. That guarantees ORDER only, not atomicity: an earlier field\'s committed side effect is never rolled back if a later field throws.',
+    gotchas: [
+      'Serial execution applies to TOP-LEVEL mutation fields only -- anything nested underneath resolves normally, concurrently where possible.',
+      'A faster second root field still waits for a slower first one to fully complete before it even starts.',
+    ],
+  },
+  'graphql/mutations/idempotency-keys-for-destructive-mutations': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Serial Execution Is Not a Transaction', route: '/graphql/mutations/serial-execution-is-not-a-transaction' },
+      { label: 'Mutations', route: '/graphql/mutations' },
+    ],
+    tip: 'An idempotency key is a client-generated ID sent inside a mutation\'s input, reused across retries of the SAME logical attempt. The resolver checks it before doing the real work and returns the cached result on a replay -- no second charge, no second email.',
+    gotchas: [
+      'Key on the client-generated attempt ID, not on an entity ID like orderId -- entity IDs conflate a retry with a genuinely new attempt against the same entity.',
+      'A production key store needs to survive restarts and be shared across instances -- a database row or Redis key with a TTL, not in-process memory.',
+    ],
+  },
   'graphql/subscriptions': {
     apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
     related: [
@@ -38148,8 +38730,44 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
     tip: 'Subscriptions typically run over WebSockets (not plain HTTP like queries/mutations) — this transport difference means subscription support requires additional server and infrastructure configuration beyond a standard HTTP GraphQL endpoint.',
     gotchas: [
-      'A subscription resolver runs once per PUBLISHED event, not once per client request — understanding this execution model is essential for correct subscription implementation.',
+      'A subscription\'s resolve function runs once PER SUBSCRIBER per published event, not once per event overall — each active subscriber gets its own execution, with its own context.',
       'Scaling subscriptions across multiple server instances requires a shared pub/sub backend (Redis, for example) so an event published on one instance reaches subscribers connected to another.',
+    ],
+  },
+  'graphql/subscriptions/federated-subscriptions-need-enterprise-graphos': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: '@skip and @include Can Crash Subscription Validation', route: '/graphql/subscriptions/skip-include-crashes-subscription-validation' },
+      { label: 'Subscriptions', route: '/graphql/subscriptions' },
+    ],
+    tip: 'Federation v2.4+ is the real floor for subscription composition (not just "v2+"), and serving federated subscriptions through a self-hosted Apollo Router additionally requires a GraphOS ENTERPRISE plan, validated via APOLLO_KEY/APOLLO_GRAPH_REF — a schema can compose fine and still be refused at the router.',
+    gotchas: [
+      'Composing against Federation 2.0-2.3 fails outright for a schema with a Subscription type — this is a build-time failure, separate from the runtime entitlement gate.',
+      'Each subgraph still needs its own working subscription server (graphql-ws) — the Enterprise Router feature aggregates across already-working subgraphs, it does not replace them.',
+    ],
+  },
+  'graphql/subscriptions/skip-include-crashes-subscription-validation': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Federated Subscriptions Need More Than Federation v2+', route: '/graphql/subscriptions/federated-subscriptions-need-enterprise-graphos' },
+      { label: 'resolve Runs Once Per Subscriber, With Their Own Context', route: '/graphql/subscriptions/resolve-runs-per-subscriber-with-their-context' },
+    ],
+    tip: 'graphql-js\'s own validate() has no variableValues parameter at all. A subscription\'s single top-level field guarded by a variable-driven @skip/@include can make SingleFieldSubscriptionsRule throw an uncaught exception instead of returning a clean validation error.',
+    gotchas: [
+      'A literal @skip(if: true)/@skip(if: false) on a subscription field validates cleanly — the crash is specific to a VARIABLE-driven directive value, not directives in general.',
+      'A fragment spread introducing a second subscription field is rejected the same as writing that field inline — fields are collected after fragment expansion.',
+    ],
+  },
+  'graphql/subscriptions/resolve-runs-per-subscriber-with-their-context': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: '@skip and @include Can Crash Subscription Validation', route: '/graphql/subscriptions/skip-include-crashes-subscription-validation' },
+      { label: 'Subscriptions', route: '/graphql/subscriptions' },
+    ],
+    tip: 'A subscription field\'s resolve function is an ordinary field resolver — it runs once per subscriber per event, with that subscriber\'s own context, letting the SAME broadcast payload be shaped differently for each listener with no per-subscriber publish call.',
+    gotchas: [
+      'resolve decides WHAT SHAPE an event takes once delivered — withFilter decides WHETHER it is delivered at all. The two compose; they are not alternatives.',
+      'Omitting resolve is completely valid — the raw published payload (for the field key) is returned as-is, with no per-subscriber shaping.',
     ],
   },
   'graphql/variables-arguments': {
@@ -38163,6 +38781,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Default values on variables let a query be called with fewer explicit arguments while still having sensible fallback behavior.',
     ],
   },
+  'graphql/variables-arguments/variable-usage-type-compatibility': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Variables & Arguments', route: '/graphql/variables-arguments' },
+      { label: 'Enum Values: Bare in the Query, String in the Variables JSON', route: '/graphql/variables-arguments/enum-inline-vs-variables' },
+    ],
+    tip: 'The spec\'s All Variable Usages Are Allowed rule: the variable and argument must share a named type, but nullability only needs to be compatible. A non-null variable fits a nullable slot; a nullable variable fits a non-null slot only if the variable or the argument has a default value.',
+    gotchas: [
+      '$id: ID! CAN be passed where the schema declares a plain nullable ID — non-null trivially satisfies "may be null".',
+      'A type mismatch is a validation error, not a runtime oddity — the operation never executes.',
+    ],
+  },
+  'graphql/variables-arguments/enum-inline-vs-variables': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'When a Variable Can Be Used Where a Different Type Is Expected', route: '/graphql/variables-arguments/variable-usage-type-compatibility' },
+      { label: 'GET vs POST, and Why GET Is Query-Only', route: '/graphql/variables-arguments/graphql-get-vs-post' },
+    ],
+    tip: 'An enum value is a bare identifier inline in the query (status: PUBLISHED) but a JSON string in the variables object ("PUBLISHED"). Quoting it inline makes it a StringValue, which a schema enum position rejects at validation. Enum value names are case-sensitive.',
+    gotchas: [
+      'Hand-built query strings tend to quote the interpolated enum value — wrong inline. Use a variable so the enum-as-string lives in the variables object, not the query text.',
+      '"published" in the variables JSON does not coerce to PUBLISHED — it fails as "value does not exist in the enum".',
+    ],
+  },
+  'graphql/variables-arguments/graphql-get-vs-post': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Enum Values: Bare in the Query, String in the Variables JSON', route: '/graphql/variables-arguments/enum-inline-vs-variables' },
+      { label: 'Variables & Arguments', route: '/graphql/variables-arguments' },
+    ],
+    tip: 'Per the GraphQL-over-HTTP spec, GET may run query operations ONLY — mutations must POST, because GET is a safe method. GET queries are CDN-cacheable, but real queries exceed URL length limits, so production GET caching pairs GET with Automatic Persisted Queries (a short stable hash instead of the full text).',
+    gotchas: [
+      'A mutation over GET is rejected: "Can only perform a mutation operation from a POST request." Route by operation type, do not switch everything to GET.',
+      'CDNs do not cache POST in practice — edge caching of GraphQL reads means GET plus a persisted query, not cache headers on a POST.',
+    ],
+  },
   'graphql/directives': {
     apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
     related: [
@@ -38172,6 +38826,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Custom directives require server-side implementation to actually do anything — declaring one in SDL without implementing its logic is a no-op.',
       '@deprecated on a schema field surfaces a warning in tooling/introspection without breaking existing clients still using that field.',
+    ],
+  },
+  'graphql/directives/where-deprecated-can-go': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Directives', route: '/graphql/directives' },
+      { label: 'Declaring a Directive Does Nothing — the Transformer Is the Behavior', route: '/graphql/directives/directive-declaration-vs-transformer' },
+    ],
+    tip: '@deprecated has four valid locations since the 2021 spec release: FIELD_DEFINITION, ENUM_VALUE, ARGUMENT_DEFINITION, and INPUT_FIELD_DEFINITION. A required (non-null, no default) argument or input field cannot be deprecated until it is made optional.',
+    gotchas: [
+      'Assuming @deprecated only applies to fields and enum values misses that individual arguments and input-object fields can be deprecated too.',
+      'Attempting to deprecate a required argument fails validation — make it optional (add a default, or widen to nullable) first.',
+    ],
+  },
+  'graphql/directives/directive-declaration-vs-transformer': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Where @deprecated Can Actually Go', route: '/graphql/directives/where-deprecated-can-go' },
+      { label: 'FIELD vs FIELD_DEFINITION: Two Different Location Namespaces', route: '/graphql/directives/field-vs-field-definition-locations' },
+    ],
+    tip: 'Declaring a custom directive in SDL (directive @auth on FIELD_DEFINITION) is inert on its own — a schema transformer (mapSchema + getDirective) has to be applied to actually wrap the resolvers it annotates.',
+    gotchas: [
+      'Forgetting the schema = authDirectiveTransformer(schema) line leaves every @auth annotation silently doing nothing, with no error anywhere.',
+      'When composing multiple transformers, the LAST-applied one wraps outermost and runs first at request time.',
+    ],
+  },
+  'graphql/directives/field-vs-field-definition-locations': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Declaring a Directive Does Nothing — the Transformer Is the Behavior', route: '/graphql/directives/directive-declaration-vs-transformer' },
+      { label: 'Directives', route: '/graphql/directives' },
+    ],
+    tip: 'Executable directive locations (FIELD, FRAGMENT_SPREAD, etc.) and type-system directive locations (FIELD_DEFINITION, ARGUMENT_DEFINITION, etc.) are two disjoint sets. A directive declared for one cannot be used in the other.',
+    gotchas: [
+      'FIELD_DEFINITION means schema-controlled behavior via a transformer; FIELD means a client-controlled per-query switch — they need different implementations entirely.',
+      'A directive listing both locations still needs separate handling code for each usage site — one code path never serves both.',
     ],
   },
   'graphql/resolvers': {
@@ -38186,6 +38876,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A resolver throwing an error partially fails the response (that field becomes null with an error) rather than failing the entire query, unless the field is non-null.',
     ],
   },
+  'graphql/resolvers/graphql-middleware-shield-unmaintained': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Preventing Overfetching With info.fieldNodes', route: '/graphql/resolvers/preventing-overfetch-with-info-fieldnodes' },
+      { label: 'Resolvers', route: '/graphql/resolvers' },
+    ],
+    tip: 'graphql-middleware and graphql-shield are both effectively unmaintained (no release in 3+ years) — @envelop/graphql-middleware wraps the SAME shield()/rule() API on top of the actively-maintained envelop plugin pipeline, so existing permission rules don\'t need rewriting.',
+    gotchas: [
+      'Neither package is formally deprecated on npm — the existing code keeps running, the risk is the absence of future patches and compatibility fixes, not an imminent break.',
+      'envelop v3 moved onResolverCalled into its own package (@envelop/on-resolve, via useOnResolve) — a custom plugin defining onResolverCalled directly is the older v2 pattern.',
+    ],
+  },
+  'graphql/resolvers/preventing-overfetch-with-info-fieldnodes': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'graphql-middleware and graphql-shield Are Effectively Unmaintained', route: '/graphql/resolvers/graphql-middleware-shield-unmaintained' },
+      { label: 'info.path Matches the Response\'s Own errors[].path Array Exactly', route: '/graphql/resolvers/info-path-matches-response-errors-path' },
+    ],
+    tip: 'info.fieldNodes[0].selectionSet.selections gives the requested field names for a targeted DB SELECT — but a naive Field-only filter silently misses fields selected through a fragment spread, since those appear as a separate FragmentSpread node kind.',
+    gotchas: [
+      'A FragmentSpread node has no .name.value the way a Field node does — resolve it via info.fragments[spreadName] and read that fragment\'s own selections too, or you silently under-select.',
+      'This is a correctness bug, not just a performance one — the client gets null back for fields it legitimately requested through a fragment, with no error anywhere.',
+    ],
+  },
+  'graphql/resolvers/info-path-matches-response-errors-path': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Preventing Overfetching With info.fieldNodes', route: '/graphql/resolvers/preventing-overfetch-with-info-fieldnodes' },
+      { label: 'Resolvers', route: '/graphql/resolvers' },
+    ],
+    tip: 'info.path is a linked list ({ key, typename, prev }), not a plain array — walking it via .prev and unshifting each .key produces an array byte-for-byte identical to the final response\'s own errors[].path, confirmed via a real executed query.',
+    gotchas: [
+      'A list index appears as a plain NUMBER in both info.path and errors[].path, never a stringified index — comparing against a string index silently never matches.',
+      'Tagging an internal error log with pathToArray(info.path) lets you correlate it with the exact client-visible error, with no separate path-tracking logic needed.',
+    ],
+  },
   'graphql/dataloader': {
     apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
     related: [
@@ -38196,6 +38922,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'DataLoader\'s cache is scoped to a SINGLE request by default — reusing one DataLoader instance across multiple requests risks serving stale cached data to a different request.',
       'Batching only works if the underlying data-fetching function accepts an ARRAY of keys and returns results in the SAME order — mismatched ordering silently returns wrong data to the wrong resolver.',
+    ],
+  },
+  'graphql/dataloader/default-scheduler-microtask-then-nexttick': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'cacheKeyFn Is Required to Deduplicate Object Keys', route: '/graphql/dataloader/cachekeyfn-required-for-object-keys' },
+      { label: 'DataLoader & N+1 Problem', route: '/graphql/dataloader' },
+    ],
+    tip: 'DataLoader\'s default batchScheduleFn is not a bare process.nextTick call — it\'s a microtask that then schedules the process.nextTick job, so load() calls after any number of microtask-only awaits still join the same batch.',
+    gotchas: [
+      'Only a genuine macrotask (setImmediate, setTimeout, real I/O) breaks out of the current batch — a resolver awaiting an already-resolved value stays in the same batch regardless of how many microtask hops it takes.',
+      'Confirmed by reading the installed dataloader package\'s own source directly, not just its docs — the exact mechanism is resolvedPromise.then(() => process.nextTick(fn)).',
+    ],
+  },
+  'graphql/dataloader/cachekeyfn-required-for-object-keys': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'The Default Batch Scheduler Is a Microtask, Not a Bare process.nextTick', route: '/graphql/dataloader/default-scheduler-microtask-then-nexttick' },
+      { label: 'maxBatchSize Splits One Tick Into Multiple Batch Calls', route: '/graphql/dataloader/maxbatchsize-splits-large-batches' },
+    ],
+    tip: 'The default cacheKeyFn is the identity function, and the internal cache is a plain Map — two structurally-identical object keys built separately are treated as DIFFERENT keys unless you supply a cacheKeyFn.',
+    gotchas: [
+      'Without cacheKeyFn, structurally-equal composite keys (like {tenantId, userId}) are sent to the batch function as separate entries even within the SAME batch call — verified via direct execution.',
+      'JSON.stringify works as a cacheKeyFn for simple, consistently-shaped keys, but is order-sensitive for property enumeration and drops undefined-valued properties on less predictable shapes.',
+    ],
+  },
+  'graphql/dataloader/maxbatchsize-splits-large-batches': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'cacheKeyFn Is Required to Deduplicate Object Keys', route: '/graphql/dataloader/cachekeyfn-required-for-object-keys' },
+      { label: 'DataLoader & N+1 Problem', route: '/graphql/dataloader' },
+    ],
+    tip: 'maxBatchSize does not throw or drop keys once exceeded — DataLoader automatically splits a single tick\'s worth of loads into multiple, separately-dispatched batch function calls, each capped at maxBatchSize.',
+    gotchas: [
+      'maxBatchSize caps each individual batch CALL, not the loader\'s lifetime total — verified via execution that 7 keys with maxBatchSize:3 chunk into 3 separate calls, and every load() still resolves correctly.',
+      'This is what keeps a large resolved list from generating one giant WHERE id IN (...) clause with thousands of values, which many databases reject outright.',
     ],
   },
   'graphql/error-handling': {
@@ -38209,6 +38971,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Leaking internal error details (stack traces, database errors) in the errors array is the same security risk as leaking them in a REST error response.',
     ],
   },
+  'graphql/error-handling/apollo-server-v4-removed-error-classes': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'The Payload UserErrors Pattern, Built Out', route: '/graphql/error-handling/payload-user-errors-pattern' },
+      { label: 'Mutation Error Handling', route: '/graphql/error-handling' },
+    ],
+    tip: 'Apollo Server 4 removed AuthenticationError, ForbiddenError, UserInputError, and ApolloError entirely — not deprecated, gone. The only supported form now is throwing GraphQLError directly with your own extensions.code string.',
+    gotchas: [
+      'A v3 codebase importing these classes under @apollo/server (v4) fails at the import itself — there is nothing equivalent to migrate to except writing the extensions object by hand.',
+      'A local wrapper function that calls new GraphQLError(...) internally is a fine replacement — it is functionally identical to what the removed classes did.',
+    ],
+  },
+  'graphql/error-handling/payload-user-errors-pattern': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Apollo Server v4 Removed Its Built-In Error Classes', route: '/graphql/error-handling/apollo-server-v4-removed-error-classes' },
+      { label: 'ApolloServerErrorCode: Recognizing Apollo\'s Own Errors', route: '/graphql/error-handling/apollo-server-error-code-enum' },
+    ],
+    tip: 'Throw GraphQLError for the genuinely unexpected (auth, system failures). Return a userErrors: [UserError!]! list in the payload for expected domain validation — a single throw can only report one problem, but a form can have several at once.',
+    gotchas: [
+      'userErrors is an ordinary schema-typed field the client selects like any other — it lives in data, not in the separate top-level errors array.',
+      'Give each UserError its own machine-readable code, not just a message string, so clients can branch on the failure reason without string-matching.',
+    ],
+  },
+  'graphql/error-handling/apollo-server-error-code-enum': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'The Payload UserErrors Pattern, Built Out', route: '/graphql/error-handling/payload-user-errors-pattern' },
+      { label: 'Mutation Error Handling', route: '/graphql/error-handling' },
+    ],
+    tip: 'ApolloServerErrorCode (from @apollo/server/errors) covers ONLY errors Apollo Server generates before a resolver ever runs — parse failures, validation failures, persisted-query issues. Your own resolver-thrown codes never appear in this enum.',
+    gotchas: [
+      'GRAPHQL_VALIDATION_FAILED means zero resolvers ran at all — safe to log quietly and skip on-call alerting for.',
+      'INTERNAL_SERVER_ERROR is the fallback for anything unclassified, including your own uncaught resolver exceptions — that one is worth alerting on.',
+    ],
+  },
   'graphql/auth': {
     apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
     related: [
@@ -38220,6 +39018,44 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Returning null vs throwing an authorization error for an unauthorized field are different UX/security tradeoffs — decide deliberately, not by default.',
     ],
   },
+  'graphql/auth/no-cache-is-the-real-shield-default': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Contextual vs. Strict Cache Modes', route: '/graphql/auth/contextual-vs-strict-cache-modes' },
+      { label: 'Authentication & Authorization', route: '/graphql/auth' },
+    ],
+    tip: 'Verified directly against the installed graphql-shield@7.6.5 source: rule()\'s real default cache mode is no_cache, not memoization. Every rule with no cache option re-runs its check function on every call.',
+    gotchas: [
+      'A rule with an expensive check (a real database lookup, like isOwner) and no cache option pays that cost on every single field it guards in a request, not once.',
+      'cache: true is a legacy shorthand for \'strict\', and cache: false for \'no_cache\' — there is no boolean shorthand for \'contextual\'.',
+    ],
+  },
+  'graphql/auth/contextual-vs-strict-cache-modes': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'graphql-shield Rules Are NOT Memoized by Default', route: '/graphql/auth/no-cache-is-the-real-shield-default' },
+      { label: 'graphql-shield Is Effectively Unmaintained', route: '/graphql/auth/graphql-shield-unmaintained-envelop-fix' },
+      { label: 'Authentication & Authorization', route: '/graphql/auth' },
+    ],
+    tip: 'contextual caches by rule NAME only (once per request, ignores args) — safe when a rule only reads ctx. strict caches by a hash of parent+args — required when a rule\'s result depends on which object is being checked, like isOwner.',
+    gotchas: [
+      'Using contextual on a rule that depends on args.id (like ownership) caches the FIRST checked object\'s result and silently reuses it for every other object in the same request.',
+      'strict is not "always safer" — it costs more (a hash computation per unique args) and is only needed when a rule genuinely depends on parent/args.',
+    ],
+  },
+  'graphql/auth/graphql-shield-unmaintained-envelop-fix': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Contextual vs. Strict Cache Modes', route: '/graphql/auth/contextual-vs-strict-cache-modes' },
+      { label: 'graphql-middleware and graphql-shield Are Effectively Unmaintained', route: '/graphql/resolvers/graphql-middleware-shield-unmaintained' },
+      { label: 'Authentication & Authorization', route: '/graphql/auth' },
+    ],
+    tip: 'graphql-shield and graphql-middleware (same original author) have had no release in 3+ years. @envelop/graphql-middleware (useGraphQLMiddleware) wraps the identical rule()/shield() API and is actively maintained.',
+    gotchas: [
+      'Migrating only changes how the permission map is wired onto the schema — every rule()/shield() call, including the cache option, stays exactly the same.',
+      'Switching wiring layers does not make graphql-shield itself maintained — useGraphQLMiddleware still depends on the unmaintained graphql-shield package for the rule/shield API.',
+    ],
+  },
   'graphql/pagination': {
     apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
     related: [
@@ -38229,6 +39065,80 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Implementing the full Relay connection spec (edges, cursor, pageInfo.hasNextPage) is more ceremony than a simple limit/offset — worth it specifically for the stability guarantee, not just convention.',
       'A cursor should be OPAQUE to the client (an encoded token, not a raw offset) so the server can change its underlying pagination mechanism without breaking client cursors.',
+    ],
+  },
+  'graphql/pagination/totalcount-cache-fix': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Composite Cursors Prevent Skipped Rows', route: '/graphql/pagination/composite-cursor-tie-breaking' },
+      { label: 'Pagination Patterns', route: '/graphql/pagination' },
+    ],
+    tip: 'The main page\'s own Resolver codeTab and Challenge solution both call db.posts.count() unconditionally on every request -- exactly what mistake #4 on the same page warns against. A short-TTL cache wrapper, created ONCE at module scope, collapses a burst of requests into one DB call.',
+    gotchas: [
+      'Creating the cache wrapper INSIDE the resolver function instead of at module scope recreates a fresh, empty cache on every request -- the caching provides zero benefit.',
+      'This is a staleness tradeoff, not a correctness fix -- pick a TTL that matches how quickly totalCount actually needs to reflect new writes.',
+    ],
+  },
+  'graphql/pagination/composite-cursor-tie-breaking': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'totalCount Caching Fix', route: '/graphql/pagination/totalcount-cache-fix' },
+      { label: 'Backward Pagination with last/before', route: '/graphql/pagination/backward-pagination-last-before' },
+      { label: 'Pagination Patterns', route: '/graphql/pagination' },
+    ],
+    tip: 'The main page\'s own QnA already names the fix (a cursor encoding both createdAt and id) -- but its own Resolver codeTab never applies it, leaving a real skipped-row risk whenever two rows tie on createdAt.',
+    gotchas: [
+      'A cursor keyed on id alone, with orderBy on createdAt alone, has no deterministic tiebreaker -- SQL makes no guarantee about tied rows\' relative order across two separate query executions.',
+      'The fix needs THREE coordinated changes: a compound orderBy, a compound WHERE comparison, and a cursor that encodes both fields -- not just one of the three.',
+    ],
+  },
+  'graphql/apollo-client/aborting-inflight-queries': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Reactive Variables for Global State', route: '/graphql/apollo-client/reactive-variables-global-state' },
+      { label: 'Apollo Client', route: '/graphql/apollo-client' },
+    ],
+    tip: 'The main page\'s own QnA was wrong on three counts. The real mechanism: pass an AbortController signal via context.fetchOptions.signal -- Apollo forwards it straight through to the underlying fetch() call.',
+    gotchas: [
+      'fetchPolicy has nothing to do with aborting a request -- it only controls cache read/write behavior.',
+      'Apollo Client\'s own request deduplication can make a re-run of the identical query+variables shortly after an abort resolve against the already-aborted in-flight request instead of firing a genuinely new one.',
+    ],
+  },
+  'graphql/apollo-client/reactive-variables-global-state': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Aborting In-Flight Queries', route: '/graphql/apollo-client/aborting-inflight-queries' },
+      { label: 'Manual Cache Updates', route: '/graphql/apollo-client/manual-cache-updates' },
+      { label: 'Apollo Client', route: '/graphql/apollo-client' },
+    ],
+    tip: 'makeVar() returns one function used for both reading and writing. useReactiveVar() re-renders on every change -- but a useQuery-driven component only re-renders too if the query touches a field policy whose read() function reads the same variable.',
+    gotchas: [
+      'Declaring a reactive variable does NOT automatically wire it into useQuery reactivity -- that requires reading it inside a cache field policy\'s read() function.',
+      'Reactive variables and useQuery are two independent reactivity systems until a field policy explicitly connects them.',
+    ],
+  },
+  'graphql/apollo-client/manual-cache-updates': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Reactive Variables for Global State', route: '/graphql/apollo-client/reactive-variables-global-state' },
+      { label: 'Apollo Client', route: '/graphql/apollo-client' },
+    ],
+    tip: 'The main page\'s own QnA correctly prefers update over refetchQueries in prose (no extra round-trip) -- but every codeTab on the page only ever uses refetchQueries. cache.modify() with toReference() is the real tool for appending a new item to a cached list.',
+    gotchas: [
+      'toReference() can only build a reference to an object with __typename and id already present in the mutation response -- without both, it silently returns undefined.',
+      'cache.modify() updates cached REFERENCES; it never fetches or fabricates data the mutation response never returned.',
+    ],
+  },
+  'graphql/pagination/backward-pagination-last-before': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Composite Cursors Prevent Skipped Rows', route: '/graphql/pagination/composite-cursor-tie-breaking' },
+      { label: 'Pagination Patterns', route: '/graphql/pagination' },
+    ],
+    tip: '"before: cursor" means items EARLIER in the connection\'s own overall order -- for a feed sorted newest-first, that means NEWER items (larger id), the opposite of what the name might suggest at a glance.',
+    gotchas: [
+      'Backward pagination needs the comparison flipped (gt instead of lt), the orderBy direction flipped (asc instead of desc), AND the final result array reversed -- three coordinated changes, not one.',
+      'The "fetch one extra" item to drop is the LARGEST id in the ascending-sorted batch, not the smallest -- it is easy to drop the wrong end of the array by mistake.',
     ],
   },
   'graphql/testing': {
@@ -38286,6 +39196,43 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Sharing a single DataLoader instance across requests (instead of creating one per request in context) reintroduces the cross-request cache-leak risk DataLoader is meant to avoid.',
       'Apollo Server plugins hook into the request lifecycle for cross-cutting concerns (logging, tracing) similar to middleware in a REST framework.',
+    ],
+  },
+  'graphql/apollo-server/introspection-still-nodeenv-gated': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'executeOperation’s ‘incremental’ Response Kind', route: '/graphql/apollo-server/executeoperation-incremental-response-kind' },
+      { label: 'Apollo Server', route: '/graphql/apollo-server' },
+    ],
+    tip: 'Verified against Apollo\'s own current docs: introspection defaults to enabled unless NODE_ENV=production. This has never changed between Apollo Server 3 and 4 -- pass introspection explicitly to control it in either version.',
+    gotchas: [
+      'A PaaS deployment that never sets NODE_ENV at all leaves introspection enabled by default -- the "unless production" gate only fires when NODE_ENV is literally the string production.',
+      'Disabling introspection alone does not stop a determined client -- Angular\'s own field-suggestion errors and schema-diffing tools can still reconstruct much of a schema.',
+    ],
+  },
+  'graphql/apollo-server/executeoperation-incremental-response-kind': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Introspection Is Still NODE_ENV-Gated', route: '/graphql/apollo-server/introspection-still-nodeenv-gated' },
+      { label: 'contextValue Is Shallow-Cloned', route: '/graphql/apollo-server/contextvalue-is-shallow-cloned' },
+      { label: 'Apollo Server', route: '/graphql/apollo-server' },
+    ],
+    tip: 'response.body.kind is \'single\' for every ordinary response and \'incremental\' only for @defer/@stream results -- which need an alpha graphql-js v17 install AND explicit schema opt-in, so most production apps never see the second branch.',
+    gotchas: [
+      'The main page\'s own Testing codeTab narrows on kind === \'single\' as correct future-proofing, not dead code -- TypeScript requires the check before singleResult is accessible at all.',
+      'Installing a graphql-js version that technically supports @defer/@stream does not enable them -- the directives must be explicitly declared in the schema\'s own SDL first.',
+    ],
+  },
+  'graphql/apollo-server/contextvalue-is-shallow-cloned': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'executeOperation’s ‘incremental’ Response Kind', route: '/graphql/apollo-server/executeoperation-incremental-response-kind' },
+      { label: 'Apollo Server', route: '/graphql/apollo-server' },
+    ],
+    tip: 'Verified directly from the installed @apollo/server source: executeOperation clones the contextValue you pass with Object.assign(Object.create(proto), object) -- a genuine shallow clone, never a shared reference.',
+    gotchas: [
+      'A plugin adding a NEW top-level property to requestContext.contextValue can never leak it back to the object the caller originally passed in -- only the clone was ever mutated.',
+      'Mutating an EXISTING nested object referenced by contextValue (a db connection, a mutable array) IS visible outside the request -- the shallow clone shares inner references, it just never shares the top-level object itself.',
     ],
   },
   'graphql/federation': {

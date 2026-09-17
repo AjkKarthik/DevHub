@@ -1,0 +1,27 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Redis Streams" topicRoute="/redis/streams"
+    subtopicLabel="XCLAIM vs. XAUTOCLAIM" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">XCLAIM vs. XAUTOCLAIM: Manual IDs vs. Scan-Based Reassignment</h1>
+  <p class="page-subtitle">The main page names XCLAIM alongside XAUTOCLAIM but only ever demonstrates XAUTOCLAIM in code. Here's what XCLAIM actually requires — and when it's still the right tool despite XAUTOCLAIM being the modern default.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Redis 6.2+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>This closes a real gap between what the main page names and what it demonstrates, reusing the prior subtopic's own fixed XPENDING extended-form usage. Next: what to do with an entry that's been reclaimed too many times.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Redis Streams" topicRoute="/redis/streams"
+    [prev]="{ label: 'XPENDING’s Summary vs. Extended Form', route: '/redis/streams/xpending-summary-vs-extended-form' }"
+    [next]="{ label: 'Dead-Letter Routing by Delivery Count', route: '/redis/streams/dead-letter-routing-by-delivery-count' }" />
+</div>

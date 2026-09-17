@@ -1,0 +1,26 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Schema Definition Language" topicRoute="/graphql/schema-definition-language"
+    subtopicLabel="Custom Scalars: serialize, parseValue, and parseLiteral" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">Custom Scalars: serialize, parseValue, and parseLiteral</h1>
+  <p class="page-subtitle">The main page names the three custom-scalar functions in one QnA sentence and never shows one. Here is a working DateTime scalar, which hook runs for which query shape, and the trap of letting the two input hooks disagree.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This closes the gap between the main page's one-sentence description of custom scalars and a scalar you could actually register — including why <code>parseValue</code> and <code>parseLiteral</code> must accept the same inputs, and why <code>serialize</code> never touches client input. Back to the topic overview for the full SDL picture.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Schema Definition Language" topicRoute="/graphql/schema-definition-language"
+    [prev]="{ label: 'Only Fragments and __typename Can Select From a Union', route: '/graphql/schema-definition-language/union-selection-sets' }" />
+</div>

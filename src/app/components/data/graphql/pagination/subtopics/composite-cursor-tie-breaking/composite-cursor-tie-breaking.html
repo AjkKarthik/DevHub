@@ -1,0 +1,27 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Pagination Patterns" topicRoute="/graphql/pagination"
+    subtopicLabel="Composite Cursors Prevent Skipped Rows When Sort Keys Tie" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">Composite Cursors Prevent Skipped Rows When Sort Keys Tie</h1>
+  <p class="page-subtitle">The main page's own QnA already names the fix -- a cursor encoding &#123;createdAt, id&#125; -- but its own Resolver codeTab never applies it, leaving a real skipped-row risk on any tied timestamp.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This applies the main page's own QnA answer about composite cursors to the one codeTab that actually needed it. Next: implementing the backward pagination (last/before) direction the main page describes in prose but never demonstrates in code.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Pagination Patterns" topicRoute="/graphql/pagination"
+    [prev]="{ label: 'The Resolver’s Own totalCount Call Repeats Mistake #4', route: '/graphql/pagination/totalcount-cache-fix' }"
+    [next]="{ label: 'Implementing Backward Pagination with last and before', route: '/graphql/pagination/backward-pagination-last-before' }" />
+</div>

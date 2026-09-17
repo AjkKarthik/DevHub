@@ -37,7 +37,7 @@ export class RedisPubSub {
       points: [
         'Redis Pub/Sub is a fire-and-forget messaging system. Publishers send messages to channels; all current subscribers on that channel receive the message immediately.',
         'Messages are NOT stored. If no subscribers are connected when PUBLISH is called, the message is silently dropped. There is no message history, no replay, and no acknowledgement.',
-        'A connection enters subscribe mode after the first SUBSCRIBE or PSUBSCRIBE command. In this mode, the only valid commands are SUBSCRIBE, UNSUBSCRIBE, PSUBSCRIBE, PUNSUBSCRIBE, PING, and QUIT. Regular Redis commands (GET, SET) are not allowed on a subscribed connection.',
+        'A connection enters subscribe mode after the first SUBSCRIBE or PSUBSCRIBE command. In this mode, the only valid commands are SUBSCRIBE, SSUBSCRIBE, PSUBSCRIBE, UNSUBSCRIBE, SUNSUBSCRIBE, PUNSUBSCRIBE, PING, RESET, and QUIT — regular Redis commands (GET, SET) are not allowed on a subscribed connection, UNLESS the connection has opted into RESP3 (via HELLO), in which case any command can be issued while subscribed.',
         'This means two separate connections are needed per client: one for publishing and one (in subscribe mode) for receiving.',
         'PUBLISH returns the number of clients that received the message. A return value of 0 means no subscribers were listening.',
       ],
@@ -256,9 +256,9 @@ class DashboardBroadcaster {
     },
     {
       q: 'Can you use regular Redis commands on a connection in SUBSCRIBE mode?',
-      options: ['Yes, all commands work normally', 'No, a subscribed connection can only use SUBSCRIBE, UNSUBSCRIBE, PSUBSCRIBE, PUNSUBSCRIBE, PING, and RESET', 'Yes, but only read commands', 'Only after unsubscribing from all channels'],
+      options: ['Yes, all commands work normally', 'No (under RESP2) — a subscribed connection can only use SUBSCRIBE, UNSUBSCRIBE, PSUBSCRIBE, PUNSUBSCRIBE, PING, RESET, and QUIT', 'Yes, but only read commands', 'Only after unsubscribing from all channels'],
       answer: 1,
-      explanation: 'Once you SUBSCRIBE, the connection enters subscriber mode — it can only receive messages and use the listed commands. Other commands return errors. Always use a dedicated connection for Pub/Sub; do not share it with regular commands.',
+      explanation: 'Once you SUBSCRIBE, the connection enters subscriber mode — under the default RESP2 protocol it can only receive messages and use the listed commands (both RESET and QUIT are allowed, not just one). Other commands return errors. If the connection opted into RESP3 via HELLO, this restriction is lifted entirely and any command works while subscribed. Always use a dedicated connection for Pub/Sub under RESP2; do not share it with regular commands.',
     },
     {
       q: 'What are Redis keyspace notifications?',

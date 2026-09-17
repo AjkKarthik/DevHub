@@ -1,0 +1,26 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Type System Deep Dive" topicRoute="/graphql/type-system"
+    subtopicLabel="There Is No instanceof Fallback for Abstract Types" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">There Is No instanceof Fallback for Abstract Types</h1>
+  <p class="page-subtitle">The main page used to say GraphQL "falls back to instanceof checks" when an interface or union has no __resolveType. It does not — the default reads __typename, then tries each type's isTypeOf, then throws.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This is the corrected version of the main page's abstract-type resolution rule, matching what its own mistakes block and QnA already describe. Next: the Challenge asks you to write an introspection query full of nested <code>ofType</code> — here is the client-side loop that turns that JSON back into a readable type like <code>[Post!]!</code>.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Type System Deep Dive" topicRoute="/graphql/type-system"
+    [next]="{ label: 'Unwrapping Introspection Types: Following ofType', route: '/graphql/type-system/unwrapping-oftype' }" />
+</div>

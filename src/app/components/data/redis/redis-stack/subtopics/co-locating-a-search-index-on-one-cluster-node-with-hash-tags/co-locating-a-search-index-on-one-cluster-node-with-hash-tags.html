@@ -1,0 +1,26 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Redis Stack" topicRoute="/redis/redis-stack"
+    subtopicLabel="Co-Locating a Search Index on One Cluster Node with Hash Tags" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">Co-Locating a Search Index on One Cluster Node with Hash Tags</h1>
+  <p class="page-subtitle">The main page's own QnA names hash tags as the self-hosted-friendly way to make cluster-mode search work without a coordinator — here's how, reusing the exact extraction rule from Redis Cluster's own hash-tag algorithm.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>This is the last subtopic for Redis Stack — from knowing which Redis version has these capabilities built in, to safely checking when an index is ready, to making search actually work correctly on a sharded cluster.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Redis Stack" topicRoute="/redis/redis-stack"
+    [prev]="{ label: 'The FT.INFO indexing Field Is a Truthy String, Not a Boolean', route: '/redis/redis-stack/the-ft-info-indexing-field-is-a-truthy-string-not-a-boolean' }" />
+</div>

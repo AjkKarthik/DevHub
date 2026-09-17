@@ -1,0 +1,27 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="DataLoader & N+1 Problem" topicRoute="/graphql/dataloader"
+    subtopicLabel="cacheKeyFn Is Required to Deduplicate Object Keys" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">cacheKeyFn Is Required to Deduplicate Object Keys</h1>
+  <p class="page-subtitle">The QnA mentions cacheKeyFn for composite keys in one line — verified what actually happens without it, and how much work the default identity comparison silently duplicates for structurally-equal objects.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This closes a gap between the main page's own QnA (which names cacheKeyFn for composite keys) and its codeTabs (which never demonstrate it). Next: the other Advanced Options field the QnA describes in prose but never shows working — maxBatchSize's automatic chunking.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="DataLoader & N+1 Problem" topicRoute="/graphql/dataloader"
+    [prev]="{ label: 'The Default Batch Scheduler Is a Microtask, Not a Bare process.nextTick', route: '/graphql/dataloader/default-scheduler-microtask-then-nexttick' }"
+    [next]="{ label: 'maxBatchSize Splits One Tick Into Multiple Batch Calls', route: '/graphql/dataloader/maxbatchsize-splits-large-batches' }" />
+</div>

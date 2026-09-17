@@ -8684,6 +8684,1191 @@ this same check before any other new hub's first subtopic set:
    correct h1/breadcrumb (all 4 levels), 860px wrapper via `getComputedStyle`, tailored (not
    DEFAULT) sidebar content confirmed via direct text search. **Redis hub Phase 10: 9 of 21 topics
    complete.**
+10. **The `lua-scripting` batch found and fixed TWO more genuine, well-verified inaccuracies, one
+    of them the strongest finding this hub has produced so far — the page's own mistake block had
+    the actual sandbox behavior EXACTLY BACKWARDS**: the "Using global variables in Lua scripts"
+    mistake block claimed an undeclared-global assignment "persists between EVAL calls on same
+    server" as a silent, dangerous shared-mutable-state bug. Verified via TWO independent sources
+    (Redis's own official Lua API reference, fetched directly, plus a separate corroborating
+    GitHub issue) that Redis's Lua sandbox actively BLOCKS global-variable creation — the script
+    fails immediately every single time with a named error, "Script attempted to create global
+    variable 'name'". The real danger isn't a subtle, hard-to-find bug at all; it's a hard, loud
+    crash on the very first execution — the opposite of what the mistake block described. Fixed
+    the title, wrong-example comment, and explanation to state the verified, correct behavior.
+    Separately, the QnA's "(6) Deterministic required (no math.random without seed)... Scripts
+    must be deterministic for AOF/replication" limitation was verified stale: this described
+    VERBATIM script replication specifically, which was replaced as the default by EFFECTS
+    replication in Redis 5.0 and removed from Redis ENTIRELY as of 7.0 — confirmed directly via
+    `redis.replicate_commands()`'s own docs ("Until version: 7.0.0... as of Redis v7.0, verbatim
+    script replication is no longer supported") and the Lua API reference's own explicit statement
+    that "the restrictions on non-deterministic functions are removed" under effects replication.
+    Fixed the QnA to state math.random/TIME/SRANDMEMBER are all safe to use freely on any current
+    Redis version. Three subtopics, each verified via direct Node.js execution: (1) **fix-adjacent**
+    — reproduces the exact sandbox-rejection error via a small model matching the documented error
+    text precisely, with a Try It on the SCRIPT LOAD-vs-EXEC-time distinction (a global-variable
+    mistake hiding in a rarely-taken branch is undetected until that branch actually executes,
+    since SCRIPT LOAD only compiles and caches, never runs); (2) **fix-adjacent** — models the
+    verbatim-vs-effects replication distinction directly (forced-same-seed vs. genuinely-different-
+    every-call), with a Try It on WHY the replica never needs to independently reproduce a script's
+    own random value under effects replication (it only ever applies the primary's already-decided
+    write commands, never re-runs the script's Lua source at all); (3) **gap-closing** — a real,
+    documented feature the main page never mentions at all, `redis.set_repl()`, built from Redis's
+    own worked SUNIONSTORE/SRANDMEMBER/SADD/DEL example verified via direct execution matching the
+    docs' own claim that only the final SADD needs replicating, with a Try It confirming
+    `redis.set_repl()`'s scope resets to REPL_ALL automatically at the start of every new script
+    execution (verified against the docs' own "initialized to redis.REPL_ALL when a script begins
+    its execution" statement). No `SUBTOPICS` collision for `lua-scripting` (checked both
+    `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed collision-free, left
+    bare). All three `exercise.solution` fields swept clean of `<code>`/entity contamination; the
+    standing apostrophe-after-letter sweep, bracket-balance, and backtick-parity checks all found
+    nothing to fix across all three files and both main-page edits. Build passed clean (foreground
+    execution, explicit `EXITCODE:$?` capture, zero real `ERROR` lines). **Hit a fully-dead dev
+    server this batch** (`preview_list` returned an empty process array, alongside three stray
+    file:// tabs auto-opened by the harness's own post-Write preview hooks) — resolved with a
+    clean `preview_start` cold-start; the stray file:// tabs were closed once verification was
+    done rather than navigated into. Browser-verified: no console errors on any of the 4 pages;
+    nav accordion opens with all 3 subtopic links, confirmed via both `window.ng.getComponent()`
+    and a live DOM click-and-query; both main-page fixes confirmed rendering live via direct
+    component-data inspection; all 3 subtopic pages checked individually — correct h1/breadcrumb
+    (all 4 levels), 860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content
+    confirmed via direct text search. **Redis hub Phase 10: 10 of 21 topics complete.**
+11. **The `persistence` batch found and fixed TWO genuine, well-verified inaccuracies, one a
+    self-contained content mismatch requiring zero research and one a version-attribution error
+    confirmed against Redis's own shipped config files at two tagged releases**: the Quick
+    Reference's own entry named `DEBUG SLEEP 0` but described it as "Used in testing; SAVE forces
+    synchronous RDB write" — a description naming a completely different command, DEBUG SLEEP has
+    nothing to do with RDB/persistence at all, it simply blocks the whole server for a
+    caller-specified duration for testing timeout/retry/alerting logic. Fixed the entry's `name`
+    to `SAVE` (the command the description was actually describing). Separately, both the theory
+    and a codeTab comment attributed `aof-use-rdb-preamble yes` to "default in Redis 7+" — verified
+    by fetching Redis's own `redis.conf` template directly from GitHub at two tagged versions: 4.0
+    (the version that INTRODUCED the option) shipped `aof-use-rdb-preamble no`, with the config
+    file's own comment explaining the conservative opt-in-first rollout ("to avoid the surprise of
+    a format change, but will at some point be used as the default"); 5.0 shipped `yes` — two full
+    major versions before the "7+" the page claimed. Fixed both occurrences to "default since Redis
+    5.0". Three subtopics, each verified via direct execution: (1) **fix-adjacent** — a version-
+    timeline model matching the two GitHub-verified data points exactly, with a Try It on why the
+    corrected claim is a FLOOR, not a blanket statement about every earlier version too (a
+    hypothetical pre-5.0 instance still ships with the original opt-in default); (2) **fix-adjacent**
+    — contrasts what SAVE and DEBUG SLEEP actually do side by side, plus a real, documented use for
+    DEBUG SLEEP the main page never covers at all (simulating a BGSAVE fork()-latency spike in a
+    controlled test to verify a client's own timeout/retry logic actually works, tying directly back
+    to the main page's own fork()-latency theory point); (3) **gap-closing** — the main page's own
+    QnA describes BGSAVE's copy-on-write memory-doubling risk in real, accurate detail and even names
+    the exact INFO fields to watch (`rdb_current_bgsave_type`, `used_memory`) but never shows them
+    read together in one working script; built a real `monitorBgsaveMemory()` function reusing the
+    same `INFO`-parsing technique the main page's own Persistence Health Check Challenge already
+    establishes, verified via a modeled COW pattern matching the documented growth-then-release
+    behavior exactly. No `SUBTOPICS` collision for `persistence` (checked both `subtopics.ts` forms
+    and grepped `app.routes.ts` directly, confirmed collision-free, left bare). A nested-escaping
+    detail in subtopic 1's own codeTab (a doubled-backslash `\\'` surviving the outer template
+    literal to produce a correctly-escaped `\'` in the displayed inner TS string) was verified
+    correct by extracting and evaluating the exact backtick span as real JavaScript — an earlier,
+    flawed attempt at this same check via a bash heredoc silently collapsed the doubled backslash to
+    a single one, a reminder that reconstructing a test via shell quoting is less reliable than
+    extracting and evaluating the REAL file's own bytes directly. All three `exercise.solution`
+    fields swept clean of `<code>`/entity contamination; the standing apostrophe-after-letter sweep,
+    bracket-balance, and backtick-parity checks all found nothing to fix across all three files and
+    both main-page edits. Build passed clean (foreground execution, explicit `EXITCODE:$?` capture,
+    zero real `ERROR` lines). Browser-verified with a proactive dev-server restart before checking:
+    no console errors on any of the 4 pages; nav accordion opens with all 3 subtopic links, confirmed
+    via both `window.ng.getComponent()` and a live DOM click-and-query; all three main-page fixes
+    confirmed rendering live via direct component-data inspection; all 3 subtopic pages checked
+    individually — correct h1/breadcrumb (all 4 levels), 860px wrapper via `getComputedStyle`,
+    tailored (not DEFAULT) sidebar content confirmed via direct text search. **Redis hub Phase 10:
+    11 of 21 topics complete.**
+12. **The `pub-sub` batch found and fixed a genuine self-contained internal contradiction between
+    two DIFFERENT sections of the same page — plus a real RESP3 exception neither section
+    mentioned at all**: the theory listed the allowed subscribe-mode commands as "SUBSCRIBE,
+    UNSUBSCRIBE, PSUBSCRIBE, PUNSUBSCRIBE, PING, and QUIT" while a SEPARATE quiz question on the
+    same page listed a DIFFERENT list ending in "PING, and RESET" instead of QUIT — the two
+    sections directly disagreed with each other, and neither was the complete list. Verified
+    directly against Redis's own official SUBSCRIBE command docs (fetched directly, not a
+    secondary summary): the real, complete list is SUBSCRIBE, SSUBSCRIBE, PSUBSCRIBE,
+    UNSUBSCRIBE, SUNSUBSCRIBE, PUNSUBSCRIBE, PING, RESET, AND QUIT — both RESET and QUIT are
+    genuinely allowed simultaneously, not one or the other, plus the sharded-pub/sub command
+    variants neither section mentioned. The SAME official docs page adds a further exception the
+    main page never covered at all: "if RESP3 is used (see HELLO) it is possible for a client to
+    issue any commands while in subscribed state" — directly undermining the theory's own separate,
+    flatly-stated claim that "two separate connections are needed per client" for Pub/Sub, which is
+    actually a RESP2-specific limitation. Fixed both the theory bullet and the quiz question/
+    explanation to state the complete, verified list plus the RESP3 exception. Separately, verified
+    the theory's "Sharded Pub/Sub (introduced in Redis 7, using SSUBSCRIBE)" claim and confirmed it
+    ALREADY CORRECT — not every checked version claim in this hub turns out wrong. Three subtopics,
+    each verified via direct Node.js execution: (1) **fix-adjacent** — models the RESP2-vs-RESP3
+    command-allowlist distinction directly, with a Try It on why a client-side "fail fast" helper
+    checking this list must use the COMPLETE version, since an incomplete list becomes an executable
+    bug rejecting operations the real server would accept; (2) **fix-adjacent** — explores the RESP3
+    exception in depth, including a genuine single-connection subscribe+regular-command pattern,
+    with a Try It reasoning through why the two-connection pattern remains a reasonable DEFAULT even
+    on RESP3 (simplicity vs. real added client-side routing complexity) rather than something the
+    fix makes obsolete; (3) **gap-closing** — Sharded Pub/Sub is named and correctly explained in
+    the main page's own theory but never demonstrated in any codeTab; built and verified a slot-hash
+    routing model matching the documented distinction exactly (classic PUBLISH reaches every shard;
+    SPUBLISH reaches exactly the one shard owning the channel's slot), plus real SSUBSCRIBE/SPUBLISH
+    usage against a Cluster client. No `SUBTOPICS` collision for `pub-sub` (checked both
+    `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed collision-free, left bare).
+    All three `exercise.solution` fields swept clean of `<code>`/entity contamination; the standing
+    apostrophe-after-letter sweep, bracket-balance, and backtick-parity checks all found nothing to
+    fix across all three files and both main-page edits. Build passed clean (foreground execution,
+    explicit `EXITCODE:$?` capture, zero real `ERROR` lines). Browser-verified with a proactive
+    dev-server restart before checking: no console errors on any of the 4 pages; nav accordion opens
+    with all 3 subtopic links, confirmed via both `window.ng.getComponent()` and a live DOM
+    click-and-query; both main-page fixes confirmed rendering live via direct component-data
+    inspection; all 3 subtopic pages checked individually — correct h1/breadcrumb (all 4 levels),
+    860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed via direct
+    text search. **Redis hub Phase 10: 12 of 21 topics complete.**
+13. **The `streams` batch found and fixed a genuine, self-contained bug in the main page's own
+    Stream Metrics Aggregator Challenge, findable purely by comparing the Challenge's own hint
+    text against the shape of the command it actually called**: the Challenge's `getStreamStats`
+    reference solution called `redis.xpending(streamKey, groupName, '-', '+', 1)` — the EXTENDED
+    form of XPENDING, taking start/end/count args and returning one `[id, consumer, idleMs,
+    deliveryCount]` tuple per pending entry — but its own hint claimed this "returns summary with
+    pending count." Verified directly against XPENDING's own official docs that the SUMMARY form
+    (`XPENDING key group`, no args) is what actually returns `[totalPendingCount, minId, maxId,
+    consumers[]]`; the buggy code read `pending[0]?.[3]` — one entry's own delivery count — and
+    treated it as the TOTAL pending count. Verified via a concrete Node.js simulation of a
+    realistic 50-entry PEL that this produces a reported count of 3 against a real total of 50, a
+    94% undercount. Fixed both the misleading hint and the function body to call the summary form
+    with no args and read index 0 as the total. Three subtopics: (1) **fix-adjacent** — reproduces
+    the exact summary-vs-extended reply-shape confusion via `fakeXpendingSummary`/
+    `fakeXpendingExtended` models matching Redis's own documented reply shapes exactly, with a Try
+    It on why index `[3]` means something completely different in each form; (2) **gap-closing** —
+    the main page names XCLAIM alongside XAUTOCLAIM in its own theory but only ever demonstrates
+    XAUTOCLAIM; built a targeted-XPENDING-then-manual-XCLAIM workflow, verified via research that
+    XCLAIM requires explicit IDs (found via a prior XPENDING call) while XAUTOCLAIM scans
+    automatically, with a Try It on when each is the right tool; (3) **gap-closing** — builds a
+    dead-letter routing pattern using the extended XPENDING form's own delivery-count field (the
+    same field the sibling subtopic traced the bug around) to route messages exceeding a
+    `MAX_DELIVERY_ATTEMPTS` threshold to a separate dead-letter stream via XADD+XACK. Real
+    `SUBTOPICS` map collision: bare `streams` was already claimed by the Node.js hub's own
+    `/node/streams` topic — hub-prefixed to `redis-streams`, matching this hub's own established
+    `redis-` progress/search key prefix, with all five `RedisNavComponent` accordion helper calls
+    (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`) and the search-index composite keys
+    using the prefixed key consistently. All three `exercise.solution` fields swept clean of
+    `<code>`/entity contamination; the standing apostrophe-after-letter sweep, bracket-balance, and
+    backtick-parity checks all found nothing to fix across all three subtopic files and the
+    main-page edit. Build passed clean (foreground execution, explicit `EXITCODE:$?` capture, zero
+    real `ERROR` lines). Browser-verified with a fresh dev-server cold-start before checking: no
+    console errors; nav accordion opens with all 3 subtopic links, confirmed via both
+    `window.ng.getComponent()` direct calls and a live DOM click-and-query (had to query the
+    toggle as a CHILD of the topic's own `<a>` specifically — a naive
+    `parentElement.querySelector()` on the shared `.nav-group` div picks up a DIFFERENT, already-
+    open sibling topic's own toggle instead); the Challenge fix confirmed rendering live via direct
+    component-data inspection (`challenge.hints`/`challenge.solution` read directly); all 3
+    subtopic pages checked individually — correct h1/breadcrumb (all 4 levels), 860px wrapper via
+    `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed via direct text search.
+    **Redis hub Phase 10: 13 of 21 topics complete.**
+14. **The `caching-patterns` batch found and fixed a genuine, self-contained bug found by tracing
+    concurrency through the main page's own "Stale-While-Revalidate" codeTab, plus a duplicate
+    theory-heading cleanup**: `getWithSWR` correctly serves a stale value immediately on a
+    stale-but-not-expired read, then calls `refreshInBackground(key, fetcher)` to repopulate the
+    cache — but the original `refreshInBackground` called `fetcher()` completely unconditionally,
+    with no lock or coordination between concurrent callers at all. Verified via a direct Node.js
+    simulation that 20 concurrent stale-hit requests in the same brief window produce 20 independent
+    DB calls — reproducing, inside the SWR refresh path itself, the exact cache stampede the whole
+    page's own "Cache Stampede Prevention" theory section exists to teach how to prevent. Fixed by
+    adding the SAME `SET key 1 NX EX ttl` mutex-lock pattern the page's own mutex-lock codeTab
+    already demonstrates, gating only the background refresh (never the already-returned stale
+    response) — re-verified via simulation that the fixed version produces exactly 1 DB call for
+    the identical 20 concurrent requests. Also found and fixed a genuine authoring duplication: the
+    `theory` array had TWO separate sections both headed "Cache Stampede Prevention," with
+    substantially overlapping bullets — merged the one genuinely new bullet from the second section
+    (server-side in-memory cache layering) into the first, then removed the duplicate section
+    entirely. Three subtopics: (1) **fix-adjacent** — reproduces the exact stampede and fix via the
+    same simulation, verified via direct execution matching both the buggy (20 DB calls) and fixed
+    (1 DB call) outputs exactly, with a Try It on why an under-sized lock TTL (shorter than
+    `fetcher()`'s real duration) reintroduces a partial version of the same stampede; (2)
+    **gap-closing** — Read-Through is named in the page's own Quick Reference and QnA ("the cache
+    sits in front of the DB and handles misses automatically... Redis does not natively implement
+    read-through; you need a caching library or proxy layer") but no codeTab ever builds one; built
+    a small `ReadThroughCache` wrapper class, verified via direct execution, contrasting the SAME
+    check-miss-load-populate sequence Cache-Aside repeats at every call site against Read-Through's
+    single centralized implementation; (3) **gap-closing** — tag-based invalidation is named in one
+    "Cache Key Design" theory bullet ("store a set of keys per tag... UNLINK all keys in the set on
+    data change") but never demonstrated; built the SADD/SMEMBERS/UNLINK mechanism (including the
+    easy-to-miss step of also deleting the tag Set itself, not just its member keys), verified via
+    direct execution matching the exact invalidated-keys output. No `SUBTOPICS` collision for
+    `caching-patterns` (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly,
+    confirmed collision-free, left bare). All three `exercise.solution` fields swept clean of
+    `<code>`/entity contamination; the standing apostrophe-after-letter sweep, bracket-balance, and
+    backtick-parity checks all found nothing to fix across all three subtopic files and the
+    main-page edits; nested template-literal escaping in two of the three subtopics' own codeTabs
+    verified correct by extracting and evaluating the exact backtick spans as real JavaScript. Build
+    passed clean (foreground execution, explicit `EXITCODE:$?` capture, zero real `ERROR` lines).
+    Browser-verified against the already-running dev server (picked up the file-watcher changes
+    normally, no restart needed): no console errors; nav accordion opens with all 3 subtopic links
+    on the first check; both main-page fixes confirmed rendering live via direct component-data
+    inspection (`theory.length` dropped from 5 to 4, the fixed codeTab contains the new lock logic);
+    all 3 subtopic pages checked individually — correct h1/breadcrumb (all 4 levels), 860px wrapper
+    via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed via direct text search.
+    **Redis hub Phase 10: 14 of 21 topics complete.**
+15. **The `eviction-policies` batch found a genuinely valuable gap via direct research rather than
+    a self-contained reading catch: Redis 8.6 added an entirely new eviction policy family, LRM
+    (Least Recently Modified) — `allkeys-lrm`/`volatile-lrm` — completely absent from the main
+    page's own Quick Reference, theory, and quiz, all of which present exactly 3 families (LRU,
+    LFU, random) plus TTL as if that were the complete set**. Verified directly against Redis's own
+    official Key Eviction docs, quoted precisely: "LRM is similar to LRU but only updates the
+    timestamp on write operations, not read operations." Fixed by adding both quickRef entries and
+    a theory bullet naming the new family and its distinguishing mechanism. Three subtopics, the
+    first two verified against Redis's own real source code rather than just its prose docs: (1)
+    **gap-closing** — builds the missing LRM family out fully, with a concrete access-pattern
+    simulation (a key read constantly but never rewritten, vs. one written once mid-simulation but
+    barely read after) verified via direct execution to make LRU and LRM choose the OPPOSITE
+    eviction victim for the identical access pattern; (2) **gap-closing** — the main page names the
+    LFU "Morris counter (8-bit logarithmic counter)" and `lfu-decay-time`/`lfu-log-factor` but never
+    shows the actual increment formula; fetched Redis's own `evict.c` directly and verified via
+    simulation that the real `LFULogIncr` formula (`p = 1/(baseval*lfu_log_factor+1)`) reproduces
+    Redis's own documented saturation table closely, plus the further-verified fact that
+    `LFU_INIT_VAL` is hardcoded to 5 — every new key's counter starts at 5, not 0, specifically so
+    it isn't the very first thing evicted before it has any access history; (3) **gap-closing** —
+    the main page's own Memory Pressure Alert Challenge only ever checks `usedPct` as a single
+    snapshot, unable to distinguish a server that just tipped over budget from one that's been over
+    budget for hours; verified via Redis's own INFO documentation that `current_eviction_exceeded_
+    time` (milliseconds, not seconds — a distinction worth getting right) answers exactly this,
+    with a separate, verified `total_eviction_exceeded_time` field tracking the cumulative lifetime
+    total instead of the current streak. No `SUBTOPICS` collision for `eviction-policies` (checked
+    both `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed collision-free, left
+    bare). All three `exercise.solution` fields swept clean of `<code>`/entity contamination; the
+    standing apostrophe-after-letter sweep, bracket-balance, and backtick-parity checks all found
+    nothing to fix across all three subtopic files and the main-page edits; nested template-literal
+    escaping in all three subtopics' own codeTabs verified correct by extracting and evaluating the
+    exact backtick spans as real JavaScript, matching each subtopic's own claimed console output.
+    Build passed clean (foreground execution, explicit `EXITCODE:$?` capture, zero real `ERROR`
+    lines) — note the build was run once BEFORE wiring the 6 touchpoints as a process slip (the new
+    subtopic files aren't reachable from the compiled bundle until routed, so that first build
+    never actually validated them); re-ran clean after wiring, which is the one that counts.
+    Browser-verified against the already-running dev server (no restart needed): no console errors;
+    nav accordion opens with all 3 subtopic links on the first check; the main-page fix confirmed
+    rendering live via direct component-data inspection (`quickRef` now includes both LRM entries,
+    `theory` contains the new bullet); all 3 subtopic pages checked individually — correct
+    h1/breadcrumb (all 4 levels), 860px wrapper via `getComputedStyle`, tailored (not DEFAULT)
+    sidebar content confirmed via direct text search, generic-looking identifiers (`allkeys-lrm`,
+    `LFU_INIT_VAL`) confirmed rendering as literal text, not vanished.
+    **Redis hub Phase 10: 15 of 21 topics complete.**
+16. **The `rate-limiting` batch — the third and final topic in the Caching nav group — found and
+    fixed a genuine, self-contained off-by-one bug in the main page's own Sliding Window Counter
+    Challenge, findable purely by tracing several requests through the same state (no external
+    research needed)**: the reference solution's Lua script computes `total` (the weighted count
+    BEFORE deciding whether to allow the current request), then returns a `remaining` value adding
+    `+1` only in the REJECTED branch — `total + (allowed == 1 and 0 or 1)` — the exact opposite of
+    what's needed. Verified via a direct trace of exactly `limit` (10) requests through the
+    reference solution's own logic: the 10th request (the LAST one actually allowed, bringing the
+    true count to precisely the limit) reports `remaining: 1`, telling the caller one more request
+    is available when the true remaining is 0 — directly undermining the page's own third mistake
+    block, which insists accurate rate-limit headers are essential so clients can back off
+    correctly. Fixed the flipped ternary to `allowed == 1 and 1 or 0`, re-verified matching the
+    true state exactly for all 11 requests (10 allowed + 1 rejected). Three subtopics: (1)
+    **fix-adjacent** — reproduces the exact off-by-one and fix side by side, verified via direct
+    execution matching the claimed buggy-vs-fixed output exactly, with a Try It establishing the
+    bug is systematic across every allowed request, not confined to the boundary case; (2)
+    **gap-closing** — Leaky Bucket is named twice on the main page (Quick Reference and QnA:
+    "LPUSH requests; background consumer drains at fixed rate... excess dropped") but no codeTab
+    ever builds one; built a bounded-Redis-list implementation with a separate fixed-rate drain
+    function, verified via direct execution that a burst of 10 against a capacity-5 bucket
+    produces exactly 5 accepted/5 rejected, with a Try It distinguishing Leaky Bucket's rate-of-
+    processing control from Token Bucket's accept/reject control; (3) **gap-closing** — the main
+    page's own QnA on distributed rate limiting mentions "fail open... or fail closed" in one
+    clause, with no codeTab ever wrapping a rate-limit check with either behavior; built a generic
+    `checkRateLimitSafely` wrapper, verified via direct execution matching both failure-mode
+    outputs during a simulated Redis outage, with a Try It reasoning through why a login endpoint
+    should default to fail-CLOSED (fail-open specifically benefits an attacker running a
+    brute-force attack during the exact outage window). **A real, self-caught build failure,
+    caught and fixed before the batch was considered done**: the first subtopic's own codeTab
+    comment used markdown-style bare backticks around "limit" (`` `limit` ``) inside the outer
+    backtick-delimited `code:` field — the exact documented "markdown-style inline-code backtick
+    inside a backtick-delimited field" gotcha — caught by the build itself (`TS1128`/`Unexpected
+    "]"`, the classic unrelated-error cascade far from the actual line), fixed by removing the
+    backticks, confirmed via a second clean build and a re-verification of the codeTab's exact
+    console output. Confirmed `rate-limiting` collision-free via both `subtopics.ts` forms and a
+    direct `app.routes.ts` grep — bare `rate-limiting` was already free because both the ASP.NET
+    hub's own topic (`aspnet-rate-limiting`) and the API Design hub's own topic
+    (`api-rate-limiting`) had been proactively hub-prefixed in earlier sessions anticipating this
+    exact moment, confirmed via each hub's own inline `// NOTE:` comment. All three
+    `exercise.solution` fields swept clean of `<code>`/entity contamination; the standing
+    apostrophe-after-letter sweep, bracket-balance, and backtick-parity checks all found nothing
+    to fix in the OTHER two subtopic files (this session's own bracket/backtick-parity sweep can
+    give a false sense of safety when SOME backticks are legitimately escaped and others are
+    illegitimately bare — a raw character-count parity check passing does not guarantee the
+    delimiter STRUCTURE is correct, confirmed the hard way by this exact batch's own build
+    failure). Build passed clean on the second attempt (foreground execution, explicit
+    `EXITCODE:$?` capture, zero real `ERROR` lines). Browser-verified against the already-running
+    dev server (no restart needed): no console errors; nav accordion opens with all 3 subtopic
+    links on the first check; the main-page fix confirmed rendering live via direct component-data
+    inspection; all 3 subtopic pages checked individually — correct h1/breadcrumb (all 4 levels),
+    860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed via
+    direct text search. **This completes the Redis hub's entire Caching nav group**
+    (caching-patterns, eviction-policies, rate-limiting — all 3 of 3 topics now have subtopics).
+    **Redis hub Phase 10: 16 of 21 topics complete.**
+17. **The `replication-sentinel` batch — the first topic in the Cluster & HA nav group — found and
+    fixed a genuine, well-verified inaccuracy repeated across THREE touchpoints on the same
+    page**: the theory bullet, a QnA, and a quiz question's own correct answer/explanation all
+    described Redis's full-resync replication as unconditionally disk-based (the master forks and
+    runs BGSAVE, writing an RDB file to disk before transferring it), with no version qualifier at
+    all. Verified via WebFetch against Redis's own shipped `redis.conf` at two tagged GitHub
+    releases that `repl-diskless-sync` defaulted to `no` at Redis 6.2.6 and to `yes` at Redis
+    7.0.0 — diskless replication (streaming the RDB directly to the replica's socket, never
+    touching disk on the master) has been the default for every version since 7.0, not a niche
+    opt-in. Fixed all three touchpoints to state both mechanisms and their version boundary. Three
+    subtopics, all verified via direct Node.js execution rather than assumed: (1) **fix-adjacent**
+    — a `countTransfersNeeded` simulation (disk-based: always 1 transfer regardless of arrival
+    spread; diskless with close arrivals: 1 transfer; diskless with arrivals >5s apart: 2
+    transfers) explaining WHY `repl-diskless-sync-delay` (default 5s, verified via WebFetch against
+    Redis's current `redis.conf`) exists at all — disk-based sync lets a saved RDB file serve
+    replicas that queue up during the save, but diskless sync cannot admit a new replica once a
+    transfer starts, so the delay batches near-simultaneous arrivals into one shared transfer
+    instead of one transfer each; (2) **gap-closing** — the main page's own QnA names Sentinel's
+    exact 3-tier replica-promotion tiebreaker (priority, then offset, then run ID) in prose but no
+    codeTab ever runs it; built `selectBestReplica`, verified via direct execution that a
+    lower-priority replica wins even against a higher-offset competitor (priority 50 beats priority
+    100 regardless of offset), confirming the tiers are checked in a fixed sequential order, not a
+    single flat comparison; (3) **gap-closing** — the main page's own theory names `WAIT` once
+    ("used selectively for genuinely critical writes needing stronger durability") but never shows
+    it in code; built `criticalWrite`/`confirmPayment` wrapping `redis.wait(numreplicas,
+    timeoutMs)`, with a Try It establishing that calling WAIT on EVERY write adds real, constant
+    latency without making the genuinely risky writes any safer than calling it selectively would.
+    No `SUBTOPICS` collision for `replication-sentinel` (checked both `subtopics.ts` forms and
+    grepped `app.routes.ts` directly, confirmed collision-free, left bare). All three
+    `exercise.solution`/`theory.points` fields swept clean of stray unescaped apostrophes (matches
+    found were all safely inside backtick-delimited `code:`/`solution:` fields); brace balance and
+    backtick parity confirmed even on all three files; no bare `@word` in any `.html` file; the
+    `[prev]`/`[next]` label for "Sentinel's" correctly used the typographic curly quote (`'`), not
+    a straight apostrophe. Build passed clean (foreground execution, explicit `EXITCODE:$?`
+    capture, zero real `ERROR` lines). Browser-verified against a freshly-started dev server: no
+    console errors on any of the 4 pages; nav accordion opens with all 3 subtopic links on the
+    first check; the main-page diskless/7.0 fix confirmed rendering live; all 3 subtopic pages
+    checked individually — correct h1/breadcrumb (all 4 levels), 860px wrapper via
+    `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed via direct text search.
+    **Redis hub Phase 10: 17 of 21 topics complete.**
+18. **The `redis-cluster` batch found and fixed a genuine, self-contained authoring bug on the main
+    page: the theory array had FIVE sections when it should have had THREE — "Hash Slots and Data
+    Distribution" and "MOVED and ASK Redirects" each appeared TWICE, the second occurrence
+    ("Client-Side Cluster Awareness and Redirection Handling") reading as a near-duplicate of the
+    first with mostly the same points rephrased**. Matching the exact pattern already documented
+    once before in this hub (the Caching Patterns batch's own duplicate theory heading), merged the
+    two genuinely NEW bullets from the duplicates (live resharding with no downtime; when Cluster is
+    the right tool vs. a simpler primary-replica setup) into the first two sections, and deleted the
+    two duplicate sections entirely. Three subtopics, all verified via direct Node.js execution
+    against Redis's own official Cluster Specification (fetched via WebFetch) rather than assumed:
+    (1) **fix-adjacent** — a two-node `MockNode` state machine reproducing the EXACT documented slot-
+    migration protocol (`CLUSTER SETSLOT 8 IMPORTING A` sent to B first, then `CLUSTER SETSLOT 8
+    MIGRATING B` sent to A second), verified that a MIGRATING node still serves existing keys locally
+    and only ASK-redirects on missing ones, and that an IMPORTING node REJECTS any query lacking the
+    ASKING flag with a MOVED redirect back to the source — extending the main page's own "resharding
+    can happen live without downtime" claim into the actual mechanism that makes it true; (2)
+    **gap-closing** — the exact hash-tag substring-extraction algorithm, verified against all four of
+    Redis's own documented edge cases byte-for-byte (`{user1000}.following` → `user1000`;
+    `foo{}{bar}` → the WHOLE key, since an empty `{}` falls back to hashing everything; `foo{{bar}}zap`
+    → `{bar`; `foo{bar}{zap}` → `bar`, only the first valid tag ever matters); (3) **gap-closing** —
+    the QnA names the ASK fix ("send ASKING to the new node and retry once") but no codeTab ever
+    shows a client doing it; built a `ClusterClient` verified via direct execution that the slot map
+    is NEVER permanently updated by an ASK response — every subsequent query for that slot still
+    routes through the OLD node first, every single time, until a real MOVED eventually arrives. No
+    `SUBTOPICS` collision for `redis-cluster` (checked both `subtopics.ts` forms and grepped
+    `app.routes.ts` directly, confirmed collision-free, left bare). All three `exercise.solution`
+    fields swept clean of `<code>`/entity contamination; brace balance and backtick-parity confirmed
+    even and STRUCTURALLY correct (verified via the actual paired line numbers, not just a raw
+    character count, per the Rate Limiting batch's own documented false-sense-of-safety lesson) on
+    all three files; no bare `@word` in any `.html` file; no unescaped apostrophes in any
+    single-quoted field body. Build passed clean (foreground execution, explicit `EXITCODE:$?`
+    capture, zero real `ERROR` lines). Browser-verified against the already-running dev server with
+    a hard reload first: no console errors on any of the 4 pages; nav accordion opens with all 3
+    subtopic links on the first check; the merged-theory fix confirmed rendering live (the duplicate
+    "Client-Side Cluster Awareness" heading fully absent, the two preserved bullets present); all 3
+    subtopic pages checked individually — correct h1/breadcrumb (all 4 levels), 860px wrapper via
+    `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed via direct text search.
+    **Redis hub Phase 10: 18 of 21 topics complete.**
+19. **The `redis-stack` batch found and fixed TWO genuine issues on the main page**: a version
+    inaccuracy (a theory bullet claimed "In Redis 7.4+ (Cloud), many Stack capabilities are
+    available as part of Redis Community Edition" — verified via WebFetch against Redis's own
+    official 8.0 Release Notes that the actual merge of RediSearch/RedisJSON/RedisTimeSeries/
+    RedisBloom into core Redis happened at Redis 8.0.0 (GA May 2025), the SAME release that
+    renamed Redis Community Edition to Redis Open Source, not 7.4), and a duplicate theory
+    section (matching the recurring authoring pattern already found on `caching-patterns` and
+    `redis-cluster` this hub — "What is Redis Stack?" and "Redis Stack Modules Beyond Core Data
+    Structures" overlapped substantially; merged 3 genuinely new bullets into the originals and
+    deleted the duplicate fifth section entirely). Three subtopics: (1) **fix-adjacent** — verifies
+    the Redis 8.0 timeline via a `needsRedisStackPackage(version)` function tested against
+    7.4/7.2/8.0/8.6; (2) **gap-closing** — a genuine JS truthiness trap: `FT.INFO`'s `indexing`
+    field returns the literal string `"0"`/`"1"`, so a naive `while (!info.indexing)` readiness
+    poll is silently broken for BOTH states since any non-empty string is truthy — verified via
+    direct execution, fixed with `Number(info.indexing) === 0`; (3) **gap-closing** — reuses the
+    `extractHashTagSubstring` function from the sibling `redis-cluster` batch to demonstrate
+    per-tenant hash-tagging for co-locating a search index on one Cluster node, verified via
+    execution that per-tenant tags produce distinct extracted substrings. No `SUBTOPICS`
+    collision for `redis-stack` (checked both `subtopics.ts` forms, confirmed collision-free,
+    left bare). All three `exercise.solution` fields swept clean of `<code>`/entity
+    contamination; brace balance (23/23, 26/26, 26/26) and backtick-parity confirmed correct on
+    all three files; no bare `@word` in any `.html` file; no unescaped apostrophes in any
+    single-quoted field body. Build passed clean (foreground execution, explicit `EXITCODE:$?`
+    capture, zero real `ERROR` lines). Browser-verified against the already-running dev server:
+    no console errors on any of the 4 pages; nav accordion opens with all 3 subtopic links on the
+    first check; both main-page fixes confirmed rendering live (the version-fix text and the
+    merged-theory section, duplicate heading absent); all 3 subtopic pages checked individually —
+    correct h1/breadcrumb (all 4 levels), 860px wrapper via `getComputedStyle`, tailored (not
+    DEFAULT) sidebar content confirmed. **Redis hub Phase 10: 19 of 21 topics complete.**
+20. **The `redis-nodejs` batch found and fixed THREE genuine main-page issues, one of them a
+    real npm-package API staleness verified end to end (not just a Redis-server-specific fact)**:
+    (1) a duplicate theory section — matching the recurring authoring pattern already found on
+    `caching-patterns`/`redis-cluster`/`redis-stack` this hub — "Connection Pooling and Client
+    Configuration Best Practices" restated most of "Connection Management" and "Pipelining for
+    Throughput" nearly verbatim; merged its one genuinely new bullet (TypeScript type safety via a
+    typed repository layer) into the "ioredis vs node-redis" section and deleted the duplicate;
+    (2) the Session Store (Express) codeTab used the obsolete `connect-redis` factory-function API
+    (`connectRedis(session)`), current as of v6 only — verified via a dedicated research pass
+    against the live npm README, GitHub release notes, and the npm registry's own raw version
+    timestamps that the API changed twice since (v7: plain default export, no session arg; v8+:
+    named export) and the CURRENT major version (v10, published 2026-07-24) uses `import {
+    RedisStore } from 'connect-redis'` with `new RedisStore({ client: redisClient })` directly —
+    fixed the codeTab to the current pattern; (3) the quiz's own Pub/Sub-allowed-command-list
+    explanation repeated the SAME incomplete list this hub's own `pub-sub` batch already found and
+    fixed earlier this session (missing SSUBSCRIBE/SUNSUBSCRIBE/RESET and the RESP3 exception) —
+    recognizing the duplicate stale fact and reusing the prior verified research, rather than
+    re-deriving it, fixed the quiz explanation to match. Three subtopics: (1) **fix-adjacent** — the
+    main page's own QnA sketches a WATCH/MULTI/EXEC retry loop with no mention of which connection
+    to run it on; extends this hub's own already-published Transactions topic finding (WATCH state
+    is per-connection) directly to the Node.js client, verified via a `FakeConnection` simulation
+    matching BOTH failure modes exactly (a false abort AND, more dangerously, a false success where
+    a genuinely-conflicting write silently goes through); (2) **gap-closing** — the main page's own
+    theory argues for typed Redis access over unsafe casts, then its own `defineCommand()` example
+    can only be called via `(redis as any)`; built the properly-typed version via TypeScript
+    declaration merging on ioredis's own `RedisCommander<Context>` interface, verified against
+    ioredis's own official TypeScript example (fetched directly, not guessed) rather than the
+    plausible-but-wrong shape assumed on a first pass; (3) **gap-closing** — the main page states
+    "client-side timeouts should be configured explicitly" and "health checks should verify actual
+    connectivity via PING" as two separate bullets with no code connecting them; built a real
+    `checkRedisHealth()` racing PING against its own short timeout, verified via direct Node.js
+    execution across healthy/hung/down cases that only the genuinely-hung case ever needs the race
+    to fire. No `SUBTOPICS` collision for `redis-nodejs` (checked both `subtopics.ts` forms and
+    grepped `app.routes.ts` directly, confirmed collision-free, left bare). All three
+    `exercise.solution` fields swept clean of `<code>`/entity contamination; brace balance and
+    backtick-parity confirmed even on all three files; no bare `@word` in any `.html` file; no
+    unescaped apostrophes in any single-quoted field body; a stray backtick used for markdown-style
+    emphasis inside a plain-interpolation sidebar `tip` field (not `[innerHTML]`) was caught and
+    removed before the build, since it would have rendered as a literal backtick character to the
+    reader. Build passed clean (foreground execution, explicit `EXITCODE:$?` capture, zero real
+    `ERROR` lines). **Hit a fully-dead dev server this batch** (`preview_list` returned an empty
+    array) — resolved with a clean `preview_start` cold-start plus polling for a 200 response.
+    Browser-verified: no console errors on any of the 4 pages; nav accordion opens with all 3
+    subtopic links on the first check; all three main-page fixes confirmed rendering live (the
+    connect-redis fix required switching the code-block's own tab selector to "Session Store
+    (Express)" specifically after expanding the collapsed "View Code" toggle; the duplicate-theory
+    fix and the quiz fix both confirmed via direct component-data inspection); all 3 subtopic pages
+    checked individually — correct h1/breadcrumb (all 4 levels), 860px wrapper via
+    `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed, generic syntax
+    (`RedisCommander<Context>`) confirmed rendering as literal text, not vanished. **Redis hub
+    Phase 10: 20 of 21 topics complete — only `security` remains to finish the entire hub.**
+21. **The `security` batch — the 21st and FINAL Redis hub topic — found and fixed FOUR genuine
+    issues on the main page, all verified against Redis's own primary sources rather than assumed**:
+    (1) the Challenge's own `auditAclViolations()` reference solution parsed ACL LOG's `object`
+    field as `"command|key"` via a naive `split('|')` — verified directly against Redis's own ACL
+    LOG documentation that `object` is a single-purpose field whose meaning depends entirely on the
+    `reason` field (a command name for `reason: 'command'`, a key/channel name for `reason: 'key'`/
+    `'channel'`, never a pipe-delimited compound), fixed by extracting the real command from
+    `client-info`'s own `cmd=` token via regex and using `object` for `key` only when `reason`
+    warrants it, verified via direct Node.js execution matching real `client-info` strings; (2) a
+    QnA claimed protected-mode's restriction lifts when either "a bind address is explicitly
+    configured" OR "requirepass is set" — verified directly against Redis's own `networking.c`
+    accept-time check that bind status plays NO part in the real condition at all, only whether the
+    default user has NOPASS set matters, matching the same misconception already debunked once this
+    session on the Installation & Setup page, reused here rather than re-derived; (3) a theory
+    bullet recommended `lua-time-limit 0` to "disable Lua scripts if not needed" — verified against
+    Redis's own `redis.conf` source comments that 0 actually DISABLES the busy-script-detection
+    mechanism entirely (uninterrupted execution, no warning to other clients), the opposite of
+    restricting anything — the real fix is denying the `@scripting` ACL category, fixed the theory
+    bullet and added a matching subtopic; (4) a RESET QnA's "(Redis 6+)" version claim was tightened
+    to "(Redis 6.2+, not 6.0)" after verification. Three subtopics: (1) **fix-adjacent** — the
+    ACL LOG `object`-field parsing fix, verified via direct Node.js execution against real
+    `client-info` strings, with a Try It on the `reason: 'auth'` case the naive parser also mishandles;
+    (2) **fix-adjacent** — the protected-mode/`@scripting` fixes combined: traces the verified
+    accept-time condition precisely, and demonstrates that a `defineCommand()`-registered custom Lua
+    command still sends a real EVALSHA over the wire, so `-@scripting` blocks it too regardless of
+    how the client-side call site looks; (3) **gap-closing** — the main page's own theory says
+    runtime ACL changes "must be saved (ACL SAVE or CONFIG REWRITE)" as if interchangeable; verified
+    against Redis's own ACL documentation that inline `redis.conf` `user` directives persist via
+    `CONFIG REWRITE` while an external `aclfile` persists only via `ACL SAVE` — the two storage
+    modes are "mutually incompatible" per Redis's own docs, and `CONFIG REWRITE` alone in aclfile
+    mode silently reports success while never touching the ACL file at all; the title's own straight
+    apostrophe was proactively swapped for the typographic curly quote before any sibling page could
+    reference it. No `SUBTOPICS` collision for `security` under the `redis` prefix — bare `security`
+    already claimed by the SQL hub's own topic, hub-prefixed to `redis-security` matching this hub's
+    established `redis-` search/progress prefix; all `RedisNavComponent` accordion helper calls use
+    the prefixed key consistently. All three `exercise.solution` fields swept clean of `<code>`/
+    entity contamination; brace balance and backtick-parity confirmed even on all three files; no
+    bare `@word` in static `.html` text outside bound attributes; no unescaped straight apostrophes
+    in any `[prev]`/`[next]` label. **Hit the documented `NG2008: Could not find template file`
+    failure mid-batch — subtopic 3's `.ts` file was written and wired before its own `.html`/`.scss`
+    files existed**, caught by the production build itself; written immediately, then the local
+    `ng serve` dev server needed a full `preview_stop`/`preview_start` restart (a forced marker-add-
+    then-remove file touch was insufficient — the route kept silently redirecting to `/` via the
+    wildcard route even after the touch) before the new route resolved live, matching the
+    established stale-dev-server-artifact family. Build passed clean (foreground execution, zero
+    real `ERROR` lines). Browser-verified after the restart: no console errors on any of the 4
+    pages; nav accordion opens with all 3 subtopic links (21 toggles total across the hub — every
+    Redis-hub topic now has subtopics); all four main-page fixes confirmed rendering live via
+    direct component-data inspection; all 3 subtopic pages checked individually — correct
+    h1/breadcrumb (all 4 levels), 860px wrapper via `getComputedStyle`, the `@scripting` entity-
+    escaped h1 and the curly-quote title both confirmed rendering as literal text; tailored (not
+    DEFAULT) sidebar content confirmed. **This completes the Redis hub's entire Phase 10 rollout —
+    all 21 topics now have deep-dive subtopic pages, 63 subtopic pages total across the hub,
+    finished 2026-09-09.**
+
+### GraphQL hub subtopic wiring — first pilot; the 17th `*NavComponent` in a row missing the
+subtopics-accordion structural fix
+
+Confirmed via direct file inspection before the pilot (`/graphql/fundamentals`, 2026-09-10) — do
+this same check before any other new hub's first subtopic set:
+
+1. **`GqlNavComponent` (`shared/gql-nav/gql-nav.ts`) had ZERO subtopics-accordion support** — the
+   same structural gap already hit and fixed on every `*NavComponent`-based hub's own pilot before
+   it (Go, DevOps, Containers, AWS, Azure, Linux, Terraform, Service Mesh, System Design,
+   Architecture Patterns, Design Patterns, Security, API Design, Observability, MongoDB, Redis —
+   this is the 17th in a row). Fixed identically: added `signal` to the `@angular/core` import,
+   `Router`/`NavigationEnd` (+ existing `RouterLink`/`RouterLinkActive`) from `@angular/router`,
+   `filter` from `rxjs`, and `SUBTOPICS` from `../../../data/subtopics`; then the same three
+   methods (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`) reading a private
+   `expandedTopics = signal<Set<string>>(new Set())`, plus a constructor router subscription
+   calling an EXACT-match `autoExpandForCurrentUrl()` — copied directly from `RedisNavComponent`'s
+   own implementation (read directly, not reconstructed from memory, per the established
+   copy-fidelity discipline). Worked correctly on the first browser check — no stale-chunk incident
+   after the fresh dev-server cold-start, verified via `window.ng.getComponent()` direct calls and
+   a live `.nav-subtopic-link` DOM query.
+2. **Real `SUBTOPICS` map bare-key collision**: `fundamentals` was already claimed by the
+   JavaScript hub's own `/javascript/fundamentals` topic (checked both quoted and unquoted forms,
+   per the standing collision-detection discipline). Hub-prefixed to `gql-fundamentals` — matching
+   this hub's own established progress/search key prefix (`gql-`, confirmed via the pre-existing
+   `p.isDone('gql-fundamentals')` nav markup) — with the usual `// NOTE:` comment. All four
+   `GqlNavComponent` accordion touchpoints (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`
+   calls + the `@if (subtopicsOf('gql-fundamentals'); as fundSubs)` binding) use the prefixed
+   `'gql-fundamentals'` key consistently.
+3. **`GQL_LABELS` breadcrumb map uses bare keys** (`'fundamentals'`), matching the generic pattern
+   every hub's own dedicated labels map shares — composite subtopic keys there are bare too
+   (`'fundamentals/<slug>'`).
+4. **`SIDEBAR_MAP` keys are FULL-PATH PREFIXED** (`'graphql/fundamentals'`, confirmed the base
+   entry — and its own `GQL_DEFAULT` constant — already existed) — subtopic composite keys follow
+   suit: `'graphql/fundamentals/<slug>'`, each with `apis`/`docs`/`resources` reused from
+   `GQL_DEFAULT` and tailored `related`/`tip`/`gotchas`.
+5. **Search-index keys are hub-prefixed composite** (`'gql-fundamentals/<slug>'`) — `search.ts`'s
+   own `url()` has a dedicated `gql-` → `/graphql/` prefix-strip rule that already handles the
+   composite subtopic routes correctly with no special-casing needed.
+6. **`.gql-page` wrapper rule is NOT global** (confirmed absent from `src/styles.scss`) — every
+   subtopic `.scss` needs the standalone `.gql-page { max-width: 860px; margin: 0 auto; }` rule,
+   with `.subtopic-page`'s own padding declared separately. `$accent: #e535ab`, `$tint: #fdf2f9`,
+   dark `#f472b6`, dark icon bg `#3d0a26`. Icon content: `◈` at `font-size: 1.8rem`.
+   `tech="javascript"` in `app-page-meta`.
+7. **No live playground** — GraphQL has no in-browser runtime worth embedding — every subtopic's
+   "Code Examples" section uses a plain `<section class="gql-section"><h2>Code Examples</h2>
+   <app-code-block [tabs]="codeTabs" /></section>`, matching the established non-JS-runtime hub
+   pattern.
+8. **The `fundamentals` pilot batch found and fixed a genuine cross-codeTab undeclared-field bug
+   on the main page**: the "First Query" codeTab's schema declared `type Post { id, title,
+   published }` with no `author` field, but the "Mutation & Subscription" codeTab's own
+   `subscription OnPostPublished { postPublished { id title author { name } } }` selects
+   `Post.author` — GraphQL rejects an unknown query field at schema-validation time (before any
+   resolver runs) with `Cannot query field "author" on type "Post"`. Verified via a mini schema
+   validator that the broken schema produces exactly that error and the fixed schema produces
+   `[]`. Fixed by adding `author: User!` to the "First Query" codeTab's `Post` type, matching the
+   Challenge solution's own `Post` type which already declared it. Three subtopics: (1)
+   **fix-adjacent** — the mismatch made executable, with the resolver that pairs with the fixed
+   schema and a Try It on the "delete the offending selection instead" alternative fix; (2)
+   **gap-closing** — non-null (`!`) error propagation / "null bubbling" / "kills parent on
+   exception" (a non-null field resolving null throws a field error AND pushes the null up
+   through non-null ancestors until a nullable field absorbs it or the root's `data` becomes
+   null; the original error stays in `errors` with its full `path`), cross-checked against the
+   GraphQL spec's own "error propagation" wording via WebSearch, with all 3 claimed executor
+   output comments verified via direct Node execution; (3) **gap-closing** — aliases as the
+   client-side response-key rename that is invisible to resolvers and the only tool that rescues
+   a same-field-different-args conflict (distinct from arguments, which change what is fetched,
+   and fragments, which reuse a selection set), with the `{"users":[{"id":9}]}` vs.
+   `{"active":...,"inactive":...}` outputs verified via direct Node execution.
+   Build passed clean (`EXITCODE:0`, only harmless warnings — unused imports, bundle budget).
+   Browser-verified after a fresh dev-server cold-start: no console errors on any of the 4 pages;
+   nav accordion opens with all 3 subtopic links (this is `GqlNavComponent`'s FIRST accordion —
+   confirmed via both `window.ng.getComponent()` and a live `.nav-subtopic-link` DOM query); the
+   main-page `author: User!` fix confirmed live via direct component-data inspection of the "First
+   Query" codeTab; all 3 subtopic pages checked individually — correct h1/breadcrumb (all 4
+   levels), 860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed
+   on the final subtopic (alias-specific `tip`, `related` links to the prev subtopic + topic
+   overview, gotchas present). **GraphQL hub Phase 10: 1 of 20 topics complete.**
+9. **The `schema-definition-language` batch found and tightened TWO genuine main-page
+   inaccuracies during subtopic authoring, both verified**: (a) the "Nullability &amp; Lists"
+   theory bullet said "Non-null on an argument means the argument is required. <code>userId:
+   ID!</code> must be provided by the caller" — verified via WebSearch against the GraphQL
+   spec's own <em>Required Arguments</em> / <em>Input Object Required Fields</em> rule that an
+   argument is required only when it is Non-Null <strong>and has no default value</strong>;
+   <code>limit: Int! = 10</code> may be omitted (the default applies), though an explicit
+   <code>null</code> is still rejected either way. Rewrote the bullet to state both halves.
+   (b) The "Forgetting <code>__typename</code> in union queries" mistake's <code>wrong</code>
+   example was commented "crashes if result is a User" — verified (WebSearch + a plain-JS
+   field-collection model) that no crash occurs: a fragment whose type condition does not
+   match the runtime object contributes nothing, so an unmatched union member comes back as
+   an empty object <code>{}</code>, not a server error. Corrected the comment and the
+   explanation. Three subtopics, each verified via direct Node execution: (1) **fix-adjacent**
+   — the two-part required-argument rule as an is-this-provision-valid model, across
+   Non-Null-with-default (omitted OK, explicit null rejected, concrete value OK) and
+   Non-Null-no-default (omitted rejected), with a Try It on a dynamic query passing a
+   <code>null</code> variable to a defaulted Non-Null argument; (2) **gap-closing** — union
+   selection sets: an unmatched member yields <code>{}</code> (verified), and a union type
+   declares no fields of its own — only <code>__typename</code> plus inline/named fragments
+   are selectable (verified against the spec via WebSearch; contrasted with an
+   <code>interface</code>, which CAN expose shared fields for direct selection), with a Try It
+   on "why can't I select <code>url</code> straight off a <code>union Media</code> when both
+   members have it"; (3) **gap-closing** — custom scalar <code>serialize</code> /
+   <code>parseValue</code> / <code>parseLiteral</code> (named in one QnA sentence, never shown
+   in code): a working <code>DateTime</code> scalar, which hook runs for an inline literal
+   (<code>parseLiteral</code>, receiving an AST node like <code>{ kind: "StringValue", value:
+   "..." }</code>) vs. a query variable (<code>parseValue</code>, receiving an
+   already-parsed primitive) vs. the resolver return value (<code>serialize</code>), and why
+   <code>parseLiteral</code> should read <code>ast.value</code> and delegate to
+   <code>parseValue</code> so the inline and variable paths accept the same inputs; verified
+   the "pass parseLiteral a raw string like parseValue" mistake throws. `SUBTOPICS` key
+   `schema-definition-language` checked collision-free (both `subtopics.ts` forms + a direct
+   `app.routes.ts` grep — only GraphQL's own route uses the slug), left bare; the
+   `GqlNavComponent` toggle markup was added to the topic's own nav link. Build passed clean
+   (`EXITCODE:0`) both before and after the two main-page edits. Browser-verified: no console
+   errors on any of the 4 pages; nav accordion opens with all 3 subtopic links (confirmed via
+   `window.ng.getComponent()` + a live `.nav-subtopic-link` DOM query); both main-page fixes
+   confirmed live via direct component-data inspection (`cmp.theory` bullet and
+   `cmp.mistakes` entry); all 3 subtopic pages checked individually — correct h1/breadcrumb
+   (all 4 levels), 860px wrapper via `getComputedStyle`, no entity leaks in rendered text,
+   tailored (not DEFAULT) sidebar content confirmed on the final subtopic. **Note**: this
+   page's own theory bullets already render markdown-style backticks as literal characters
+   (9 pre-existing bullets do this) — the edited bullet matches that existing house-style
+   quirk and was left as-is rather than "improved". **GraphQL hub Phase 10: 2 of 20 topics
+   complete.**
+10. **The `type-system` batch fixed one genuine main-page inaccuracy, verified via WebSearch and
+   contradicted by the page's own other sections**: the "Abstract Types &amp; resolveType" theory
+   bullet said "Without __resolveType, GraphQL falls back to instanceof checks (only works with
+   class instances, not plain objects)" — verified that graphql-js has NO <code>instanceof</code>
+   anywhere in type resolution. The real default: (1) read a <code>__typename</code> string off
+   the resolved value if present; (2) otherwise call each possible type's <code>isTypeOf(value)</code>
+   in definition order, first match wins; (3) if neither resolves, throw <code>Abstract type "X"
+   must resolve to an Object type at runtime</code>. This already matched the page's own mistakes
+   block ("GraphQL throws...") and QnA (which describes <code>isTypeOf</code>) — only the theory
+   bullet was wrong. Rewrote it. Three subtopics, each verified via direct Node execution: (1)
+   **fix-adjacent** — the real default modelled as <code>defaultResolveType(value, possibleTypes)</code>,
+   across a <code>__typename</code>-carrying value, a plain object with <code>isTypeOf</code>
+   registered, and a class instance with neither (throws — graphql-js never checks the
+   constructor), with a Try It on an ORM returning class instances (still needs
+   <code>isTypeOf</code> or a stamped <code>__typename</code>); (2) **gap-closing** — unwrapping
+   introspection <code>ofType</code>: <code>NON_NULL</code>/<code>LIST</code> nodes have
+   <code>name: null</code> and an <code>ofType</code>; only named kinds carry a name; a recursive
+   <code>renderType</code> turns the nested tree back into <code>[Post!]!</code> /
+   <code>[[Int!]!]!</code>, and <code>namedType</code> walks <code>ofType</code> while
+   <code>name</code> is null, with a Try It on a <code>LIST → NON_NULL → OBJECT("User")</code>
+   tree; (3) **gap-closing** — "disable introspection in production" (repeated in the theory, a
+   mistakes entry, and a QnA) does NOT hide the schema: graphql-js validation errors still emit
+   "Did you mean" field-name suggestions from the live schema, and the <em>clairvoyance</em> tool
+   (Nikita Stupin / Escape) automates schema reconstruction from those alone with introspection
+   fully off (verified via WebSearch) — the real fixes are blocking field suggestions
+   (graphql-armor's <code>blockFieldSuggestions</code> or Apollo Server v4+
+   <code>hideSchemaDetailsFromClientErrors: true</code>) plus an operation allowlist, with a Try
+   It modelling the wordlist-against-error-suggestions enumeration. `SUBTOPICS` key `type-system`
+   checked collision-free (both `subtopics.ts` forms + a direct `app.routes.ts` grep), left bare;
+   the `GqlNavComponent` toggle markup was added to the topic's own Foundations-group nav link.
+   Build passed clean (`EXITCODE:0`). Browser-verified: no console errors on any of the 4 pages;
+   nav accordion opens with all 3 subtopic links (confirmed via `window.ng.getComponent()` + a
+   live `.nav-subtopic-link` DOM query); the main-page fix confirmed live via `cmp.theory`
+   inspection; all 3 subtopic pages checked individually — correct h1/breadcrumb (all 4 levels),
+   860px wrapper via `getComputedStyle`, no entity leaks, `<code>` mentions in misconceptions
+   render as styled code, tailored (not DEFAULT) sidebar content confirmed on the final subtopic.
+   **GraphQL hub Phase 10: 3 of 20 topics complete.**
+11. **The `queries` batch fixed one genuine main-page inaccuracy, verified via WebSearch and
+   contradicted by the page's own other sections**: the Directives theory bullet said
+   "Directives take effect on the client side — the server only receives the final
+   included/excluded selection." Verified that `@skip`/`@include` are evaluated SERVER-side
+   during the execution engine's field-collection step, before any resolver runs — the client
+   sends the full query text (directives and all) unchanged; the server reads the variable
+   values and drops the non-included fields. This already matched the page's own "Directives"
+   codeTab (comment: "Variables sent alongside the query") and QnA. Rewrote the bullet. Three
+   subtopics, each verified via direct Node execution: (1) **fix-adjacent** — `@skip`/`@include`
+   modelled at the field-collection step (a `collectFields(selection, variables)` applying both
+   directives), with the spec's combined rule (kept iff `@skip` false AND `@include` true) and a
+   Try It on `ssn @include(if: $isAdmin)` as a supposed access-control mechanism — it is not,
+   because the client supplies the variable and any caller can send `isAdmin: true`; (2)
+   **gap-closing** — the spec's *Fields in set can merge* validation rule behind "an alias is
+   required for the same field with different arguments": two selections sharing a response key
+   (alias, else field name) must have the same field and identical arguments; the check runs on
+   the *flattened* selection set, so two fragments each selecting the same field with different
+   args conflict even though the query text never repeats the field, with a Try It on
+   `...CardFields` + `...ListFields` both selecting `coverImage` at different widths; (3)
+   **gap-closing** — the Lone Anonymous Operation validation rule (an unnamed operation is valid
+   only as the single operation in a document) plus the request-time `operationName` requirement
+   for multi-operation documents, with a Try It on a build step that bundles `*.graphql` files
+   into one document and two of them have anonymous `{ ... }` queries — the whole request fails
+   validation, which is why "always name your operations" is a correctness rule, not just a
+   logging nicety. `SUBTOPICS` key `queries` checked collision-free (both `subtopics.ts` forms +
+   a direct `app.routes.ts` grep), left bare; the `GqlNavComponent` toggle markup was added to
+   the topic's own Queries-group nav link. **Gotcha handled**: subtopic 1's own title/subject is
+   `@skip`/`@include`, so its `.html` h1, page-subtitle, and "Where this fits" text needed the
+   `@` escaped as `&#64;` (bare `@word` in a static template text node → `NG5002`); the same
+   `@skip` mentions inside the `.ts` `[innerHTML]`-bound theory/misconception fields and inside
+   `[prev]`/`[next]` bound attributes needed no escaping, per the established rule. Also
+   self-caught and fixed an over-escaped `\\"posts\\"` inside a single-quoted `.ts` theory
+   string during authoring (double quotes never need escaping in a single-quoted string —
+   rephrased to avoid the nested quote). Build passed clean (`EXITCODE:0`, no `NG5002`).
+   Browser-verified: no console errors on any of the 4 pages; nav accordion opens with all 3
+   subtopic links (confirmed via `window.ng.getComponent()` + a live `.nav-subtopic-link` DOM
+   query); the main-page fix confirmed live via `cmp.theory` inspection; all 3 subtopic pages
+   checked individually — correct h1/breadcrumb (all 4 levels, the `&#64;` decoding to `@` in
+   both the h1 and the breadcrumb), 860px wrapper via `getComputedStyle`, no entity leaks in
+   rendered text, tailored (not DEFAULT) sidebar content confirmed on two of the subtopics.
+   **GraphQL hub Phase 10: 4 of 20 topics complete.**
+12. **The `variables-arguments` batch tightened two imprecise theory bullets in the "Variable
+   Types &amp; Defaults" section, both verified**: (a) "Non-null variables (`$id: ID!`) must
+   always be provided" contradicted the same section's own next bullet and quiz Q6 — a non-null
+   variable that HAS a default may be omitted (the default is used); rewrote it to cover the
+   no-default case, the with-default case, and that an explicit `null` for any non-null variable
+   is always a validation error. (b) "Variable types must match the argument type exactly" —
+   verified via WebSearch against the spec's *All Variable Usages Are Allowed* rule
+   (`IsVariableUsageAllowed`) that this is compatibility, not identity: same named type required,
+   but a non-null variable fits a nullable location, and a nullable variable fits a non-null
+   location when the variable OR the argument has a default value; rewrote the bullet. Three
+   subtopics, each verified via direct Node execution: (1) **fix-adjacent** —
+   `IsVariableUsageAllowed` modelled across every nullability combination, with a Try It on
+   `$q: String` used at a `String!` argument (two schema-free fixes: make `$q` non-null, or give
+   it a default — only the default keeps `$q` optional for the caller); (2) **gap-closing** —
+   enum values: a bare `EnumValue` identifier inline in the query vs a JSON string in the
+   variables object, with the validation errors each wrong form produces (quoted inline = a
+   `StringValue` rejected at validation; wrong-case string in variables = "value does not exist
+   in the enum"; case-sensitive), and why hand-built query strings trip on this; (3)
+   **gap-closing** — GET vs POST: verified via WebSearch against the GraphQL-over-HTTP spec that
+   GET may run query operations ONLY (a mutation over GET is rejected — GET is a "safe" method),
+   and that real GET/CDN caching needs Automatic Persisted Queries because full query text
+   exceeds URL length limits, with a Try It on a team flipping everything to GET and mutations
+   breaking. `SUBTOPICS` key `variables-arguments` checked collision-free (both `subtopics.ts`
+   forms + a direct `app.routes.ts` grep), left bare; the `GqlNavComponent` toggle markup was
+   added to the topic's own Queries-group nav link. **Gotcha handled**: the enum subtopic
+   discusses `${value}` string-templating as prose — inside a single-quoted `.ts`
+   `[innerHTML]`-bound field, `${value}` is literal text (no interpolation), and raw `{ }` in
+   `[innerHTML]` fields is safe (confirmed rendering correctly). Also self-caught an
+   over-escaped `\\"posts\\"`-style nested double-quote during the SDL-batch pattern and avoided
+   repeating it here (double quotes need no escaping in a single-quoted string). Build passed
+   clean (`EXITCODE:0`, no `NG5002`). Browser-verified: no console errors on any of the 4 pages;
+   nav accordion opens with all 3 subtopic links (confirmed via `window.ng.getComponent()` + a
+   live `.nav-subtopic-link` DOM query); both main-page fixes confirmed live via `cmp.theory`
+   inspection; all 3 subtopic pages checked individually — correct h1/breadcrumb (all 4 levels),
+   860px wrapper via `getComputedStyle`, no entity leaks, `${value}` rendering as literal text,
+   tailored (not DEFAULT) sidebar content confirmed. **GraphQL hub Phase 10: 5 of 20 topics
+   complete.**
+13. **The `directives` batch — the third and final topic in the Queries nav group — fixed one
+   genuine main-page inaccuracy, verified via WebSearch**: the `@deprecated` theory bullet said
+   "marks a field or enum value as deprecated without removing it from the schema" — omitting
+   the 2021-spec-release expansion of valid locations. Verified via WebSearch against the current
+   GraphQL spec that `@deprecated`'s valid locations are `FIELD_DEFINITION`, `ENUM_VALUE`, and —
+   since 2021 — `ARGUMENT_DEFINITION` and `INPUT_FIELD_DEFINITION`, and that a required (non-null,
+   no default) argument or input field cannot be deprecated at all (would make a client-required
+   value officially discouraged, a contradiction the spec forbids). Rewrote the bullet to state
+   both. Three subtopics, each verified via a small TypeScript model: (1) **fix-adjacent** — a
+   `checkDeprecatedUsage(location, target)` model over all four valid locations plus the
+   required-argument restriction, with a Try It on renaming a required `token: String!` argument
+   — `@deprecated` is rejected until it is made optional; (2) **gap-closing** — the mistake and a
+   quiz question both say declaring a custom directive in SDL "does nothing" without further
+   detail; built the full before (declared but never applied) / after
+   (`schema = authDirectiveTransformer(schema)`) comparison, plus the transformer-composition-order
+   rule (last-applied wraps outermost, runs first) neither section mentions; (3) **gap-closing** —
+   a quiz question notes `FIELD` and `FIELD_DEFINITION` are different without explaining why;
+   built `canUseDirective(declaredLocations, context)` demonstrating the two location namespaces
+   are fully disjoint (`FIELD`-family executable locations for query documents vs.
+   `FIELD_DEFINITION`-family type-system locations for the SDL), and that `FIELD_DEFINITION` needs
+   a build-time schema transformer while `FIELD` needs execution-time inspection of `info` — two
+   different implementations, not a cosmetic choice. **Real `SUBTOPICS` map collision, found while
+   converting the route to a `children` array** — grepping `app.routes.ts` for `path: 'directives'`
+   turned up a SECOND match: the Angular hub's own pre-existing `directives-demo` topic, which
+   already owns an UNQUOTED bare key `directives:` in `subtopics.ts` (invisible to a quoted-only
+   grep — the same collision-detection gap this file has documented before). Hub-prefixed the
+   GraphQL entry to `gql-directives`, matching this hub's own established `gql-` progress/search
+   prefix, with the usual `// NOTE:` comment; all four `GqlNavComponent` accordion touchpoints
+   (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics` + the `@if (subtopicsOf('gql-directives');
+   as directivesSubs)` binding) use the prefixed key consistently. Bare `@auth`/`@deprecated`
+   mentions in `.html` static text nodes (h1/subtitle/"Where this fits") entity-escaped as
+   `&#64;`; the same mentions inside `[innerHTML]`-bound `.ts` theory/misconception fields and
+   `[prev]`/`[next]` bound attributes needed no escaping, per the established rule. All three
+   `.ts` files swept clean via the standing bracket-balance/backtick-parity/apostrophe scripts. No
+   `SUBTOPICS` collision beyond the resolved `gql-directives` prefix. Build passed clean
+   (`EXITCODE:0`, no real `ERROR` lines). Browser-verified after a fresh dev-server cold-start
+   (the prior server hit a transient `EACCES` port-bind failure on port 4200 and was retried on an
+   auto-assigned port): no console errors on any of the 4 pages; nav accordion opens with all 3
+   `gql-directives` subtopic links (6 toggles total across the hub, confirming all 6 Queries+
+   Foundations-group topics now have subtopics); the main-page `@deprecated` fix confirmed
+   rendering live via direct component-data inspection; all 3 subtopic pages checked individually
+   — correct h1/breadcrumb (all 4 levels), 860px wrapper via `getComputedStyle`, no entity leaks,
+   tailored (not DEFAULT) sidebar content confirmed; the Angular hub's own `/angular/directives`
+   (directives-demo) cross-hub isolation check passed, rendering completely unaffected. This
+   completes the GraphQL hub's Queries nav group entirely (queries, variables-arguments,
+   directives — all 3 of 3 topics now have subtopics). **GraphQL hub Phase 10: 6 of 20 topics
+   complete.**
+14. **The `mutations` batch — the first topic in the Mutations & Subscriptions nav group — found
+   and fixed a genuine, well-verified staleness issue in the main page's own file-upload QnA**:
+   it claimed "Apollo Server supports it [multipart file uploads] via graphql-upload" — true for
+   Apollo Server 2 only. Verified via WebSearch/WebFetch against Apollo's own blog ("File Upload
+   Best Practices") that Apollo Server 3 (2021) removed the BUILT-IN multipart-request
+   integration entirely, and Apollo Server 4 never restored it — `graphql-multipart-request-spec`
+   is a community convention, not part of the official GraphQL spec, and never went away; only
+   Apollo's built-in wiring for it did. The deeper reason: `multipart/form-data` is one of the
+   HTTP content types a plain cross-origin `<form>` can POST without triggering a CORS preflight
+   — a real CSRF loophole — which is why Apollo's own current guidance is "we really really don't
+   think you should use multipart uploads with GraphQL," recommending signed URLs (upload direct
+   to S3/cloud storage, bypassing the GraphQL server entirely) instead. Rewrote the QnA to state
+   the version history, the CSRF mechanism, and the modern recommendation. Three subtopics, each
+   verified via direct Node.js execution: (1) **fix-adjacent** — the Apollo Server 2-vs-3+ history
+   traced precisely, contrasting the old (now-manual-only) `graphql-upload` pattern against the
+   signed-URL pattern, with a Try It on the exact CSRF attack shape and both real fixes (Apollo
+   Server 3.7+'s own opt-in CSRF-prevention options, or removing multipart entirely); (2)
+   **gap-closing** — the theory names "mutations execute serially" and quiz Q1 tests it, but no
+   codeTab on the page shows the mechanism running; built a small model of graphql-js's own
+   `executeFieldsSerially` (verified via direct execution: a faster second field still waits for a
+   slower first field to FULLY complete before starting, unlike the parallel query-style
+   equivalent, which starts both immediately and finishes out of order), plus the genuinely
+   uncovered caveat the page's own mistake block #3 never mentions — serial execution guarantees
+   ORDER only, not atomicity, so an earlier field's already-committed side effect is never rolled
+   back if a later field throws (verified via a `chargeCard` + `createOrder` simulation: the
+   charge's side effect survives the second field's failure with zero automatic rollback); (3)
+   **gap-closing** — the QnA says destructive mutations "should be guarded with deduplication
+   tokens" in one sentence with zero code; built a real idempotency-key resolver, verified via
+   direct execution across three cases (first attempt charges for real, a retry with the SAME key
+   replays the cached result with zero double-charge, a genuinely different key charges again),
+   with a Try It on why keying on an entity ID like `orderId` instead of a client-generated
+   attempt ID incorrectly conflates a legitimate retry with a deliberate new attempt against the
+   same entity. No `SUBTOPICS` collision for `mutations` (checked both `subtopics.ts` forms and
+   grepped `app.routes.ts` directly, confirmed collision-free, left bare). All three `.ts` files
+   swept clean via the standing bracket-balance/backtick-parity/apostrophe scripts; every flagged
+   apostrophe match confirmed safe (inside backtick-delimited `code:`/`solution:` fields or `//`
+   comments); `page-sidebar.ts`'s three new `tip:` fields (single-quoted, not backtick-delimited)
+   correctly used `\'` for their own possessive apostrophes. Build passed clean (`EXITCODE:0`, no
+   real `ERROR` lines). Browser-verified against the already-running dev server (picked up the
+   file-watcher changes normally, no restart needed): no console errors on any of the 4 pages; nav
+   accordion opens with all 3 subtopic links (7 toggles total across the hub, confirming Mutations
+   is the 7th GraphQL topic with subtopics); the main-page QnA fix confirmed rendering live via
+   direct component-data inspection; all 3 subtopic pages checked individually — correct
+   h1/breadcrumb (all 4 levels), 860px wrapper via `getComputedStyle`, tailored (not DEFAULT)
+   sidebar content confirmed; a code-tab text-search initially came back as a false alarm because
+   the code block's own "View Code" toggle was still collapsed — clicking it through confirmed the
+   generic-syntax code sample renders correctly, not a real bug. **GraphQL hub Phase 10: 7 of 20
+   topics complete.**
+15. **The `error-handling` batch — the second topic in the Mutations & Subscriptions nav group —
+   found and fixed a genuine, well-verified staleness issue in the main page's own Quick Reference
+   and a theory bullet**: both listed `ApolloError`, `AuthenticationError`, `ForbiddenError`, and
+   `UserInputError` as if still importable, with the theory bullet saying "Apollo Server provides
+   pre-built classes... each sets the correct code." Verified via WebSearch that Apollo Server 4
+   (September 2022) removed all four entirely — not deprecated, gone; `@apollo/server` never
+   exports those names, so a v3 import fails outright rather than printing a warning. Rewrote the
+   four QuickRef descriptions and the theory bullet to state the removal and the only supported
+   replacement (`throw new GraphQLError(msg, { extensions: { code: '...' } })`). Three subtopics,
+   the last two built around a real, previously-undocumented API verified via WebFetch against
+   Apollo's own docs: (1) **fix-adjacent** — a v3-vs-v4 codeTab comparison and a Try It on whether
+   a local wrapper function replacing the removed classes reintroduces the problem Apollo removed
+   them to solve (it does not — the classes never did more than call `new GraphQLError(...)`
+   internally); (2) **gap-closing** — the page's own QnA draws the exact line between throwing
+   `GraphQLError` (unexpected/system errors) and a payload `userErrors: [UserError!]!` list
+   (expected domain validation, Shopify/GitHub's own convention) but no codeTab ever writes the
+   schema; built the full type, a resolver checking auth-via-throw and three field validations
+   via `userErrors`, and the client-side handling, with a Try It distinguishing "the caller
+   doesn't own the account" (throw, FORBIDDEN — not a normal form-fill outcome) from "malformed
+   email" (userErrors — a real user can legitimately typo an email); (3) **gap-closing** — Apollo
+   Server 4 also stopped exporting its own internal error subclasses (`SyntaxError`,
+   `ValidationError`); verified via WebFetch against Apollo's docs that the replacement is a
+   single enum, `ApolloServerErrorCode` (from `@apollo/server/errors`, 8 members:
+   `GRAPHQL_PARSE_FAILED`, `GRAPHQL_VALIDATION_FAILED`, `BAD_USER_INPUT`,
+   `PERSISTED_QUERY_NOT_FOUND`, `PERSISTED_QUERY_NOT_SUPPORTED`, `OPERATION_RESOLUTION_FAILURE`,
+   `BAD_REQUEST`, `INTERNAL_SERVER_ERROR`) — never mentioned anywhere on the main page; built a
+   `formatError` that routes Apollo's own pre-execution codes to quiet metrics and everything else
+   (including the developer's own resolver-thrown codes) to logging/alerting, with a Try It on a
+   typo'd field name in a query producing `GRAPHQL_VALIDATION_FAILED` and confirming no resolver
+   ever ran, so the alerting branch correctly never fires. `SUBTOPICS` key hub-prefixed to
+   `gql-error-handling` (bare `error-handling` already claimed by the JavaScript hub, confirmed via
+   both quoted and unquoted `subtopics.ts` forms), matching this hub's own established `gql-`
+   progress/search prefix; the `GqlNavComponent` toggle markup was added to the topic's own
+   Mutations & Subscriptions nav link (a plain link with no toggle before this batch, unlike
+   `mutations`/`directives`, which already had the accordion pattern from earlier batches). All
+   three `.ts` files swept clean via the standing bracket-balance/backtick-parity/apostrophe
+   scripts (every flagged apostrophe match confirmed safe — inside backtick-delimited
+   `code:`/`solution:` fields or `//` comments); no bare `@word` or single-`{` needed escaping in
+   any `.html` file this batch. Build passed clean (`EXITCODE:0`, no real `ERROR` lines).
+   Browser-verified against the already-running dev server (picked up the file-watcher changes
+   normally, no restart needed): no console errors on any of the 4 pages; the toggle rendered
+   correctly and all 3 subtopic links expanded on the first click, confirmed via both
+   `window.ng.getComponent()` and a live DOM query; both main-page fixes (QuickRef + theory
+   bullet) confirmed rendering live; all 3 subtopic pages checked individually — correct
+   h1/breadcrumb (all 4 levels), 860px wrapper via `getComputedStyle`, tailored (not DEFAULT)
+   sidebar content confirmed on two of the three. **GraphQL hub Phase 10: 8 of 20 topics
+   complete.**
+16. **The `subscriptions` batch — the third and final topic in the Mutations & Subscriptions nav
+   group — tightened the main page's own federation QnA and produced this hub's most surprising
+   verified finding to date, discovered by actually installing and running real `graphql`
+   (v16.11.0) in the scratchpad rather than trusting a WebFetch summary**: the QnA said federating
+   subscriptions "requires careful design and Apollo Federation v2+." Verified via WebSearch
+   against Apollo's own GraphOS docs that the real version floor is Federation `2.4` specifically
+   (2.0-2.3 do not support subscription composition at all), and — never mentioned on the page —
+   serving federated subscriptions through a self-hosted Apollo Router additionally requires a
+   GraphOS **Enterprise** plan, validated at the router via `APOLLO_KEY`/`APOLLO_GRAPH_REF`; a
+   schema can compose perfectly and still be refused at the router on a lower-tier plan. Rewrote
+   the QnA to state both. Three subtopics: (1) **fix-adjacent** — the version/plan gap above,
+   with a Try It distinguishing the build-time composition failure (Federation < 2.4) from the
+   separate runtime entitlement gate; (2) **gap-closing, and the real find of this batch** — the
+   page names "a subscription can only have one root field" with no mechanism; verified directly
+   against `graphql-js`'s `SingleFieldSubscriptionsRule` (via `npm install graphql` in the
+   scratchpad, not just reading docs) that two literal fields, and a fragment spread introducing a
+   second field, both correctly produce a clean `"must select only one top level field"` error —
+   but a LITERAL `@skip(if: true/false)` on the single field validates cleanly with zero errors,
+   while a VARIABLE-driven `@skip(if: $flag)` on that SAME single field makes `validate()` throw
+   an uncaught exception instead of returning one, because `validate()`'s own public signature
+   (confirmed via direct inspection of the function) has no `variableValues` parameter at all, yet
+   the rule still tries to resolve the variable to decide whether to count the field. An initial,
+   unverified assumption for this subtopic ("still rejected regardless of directive value") was
+   discarded once the real test contradicted it — confirmed the discipline of running the actual
+   code before publishing a claim, not just reasoning about it; (3) **gap-closing** — the theory
+   names the `resolve` function but not one of the page's 3 codeTabs, the mistakes block, or the
+   Challenge ever writes one; verified end-to-end via `graphql-js`'s own `subscribe()` with two
+   independently-`contextValue`'d subscribers on the identical broadcast event that `resolve`
+   genuinely runs once PER SUBSCRIBER, each with its own `context`, producing a different
+   `isOwn` boolean per subscriber from the SAME underlying event — real proof, not inference.
+   `SUBTOPICS` key `subscriptions` checked collision-free (both `subtopics.ts` forms and a direct
+   `app.routes.ts` grep), left bare. **Gotcha handled**: the second subtopic's own subject is
+   literally `@skip`/`@include`, so its `.html` h1/page-subtitle/"Where this fits" text needed
+   `&#64;` escaping — caught one instance missed on the first pass (a "Where this fits" paragraph
+   on a DIFFERENT subtopic file, referencing this one) via the standard post-write sweep; the same
+   mentions inside `[innerHTML]`-bound `.ts` fields and `[prev]`/`[next]` bound attributes needed
+   no escaping, per the established rule. All three `.ts` files swept clean via the standing
+   bracket-balance/backtick-parity/apostrophe scripts (every flagged match confirmed safe — inside
+   backtick-delimited `code:`/`solution:` fields); the pre-existing base `graphql/subscriptions`
+   sidebar entry's own gotcha text was also tightened for consistency with subtopic 3's verified
+   finding (from "once per published event" to "once per SUBSCRIBER per published event"). Build
+   passed clean (`EXITCODE:0`, no real `ERROR` lines). Browser-verified against the already-running
+   dev server (picked up the file-watcher changes normally, no restart needed): no console errors
+   on any of the 4 pages; the toggle rendered and all 3 subtopic links expanded on the first click;
+   the main-page QnA fix confirmed live via direct component-data inspection; both subtopic pages
+   checked individually — correct h1/breadcrumb (all 4 levels, `&#64;` decoding to `@` correctly),
+   860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on both.
+   This completes the GraphQL hub's Mutations & Subscriptions nav group entirely (mutations,
+   error-handling, subscriptions — all 3 of 3 topics now have subtopics). **GraphQL hub Phase 10:
+   9 of 20 topics complete.**
+17. **The `resolvers` batch — the first topic in the Resolvers & Data nav group — found and fixed
+   a genuine staleness issue verified via WebSearch/WebFetch**: a theory bullet and a QnA answer
+   both described graphql-middleware/graphql-shield as the standard way to wrap resolvers with
+   cross-cutting logic, with no mention of their maintenance status. Verified that neither package
+   (both from the same original maintainer) has shipped a release in 3+ years — confirmed
+   effectively unmaintained, not formally deprecated — and that `@envelop/graphql-middleware`
+   (`useGraphQLMiddleware`) wraps the SAME `shield()`/`rule()` API on top of the actively-maintained
+   envelop plugin pipeline, requiring no rewrite of existing permission rules. Also verified,
+   researching envelop's own migration guide, that envelop v3 moved `onResolverCalled` out of core
+   into a separate package (`@envelop/on-resolve`, via `useOnResolve`) — a custom plugin defining
+   `onResolverCalled` directly is the older v2-only pattern. Fixed the theory bullet and QnA to
+   state the current, verified guidance. Three subtopics, all verified via direct Node.js execution
+   against a real, installed `graphql` package: (1) **fix-adjacent** — the unmaintained-package
+   finding plus the v2-vs-v3 envelop migration, contrasting the old `onResolverCalled`-in-a-custom-
+   plugin pattern against the current `useOnResolve` import; (2) **gap-closing** — a genuine,
+   verified correctness bug: `info.fieldNodes[0].selectionSet.selections` correctly extracts
+   requested field names for literal-field queries, but a naive `kind === 'Field'`-only filter
+   silently misses fields selected via a `FragmentSpread` node — the fix requires also resolving
+   `info.fragments[spreadName]` and reading that fragment's own selections, verified via a real
+   executed query that a naive filter under-selects columns for a fragment-based client request;
+   (3) **gap-closing** — `info.path` is a linked-list structure (`{ key, typename, prev }`), not a
+   plain array; walking `.prev` and unshifting each `.key` produces an array byte-for-byte
+   identical to the final response's own `errors[].path` array, including representing list
+   indices as plain numbers (not stringified) — confirmed via a real executed query comparing the
+   two arrays directly. No `SUBTOPICS` collision for `resolvers` (checked both `subtopics.ts` forms
+   and grepped `app.routes.ts` directly, confirmed collision-free, left bare). All three
+   `.ts` files swept clean via the standing bracket-balance/backtick-parity/apostrophe scripts.
+   Build passed clean (`EXITCODE:0`, zero real `ERROR` lines) after a fresh dev-server cold-start.
+   Browser-verified: no console errors on any of the 4 pages; nav accordion opens with all 3
+   subtopic links (confirmed via both `window.ng.getComponent()` and a live DOM click-and-query);
+   both main-page fixes (theory bullet + QnA) confirmed rendering live via direct component-data
+   inspection; both subtopic pages checked individually — correct h1/breadcrumb (all 4 levels, the
+   curly-quote possessive "Response’s Own" rendering correctly), 860px wrapper via
+   `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on both. **GraphQL hub
+   Phase 10: 10 of 20 topics complete.**
+18. **The `dataloader` batch — the second topic in the Resolvers & Data nav group — found and
+   fixed a genuine, well-verified precision issue in the main page's own Advanced Options theory
+   bullet**: it said `batchScheduleFn`, "by default uses process.nextTick" — verified by reading
+   the installed `dataloader` v2.2.3 package's own source directly (not just its docs) that the
+   real default is `resolvedPromise.then(() => process.nextTick(fn))` — a shared, cached
+   `Promise.resolve()` whose `.then()` callback is what actually schedules the dispatch as a
+   `process.nextTick` job. The package's own source comment explains why: a bare
+   `process.nextTick(fn)` risks dispatching BEFORE pending `.then()` continuations from the
+   current tick get a chance to call `load()` — the extra microtask hop guarantees the dispatch
+   happens after the current microtask queue has been given a chance to enqueue more loads.
+   Tightened the theory bullet to state the real two-step mechanism. Three subtopics, all
+   verified via direct execution against the real, npm-installed package rather than assumed: (1)
+   **fix-adjacent** — the verified scheduler mechanism, with a Try It establishing the practical
+   consequence: a `load()` call issued synchronously, one from inside `Promise.resolve().then()`,
+   and even one after 50 chained `await Promise.resolve()` hops all land in the SAME batch call —
+   only a genuine macrotask (`setImmediate`, `setTimeout`, real I/O) breaks out; (2)
+   **gap-closing** — the QnA names `cacheKeyFn` for composite object keys in one line ("use
+   cacheKeyFn... JSON.stringify") but never shows what breaks without it; verified directly
+   against the package's own source that the default `cacheKeyFn` is the identity function, and
+   confirmed via execution that two structurally-identical-but-separately-created objects are
+   sent to the batch function as SEPARATE entries (batch size 2) without a `cacheKeyFn`, collapsing
+   to one (batch size 1, identical cached result) with `JSON.stringify` as the key function; (3)
+   **gap-closing** — the QnA claims maxBatchSize "splits large batches automatically into chunks"
+   with zero codeTab demonstrating it; verified via direct execution that 7 keys against
+   `maxBatchSize: 3` chunk into exactly 3 separate batch function calls (`[1,2,3]`, `[4,5,6]`,
+   `[7]`), with every individual `.load()` call still resolving correctly regardless of which
+   chunk produced it — directly extending the main page's own N+1-fix codeTab's `WHERE id IN
+   (...)` query-size concern to real scale. **A real, self-caught mistake caught and fixed before
+   the build, not the standing sweep**: an early draft of a `page-sidebar.ts` `tip` field used the
+   HTML entity `&gt;` for a literal `=>` inside `resolvedPromise.then(() => process.nextTick(fn))`
+   — checking the real sidebar template (`page-sidebar.html`) confirmed `tip`/`gotchas` bind via
+   PLAIN interpolation (`{{ data().tip }}`), not `[innerHTML]`, so the entity would have rendered
+   as the literal raw text `&gt;` to the reader instead of `>`; fixed to the raw, unescaped
+   character. No `SUBTOPICS` collision for `dataloader` (checked both `subtopics.ts` forms and
+   grepped `app.routes.ts` directly, confirmed collision-free, left bare). All three `.ts` files
+   swept clean via the standing bracket-balance/backtick-parity/apostrophe scripts (every flagged
+   apostrophe match confirmed safe — inside backtick-delimited `code:`/`solution:` fields). Build
+   passed clean (`EXITCODE:0`, zero real `ERROR` lines) against the already-running dev server
+   (picked up the file-watcher changes normally, no restart needed). Browser-verified: no console
+   errors on any of the 4 pages; nav accordion opens with all 3 subtopic links (confirmed via both
+   `window.ng.getComponent()` and a live DOM click-and-query); the main-page theory fix confirmed
+   rendering live via direct component-data inspection; all 3 subtopic pages checked individually
+   — correct h1/breadcrumb (all 4 levels), 860px wrapper via `getComputedStyle`, the `{tenantId,
+   userId}` brace-containing prose mention confirmed rendering as literal text (not vanished,
+   confirming single braces are safe inside `[innerHTML]`-bound TS string fields), tailored (not
+   DEFAULT) sidebar content confirmed on all three, and the corrected sidebar `tip` entity fix
+   confirmed rendering as a literal `=>` arrow, not the raw entity text. **GraphQL hub Phase 10:
+   11 of 20 topics complete.**
+19. **The `auth` batch — the third topic in the Resolvers & Data nav group — found and fixed a
+   genuine, well-verified inaccuracy in the main page's own graphql-shield theory bullet**: it
+   claimed "Rules are memoized per request by default — the same rule called multiple times in
+   one request only executes once." Verified by installing `graphql-shield@7.6.5` directly and
+   reading its real compiled source: `rule(name, options)` in `cjs/constructors.js` passes
+   `options.cache` straight through with no default applied at that layer, and `Rule`'s own
+   `normalizeOptions()` method in `cjs/rules.js` confirms the real default (when `cache` is
+   undefined) is `'no_cache'` — genuinely NOT memoized. `executeRule()`'s own switch statement
+   was also read directly to confirm the exact per-mode mechanics: `'strict'` keys on a hash of
+   `{ parent, args }` (cached per unique combination); `'contextual'` keys on the rule's own name
+   only (cached once per request, ignoring args); `'no_cache'` calls the check function directly
+   every time. This directly contradicted the page's own codeTab, which already correctly opts
+   into `cache: 'contextual'` for `isAuthenticated`/`isAdmin` and `cache: 'strict'` for `isOwner`
+   — an internal tension (why explicitly configure caching if it were already the unconditional
+   default?) matching the established main-page-code-vs-main-page-prose contradiction pattern.
+   Fixed the theory bullet to state the verified real default. Also added the already-verified
+   graphql-middleware/graphql-shield-unmaintained caveat (reused from the sibling `/graphql/
+   resolvers` finding, not re-derived) to the QnA comparing `@auth` directive vs. graphql-shield,
+   which previously recommended graphql-shield for "complex permission logic" with zero
+   maintenance caveat. Three subtopics: (1) **fix-adjacent** — the verified `'no_cache'` default
+   and why the page's own codeTab opts into explicit caching, with a Try It on the real DB-call
+   cost difference (`isOwner` calling `ctx.db.posts.findById` on every guarded field vs. once) an
+   unguarded default would introduce; (2) **gap-closing** — the precise mechanical distinction
+   between `'contextual'` and `'strict'` the page's own codeTab uses on different rules but never
+   explains, with a Try It testing whether the reader can correctly pick the right mode for a
+   new hypothetical rule depending on both `ctx` and `args`; (3) **fix-adjacent/reused** — the
+   graphql-shield/graphql-middleware unmaintained finding applied specifically to this page's own
+   `@auth` vs. graphql-shield QnA, with a before/after codeTab showing the identical `rule()`/
+   `shield()` code migrating from `graphql-middleware`'s `applyMiddleware` to the actively
+   maintained `@envelop/graphql-middleware`'s `useGraphQLMiddleware`. No `SUBTOPICS` collision for
+   `auth` (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly for any other
+   hub's route path literally `auth` — none found, left bare). All three `.ts` files swept clean
+   via the standing bracket-balance/backtick-parity/apostrophe scripts (the two flagged apostrophe
+   matches confirmed safe — inside backtick-delimited `code:` fields). Build passed clean
+   (`EXITCODE:0`, zero real `ERROR` lines). Browser-verified: no console errors on either subtopic
+   page checked; nav accordion opens with all 3 subtopic links (toggle count 12 across the hub,
+   confirming `auth` is now the hub's 12th topic with subtopics); both main-page fixes (theory
+   bullet + QnA) confirmed rendering live via direct text search; the entity-escaped `&#64;` in
+   the final subtopic's own h1 title ("...Use @envelop/graphql-middleware") confirmed rendering
+   as literal text; breadcrumb showed all 4 levels; 860px wrapper confirmed via
+   `getComputedStyle`; tailored (not DEFAULT) sidebar content confirmed on the first subtopic
+   checked. **GraphQL hub Phase 10: 12 of 20 topics complete.**
+20. **The `apollo-server` batch — the first topic in the Server nav group — found and fixed one
+   genuine main-page inaccuracy, plus two verified research angles**: a QnA claimed introspection
+   changed to "on in all environments" as a v4 change — verified via WebFetch against Apollo's own
+   docs that the default is UNCHANGED between v3 and v4 (still gated on `NODE_ENV=production`) and
+   was never a v3→v4 change at all. Also researched the real, current (2026-09-17) status of
+   `@defer`/`@stream` incremental delivery in `graphql-js` — confirmed still alpha-only, requiring
+   explicit SDL opt-in even on that alpha install — explaining why the main page's own
+   `response.body.kind === 'single'` type-narrow in its Testing codeTab is correct future-proofing,
+   not dead code. A third finding came from actually installing `@apollo/server@5.5.1` fresh and
+   running a live plugin test: `executeOperation()`'s `contextValue` option is shallow-cloned
+   internally (`cloneObject()` via `Object.assign(Object.create(proto), object)` in the real
+   compiled source), confirmed via direct execution that a plugin's mutation of
+   `requestContext.contextValue` is invisible on the caller's original object afterward — even
+   though other plugin-visible effects (a response header) work correctly within the same request.
+   Three subtopics: (1) **fix-adjacent** — the verified NODE_ENV-gated default, with a Try It on a
+   PaaS deployment that never sets NODE_ENV at all (resolves to introspection ENABLED); (2)
+   **gap-closing** — the `'single'`/`'incremental'` discriminated union and why the alternate
+   branch essentially never fires today; (3) **gap-closing** — the shallow-clone finding, with a
+   codeTab contrasting a NEW top-level property (never leaks out) against mutating an ALREADY
+   nested object like a shared `db` connection (does leak out, since the clone is shallow). A
+   backtick-vs-`<code>` house-style slip was self-caught and fixed in the third subtopic's own
+   `exercise.hint` field before the build (backticks around `fakeDb` converted to `<code>` tags,
+   matching the `misconceptions` fields in the same file). No `SUBTOPICS` collision for
+   `apollo-server` (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly,
+   confirmed collision-free, left bare). Build passed clean (`EXITCODE:0`, zero real `ERROR`
+   lines). Browser-verified: no console errors on any of the 4 pages; nav accordion opens with all
+   3 subtopic links (toggle count 13 across the hub); the main-page QnA fix confirmed rendering
+   live via direct component-data inspection; all 3 subtopic pages checked individually — correct
+   h1/breadcrumb (all 4 levels, curly-quote titles rendering correctly), 860px wrapper via
+   `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on all three. **GraphQL
+   hub Phase 10: 13 of 20 topics complete.**
+21. **The `pagination` batch — the second and final topic in the Server nav group — found and
+   fixed a genuine, self-contained inconsistency requiring zero external research**: the main
+   page's own mistake #4 (`Running COUNT(*) on every request without caching`) explicitly warns
+   against uncached `db.posts.count()` calls — but the SAME page's own "Resolver" codeTab and its
+   own Challenge reference solution both call `await db.posts.count()` unconditionally, on every
+   single request, exactly the anti-pattern the mistake block warns against. Fixed with explanatory
+   comments in both codeTabs pointing to the real fix. Three subtopics, each verified via direct
+   Node.js execution: (1) **fix-adjacent** — a real TTL-cached wrapper (`cachedCounter`), verified
+   that 3 calls within a 10s window collapse to 1 real DB call, with a Try It on the easy-to-miss
+   mistake of instantiating the cache wrapper INSIDE the resolver function (recreating a fresh,
+   empty cache every request) instead of once at module scope; (2) **gap-closing** — the main
+   page's own QnA on cursor encoding already names the fix ("the cursor might encode `{ createdAt,
+   id }` to ensure stable ordering even with identical timestamps"), but the Resolver codeTab's own
+   cursor only ever encodes `node.id` with a single-field `orderBy: { createdAt: 'desc' }`; verified
+   via a concrete simulation that a tied-timestamp group whose internal order differs between two
+   query executions can silently and permanently skip a row, then built the compound-cursor fix
+   (two-field `orderBy`, compound `WHERE` comparison, cursor encoding both fields); (3)
+   **gap-closing** — the main page's QnA describes backward pagination in one sentence ("fetch
+   results in reverse order using the before cursor, then reverse the array") with zero code
+   anywhere; built and verified the full reverse-then-reverse resolver against a concrete 9-item
+   desc-ordered feed, correcting an initial wrong first draft of the simulation (which had the
+   `before`/`gt` vs `after`/`lt` and trim-direction logic backwards) before publishing anything.
+   **A real bare-single-brace-in-prose gotcha caught before the build**: the composite-cursor
+   subtopic's own page-subtitle text contained a literal `{ createdAt, id }` as static `.html`
+   text — the same established gotcha (Angular's AOT template compiler treats a bare `{` as a
+   potential ICU-expansion start) — entity-escaped as `&#123;createdAt, id&#125;` before the build
+   ever ran, confirmed via a live browser check rendering as literal text afterward. No
+   `SUBTOPICS` collision for `pagination` (checked both `subtopics.ts` forms and grepped
+   `app.routes.ts` directly, confirmed collision-free, left bare). Build passed clean
+   (`EXITCODE:0`, zero real `ERROR` lines). Browser-verified: no console errors on any of the 4
+   pages; nav accordion opens with all 3 subtopic links (toggle count 14 across the hub); both
+   main-page fixes confirmed rendering live via direct component-data inspection; all 3 subtopic
+   pages checked individually — correct h1/breadcrumb (all 4 levels), 860px wrapper via
+   `getComputedStyle`, the entity-escaped braces rendering as literal text, tailored (not DEFAULT)
+   sidebar content confirmed on all three. **This completes the GraphQL hub's Server nav group**
+   (apollo-server, pagination — both of 2 topics now have subtopics). **GraphQL hub Phase 10: 14
+   of 20 topics complete.**
+22. **The `apollo-client` batch — the first topic in the Client nav group — found and fixed a
+   QnA that was wrong on three separate counts, verified against Apollo Client's own API surface
+   and GitHub issue tracker rather than assumed**: it claimed you could abort a query "via
+   fetchPolicy: 'no-cache' queries" (fetchPolicy has no relationship to aborting at all), that
+   `client.watchQuery().cancel()` exists (verified against `ObservableQuery`'s own API surface —
+   no such method; stopping a watch means unsubscribing from its returned subscription instead),
+   and that "Apollo 3+ supports React 18 AbortSignal integration" (no such feature exists — the
+   real mechanism, HttpLink forwarding `context.fetchOptions` to the underlying `fetch()` call, has
+   existed for years and has nothing to do with React versioning). Fixed the QnA with the real,
+   verified mechanism, including a documented request-deduplication gotcha (confirmed via a real
+   Apollo Client GitHub issue) where re-running an identical query+variables shortly after an abort
+   can resolve against the already-aborted in-flight request. Three subtopics: (1) **fix-adjacent**
+   — the verified `context.fetchOptions.signal` mechanism, with a Try It on the correct
+   `.unsubscribe()` cleanup for a `watchQuery()`-driven component (not a nonexistent `.cancel()`);
+   (2) **gap-closing** — `makeVar`/`useReactiveVar`, which the main page names in one QnA sentence
+   and never shows in code, PLUS a precision fix on the QnA's own "integrate with useQuery" claim —
+   verified via research that this only holds once the reactive variable is read inside a cache
+   field policy's `read()` function, not automatically; (3) **gap-closing** — the main page's own
+   QnA already states the correct preference (`update` over `refetchQueries`, "no extra
+   round-trip") but every codeTab on the page only ever demonstrates `refetchQueries`; built the
+   missing `cache.modify()`-based `update` function, with a Try It on the `__typename`/`id`
+   requirement that makes `toReference()` actually work. No `SUBTOPICS` collision for
+   `apollo-client` (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly,
+   confirmed collision-free, left bare). All three `.ts` files swept clean via the standing
+   bracket-balance/backtick-parity/apostrophe scripts; entity-escaped `&lt;ThemeToggle&gt;`/
+   `&lt;Header&gt;` component-name mentions inside a `[innerHTML]`-bound `exercise.prompt` field
+   confirmed rendering as literal text (not vanished) after publishing. Build passed clean
+   (`EXITCODE:0`, zero real `ERROR` lines). Browser-verified: no console errors on any of the 4
+   pages; nav accordion opens with all 3 subtopic links (toggle count 15 across the hub); the
+   main-page QnA fix confirmed rendering live via direct component-data inspection; all 3 subtopic
+   pages checked individually — correct h1/breadcrumb (all 4 levels), 860px wrapper via
+   `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on all three. **GraphQL
+   hub Phase 10: 15 of 20 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -8867,16 +10052,24 @@ this same check before any other new hub's first subtopic set:
   All 23 cards `available: true` in `data/redis/home/home.ts`. Progress: `redisTotal=21` in progress.service.ts.
   Redis pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. RedisNavComponent at `shared/redis-nav/redis-nav.ts`.
-  Phase 10: 9 of 21 topics have subtopics (`/redis/fundamentals`, pilot batch;
+  Phase 10: **COMPLETE — 21 of 21 topics have subtopics** (`/redis/fundamentals`, pilot batch;
   `/redis/installation-setup`; `/redis/strings`; `/redis/hashes`; `/redis/lists`; `/redis/sets`;
-  `/redis/sorted-sets`; `/redis/key-commands`; `/redis/transactions`, finished 2026-09-08) — see
+  `/redis/sorted-sets`; `/redis/key-commands`; `/redis/transactions`; `/redis/lua-scripting`;
+  `/redis/persistence`; `/redis/pub-sub`; `/redis/streams` (SUBTOPICS key hub-prefixed to
+  `redis-streams` — bare `streams` collides with the Node.js hub's own topic);
+  `/redis/caching-patterns`; `/redis/eviction-policies`; `/redis/rate-limiting` — Caching nav
+  group fully done; `/redis/replication-sentinel`; `/redis/redis-cluster`; `/redis/redis-stack`;
+  `/redis/redis-nodejs`; `/redis/security` (SUBTOPICS key hub-prefixed to `redis-security` —
+  bare `security` collides with the SQL hub's own topic) — every nav group fully done,
+  finished 2026-09-09, 63 subtopic pages total across the hub) — see
   "Redis hub subtopic wiring" section above for
   the `RedisNavComponent` accordion structural fix (16th `*NavComponent`-based hub in a row missing
   it at pilot time), the SUBTOPICS-map collision resolutions (bare `fundamentals` collides with the
   JavaScript hub's own topic key; `installation-setup` confirmed collision-free since MongoDB's own
   topic of the same name was proactively hub-prefixed to `mongo-installation-setup`; `strings`
   proactively hub-prefixed to `redis-strings` against the DSA hub's own bare `strings` route;
-  `hashes`, `lists`, `sets` and `sorted-sets` all confirmed collision-free, left bare; `transactions`
+  `hashes`, `lists`, `sets`, `sorted-sets`, `key-commands`, `lua-scripting`, `persistence` and
+  `pub-sub` all confirmed collision-free, left bare; `transactions`
   hub-prefixed to `redis-transactions` against the SQL hub's own bare `transactions` route), and the
   genuine inaccuracies found and fixed so far: Redis-on-Flash version-line conflation on the
   Fundamentals page; a `rename-command` typo plus two source-verified (`config.c`/`networking.c`)
@@ -8901,7 +10094,57 @@ this same check before any other new hub's first subtopic set:
   Redis 6.0, two major versions earlier); and, on the Transactions (MULTI/EXEC) page, the WATCH/CAS
   codeTab and Atomic Inventory Decrement Challenge both used a single shared connection for WATCH —
   exactly the anti-pattern the page's own third mistake block warns against — verified via
-  simulation to risk a silent false-success CAS corruption, fixed with `redis.duplicate()`.
+  simulation to risk a silent false-success CAS corruption, fixed with `redis.duplicate()`; and,
+  on the Lua Scripting page, the "Using global variables" mistake block had the sandbox's actual
+  behavior exactly backwards (Redis rejects a global-variable assignment outright with a hard
+  error, it does not silently persist shared state) plus a stale "scripts must be deterministic"
+  QnA claim describing verbatim replication, which was removed entirely as of Redis 7.0; and, on
+  the Persistence: RDB & AOF page, a Quick Reference entry named `DEBUG SLEEP 0` but described
+  SAVE's own behavior, plus `aof-use-rdb-preamble`'s default wrongly attributed to "Redis 7+" —
+  verified via Redis's own shipped `redis.conf` at two tagged releases to have actually defaulted
+  to yes since Redis 5.0; and, on the Pub/Sub Messaging page, the theory and a quiz question each
+  listed a DIFFERENT, incomplete version of the subscribe-mode allowed-command list (one ending in
+  QUIT, the other in RESET) — verified via Redis's own docs that both are genuinely allowed
+  simultaneously, alongside a RESP3 exception (any command is allowed while subscribed) neither
+  section mentioned at all, directly undermining the page's own separate "two connections always
+  needed" claim; and, on the Streams page, the Stream Metrics Aggregator Challenge's own reference
+  solution called XPENDING's extended form but its own hint claimed it returns the summary form —
+  verified via XPENDING's official docs and a concrete 50-entry-PEL simulation that the buggy code
+  undercounted a real total of 50 down to 3 (94% undercount), fixed to call the summary form
+  correctly; and, on the Caching Patterns page, the Stale-While-Revalidate codeTab's own
+  `refreshInBackground` had no lock at all — verified via simulation that 20 concurrent stale-hit
+  requests produced 20 independent DB calls, reproducing the exact cache stampede the page's own
+  theory teaches how to prevent, just relocated into the SWR refresh path itself, fixed with the
+  same mutex-lock pattern already shown elsewhere on the same page; and, on the Eviction Policies
+  page, an entirely missing eviction-policy family — LRM (Least Recently Modified), added in Redis
+  8.6 — verified via Redis's own official docs and added to the Quick Reference and theory; and,
+  on the Rate Limiting page, the Sliding Window Counter Challenge's own reference solution had a
+  flipped ternary reporting `remaining` one HIGHER than the true value on every allowed request —
+  verified via a direct trace showing the last allowed request in a window reports 1 remaining
+  when the true value is 0; and, on the Replication & Sentinel page, the theory, a QnA, and a quiz
+  question all described full-resync replication as unconditionally disk-based with no version
+  qualifier — verified via Redis's own shipped `redis.conf` at two tagged releases that diskless
+  replication has been the default since Redis 7.0; and, on the Redis Cluster page, the theory array
+  had two genuine duplicate sections (near-identical content authored twice under different
+  headings), merged into the originals with their two unique bullets preserved; and, on the Redis
+  Stack & Modules page, a theory bullet wrongly attributed the Stack-modules-into-core-Redis merge
+  to "Redis 7.4+" — verified via Redis's own official 8.0 Release Notes that this happened at
+  Redis 8.0.0 (GA May 2025), the same release that renamed Redis Community Edition to Redis Open
+  Source — plus another genuine duplicate theory section matching the same recurring authoring
+  pattern already found on `caching-patterns` and `redis-cluster`; and, on the Redis with Node.js
+  page, a third instance of the same duplicate-theory-section pattern, plus an obsolete
+  `connect-redis` factory-function API in the Session Store codeTab (current as of v6 only —
+  verified via the npm registry's own version timestamps that the API changed twice since, to a
+  named-export pattern current as of v8 through the latest v10), plus a quiz explanation repeating
+  the same incomplete Pub/Sub allowed-command list already found and fixed on this hub's own
+  `pub-sub` page earlier this session; and, on the Security page (the hub's 21st and FINAL topic),
+  the Challenge's own ACL LOG `object`-field parsing bug (naive `"command|key"` split instead of
+  the real `reason`-dependent single-purpose field, verified against Redis's own ACL LOG docs), a
+  recurring protected-mode misconception (bind status plays no part — reused the same
+  `networking.c`-verified finding already debunked once on the Installation & Setup page), and a
+  genuinely backwards `lua-time-limit 0` claim (verified via Redis's own `redis.conf` source
+  comments that 0 DISABLES the busy-script-detection mechanism rather than disabling scripting).
+  **This completes the Redis hub's entire Phase 10 rollout.**
 - **GraphQL hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Pink theme `$accent: #e535ab`, `$tint: #fdf2f9`, dark `#f472b6`, dark bg `#3d0a26`. Search prefix `gql-`. Route: `/graphql`.
   CSS classes: `.gql-page`, `.gql-icon`, `.gql-section`. Icon content: `◈` at `font-size: 1.8rem`. `tech="javascript"`.
@@ -8909,6 +10152,68 @@ this same check before any other new hub's first subtopic set:
   All 22 cards `available: true` in `data/graphql/home/home.ts`. Progress: `gqlTotal=20` in progress.service.ts.
   GraphQL pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. GqlNavComponent at `shared/gql-nav/gql-nav.ts`.
+  Phase 10: **15 of 20 topics have subtopics** (`/graphql/fundamentals`, pilot batch, 2026-09-10;
+  `/graphql/schema-definition-language`, 2026-09-10; `/graphql/type-system`, 2026-09-10;
+  `/graphql/queries`, 2026-09-10; `/graphql/variables-arguments`, 2026-09-10;
+  `/graphql/directives`, 2026-09-10 — Queries nav group fully done; `/graphql/mutations`,
+  2026-09-10; `/graphql/error-handling`, 2026-09-16; `/graphql/subscriptions`, 2026-09-16 —
+  Mutations & Subscriptions nav group fully done; `/graphql/resolvers`, 2026-09-17;
+  `/graphql/dataloader`, 2026-09-17; `/graphql/auth`, 2026-09-17; `/graphql/apollo-server`,
+  2026-09-17; `/graphql/pagination`, 2026-09-17 — Server nav group fully done;
+  `/graphql/apollo-client`, 2026-09-17 — first topic in the Client nav group) —
+  see "GraphQL hub
+  subtopic wiring" section above for the `GqlNavComponent` accordion structural fix (17th
+  `*NavComponent`-based hub in a row missing it at pilot time), the `gql-fundamentals`/
+  `gql-directives`/`gql-error-handling` SUBTOPICS-map collision resolutions (`gql-fundamentals`
+  collided with the JavaScript hub's own bare `fundamentals` topic key; `gql-directives` collided
+  with the Angular hub's own `directives-demo` topic's unquoted bare `directives` key;
+  `gql-error-handling` collided with the JavaScript hub's own bare `error-handling` topic key;
+  `schema-definition-language`, `type-system`, `queries`, `variables-arguments`, `mutations`,
+  `subscriptions`, `resolvers`, `dataloader`, `auth`, `apollo-server`, `pagination`, and
+  `apollo-client` are all collision-free and left bare — confirmed via a direct grep that no other
+  hub's `app.routes.ts` route path is literally `auth`/`apollo-server`/`pagination`/
+  `apollo-client`), the
+  no-live-playground
+  note, and the
+  genuine main-page fixes: the cross-codeTab undeclared-`Post.author`-field bug (Fundamentals);
+  the "non-null argument = required" theory bullet omitting the default-value carve-out, and a
+  wrong "crashes if result is a User" union-query mistake comment (SDL); a wrong "falls back to
+  instanceof checks" abstract-type resolution claim (Type System); a wrong "directives take effect
+  on the client side" claim (Queries); two imprecise variable-type bullets — "non-null variables
+  must always be provided" (ignores the default carve-out) and "variable types must match exactly"
+  (the spec's rule is compatibility, not identity) (Variables & Arguments); an incomplete
+  `@deprecated` locations bullet missing the 2021-spec `ARGUMENT_DEFINITION`/
+  `INPUT_FIELD_DEFINITION` expansion and the required-argument restriction (Directives); a stale
+  file-upload QnA claiming Apollo Server "supports" graphql-upload, when Apollo Server 3+ (2021)
+  removed built-in support over a CSRF loophole and now recommends signed URLs instead
+  (Mutations); a Quick Reference + theory bullet still listing `AuthenticationError`/
+  `ForbiddenError`/`UserInputError`/`ApolloError` as importable, when Apollo Server 4 removed all
+  four entirely (Error Handling); an imprecise federation QnA saying "Federation v2+" for
+  subscriptions when the real floor is 2.4 and serving them additionally requires a paid GraphOS
+  Enterprise entitlement, never mentioned at all (Subscriptions); a theory bullet/QnA
+  recommending graphql-middleware/graphql-shield with no mention that both are effectively
+  unmaintained (no release in 3+ years), with @envelop/graphql-middleware as the verified modern
+  replacement (Resolvers); an imprecise batchScheduleFn bullet claiming the default "uses
+  process.nextTick," when the real, source-verified default is a microtask that THEN schedules
+  the process.nextTick job (DataLoader & N+1 Problem); and a theory bullet claiming graphql-shield
+  rules "are memoized per request by default," when the real, source-verified default (read
+  directly from the installed graphql-shield@7.6.5 package's own `normalizeOptions()`) is
+  `'no_cache'` — no memoization at all unless a rule explicitly opts in via `cache: 'contextual'`
+  or `cache: 'strict'`, exactly as the page's own codeTab already does; plus the reused
+  graphql-shield/graphql-middleware-unmaintained caveat applied to this page's own
+  `@auth` vs. graphql-shield QnA (Auth & Authorization); a QnA wrongly claiming introspection's
+  default changed to "on in all environments" in v4, when it is actually unchanged from v3 and
+  still `NODE_ENV`-gated (Apollo Server); plus two verified research angles on the same page — the
+  real (still-alpha, still-SDL-opt-in) status of `@defer`/`@stream` incremental delivery in
+  `graphql-js`, and a live-verified finding (via a real `@apollo/server@5.5.1` install) that
+  `executeOperation()`'s `contextValue` is shallow-cloned via `cloneObject()`, never shared by
+  reference with the caller's original object (Apollo Server); and a self-contained inconsistency
+  where the page's own mistake #4 warns against uncached `db.posts.count()` on every request, but
+  its own Resolver codeTab and Challenge solution both do exactly that (Pagination Patterns); and
+  a QnA wrong on three separate counts about aborting an in-flight query (`fetchPolicy` is
+  unrelated; `client.watchQuery().cancel()` doesn't exist; no such "React 18 AbortSignal
+  integration" exists) — fixed with the real, verified `context.fetchOptions.signal` mechanism
+  (Apollo Client).
 - **Messaging/Kafka hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Burnt-orange theme `$accent: #9a3412`, `$tint: #fff7ed`, dark `#fdba74`, dark bg `#2d1a0e`. Search prefix `kafka-`. Route: `/messaging`.
   CSS classes: `.kafka-page`, `.kafka-icon`, `.kafka-section`. Icon content: `⇄` at `font-size: 1.8rem`. `tech="javascript"`.

@@ -1,0 +1,26 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="DataLoader & N+1 Problem" topicRoute="/graphql/dataloader"
+    subtopicLabel="The Default Batch Scheduler Is a Microtask, Not a Bare process.nextTick" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">The Default Batch Scheduler Is a Microtask, Not a Bare process.nextTick</h1>
+  <p class="page-subtitle">The main page's own Advanced Options bullet says batchScheduleFn "by default uses process.nextTick" — verified against the real installed package that the actual default is a microtask that then schedules a process.nextTick job, with a real practical consequence.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This tightens the main page's own Advanced Options bullet on batchScheduleFn with the verified two-step mechanism and its practical consequence. Next: a different gap in the same Advanced Options section — why cacheKeyFn is required for object keys to actually deduplicate.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="DataLoader & N+1 Problem" topicRoute="/graphql/dataloader"
+    [next]="{ label: 'cacheKeyFn Is Required to Deduplicate Object Keys', route: '/graphql/dataloader/cachekeyfn-required-for-object-keys' }" />
+</div>

@@ -1,0 +1,27 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Subscriptions" topicRoute="/graphql/subscriptions"
+    subtopicLabel="&#64;skip and &#64;include Can Crash Subscription Validation, Not Just Reject It" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">&#64;skip and &#64;include Can Crash Subscription Validation, Not Just Reject It</h1>
+  <p class="page-subtitle">Neither the main page nor the GraphQL spec docs mention this: a variable-driven &#64;skip/&#64;include on a subscription's own top-level field can make graphql-js's validate() throw an uncaught exception — verified by running the real code.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This digs into the exact mechanism behind the main page's "one root field" rule, verified against graphql-js directly, and surfaces a genuinely surprising failure mode the page never mentions. Next: the resolve function the main page's own theory names but never demonstrates — and why it runs once per subscriber, not once per event.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Subscriptions" topicRoute="/graphql/subscriptions"
+    [prev]="{ label: 'Federated Subscriptions Need More Than Federation v2+', route: '/graphql/subscriptions/federated-subscriptions-need-enterprise-graphos' }"
+    [next]="{ label: 'resolve Runs Once Per Subscriber, With Their Own Context', route: '/graphql/subscriptions/resolve-runs-per-subscriber-with-their-context' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Replication & Sentinel" topicRoute="/redis/replication-sentinel"
+    subtopicLabel="Why Diskless Sync Needs a Delay to Batch Replicas" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">Why Diskless Sync Needs a Delay to Batch Replicas</h1>
+  <p class="page-subtitle">The main page described full sync as always disk-based BGSAVE — verified against Redis's own shipped redis.conf that diskless replication has actually been the default since Redis 7.0, with a real mechanical reason it needs its own delay setting.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Redis 7.0+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>repl-diskless-sync-delay exists because a diskless transfer, once started, can't admit new replicas — a real, verified mechanical tradeoff the modern default carries. Next: the exact tiebreaker logic Sentinel uses to pick which replica gets promoted.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Replication & Sentinel" topicRoute="/redis/replication-sentinel"
+    [next]="{ label: 'Sentinel’s Replica-Selection Tiebreaker, Implemented', route: '/redis/replication-sentinel/sentinel-replica-selection-tiebreaker-implemented' }" />
+</div>

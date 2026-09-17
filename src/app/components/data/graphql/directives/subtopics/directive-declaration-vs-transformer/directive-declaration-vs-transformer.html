@@ -1,0 +1,27 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Directives" topicRoute="/graphql/directives"
+    subtopicLabel="Declaring a Directive Does Nothing — the Transformer Is the Behavior" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">Declaring a Directive Does Nothing — the Transformer Is the Behavior</h1>
+  <p class="page-subtitle">The mistake and quiz both say it: <code>directive &#64;auth on FIELD_DEFINITION</code> in the SDL is inert. Here is the full before/after, and why the order you apply transformers changes which check runs first.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This makes the main page's "declaration does nothing" line concrete, and adds the transformer-order rule the page never mentions. Next: the <code>FIELD</code> vs <code>FIELD_DEFINITION</code> distinction a quiz question touches on — two entirely separate location namespaces.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Directives" topicRoute="/graphql/directives"
+    [prev]="{ label: 'Where @deprecated Can Actually Go', route: '/graphql/directives/where-deprecated-can-go' }"
+    [next]="{ label: 'FIELD vs FIELD_DEFINITION: Two Different Location Namespaces', route: '/graphql/directives/field-vs-field-definition-locations' }" />
+</div>

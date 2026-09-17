@@ -41,7 +41,8 @@ export class RedisStack {
         'Redis Stack bundles Redis core with a set of official modules: RedisSearch (full-text search + secondary indexes), RedisJSON (native JSON storage + JSONPath queries), RedisTimeSeries (time series data), RedisBloom (probabilistic data structures), and RedisInsight (GUI).',
         'Modules extend Redis with new data types and commands while remaining fully compatible with the Redis protocol — existing clients work without changes.',
         'Redis Stack is available as a Docker image (`redis/redis-stack`), as cloud-managed Redis on Redis Cloud and AWS ElastiCache Serverless, and as a self-hosted installation.',
-        'In Redis 7.4+ (Cloud), many Stack capabilities are available as part of Redis Community Edition. On self-hosted, you must use the Redis Stack package or load modules individually.',
+        'As of Redis 8.0 (GA May 2025, when Redis Community Edition was renamed Redis Open Source), RediSearch, RedisJSON, RedisTimeSeries, and RedisBloom are built directly into core Redis — no separate Stack package or module loading needed. On any earlier version, you must still use the Redis Stack package or load these modules individually.',
+        'Redis Stack bundles these modules together specifically to reduce the operational overhead of running multiple separate specialized databases (a document store, a search engine, a time-series database) — consolidating into one Redis deployment where the additional capabilities genuinely fit the application\'s needs.',
       ],
     },
     {
@@ -52,6 +53,7 @@ export class RedisStack {
         'FT.SEARCH supports query syntax: `hello world` (AND), `hello|world` (OR), `@field:[1 100]` (numeric range), `@field:{tag1|tag2}` (tag filter), `@field:(phrase)` (exact phrase).',
         'FT.AGGREGATE provides a server-side aggregation pipeline — GROUP BY, REDUCE (COUNT, SUM, AVG, etc.), SORT, APPLY transformations — for analytics without loading all data to the client.',
         'Indexes are maintained automatically as documents are added/updated/deleted — you only create the index once.',
+        'RedisSearch enables complex queries (filtering, faceting, ranking) against Redis-stored data that would otherwise require a separate dedicated search engine like Elasticsearch — worth the tradeoff when the data already lives in Redis and the query needs stay within RediSearch\'s own supported feature set.',
       ],
     },
     {
@@ -69,15 +71,7 @@ export class RedisStack {
         'RedisTimeSeries stores numeric time series with automatic compaction rules (downsample to averages/mins/maxes at larger intervals). Native support for TS.RANGE, TS.MRANGE (multiple series), and label-based queries.',
         'RedisBloom adds Bloom filters (space-efficient membership tests with no false negatives but possible false positives), Cuckoo filters, Count-Min Sketch, Top-K, and HyperLogLog extensions.',
         'Bloom filters are ideal for "have I seen this ID before?" checks (deduplication, cache warming) where false positives are acceptable but memory is constrained.',
-      ],
-    },
-    {
-      heading: 'Redis Stack Modules Beyond Core Data Structures',
-      points: [
-        'RedisJSON adds native JSON document storage and manipulation (JSON.SET, JSON.GET with path expressions) — letting you update a single nested field within a JSON document atomically, without needing to fetch, modify, and rewrite the entire document as a plain string.',
-        'RediSearch adds full-text search and secondary indexing capabilities on top of Redis data — enabling complex queries (filtering, faceting, ranking) against Redis-stored data that would otherwise require a separate dedicated search engine like Elasticsearch.',
-        'RedisTimeSeries provides purpose-built time-series data structures with automatic downsampling and retention policies — more efficient than manually implementing time-series storage using sorted sets, particularly for high-frequency metric ingestion.',
-        'Redis Stack bundles these modules together specifically to reduce the operational overhead of running multiple separate specialized databases (a document store, a search engine, a time-series database) — consolidating into one Redis deployment where the additional capabilities genuinely fit the application\'s needs.',
+        'RedisTimeSeries is more efficient than manually implementing time-series storage using sorted sets, particularly for high-frequency metric ingestion — the built-in downsampling and retention rules replace application-level TTL management and manual aggregation.',
       ],
     },
   ];

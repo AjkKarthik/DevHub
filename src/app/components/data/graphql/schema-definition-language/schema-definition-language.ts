@@ -55,7 +55,7 @@ export class GqlSchemaDefinitionLanguage {
       points: [
         'By default every field is nullable — the server can return null. The `!` modifier makes it non-null.',
         '`[Post]` is a nullable list of nullable Posts. `[Post!]!` is a non-null list of non-null Posts.',
-        'Non-null on an argument means the argument is required. `userId: ID!` must be provided by the caller.',
+        'A non-null argument is required only if it has no default value. `userId: ID!` must be provided by the caller; `limit: Int! = 10` may be omitted (the default applies) — but passing explicit `null` is still rejected either way.',
         'Over-using `!` is a footgun — if a field errors and it\'s non-null, the error bubbles up and nullifies the parent.'
       ]
     },
@@ -213,9 +213,9 @@ type Query { user: User }`,
     },
     {
       title: 'Forgetting __typename in union queries',
-      wrong: `query { search { ... on Post { title } } }  # crashes if result is a User`,
+      wrong: `query { search { ... on Post { title } } }  # a User result comes back as {} — no crash, but nothing to discriminate on`,
       right: `query { search { __typename ... on Post { title } ... on User { name } } }`,
-      explanation: 'Without __typename and exhaustive fragments, clients cannot discriminate union members at runtime.'
+      explanation: 'A fragment whose type condition does not match the runtime object contributes nothing, so an unmatched member returns an empty object (not a server error). Without __typename and a fragment per member, the client cannot tell union members apart.'
     },
     {
       title: 'Naming input types without the Input suffix',

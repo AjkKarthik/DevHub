@@ -105,6 +105,7 @@ type Post {
   id: ID!
   title: String!
   published: Boolean!
+  author: User!
 }
 
 // Client query — fetch exactly what you need

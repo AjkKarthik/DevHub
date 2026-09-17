@@ -64,7 +64,7 @@ export class GqlResolvers {
       points: [
         'Resolvers are organized as a nested map mirroring the schema: `{ Query: { post }, Post: { author } }`.',
         'You can split resolvers across multiple files and merge them with `mergeResolvers` from @graphql-tools/merge.',
-        'Resolver middleware (graphql-middleware, graphql-shield) wraps resolvers with cross-cutting logic like auth and logging.',
+        'Resolver middleware wraps resolvers with cross-cutting logic like auth and logging. graphql-middleware and graphql-shield (the classic pair, both from the same original maintainer) are both effectively unmaintained now — neither has shipped a release in 3+ years. New projects generally reach for the actively-maintained envelop plugin ecosystem instead for this need.',
         'Abstract type resolvers (__resolveType for Interface/Union) live at the top level of the type key.'
       ]
     },
@@ -297,7 +297,7 @@ const resolvers = {
   qna: QnaItem[] = [
     { q: 'What is the info argument used for?', a: 'info contains the field name, return type, path to the field, and the AST of the query. It\'s used for query-aware optimizations: checking which sub-fields are requested (to avoid fetching unused data), getting the field path for error reporting, or schema stitching.' },
     { q: 'Can resolvers call each other?', a: 'Not directly — resolvers are functions that GraphQL calls independently. You can share business logic by extracting it into service functions and calling those from multiple resolvers.' },
-    { q: 'What is graphql-middleware?', a: 'graphql-middleware lets you wrap resolvers with middleware functions (similar to Express middleware). Each middleware receives (resolve, parent, args, context, info) and can modify args, check permissions, log, or short-circuit.' },
+    { q: 'What is graphql-middleware?', a: 'graphql-middleware lets you wrap resolvers with middleware functions (similar to Express middleware). Each middleware receives (resolve, parent, args, context, info) and can modify args, check permissions, log, or short-circuit. It is effectively unmaintained now (no release in 3+ years) — @envelop/graphql-middleware wraps the same API on top of the actively-maintained envelop plugin ecosystem, and is the more future-proof choice for a new project.' },
     { q: 'How do I split resolvers across multiple files?', a: 'Export a resolver map from each domain file, then merge with mergeResolvers from @graphql-tools/merge. Example: `const resolvers = mergeResolvers([userResolvers, postResolvers, commentResolvers])`.' },
     { q: 'Can a resolver return a plain object for a type?', a: 'Yes — resolvers return plain JavaScript objects, not GraphQL type instances. GraphQL maps the object\'s properties to the type\'s fields using the resolver chain.' },
     { q: 'What is a rootValue in GraphQL?', a: 'rootValue is an optional value passed as the `parent` for all root resolvers (Query, Mutation). It\'s rarely used in schema-first GraphQL — context is the preferred way to share request-scoped data.' }

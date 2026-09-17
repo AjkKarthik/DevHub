@@ -1,0 +1,26 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Apollo Client" topicRoute="/graphql/apollo-client"
+    subtopicLabel="The Real Way to Abort an In-Flight Apollo Query" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">The Real Way to Abort an In-Flight Apollo Query</h1>
+  <p class="page-subtitle">The main page's own QnA was wrong on three separate counts -- verified against Apollo Client's real API surface and a documented deduplication gotcha.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This corrects a genuinely wrong QnA answer on the main page with the real, verified mechanism. Next: reactive variables, a client-side state technique the main page names in one sentence but never demonstrates in code.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Apollo Client" topicRoute="/graphql/apollo-client"
+    [next]="{ label: 'Reactive Variables for Global Client-Side State', route: '/graphql/apollo-client/reactive-variables-global-state' }" />
+</div>

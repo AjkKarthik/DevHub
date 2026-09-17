@@ -1,0 +1,27 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Variables & Arguments" topicRoute="/graphql/variables-arguments"
+    subtopicLabel="Enum Values: Bare in the Query, String in the Variables JSON" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">Enum Values: Bare in the Query, String in the Variables JSON</h1>
+  <p class="page-subtitle">The main page mentions it in a mistake and a quiz. Here is the full round-trip: <code>status: PUBLISHED</code> inline, <code>"PUBLISHED"</code> in the variables object — and the validation errors when they are swapped.</p>
+  <app-page-meta [readingTime]="6" difficulty="beginner" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This makes the main page's "unquoted inline, string in JSON" note concrete, with the errors each wrong form produces. Next: the HTTP Transport section says GET is CDN-cacheable — here is why GET is restricted to query operations, and what to pair it with for real caching.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Variables & Arguments" topicRoute="/graphql/variables-arguments"
+    [prev]="{ label: 'When a Variable Can Be Used Where a Different Type Is Expected', route: '/graphql/variables-arguments/variable-usage-type-compatibility' }"
+    [next]="{ label: 'GET vs POST, and Why GET Is Query-Only', route: '/graphql/variables-arguments/graphql-get-vs-post' }" />
+</div>

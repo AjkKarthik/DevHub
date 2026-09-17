@@ -40,6 +40,7 @@ export class RedisNodejs {
         'node-redis (npm package `redis`) is the official client maintained by Redis. It is TypeScript-first, supports Redis Stack modules natively (client.json, client.ft, client.ts), and uses modern async/await APIs.',
         'Both support pipelining, transactions (MULTI/EXEC), Pub/Sub, and Lua scripting. Key differences: ioredis has a slightly nicer Cluster API; node-redis has first-class Stack module support.',
         'For Redis Stack (RedisSearch, RedisJSON), prefer node-redis — it ships typed helpers for FT.*, JSON.*, TS.* commands. For vanilla Redis with Sentinel/Cluster, either works well.',
+        'TypeScript type safety for Redis operations requires care, since Redis itself is largely untyped (everything is effectively a string at the protocol level) — wrapping Redis access in a typed repository layer that handles serialization/deserialization at the application boundary avoids scattering unsafe type assertions throughout the codebase.',
       ],
     },
     {
@@ -60,15 +61,6 @@ export class RedisNodejs {
         'Pipelining is NOT the same as transactions — commands run in order but are not atomic. Use MULTI/EXEC for atomicity.',
         'Use pipelining when you have 5+ independent commands to run in sequence — the throughput improvement is significant on network-latency-sensitive deployments.',
         'Avoid very large pipelines (>1000 commands) — they hold all replies in memory and can cause temporary latency spikes.',
-      ],
-    },
-    {
-      heading: 'Connection Pooling and Client Configuration Best Practices',
-      points: [
-        'Modern Node.js Redis clients (node-redis, ioredis) manage a connection internally and should be instantiated once and reused throughout the application lifetime — creating a new client per request adds unnecessary connection overhead and can quickly exhaust Redis\'s max client connection limit.',
-        'ioredis and node-redis both support automatic reconnection with configurable retry strategies — properly configuring reconnection behavior (rather than accepting silent connection loss) is essential for application resilience against transient network issues or Redis restarts.',
-        'Pipelining (batching multiple commands into a single network round trip) significantly improves throughput for bulk operations — both major Node.js Redis clients provide a pipeline API that queues commands and sends them together, rather than awaiting each command individually in a loop.',
-        'TypeScript type safety for Redis operations requires care, since Redis itself is largely untyped (everything is effectively a string at the protocol level) — wrapping Redis access in a typed repository layer that handles serialization/deserialization at the application boundary avoids scattering unsafe type assertions throughout the codebase.',
       ],
     },
     {
@@ -166,13 +158,11 @@ await subscriber.subscribe('channel', (message) => {
       code: `import express from 'express';
 import session from 'express-session';
 import { createClient } from 'redis';
-import connectRedis from 'connect-redis';
+import { RedisStore } from 'connect-redis';
 
 const app = express();
 const redisClient = createClient({ url: 'redis://localhost:6379' });
 await redisClient.connect();
-
-const RedisStore = connectRedis(session);
 
 app.use(session({
   store: new RedisStore({ client: redisClient }),
@@ -291,7 +281,7 @@ function cacheMiddleware(redis: Redis, ttlSec: number) {
         'node-redis requires it for security',
       ],
       answer: 1,
-      explanation: 'Once a connection enters subscribe mode (after SUBSCRIBE/PSUBSCRIBE), it can only run SUBSCRIBE, UNSUBSCRIBE, PSUBSCRIBE, PUNSUBSCRIBE, PING, and QUIT. Regular commands (GET, SET) return errors. Always use a dedicated connection for pub/sub.',
+      explanation: 'Once a connection enters subscribe mode (after SUBSCRIBE/PSUBSCRIBE), on RESP2 (the common default) it can only run SUBSCRIBE, SSUBSCRIBE, PSUBSCRIBE, UNSUBSCRIBE, SUNSUBSCRIBE, PUNSUBSCRIBE, PING, RESET, and QUIT — regular commands (GET, SET) return errors. If the connection negotiates RESP3 (via HELLO 3), this restriction is lifted and any command is allowed while subscribed. Node.js clients default to RESP2, so a dedicated connection for pub/sub remains the standard, safe pattern.',
     },
     {
       q: 'What is the difference between pipeline and MULTI/EXEC in node-redis/ioredis?',

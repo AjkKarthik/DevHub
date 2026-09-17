@@ -1,0 +1,27 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Type System Deep Dive" topicRoute="/graphql/type-system"
+    subtopicLabel="Unwrapping Introspection Types: Following ofType" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">Unwrapping Introspection Types: Following ofType</h1>
+  <p class="page-subtitle">The Challenge asks for an introspection query full of nested <code>ofType</code>. Here is the loop that turns that JSON back into a readable type like <code>[Post!]!</code> — and why reading <code>.name</code> directly returns <code>null</code>.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This is the client-side half of the main page's Challenge — the introspection query returns the nested tree, and this turns it back into SDL. Next: the security claim the theory, mistakes block, and QnA all repeat — "disable introspection in production" — and why it does not actually hide your schema.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Type System Deep Dive" topicRoute="/graphql/type-system"
+    [prev]="{ label: 'There Is No instanceof Fallback for Abstract Types', route: '/graphql/type-system/abstract-type-no-instanceof-fallback' }"
+    [next]="{ label: 'Disabling Introspection Is Not the Same as Hiding Your Schema', route: '/graphql/type-system/disabling-introspection-vs-hiding-schema' }" />
+</div>

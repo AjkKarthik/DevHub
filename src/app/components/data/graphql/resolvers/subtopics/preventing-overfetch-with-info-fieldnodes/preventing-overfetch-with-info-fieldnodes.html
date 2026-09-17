@@ -1,0 +1,27 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Resolvers" topicRoute="/graphql/resolvers"
+    subtopicLabel="Preventing Overfetching With info.fieldNodes" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">Preventing Overfetching With info.fieldNodes</h1>
+  <p class="page-subtitle">The QnA names the technique, the mistakes block warns against doing it wrong — neither shows the actual code. Built and verified against real graphql-js, including a real correctness bug a naive version has with fragments.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This builds out the info argument's own field-selection use case the QnA names but never demonstrates, and surfaces a real correctness gotcha with fragments along the way. Next: info.path, verified to match the response's own errors[].path array exactly.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Resolvers" topicRoute="/graphql/resolvers"
+    [prev]="{ label: 'graphql-middleware and graphql-shield Are Effectively Unmaintained', route: '/graphql/resolvers/graphql-middleware-shield-unmaintained' }"
+    [next]="{ label: 'info.path Matches the Response’s Own errors[].path Array Exactly', route: '/graphql/resolvers/info-path-matches-response-errors-path' }" />
+</div>

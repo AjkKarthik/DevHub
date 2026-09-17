@@ -1,0 +1,26 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Directives" topicRoute="/graphql/directives"
+    subtopicLabel="FIELD vs FIELD_DEFINITION: Two Different Location Namespaces" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">FIELD vs FIELD_DEFINITION: Two Different Location Namespaces</h1>
+  <p class="page-subtitle">A quiz question touches on this. Executable locations (where a directive goes in a query) and type-system locations (where it goes in the SDL) are two disjoint sets — and which one you choose changes the whole implementation.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This expands the main page's <code>FIELD</code> / <code>FIELD_DEFINITION</code> quiz distinction into the full executable-vs-type-system location split, and why a schema transformer only serves one of the two. Back to the topic overview for the full directives picture.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Directives" topicRoute="/graphql/directives"
+    [prev]="{ label: 'Declaring a Directive Does Nothing — the Transformer Is the Behavior', route: '/graphql/directives/directive-declaration-vs-transformer' }" />
+</div>

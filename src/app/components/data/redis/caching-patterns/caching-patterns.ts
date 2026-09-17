@@ -48,7 +48,8 @@ export class RedisCachingPatterns {
         'Mutex lock approach: the first request acquires a lock (SET lock:key 1 NX EX 5), fetches from DB, populates cache, releases lock. Other requests wait or serve stale data.',
         'Probabilistic early revalidation: recompute the cache before TTL expires with probability proportional to how close to expiry the key is. No lock required, smoother traffic.',
         'Background refresh: a background job proactively refreshes keys before they expire based on access patterns. Works well for known high-traffic keys.',
-        'Stale-while-revalidate: serve the stale cached value immediately, trigger an async refresh. Eliminates latency spikes at the cost of briefly serving outdated data.',
+        'Stale-while-revalidate: serve the stale cached value immediately, trigger an async refresh. Eliminates latency spikes at the cost of briefly serving outdated data — but the background refresh itself still needs its own lock, or every concurrent stale-hit request independently re-triggers it.',
+        'For extremely hot keys, combining a short server-side in-memory cache in front of Redis with the above stampede-prevention techniques provides an additional layer of protection, reducing Redis load itself in addition to protecting the origin database.',
       ],
     },
     {
@@ -67,15 +68,6 @@ export class RedisCachingPatterns {
         'Avoid caching large objects that change frequently. Cache derived/computed values (e.g. formatted output, aggregates) that are expensive to recompute.',
         'Tag-based invalidation: store a set of keys per tag (e.g. `tag:user:42 → [key1, key2, ...]`) and UNLINK all keys in the set on data change. Expensive to maintain but flexible.',
         'Use HSET for structured cache entries rather than JSON strings when you need to access individual fields without deserialising the whole object.',
-      ],
-    },
-    {
-      heading: 'Cache Stampede Prevention',
-      points: [
-        'A cache stampede occurs when a popular cache key expires and many concurrent requests simultaneously miss the cache and hammer the origin database at once — under high traffic this can overwhelm the database with a sudden burst of duplicate, redundant queries all computing the same result.',
-        'A distributed lock (SET key value NX EX ttl) lets only the first request that detects a cache miss actually recompute and repopulate the cache, while other concurrent requests either wait briefly and retry, or serve slightly stale data instead of all independently hitting the database simultaneously.',
-        'Probabilistic early expiration (recomputing the cache slightly before its actual TTL expires, with a randomized probability that increases as expiry approaches) spreads out cache regeneration over time rather than having many keys expire in a synchronized burst.',
-        'For extremely hot keys, combining a short server-side in-memory cache in front of Redis with the above stampede-prevention techniques provides an additional layer of protection, reducing Redis load itself in addition to protecting the origin database.',
       ],
     },
   ];
@@ -160,8 +152,17 @@ async function getWithSWR(key: string, fetcher: () => Promise<object>) {
 }
 
 async function refreshInBackground(key: string, fetcher: () => Promise<object>) {
-  const data = await fetcher();
-  await redis.set(key, JSON.stringify({ data, freshUntil: Date.now() + FRESH_TTL * 1000 }), 'EX', FRESH_TTL + STALE_TTL);
+  // Without this lock, every concurrent stale-hit request independently calls
+  // fetcher() -- N concurrent requests fire N DB queries, the exact stampede
+  // this whole page is about preventing, just moved into the SWR refresh path.
+  const acquired = await redis.set('refresh-lock:' + key, '1', 'NX', 'EX', 10);
+  if (!acquired) return; // another request is already refreshing this key
+  try {
+    const data = await fetcher();
+    await redis.set(key, JSON.stringify({ data, freshUntil: Date.now() + FRESH_TTL * 1000 }), 'EX', FRESH_TTL + STALE_TTL);
+  } finally {
+    await redis.unlink('refresh-lock:' + key);
+  }
 }
 
 declare const db: any;`,

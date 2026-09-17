@@ -1,0 +1,26 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Replication & Sentinel" topicRoute="/redis/replication-sentinel"
+    subtopicLabel="Using WAIT for Selective Write Durability" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">Using WAIT for Selective Write Durability</h1>
+  <p class="page-subtitle">The main page's own theory names WAIT once, precisely — used selectively for writes that need stronger durability than the default asynchronous replication gives every other write on the page.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>WAIT is a per-call opt-in, not a global replication setting — the caller decides which writes are worth the extra latency, and everything else on this page keeps using Redis's default async replication unchanged. This is the last subtopic for Replication & Sentinel.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Replication & Sentinel" topicRoute="/redis/replication-sentinel"
+    [prev]="{ label: 'Sentinel’s Replica-Selection Tiebreaker, Implemented', route: '/redis/replication-sentinel/sentinel-replica-selection-tiebreaker-implemented' }" />
+</div>

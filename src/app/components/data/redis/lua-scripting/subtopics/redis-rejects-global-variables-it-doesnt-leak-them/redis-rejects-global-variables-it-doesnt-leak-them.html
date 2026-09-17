@@ -1,0 +1,26 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Lua Scripting" topicRoute="/redis/lua-scripting"
+    subtopicLabel="Redis Rejects Global Variables — It Doesn't Leak Them" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">Redis Rejects Global Variables — It Doesn't Leak Them</h1>
+  <p class="page-subtitle">The main page's own mistake block originally warned that a Lua global "persists between EVAL calls" as a silent shared-state bug. Verified against Redis's own docs: it's the opposite — the sandbox rejects it outright with a hard, immediate error.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>This fixes a genuine main-page inaccuracy that had the sandbox's actual protective behavior exactly backwards. Next: another main-page correction — determinism is no longer required for Lua scripts under the current default replication mode.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Lua Scripting" topicRoute="/redis/lua-scripting"
+    [next]="{ label: 'Since Redis 7.0, Scripts No Longer Need to Be Deterministic', route: '/redis/lua-scripting/scripts-no-longer-need-to-be-deterministic' }" />
+</div>

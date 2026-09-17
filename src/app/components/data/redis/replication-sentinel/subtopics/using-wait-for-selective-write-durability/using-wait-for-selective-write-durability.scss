@@ -1,0 +1,12 @@
+$accent: #dc382d;
+$tint: #fff0ef;
+
+.redis-page { max-width: 860px; margin: 0 auto; }
+
+.subtopic-page {
+  padding: 2rem 1.25rem 4rem;
+}
+
+:host-context(body.dark) {
+  .redis-icon { background: #3d0a0a; color: #f87171; }
+}

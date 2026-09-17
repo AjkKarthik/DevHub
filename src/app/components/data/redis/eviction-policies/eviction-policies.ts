@@ -30,6 +30,8 @@ export class RedisEvictionPolicies {
     { name: 'allkeys-random', type: 'keyword', desc: 'Evict a random key from the entire keyspace' },
     { name: 'volatile-random', type: 'keyword', desc: 'Evict a random key that has a TTL set' },
     { name: 'volatile-ttl', type: 'keyword', desc: 'Evict keys closest to expiry first' },
+    { name: 'allkeys-lrm', type: 'keyword', desc: 'Evict least recently MODIFIED keys — reads never count (Redis 8.6+)' },
+    { name: 'volatile-lrm', type: 'keyword', desc: 'Evict LRM keys that have a TTL set (Redis 8.6+)' },
     { name: 'maxmemory-samples 5', type: 'syntax', desc: 'Number of keys sampled per eviction — higher = more accurate, slower' },
   ];
 
@@ -51,6 +53,7 @@ export class RedisEvictionPolicies {
         'LFU (Least Frequently Used, Redis 4+): evicts the key accessed the fewest times overall, with a time-decaying counter. Better for "popularity" patterns where some keys are always hot.',
         'LFU uses a Morris counter (8-bit logarithmic counter) per key — memory overhead is minimal. The decay rate is configurable: `lfu-decay-time 1` (minutes per counter decrement).',
         'For most caching workloads, allkeys-lru is a safe default. Switch to allkeys-lfu when you have clear hot vs cold key distributions (e.g. product catalogue where top items are always popular).',
+        'Redis 8.6 added a fourth eviction family, LRM (Least Recently Modified) — allkeys-lrm and volatile-lrm. Unlike LRU, LRM only updates a key\'s recency timestamp on WRITE operations, never on reads — useful for evicting stale data that hasn\'t been updated recently, regardless of how often it\'s being read.',
       ],
     },
     {

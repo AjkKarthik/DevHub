@@ -1,0 +1,26 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Redis Cluster" topicRoute="/redis/redis-cluster"
+    subtopicLabel="The Live Resharding State Machine: MIGRATING, IMPORTING, ASK, MOVED" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">The Live Resharding State Machine: MIGRATING, IMPORTING, ASK, MOVED</h1>
+  <p class="page-subtitle">The main page says resharding "can happen live without downtime" — here is the actual two-node state machine that makes that true, verified against Redis's own Cluster Specification.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>The state machine above shows WHEN a node ASK-redirects, but not HOW a key ends up mapping to slot 8 in the first place — next, the exact hash-tag extraction rule Redis uses, verified against every documented edge case.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Redis Cluster" topicRoute="/redis/redis-cluster"
+    [next]="{ label: 'The Hash Tag Extraction Algorithm, Verified Against Real Edge Cases', route: '/redis/redis-cluster/the-hash-tag-extraction-algorithm-verified-against-real-edge-cases' }" />
+</div>

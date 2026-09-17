@@ -24,10 +24,10 @@ export class GqlErrorHandling {
     { type: 'type', name: 'GraphQLError', desc: 'Base error class — has message, path, locations, extensions' },
     { type: 'class', name: 'GraphQLError(msg, opts)', desc: 'Throw from resolvers to return a typed error with extensions' },
     { type: 'method', name: 'extensions.code', desc: 'Convention: error code string (NOT_FOUND, UNAUTHENTICATED, etc.)' },
-    { type: 'type', name: 'ApolloError', desc: 'Apollo Server base class — wraps GraphQLError with a code shorthand' },
-    { type: 'class', name: 'AuthenticationError', desc: 'Apollo: 401-equivalent — UNAUTHENTICATED code' },
-    { type: 'class', name: 'ForbiddenError', desc: 'Apollo: 403-equivalent — FORBIDDEN code' },
-    { type: 'class', name: 'UserInputError', desc: 'Apollo: 400-equivalent — BAD_USER_INPUT code' },
+    { type: 'type', name: 'ApolloError', desc: 'REMOVED in Apollo Server v4 — throw GraphQLError directly, there is no shorthand base class anymore' },
+    { type: 'class', name: 'AuthenticationError', desc: 'REMOVED in Apollo Server v4 — use GraphQLError with extensions.code: "UNAUTHENTICATED"' },
+    { type: 'class', name: 'ForbiddenError', desc: 'REMOVED in Apollo Server v4 — use GraphQLError with extensions.code: "FORBIDDEN"' },
+    { type: 'class', name: 'UserInputError', desc: 'REMOVED in Apollo Server v4 — use GraphQLError with extensions.code: "BAD_USER_INPUT"' },
     { type: 'method', name: 'formatError', desc: 'Server hook to sanitize/transform errors before sending to client' },
   ];
 
@@ -45,8 +45,8 @@ export class GqlErrorHandling {
       heading: 'Error Types & Codes',
       points: [
         'Extensions.code is the community convention for categorizing errors: NOT_FOUND, UNAUTHENTICATED, FORBIDDEN, BAD_USER_INPUT, INTERNAL_SERVER_ERROR.',
-        'Apollo Server provides pre-built classes: AuthenticationError, ForbiddenError, UserInputError — each sets the correct code.',
-        'In Apollo Server v4, throw new GraphQLError(msg, { extensions: { code: "NOT_FOUND" } }) is the canonical form.',
+        'Apollo Server v3 provided pre-built classes (AuthenticationError, ForbiddenError, UserInputError, ApolloError) — all four were REMOVED in Apollo Server v4 (Sept 2022), along with the ApolloError base class.',
+        'In Apollo Server v4, throw new GraphQLError(msg, { extensions: { code: "NOT_FOUND" } }) is the only supported form — there is no shorthand class to import anymore.',
         'Never expose internal details (stack traces, DB errors) in the message field — sanitize in formatError.'
       ]
     },

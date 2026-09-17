@@ -1,0 +1,27 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="GraphQL Fundamentals" topicRoute="/graphql/fundamentals"
+    subtopicLabel="Non-Null Field Errors Bubble Up" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">Non-Null Field Errors Bubble Up</h1>
+  <p class="page-subtitle">The main page says a null in a non-null field "crashes the response at that node." It actually does more: the null propagates upward through every non-null ancestor until it hits a nullable field or the root.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This is the execution behind the main page's one-line "crashes at that node" claim, and the reason the previous subtopic's <code>Post.author: User!</code> choice carries risk if the author lookup is unreliable. Next: another main-page feature named in one line but never shown in code — aliases, and the field-name collision they exist to solve.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="GraphQL Fundamentals" topicRoute="/graphql/fundamentals"
+    [prev]="{ label: 'The Post Type Never Declared Its Own author Field', route: '/graphql/fundamentals/post-type-missing-author-field' }"
+    [next]="{ label: 'Aliases Resolve Field-Name Collisions', route: '/graphql/fundamentals/aliases-resolve-field-collisions' }" />
+</div>

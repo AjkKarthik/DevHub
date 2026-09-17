@@ -1,0 +1,27 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Redis Security" topicRoute="/redis/security"
+    subtopicLabel="Restricting EVAL Access via ACL -@scripting" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">Restricting EVAL Access via ACL -&#64;scripting</h1>
+  <p class="page-subtitle">The main page's own theory bullet claimed lua-time-limit 0 disables Lua scripts — verified against Redis's own config comments, it does the opposite. Here's the real fix.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Redis 6+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>This directly fixes the main page's own theory bullet on disabling Lua scripting. Next: the main page's own "runtime ACL changes... must be saved" advice glosses over a real, documented gotcha — ACL SAVE only works when an aclfile is actually configured.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Redis Security" topicRoute="/redis/security"
+    [prev]="{ label: 'Parsing ACL LOG’s object Field Correctly', route: '/redis/security/parsing-acl-logs-object-field-correctly' }"
+    [next]="{ label: 'ACL SAVE Requires an aclfile', route: '/redis/security/acl-save-requires-an-aclfile' }" />
+</div>

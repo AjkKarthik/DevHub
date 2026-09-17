@@ -1,0 +1,26 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Caching Patterns" topicRoute="/redis/caching-patterns"
+    subtopicLabel="Locking the Stale-While-Revalidate Refresh" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">Locking the Stale-While-Revalidate Refresh</h1>
+  <p class="page-subtitle">The main page's own stale-while-revalidate codeTab refreshed the cache with no lock at all — every concurrent stale-hit request independently re-fetched from the database, the exact stampede this page teaches how to prevent.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>Stale-while-revalidate eliminates latency spikes, but it needs its own stampede-prevention lock, borrowed from the same mutex pattern shown earlier for the plain cache-aside case. Next: a completely different caching pattern the main page names but never builds — Read-Through.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Caching Patterns" topicRoute="/redis/caching-patterns"
+    [next]="{ label: 'Implementing Read-Through in Application Code', route: '/redis/caching-patterns/implementing-read-through-in-application-code' }" />
+</div>

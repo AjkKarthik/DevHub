@@ -1,0 +1,26 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Redis Stack" topicRoute="/redis/redis-stack"
+    subtopicLabel="When Modules Are Built In (Redis 8.0+) vs. Still Need Stack" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">When Modules Are Built In (Redis 8.0+) vs. Still Need Stack</h1>
+  <p class="page-subtitle">The main page named the wrong version for when RedisJSON, RediSearch, and the rest merged into core Redis — verified directly against Redis's own official release notes.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>Knowing which Redis version you're on decides whether these commands are available at all — the next subtopic covers a real gotcha in checking whether an index built with one of them (FT.CREATE) is actually ready to query yet.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Redis Stack" topicRoute="/redis/redis-stack"
+    [next]="{ label: 'The FT.INFO indexing Field Is a Truthy String, Not a Boolean', route: '/redis/redis-stack/the-ft-info-indexing-field-is-a-truthy-string-not-a-boolean' }" />
+</div>

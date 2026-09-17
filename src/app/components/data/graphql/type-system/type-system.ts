@@ -64,7 +64,7 @@ export class GqlTypeSystem {
       points: [
         'When a field returns an interface or union, GraphQL needs to know the concrete type of each resolved value.',
         '__resolveType is a function on the resolver map that receives the value and returns the type name as a string.',
-        'Without __resolveType, GraphQL falls back to instanceof checks (only works with class instances, not plain objects).',
+        'Without __resolveType, graphql-js uses a default: it reads a __typename field off the resolved value if one is present, otherwise it calls each possible type\'s isTypeOf function in turn. There is no instanceof check — a value (plain object or class instance) with neither __typename nor a matching isTypeOf produces the "Abstract type must resolve to an Object type at runtime" error.',
         'Apollo Server also supports isTypeOf on each type as an alternative to __resolveType on the abstract type.'
       ]
     },

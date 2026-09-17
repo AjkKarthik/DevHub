@@ -1,0 +1,27 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Pub/Sub Messaging" topicRoute="/redis/pub-sub"
+    subtopicLabel="RESP3 Removes the Subscribe-Mode Restriction" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">RESP3 Removes the Subscribe-Mode Restriction Entirely</h1>
+  <p class="page-subtitle">The main page states flatly that Pub/Sub always needs two connections. Verified against Redis's own docs: that's a RESP2-specific limitation — under RESP3, one connection can subscribe and run regular commands at the same time.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Redis 6.0+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>This builds directly on the prior subtopic's fix, exploring the RESP3 exception in depth without abandoning the main page's own reasonable default advice. Next: Sharded Pub/Sub, named in the theory but never demonstrated in any codeTab.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Pub/Sub Messaging" topicRoute="/redis/pub-sub"
+    [prev]="{ label: 'The Complete Subscribe-Mode Command List', route: '/redis/pub-sub/the-complete-subscribe-mode-command-list' }"
+    [next]="{ label: 'Sharded Pub/Sub: SSUBSCRIBE and SPUBLISH, Actually Demonstrated', route: '/redis/pub-sub/sharded-pubsub-ssubscribe-and-spublish' }" />
+</div>

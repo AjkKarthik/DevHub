@@ -1,0 +1,27 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Lua Scripting" topicRoute="/redis/lua-scripting"
+    subtopicLabel="Scripts No Longer Need to Be Deterministic" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">Since Redis 7.0, Scripts No Longer Need to Be Deterministic</h1>
+  <p class="page-subtitle">The main page's QnA listed "deterministic required" as a standing Lua limitation. It described verbatim replication — removed entirely in Redis 7.0. Under today's effects replication, math.random, TIME, and SRANDMEMBER are all fair game.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Redis 5.0+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the second genuine main-page inaccuracy this batch found, both traceable to the same underlying replication-mode change. Next: a real, documented feature the main page never mentions — fine-grained control over which writes actually get replicated.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Lua Scripting" topicRoute="/redis/lua-scripting"
+    [prev]="{ label: 'Redis Rejects Global Variables — It Doesn’t Leak Them', route: '/redis/lua-scripting/redis-rejects-global-variables-it-doesnt-leak-them' }"
+    [next]="{ label: 'redis.set_repl(): Skipping Replication for Throwaway Writes', route: '/redis/lua-scripting/set-repl-skipping-replication-for-throwaway-writes' }" />
+</div>

@@ -152,7 +152,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/redis/redis-stack" routerLinkActive="active"><span class="nl-text">Redis Stack &amp; Modules</span>@if(p.isDone('redis-redis-stack')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/redis/redis-stack" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Redis Stack &amp; Modules</span>
+        @if(p.isDone('redis-redis-stack')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('redis-stack')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('redis-stack')"
+                  (click)="toggleSubtopics('redis-stack', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('redis-stack'); as redisStackSubs) {
+        @if (isSubtopicsExpanded('redis-stack')) {
+          <div class="nav-subtopics">
+            @for (s of redisStackSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
@@ -195,37 +213,235 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/redis/lua-scripting" routerLinkActive="active"><span class="nl-text">Lua Scripting</span>@if(p.isDone('redis-lua-scripting')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/redis/lua-scripting" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Lua Scripting</span>
+        @if(p.isDone('redis-lua-scripting')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('lua-scripting')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('lua-scripting')"
+                  (click)="toggleSubtopics('lua-scripting', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('lua-scripting'); as luaScriptingSubs) {
+        @if (isSubtopicsExpanded('lua-scripting')) {
+          <div class="nav-subtopics">
+            @for (s of luaScriptingSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Persistence</p>
-      <a routerLink="/redis/persistence" routerLinkActive="active"><span class="nl-text">Persistence: RDB &amp; AOF</span>@if(p.isDone('redis-persistence')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/redis/persistence" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Persistence: RDB &amp; AOF</span>
+        @if(p.isDone('redis-persistence')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('persistence')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('persistence')"
+                  (click)="toggleSubtopics('persistence', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('persistence'); as persistenceSubs) {
+        @if (isSubtopicsExpanded('persistence')) {
+          <div class="nav-subtopics">
+            @for (s of persistenceSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Pub/Sub &amp; Streams</p>
-      <a routerLink="/redis/pub-sub" routerLinkActive="active"><span class="nl-text">Pub/Sub Messaging</span>@if(p.isDone('redis-pub-sub')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/redis/streams" routerLinkActive="active"><span class="nl-text">Redis Streams</span>@if(p.isDone('redis-streams')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/redis/pub-sub" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Pub/Sub Messaging</span>
+        @if(p.isDone('redis-pub-sub')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('pub-sub')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('pub-sub')"
+                  (click)="toggleSubtopics('pub-sub', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('pub-sub'); as pubSubSubs) {
+        @if (isSubtopicsExpanded('pub-sub')) {
+          <div class="nav-subtopics">
+            @for (s of pubSubSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/redis/streams" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Redis Streams</span>
+        @if(p.isDone('redis-streams')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('redis-streams')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('redis-streams')"
+                  (click)="toggleSubtopics('redis-streams', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('redis-streams'); as streamsSubs) {
+        @if (isSubtopicsExpanded('redis-streams')) {
+          <div class="nav-subtopics">
+            @for (s of streamsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Caching</p>
-      <a routerLink="/redis/caching-patterns" routerLinkActive="active"><span class="nl-text">Caching Patterns</span>@if(p.isDone('redis-caching-patterns')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/redis/eviction-policies" routerLinkActive="active"><span class="nl-text">Eviction Policies</span>@if(p.isDone('redis-eviction-policies')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/redis/rate-limiting" routerLinkActive="active"><span class="nl-text">Rate Limiting</span>@if(p.isDone('redis-rate-limiting')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/redis/caching-patterns" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Caching Patterns</span>
+        @if(p.isDone('redis-caching-patterns')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('caching-patterns')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('caching-patterns')"
+                  (click)="toggleSubtopics('caching-patterns', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('caching-patterns'); as cachingSubs) {
+        @if (isSubtopicsExpanded('caching-patterns')) {
+          <div class="nav-subtopics">
+            @for (s of cachingSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/redis/eviction-policies" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Eviction Policies</span>
+        @if(p.isDone('redis-eviction-policies')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('eviction-policies')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('eviction-policies')"
+                  (click)="toggleSubtopics('eviction-policies', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('eviction-policies'); as evictionSubs) {
+        @if (isSubtopicsExpanded('eviction-policies')) {
+          <div class="nav-subtopics">
+            @for (s of evictionSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/redis/rate-limiting" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Rate Limiting</span>
+        @if(p.isDone('redis-rate-limiting')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('rate-limiting')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('rate-limiting')"
+                  (click)="toggleSubtopics('rate-limiting', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('rate-limiting'); as rateLimitingSubs) {
+        @if (isSubtopicsExpanded('rate-limiting')) {
+          <div class="nav-subtopics">
+            @for (s of rateLimitingSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Cluster &amp; HA</p>
-      <a routerLink="/redis/replication-sentinel" routerLinkActive="active"><span class="nl-text">Replication &amp; Sentinel</span>@if(p.isDone('redis-replication-sentinel')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/redis/redis-cluster" routerLinkActive="active"><span class="nl-text">Redis Cluster</span>@if(p.isDone('redis-redis-cluster')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/redis/replication-sentinel" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Replication &amp; Sentinel</span>
+        @if(p.isDone('redis-replication-sentinel')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('replication-sentinel')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('replication-sentinel')"
+                  (click)="toggleSubtopics('replication-sentinel', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('replication-sentinel'); as replicationSentinelSubs) {
+        @if (isSubtopicsExpanded('replication-sentinel')) {
+          <div class="nav-subtopics">
+            @for (s of replicationSentinelSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/redis/redis-cluster" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Redis Cluster</span>
+        @if(p.isDone('redis-redis-cluster')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('redis-cluster')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('redis-cluster')"
+                  (click)="toggleSubtopics('redis-cluster', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('redis-cluster'); as redisClusterSubs) {
+        @if (isSubtopicsExpanded('redis-cluster')) {
+          <div class="nav-subtopics">
+            @for (s of redisClusterSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Ecosystem</p>
-      <a routerLink="/redis/redis-nodejs" routerLinkActive="active"><span class="nl-text">Redis with Node.js</span>@if(p.isDone('redis-redis-nodejs')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/redis/security" routerLinkActive="active"><span class="nl-text">Redis Security</span>@if(p.isDone('redis-security')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/redis/redis-nodejs" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Redis with Node.js</span>
+        @if(p.isDone('redis-redis-nodejs')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('redis-nodejs')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('redis-nodejs')"
+                  (click)="toggleSubtopics('redis-nodejs', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('redis-nodejs'); as redisNodejsSubs) {
+        @if (isSubtopicsExpanded('redis-nodejs')) {
+          <div class="nav-subtopics">
+            @for (s of redisNodejsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/redis/security" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Redis Security</span>
+        @if(p.isDone('redis-security')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('redis-security')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('redis-security')"
+                  (click)="toggleSubtopics('redis-security', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('redis-security'); as redisSecuritySubs) {
+        @if (isSubtopicsExpanded('redis-security')) {
+          <div class="nav-subtopics">
+            @for (s of redisSecuritySubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

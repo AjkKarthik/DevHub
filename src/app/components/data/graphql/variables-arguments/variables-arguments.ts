@@ -45,9 +45,9 @@ export class GqlVariablesArguments {
       heading: 'Variable Types & Defaults',
       points: [
         'Variable types follow the same syntax as SDL field types: `$id: ID!`, `$limit: Int`, `$tags: [String!]`.',
-        'Non-null variables (`$id: ID!`) must always be provided. Null values for non-null variables cause a validation error before execution.',
-        'Default values: `$limit: Int = 10`. If the client omits $limit, the default is used. Non-null variables can still have defaults.',
-        'Variable types must match the argument type in the schema exactly. Mismatches are caught at validation time.'
+        'A non-null variable with NO default (`$id: ID!`) must always be provided. A non-null variable that HAS a default may be omitted — the default is used. Passing an explicit null for any non-null variable is always a validation error, default or not.',
+        'Default values: `$limit: Int = 10`. If the client omits $limit, the default is used.',
+        'A variable’s type must be compatible with the argument type, not necessarily identical: a non-null variable works where a nullable type is expected, and a nullable variable works at a non-null location if the variable or the argument has a default value. Mismatches are caught at validation time.'
       ]
     },
     {

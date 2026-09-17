@@ -1721,6 +1721,79 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'WATCH Inside MULTI Is Not Allowed', route: '/redis/transactions/watch-inside-multi-is-not-allowed' },
     { label: 'The Partial-Execution Mistake, as Real, Runnable Code', route: '/redis/transactions/the-partial-execution-mistake-as-real-runnable-code' },
   ],
+  // NOTE: bare 'lua-scripting' confirmed collision-free (checked both quoted
+  // and unquoted forms in this file, plus app.routes.ts route paths directly).
+  'lua-scripting': [
+    { label: 'Redis Rejects Global Variables — It Doesn’t Leak Them', route: '/redis/lua-scripting/redis-rejects-global-variables-it-doesnt-leak-them' },
+    { label: 'Since Redis 7.0, Scripts No Longer Need to Be Deterministic', route: '/redis/lua-scripting/scripts-no-longer-need-to-be-deterministic' },
+    { label: 'redis.set_repl(): Skipping Replication for Throwaway Writes', route: '/redis/lua-scripting/set-repl-skipping-replication-for-throwaway-writes' },
+  ],
+  // NOTE: bare 'persistence' confirmed collision-free (checked both quoted
+  // and unquoted forms in this file, plus app.routes.ts route paths directly).
+  'persistence': [
+    { label: 'aof-use-rdb-preamble Has Defaulted to Yes Since Redis 5.0', route: '/redis/persistence/aof-use-rdb-preamble-default-since-redis-5-0' },
+    { label: 'DEBUG SLEEP vs. SAVE: Two Completely Different Commands', route: '/redis/persistence/debug-sleep-vs-save-two-different-commands' },
+    { label: 'Monitoring BGSAVE’s Copy-on-Write Memory Growth', route: '/redis/persistence/monitoring-bgsave-cow-memory-growth' },
+  ],
+  // NOTE: bare 'pub-sub' confirmed collision-free (checked both quoted
+  // and unquoted forms in this file, plus app.routes.ts route paths directly).
+  'pub-sub': [
+    { label: 'The Complete Subscribe-Mode Command List', route: '/redis/pub-sub/the-complete-subscribe-mode-command-list' },
+    { label: 'RESP3 Removes the Subscribe-Mode Restriction Entirely', route: '/redis/pub-sub/resp3-removes-the-subscribe-mode-restriction' },
+    { label: 'Sharded Pub/Sub: SSUBSCRIBE and SPUBLISH, Actually Demonstrated', route: '/redis/pub-sub/sharded-pubsub-ssubscribe-and-spublish' },
+  ],
+  // NOTE: bare 'streams' already claimed by the Node.js hub's own topic --
+  // hub-prefixed to 'redis-streams', matching this hub's own established
+  // redis- progress/search key prefix.
+  'redis-streams': [
+    { label: 'XPENDING’s Summary vs. Extended Form', route: '/redis/streams/xpending-summary-vs-extended-form' },
+    { label: 'XCLAIM vs. XAUTOCLAIM: Manual IDs vs. Scan-Based Reassignment', route: '/redis/streams/xclaim-vs-xautoclaim-manual-vs-scan' },
+    { label: 'Dead-Letter Routing by Delivery Count', route: '/redis/streams/dead-letter-routing-by-delivery-count' },
+  ],
+  'caching-patterns': [
+    { label: 'Locking the Stale-While-Revalidate Refresh', route: '/redis/caching-patterns/stale-while-revalidate-refresh-needs-its-own-lock' },
+    { label: 'Implementing Read-Through in Application Code', route: '/redis/caching-patterns/implementing-read-through-in-application-code' },
+    { label: 'Tag-Based Invalidation with Redis Sets', route: '/redis/caching-patterns/tag-based-invalidation-with-redis-sets' },
+  ],
+  'eviction-policies': [
+    { label: 'LRM Evicts by Write, Not by Read', route: '/redis/eviction-policies/lrm-evicts-by-write-not-by-read' },
+    { label: 'The LFU Morris Counter, Verified Against Real Redis Source', route: '/redis/eviction-policies/the-lfu-morris-counter-formula-verified' },
+    { label: 'current_eviction_exceeded_time and Other INFO Fields', route: '/redis/eviction-policies/current-eviction-exceeded-time-and-other-info-fields' },
+  ],
+  // NOTE: bare 'rate-limiting' was already proactively hub-prefixed by both the
+  // ASP.NET hub (aspnet-rate-limiting) and the API Design hub (api-rate-limiting)
+  // anticipating this exact moment -- left bare here for the Redis hub's own topic.
+  'rate-limiting': [
+    { label: 'The Off-by-One in Remaining After an Allowed Request', route: '/redis/rate-limiting/the-off-by-one-in-remaining-after-an-allowed-request' },
+    { label: 'Implementing Leaky Bucket with a Bounded Queue', route: '/redis/rate-limiting/implementing-leaky-bucket-with-a-bounded-queue' },
+    { label: 'Fail-Open vs. Fail-Closed When Redis Is Unreachable', route: '/redis/rate-limiting/fail-open-vs-fail-closed-when-redis-is-unreachable' },
+  ],
+  'replication-sentinel': [
+    { label: 'Why Diskless Sync Needs a Delay to Batch Replicas', route: '/redis/replication-sentinel/why-diskless-sync-needs-a-delay-to-batch-replicas' },
+    { label: 'Sentinel’s Replica-Selection Tiebreaker, Implemented', route: '/redis/replication-sentinel/sentinel-replica-selection-tiebreaker-implemented' },
+    { label: 'Using WAIT for Selective Write Durability', route: '/redis/replication-sentinel/using-wait-for-selective-write-durability' },
+  ],
+  'redis-cluster': [
+    { label: 'The Live Resharding State Machine: MIGRATING, IMPORTING, ASK, MOVED', route: '/redis/redis-cluster/the-live-resharding-state-machine-migrating-importing-ask-moved' },
+    { label: 'The Hash Tag Extraction Algorithm, Verified Against Real Edge Cases', route: '/redis/redis-cluster/the-hash-tag-extraction-algorithm-verified-against-real-edge-cases' },
+    { label: 'ASK Is a One-Time Redirect, Not a Permanent Slot-Map Update', route: '/redis/redis-cluster/ask-is-a-one-time-redirect-not-a-permanent-slot-map-update' },
+  ],
+  'redis-stack': [
+    { label: 'When Modules Are Built In (Redis 8.0+) vs. Still Need Stack', route: '/redis/redis-stack/when-modules-are-built-in-redis-8-vs-still-need-stack' },
+    { label: 'The FT.INFO indexing Field Is a Truthy String, Not a Boolean', route: '/redis/redis-stack/the-ft-info-indexing-field-is-a-truthy-string-not-a-boolean' },
+    { label: 'Co-Locating a Search Index on One Cluster Node with Hash Tags', route: '/redis/redis-stack/co-locating-a-search-index-on-one-cluster-node-with-hash-tags' },
+  ],
+  'redis-nodejs': [
+    { label: 'WATCH Retry Loops Need a Dedicated Connection', route: '/redis/redis-nodejs/watch-retry-loops-need-a-dedicated-connection' },
+    { label: 'Typed defineCommand(), Without the as any Cast', route: '/redis/redis-nodejs/typed-definecommand-without-as-any' },
+    { label: 'A Real Health-Check Endpoint with a PING Timeout', route: '/redis/redis-nodejs/a-real-health-check-endpoint-with-ping-timeout' },
+  ],
+  // NOTE: hub-prefixed — bare 'security' is already claimed by the SQL hub's own topic.
+  'redis-security': [
+    { label: 'Parsing ACL LOG’s object Field Correctly', route: '/redis/security/parsing-acl-logs-object-field-correctly' },
+    { label: 'Restricting EVAL Access via ACL -@scripting', route: '/redis/security/restricting-eval-access-via-acl-scripting' },
+    { label: 'ACL SAVE Requires an aclfile', route: '/redis/security/acl-save-requires-an-aclfile' },
+  ],
   closures: [
     { label: 'var Shares One Binding, let Creates One Per Iteration', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
     { label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },
@@ -3948,5 +4021,83 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Quiz’s Own Rival Maturity Model', route: '/observability/observability-maturity/the-quizs-own-rival-maturity-model' },
     { label: 'Combining Overall Score With Named Weakest Areas', route: '/observability/observability-maturity/combining-overall-score-with-named-weakest-areas' },
     { label: 'Building a Real Anomaly Detector for MTTR', route: '/observability/observability-maturity/building-a-real-anomaly-detector-for-mttr' },
+  ],
+  // NOTE: hub-prefixed — bare 'fundamentals' is already claimed by the JavaScript hub's own topic.
+  'gql-fundamentals': [
+    { label: 'The Post Type Never Declared Its Own author Field', route: '/graphql/fundamentals/post-type-missing-author-field' },
+    { label: 'Non-Null Field Errors Bubble Up', route: '/graphql/fundamentals/non-null-error-propagation' },
+    { label: 'Aliases Resolve Field-Name Collisions', route: '/graphql/fundamentals/aliases-resolve-field-collisions' },
+  ],
+  'schema-definition-language': [
+    { label: 'A Non-Null Argument With a Default Value Is Not Required', route: '/graphql/schema-definition-language/non-null-arg-with-default-not-required' },
+    { label: 'Only Fragments and __typename Can Select From a Union', route: '/graphql/schema-definition-language/union-selection-sets' },
+    { label: 'Custom Scalars: serialize, parseValue, and parseLiteral', route: '/graphql/schema-definition-language/custom-scalar-hooks' },
+  ],
+  'type-system': [
+    { label: 'There Is No instanceof Fallback for Abstract Types', route: '/graphql/type-system/abstract-type-no-instanceof-fallback' },
+    { label: 'Unwrapping Introspection Types: Following ofType', route: '/graphql/type-system/unwrapping-oftype' },
+    { label: 'Disabling Introspection Is Not the Same as Hiding Your Schema', route: '/graphql/type-system/disabling-introspection-vs-hiding-schema' },
+  ],
+  'queries': [
+    { label: '@skip and @include Run on the Server, Not the Client', route: '/graphql/queries/skip-include-run-on-the-server' },
+    { label: 'Field Merging: Two Selections of the Same Field Must Be Compatible', route: '/graphql/queries/field-merging-conflicts' },
+    { label: 'The Lone Anonymous Operation Rule', route: '/graphql/queries/lone-anonymous-operation' },
+  ],
+  'variables-arguments': [
+    { label: 'When a Variable Can Be Used Where a Different Type Is Expected', route: '/graphql/variables-arguments/variable-usage-type-compatibility' },
+    { label: 'Enum Values: Bare in the Query, String in the Variables JSON', route: '/graphql/variables-arguments/enum-inline-vs-variables' },
+    { label: 'GET vs POST, and Why GET Is Query-Only', route: '/graphql/variables-arguments/graphql-get-vs-post' },
+  ],
+  // NOTE: hub-prefixed -- bare 'directives' is already claimed by the Angular hub's own topic (directives-demo).
+  'gql-directives': [
+    { label: 'Where @deprecated Can Actually Go', route: '/graphql/directives/where-deprecated-can-go' },
+    { label: 'Declaring a Directive Does Nothing — the Transformer Is the Behavior', route: '/graphql/directives/directive-declaration-vs-transformer' },
+    { label: 'FIELD vs FIELD_DEFINITION: Two Different Location Namespaces', route: '/graphql/directives/field-vs-field-definition-locations' },
+  ],
+  'mutations': [
+    { label: 'Apollo Server Dropped Built-In Upload Support in v3', route: '/graphql/mutations/apollo-server-dropped-upload-support' },
+    { label: 'Serial Execution Is Not a Transaction', route: '/graphql/mutations/serial-execution-is-not-a-transaction' },
+    { label: 'Guarding a Destructive Mutation With an Idempotency Key', route: '/graphql/mutations/idempotency-keys-for-destructive-mutations' },
+  ],
+  // NOTE: hub-prefixed -- bare 'error-handling' is already claimed by the JavaScript hub's own topic.
+  'gql-error-handling': [
+    { label: 'Apollo Server v4 Removed Its Built-In Error Classes', route: '/graphql/error-handling/apollo-server-v4-removed-error-classes' },
+    { label: 'The Payload UserErrors Pattern, Built Out', route: '/graphql/error-handling/payload-user-errors-pattern' },
+    { label: 'ApolloServerErrorCode: Recognizing Apollo’s Own Errors', route: '/graphql/error-handling/apollo-server-error-code-enum' },
+  ],
+  'subscriptions': [
+    { label: 'Federated Subscriptions Need More Than Federation v2+', route: '/graphql/subscriptions/federated-subscriptions-need-enterprise-graphos' },
+    { label: '@skip and @include Can Crash Subscription Validation, Not Just Reject It', route: '/graphql/subscriptions/skip-include-crashes-subscription-validation' },
+    { label: 'resolve Runs Once Per Subscriber, With Their Own Context', route: '/graphql/subscriptions/resolve-runs-per-subscriber-with-their-context' },
+  ],
+  'resolvers': [
+    { label: 'graphql-middleware and graphql-shield Are Effectively Unmaintained', route: '/graphql/resolvers/graphql-middleware-shield-unmaintained' },
+    { label: 'Preventing Overfetching With info.fieldNodes', route: '/graphql/resolvers/preventing-overfetch-with-info-fieldnodes' },
+    { label: 'info.path Matches the Response’s Own errors[].path Array Exactly', route: '/graphql/resolvers/info-path-matches-response-errors-path' },
+  ],
+  'dataloader': [
+    { label: 'The Default Batch Scheduler Is a Microtask, Not a Bare process.nextTick', route: '/graphql/dataloader/default-scheduler-microtask-then-nexttick' },
+    { label: 'cacheKeyFn Is Required to Deduplicate Object Keys', route: '/graphql/dataloader/cachekeyfn-required-for-object-keys' },
+    { label: 'maxBatchSize Splits One Tick Into Multiple Batch Calls', route: '/graphql/dataloader/maxbatchsize-splits-large-batches' },
+  ],
+  'auth': [
+    { label: 'graphql-shield Rules Are NOT Memoized by Default', route: '/graphql/auth/no-cache-is-the-real-shield-default' },
+    { label: 'Contextual vs. Strict: Which Cache Mode Does a Rule Actually Need?', route: '/graphql/auth/contextual-vs-strict-cache-modes' },
+    { label: 'graphql-shield Is Effectively Unmaintained — Use @envelop/graphql-middleware', route: '/graphql/auth/graphql-shield-unmaintained-envelop-fix' },
+  ],
+  'apollo-server': [
+    { label: 'Introspection Is Still NODE_ENV-Gated — Not a v3-to-v4 Change', route: '/graphql/apollo-server/introspection-still-nodeenv-gated' },
+    { label: 'executeOperation’s ‘incremental’ Response Kind, and Why You Probably Won’t See It', route: '/graphql/apollo-server/executeoperation-incremental-response-kind' },
+    { label: 'executeOperation’s contextValue Is Shallow-Cloned, Not Shared by Reference', route: '/graphql/apollo-server/contextvalue-is-shallow-cloned' },
+  ],
+  'pagination': [
+    { label: 'The Resolver’s Own totalCount Call Repeats Mistake #4', route: '/graphql/pagination/totalcount-cache-fix' },
+    { label: 'Composite Cursors Prevent Skipped Rows When Sort Keys Tie', route: '/graphql/pagination/composite-cursor-tie-breaking' },
+    { label: 'Implementing Backward Pagination with last and before', route: '/graphql/pagination/backward-pagination-last-before' },
+  ],
+  'apollo-client': [
+    { label: 'The Real Way to Abort an In-Flight Apollo Query', route: '/graphql/apollo-client/aborting-inflight-queries' },
+    { label: 'Reactive Variables for Global Client-Side State', route: '/graphql/apollo-client/reactive-variables-global-state' },
+    { label: 'The update Function for Manual Cache Writes', route: '/graphql/apollo-client/manual-cache-updates' },
   ],
 };

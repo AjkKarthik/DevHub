@@ -1,0 +1,26 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Resolvers" topicRoute="/graphql/resolvers"
+    subtopicLabel="graphql-middleware and graphql-shield Are Effectively Unmaintained" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">graphql-middleware and graphql-shield Are Effectively Unmaintained</h1>
+  <p class="page-subtitle">The main page's Resolver Middleware codeTab presents both as a live, current recommendation. Verified via WebSearch: neither has shipped a release in 3+ years — here's the actively-maintained modern path.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This tightens the main page's own Resolver Middleware framing with the verified maintenance status and the modern envelop-based replacement path. Next: putting the info argument's fieldNodes to real use, preventing the exact overfetching the page's own mistake block warns about.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Resolvers" topicRoute="/graphql/resolvers"
+    [next]="{ label: 'Preventing Overfetching With info.fieldNodes', route: '/graphql/resolvers/preventing-overfetch-with-info-fieldnodes' }" />
+</div>

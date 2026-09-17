@@ -62,7 +62,7 @@ export class GqlDirectives {
     {
       heading: '@deprecated',
       points: [
-        '@deprecated marks a field or enum value as deprecated without removing it from the schema.',
+        '@deprecated marks a schema element as deprecated without removing it. Its locations are FIELD_DEFINITION, ENUM_VALUE, and — since the 2021 spec release — ARGUMENT_DEFINITION and INPUT_FIELD_DEFINITION, so an individual argument or input-object field can be deprecated too. A required (non-null, no default) argument or input field must be made optional before it can be deprecated.',
         'Clients see the deprecation in introspection and tools like GraphiQL display a warning.',
         'The `reason` argument is optional but strongly recommended: `@deprecated(reason: "Use \'newField\' instead")`.',
         'Deprecated fields still resolve normally — no runtime change, just a documentation signal.'

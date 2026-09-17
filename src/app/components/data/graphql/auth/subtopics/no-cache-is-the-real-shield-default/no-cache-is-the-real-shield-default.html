@@ -1,0 +1,26 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Authentication & Authorization" topicRoute="/graphql/auth"
+    subtopicLabel="graphql-shield Rules Are NOT Memoized by Default" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">graphql-shield Rules Are NOT Memoized by Default</h1>
+  <p class="page-subtitle">The main page's own theory bullet claimed rules are "memoized per request by default" — verified against the real installed graphql-shield@7.6.5 source that the true default is 'no_cache', with the page's own codeTab already correctly opting into caching explicitly.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the main page's own "memoized per request by default" claim with the verified real default. Next: the precise mechanical difference between the 'contextual' and 'strict' cache modes the page's own codeTab already uses on different rules.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Authentication & Authorization" topicRoute="/graphql/auth"
+    [next]="{ label: 'Contextual vs. Strict: Which Cache Mode Does a Rule Actually Need?', route: '/graphql/auth/contextual-vs-strict-cache-modes' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Eviction Policies" topicRoute="/redis/eviction-policies"
+    subtopicLabel="current_eviction_exceeded_time and Other INFO Fields" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">current_eviction_exceeded_time and Other INFO Fields</h1>
+  <p class="page-subtitle">The main page's own Challenge only ever checks usedPct as a single snapshot — two servers at the identical 85% usage can be in completely different situations, and one extra INFO field tells them apart.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>current_eviction_exceeded_time distinguishes a transient tip-over from sustained memory pressure — a real gap in the main page's own Memory Pressure Alert Challenge. This closes out the Eviction Policies subtopics — back to the topic overview to review LRU, LFU, LRM, and volatile-vs-allkeys as a whole.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Eviction Policies" topicRoute="/redis/eviction-policies"
+    [prev]="{ label: 'The LFU Morris Counter, Verified Against Real Redis Source', route: '/redis/eviction-policies/the-lfu-morris-counter-formula-verified' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Directives" topicRoute="/graphql/directives"
+    subtopicLabel="Where @deprecated Can Actually Go" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">Where &#64;deprecated Can Actually Go</h1>
+  <p class="page-subtitle">The main page said &#64;deprecated applies to "a field or enum value". Since the 2021 spec release it also applies to arguments and input-object fields — and a required argument cannot be deprecated at all.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This completes the main page's &#64;deprecated location list and adds the required-argument rule. Next: the mistake and quiz both say declaring a custom directive "does nothing" without a transformer — here is the full before/after, plus what transformer order does.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Directives" topicRoute="/graphql/directives"
+    [next]="{ label: 'Declaring a Directive Does Nothing — the Transformer Is the Behavior', route: '/graphql/directives/directive-declaration-vs-transformer' }" />
+</div>

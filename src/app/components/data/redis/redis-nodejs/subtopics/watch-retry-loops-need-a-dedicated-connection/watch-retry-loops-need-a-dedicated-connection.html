@@ -1,0 +1,26 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Redis with Node.js" topicRoute="/redis/redis-nodejs"
+    subtopicLabel="WATCH Retry Loops Need a Dedicated Connection" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">WATCH Retry Loops Need a Dedicated Connection</h1>
+  <p class="page-subtitle">The main page's own QnA sketches a WATCH/MULTI/EXEC retry loop in one sentence — but never says which connection to run it on. Sharing the module-level client is a real, silent-corruption bug.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>WATCH's per-connection semantics are the same mechanism this hub's own Transactions & Optimistic Locking topic already covers in depth — this subtopic applies that established fix directly to the Node.js client sketch this page's own QnA leaves incomplete. Next: giving ioredis's own <code>defineCommand()</code> real TypeScript types, instead of the main page's own <code>as any</code> cast.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Redis with Node.js" topicRoute="/redis/redis-nodejs"
+    [next]="{ label: 'Typed defineCommand(), Without the as any Cast', route: '/redis/redis-nodejs/typed-definecommand-without-as-any' }" />
+</div>

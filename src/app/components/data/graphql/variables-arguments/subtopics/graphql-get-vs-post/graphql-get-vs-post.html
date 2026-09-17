@@ -1,0 +1,26 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Variables & Arguments" topicRoute="/graphql/variables-arguments"
+    subtopicLabel="GET vs POST, and Why GET Is Query-Only" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">GET vs POST, and Why GET Is Query-Only</h1>
+  <p class="page-subtitle">The main page says GET is CDN-cacheable. It leaves out that GET may run only query operations — mutations must POST — and that real GET caching needs a persisted-query scheme to keep the URL short.</p>
+  <app-page-meta [readingTime]="6" difficulty="beginner" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This fills in the constraints behind the main page's "GET is good for CDN caching" line — GET is query-only because it is a safe method, and persisted queries are what make GET caching workable for non-trivial queries. Back to the topic overview for the full variables-and-arguments picture.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Variables & Arguments" topicRoute="/graphql/variables-arguments"
+    [prev]="{ label: 'Enum Values: Bare in the Query, String in the Variables JSON', route: '/graphql/variables-arguments/enum-inline-vs-variables' }" />
+</div>

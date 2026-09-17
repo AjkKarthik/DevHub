@@ -1,0 +1,27 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Schema Definition Language" topicRoute="/graphql/schema-definition-language"
+    subtopicLabel="Only Fragments and __typename Can Select From a Union" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">Only Fragments and __typename Can Select From a Union</h1>
+  <p class="page-subtitle">A fragment-only union query does not crash when the runtime type matches no fragment — you get an empty object. And a union has no fields of its own to select in the first place, so every field must go through a fragment.</p>
+  <app-page-meta [readingTime]="6" difficulty="beginner" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This pins down the actual execution behaviour behind the "Forgetting __typename in union queries" mistake, and exactly what a union type does and does not let a client select. Next: the three functions the main page names in one QnA sentence but never shows — the hooks a custom scalar needs on the server.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Schema Definition Language" topicRoute="/graphql/schema-definition-language"
+    [prev]="{ label: 'A Non-Null Argument With a Default Value Is Not Required', route: '/graphql/schema-definition-language/non-null-arg-with-default-not-required' }"
+    [next]="{ label: 'Custom Scalars: serialize, parseValue, and parseLiteral', route: '/graphql/schema-definition-language/custom-scalar-hooks' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="GraphQL Queries" topicRoute="/graphql/queries"
+    subtopicLabel="@skip and @include Run on the Server, Not the Client" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">&#64;skip and &#64;include Run on the Server, Not the Client</h1>
+  <p class="page-subtitle">The main page said directives "take effect on the client side". They do not — the full query is sent to the server, which evaluates &#64;skip / &#64;include during field collection before any resolver runs.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This corrects where &#64;skip / &#64;include actually execute, and separates response shaping from access control. Next: the Aliases section says an alias is "required" when a field appears twice with different arguments — here is the validation rule that makes it required, and how it fires through fragments you did not write.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="GraphQL Queries" topicRoute="/graphql/queries"
+    [next]="{ label: 'Field Merging: Two Selections of the Same Field Must Be Compatible', route: '/graphql/queries/field-merging-conflicts' }" />
+</div>

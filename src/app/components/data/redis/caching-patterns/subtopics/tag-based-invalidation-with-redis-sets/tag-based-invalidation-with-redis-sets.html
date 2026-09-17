@@ -1,0 +1,26 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Caching Patterns" topicRoute="/redis/caching-patterns"
+    subtopicLabel="Tag-Based Invalidation with Redis Sets" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">Tag-Based Invalidation with Redis Sets</h1>
+  <p class="page-subtitle">The main page's own Cache Key Design theory names tag-based invalidation in one bullet, but no codeTab ever builds it — here's the SADD/SMEMBERS/UNLINK mechanism, and the cleanup step it's easy to forget.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>Tag-based invalidation lets one write invalidate several related cache entries at once, at the cost of extra bookkeeping on every write. This closes out the Caching Patterns subtopics — back to the topic overview to review cache-aside, write-through, and stampede prevention as a whole.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Caching Patterns" topicRoute="/redis/caching-patterns"
+    [prev]="{ label: 'Implementing Read-Through in Application Code', route: '/redis/caching-patterns/implementing-read-through-in-application-code' }" />
+</div>

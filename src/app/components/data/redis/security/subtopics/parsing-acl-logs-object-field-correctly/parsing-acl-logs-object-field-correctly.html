@@ -1,0 +1,26 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Redis Security" topicRoute="/redis/security"
+    subtopicLabel="Parsing ACL LOG’s object Field Correctly" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">Parsing ACL LOG’s object Field Correctly</h1>
+  <p class="page-subtitle">The main page's own Challenge solution assumes ACL LOG’s object field is formatted as "command|key" — verified against Redis's own docs, it never is.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>This is the exact fix now applied to the main page's own ACL Audit Logger Challenge. Next: the main page's own theory bullet on disabling Lua scripting had the mechanism backwards too — the real fix is an ACL rule, not a config directive named lua-time-limit.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Redis Security" topicRoute="/redis/security"
+    [next]="{ label: 'Restricting EVAL Access via ACL -@scripting', route: '/redis/security/restricting-eval-access-via-acl-scripting' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Pub/Sub Messaging" topicRoute="/redis/pub-sub"
+    subtopicLabel="Sharded Pub/Sub: SSUBSCRIBE and SPUBLISH" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">Sharded Pub/Sub: SSUBSCRIBE and SPUBLISH, Actually Demonstrated</h1>
+  <p class="page-subtitle">The main page names Sharded Pub/Sub and correctly explains its purpose — but never shows the actual commands or what "routes to the responsible shard" means mechanically. Here's the real routing behavior, modeled and verified.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Redis 7.0" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>This closes a real gap between what the main page names in prose and what it actually demonstrates in code. Back to the topic overview to continue with a different subtopic path.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Pub/Sub Messaging" topicRoute="/redis/pub-sub"
+    [prev]="{ label: 'RESP3 Removes the Subscribe-Mode Restriction Entirely', route: '/redis/pub-sub/resp3-removes-the-subscribe-mode-restriction' }" />
+</div>

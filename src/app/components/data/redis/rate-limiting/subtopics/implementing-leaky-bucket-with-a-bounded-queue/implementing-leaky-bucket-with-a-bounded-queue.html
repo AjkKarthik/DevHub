@@ -1,0 +1,27 @@
+<div class="redis-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Rate Limiting" topicRoute="/redis/rate-limiting"
+    subtopicLabel="Implementing Leaky Bucket with a Bounded Queue" />
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">Implementing Leaky Bucket with a Bounded Queue</h1>
+  <p class="page-subtitle">Leaky Bucket appears in the main page's own Quick Reference and QnA, but no codeTab ever builds one — here's the bounded-queue-plus-fixed-rate-drain mechanism, and how it genuinely differs from Token Bucket.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="redis-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="redis-section">
+    <h2>Where this fits</h2>
+    <p>Leaky Bucket smooths a burst by draining at a fixed rate rather than rejecting excess outright — a genuinely different tool from Token Bucket. Next: what should actually happen to a rate limiter when Redis itself becomes unreachable.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Rate Limiting" topicRoute="/redis/rate-limiting"
+    [prev]="{ label: 'The Off-by-One in Remaining After an Allowed Request', route: '/redis/rate-limiting/the-off-by-one-in-remaining-after-an-allowed-request' }"
+    [next]="{ label: 'Fail-Open vs. Fail-Closed When Redis Is Unreachable', route: '/redis/rate-limiting/fail-open-vs-fail-closed-when-redis-is-unreachable' }" />
+</div>
