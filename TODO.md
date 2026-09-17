@@ -9758,7 +9758,17 @@ off here with a date.
   reverse-then-reverse backward pagination (`last`/`before`) implementation the QnA describes in
   one sentence and never shows in code. This completes the Server nav group (apollo-server,
   pagination). SUBTOPICS key `pagination` collision-free, left bare. All 6 touchpoints wired.
-- [ ] `/graphql/apollo-client` — Apollo Client
+- [x] 2026-09-17 — `/graphql/apollo-client` — Apollo Client. Fixed a QnA wrong on three counts
+  about aborting an in-flight query: `fetchPolicy` has nothing to do with aborting,
+  `client.watchQuery().cancel()` doesn't exist (no `cancel()` method on `ObservableQuery`), and
+  there's no "React 18 AbortSignal integration" — the real mechanism is `context.fetchOptions.signal`
+  forwarded to `fetch()`, verified against Apollo's own GitHub issue tracker (including a real
+  request-deduplication gotcha). 3 subtopics: (1) the verified abort mechanism; (2)
+  `makeVar`/`useReactiveVar`, plus a precision fix that "integrates with useQuery" only holds once
+  wired into a cache field policy's `read()` function; (3) a real `cache.modify()`-based `update`
+  function — the main page's own QnA prefers it over `refetchQueries` in prose but every codeTab
+  only ever uses `refetchQueries`. SUBTOPICS key `apollo-client` collision-free, left bare. All 6
+  touchpoints wired.
 - [ ] `/graphql/client-caching` — Client-Side Caching
 - [ ] `/graphql/code-generation` — Code Generation
 - [ ] `/graphql/performance` — Performance & Security

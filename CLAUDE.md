@@ -9836,6 +9836,39 @@ this same check before any other new hub's first subtopic set:
    sidebar content confirmed on all three. **This completes the GraphQL hub's Server nav group**
    (apollo-server, pagination — both of 2 topics now have subtopics). **GraphQL hub Phase 10: 14
    of 20 topics complete.**
+22. **The `apollo-client` batch — the first topic in the Client nav group — found and fixed a
+   QnA that was wrong on three separate counts, verified against Apollo Client's own API surface
+   and GitHub issue tracker rather than assumed**: it claimed you could abort a query "via
+   fetchPolicy: 'no-cache' queries" (fetchPolicy has no relationship to aborting at all), that
+   `client.watchQuery().cancel()` exists (verified against `ObservableQuery`'s own API surface —
+   no such method; stopping a watch means unsubscribing from its returned subscription instead),
+   and that "Apollo 3+ supports React 18 AbortSignal integration" (no such feature exists — the
+   real mechanism, HttpLink forwarding `context.fetchOptions` to the underlying `fetch()` call, has
+   existed for years and has nothing to do with React versioning). Fixed the QnA with the real,
+   verified mechanism, including a documented request-deduplication gotcha (confirmed via a real
+   Apollo Client GitHub issue) where re-running an identical query+variables shortly after an abort
+   can resolve against the already-aborted in-flight request. Three subtopics: (1) **fix-adjacent**
+   — the verified `context.fetchOptions.signal` mechanism, with a Try It on the correct
+   `.unsubscribe()` cleanup for a `watchQuery()`-driven component (not a nonexistent `.cancel()`);
+   (2) **gap-closing** — `makeVar`/`useReactiveVar`, which the main page names in one QnA sentence
+   and never shows in code, PLUS a precision fix on the QnA's own "integrate with useQuery" claim —
+   verified via research that this only holds once the reactive variable is read inside a cache
+   field policy's `read()` function, not automatically; (3) **gap-closing** — the main page's own
+   QnA already states the correct preference (`update` over `refetchQueries`, "no extra
+   round-trip") but every codeTab on the page only ever demonstrates `refetchQueries`; built the
+   missing `cache.modify()`-based `update` function, with a Try It on the `__typename`/`id`
+   requirement that makes `toReference()` actually work. No `SUBTOPICS` collision for
+   `apollo-client` (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly,
+   confirmed collision-free, left bare). All three `.ts` files swept clean via the standing
+   bracket-balance/backtick-parity/apostrophe scripts; entity-escaped `&lt;ThemeToggle&gt;`/
+   `&lt;Header&gt;` component-name mentions inside a `[innerHTML]`-bound `exercise.prompt` field
+   confirmed rendering as literal text (not vanished) after publishing. Build passed clean
+   (`EXITCODE:0`, zero real `ERROR` lines). Browser-verified: no console errors on any of the 4
+   pages; nav accordion opens with all 3 subtopic links (toggle count 15 across the hub); the
+   main-page QnA fix confirmed rendering live via direct component-data inspection; all 3 subtopic
+   pages checked individually — correct h1/breadcrumb (all 4 levels), 860px wrapper via
+   `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on all three. **GraphQL
+   hub Phase 10: 15 of 20 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -10119,14 +10152,15 @@ this same check before any other new hub's first subtopic set:
   All 22 cards `available: true` in `data/graphql/home/home.ts`. Progress: `gqlTotal=20` in progress.service.ts.
   GraphQL pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. GqlNavComponent at `shared/gql-nav/gql-nav.ts`.
-  Phase 10: **14 of 20 topics have subtopics** (`/graphql/fundamentals`, pilot batch, 2026-09-10;
+  Phase 10: **15 of 20 topics have subtopics** (`/graphql/fundamentals`, pilot batch, 2026-09-10;
   `/graphql/schema-definition-language`, 2026-09-10; `/graphql/type-system`, 2026-09-10;
   `/graphql/queries`, 2026-09-10; `/graphql/variables-arguments`, 2026-09-10;
   `/graphql/directives`, 2026-09-10 — Queries nav group fully done; `/graphql/mutations`,
   2026-09-10; `/graphql/error-handling`, 2026-09-16; `/graphql/subscriptions`, 2026-09-16 —
   Mutations & Subscriptions nav group fully done; `/graphql/resolvers`, 2026-09-17;
   `/graphql/dataloader`, 2026-09-17; `/graphql/auth`, 2026-09-17; `/graphql/apollo-server`,
-  2026-09-17; `/graphql/pagination`, 2026-09-17 — Server nav group fully done) —
+  2026-09-17; `/graphql/pagination`, 2026-09-17 — Server nav group fully done;
+  `/graphql/apollo-client`, 2026-09-17 — first topic in the Client nav group) —
   see "GraphQL hub
   subtopic wiring" section above for the `GqlNavComponent` accordion structural fix (17th
   `*NavComponent`-based hub in a row missing it at pilot time), the `gql-fundamentals`/
@@ -10135,9 +10169,10 @@ this same check before any other new hub's first subtopic set:
   with the Angular hub's own `directives-demo` topic's unquoted bare `directives` key;
   `gql-error-handling` collided with the JavaScript hub's own bare `error-handling` topic key;
   `schema-definition-language`, `type-system`, `queries`, `variables-arguments`, `mutations`,
-  `subscriptions`, `resolvers`, `dataloader`, `auth`, `apollo-server`, and `pagination` are all
-  collision-free and left bare — confirmed via a direct grep that no other hub's `app.routes.ts`
-  route path is literally `auth`/`apollo-server`/`pagination`), the
+  `subscriptions`, `resolvers`, `dataloader`, `auth`, `apollo-server`, `pagination`, and
+  `apollo-client` are all collision-free and left bare — confirmed via a direct grep that no other
+  hub's `app.routes.ts` route path is literally `auth`/`apollo-server`/`pagination`/
+  `apollo-client`), the
   no-live-playground
   note, and the
   genuine main-page fixes: the cross-codeTab undeclared-`Post.author`-field bug (Fundamentals);
@@ -10174,7 +10209,11 @@ this same check before any other new hub's first subtopic set:
   `executeOperation()`'s `contextValue` is shallow-cloned via `cloneObject()`, never shared by
   reference with the caller's original object (Apollo Server); and a self-contained inconsistency
   where the page's own mistake #4 warns against uncached `db.posts.count()` on every request, but
-  its own Resolver codeTab and Challenge solution both do exactly that (Pagination Patterns).
+  its own Resolver codeTab and Challenge solution both do exactly that (Pagination Patterns); and
+  a QnA wrong on three separate counts about aborting an in-flight query (`fetchPolicy` is
+  unrelated; `client.watchQuery().cancel()` doesn't exist; no such "React 18 AbortSignal
+  integration" exists) — fixed with the real, verified `context.fetchOptions.signal` mechanism
+  (Apollo Client).
 - **Messaging/Kafka hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Burnt-orange theme `$accent: #9a3412`, `$tint: #fff7ed`, dark `#fdba74`, dark bg `#2d1a0e`. Search prefix `kafka-`. Route: `/messaging`.
   CSS classes: `.kafka-page`, `.kafka-icon`, `.kafka-section`. Icon content: `⇄` at `font-size: 1.8rem`. `tech="javascript"`.
