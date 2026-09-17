@@ -9769,7 +9769,19 @@ off here with a date.
   function — the main page's own QnA prefers it over `refetchQueries` in prose but every codeTab
   only ever uses `refetchQueries`. SUBTOPICS key `apollo-client` collision-free, left bare. All 6
   touchpoints wired.
-- [ ] `/graphql/client-caching` — Client-Side Caching
+- [x] 2026-09-17 — `/graphql/client-caching` — Client-Side Caching. Fixed a `cache.modify` theory
+  bullet plus a QnA both overstating INVALIDATE's effect — it does not itself change a field's
+  cached value or force a network fetch (verified against Apollo's own GitHub issue #7060); the
+  documented fix is wrapping it in `client.refetchQueries({ updateCache })`. Also fixed a
+  normalization theory bullet with embedded-vs-referenced backwards — unnormalized objects are
+  stored EMBEDDED inline in the parent, not "by reference"; Apollo's own `Reference` type
+  specifically represents a NORMALIZED entity. 3 subtopics: (1) the verified
+  INVALIDATE-does-nothing-alone finding with the `refetchQueries` fix; (2) the embedded-vs-
+  normalized distinction made concrete; (3) `apollo3-cache-persist`'s real await-before-construct
+  ordering requirement. Caught and rephrased a subtopic title containing a literal double quote
+  before it could break a sibling `[prev]`/`[next]` reference (no safe escape exists for that
+  collision). SUBTOPICS key `client-caching` collision-free, left bare. All 6 touchpoints wired.
+  This completes the Client nav group's 2nd of however-many topics so far.
 - [ ] `/graphql/code-generation` — Code Generation
 - [ ] `/graphql/performance` — Performance & Security
 - [ ] `/graphql/federation` — Schema Federation

@@ -9869,6 +9869,51 @@ this same check before any other new hub's first subtopic set:
    pages checked individually — correct h1/breadcrumb (all 4 levels), 860px wrapper via
    `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on all three. **GraphQL
    hub Phase 10: 15 of 20 topics complete.**
+23. **The `client-caching` batch — the second topic in the Client nav group — found and fixed TWO
+   genuine main-page inaccuracies, both verified rather than assumed**: the `cache.modify` theory
+   bullet and a separate QnA both overstated what the `INVALIDATE` sentinel does — verified via
+   Apollo's own GitHub issue #7060 that `INVALIDATE` alone does NOT change a field's cached value
+   or force a network fetch; with the default `cache-first` fetchPolicy, a query re-reading an
+   invalidated-but-unchanged field sees the identical value and typically never hits the network
+   at all. The documented, actually-working pattern is wrapping the `cache.modify` call inside
+   `client.refetchQueries({ updateCache })`. Fixed both the theory bullet and the QnA. Separately,
+   the InMemoryCache normalization theory bullet had the embedded-vs-referenced relationship
+   backwards — it framed unnormalized objects (no `id`, or `keyFields: false`) as being "by
+   reference," when Apollo's own docs confirm the OPPOSITE: they're stored EMBEDDED (inline,
+   duplicated) inside their parent's own cache entry; Apollo's own `Reference` type (a `{ __ref:
+   'Type:id' }` pointer) specifically represents a NORMALIZED entity — the case an id-less/
+   keyFields:false object never becomes. Fixed the bullet to state this correctly. Three
+   subtopics: (1) **fix-adjacent** — the verified INVALIDATE-does-nothing-alone finding, with the
+   `refetchQueries({ updateCache })` pattern shown as the real fix; (2) **fix-adjacent** — the
+   embedded-vs-normalized distinction made concrete, contrasting a `Reference` object's shape
+   against an embedded object's inline duplication; (3) **gap-closing** — `apollo3-cache-persist`'s
+   real API (`await persistCache({ cache, storage })` MUST be awaited BEFORE `new ApolloClient()`
+   is constructed, to avoid a race where an already-mounted component reads from the still-empty
+   cache before restoration finishes), verified via research rather than assumed. **A real
+   delimiter-collision gotcha caught proactively during authoring, before it could break a
+   sibling page**: the second subtopic's title was initially drafted containing a literal double
+   quote (`'Unnormalized Objects Are Embedded, Not "By Reference"'`) — since a subtopic's own title
+   is embedded verbatim as a `[prev]`/`[next]` label on sibling pages, and the label string is
+   itself wrapped in a double-quoted Angular attribute, a literal `"` would have collided with the
+   OUTER delimiter the moment any sibling page referenced it, with no safe entity-escape available
+   for this specific case (unlike the apostrophe case, which uses the typographic curly quote).
+   Fixed by rephrasing to `'Unnormalized Objects Are Embedded, Never Referenced'` before any
+   sibling reference was ever created. A `’` JS-unicode-escape sequence typed literally into
+   both a `.ts` string field and an `.html` attribute was initially suspected as a mistake but
+   confirmed, via direct `Read`, to have already resolved correctly to the real curly-quote
+   character (’) at write time — a false alarm caught by verifying rather than assuming. Also
+   proactively kept the third subtopic's slug short (`persisting-cache-apollo3`, 24 chars) from
+   the start, avoiding the original, longer planned slug
+   (`persisting-cache-with-apollo3-cache-persist`, 44 chars) to stay well clear of the Windows
+   MAX_PATH ceiling before ever creating the folder. No `SUBTOPICS` collision for `client-caching`
+   (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed
+   collision-free, left bare). Build passed clean (`EXITCODE:0`, zero real `ERROR` lines).
+   Browser-verified: no console errors on any of the 4 pages; nav accordion opens with all 3
+   subtopic links (toggle count 16 across the hub); both main-page fixes confirmed rendering live
+   via direct component-data inspection; all 3 subtopic pages checked individually — correct
+   h1/breadcrumb (all 4 levels, including the curly-quote `[prev]`/`[next]` label rendering
+   correctly), 860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content
+   confirmed on all three. **GraphQL hub Phase 10: 16 of 20 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -10152,7 +10197,7 @@ this same check before any other new hub's first subtopic set:
   All 22 cards `available: true` in `data/graphql/home/home.ts`. Progress: `gqlTotal=20` in progress.service.ts.
   GraphQL pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. GqlNavComponent at `shared/gql-nav/gql-nav.ts`.
-  Phase 10: **15 of 20 topics have subtopics** (`/graphql/fundamentals`, pilot batch, 2026-09-10;
+  Phase 10: **16 of 20 topics have subtopics** (`/graphql/fundamentals`, pilot batch, 2026-09-10;
   `/graphql/schema-definition-language`, 2026-09-10; `/graphql/type-system`, 2026-09-10;
   `/graphql/queries`, 2026-09-10; `/graphql/variables-arguments`, 2026-09-10;
   `/graphql/directives`, 2026-09-10 — Queries nav group fully done; `/graphql/mutations`,
@@ -10160,7 +10205,8 @@ this same check before any other new hub's first subtopic set:
   Mutations & Subscriptions nav group fully done; `/graphql/resolvers`, 2026-09-17;
   `/graphql/dataloader`, 2026-09-17; `/graphql/auth`, 2026-09-17; `/graphql/apollo-server`,
   2026-09-17; `/graphql/pagination`, 2026-09-17 — Server nav group fully done;
-  `/graphql/apollo-client`, 2026-09-17 — first topic in the Client nav group) —
+  `/graphql/apollo-client`, 2026-09-17; `/graphql/client-caching`, 2026-09-17 — second topic in
+  the Client nav group) —
   see "GraphQL hub
   subtopic wiring" section above for the `GqlNavComponent` accordion structural fix (17th
   `*NavComponent`-based hub in a row missing it at pilot time), the `gql-fundamentals`/
@@ -10169,10 +10215,10 @@ this same check before any other new hub's first subtopic set:
   with the Angular hub's own `directives-demo` topic's unquoted bare `directives` key;
   `gql-error-handling` collided with the JavaScript hub's own bare `error-handling` topic key;
   `schema-definition-language`, `type-system`, `queries`, `variables-arguments`, `mutations`,
-  `subscriptions`, `resolvers`, `dataloader`, `auth`, `apollo-server`, `pagination`, and
-  `apollo-client` are all collision-free and left bare — confirmed via a direct grep that no other
-  hub's `app.routes.ts` route path is literally `auth`/`apollo-server`/`pagination`/
-  `apollo-client`), the
+  `subscriptions`, `resolvers`, `dataloader`, `auth`, `apollo-server`, `pagination`,
+  `apollo-client`, and `client-caching` are all collision-free and left bare — confirmed via a
+  direct grep that no other hub's `app.routes.ts` route path is literally
+  `auth`/`apollo-server`/`pagination`/`apollo-client`/`client-caching`), the
   no-live-playground
   note, and the
   genuine main-page fixes: the cross-codeTab undeclared-`Post.author`-field bug (Fundamentals);
@@ -10213,7 +10259,13 @@ this same check before any other new hub's first subtopic set:
   a QnA wrong on three separate counts about aborting an in-flight query (`fetchPolicy` is
   unrelated; `client.watchQuery().cancel()` doesn't exist; no such "React 18 AbortSignal
   integration" exists) — fixed with the real, verified `context.fetchOptions.signal` mechanism
-  (Apollo Client).
+  (Apollo Client); and TWO more genuine fixes on client-caching.ts — a `cache.modify`
+  theory bullet plus a QnA both overstating INVALIDATE's effect (it does not itself change a
+  field's cached value or force a network fetch, verified against Apollo's own GitHub issue
+  #7060; the documented fix is wrapping it in `client.refetchQueries({ updateCache })`), and a
+  normalization theory bullet with embedded-vs-referenced exactly backwards (unnormalized
+  objects are stored EMBEDDED inline in the parent, not "by reference" — Apollo's own
+  `Reference` type specifically represents a NORMALIZED entity) (Client Caching).
 - **Messaging/Kafka hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Burnt-orange theme `$accent: #9a3412`, `$tint: #fff7ed`, dark `#fdba74`, dark bg `#2d1a0e`. Search prefix `kafka-`. Route: `/messaging`.
   CSS classes: `.kafka-page`, `.kafka-icon`, `.kafka-section`. Icon content: `⇄` at `font-size: 1.8rem`. `tech="javascript"`.
