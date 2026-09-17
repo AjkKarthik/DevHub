@@ -9782,7 +9782,16 @@ off here with a date.
   before it could break a sibling `[prev]`/`[next]` reference (no safe escape exists for that
   collision). SUBTOPICS key `client-caching` collision-free, left bare. All 6 touchpoints wired.
   This completes the Client nav group's 2nd of however-many topics so far.
-- [ ] `/graphql/code-generation` — Code Generation
+- [x] 2026-09-17 — `/graphql/code-generation` — Code Generation. Fixed the "Client Usage"
+  codeTab's own comment claiming a masked fragment field (author { ...AuthorFields }) "has
+  type string" -- verified against client-preset's own docs that fragment masking is ON by
+  default; direct access is a TS2339 compile error, useFragment() is required to unmask it.
+  3 subtopics: (1) the verified masking fix with a broken-vs-fixed codeTab pair; (2)
+  near-operation-file's real two-output config plus the documents-glob exclusion gotcha; (3)
+  the two ways to authenticate a protected introspection endpoint, with the real tradeoff
+  neither avoids. SUBTOPICS key `code-generation` collision-free, left bare. All 6
+  touchpoints wired. This completes the Client nav group (apollo-client, client-caching,
+  code-generation).
 - [ ] `/graphql/performance` — Performance & Security
 - [ ] `/graphql/federation` — Schema Federation
 - [ ] `/graphql/testing` — Testing GraphQL

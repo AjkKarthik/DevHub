@@ -9914,6 +9914,54 @@ this same check before any other new hub's first subtopic set:
    h1/breadcrumb (all 4 levels, including the curly-quote `[prev]`/`[next]` label rendering
    correctly), 860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content
    confirmed on all three. **GraphQL hub Phase 10: 16 of 20 topics complete.**
+24. **The `code-generation` batch — the third and final topic in the Client nav group — found and
+   fixed a genuine main-page inaccuracy, verified against GraphQL Code Generator's own client-
+   preset docs before publishing**: the "Client Usage" codeTab's own comment claimed
+   `data.post.author.name has type string` for a field spread with a fragment (`author {
+   ...AuthorFields }`) — but client-preset enables fragment masking ON BY DEFAULT, verified via
+   WebFetch against the-guild.dev's own client-preset page ("the client-preset comes with
+   Fragment Masking enabled by default"). A masked field is generated as an opaque
+   `FragmentType<...>`, not the fragment's real shape — direct access to `post.author.name` is a
+   TypeScript compile error, not a working shortcut; `useFragment(AUTHOR_FIELDS, post.author)` is
+   required to unmask it first. The codeTab's own JSX never actually tried to read
+   `.author.name` — only the trailing COMMENT made the incorrect claim, exactly the kind of gap a
+   build never catches since the code itself compiled fine either way. Fixed the codeTab's
+   comment and tightened the vague "Fragments are typed separately" theory bullet into a precise
+   statement of the real default behavior. Three subtopics, each verified before writing: (1)
+   **fix-adjacent** — a broken-vs-fixed codeTab pair (direct access producing the exact TS2339
+   error vs. the correct `useFragment()` unwrap), with a Try It on why casting a masked field to
+   `any` silently defeats the coupling-prevention masking exists for, rather than solving it; (2)
+   **gap-closing** — the QnA names `near-operation-file` in one sentence and never sets it up;
+   verified via WebFetch against the preset's own official docs that it needs TWO codegen
+   outputs (a plain `typescript`-plugin base-types file plus the preset itself, wired together via
+   `baseTypesPath`), plus a real gotcha the QnA never mentions — a documents glob broad enough to
+   match `.tsx` files re-scans the preset's own `.generated.tsx` output on the next run unless
+   explicitly excluded (`src/**/!(*.generated).{ts,tsx}`); (3) **gap-closing** — the QnA names two
+   ways to authenticate against a protected introspection endpoint (URL-config headers, or a
+   committed pre-downloaded schema file) in one sentence with zero code for either; verified the
+   real `schema` field's URL-keyed-object-with-headers config shape via WebSearch against
+   GraphQL Code Generator's own config reference, built both approaches, and traced the genuine,
+   unavoidable tradeoff neither one eliminates (a live-URL config fails the whole build on a brief
+   API outage; a committed file trades that risk for silent staleness if nobody refreshes it).
+   Nested `${...}` interpolation inside a backtick-wrapped auth header, and a shell
+   line-continuation backslash inside an illustrative curl comment, were both verified correct by
+   extracting the exact stored codeTab body and evaluating it as a real JS template literal before
+   trusting it, per the established verification technique — both resolved to the intended
+   literal output, not double-escaped stray backslashes. No `SUBTOPICS` collision for
+   `code-generation` (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly,
+   confirmed collision-free, left bare). All three `.ts` files and the main-page edit swept clean
+   via the standing apostrophe/bracket-balance/backtick-parity scripts — two flagged apostrophe
+   matches in the third subtopic confirmed safe (inside the backtick-delimited `code:` field's own
+   comment lines, which tolerate bare apostrophes fine). Build passed clean (`EXITCODE:0`, zero
+   real `ERROR` lines). Browser-verified against a fresh dev-server cold-start: no console errors
+   on any of the 4 pages; nav accordion opens with all 3 subtopic links (toggle count 17 across
+   the hub, confirmed both via `window.ng.getComponent()` direct calls and a live
+   `.nav-subtopic-link` DOM query); both main-page fixes confirmed rendering live via direct
+   component-data inspection; all 3 subtopic pages checked individually — correct h1/breadcrumb
+   (all 4 levels), 860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content
+   confirmed on all three. **This completes the GraphQL hub's Client nav group** (apollo-client,
+   client-caching, code-generation — all 3 of 3 topics now have subtopics). **GraphQL hub Phase
+   10: 17 of 20 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -10197,7 +10245,7 @@ this same check before any other new hub's first subtopic set:
   All 22 cards `available: true` in `data/graphql/home/home.ts`. Progress: `gqlTotal=20` in progress.service.ts.
   GraphQL pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. GqlNavComponent at `shared/gql-nav/gql-nav.ts`.
-  Phase 10: **16 of 20 topics have subtopics** (`/graphql/fundamentals`, pilot batch, 2026-09-10;
+  Phase 10: **17 of 20 topics have subtopics** (`/graphql/fundamentals`, pilot batch, 2026-09-10;
   `/graphql/schema-definition-language`, 2026-09-10; `/graphql/type-system`, 2026-09-10;
   `/graphql/queries`, 2026-09-10; `/graphql/variables-arguments`, 2026-09-10;
   `/graphql/directives`, 2026-09-10 — Queries nav group fully done; `/graphql/mutations`,
@@ -10205,8 +10253,8 @@ this same check before any other new hub's first subtopic set:
   Mutations & Subscriptions nav group fully done; `/graphql/resolvers`, 2026-09-17;
   `/graphql/dataloader`, 2026-09-17; `/graphql/auth`, 2026-09-17; `/graphql/apollo-server`,
   2026-09-17; `/graphql/pagination`, 2026-09-17 — Server nav group fully done;
-  `/graphql/apollo-client`, 2026-09-17; `/graphql/client-caching`, 2026-09-17 — second topic in
-  the Client nav group) —
+  `/graphql/apollo-client`, 2026-09-17; `/graphql/client-caching`, 2026-09-17;
+  `/graphql/code-generation`, 2026-09-17 — Client nav group fully done) —
   see "GraphQL hub
   subtopic wiring" section above for the `GqlNavComponent` accordion structural fix (17th
   `*NavComponent`-based hub in a row missing it at pilot time), the `gql-fundamentals`/
@@ -10216,9 +10264,9 @@ this same check before any other new hub's first subtopic set:
   `gql-error-handling` collided with the JavaScript hub's own bare `error-handling` topic key;
   `schema-definition-language`, `type-system`, `queries`, `variables-arguments`, `mutations`,
   `subscriptions`, `resolvers`, `dataloader`, `auth`, `apollo-server`, `pagination`,
-  `apollo-client`, and `client-caching` are all collision-free and left bare — confirmed via a
-  direct grep that no other hub's `app.routes.ts` route path is literally
-  `auth`/`apollo-server`/`pagination`/`apollo-client`/`client-caching`), the
+  `apollo-client`, `client-caching`, and `code-generation` are all collision-free and left bare —
+  confirmed via a direct grep that no other hub's `app.routes.ts` route path is literally
+  `auth`/`apollo-server`/`pagination`/`apollo-client`/`client-caching`/`code-generation`), the
   no-live-playground
   note, and the
   genuine main-page fixes: the cross-codeTab undeclared-`Post.author`-field bug (Fundamentals);
@@ -10265,7 +10313,11 @@ this same check before any other new hub's first subtopic set:
   #7060; the documented fix is wrapping it in `client.refetchQueries({ updateCache })`), and a
   normalization theory bullet with embedded-vs-referenced exactly backwards (unnormalized
   objects are stored EMBEDDED inline in the parent, not "by reference" — Apollo's own
-  `Reference` type specifically represents a NORMALIZED entity) (Client Caching).
+  `Reference` type specifically represents a NORMALIZED entity) (Client Caching); and a "Client
+  Usage" codeTab comment claiming a masked fragment field (`author { ...AuthorFields }`) "has
+  type string" when client-preset enables fragment masking by default — direct access is a
+  TypeScript compile error; `useFragment()` is required to unmask it, verified against
+  client-preset's own official docs (Code Generation).
 - **Messaging/Kafka hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Burnt-orange theme `$accent: #9a3412`, `$tint: #fff7ed`, dark `#fdba74`, dark bg `#2d1a0e`. Search prefix `kafka-`. Route: `/messaging`.
   CSS classes: `.kafka-page`, `.kafka-icon`, `.kafka-section`. Icon content: `⇄` at `font-size: 1.8rem`. `tech="javascript"`.
