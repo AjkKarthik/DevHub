@@ -259,7 +259,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
 
     <div class="nav-group">
       <p class="nav-group-label">Server</p>
-      <a routerLink="/graphql/apollo-server" routerLinkActive="active"><span class="nl-text">Apollo Server</span>@if(p.isDone('gql-apollo-server')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/graphql/apollo-server" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Apollo Server</span>
+        @if(p.isDone('gql-apollo-server')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('apollo-server')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('apollo-server')"
+                  (click)="toggleSubtopics('apollo-server', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('apollo-server'); as apolloServerSubs) {
+        @if (isSubtopicsExpanded('apollo-server')) {
+          <div class="nav-subtopics">
+            @for (s of apolloServerSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/graphql/pagination" routerLinkActive="active"><span class="nl-text">Pagination Patterns</span>@if(p.isDone('gql-pagination')){<span class="nl-done">✓</span>}</a>
     </div>
 

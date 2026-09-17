@@ -307,7 +307,7 @@ const PerformancePlugin: ApolloServerPlugin = {
   ];
 
   qna: QnaItem[] = [
-    { q: 'What changed from Apollo Server 3 to 4?', a: 'Key changes: context moved from ApolloServer to expressMiddleware; cors/bodyParser removed from ApolloServer (pass your own); introspection on by default in all environments; plugin API updated; the server is now framework-agnostic by design.' },
+    { q: 'What changed from Apollo Server 3 to 4?', a: 'Key changes: context moved from ApolloServer to expressMiddleware; cors/bodyParser removed from ApolloServer (pass your own); plugin API updated; the server is now framework-agnostic by design. Introspection\'s NODE_ENV-based default (on unless NODE_ENV=production) is unchanged from v3 — pass introspection: true/false explicitly to override it in either version.' },
     { q: 'Can I use Apollo Server with Fastify instead of Express?', a: 'Yes. Use @as-integrations/fastify or @apollo/server/fastify4 adapters. The setup is similar: instantiate ApolloServer, call start(), then register the Fastify plugin.' },
     { q: 'How do I enable GraphiQL in Apollo Server v4?', a: 'ApolloServerPluginLandingPageLocalDefault is the built-in plugin for the Apollo Sandbox. In production, use ApolloServerPluginLandingPageProductionDefault or disable the landing page entirely.' },
     { q: 'How do I add request ID to every response for correlation?', a: 'Use a plugin: in requestDidStart, generate or read a request ID. In willSendResponse, add it to response.http.headers. Also include it in formatError\'s extensions for error correlation.' },

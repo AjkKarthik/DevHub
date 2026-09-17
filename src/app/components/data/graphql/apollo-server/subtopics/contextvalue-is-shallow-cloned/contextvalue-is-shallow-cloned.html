@@ -1,0 +1,26 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Apollo Server" topicRoute="/graphql/apollo-server"
+    subtopicLabel="executeOperation’s contextValue Is Shallow-Cloned, Not Shared by Reference" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">executeOperation’s contextValue Is Shallow-Cloned, Not Shared by Reference</h1>
+  <p class="page-subtitle">Verified by installing a real Apollo Server and reading its own compiled source: the contextValue object you pass to executeOperation is never the same object your plugins mutate.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the apollo-server batch's third and final verified finding: a plugin's mutation of requestContext.contextValue can never leak back to the object the caller of executeOperation originally passed in, because Apollo Server clones it internally before any plugin ever sees it. This is the last subtopic in this batch — return to the Apollo Server topic overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Apollo Server" topicRoute="/graphql/apollo-server"
+    [prev]="{ label: 'executeOperation’s ‘incremental’ Response Kind, and Why You Probably Won’t See It', route: '/graphql/apollo-server/executeoperation-incremental-response-kind' }" />
+</div>

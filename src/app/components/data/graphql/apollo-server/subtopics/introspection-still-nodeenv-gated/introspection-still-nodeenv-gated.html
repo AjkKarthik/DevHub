@@ -1,0 +1,26 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Apollo Server" topicRoute="/graphql/apollo-server"
+    subtopicLabel="Introspection Is Still NODE_ENV-Gated — Not a v3-to-v4 Change" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">Introspection Is Still NODE_ENV-Gated — Not a v3-to-v4 Change</h1>
+  <p class="page-subtitle">The main page's own QnA claimed Apollo Server 4 made introspection "on by default in all environments" — verified against Apollo's own docs that the real default is still NODE_ENV-dependent, unchanged from v3.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the main page's own "changed in v4" claim about introspection with the real, source-verified default. Next: what the 'incremental' branch of executeOperation's own response.body.kind actually means, and why the main page's Testing codeTab never needs to handle it in practice.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Apollo Server" topicRoute="/graphql/apollo-server"
+    [next]="{ label: 'executeOperation’s ‘incremental’ Response Kind, and Why You Probably Won’t See It', route: '/graphql/apollo-server/executeoperation-incremental-response-kind' }" />
+</div>

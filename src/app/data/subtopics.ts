@@ -4085,4 +4085,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Contextual vs. Strict: Which Cache Mode Does a Rule Actually Need?', route: '/graphql/auth/contextual-vs-strict-cache-modes' },
     { label: 'graphql-shield Is Effectively Unmaintained — Use @envelop/graphql-middleware', route: '/graphql/auth/graphql-shield-unmaintained-envelop-fix' },
   ],
+  'apollo-server': [
+    { label: 'Introspection Is Still NODE_ENV-Gated — Not a v3-to-v4 Change', route: '/graphql/apollo-server/introspection-still-nodeenv-gated' },
+    { label: 'executeOperation’s ‘incremental’ Response Kind, and Why You Probably Won’t See It', route: '/graphql/apollo-server/executeoperation-incremental-response-kind' },
+    { label: 'executeOperation’s contextValue Is Shallow-Cloned, Not Shared by Reference', route: '/graphql/apollo-server/contextvalue-is-shallow-cloned' },
+  ],
 };

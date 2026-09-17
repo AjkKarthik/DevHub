@@ -2929,7 +2929,12 @@ export const routes: Routes = [
       { path: 'contextual-vs-strict-cache-modes', loadComponent: () => import('./components/data/graphql/auth/subtopics/contextual-vs-strict-cache-modes/contextual-vs-strict-cache-modes').then(m => m.ContextualVsStrictCacheModesSubtopic) },
       { path: 'graphql-shield-unmaintained-envelop-fix', loadComponent: () => import('./components/data/graphql/auth/subtopics/graphql-shield-unmaintained-envelop-fix/graphql-shield-unmaintained-envelop-fix').then(m => m.GraphqlShieldUnmaintainedEnvelopFixSubtopic) },
     ] },
-    { path: 'apollo-server',              loadComponent: () => import('./components/data/graphql/apollo-server/apollo-server').then(m => m.GqlApolloServer) },
+    { path: 'apollo-server', children: [
+      { path: '', loadComponent: () => import('./components/data/graphql/apollo-server/apollo-server').then(m => m.GqlApolloServer) },
+      { path: 'introspection-still-nodeenv-gated', loadComponent: () => import('./components/data/graphql/apollo-server/subtopics/introspection-still-nodeenv-gated/introspection-still-nodeenv-gated').then(m => m.IntrospectionStillNodeenvGatedSubtopic) },
+      { path: 'executeoperation-incremental-response-kind', loadComponent: () => import('./components/data/graphql/apollo-server/subtopics/executeoperation-incremental-response-kind/executeoperation-incremental-response-kind').then(m => m.ExecuteoperationIncrementalResponseKindSubtopic) },
+      { path: 'contextvalue-is-shallow-cloned', loadComponent: () => import('./components/data/graphql/apollo-server/subtopics/contextvalue-is-shallow-cloned/contextvalue-is-shallow-cloned').then(m => m.ContextvalueIsShallowClonedSubtopic) },
+    ] },
     { path: 'pagination',                 loadComponent: () => import('./components/data/graphql/pagination/pagination').then(m => m.GqlPagination) },
     { path: 'apollo-client',              loadComponent: () => import('./components/data/graphql/apollo-client/apollo-client').then(m => m.GqlApolloClient) },
     { path: 'client-caching',             loadComponent: () => import('./components/data/graphql/client-caching/client-caching').then(m => m.GqlClientCaching) },

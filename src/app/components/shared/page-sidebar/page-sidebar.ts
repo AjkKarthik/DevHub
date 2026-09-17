@@ -39124,6 +39124,43 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Apollo Server plugins hook into the request lifecycle for cross-cutting concerns (logging, tracing) similar to middleware in a REST framework.',
     ],
   },
+  'graphql/apollo-server/introspection-still-nodeenv-gated': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'executeOperation’s ‘incremental’ Response Kind', route: '/graphql/apollo-server/executeoperation-incremental-response-kind' },
+      { label: 'Apollo Server', route: '/graphql/apollo-server' },
+    ],
+    tip: 'Verified against Apollo\'s own current docs: introspection defaults to enabled unless NODE_ENV=production. This has never changed between Apollo Server 3 and 4 -- pass introspection explicitly to control it in either version.',
+    gotchas: [
+      'A PaaS deployment that never sets NODE_ENV at all leaves introspection enabled by default -- the "unless production" gate only fires when NODE_ENV is literally the string production.',
+      'Disabling introspection alone does not stop a determined client -- Angular\'s own field-suggestion errors and schema-diffing tools can still reconstruct much of a schema.',
+    ],
+  },
+  'graphql/apollo-server/executeoperation-incremental-response-kind': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Introspection Is Still NODE_ENV-Gated', route: '/graphql/apollo-server/introspection-still-nodeenv-gated' },
+      { label: 'contextValue Is Shallow-Cloned', route: '/graphql/apollo-server/contextvalue-is-shallow-cloned' },
+      { label: 'Apollo Server', route: '/graphql/apollo-server' },
+    ],
+    tip: 'response.body.kind is \'single\' for every ordinary response and \'incremental\' only for @defer/@stream results -- which need an alpha graphql-js v17 install AND explicit schema opt-in, so most production apps never see the second branch.',
+    gotchas: [
+      'The main page\'s own Testing codeTab narrows on kind === \'single\' as correct future-proofing, not dead code -- TypeScript requires the check before singleResult is accessible at all.',
+      'Installing a graphql-js version that technically supports @defer/@stream does not enable them -- the directives must be explicitly declared in the schema\'s own SDL first.',
+    ],
+  },
+  'graphql/apollo-server/contextvalue-is-shallow-cloned': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'executeOperation’s ‘incremental’ Response Kind', route: '/graphql/apollo-server/executeoperation-incremental-response-kind' },
+      { label: 'Apollo Server', route: '/graphql/apollo-server' },
+    ],
+    tip: 'Verified directly from the installed @apollo/server source: executeOperation clones the contextValue you pass with Object.assign(Object.create(proto), object) -- a genuine shallow clone, never a shared reference.',
+    gotchas: [
+      'A plugin adding a NEW top-level property to requestContext.contextValue can never leak it back to the object the caller originally passed in -- only the clone was ever mutated.',
+      'Mutating an EXISTING nested object referenced by contextValue (a db connection, a mutable array) IS visible outside the request -- the shallow clone shares inner references, it just never shares the top-level object itself.',
+    ],
+  },
   'graphql/federation': {
     apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
     related: [
