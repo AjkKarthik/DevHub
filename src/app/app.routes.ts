@@ -2953,7 +2953,12 @@ export const routes: Routes = [
       { path: 'embedded-vs-normalized-objects', loadComponent: () => import('./components/data/graphql/client-caching/subtopics/embedded-vs-normalized-objects/embedded-vs-normalized-objects').then(m => m.EmbeddedVsNormalizedObjectsSubtopic) },
       { path: 'persisting-cache-apollo3', loadComponent: () => import('./components/data/graphql/client-caching/subtopics/persisting-cache-apollo3/persisting-cache-apollo3').then(m => m.PersistingCacheApollo3Subtopic) },
     ] },
-    { path: 'code-generation',            loadComponent: () => import('./components/data/graphql/code-generation/code-generation').then(m => m.GqlCodeGeneration) },
+    { path: 'code-generation', children: [
+      { path: '', loadComponent: () => import('./components/data/graphql/code-generation/code-generation').then(m => m.GqlCodeGeneration) },
+      { path: 'fragment-masking-blocks-direct-access', loadComponent: () => import('./components/data/graphql/code-generation/subtopics/fragment-masking-blocks-direct-access/fragment-masking-blocks-direct-access').then(m => m.FragmentMaskingBlocksDirectAccessSubtopic) },
+      { path: 'near-operation-file-preset', loadComponent: () => import('./components/data/graphql/code-generation/subtopics/near-operation-file-preset/near-operation-file-preset').then(m => m.NearOperationFilePresetSubtopic) },
+      { path: 'authenticated-introspection-endpoint', loadComponent: () => import('./components/data/graphql/code-generation/subtopics/authenticated-introspection-endpoint/authenticated-introspection-endpoint').then(m => m.AuthenticatedIntrospectionEndpointSubtopic) },
+    ] },
     { path: 'performance',                loadComponent: () => import('./components/data/graphql/performance/performance').then(m => m.GqlPerformance) },
     { path: 'federation',                 loadComponent: () => import('./components/data/graphql/federation/federation').then(m => m.GqlFederation) },
     { path: 'testing',                    loadComponent: () => import('./components/data/graphql/testing/testing').then(m => m.GqlTesting) },

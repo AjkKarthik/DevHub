@@ -4100,6 +4100,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Reactive Variables for Global Client-Side State', route: '/graphql/apollo-client/reactive-variables-global-state' },
     { label: 'The update Function for Manual Cache Writes', route: '/graphql/apollo-client/manual-cache-updates' },
   ],
+  'code-generation': [
+    { label: 'Fragment Masking Blocks Direct Field Access', route: '/graphql/code-generation/fragment-masking-blocks-direct-access' },
+    { label: 'Setting Up near-operation-file for Colocated Types', route: '/graphql/code-generation/near-operation-file-preset' },
+    { label: 'Authenticating codegen Against a Protected Endpoint', route: '/graphql/code-generation/authenticated-introspection-endpoint' },
+  ],
   'client-caching': [
     { label: 'INVALIDATE Alone Doesn’t Force a Refetch', route: '/graphql/client-caching/invalidate-does-not-force-refetch' },
     { label: 'Unnormalized Objects Are Embedded, Never Referenced', route: '/graphql/client-caching/embedded-vs-normalized-objects' },

@@ -39294,6 +39294,43 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Overly generic generated types (falling back to any/unknown for complex union/interface cases) can reduce the actual type-safety benefit if not configured carefully.',
     ],
   },
+  'graphql/code-generation/fragment-masking-blocks-direct-access': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Setting Up near-operation-file for Colocated Types', route: '/graphql/code-generation/near-operation-file-preset' },
+      { label: 'Code Generation', route: '/graphql/code-generation' },
+    ],
+    tip: 'Verified against client-preset\'s own docs: fragment masking is ON by default. A field spreading a fragment is typed as an opaque FragmentType<...> — reading its fields directly is a compile error, not a shortcut. Call useFragment() to unmask it.',
+    gotchas: [
+      'Casting a masked field to any restores unmasked access but defeats the point of masking — it silently re-couples the component to that fragment\'s internal shape with zero compile-time protection.',
+      'useFragment() has a trivial runtime cost — it is essentially a type-level unwrap, not a network call or re-fetch.',
+    ],
+  },
+  'graphql/code-generation/near-operation-file-preset': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Fragment Masking Blocks Direct Field Access', route: '/graphql/code-generation/fragment-masking-blocks-direct-access' },
+      { label: 'Authenticating codegen Against a Protected Endpoint', route: '/graphql/code-generation/authenticated-introspection-endpoint' },
+      { label: 'Code Generation', route: '/graphql/code-generation' },
+    ],
+    tip: 'near-operation-file needs TWO codegen outputs — a plain typescript-plugin output for shared schema types, plus the preset itself for per-operation files pointed back at it via baseTypesPath.',
+    gotchas: [
+      'A documents glob broad enough to match .tsx files will re-scan the .generated.tsx files near-operation-file just produced — exclude the generated extension, e.g. src/**/!(*.generated).{ts,tsx}.',
+      'Deleting the shared base-types output (e.g. because it is gitignored) breaks every already-generated per-operation file until codegen is re-run to regenerate it.',
+    ],
+  },
+  'graphql/code-generation/authenticated-introspection-endpoint': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Setting Up near-operation-file for Colocated Types', route: '/graphql/code-generation/near-operation-file-preset' },
+      { label: 'Code Generation', route: '/graphql/code-generation' },
+    ],
+    tip: 'The schema field accepts an object keyed by URL with a headers property for authenticated introspection — schema: { url: { headers: { Authorization: "Bearer ..." } } } — verified against GraphQL Code Generator\'s own schema-field config reference.',
+    gotchas: [
+      'A live-URL schema config makes a real network request as part of every codegen run — a brief API outage fails the whole build step, with no built-in fallback.',
+      'A committed schema file removes that live dependency but introduces its own staleness risk if nobody remembers to re-download it after a schema change.',
+    ],
+  },
 
   // ── Node.js: per-page entries ───────────────────────────────────────────────
   'node/core-modules': {
