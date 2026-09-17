@@ -4090,4 +4090,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'executeOperation’s ‘incremental’ Response Kind, and Why You Probably Won’t See It', route: '/graphql/apollo-server/executeoperation-incremental-response-kind' },
     { label: 'executeOperation’s contextValue Is Shallow-Cloned, Not Shared by Reference', route: '/graphql/apollo-server/contextvalue-is-shallow-cloned' },
   ],
+  'pagination': [
+    { label: 'The Resolver’s Own totalCount Call Repeats Mistake #4', route: '/graphql/pagination/totalcount-cache-fix' },
+    { label: 'Composite Cursors Prevent Skipped Rows When Sort Keys Tie', route: '/graphql/pagination/composite-cursor-tie-breaking' },
+    { label: 'Implementing Backward Pagination with last and before', route: '/graphql/pagination/backward-pagination-last-before' },
+  ],
 };

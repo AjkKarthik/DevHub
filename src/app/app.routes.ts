@@ -2935,7 +2935,12 @@ export const routes: Routes = [
       { path: 'executeoperation-incremental-response-kind', loadComponent: () => import('./components/data/graphql/apollo-server/subtopics/executeoperation-incremental-response-kind/executeoperation-incremental-response-kind').then(m => m.ExecuteoperationIncrementalResponseKindSubtopic) },
       { path: 'contextvalue-is-shallow-cloned', loadComponent: () => import('./components/data/graphql/apollo-server/subtopics/contextvalue-is-shallow-cloned/contextvalue-is-shallow-cloned').then(m => m.ContextvalueIsShallowClonedSubtopic) },
     ] },
-    { path: 'pagination',                 loadComponent: () => import('./components/data/graphql/pagination/pagination').then(m => m.GqlPagination) },
+    { path: 'pagination', children: [
+      { path: '', loadComponent: () => import('./components/data/graphql/pagination/pagination').then(m => m.GqlPagination) },
+      { path: 'totalcount-cache-fix', loadComponent: () => import('./components/data/graphql/pagination/subtopics/totalcount-cache-fix/totalcount-cache-fix').then(m => m.TotalcountCacheFixSubtopic) },
+      { path: 'composite-cursor-tie-breaking', loadComponent: () => import('./components/data/graphql/pagination/subtopics/composite-cursor-tie-breaking/composite-cursor-tie-breaking').then(m => m.CompositeCursorTieBreakingSubtopic) },
+      { path: 'backward-pagination-last-before', loadComponent: () => import('./components/data/graphql/pagination/subtopics/backward-pagination-last-before/backward-pagination-last-before').then(m => m.BackwardPaginationLastBeforeSubtopic) },
+    ] },
     { path: 'apollo-client',              loadComponent: () => import('./components/data/graphql/apollo-client/apollo-client').then(m => m.GqlApolloClient) },
     { path: 'client-caching',             loadComponent: () => import('./components/data/graphql/client-caching/client-caching').then(m => m.GqlClientCaching) },
     { path: 'code-generation',            loadComponent: () => import('./components/data/graphql/code-generation/code-generation').then(m => m.GqlCodeGeneration) },

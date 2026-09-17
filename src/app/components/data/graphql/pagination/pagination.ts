@@ -133,6 +133,10 @@ const resolvers = {
 
       const hasNextPage = items.length > first;
       const nodes = hasNextPage ? items.slice(0, first) : items;
+      // NOTE: an uncached db.posts.count() on every request is exactly the anti-pattern
+      // the "Running COUNT(*) on every request" mistake below warns against -- shown
+      // simplified here for clarity, but see that mistake's fix (and its own subtopic)
+      // for a real short-TTL cache wrapper before using this in production.
       const totalCount = await db.posts.count();
 
       return {
@@ -273,6 +277,8 @@ const nodes = hasNextPage ? items.slice(0, first) : items;`,
 
       const hasNextPage = items.length > first;
       const nodes = hasNextPage ? items.slice(0, first) : items;
+      // NOTE: same simplification as the main Resolver codeTab -- an uncached count()
+      // here repeats mistake #4 above. A real implementation should cache this.
       const totalCount = await db.posts.count();
 
       return {

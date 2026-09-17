@@ -1,0 +1,26 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Pagination Patterns" topicRoute="/graphql/pagination"
+    subtopicLabel="The Resolver's Own totalCount Call Repeats Mistake #4" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">The Resolver's Own totalCount Call Repeats Mistake #4</h1>
+  <p class="page-subtitle">The main page's own mistake block warns against uncached COUNT(*) on every request -- then its own Resolver codeTab and Challenge solution both do exactly that. A real TTL-cached fix, verified end to end.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This closes a real gap between the main page's own stated best practice and its own working code. Next: the composite-cursor tie-breaking bug hiding in the same Resolver codeTab's cursor design.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Pagination Patterns" topicRoute="/graphql/pagination"
+    [next]="{ label: 'Composite Cursors Prevent Skipped Rows When Sort Keys Tie', route: '/graphql/pagination/composite-cursor-tie-breaking' }" />
+</div>

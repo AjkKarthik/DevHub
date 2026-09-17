@@ -1,0 +1,26 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Pagination Patterns" topicRoute="/graphql/pagination"
+    subtopicLabel="Implementing Backward Pagination with last and before" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">Implementing Backward Pagination with last and before</h1>
+  <p class="page-subtitle">The main page's own QnA describes the reverse-then-reverse technique in one sentence and never shows it as code -- built and verified against a concrete desc-ordered feed.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This is the last subtopic in this batch -- it completes the picture of the Relay connection spec's own last/before direction, which the main page names but never demonstrates in code. Return to the Pagination Patterns topic overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Pagination Patterns" topicRoute="/graphql/pagination"
+    [prev]="{ label: 'Composite Cursors Prevent Skipped Rows When Sort Keys Tie', route: '/graphql/pagination/composite-cursor-tie-breaking' }" />
+</div>

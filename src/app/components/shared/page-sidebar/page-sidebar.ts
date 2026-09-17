@@ -39067,6 +39067,43 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A cursor should be OPAQUE to the client (an encoded token, not a raw offset) so the server can change its underlying pagination mechanism without breaking client cursors.',
     ],
   },
+  'graphql/pagination/totalcount-cache-fix': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Composite Cursors Prevent Skipped Rows', route: '/graphql/pagination/composite-cursor-tie-breaking' },
+      { label: 'Pagination Patterns', route: '/graphql/pagination' },
+    ],
+    tip: 'The main page\'s own Resolver codeTab and Challenge solution both call db.posts.count() unconditionally on every request -- exactly what mistake #4 on the same page warns against. A short-TTL cache wrapper, created ONCE at module scope, collapses a burst of requests into one DB call.',
+    gotchas: [
+      'Creating the cache wrapper INSIDE the resolver function instead of at module scope recreates a fresh, empty cache on every request -- the caching provides zero benefit.',
+      'This is a staleness tradeoff, not a correctness fix -- pick a TTL that matches how quickly totalCount actually needs to reflect new writes.',
+    ],
+  },
+  'graphql/pagination/composite-cursor-tie-breaking': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'totalCount Caching Fix', route: '/graphql/pagination/totalcount-cache-fix' },
+      { label: 'Backward Pagination with last/before', route: '/graphql/pagination/backward-pagination-last-before' },
+      { label: 'Pagination Patterns', route: '/graphql/pagination' },
+    ],
+    tip: 'The main page\'s own QnA already names the fix (a cursor encoding both createdAt and id) -- but its own Resolver codeTab never applies it, leaving a real skipped-row risk whenever two rows tie on createdAt.',
+    gotchas: [
+      'A cursor keyed on id alone, with orderBy on createdAt alone, has no deterministic tiebreaker -- SQL makes no guarantee about tied rows\' relative order across two separate query executions.',
+      'The fix needs THREE coordinated changes: a compound orderBy, a compound WHERE comparison, and a cursor that encodes both fields -- not just one of the three.',
+    ],
+  },
+  'graphql/pagination/backward-pagination-last-before': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Composite Cursors Prevent Skipped Rows', route: '/graphql/pagination/composite-cursor-tie-breaking' },
+      { label: 'Pagination Patterns', route: '/graphql/pagination' },
+    ],
+    tip: '"before: cursor" means items EARLIER in the connection\'s own overall order -- for a feed sorted newest-first, that means NEWER items (larger id), the opposite of what the name might suggest at a glance.',
+    gotchas: [
+      'Backward pagination needs the comparison flipped (gt instead of lt), the orderBy direction flipped (asc instead of desc), AND the final result array reversed -- three coordinated changes, not one.',
+      'The "fetch one extra" item to drop is the LARGEST id in the ascending-sorted batch, not the smallest -- it is easy to drop the wrong end of the array by mistake.',
+    ],
+  },
   'graphql/testing': {
     apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
     related: [
