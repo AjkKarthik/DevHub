@@ -9749,7 +9749,15 @@ off here with a date.
   object)`), never shared by reference with the caller's original object. SUBTOPICS key
   `apollo-server` collision-free (checked both forms + a direct `app.routes.ts` route-path grep),
   left bare. All 6 touchpoints wired.
-- [ ] `/graphql/pagination` — Pagination Patterns
+- [x] 2026-09-17 — `/graphql/pagination` — Pagination Patterns. Fixed a self-contained
+  inconsistency: mistake #4 warns against uncached `db.posts.count()` on every request, but the
+  page's own Resolver codeTab and Challenge solution both do exactly that — added explanatory
+  comments pointing to the fix. 3 subtopics: (1) a verified TTL-cached `totalCount` wrapper; (2)
+  a compound-cursor fix for the tie-breaking bug the page's own QnA names but never applies (a
+  single-field cursor + single-field orderBy can silently skip a tied row); (3) a verified
+  reverse-then-reverse backward pagination (`last`/`before`) implementation the QnA describes in
+  one sentence and never shows in code. This completes the Server nav group (apollo-server,
+  pagination). SUBTOPICS key `pagination` collision-free, left bare. All 6 touchpoints wired.
 - [ ] `/graphql/apollo-client` — Apollo Client
 - [ ] `/graphql/client-caching` — Client-Side Caching
 - [ ] `/graphql/code-generation` — Code Generation

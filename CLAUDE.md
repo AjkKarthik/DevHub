@@ -9799,6 +9799,43 @@ this same check before any other new hub's first subtopic set:
    h1/breadcrumb (all 4 levels, curly-quote titles rendering correctly), 860px wrapper via
    `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on all three. **GraphQL
    hub Phase 10: 13 of 20 topics complete.**
+21. **The `pagination` batch — the second and final topic in the Server nav group — found and
+   fixed a genuine, self-contained inconsistency requiring zero external research**: the main
+   page's own mistake #4 (`Running COUNT(*) on every request without caching`) explicitly warns
+   against uncached `db.posts.count()` calls — but the SAME page's own "Resolver" codeTab and its
+   own Challenge reference solution both call `await db.posts.count()` unconditionally, on every
+   single request, exactly the anti-pattern the mistake block warns against. Fixed with explanatory
+   comments in both codeTabs pointing to the real fix. Three subtopics, each verified via direct
+   Node.js execution: (1) **fix-adjacent** — a real TTL-cached wrapper (`cachedCounter`), verified
+   that 3 calls within a 10s window collapse to 1 real DB call, with a Try It on the easy-to-miss
+   mistake of instantiating the cache wrapper INSIDE the resolver function (recreating a fresh,
+   empty cache every request) instead of once at module scope; (2) **gap-closing** — the main
+   page's own QnA on cursor encoding already names the fix ("the cursor might encode `{ createdAt,
+   id }` to ensure stable ordering even with identical timestamps"), but the Resolver codeTab's own
+   cursor only ever encodes `node.id` with a single-field `orderBy: { createdAt: 'desc' }`; verified
+   via a concrete simulation that a tied-timestamp group whose internal order differs between two
+   query executions can silently and permanently skip a row, then built the compound-cursor fix
+   (two-field `orderBy`, compound `WHERE` comparison, cursor encoding both fields); (3)
+   **gap-closing** — the main page's QnA describes backward pagination in one sentence ("fetch
+   results in reverse order using the before cursor, then reverse the array") with zero code
+   anywhere; built and verified the full reverse-then-reverse resolver against a concrete 9-item
+   desc-ordered feed, correcting an initial wrong first draft of the simulation (which had the
+   `before`/`gt` vs `after`/`lt` and trim-direction logic backwards) before publishing anything.
+   **A real bare-single-brace-in-prose gotcha caught before the build**: the composite-cursor
+   subtopic's own page-subtitle text contained a literal `{ createdAt, id }` as static `.html`
+   text — the same established gotcha (Angular's AOT template compiler treats a bare `{` as a
+   potential ICU-expansion start) — entity-escaped as `&#123;createdAt, id&#125;` before the build
+   ever ran, confirmed via a live browser check rendering as literal text afterward. No
+   `SUBTOPICS` collision for `pagination` (checked both `subtopics.ts` forms and grepped
+   `app.routes.ts` directly, confirmed collision-free, left bare). Build passed clean
+   (`EXITCODE:0`, zero real `ERROR` lines). Browser-verified: no console errors on any of the 4
+   pages; nav accordion opens with all 3 subtopic links (toggle count 14 across the hub); both
+   main-page fixes confirmed rendering live via direct component-data inspection; all 3 subtopic
+   pages checked individually — correct h1/breadcrumb (all 4 levels), 860px wrapper via
+   `getComputedStyle`, the entity-escaped braces rendering as literal text, tailored (not DEFAULT)
+   sidebar content confirmed on all three. **This completes the GraphQL hub's Server nav group**
+   (apollo-server, pagination — both of 2 topics now have subtopics). **GraphQL hub Phase 10: 14
+   of 20 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -10082,14 +10119,14 @@ this same check before any other new hub's first subtopic set:
   All 22 cards `available: true` in `data/graphql/home/home.ts`. Progress: `gqlTotal=20` in progress.service.ts.
   GraphQL pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. GqlNavComponent at `shared/gql-nav/gql-nav.ts`.
-  Phase 10: **13 of 20 topics have subtopics** (`/graphql/fundamentals`, pilot batch, 2026-09-10;
+  Phase 10: **14 of 20 topics have subtopics** (`/graphql/fundamentals`, pilot batch, 2026-09-10;
   `/graphql/schema-definition-language`, 2026-09-10; `/graphql/type-system`, 2026-09-10;
   `/graphql/queries`, 2026-09-10; `/graphql/variables-arguments`, 2026-09-10;
   `/graphql/directives`, 2026-09-10 — Queries nav group fully done; `/graphql/mutations`,
   2026-09-10; `/graphql/error-handling`, 2026-09-16; `/graphql/subscriptions`, 2026-09-16 —
   Mutations & Subscriptions nav group fully done; `/graphql/resolvers`, 2026-09-17;
   `/graphql/dataloader`, 2026-09-17; `/graphql/auth`, 2026-09-17; `/graphql/apollo-server`,
-  2026-09-17 — second topic in the Server nav group) —
+  2026-09-17; `/graphql/pagination`, 2026-09-17 — Server nav group fully done) —
   see "GraphQL hub
   subtopic wiring" section above for the `GqlNavComponent` accordion structural fix (17th
   `*NavComponent`-based hub in a row missing it at pilot time), the `gql-fundamentals`/
@@ -10098,9 +10135,9 @@ this same check before any other new hub's first subtopic set:
   with the Angular hub's own `directives-demo` topic's unquoted bare `directives` key;
   `gql-error-handling` collided with the JavaScript hub's own bare `error-handling` topic key;
   `schema-definition-language`, `type-system`, `queries`, `variables-arguments`, `mutations`,
-  `subscriptions`, `resolvers`, `dataloader`, `auth`, and `apollo-server` are all collision-free
-  and left bare — the latter confirmed via a direct grep that no other hub's `app.routes.ts`
-  route path is literally `auth`/`apollo-server`), the
+  `subscriptions`, `resolvers`, `dataloader`, `auth`, `apollo-server`, and `pagination` are all
+  collision-free and left bare — confirmed via a direct grep that no other hub's `app.routes.ts`
+  route path is literally `auth`/`apollo-server`/`pagination`), the
   no-live-playground
   note, and the
   genuine main-page fixes: the cross-codeTab undeclared-`Post.author`-field bug (Fundamentals);
@@ -10135,7 +10172,9 @@ this same check before any other new hub's first subtopic set:
   real (still-alpha, still-SDL-opt-in) status of `@defer`/`@stream` incremental delivery in
   `graphql-js`, and a live-verified finding (via a real `@apollo/server@5.5.1` install) that
   `executeOperation()`'s `contextValue` is shallow-cloned via `cloneObject()`, never shared by
-  reference with the caller's original object (Apollo Server).
+  reference with the caller's original object (Apollo Server); and a self-contained inconsistency
+  where the page's own mistake #4 warns against uncached `db.posts.count()` on every request, but
+  its own Resolver codeTab and Challenge solution both do exactly that (Pagination Patterns).
 - **Messaging/Kafka hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Burnt-orange theme `$accent: #9a3412`, `$tint: #fff7ed`, dark `#fdba74`, dark bg `#2d1a0e`. Search prefix `kafka-`. Route: `/messaging`.
   CSS classes: `.kafka-page`, `.kafka-icon`, `.kafka-section`. Icon content: `⇄` at `font-size: 1.8rem`. `tech="javascript"`.
