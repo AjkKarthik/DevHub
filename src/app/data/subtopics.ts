@@ -4110,4 +4110,10 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Unnormalized Objects Are Embedded, Never Referenced', route: '/graphql/client-caching/embedded-vs-normalized-objects' },
     { label: 'Persisting the Cache with apollo3-cache-persist', route: '/graphql/client-caching/persisting-cache-apollo3' },
   ],
+  // NOTE: hub-prefixed — bare 'performance' is already claimed by the Node.js hub's own topic.
+  'gql-performance': [
+    { label: 'Computing the Response’s Real Cache-Control Header', route: '/graphql/performance/cache-control-header-computation' },
+    { label: 'Aliased Root Fields Are Not Stopped by Disabling Batching', route: '/graphql/performance/aliased-root-fields-bypass-batching-disable' },
+    { label: 'How Field-Suggestion Blocking Actually Works', route: '/graphql/performance/field-suggestion-blocking-mechanism' },
+  ],
 };

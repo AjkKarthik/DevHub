@@ -1,0 +1,26 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Performance &amp; Security" topicRoute="/graphql/performance"
+    subtopicLabel="Computing the Response's Real Cache-Control Header" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">Computing the Response's Real Cache-Control Header</h1>
+  <p class="page-subtitle">The main page's own &#64;cacheControl codeTab used the wrong enum name and never showed how the "minimum maxAge" rule actually computes. Fixed both, and verified the separate, independent rule that governs scope.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>Response caching is the last of the five performance/security techniques this topic covers. Next up: the main page's own QnA on the "batched query" attack conflates two genuinely different mechanisms -- see why disabling batching does not stop the exact example the QnA gives.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Performance &amp; Security" topicRoute="/graphql/performance"
+    [next]="{ label: 'Aliased Root Fields Are Not Stopped by Disabling Batching', route: '/graphql/performance/aliased-root-fields-bypass-batching-disable' }" />
+</div>

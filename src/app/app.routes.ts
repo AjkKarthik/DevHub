@@ -2959,7 +2959,12 @@ export const routes: Routes = [
       { path: 'near-operation-file-preset', loadComponent: () => import('./components/data/graphql/code-generation/subtopics/near-operation-file-preset/near-operation-file-preset').then(m => m.NearOperationFilePresetSubtopic) },
       { path: 'authenticated-introspection-endpoint', loadComponent: () => import('./components/data/graphql/code-generation/subtopics/authenticated-introspection-endpoint/authenticated-introspection-endpoint').then(m => m.AuthenticatedIntrospectionEndpointSubtopic) },
     ] },
-    { path: 'performance',                loadComponent: () => import('./components/data/graphql/performance/performance').then(m => m.GqlPerformance) },
+    { path: 'performance', children: [
+      { path: '', loadComponent: () => import('./components/data/graphql/performance/performance').then(m => m.GqlPerformance) },
+      { path: 'cache-control-header-computation', loadComponent: () => import('./components/data/graphql/performance/subtopics/cache-control-header-computation/cache-control-header-computation').then(m => m.CacheControlHeaderComputationSubtopic) },
+      { path: 'aliased-root-fields-bypass-batching-disable', loadComponent: () => import('./components/data/graphql/performance/subtopics/aliased-root-fields-bypass-batching-disable/aliased-root-fields-bypass-batching-disable').then(m => m.AliasedRootFieldsBypassBatchingDisableSubtopic) },
+      { path: 'field-suggestion-blocking-mechanism', loadComponent: () => import('./components/data/graphql/performance/subtopics/field-suggestion-blocking-mechanism/field-suggestion-blocking-mechanism').then(m => m.FieldSuggestionBlockingMechanismSubtopic) },
+    ] },
     { path: 'federation',                 loadComponent: () => import('./components/data/graphql/federation/federation').then(m => m.GqlFederation) },
     { path: 'testing',                    loadComponent: () => import('./components/data/graphql/testing/testing').then(m => m.GqlTesting) },
     { path: 'cheatsheet',                 loadComponent: () => import('./components/data/graphql/cheatsheet/cheatsheet').then(m => m.GqlCheatsheet) },

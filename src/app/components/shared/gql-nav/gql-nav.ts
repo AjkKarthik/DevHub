@@ -362,7 +362,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
 
     <div class="nav-group">
       <p class="nav-group-label">Advanced</p>
-      <a routerLink="/graphql/performance" routerLinkActive="active"><span class="nl-text">Performance &amp; Best Practices</span>@if(p.isDone('gql-performance')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/graphql/performance" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Performance &amp; Best Practices</span>
+        @if(p.isDone('gql-performance')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('gql-performance')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('gql-performance')"
+                  (click)="toggleSubtopics('gql-performance', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('gql-performance'); as performanceSubs) {
+        @if (isSubtopicsExpanded('gql-performance')) {
+          <div class="nav-subtopics">
+            @for (s of performanceSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/graphql/federation" routerLinkActive="active"><span class="nl-text">Schema Stitching &amp; Federation</span>@if(p.isDone('gql-federation')){<span class="nl-done">✓</span>}</a>
       <a routerLink="/graphql/testing" routerLinkActive="active"><span class="nl-text">Testing GraphQL APIs</span>@if(p.isDone('gql-testing')){<span class="nl-done">✓</span>}</a>
     </div>

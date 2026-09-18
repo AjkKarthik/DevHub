@@ -39200,6 +39200,43 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Resolver-level caching and DataLoader batching solve different performance problems — caching avoids redundant work, batching avoids the N+1 problem, and most production APIs need both.',
     ],
   },
+  'graphql/performance/cache-control-header-computation': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Performance & Best Practices', route: '/graphql/performance' },
+      { label: 'Aliased Root Fields Are Not Stopped by Disabling Batching', route: '/graphql/performance/aliased-root-fields-bypass-batching-disable' },
+    ],
+    tip: 'The @cacheControl directive is not built into Apollo Server\'s default schema — you declare it yourself with the real enum name, CacheControlScope, not CacheScope.',
+    gotchas: [
+      'The overall response header takes the LOWEST maxAge and the most-restrictive scope (PRIVATE if any field is private) across every selected field, computed as two separate, independent rules — fixing one axis never automatically fixes the other.',
+      'An unannotated field is not exempt from the calculation — it defaults to PUBLIC scope and maxAge: 0 for root/non-scalar fields, and can still be the field that drags the whole response down to uncacheable.',
+    ],
+  },
+  'graphql/performance/aliased-root-fields-bypass-batching-disable': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Performance & Best Practices', route: '/graphql/performance' },
+      { label: 'Computing the Response’s Real Cache-Control Header', route: '/graphql/performance/cache-control-header-computation' },
+      { label: 'How Field-Suggestion Blocking Actually Works', route: '/graphql/performance/field-suggestion-blocking-mechanism' },
+    ],
+    tip: 'Apollo Server 4\'s allowBatchedHttpRequests option (off by default) only controls an array of separate operations in one HTTP request — it has zero effect on aliased root fields inside a SINGLE operation, which is ordinary GraphQL syntax with no config to disable.',
+    gotchas: [
+      'A per-HTTP-request rate limiter counts requests, not root fields — a mutation aliasing 5 root-level calls in one operation still only consumes 1 unit from that budget.',
+      'A root-field-count validation rule is the real fix, measuring the same "how much work does this one operation ask for" question as depth limiting, just along a different (breadth, not depth) axis.',
+    ],
+  },
+  'graphql/performance/field-suggestion-blocking-mechanism': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Performance & Best Practices', route: '/graphql/performance' },
+      { label: 'Aliased Root Fields Are Not Stopped by Disabling Batching', route: '/graphql/performance/aliased-root-fields-bypass-batching-disable' },
+    ],
+    tip: 'The "Did you mean" field-suggestion leak comes from ordinary validation, not introspection — disabling introspection in production does nothing to stop it, since the two are independent code paths.',
+    gotchas: [
+      'graphql-js has no built-in option to stop itself from COMPUTING a suggestion during validation — the real fix (graphql-armor\'s block-field-suggestions plugin) strips the suggestion text from the already-generated error message afterward, via a regex.',
+      'The leak works identically on Mutation and Subscription root fields, not just Query fields — the suggestion mechanism runs the same way regardless of which root operation type is being validated.',
+    ],
+  },
   'graphql/client-caching': {
     apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
     related: [
