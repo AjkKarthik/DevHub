@@ -9792,7 +9792,22 @@ off here with a date.
   neither avoids. SUBTOPICS key `code-generation` collision-free, left bare. All 6
   touchpoints wired. This completes the Client nav group (apollo-client, client-caching,
   code-generation).
-- [ ] `/graphql/performance` — Performance & Security
+- [x] 2026-09-17 — `/graphql/performance` — Performance & Security. Fixed the `@cacheControl`
+  codeTab's own directive definition -- it used a nonexistent `CacheScope` enum name instead of
+  the real `CacheControlScope`, and omitted `INTERFACE | UNION` locations plus `inheritMaxAge` --
+  verified against Apollo Server's own caching docs. Tightened a theory bullet stating only half
+  the response-header computation rule (added the independently-verified "scope: PRIVATE if any
+  field is private" half). Rewrote the "batched query" QnA, which conflated aliased root fields
+  in ONE operation (ordinary GraphQL syntax, unaffected by any server config) with Apollo Server
+  4's separate, off-by-default `allowBatchedHttpRequests` transport setting -- the QnA's own
+  prescribed fix does nothing for its own example. 3 subtopics: (1) the verified two-part
+  cache-header computation rule as a real function matching Apollo's own algorithm; (2) a real
+  root-field-count validation rule, verified end-to-end against a live graphql-js install that it
+  rejects the exact 5-field aliased-login attack; (3) graphql-armor's real block-field-suggestions
+  mechanism (a post-hoc regex strip, not a suppression), reproducing the underlying field-name
+  leak via graphql-js's own suggestion text with introspection fully disabled. SUBTOPICS key
+  hub-prefixed to `gql-performance` -- bare `performance` collides with the Node.js hub's own
+  topic. All 6 touchpoints wired. First topic in the Advanced nav group.
 - [ ] `/graphql/federation` — Schema Federation
 - [ ] `/graphql/testing` — Testing GraphQL
 

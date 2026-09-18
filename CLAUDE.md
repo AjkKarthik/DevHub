@@ -9962,6 +9962,46 @@ this same check before any other new hub's first subtopic set:
    confirmed on all three. **This completes the GraphQL hub's Client nav group** (apollo-client,
    client-caching, code-generation — all 3 of 3 topics now have subtopics). **GraphQL hub Phase
    10: 17 of 20 topics complete.**
+25. **The `performance` batch — the first topic in the Advanced nav group — found and fixed THREE
+   genuine main-page issues, verified against Apollo Server's own official caching docs and a
+   live graphql-js install rather than assumed**: the `@cacheControl` codeTab's own directive
+   definition used `CacheScope` for its enum, a name never actually declared anywhere in Apollo
+   Server's real schema-level convention — verified against Apollo's own docs the correct name is
+   `CacheControlScope`, and the full definition also needs `INTERFACE | UNION` locations plus an
+   `inheritMaxAge: Boolean` field the original omitted. Separately, the "minimum maxAge across
+   selected fields" theory bullet only stated HALF the real rule — verified via WebFetch that the
+   response's overall `scope` independently becomes `PRIVATE` if ANY selected field is `PRIVATE`,
+   a second axis the original bullet never mentioned at all. Third, and most substantial: the
+   "batched query" QnA conflated two genuinely unrelated mechanisms — its own example,
+   `mutation { m1: login(...) m2: login(...) }`, is ordinary aliased-root-field GraphQL syntax
+   within ONE operation, completely unaffected by any batching config, while "disabling query
+   batching" (the QnA's own listed mitigation) refers to Apollo Server 4's separate
+   `allowBatchedHttpRequests` option (off by default since v4), which only blocks an ARRAY of
+   independent operations in one POST body. The QnA's own prescribed fix does nothing for its own
+   example. Rewrote all three. Three subtopics, each independently verified: (1) **fix-adjacent**
+   — reproduces Apollo's own documented cache-header algorithm as a real function (`Math.min` for
+   maxAge, `.some()` for the PRIVATE-if-any-private scope rule), matching the main page's own
+   `Post` type example exactly (title maxAge 300 + author maxAge 0/PRIVATE → overall maxAge 0,
+   scope PRIVATE); (2) **fix-adjacent** — a real root-field-count `ValidationRule`, verified
+   end-to-end against a freshly-installed `graphql` package that it genuinely rejects a 5-field
+   aliased-login attack document with the exact claimed error message while passing a compliant
+   2-field mutation clean, closing the gap the batching-disable "fix" cannot; (3) **gap-closing**
+   — graphql-armor's real `block-field-suggestions` mechanism, verified by fetching its own source
+   directly (`error.message.replace(/Did you mean ".+"\?/g, mask)`, a post-hoc regex strip during
+   `onValidate`, NOT a suppression of graphql-js's own suggestion computation) and reproducing the
+   underlying leak itself — a plain validation error against a guessed near-miss field name leaks
+   the real field name via "Did you mean" with introspection fully disabled the whole time,
+   confirmed via direct execution against real graphql-js. **A real bare-`@word`-in-static-HTML
+   gotcha caught by the standard sweep, not the build**: the first subtopic's own page-subtitle
+   contained a literal `@cacheControl` as bare text-node content — fixed with the standard
+   `&#64;` entity escape, confirmed rendering as literal text afterward. SUBTOPICS key
+   hub-prefixed to `gql-performance` — bare `performance` collides with the Node.js hub's own
+   topic. All 6 touchpoints wired. Build passed clean (`EXITCODE:0`, zero real `ERROR` lines).
+   Browser-verified: no console errors on any of the 4 pages; nav accordion opens with all 3
+   subtopic links (toggle count 18 across the hub); all three main-page fixes confirmed rendering
+   live via direct component-data inspection; all 3 subtopic pages checked individually — correct
+   h1/breadcrumb (all 4 levels), 860px wrapper via `getComputedStyle`, tailored (not DEFAULT)
+   sidebar content confirmed on all three. **GraphQL hub Phase 10: 18 of 20 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -10245,7 +10285,7 @@ this same check before any other new hub's first subtopic set:
   All 22 cards `available: true` in `data/graphql/home/home.ts`. Progress: `gqlTotal=20` in progress.service.ts.
   GraphQL pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. GqlNavComponent at `shared/gql-nav/gql-nav.ts`.
-  Phase 10: **17 of 20 topics have subtopics** (`/graphql/fundamentals`, pilot batch, 2026-09-10;
+  Phase 10: **18 of 20 topics have subtopics** (`/graphql/fundamentals`, pilot batch, 2026-09-10;
   `/graphql/schema-definition-language`, 2026-09-10; `/graphql/type-system`, 2026-09-10;
   `/graphql/queries`, 2026-09-10; `/graphql/variables-arguments`, 2026-09-10;
   `/graphql/directives`, 2026-09-10 — Queries nav group fully done; `/graphql/mutations`,
@@ -10254,18 +10294,21 @@ this same check before any other new hub's first subtopic set:
   `/graphql/dataloader`, 2026-09-17; `/graphql/auth`, 2026-09-17; `/graphql/apollo-server`,
   2026-09-17; `/graphql/pagination`, 2026-09-17 — Server nav group fully done;
   `/graphql/apollo-client`, 2026-09-17; `/graphql/client-caching`, 2026-09-17;
-  `/graphql/code-generation`, 2026-09-17 — Client nav group fully done) —
+  `/graphql/code-generation`, 2026-09-17 — Client nav group fully done;
+  `/graphql/performance`, 2026-09-17 — first topic in the Advanced nav group) —
   see "GraphQL hub
   subtopic wiring" section above for the `GqlNavComponent` accordion structural fix (17th
   `*NavComponent`-based hub in a row missing it at pilot time), the `gql-fundamentals`/
-  `gql-directives`/`gql-error-handling` SUBTOPICS-map collision resolutions (`gql-fundamentals`
-  collided with the JavaScript hub's own bare `fundamentals` topic key; `gql-directives` collided
-  with the Angular hub's own `directives-demo` topic's unquoted bare `directives` key;
-  `gql-error-handling` collided with the JavaScript hub's own bare `error-handling` topic key;
-  `schema-definition-language`, `type-system`, `queries`, `variables-arguments`, `mutations`,
-  `subscriptions`, `resolvers`, `dataloader`, `auth`, `apollo-server`, `pagination`,
-  `apollo-client`, `client-caching`, and `code-generation` are all collision-free and left bare —
-  confirmed via a direct grep that no other hub's `app.routes.ts` route path is literally
+  `gql-directives`/`gql-error-handling`/`gql-performance` SUBTOPICS-map collision resolutions
+  (`gql-fundamentals` collided with the JavaScript hub's own bare `fundamentals` topic key;
+  `gql-directives` collided with the Angular hub's own `directives-demo` topic's unquoted bare
+  `directives` key; `gql-error-handling` collided with the JavaScript hub's own bare
+  `error-handling` topic key; `gql-performance` collided with the Node.js hub's own bare
+  `performance` topic key; `schema-definition-language`, `type-system`, `queries`,
+  `variables-arguments`, `mutations`, `subscriptions`, `resolvers`, `dataloader`, `auth`,
+  `apollo-server`, `pagination`, `apollo-client`, `client-caching`, and `code-generation` are all
+  collision-free and left bare — confirmed via a direct grep that no other hub's `app.routes.ts`
+  route path is literally
   `auth`/`apollo-server`/`pagination`/`apollo-client`/`client-caching`/`code-generation`), the
   no-live-playground
   note, and the
@@ -10317,7 +10360,15 @@ this same check before any other new hub's first subtopic set:
   Usage" codeTab comment claiming a masked fragment field (`author { ...AuthorFields }`) "has
   type string" when client-preset enables fragment masking by default — direct access is a
   TypeScript compile error; `useFragment()` is required to unmask it, verified against
-  client-preset's own official docs (Code Generation).
+  client-preset's own official docs (Code Generation); and THREE more genuine fixes on
+  performance.ts — the `@cacheControl` codeTab's own directive definition used a nonexistent
+  `CacheScope` enum name instead of the real `CacheControlScope` and omitted `INTERFACE | UNION`
+  locations plus `inheritMaxAge`, verified against Apollo Server's own caching docs; a theory
+  bullet stating only half the response-header computation rule (added the independently-verified
+  "PRIVATE if any field is private" scope rule); and a "batched query" QnA conflating aliased
+  root fields in one operation (unaffected by any server config) with Apollo Server 4's separate,
+  off-by-default `allowBatchedHttpRequests` transport setting, whose own prescribed fix does
+  nothing for its own example (Performance & Security).
 - **Messaging/Kafka hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Burnt-orange theme `$accent: #9a3412`, `$tint: #fff7ed`, dark `#fdba74`, dark bg `#2d1a0e`. Search prefix `kafka-`. Route: `/messaging`.
   CSS classes: `.kafka-page`, `.kafka-icon`, `.kafka-section`. Icon content: `⇄` at `font-size: 1.8rem`. `tech="javascript"`.
