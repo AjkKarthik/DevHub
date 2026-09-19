@@ -10057,6 +10057,42 @@ this same check before any other new hub's first subtopic set:
    correct h1/breadcrumb (all 4 levels), 860px wrapper, no entity leaks, tailored sidebar content.
    **GraphQL hub Phase 10: 20 of 20 topics complete -- the entire hub is done.**
 
+### Messaging/Kafka hub subtopic wiring — first pilot; the 18th `*NavComponent` in a row missing
+the subtopics-accordion structural fix
+
+Confirmed via direct file inspection before the pilot (`/messaging/messaging-fundamentals`,
+2026-09-20) — do this same check before any other new hub's first subtopic set:
+
+1. **`MessagingNavComponent` (`shared/messaging-nav/messaging-nav.ts`) had ZERO subtopics-accordion
+   support.** Fixed identically to every prior `*NavComponent` hub, copying `GqlNavComponent`'s
+   class body directly (signal + `Router`/`NavigationEnd` + `filter` + `SUBTOPICS`, three helper
+   methods, exact-match `autoExpandForCurrentUrl()`). Each topic's nav link then needs its own
+   toggle block — this nav is hand-written per topic (not a `@for` loop).
+2. **Bare `messaging-fundamentals` SUBTOPICS key is collision-free** (checked quoted/unquoted forms
+   and `app.routes.ts`) — left bare, so nav helper calls use `'messaging-fundamentals'`. Later topics
+   need the usual collision check per slug (e.g. `saga-pattern`, `idempotency`, `backpressure`).
+3. **Hub conventions**: search keys are `kafka-<topic>/<slug>` (`search.ts` maps `kafka-` →
+   `/messaging/`); `SIDEBAR_MAP` keys are `messaging/<topic>/<slug>` reusing `KAFKA_DEFAULT`;
+   breadcrumb map is `MESSAGING_LABELS` with bare composite keys (`'<topic>/<slug>'`). CSS classes
+   `.kafka-page`/`.kafka-icon`/`.kafka-section`; **`.kafka-page` is NOT global**, and the main page's
+   SCSS sets `.page-header-icon { background: $accent; color: #fff; font-size: 1.8rem }` locally, so
+   every subtopic `.scss` must carry the wrapper rule plus the icon/title/section rules (copy from
+   an existing Messaging subtopic). `$accent: #9a3412`, dark icon `#7c2d12`/`#fdba74`. No live
+   playground (`<app-code-block>` only); `tech="javascript"`; icon `⇄`.
+4. **The `messaging-fundamentals` batch found and fixed THREE main-page inaccuracies, verified via
+   WebFetch against primary docs**: (a) the RabbitMQ codeTab declared `orders` with no
+   `x-dead-letter-exchange` yet commented `nack(msg, false, false)` "send to DLQ" -- per RabbitMQ's
+   acknowledgements guide a requeue=false rejection is dead-lettered only if a DLX is configured,
+   otherwise discarded (also fixed the mistake-block claim that poison messages "block the queue
+   forever", which describes requeue=true, and the Challenge comment); (b) the push/pull QnA listed
+   "RabbitMQ poll" under pull, contradicting the page's own `ch.consume` + `ch.prefetch` codeTab --
+   RabbitMQ consumers are push-based and the guide strongly discourages `basic.get` polling; (c) the
+   exactly-once bullet gave SQS FIFO no scope -- AWS docs describe a send-side, 5-minute
+   deduplication interval, and content-based dedup hashes the body only. 3 subtopics on (a)-(c).
+   Build passed clean; browser-verified (nav toggle, all main-page fixes via component data, 3 pages
+   with 4-level breadcrumb, 860px wrapper, no entity leaks, no console errors). **Messaging hub
+   Phase 10: 1 of 20 topics complete.**
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
@@ -10428,10 +10464,15 @@ this same check before any other new hub's first subtopic set:
 - **Messaging/Kafka hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Burnt-orange theme `$accent: #9a3412`, `$tint: #fff7ed`, dark `#fdba74`, dark bg `#2d1a0e`. Search prefix `kafka-`. Route: `/messaging`.
   CSS classes: `.kafka-page`, `.kafka-icon`, `.kafka-section`. Icon content: `⇄` at `font-size: 1.8rem`. `tech="javascript"`.
-  Nav groups: Foundations, RabbitMQ, Kafka, Patterns, Cloud Messaging, Reliability, Reference.
+  Nav groups (corrected 2026-09-20 against the real `messaging-nav.ts`): Foundations, RabbitMQ, Apache Kafka, Patterns, Azure Service Bus, AWS SQS/SNS, Reliability, Reference.
   All 22 cards `available: true` in `data/messaging/home/home.ts`. Progress: `kafkaTotal=20` in progress.service.ts.
   Messaging pages use `app-common-mistakes` AND `app-revision-card`. Reference pages (monitoring, messaging-security) have no PageComplete.
   Challenge.language: `'typescript'`. MessagingNavComponent at `shared/messaging-nav/messaging-nav.ts`.
+  Phase 10: **1 of 20 topics have subtopics** (`/messaging/messaging-fundamentals`, pilot batch,
+  2026-09-20) — see "Messaging/Kafka hub subtopic wiring" section above for the
+  `MessagingNavComponent` accordion structural fix (18th `*NavComponent` hub in a row) and the
+  three genuine main-page inaccuracies found and fixed (DLX-less nack "sends to DLQ", RabbitMQ
+  wrongly listed as pull-based, unscoped SQS FIFO exactly-once claim).
 - **Testing hub**: 19 trackable topic pages + 3 reference pages (22 cards total). Feature-complete.
   Indigo theme `$accent: #6366f1`, `$tint: #eef2ff`, dark `#a5b4fc`, dark bg `#1e1b4b`. Search prefix `test-`. Route: `/testing-hub`.
   CSS classes: `.test-page`, `.test-icon`, `.test-section`. Icon content: `✓` at `font-size: 1.8rem`. `tech="javascript"`.

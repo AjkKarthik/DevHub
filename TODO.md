@@ -9837,7 +9837,20 @@ off here with a date.
 
 #### Messaging/Kafka — 20 topic pages
 
-- [ ] `/messaging/messaging-fundamentals` — Messaging Fundamentals
+- [x] 2026-09-20 — `/messaging/messaging-fundamentals` — Messaging Fundamentals (hub pilot).
+  Verified against RabbitMQ's acknowledgements guide that `nack`/`reject` with requeue=false is
+  routed to a DLX only if one is configured, otherwise DISCARDED -- but the page's codeTab
+  declared the queue with no `x-dead-letter-exchange` and commented "send to DLQ" (also fixed the
+  mistake block and Challenge comment; the codeTab now shares one queue-args constant with the DLX
+  argument). Fixed the push/pull QnA: RabbitMQ consumers are push-based (`basic.consume` + prefetch;
+  `basic.get` polling is strongly discouraged), not "RabbitMQ poll". Qualified the exactly-once
+  bullet: SQS FIFO dedup is a send-side 5-minute window (AWS docs). 3 subtopics on those three
+  findings. Structural fix: `MessagingNavComponent` had no subtopics-accordion support (18th
+  `*NavComponent` hub in a row) -- added the standard signal/router/`SUBTOPICS` wiring copied from
+  `GqlNavComponent`. Bare `messaging-fundamentals` SUBTOPICS key checked collision-free. Kafka hub
+  conventions: `.kafka-page` wrapper NOT global (each subtopic SCSS carries wrapper + icon rules),
+  sidebar keys `messaging/<topic>/<slug>`, search keys `kafka-<topic>/<slug>`, breadcrumb
+  `MESSAGING_LABELS` composite bare keys. Messaging hub Phase 10: 1 of 20.
 - [ ] `/messaging/message-queues-vs-streams` — Message Queues vs Event Streams
 - [ ] `/messaging/rabbitmq-core` — RabbitMQ Core Concepts
 - [ ] `/messaging/rabbitmq-exchanges` — RabbitMQ Exchanges
