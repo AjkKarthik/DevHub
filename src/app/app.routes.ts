@@ -2982,7 +2982,12 @@ export const routes: Routes = [
   ] },
   { path: 'messaging', children: [
     { path: '', loadComponent: () => import('./components/data/messaging/home/home').then(m => m.MessagingHome) },
-    { path: 'messaging-fundamentals',    loadComponent: () => import('./components/data/messaging/messaging-fundamentals/messaging-fundamentals').then(m => m.MessagingFundamentals) },
+    { path: 'messaging-fundamentals', children: [
+      { path: '', loadComponent: () => import('./components/data/messaging/messaging-fundamentals/messaging-fundamentals').then(m => m.MessagingFundamentals) },
+      { path: 'nack-without-dlx-discards', loadComponent: () => import('./components/data/messaging/messaging-fundamentals/subtopics/nack-without-dlx-discards/nack-without-dlx-discards').then(m => m.NackWithoutDlxDiscardsSubtopic) },
+      { path: 'rabbitmq-consumers-are-pushed', loadComponent: () => import('./components/data/messaging/messaging-fundamentals/subtopics/rabbitmq-consumers-are-pushed/rabbitmq-consumers-are-pushed').then(m => m.RabbitmqConsumersArePushedSubtopic) },
+      { path: 'sqs-fifo-dedup-five-minute-window', loadComponent: () => import('./components/data/messaging/messaging-fundamentals/subtopics/sqs-fifo-dedup-five-minute-window/sqs-fifo-dedup-five-minute-window').then(m => m.SqsFifoDedupFiveMinuteWindowSubtopic) },
+    ] },
     { path: 'message-queues-vs-streams', loadComponent: () => import('./components/data/messaging/message-queues-vs-streams/message-queues-vs-streams').then(m => m.MessageQueuesVsStreams) },
     { path: 'rabbitmq-core',             loadComponent: () => import('./components/data/messaging/rabbitmq-core/rabbitmq-core').then(m => m.RabbitMqCore) },
     { path: 'rabbitmq-exchanges',        loadComponent: () => import('./components/data/messaging/rabbitmq-exchanges/rabbitmq-exchanges').then(m => m.RabbitMqExchanges) },

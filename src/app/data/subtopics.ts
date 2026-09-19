@@ -4127,4 +4127,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Subscriptions Need graphql-js subscribe(), Not executeOperation', route: '/graphql/testing/subscriptions-need-graphql-js-subscribe' },
     { label: 'addMocksToSchema Defaults, Memoization and preserveResolvers', route: '/graphql/testing/addmocks-hello-world-and-preserve-resolvers' },
   ],
+  'messaging-fundamentals': [
+    { label: 'nack With requeue=false Discards Messages Unless a DLX Exists', route: '/messaging/messaging-fundamentals/nack-without-dlx-discards' },
+    { label: 'RabbitMQ Consumers Are Pushed To, Not Polled', route: '/messaging/messaging-fundamentals/rabbitmq-consumers-are-pushed' },
+    { label: 'SQS FIFO Deduplication Only Covers a Five-Minute Send Window', route: '/messaging/messaging-fundamentals/sqs-fifo-dedup-five-minute-window' },
+  ],
 };

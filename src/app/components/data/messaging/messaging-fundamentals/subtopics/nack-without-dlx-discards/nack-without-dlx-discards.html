@@ -1,0 +1,26 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Messaging Fundamentals" topicRoute="/messaging/messaging-fundamentals"
+    subtopicLabel="nack With requeue=false Discards Messages Unless a DLX Exists" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">nack With requeue=false Discards Messages Unless a DLX Exists</h1>
+  <p class="page-subtitle">The page said nack sends a failed message to the DLQ. Per the RabbitMQ docs it only does that when a dead letter exchange is configured; otherwise the message is discarded.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="RabbitMQ 3+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the dead-letter behavior described in the main page's code sample, mistake block and Challenge. The next subtopic corrects another RabbitMQ detail on the same page: how deliveries reach a consumer.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Messaging Fundamentals" topicRoute="/messaging/messaging-fundamentals"
+    [next]="{ label: 'RabbitMQ Consumers Are Pushed To, Not Polled', route: '/messaging/messaging-fundamentals/rabbitmq-consumers-are-pushed' }" />
+</div>

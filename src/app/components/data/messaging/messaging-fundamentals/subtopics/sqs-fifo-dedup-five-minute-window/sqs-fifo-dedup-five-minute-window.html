@@ -1,0 +1,26 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Messaging Fundamentals" topicRoute="/messaging/messaging-fundamentals"
+    subtopicLabel="SQS FIFO Deduplication Only Covers a Five-Minute Send Window" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">SQS FIFO Deduplication Only Covers a Five-Minute Send Window</h1>
+  <p class="page-subtitle">The page lists SQS FIFO as exactly-once at extra cost. The docs promise something narrower: retries of a send within 5 minutes are not added twice. Consumers still need to be idempotent.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Amazon SQS FIFO" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This tightens the delivery-semantics bullet and the exactly-once QnA on the main page. The Idempotency and Exactly-Once topic covers how to build the idempotent consumer this window cannot replace.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Messaging Fundamentals" topicRoute="/messaging/messaging-fundamentals"
+    [prev]="{ label: 'RabbitMQ Consumers Are Pushed To, Not Polled', route: '/messaging/messaging-fundamentals/rabbitmq-consumers-are-pushed' }" />
+</div>

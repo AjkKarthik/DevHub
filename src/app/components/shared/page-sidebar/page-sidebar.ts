@@ -31486,6 +31486,43 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Deployment and scaling independence is a real benefit — producer and consumer can be redeployed or rewritten independently as long as the message contract stays stable.',
     ],
   },
+  'messaging/messaging-fundamentals/nack-without-dlx-discards': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Messaging Fundamentals', route: '/messaging/messaging-fundamentals' },
+      { label: 'RabbitMQ Consumers Are Pushed To, Not Polled', route: '/messaging/messaging-fundamentals/rabbitmq-consumers-are-pushed' },
+    ],
+    tip: 'A message rejected with requeue=false is routed to a dead letter exchange only if one is configured for the queue; otherwise RabbitMQ discards it. Declare the DLX and the x-dead-letter-exchange argument.',
+    gotchas: [
+      'nack with requeue=true is the case that loops a poison message forever; requeue=false with no DLX makes it disappear instead.',
+      'Producer and consumer must declare the source queue with identical arguments, or the second declaration is rejected.',
+    ],
+  },
+  'messaging/messaging-fundamentals/rabbitmq-consumers-are-pushed': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Messaging Fundamentals', route: '/messaging/messaging-fundamentals' },
+      { label: 'nack With requeue=false Discards Messages Unless a DLX Exists', route: '/messaging/messaging-fundamentals/nack-without-dlx-discards' },
+      { label: 'SQS FIFO Deduplication Only Covers a Five-Minute Send Window', route: '/messaging/messaging-fundamentals/sqs-fifo-dedup-five-minute-window' },
+    ],
+    tip: 'RabbitMQ consumers registered with basic.consume are push-based; prefetch caps how many unacknowledged deliveries are in flight, which is its backpressure mechanism.',
+    gotchas: [
+      'basic.get is polling and the RabbitMQ docs strongly discourage it outside integration tests.',
+      'SQS and Kafka are pull-based; SNS, EventBridge and webhooks push to an endpoint with no per-consumer in-flight cap.',
+    ],
+  },
+  'messaging/messaging-fundamentals/sqs-fifo-dedup-five-minute-window': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Messaging Fundamentals', route: '/messaging/messaging-fundamentals' },
+      { label: 'RabbitMQ Consumers Are Pushed To, Not Polled', route: '/messaging/messaging-fundamentals/rabbitmq-consumers-are-pushed' },
+    ],
+    tip: 'SQS FIFO deduplicates SendMessage retries inside a 5-minute interval. It does not make consumers exactly-once, so keep them idempotent.',
+    gotchas: [
+      'A retry that arrives after the 5-minute interval is accepted as a new message.',
+      'Content-based deduplication hashes the message body only; message attributes are not part of the deduplication ID.',
+    ],
+  },
   'messaging/message-queues-vs-streams': {
     apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
     related: [

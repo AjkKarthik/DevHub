@@ -59,7 +59,7 @@ export class MessagingFundamentals {
         'At-least-once: broker retries until acknowledged — duplicates must be handled',
         'Exactly-once: no loss, no duplicates — requires idempotent consumers or transactions',
         'Most brokers default to at-least-once; design consumers to be idempotent',
-        'Kafka transactional API and SQS FIFO offer exactly-once at extra cost',
+        'Kafka transactions (Kafka-to-Kafka only) and SQS FIFO (5-minute send-side deduplication window) narrow duplicates at extra cost -- neither removes the need for idempotent consumers',
       ],
     },
     {
@@ -89,11 +89,14 @@ export class MessagingFundamentals {
       language: 'typescript',
       code: `import amqp from 'amqplib';
 
+// Both sides must declare the queue with identical arguments (a mismatch fails)
+const ORDERS_QUEUE_ARGS = { durable: true, arguments: { 'x-dead-letter-exchange': 'dlx' } };
+
 // Producer
 async function publish(msg: string) {
   const conn = await amqp.connect('amqp://localhost');
   const ch   = await conn.createChannel();
-  await ch.assertQueue('orders', { durable: true });
+  await ch.assertQueue('orders', ORDERS_QUEUE_ARGS);
   ch.sendToQueue('orders', Buffer.from(msg), { persistent: true });
   await ch.close();
   await conn.close();
@@ -103,7 +106,7 @@ async function publish(msg: string) {
 async function consume() {
   const conn = await amqp.connect('amqp://localhost');
   const ch   = await conn.createChannel();
-  await ch.assertQueue('orders', { durable: true });
+  await ch.assertQueue('orders', ORDERS_QUEUE_ARGS);
   ch.prefetch(1); // process one at a time
 
   ch.consume('orders', async (msg) => {
@@ -112,7 +115,8 @@ async function consume() {
       await processOrder(JSON.parse(msg.content.toString()));
       ch.ack(msg);        // success — remove from queue
     } catch {
-      ch.nack(msg, false, false); // failed — send to DLQ
+      ch.nack(msg, false, false); // failed — dead-lettered to 'dlx' ONLY because the queue
+                                  // has x-dead-letter-exchange; without one it is discarded
     }
   });
 }`,
@@ -160,7 +164,7 @@ await consumer.run({
       title: 'Missing DLQ configuration',
       wrong: `await ch.assertQueue('orders', { durable: true });`,
       right: `await ch.assertQueue('orders', { durable: true, arguments: { 'x-dead-letter-exchange': 'dlx' } });`,
-      explanation: 'Without a DLQ, poison messages block the queue forever after exhausting retries.',
+      explanation: 'Without a dead-letter exchange, a message rejected with requeue=false is silently DISCARDED (per the RabbitMQ docs: routed to a DLX if configured, otherwise discarded), and one rejected with requeue=true is redelivered again and again. A poison message either vanishes or loops -- a DLQ is what keeps it for inspection.',
     },
     {
       title: 'Non-idempotent consumer',
@@ -211,7 +215,7 @@ async function handleMessage(ch: Channel, msg: Message | null) {
     processed.add(order.id);
     ch.ack(msg);
   } catch {
-    ch.nack(msg, false, false); // send to DLQ
+    ch.nack(msg, false, false); // dead-lettered if the queue has a DLX, otherwise discarded
   }
 }`,
   };
@@ -278,7 +282,7 @@ async function handleMessage(ch: Channel, msg: Message | null) {
     },
     {
       q: 'What is the difference between push and pull message delivery?',
-      a: 'Push (SNS, EventBridge, webhooks): broker sends to subscriber endpoint — low latency but subscriber must handle burst load. Pull (SQS, Kafka, RabbitMQ poll): consumer fetches at its own pace — easier backpressure but higher latency. Long-polling bridges both: consumer waits up to N seconds for a message before returning empty.',
+      a: 'Push (SNS, EventBridge, webhooks): broker sends to subscriber endpoint — low latency but subscriber must handle burst load. Pull (SQS, Kafka): consumer fetches at its own pace — easier backpressure but higher latency. RabbitMQ is push-based: basic.consume has the broker push deliveries, with prefetch capping how many are in flight (basic.get polling exists but the docs strongly discourage it). Long-polling bridges both: consumer waits up to N seconds for a message before returning empty.',
     },
   ];
 

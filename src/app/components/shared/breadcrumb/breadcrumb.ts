@@ -3133,6 +3133,9 @@ const GQL_LABELS: Record<string, string> = {
 
 const MESSAGING_LABELS: Record<string, string> = {
   'messaging-fundamentals':    'Messaging Fundamentals',
+  'messaging-fundamentals/nack-without-dlx-discards': 'nack With requeue=false Discards Messages Unless a DLX Exists',
+  'messaging-fundamentals/rabbitmq-consumers-are-pushed': 'RabbitMQ Consumers Are Pushed To, Not Polled',
+  'messaging-fundamentals/sqs-fifo-dedup-five-minute-window': 'SQS FIFO Deduplication Only Covers a Five-Minute Send Window',
   'message-queues-vs-streams': 'Queues vs Event Streams',
   'rabbitmq-core':             'RabbitMQ Core Concepts',
   'rabbitmq-exchanges':        'RabbitMQ Exchanges',
