@@ -9808,7 +9808,18 @@ off here with a date.
   leak via graphql-js's own suggestion text with introspection fully disabled. SUBTOPICS key
   hub-prefixed to `gql-performance` -- bare `performance` collides with the Node.js hub's own
   topic. All 6 touchpoints wired. First topic in the Advanced nav group.
-- [ ] `/graphql/federation` — Schema Federation
+- [x] 2026-09-20 — `/graphql/federation` — Schema Federation. Fixed a wrong main-page claim
+  that "Federation v2 removes the gateway in favor of the Apollo Router" -- verified against
+  Apollo's own docs that v2 is a composition/spec version, `@apollo/gateway` 2.0+ still works with
+  it, Router is a separate recommended runtime, and Router 1.60+ actually DROPPED v1 supergraph
+  support (the opposite direction). Added that a missing `@link` does not fail composition -- the
+  subgraph is silently treated as Federation v1. Corrected the `__resolveReference` batching
+  bullet: the Router batches into ONE `_entities` call, but the subgraph still resolves each
+  representation separately, so DataLoader batches the DB lookups behind it (verified via a direct
+  simulation: 4 naive DB calls vs 1 batch invocation / 3 deduped lookups, order preserved).
+  3 subtopics matching those three findings. Bare `federation` SUBTOPICS key checked
+  collision-free, left bare. All 6 touchpoints wired. Verified `@link` detection regex output and
+  nested-escape display by direct execution.
 - [ ] `/graphql/testing` — Testing GraphQL
 
 #### Messaging/Kafka — 20 topic pages

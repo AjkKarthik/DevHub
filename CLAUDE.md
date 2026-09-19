@@ -10002,6 +10002,34 @@ this same check before any other new hub's first subtopic set:
    live via direct component-data inspection; all 3 subtopic pages checked individually — correct
    h1/breadcrumb (all 4 levels), 860px wrapper via `getComputedStyle`, tailored (not DEFAULT)
    sidebar content confirmed on all three. **GraphQL hub Phase 10: 18 of 20 topics complete.**
+26. **The `federation` batch — the second topic in the Advanced nav group — found and fixed THREE
+   genuine main-page issues, verified via a dedicated research agent fetching Apollo's own
+   Federation docs (not assumed)**: (a) a theory bullet claimed "Federation v2 removes the gateway
+   in favor of the Apollo Router" — false: Federation v2 is a composition/spec version decoupled
+   from the runtime; `@apollo/gateway` 2.0+ still works with v2 subgraphs, Apollo Router is a
+   separate Rust runtime Apollo recommends for performance but does not require, and very recent
+   Router releases (1.60+) actually DROPPED Federation v1 supergraph support — the relationship
+   runs the opposite direction from the claim; (b) the "incremental adoption via `@link`" bullet
+   omitted that a missing `@link` does NOT fail composition — verified quote from Apollo's own
+   migration docs: without it "composition considers a schema to be a Federation 1 schema" — a
+   silent fallback, and opt-in is per-subgraph (the `federation_version` key exists only in rover's
+   `supergraph.yaml`, not in a subgraph's own SDL); (c) the `__resolveReference` bullet said the
+   Router "calls it with multiple references at once" — the Router batches into ONE `_entities`
+   call (network level), but the subgraph still resolves each representation separately, so
+   DataLoader batches the underlying DB lookups, not the GraphQL call. Verified (b)'s detection
+   regex and (c)'s batching via direct Node execution (naive: 4 DB calls; batched: 1 batch
+   invocation, 3 deduped lookups, results still in input order); verified the nested double-backslash
+   regex escaping in a codeTab by extracting and evaluating the exact stored body. Confirmed the
+   agent also verified two claims accurate and left them alone (`@requires` example shape, `rover
+   dev --supergraph-config` syntax). Bare `federation` checked collision-free (both `subtopics.ts`
+   forms and a direct `app.routes.ts` grep), left bare; `GqlNavComponent`'s federation link was a
+   plain single-line `<a>` before this batch and needed the full accordion block added. A bash
+   heredoc collapsed the backslashes in a Windows path inside a verification script (same gotcha as
+   before) — recreated it with the Write tool. Build passed clean (`EXITCODE:0`, zero real
+   `ERROR` lines). Browser-verified: no console errors on any page; nav toggle count 19; all three
+   main-page fixes confirmed via direct component-data inspection; all 3 subtopic pages checked —
+   correct h1/breadcrumb (all 4 levels, `&#64;link` decoding to `@link`), 860px wrapper, tailored
+   sidebar content. **GraphQL hub Phase 10: 19 of 20 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -10285,7 +10313,7 @@ this same check before any other new hub's first subtopic set:
   All 22 cards `available: true` in `data/graphql/home/home.ts`. Progress: `gqlTotal=20` in progress.service.ts.
   GraphQL pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. GqlNavComponent at `shared/gql-nav/gql-nav.ts`.
-  Phase 10: **18 of 20 topics have subtopics** (`/graphql/fundamentals`, pilot batch, 2026-09-10;
+  Phase 10: **19 of 20 topics have subtopics** (`/graphql/fundamentals`, pilot batch, 2026-09-10;
   `/graphql/schema-definition-language`, 2026-09-10; `/graphql/type-system`, 2026-09-10;
   `/graphql/queries`, 2026-09-10; `/graphql/variables-arguments`, 2026-09-10;
   `/graphql/directives`, 2026-09-10 — Queries nav group fully done; `/graphql/mutations`,
@@ -10295,7 +10323,8 @@ this same check before any other new hub's first subtopic set:
   2026-09-17; `/graphql/pagination`, 2026-09-17 — Server nav group fully done;
   `/graphql/apollo-client`, 2026-09-17; `/graphql/client-caching`, 2026-09-17;
   `/graphql/code-generation`, 2026-09-17 — Client nav group fully done;
-  `/graphql/performance`, 2026-09-17 — first topic in the Advanced nav group) —
+  `/graphql/performance`, 2026-09-17 — first topic in the Advanced nav group;
+  `/graphql/federation`, 2026-09-20 — only `testing` remains) —
   see "GraphQL hub
   subtopic wiring" section above for the `GqlNavComponent` accordion structural fix (17th
   `*NavComponent`-based hub in a row missing it at pilot time), the `gql-fundamentals`/
@@ -10306,8 +10335,8 @@ this same check before any other new hub's first subtopic set:
   `error-handling` topic key; `gql-performance` collided with the Node.js hub's own bare
   `performance` topic key; `schema-definition-language`, `type-system`, `queries`,
   `variables-arguments`, `mutations`, `subscriptions`, `resolvers`, `dataloader`, `auth`,
-  `apollo-server`, `pagination`, `apollo-client`, `client-caching`, and `code-generation` are all
-  collision-free and left bare — confirmed via a direct grep that no other hub's `app.routes.ts`
+  `apollo-server`, `pagination`, `apollo-client`, `client-caching`, `code-generation`, and
+  `federation` are all collision-free and left bare — confirmed via a direct grep that no other hub's `app.routes.ts`
   route path is literally
   `auth`/`apollo-server`/`pagination`/`apollo-client`/`client-caching`/`code-generation`), the
   no-live-playground
