@@ -400,7 +400,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/graphql/testing" routerLinkActive="active"><span class="nl-text">Testing GraphQL APIs</span>@if(p.isDone('gql-testing')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/graphql/testing" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Testing GraphQL APIs</span>
+        @if(p.isDone('gql-testing')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('gql-testing')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('gql-testing')"
+                  (click)="toggleSubtopics('gql-testing', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('gql-testing'); as testingSubs) {
+        @if (isSubtopicsExpanded('gql-testing')) {
+          <div class="nav-subtopics">
+            @for (s of testingSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

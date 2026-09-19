@@ -3124,6 +3124,9 @@ const GQL_LABELS: Record<string, string> = {
   'federation/missing-link-falls-back-to-v1': 'A Missing @link Silently Falls Back to v1',
   'federation/dataloader-inside-resolve-reference': 'Where DataLoader Actually Helps in __resolveReference',
   'testing':                    'Testing GraphQL APIs',
+  'testing/executeoperation-starts-the-server': 'executeOperation Starts the Server for You',
+  'testing/subscriptions-need-graphql-js-subscribe': 'Subscriptions Need graphql-js subscribe(), Not executeOperation',
+  'testing/addmocks-hello-world-and-preserve-resolvers': 'addMocksToSchema Defaults, Memoization and preserveResolvers',
   'cheatsheet':                 'GraphQL Cheat Sheet',
   'interview-prep':             'GraphQL Interview Prep',
 };

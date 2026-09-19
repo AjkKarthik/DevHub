@@ -39189,6 +39189,43 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Mocking resolvers for testing requires understanding the resolver execution order, since mocked parent resolvers affect what arguments child resolvers receive.',
     ],
   },
+  'graphql/testing/executeoperation-starts-the-server': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Testing GraphQL APIs', route: '/graphql/testing' },
+      { label: 'Subscriptions Need graphql-js subscribe(), Not executeOperation', route: '/graphql/testing/subscriptions-need-graphql-js-subscribe' },
+    ],
+    tip: 'executeOperation starts the ApolloServer itself on its first call, so an explicit start() in beforeAll is optional — but start() may only run once, and a second call throws.',
+    gotchas: [
+      'Calling start() AFTER an executeOperation has already run on the same instance throws — a shared helper plus a beforeAll start() on one server can fail in the setup hook.',
+      'stop() before the server ever started also throws, so a file whose tests are all skipped can fail in afterAll unless start() ran in beforeAll.',
+    ],
+  },
+  'graphql/testing/subscriptions-need-graphql-js-subscribe': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Testing GraphQL APIs', route: '/graphql/testing' },
+      { label: 'executeOperation Starts the Server for You', route: '/graphql/testing/executeoperation-starts-the-server' },
+      { label: 'addMocksToSchema Defaults, Memoization and preserveResolvers', route: '/graphql/testing/addmocks-hello-world-and-preserve-resolvers' },
+    ],
+    tip: 'executeOperation returns one result and cannot iterate a subscription. Use graphql-js subscribe() on the executable schema and for-await the iterator it returns.',
+    gotchas: [
+      'A nullable subscription field run through executeOperation returns data with a null value and NO errors — a test asserting only "no errors" passes while testing nothing.',
+      'subscribe() returns a plain result with errors (not an iterator) for an invalid document or a non-subscription operation, so check before iterating.',
+    ],
+  },
+  'graphql/testing/addmocks-hello-world-and-preserve-resolvers': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Testing GraphQL APIs', route: '/graphql/testing' },
+      { label: 'Subscriptions Need graphql-js subscribe(), Not executeOperation', route: '/graphql/testing/subscriptions-need-graphql-js-subscribe' },
+    ],
+    tip: 'addMocksToSchema mocks replace real resolvers unless you pass preserveResolvers: true, and String fields are always the literal "Hello World" — only numbers and booleans are random.',
+    gotchas: [
+      'The same mocked schema returns identical values on a repeat query (the mock store memoizes), so build a fresh mocked schema per test for fresh data.',
+      'A jest.fn() resolver on a fully mocked schema never runs by default — the data came from generated mocks, not your resolver.',
+    ],
+  },
   'graphql/performance': {
     apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
     related: [

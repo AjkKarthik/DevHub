@@ -56,7 +56,7 @@ export class GqlTesting {
         'server.executeOperation({ query, variables }, { contextValue }) runs the full GraphQL stack without HTTP.',
         'Catches issues that unit tests miss: schema validation, resolver chain ordering, directive effects.',
         'Use a real (or in-memory) database in integration tests — mocking the DB at this level defeats the purpose.',
-        'Call server.start() in beforeAll and server.stop() in afterAll to manage lifecycle in Jest.'
+        'executeOperation starts the server itself on its first call, so an explicit <code>server.start()</code> is optional when you only use it. Still call <code>server.stop()</code> in afterAll to release resources. Calling <code>start()</code> AFTER an executeOperation has already run throws.'
       ]
     },
     {
@@ -65,13 +65,14 @@ export class GqlTesting {
         'MockedProvider from @apollo/client/testing intercepts queries and returns mock responses without a network.',
         'Provide mocks as `[{ request: { query, variables }, result: { data } }]`.',
         'Test loading state, success state, and error state separately — mock can return an error result.',
-        'Use waitFor from @testing-library/react to wait for async query resolution before asserting.'
+        'Use waitFor from @testing-library/react to wait for async query resolution before asserting.',
+        'Version note: in Apollo Client 4, MockedProvider moved to <code>@apollo/client/testing/react</code> and the <code>addTypename</code> prop was removed -- __typename is always added to the query, so mock results must include __typename. The example below is the Apollo Client 3 style.'
       ]
     },
     {
       heading: 'Mocking Schemas',
       points: [
-        'addMocksToSchema adds default scalar resolvers (random strings, numbers, booleans) to any schema.',
+        'addMocksToSchema adds default scalar mocks to any schema: String is always "Hello World", Int and Float are random numbers, Boolean is random, ID is a UUID. By default mocks REPLACE real resolvers (pass <code>preserveResolvers: true</code> to keep them), and a mock store returns the same values for repeated queries.',
         'Override specific mocks: `mocks: { User: () => ({ name: "Alice" }) }` for predictable test data.',
         'Useful for contract testing: generate random data to test every type is resolvable.',
         'buildClientSchema + addMocksToSchema can create a mock server from an introspection JSON — test clients against it.'
@@ -139,7 +140,7 @@ let db: any;
 beforeAll(async () => {
   db = await createTestDb();
   server = new ApolloServer({ typeDefs, resolvers });
-  await server.start();
+  await server.start(); // optional: executeOperation would start it on its first call
 });
 
 afterAll(async () => {
@@ -170,7 +171,9 @@ it('returns post with author', async () => {
     {
       label: 'MockedProvider (Client)',
       language: 'typescript',
-      code: `import { MockedProvider } from '@apollo/client/testing';
+      code: `// Apollo Client 3 style. In Apollo Client 4: import MockedProvider from
+// '@apollo/client/testing/react', drop addTypename, and put __typename in every mock result.
+import { MockedProvider } from '@apollo/client/testing';
 import { render, screen, waitFor } from '@testing-library/react';
 import { gql } from '@apollo/client';
 import { PostPage } from './PostPage';
@@ -264,6 +267,7 @@ await waitFor(() => {
 // in a unit test for a resolver — resolvers don't do validation`,
       right: `// Schema validation is done by executeOperation or HTTP test
 const response = await server.executeOperation({ query: malformedQuery });
+if (response.body.kind !== 'single') throw new Error('Expected single response');
 expect(response.body.singleResult.errors).toBeDefined();`,
       explanation: 'Schema validation (unknown fields, type errors) runs before resolvers. Test it with executeOperation or HTTP tests, not by calling resolver functions directly.'
     }
@@ -333,13 +337,13 @@ describe('Mutation.updatePost', () => {
     { q: 'What is MockedProvider used for?', options: ['Mocking the GraphQL server', 'Testing React components that use Apollo Client hooks without a real network', 'Mocking the InMemoryCache', 'Providing test data to resolvers'], answer: 1, explanation: 'MockedProvider intercepts Apollo Client queries and returns pre-defined mock responses. Use it to test React components that use useQuery, useMutation, etc., without a network.' },
     { q: 'Why should integration tests use a real DB?', options: ['It is faster', 'It catches ORM, migration, and DB-specific bugs that mocked DBs miss', 'It is required by Jest', 'Apollo only works with real databases'], answer: 1, explanation: 'Mocking the DB in integration tests doesn\'t test the actual queries, indices, or constraints. Real (or in-memory test) databases catch bugs that mocks hide.' },
     { q: 'What do you need after rendering with MockedProvider to assert on query results?', options: ['act()', 'A setTimeout', 'waitFor() from @testing-library/react', 'Nothing — rendering is synchronous'], answer: 2, explanation: 'MockedProvider resolves queries asynchronously. Use waitFor() to wait for the DOM to update after the mock query resolves before making assertions.' },
-    { q: 'What is addMocksToSchema used for?', options: ['Mocking HTTP responses', 'Adding automatic scalar mock resolvers to a schema for testing', 'Generating test data from a DB', 'Validating mock types'], answer: 1, explanation: 'addMocksToSchema from @graphql-tools/mock adds default resolvers that return random scalar values for each type. Useful for contract testing or quick schema smoke tests.' },
+    { q: 'What is addMocksToSchema used for?', options: ['Mocking HTTP responses', 'Adding automatic scalar mock resolvers to a schema for testing', 'Generating test data from a DB', 'Validating mock types'], answer: 1, explanation: 'addMocksToSchema from @graphql-tools/mock adds default mocks for each scalar type (String is always "Hello World"; Int, Float and Boolean are random). Useful for contract testing or quick schema smoke tests.' },
     { q: 'When should you call server.stop() in tests?', options: ['Before each test', 'In beforeAll', 'In afterAll, after all tests in the file complete', 'Never — it stops automatically'], answer: 2, explanation: 'server.stop() should run in afterAll to clean up after all tests. Running it before each test would restart the server unnecessarily; not running it leaks connections.' }
   ];
 
   qna: QnaItem[] = [
     { q: 'Should I write tests for every resolver or just integration tests?', a: 'Both. Unit tests for individual resolvers are fast and give precise failure messages. Integration tests (via executeOperation) catch cross-cutting issues like middleware, directives, and resolver chain ordering. Use a pyramid: many unit tests, fewer integration, minimal E2E.' },
-    { q: 'How do I test subscriptions?', a: 'Use pubsub.publish() to emit events in tests, then subscribe via client.subscribe() and assert the emitted values. For integration, use graphql-ws\'s createClient with a test WebSocket server. For Apollo Server 4, use the executeOperation with a subscription operation and collect async iterator values.' },
+    { q: 'How do I test subscriptions?', a: 'Use pubsub.publish() to emit events in tests, then subscribe via client.subscribe() and assert the emitted values. For integration, use graphql-ws\'s createClient with a test WebSocket server. Do not use Apollo Server\'s executeOperation for this: it only returns a single result and cannot iterate a subscription (verified -- it returns an error). To test the subscription resolvers without a socket, call graphql-js\'s subscribe() on the executable schema and iterate the async iterator it returns.' },
     { q: 'How do I test error formatting (formatError)?', a: 'Write an integration test with executeOperation where the resolver throws a known error. Assert that the response contains the expected error code and message. Test that stack traces are absent in production mode (set NODE_ENV=production in the test).' },
     { q: 'Can I test federation subgraphs independently?', a: 'Yes — each subgraph is a standalone Apollo Server. Test it with executeOperation just like any other server. Test __resolveReference by calling it with a known @key object. Cross-subgraph integration tests require a running Router and all subgraphs.' },
     { q: 'What is the difference between MockedProvider mocks and jest.mock?', a: 'MockedProvider intercepts Apollo Client query network requests at the link layer. jest.mock replaces a module or function. Use MockedProvider for component tests that use Apollo hooks; use jest.fn() to mock resolver dependencies (DB, services).' },

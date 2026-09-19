@@ -4121,4 +4121,10 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'A Missing @link Silently Falls Back to v1', route: '/graphql/federation/missing-link-falls-back-to-v1' },
     { label: 'Where DataLoader Actually Helps in __resolveReference', route: '/graphql/federation/dataloader-inside-resolve-reference' },
   ],
+  // NOTE: hub-prefixed — bare 'testing' is already claimed by the Angular hub's own topic.
+  'gql-testing': [
+    { label: 'executeOperation Starts the Server for You', route: '/graphql/testing/executeoperation-starts-the-server' },
+    { label: 'Subscriptions Need graphql-js subscribe(), Not executeOperation', route: '/graphql/testing/subscriptions-need-graphql-js-subscribe' },
+    { label: 'addMocksToSchema Defaults, Memoization and preserveResolvers', route: '/graphql/testing/addmocks-hello-world-and-preserve-resolvers' },
+  ],
 };

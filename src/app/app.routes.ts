@@ -2971,7 +2971,12 @@ export const routes: Routes = [
       { path: 'missing-link-falls-back-to-v1', loadComponent: () => import('./components/data/graphql/federation/subtopics/missing-link-falls-back-to-v1/missing-link-falls-back-to-v1').then(m => m.MissingLinkFallsBackToV1Subtopic) },
       { path: 'dataloader-inside-resolve-reference', loadComponent: () => import('./components/data/graphql/federation/subtopics/dataloader-inside-resolve-reference/dataloader-inside-resolve-reference').then(m => m.DataloaderInsideResolveReferenceSubtopic) },
     ] },
-    { path: 'testing',                    loadComponent: () => import('./components/data/graphql/testing/testing').then(m => m.GqlTesting) },
+    { path: 'testing', children: [
+      { path: '', loadComponent: () => import('./components/data/graphql/testing/testing').then(m => m.GqlTesting) },
+      { path: 'executeoperation-starts-the-server', loadComponent: () => import('./components/data/graphql/testing/subtopics/executeoperation-starts-the-server/executeoperation-starts-the-server').then(m => m.ExecuteoperationStartsTheServerSubtopic) },
+      { path: 'subscriptions-need-graphql-js-subscribe', loadComponent: () => import('./components/data/graphql/testing/subtopics/subscriptions-need-graphql-js-subscribe/subscriptions-need-graphql-js-subscribe').then(m => m.SubscriptionsNeedGraphqlJsSubscribeSubtopic) },
+      { path: 'addmocks-hello-world-and-preserve-resolvers', loadComponent: () => import('./components/data/graphql/testing/subtopics/addmocks-hello-world-and-preserve-resolvers/addmocks-hello-world-and-preserve-resolvers').then(m => m.AddmocksHelloWorldAndPreserveResolversSubtopic) },
+    ] },
     { path: 'cheatsheet',                 loadComponent: () => import('./components/data/graphql/cheatsheet/cheatsheet').then(m => m.GqlCheatsheet) },
     { path: 'interview-prep',             loadComponent: () => import('./components/data/graphql/interview-prep/interview-prep').then(m => m.GqlInterviewPrep) },
   ] },

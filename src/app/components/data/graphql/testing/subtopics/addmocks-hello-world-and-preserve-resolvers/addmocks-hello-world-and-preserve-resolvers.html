@@ -1,0 +1,26 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Testing GraphQL APIs" topicRoute="/graphql/testing"
+    subtopicLabel="addMocksToSchema Defaults, Memoization and preserveResolvers" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">addMocksToSchema Defaults, Memoization and preserveResolvers</h1>
+  <p class="page-subtitle">Strings are always Hello World, not random. Mocks replace your real resolvers unless you opt out, and the same mocked schema repeats its values. All verified against a real &#64;graphql-tools/mock install.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="graphql-tools 9" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>Mocked schemas suit component and contract tests where the data shape matters more than real values. When a real resolver is what you are testing, use the unit-test pattern from the main page or keep resolvers with preserveResolvers.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Testing GraphQL APIs" topicRoute="/graphql/testing"
+    [prev]="{ label: 'Subscriptions Need graphql-js subscribe(), Not executeOperation', route: '/graphql/testing/subscriptions-need-graphql-js-subscribe' }" />
+</div>

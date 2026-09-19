@@ -1,0 +1,27 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Testing GraphQL APIs" topicRoute="/graphql/testing"
+    subtopicLabel="Subscriptions Need graphql-js subscribe(), Not executeOperation" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">Subscriptions Need graphql-js subscribe(), Not executeOperation</h1>
+  <p class="page-subtitle">The QnA said executeOperation can collect subscription events. It cannot: it returns one result, and for a nullable field that result is null data with no errors. graphql-js subscribe() is the tool that actually iterates events.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Apollo Server 4+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>The previous subtopic covers what executeOperation does on its own lifecycle. This one covers the operation type it cannot run. The Subscriptions topic explains how the subscribe and resolve functions work in production.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Testing GraphQL APIs" topicRoute="/graphql/testing"
+    [prev]="{ label: 'executeOperation Starts the Server for You', route: '/graphql/testing/executeoperation-starts-the-server' }"
+    [next]="{ label: 'addMocksToSchema Defaults, Memoization and preserveResolvers', route: '/graphql/testing/addmocks-hello-world-and-preserve-resolvers' }" />
+</div>
