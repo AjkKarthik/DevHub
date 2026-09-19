@@ -4116,4 +4116,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Aliased Root Fields Are Not Stopped by Disabling Batching', route: '/graphql/performance/aliased-root-fields-bypass-batching-disable' },
     { label: 'How Field-Suggestion Blocking Actually Works', route: '/graphql/performance/field-suggestion-blocking-mechanism' },
   ],
+  federation: [
+    { label: 'Federation v2 Doesn’t Replace the Gateway', route: '/graphql/federation/gateway-vs-router' },
+    { label: 'A Missing @link Silently Falls Back to v1', route: '/graphql/federation/missing-link-falls-back-to-v1' },
+    { label: 'Where DataLoader Actually Helps in __resolveReference', route: '/graphql/federation/dataloader-inside-resolve-reference' },
+  ],
 };

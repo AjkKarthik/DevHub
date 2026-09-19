@@ -381,7 +381,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/graphql/federation" routerLinkActive="active"><span class="nl-text">Schema Stitching &amp; Federation</span>@if(p.isDone('gql-federation')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/graphql/federation" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Schema Stitching &amp; Federation</span>
+        @if(p.isDone('gql-federation')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('federation')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('federation')"
+                  (click)="toggleSubtopics('federation', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('federation'); as federationSubs) {
+        @if (isSubtopicsExpanded('federation')) {
+          <div class="nav-subtopics">
+            @for (s of federationSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/graphql/testing" routerLinkActive="active"><span class="nl-text">Testing GraphQL APIs</span>@if(p.isDone('gql-testing')){<span class="nl-done">✓</span>}</a>
     </div>
 

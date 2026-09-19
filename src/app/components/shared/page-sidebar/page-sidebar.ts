@@ -39320,6 +39320,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The gateway adds a query-planning step to fan out a client query across the right subgraphs — this adds latency compared to a single monolithic GraphQL server.',
     ],
   },
+  'graphql/federation/gateway-vs-router': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Schema Stitching & Federation', route: '/graphql/federation' },
+      { label: 'A Missing @link Silently Falls Back to v1', route: '/graphql/federation/missing-link-falls-back-to-v1' },
+    ],
+    tip: 'Federation v2 is a composition/spec version, not a runtime — @apollo/gateway (2.0+) still works fine with it. Apollo Router is a separate, newer runtime Apollo recommends for performance, not a replacement for the gateway.',
+    gotchas: [
+      'Very recent Apollo Router releases (v1.60+) actually dropped Federation v1 support — the opposite direction from "v2 removes the gateway."',
+      'Choosing Router over Gateway is a performance/operational decision (a standalone Rust binary vs. a Node/Apollo Server plugin), not something Federation v2 forces on you.',
+    ],
+  },
+  'graphql/federation/missing-link-falls-back-to-v1': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Federation v2 Doesn’t Replace the Gateway', route: '/graphql/federation/gateway-vs-router' },
+      { label: 'Where DataLoader Actually Helps in __resolveReference', route: '/graphql/federation/dataloader-inside-resolve-reference' },
+    ],
+    tip: 'Forgetting `extend schema @link(url: "https://specs.apollo.dev/federation/v2.0", ...)` does not fail composition — it silently falls back to Federation v1 semantics for backward compatibility, which is a much quieter failure mode than an error.',
+    gotchas: [
+      'A subgraph missing @link can compose successfully but silently lose access to v2-only directives like @shareable/@override/@inaccessible.',
+      'There is no `federation_version: 2` field inside a subgraph\'s own SDL to opt in instead — @link on the schema is the only mechanism.',
+    ],
+  },
+  'graphql/federation/dataloader-inside-resolve-reference': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Schema Stitching & Federation', route: '/graphql/federation' },
+      { label: 'DataLoader & N+1 Problem', route: '/graphql/dataloader' },
+    ],
+    tip: 'The Router already batches every reference to one entity type into ONE _entities call per operation — DataLoader inside __resolveReference batches the underlying DATABASE lookups for the representations arriving in that one call, not the GraphQL call itself.',
+    gotchas: [
+      'Because _entities results must return in the same order as the input representations, a naive per-reference DB call inside __resolveReference still reintroduces N+1 at the data-source level even though the GraphQL request was already batched.',
+      'This is a genuinely different N+1 than the one covered on the DataLoader & N+1 Problem topic — that one is about a parent-field resolver fanning out to a child field per item; this one is specifically about entity reference resolution across subgraphs.',
+    ],
+  },
   'graphql/code-generation': {
     apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
     related: [

@@ -2965,7 +2965,12 @@ export const routes: Routes = [
       { path: 'aliased-root-fields-bypass-batching-disable', loadComponent: () => import('./components/data/graphql/performance/subtopics/aliased-root-fields-bypass-batching-disable/aliased-root-fields-bypass-batching-disable').then(m => m.AliasedRootFieldsBypassBatchingDisableSubtopic) },
       { path: 'field-suggestion-blocking-mechanism', loadComponent: () => import('./components/data/graphql/performance/subtopics/field-suggestion-blocking-mechanism/field-suggestion-blocking-mechanism').then(m => m.FieldSuggestionBlockingMechanismSubtopic) },
     ] },
-    { path: 'federation',                 loadComponent: () => import('./components/data/graphql/federation/federation').then(m => m.GqlFederation) },
+    { path: 'federation', children: [
+      { path: '', loadComponent: () => import('./components/data/graphql/federation/federation').then(m => m.GqlFederation) },
+      { path: 'gateway-vs-router', loadComponent: () => import('./components/data/graphql/federation/subtopics/gateway-vs-router/gateway-vs-router').then(m => m.GatewayVsRouterSubtopic) },
+      { path: 'missing-link-falls-back-to-v1', loadComponent: () => import('./components/data/graphql/federation/subtopics/missing-link-falls-back-to-v1/missing-link-falls-back-to-v1').then(m => m.MissingLinkFallsBackToV1Subtopic) },
+      { path: 'dataloader-inside-resolve-reference', loadComponent: () => import('./components/data/graphql/federation/subtopics/dataloader-inside-resolve-reference/dataloader-inside-resolve-reference').then(m => m.DataloaderInsideResolveReferenceSubtopic) },
+    ] },
     { path: 'testing',                    loadComponent: () => import('./components/data/graphql/testing/testing').then(m => m.GqlTesting) },
     { path: 'cheatsheet',                 loadComponent: () => import('./components/data/graphql/cheatsheet/cheatsheet').then(m => m.GqlCheatsheet) },
     { path: 'interview-prep',             loadComponent: () => import('./components/data/graphql/interview-prep/interview-prep').then(m => m.GqlInterviewPrep) },

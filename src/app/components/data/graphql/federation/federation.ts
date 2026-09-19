@@ -38,7 +38,7 @@ export class GqlFederation {
         'Federation composes multiple independent GraphQL APIs (subgraphs) into one unified API (supergraph).',
         'Each subgraph owns its domain: Users subgraph owns User, Products subgraph owns Product, Orders subgraph owns Order.',
         'The Apollo Router sits in front, receives client queries, plans which subgraphs to call, and merges the responses.',
-        'Federation v2 removes the gateway in favor of the Apollo Router and introduces new directives (@shareable, @override, @inaccessible).'
+        'Federation v2 is a composition/spec version, not a runtime choice -- @apollo/gateway is still fully usable with Federation v2 subgraphs (Gateway 2.0+). Apollo Router is a separate, newer runtime Apollo recommends for performance, but it is not required for Federation v2. Federation v2 also introduces new directives (@shareable, @override, @inaccessible).'
       ]
     },
     {
@@ -56,7 +56,7 @@ export class GqlFederation {
         'When the Router needs to fetch an entity from a subgraph, it calls the entity\'s __resolveReference.',
         'It receives an object with the @key fields: `{ __typename: "User", id: "1" }`.',
         'Return the full entity data for that subgraph — only the fields owned by that subgraph need to be populated.',
-        'Batch __resolveReference using DataLoader — the Router calls it with multiple references at once for efficiency.'
+        'The Router batches every reference to one entity type in an operation into ONE _entities call, not one call per reference -- but a subgraph\'s own resolver can still hit the database once per representation inside that single call. Use DataLoader inside __resolveReference to batch those underlying data-source lookups, not the GraphQL call itself (the Router already batches that).'
       ]
     },
     {
@@ -74,7 +74,7 @@ export class GqlFederation {
         '@shareable: types and fields can now be defined in multiple subgraphs (v1 required a single owner).',
         '@override: migrate a field from one subgraph to another with zero downtime.',
         '@inaccessible: hide a field from the public API (still accessible internally for cross-subgraph resolution).',
-        'Incremental adoption: Federation v2 can be enabled without rewriting existing subgraphs — use `@link` directive to opt in.'
+        'Incremental adoption: Federation v2 can be enabled subgraph-by-subgraph without rewriting existing ones -- use the `@link` directive to opt in. Without @link, composition does not fail; it silently falls back to Federation v1 semantics for backward compatibility, so a forgotten @link is a real, quiet footgun.'
       ]
     }
   ];
