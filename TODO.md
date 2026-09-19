@@ -9851,7 +9851,13 @@ off here with a date.
   conventions: `.kafka-page` wrapper NOT global (each subtopic SCSS carries wrapper + icon rules),
   sidebar keys `messaging/<topic>/<slug>`, search keys `kafka-<topic>/<slug>`, breadcrumb
   `MESSAGING_LABELS` composite bare keys. Messaging hub Phase 10: 1 of 20.
-- [ ] `/messaging/message-queues-vs-streams` — Message Queues vs Event Streams
+- [x] 2026-09-20 `/messaging/message-queues-vs-streams` — Message Queues vs Event Streams. 3 subtopics
+  (unacked-messages-not-redelivered-forever, rabbitmq-streams-can-replay-too,
+  at-least-once-queues-need-idempotent-handlers). Main-page fixes verified against RabbitMQ docs, AWS SQS
+  docs and Kafka docs: unacked RabbitMQ messages are requeued only on channel close (30-min ack timeout
+  closes the channel), not redelivered forever; RabbitMQ 3.9+ streams can replay; queues are at-least-once
+  not guaranteed single-processing; compaction keeps latest value per key, not everything. Bare
+  `message-queues-vs-streams` SUBTOPICS key collision-free. Messaging hub Phase 10: 2 of 20.
 - [ ] `/messaging/rabbitmq-core` — RabbitMQ Core Concepts
 - [ ] `/messaging/rabbitmq-exchanges` — RabbitMQ Exchanges
 - [ ] `/messaging/rabbitmq-patterns` — RabbitMQ Patterns

@@ -10092,6 +10092,20 @@ Confirmed via direct file inspection before the pilot (`/messaging/messaging-fun
    Build passed clean; browser-verified (nav toggle, all main-page fixes via component data, 3 pages
    with 4-level breadcrumb, 860px wrapper, no entity leaks, no console errors). **Messaging hub
    Phase 10: 1 of 20 topics complete.**
+5. **The `message-queues-vs-streams` batch found and fixed FIVE main-page inaccuracies, all verified
+   against primary docs**: (a) the ack mistake block and theory said an unacked message is
+   "redelivered forever" after a "consumer timeout" -- per the RabbitMQ consumers guide it is requeued
+   only when the channel closes, and the 30-minute delivery acknowledgement timeout (default) closes the
+   channel with PRECONDITION_FAILED; a connected consumer that never acks just stalls on its prefetch
+   slots (SQS is different: visibility timeout, default 30s); (b) a quiz option and a QnA said RabbitMQ
+   cannot replay / has no independent readers -- RabbitMQ 3.9 (2021) added streams (x-queue-type=stream,
+   QoS prefetch + manual ack required, x-stream-offset consumer arg); (c) queues were sold as
+   "guaranteed single-processing" / "exactly-once" -- delivery is at-least-once (AWS: more than one
+   copy may be delivered), handlers must be idempotent; (d) "indefinitely with compaction" -- compaction
+   keeps at least the latest value per key, indefinite retention is retention.ms=-1. 3 subtopics on
+   (a)-(c). Bare `message-queues-vs-streams` SUBTOPICS key collision-free; nav toggle block added to
+   the topic own link in `messaging-nav.ts`. Build clean; browser-verified. **Messaging hub Phase 10:
+   2 of 20 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -10468,8 +10482,8 @@ Confirmed via direct file inspection before the pilot (`/messaging/messaging-fun
   All 22 cards `available: true` in `data/messaging/home/home.ts`. Progress: `kafkaTotal=20` in progress.service.ts.
   Messaging pages use `app-common-mistakes` AND `app-revision-card`. Reference pages (monitoring, messaging-security) have no PageComplete.
   Challenge.language: `'typescript'`. MessagingNavComponent at `shared/messaging-nav/messaging-nav.ts`.
-  Phase 10: **1 of 20 topics have subtopics** (`/messaging/messaging-fundamentals`, pilot batch,
-  2026-09-20) — see "Messaging/Kafka hub subtopic wiring" section above for the
+  Phase 10: **2 of 20 topics have subtopics** (`/messaging/messaging-fundamentals`, pilot batch,
+  2026-09-20; `/messaging/message-queues-vs-streams`, 2026-09-20) — see "Messaging/Kafka hub subtopic wiring" section above for the
   `MessagingNavComponent` accordion structural fix (18th `*NavComponent` hub in a row) and the
   three genuine main-page inaccuracies found and fixed (DLX-less nack "sends to DLQ", RabbitMQ
   wrongly listed as pull-based, unscoped SQS FIFO exactly-once claim).
