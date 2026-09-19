@@ -34,7 +34,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/messaging/message-queues-vs-streams" routerLinkActive="active"><span class="nl-text">Queues vs Event Streams</span>@if(p.isDone('kafka-message-queues-vs-streams')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/messaging/message-queues-vs-streams" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Queues vs Event Streams</span>
+        @if(p.isDone('kafka-message-queues-vs-streams')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('message-queues-vs-streams')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('message-queues-vs-streams')"
+                  (click)="toggleSubtopics('message-queues-vs-streams', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('message-queues-vs-streams'); as mqsSubs) {
+        @if (isSubtopicsExpanded('message-queues-vs-streams')) {
+          <div class="nav-subtopics">
+            @for (s of mqsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

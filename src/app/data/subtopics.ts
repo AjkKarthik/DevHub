@@ -4132,4 +4132,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'RabbitMQ Consumers Are Pushed To, Not Polled', route: '/messaging/messaging-fundamentals/rabbitmq-consumers-are-pushed' },
     { label: 'SQS FIFO Deduplication Only Covers a Five-Minute Send Window', route: '/messaging/messaging-fundamentals/sqs-fifo-dedup-five-minute-window' },
   ],
+  'message-queues-vs-streams': [
+    { label: 'Unacked Messages Are Not Redelivered Forever', route: '/messaging/message-queues-vs-streams/unacked-messages-not-redelivered-forever' },
+    { label: 'RabbitMQ Streams Can Replay Too', route: '/messaging/message-queues-vs-streams/rabbitmq-streams-can-replay-too' },
+    { label: 'Queues Are At-Least-Once, So Handlers Must Be Idempotent', route: '/messaging/message-queues-vs-streams/at-least-once-queues-need-idempotent-handlers' },
+  ],
 };

@@ -1,0 +1,26 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Queues vs Event Streams" topicRoute="/messaging/message-queues-vs-streams"
+    subtopicLabel="Unacked Messages Are Not Redelivered Forever" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">Unacked Messages Are Not Redelivered Forever</h1>
+  <p class="page-subtitle">The page said a consumer that never acks gets the message redelivered forever. In RabbitMQ the message just sits unacknowledged until the channel closes.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="RabbitMQ 3.8.15+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the acknowledgement mistake block and the redelivery line in the main page's queue theory. The next subtopic corrects the claim that only Kafka-style platforms can replay history.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Queues vs Event Streams" topicRoute="/messaging/message-queues-vs-streams"
+    [next]="{ label: 'RabbitMQ Streams Can Replay Too', route: '/messaging/message-queues-vs-streams/rabbitmq-streams-can-replay-too' }" />
+</div>

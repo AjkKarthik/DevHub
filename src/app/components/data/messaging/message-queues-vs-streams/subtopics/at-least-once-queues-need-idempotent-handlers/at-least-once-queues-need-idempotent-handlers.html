@@ -1,0 +1,26 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Queues vs Event Streams" topicRoute="/messaging/message-queues-vs-streams"
+    subtopicLabel="Queues Are At-Least-Once, So Handlers Must Be Idempotent" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">Queues Are At-Least-Once, So Handlers Must Be Idempotent</h1>
+  <p class="page-subtitle">The page promised guaranteed single-processing from queues. A queue gives each message to one worker at a time, but delivery is at-least-once, so the handler has to tolerate repeats.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="AMQP / SQS" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the wording in the queue guidance and the hybrid-architecture QnA. The dedicated Idempotency and Exactly-Once topic later in the Reliability group goes deeper on the same problem.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Queues vs Event Streams" topicRoute="/messaging/message-queues-vs-streams"
+    [prev]="{ label: 'RabbitMQ Streams Can Replay Too', route: '/messaging/message-queues-vs-streams/rabbitmq-streams-can-replay-too' }" />
+</div>

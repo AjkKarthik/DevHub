@@ -2988,7 +2988,12 @@ export const routes: Routes = [
       { path: 'rabbitmq-consumers-are-pushed', loadComponent: () => import('./components/data/messaging/messaging-fundamentals/subtopics/rabbitmq-consumers-are-pushed/rabbitmq-consumers-are-pushed').then(m => m.RabbitmqConsumersArePushedSubtopic) },
       { path: 'sqs-fifo-dedup-five-minute-window', loadComponent: () => import('./components/data/messaging/messaging-fundamentals/subtopics/sqs-fifo-dedup-five-minute-window/sqs-fifo-dedup-five-minute-window').then(m => m.SqsFifoDedupFiveMinuteWindowSubtopic) },
     ] },
-    { path: 'message-queues-vs-streams', loadComponent: () => import('./components/data/messaging/message-queues-vs-streams/message-queues-vs-streams').then(m => m.MessageQueuesVsStreams) },
+    { path: 'message-queues-vs-streams', children: [
+      { path: '', loadComponent: () => import('./components/data/messaging/message-queues-vs-streams/message-queues-vs-streams').then(m => m.MessageQueuesVsStreams) },
+      { path: 'unacked-messages-not-redelivered-forever', loadComponent: () => import('./components/data/messaging/message-queues-vs-streams/subtopics/unacked-messages-not-redelivered-forever/unacked-messages-not-redelivered-forever').then(m => m.UnackedMessagesNotRedeliveredForeverSubtopic) },
+      { path: 'rabbitmq-streams-can-replay-too', loadComponent: () => import('./components/data/messaging/message-queues-vs-streams/subtopics/rabbitmq-streams-can-replay-too/rabbitmq-streams-can-replay-too').then(m => m.RabbitmqStreamsCanReplayTooSubtopic) },
+      { path: 'at-least-once-queues-need-idempotent-handlers', loadComponent: () => import('./components/data/messaging/message-queues-vs-streams/subtopics/at-least-once-queues-need-idempotent-handlers/at-least-once-queues-need-idempotent-handlers').then(m => m.AtLeastOnceQueuesNeedIdempotentHandlersSubtopic) },
+    ] },
     { path: 'rabbitmq-core',             loadComponent: () => import('./components/data/messaging/rabbitmq-core/rabbitmq-core').then(m => m.RabbitMqCore) },
     { path: 'rabbitmq-exchanges',        loadComponent: () => import('./components/data/messaging/rabbitmq-exchanges/rabbitmq-exchanges').then(m => m.RabbitMqExchanges) },
     { path: 'rabbitmq-patterns',         loadComponent: () => import('./components/data/messaging/rabbitmq-patterns/rabbitmq-patterns').then(m => m.RabbitMqPatterns) },

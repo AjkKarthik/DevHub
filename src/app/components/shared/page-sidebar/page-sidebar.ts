@@ -31523,6 +31523,44 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Content-based deduplication hashes the message body only; message attributes are not part of the deduplication ID.',
     ],
   },
+  'messaging/message-queues-vs-streams/unacked-messages-not-redelivered-forever': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Queues vs Event Streams', route: '/messaging/message-queues-vs-streams' },
+      { label: 'RabbitMQ Streams Can Replay Too', route: '/messaging/message-queues-vs-streams/rabbitmq-streams-can-replay-too' },
+      { label: 'Queues Are At-Least-Once, So Handlers Must Be Idempotent', route: '/messaging/message-queues-vs-streams/at-least-once-queues-need-idempotent-handlers' },
+    ],
+    tip: 'RabbitMQ requeues unacked deliveries when the channel closes; the delivery acknowledgement timeout (default 30 minutes) closes the channel with PRECONDITION_FAILED. A connected consumer that never acks is simply stuck, not redelivered to.',
+    gotchas: [
+      'Each unacked message holds a prefetch slot, so a missing ack stalls the consumer once the slots run out.',
+      'SQS differs: a received message reappears after the visibility timeout (default 30 seconds) unless it was deleted.',
+    ],
+  },
+  'messaging/message-queues-vs-streams/rabbitmq-streams-can-replay-too': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Queues vs Event Streams', route: '/messaging/message-queues-vs-streams' },
+      { label: 'Unacked Messages Are Not Redelivered Forever', route: '/messaging/message-queues-vs-streams/unacked-messages-not-redelivered-forever' },
+      { label: 'Queues Are At-Least-Once, So Handlers Must Be Idempotent', route: '/messaging/message-queues-vs-streams/at-least-once-queues-need-idempotent-handlers' },
+    ],
+    tip: 'RabbitMQ 3.9+ streams are an append-only log: declare with x-queue-type=stream, consume with a QoS prefetch, manual acks and an x-stream-offset argument.',
+    gotchas: [
+      'Acking a stream message only advances that reader; messages leave when x-max-age or x-max-length-bytes retention expires.',
+      'With neither retention argument set, no retention limit applies.',
+    ],
+  },
+  'messaging/message-queues-vs-streams/at-least-once-queues-need-idempotent-handlers': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Queues vs Event Streams', route: '/messaging/message-queues-vs-streams' },
+      { label: 'RabbitMQ Streams Can Replay Too', route: '/messaging/message-queues-vs-streams/rabbitmq-streams-can-replay-too' },
+    ],
+    tip: 'A queue hands each message to one consumer at a time, but delivery is at-least-once. Dedupe on a stable message id, recorded atomically with the side effect, then ack.',
+    gotchas: [
+      'SQS standard queues can deliver more than one copy of a message.',
+      'Acking before the work is committed trades duplicates for lost messages.',
+    ],
+  },
   'messaging/message-queues-vs-streams': {
     apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
     related: [
