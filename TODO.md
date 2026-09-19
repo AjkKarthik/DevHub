@@ -9820,7 +9820,20 @@ off here with a date.
   3 subtopics matching those three findings. Bare `federation` SUBTOPICS key checked
   collision-free, left bare. All 6 touchpoints wired. Verified `@link` detection regex output and
   nested-escape display by direct execution.
-- [ ] `/graphql/testing` — Testing GraphQL
+- [x] 2026-09-20 — `/graphql/testing` — Testing GraphQL APIs. Verified against a real
+  @apollo/server 5.5.1 install: `executeOperation` auto-starts the server, so the main page's
+  "call start() in beforeAll" requirement is optional -- and calling start() AFTER an
+  executeOperation throws (as does stop() before any start). The subscriptions QnA claimed
+  executeOperation can collect async-iterator values; it returns one single result (an error for
+  a non-null field, and `data: { tick: null }` with NO errors for a nullable one -- a silent false
+  pass), so subscriptions need graphql-js `subscribe()`. `addMocksToSchema` (@graphql-tools/mock
+  9.1.14): the String mock is always "Hello World" (not random), mocks REPLACE real resolvers
+  unless `preserveResolvers: true`, and repeat queries on the same mocked schema return identical
+  values. Also noted (via the Apollo Client 4.0.0 release notes) that MockedProvider moved to
+  `@apollo/client/testing/react` and `addTypename` was removed, and added the missing
+  `kind === 'single'` narrowing to a mistake example. 3 subtopics on the first three findings.
+  SUBTOPICS key hub-prefixed to `gql-testing` -- bare `testing` collides with Angular's own
+  unquoted key. All 6 touchpoints wired. **This completes the GraphQL hub's Phase 10 (20 of 20).**
 
 #### Messaging/Kafka — 20 topic pages
 

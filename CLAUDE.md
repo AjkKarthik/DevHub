@@ -10030,6 +10030,32 @@ this same check before any other new hub's first subtopic set:
    main-page fixes confirmed via direct component-data inspection; all 3 subtopic pages checked —
    correct h1/breadcrumb (all 4 levels, `&#64;link` decoding to `@link`), 860px wrapper, tailored
    sidebar content. **GraphQL hub Phase 10: 19 of 20 topics complete.**
+27. **The `testing` batch — the 20th and FINAL GraphQL topic, the last in the Advanced nav group —
+   found and fixed THREE main-page inaccuracies, all verified by direct execution against a real
+   `@apollo/server@5.5.1` + `graphql` + `@graphql-tools/mock@9.1.14` install in the scratchpad rather
+   than read from docs**: (a) the theory said to call `server.start()` in beforeAll as a requirement --
+   `executeOperation` auto-starts the server (Apollo's own docs agree), so it is optional, and calling
+   `start()` AFTER an executeOperation has run throws "only call start() once", while `stop()` before any
+   start also throws (`stop()` twice did not); (b) the subscriptions QnA said Apollo Server 4's
+   executeOperation can run a subscription and collect async-iterator values -- it returns ONE single
+   result: an error for a non-null field, and `data: { tick: null }` with NO errors for a nullable one, a
+   silent false pass; the real tool is graphql-js `subscribe()` (verified [1,2,3] via for-await; an invalid
+   document or non-subscription operation returns a plain result with errors, not an iterator); (c) the
+   addMocksToSchema theory said "random strings, numbers, booleans" -- the String mock is always the literal
+   "Hello World", ID is a UUID, Int/Float/Boolean are random, mocks REPLACE real resolvers unless
+   `preserveResolvers: true`, and repeat queries on the same mocked schema return identical values. Also,
+   verified via WebSearch against the Apollo Client 4.0.0 release notes that MockedProvider moved to
+   `@apollo/client/testing/react` and `addTypename` was removed (__typename is always added; mocks must
+   include it) -- added as a version note plus a comment in the MockedProvider codeTab rather than
+   rewriting it, and added the missing `kind === 'single'` narrowing to a mistake example. 3 subtopics on
+   findings (a)-(c). **SUBTOPICS key hub-prefixed to `gql-testing`** -- bare `testing` collides with the
+   Angular hub's own UNQUOTED `testing:` key (checked both quoted and unquoted forms, plus
+   `app.routes.ts`); all four `GqlNavComponent` accordion touchpoints use `'gql-testing'`. A bare
+   `@graphql-tools/mock` in a static `.html` subtitle needed `&#64;` (caught by the standing sweep, not the
+   build). Build passed clean (`EXITCODE:0`). Browser-verified: no console errors; nav toggle count 20; all
+   three main-page fixes confirmed via direct component-data inspection; all 3 subtopic pages checked --
+   correct h1/breadcrumb (all 4 levels), 860px wrapper, no entity leaks, tailored sidebar content.
+   **GraphQL hub Phase 10: 20 of 20 topics complete -- the entire hub is done.**
 
 ## Current state (update when it changes!)
 
@@ -10313,7 +10339,7 @@ this same check before any other new hub's first subtopic set:
   All 22 cards `available: true` in `data/graphql/home/home.ts`. Progress: `gqlTotal=20` in progress.service.ts.
   GraphQL pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. GqlNavComponent at `shared/gql-nav/gql-nav.ts`.
-  Phase 10: **19 of 20 topics have subtopics** (`/graphql/fundamentals`, pilot batch, 2026-09-10;
+  Phase 10: **COMPLETE — 20 of 20 topics have subtopics** (`/graphql/fundamentals`, pilot batch, 2026-09-10;
   `/graphql/schema-definition-language`, 2026-09-10; `/graphql/type-system`, 2026-09-10;
   `/graphql/queries`, 2026-09-10; `/graphql/variables-arguments`, 2026-09-10;
   `/graphql/directives`, 2026-09-10 — Queries nav group fully done; `/graphql/mutations`,
@@ -10324,7 +10350,7 @@ this same check before any other new hub's first subtopic set:
   `/graphql/apollo-client`, 2026-09-17; `/graphql/client-caching`, 2026-09-17;
   `/graphql/code-generation`, 2026-09-17 — Client nav group fully done;
   `/graphql/performance`, 2026-09-17 — first topic in the Advanced nav group;
-  `/graphql/federation`, 2026-09-20 — only `testing` remains) —
+  `/graphql/federation`, 2026-09-20; `/graphql/testing`, 2026-09-20 — every nav group fully done) —
   see "GraphQL hub
   subtopic wiring" section above for the `GqlNavComponent` accordion structural fix (17th
   `*NavComponent`-based hub in a row missing it at pilot time), the `gql-fundamentals`/
@@ -10333,7 +10359,8 @@ this same check before any other new hub's first subtopic set:
   `gql-directives` collided with the Angular hub's own `directives-demo` topic's unquoted bare
   `directives` key; `gql-error-handling` collided with the JavaScript hub's own bare
   `error-handling` topic key; `gql-performance` collided with the Node.js hub's own bare
-  `performance` topic key; `schema-definition-language`, `type-system`, `queries`,
+  `performance` topic key; `gql-testing` collided with the Angular hub's own unquoted bare
+  `testing` key; `schema-definition-language`, `type-system`, `queries`,
   `variables-arguments`, `mutations`, `subscriptions`, `resolvers`, `dataloader`, `auth`,
   `apollo-server`, `pagination`, `apollo-client`, `client-caching`, `code-generation`, and
   `federation` are all collision-free and left bare — confirmed via a direct grep that no other hub's `app.routes.ts`
