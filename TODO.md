@@ -9910,7 +9910,15 @@ off here with a date.
   only the latest version (_TRANSITIVE checks all), JSON Schema uses the same schema-ID header (Protobuf adds
   message indexes), Avro example no longer hardcodes schemaId. Bare `schema-registry` SUBTOPICS key
   collision-free. Messaging hub Phase 10: 10 of 20 (RabbitMQ + Apache Kafka groups done).
-- [ ] `/messaging/messaging-patterns` — Enterprise Messaging Patterns
+- [x] 2026-09-20 `/messaging/messaging-patterns` — Enterprise Messaging Patterns. 3 subtopics
+  (claim-check-limits-and-byte-length, scatter-gather-example-needs-a-timeout,
+  aggregator-loses-partial-orders). Main-page fixes: stale/wrong message-size limits (SQS 1 MiB since
+  Aug 2025, RabbitMQ 16 MiB since 4.0, Kafka about 1MB) and a string-length size test now Buffer.byteLength;
+  the Scatter-Gather example had no timeout despite its own mistake block and leaked its connection;
+  "exactly one consumer" replaced with at-least-once wording, and competing-consumer load claim tightened;
+  the Aggregator challenge deleted the order before the send succeeded, ran overlapping flush passes, and
+  is documented as demo-only (auto-commit plus in-memory state loses partial orders on a crash). Bare
+  `messaging-patterns` SUBTOPICS key collision-free. Messaging hub Phase 10: 11 of 20.
 - [ ] `/messaging/saga-pattern` — Saga Pattern
 - [ ] `/messaging/outbox-pattern` — Outbox Pattern
 - [ ] `/messaging/azure-service-bus` — Azure Service Bus

@@ -10233,6 +10233,24 @@ Confirmed via direct file inspection before the pilot (`/messaging/messaging-fun
    same-wire-format-for-all-three-formats), each backed by a Node model. Bare `schema-registry` SUBTOPICS key
    collision-free. Build clean; browser-verified. **Messaging hub Phase 10: 10 of 20 topics complete --
    RabbitMQ and Apache Kafka nav groups done.**
+14. **The `messaging-patterns` batch (first Patterns group topic) found and fixed FIVE main-page issues,
+   verified against AWS SQS release notes and quotas, the RabbitMQ 4.0 release notes and limits docs, and a
+   Node model for each behaviour**: (a) the Claim Check theory and mistake block listed "SQS: 256KB" and
+   "Kafka and RabbitMQ default 1MB" -- AWS raised SQS to 1 MiB on 4 Aug 2025, RabbitMQ 4.0 defaults to 16 MiB
+   (128 MiB in 3.8 to 3.13), Kafka is about 1MB (producer max.request.size 1048576, broker message.max.bytes
+   1048588); (b) the size test used `json.length > 900_000` -- length counts UTF-16 code units, so 400,000 euro
+   signs are length 400011 but 1,200,011 bytes; now Buffer.byteLength; (c) the Scatter-Gather codeTab
+   resolved only when replies.length === vendors.length, contradicting the page's own deadline mistake block,
+   and closed the connection only on the all-replied path -- now a 2s timer that resolves with the best
+   partial reply or rejects; (d) "exactly one consumer processes each message" (theory, quiz, quick reference)
+   -- delivery is at-least-once, handlers must be idempotent, and the "fixed round-robin could overload a
+   slow instance" claim now says it applies to push brokers without prefetch; (e) the Aggregator challenge
+   deleted the Map entry before `producer.send` succeeded and let flush passes overlap -- now delete after a
+   successful send, a `flushing` guard, and a demo-only note (auto-commit plus in-memory state loses partial
+   orders on a crash, and order-items must be keyed by orderId). 3 subtopics
+   (claim-check-limits-and-byte-length, scatter-gather-example-needs-a-timeout,
+   aggregator-loses-partial-orders), each backed by a Node model. Bare `messaging-patterns` SUBTOPICS key
+   collision-free. Build clean; browser-verified. **Messaging hub Phase 10: 11 of 20 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -10609,12 +10627,12 @@ Confirmed via direct file inspection before the pilot (`/messaging/messaging-fun
   All 22 cards `available: true` in `data/messaging/home/home.ts`. Progress: `kafkaTotal=20` in progress.service.ts.
   Messaging pages use `app-common-mistakes` AND `app-revision-card`. Reference pages (monitoring, messaging-security) have no PageComplete.
   Challenge.language: `'typescript'`. MessagingNavComponent at `shared/messaging-nav/messaging-nav.ts`.
-  Phase 10: **10 of 20 topics have subtopics** (`/messaging/messaging-fundamentals`, pilot batch,
+  Phase 10: **11 of 20 topics have subtopics** (`/messaging/messaging-fundamentals`, pilot batch,
   2026-09-20; `/messaging/message-queues-vs-streams`, 2026-09-20; `/messaging/rabbitmq-core`,
   2026-09-20; `/messaging/rabbitmq-exchanges`, 2026-09-20; `/messaging/rabbitmq-patterns`,
   2026-09-20; `/messaging/kafka-architecture`, 2026-09-20; `/messaging/kafka-producers-consumers`,
   2026-09-20; `/messaging/kafka-streams`, 2026-09-20; `/messaging/kafka-connect`, 2026-09-20;
-  `/messaging/schema-registry`, 2026-09-20) — see "Messaging/Kafka hub subtopic wiring" section above for the
+  `/messaging/schema-registry`, 2026-09-20; `/messaging/messaging-patterns`, 2026-09-20) — see "Messaging/Kafka hub subtopic wiring" section above for the
   `MessagingNavComponent` accordion structural fix (18th `*NavComponent` hub in a row) and the
   three genuine main-page inaccuracies found and fixed (DLX-less nack "sends to DLQ", RabbitMQ
   wrongly listed as pull-based, unscoped SQS FIFO exactly-once claim).
