@@ -9864,7 +9864,12 @@ off here with a date.
   "fastest consumer" claim (really blind round-robin), durability "guarantee" overstated, classic mirroring
   removed in 4.0, Challenge `> 3` vs `>= 3` mismatch. Bare `rabbitmq-core` SUBTOPICS key collision-free.
   Messaging hub Phase 10: 3 of 20.
-- [ ] `/messaging/rabbitmq-exchanges` — RabbitMQ Exchanges
+- [x] 2026-09-20 `/messaging/rabbitmq-exchanges` — RabbitMQ Exchanges. 3 subtopics
+  (trailing-hash-matches-bare-key, missing-exchange-closes-the-channel, mandatory-and-alternate-exchange).
+  Main-page fixes: `order.#` does match bare `order`; publishing to a missing exchange closes the channel
+  (not a silent drop) and assertExchange does not catch typos; unroutable messages return only with
+  `mandatory`, and alternate-exchange routing counts as routed. Bare `rabbitmq-exchanges` SUBTOPICS key
+  collision-free. Messaging hub Phase 10: 4 of 20.
 - [ ] `/messaging/rabbitmq-patterns` — RabbitMQ Patterns
 - [ ] `/messaging/kafka-architecture` — Kafka Architecture
 - [ ] `/messaging/kafka-producers-consumers` — Producers & Consumers

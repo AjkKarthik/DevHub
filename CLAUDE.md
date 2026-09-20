@@ -10122,6 +10122,20 @@ Confirmed via direct file inspection before the pilot (`/messaging/messaging-fun
    Bare `rabbitmq-core` SUBTOPICS key collision-free. Build clean; browser-verified (all main-page
    fixes live, 3 pages with 4-level breadcrumb, 860px wrapper, no entity leaks, no console errors).
    **Messaging hub Phase 10: 3 of 20 topics complete.**
+7. **The `rabbitmq-exchanges` batch found and fixed THREE main-page inaccuracies, verified against
+   the RabbitMQ exchanges, publishers and alternate-exchange docs plus the amqplib channel API**: (a)
+   mistake #3 claimed `order.#` does not match the bare key `order` -- `#` is zero or more words and
+   the docs example `audit.events.#` matches `audit.events`; it now contrasts `order.*` (exactly one
+   word) with `order.#`; (b) mistake #4 said publishing to a non-existent exchange is "silently
+   dropped" -- it is a 404 channel error that closes the channel (only unroutable messages to an
+   existing exchange are dropped), and its "assertExchange to catch typos" fix was wrong because
+   assertExchange creates the typo'd exchange; now `checkExchange` plus error/close handlers; (c) quiz
+   Q4 and the revision list implied unroutable messages come back to the producer -- only with
+   `mandatory`, and a message routed via an alternate exchange still counts as routed. 3 subtopics
+   (trailing-hash-matches-bare-key, missing-exchange-closes-the-channel,
+   mandatory-and-alternate-exchange), each backed by a Node model. Bare `rabbitmq-exchanges`
+   SUBTOPICS key collision-free. Build clean; browser-verified. **Messaging hub Phase 10: 4 of 20
+   topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -10498,9 +10512,9 @@ Confirmed via direct file inspection before the pilot (`/messaging/messaging-fun
   All 22 cards `available: true` in `data/messaging/home/home.ts`. Progress: `kafkaTotal=20` in progress.service.ts.
   Messaging pages use `app-common-mistakes` AND `app-revision-card`. Reference pages (monitoring, messaging-security) have no PageComplete.
   Challenge.language: `'typescript'`. MessagingNavComponent at `shared/messaging-nav/messaging-nav.ts`.
-  Phase 10: **3 of 20 topics have subtopics** (`/messaging/messaging-fundamentals`, pilot batch,
+  Phase 10: **4 of 20 topics have subtopics** (`/messaging/messaging-fundamentals`, pilot batch,
   2026-09-20; `/messaging/message-queues-vs-streams`, 2026-09-20; `/messaging/rabbitmq-core`,
-  2026-09-20) — see "Messaging/Kafka hub subtopic wiring" section above for the
+  2026-09-20; `/messaging/rabbitmq-exchanges`, 2026-09-20) — see "Messaging/Kafka hub subtopic wiring" section above for the
   `MessagingNavComponent` accordion structural fix (18th `*NavComponent` hub in a row) and the
   three genuine main-page inaccuracies found and fixed (DLX-less nack "sends to DLQ", RabbitMQ
   wrongly listed as pull-based, unscoped SQS FIFO exactly-once claim).
