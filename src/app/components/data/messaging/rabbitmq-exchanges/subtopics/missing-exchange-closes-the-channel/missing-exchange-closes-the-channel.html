@@ -1,0 +1,27 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="RabbitMQ Exchanges" topicRoute="/messaging/rabbitmq-exchanges"
+    subtopicLabel="Publishing to a Missing Exchange Closes the Channel" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">Publishing to a Missing Exchange Closes the Channel</h1>
+  <p class="page-subtitle">The page said a message to a non-existent exchange is silently dropped. RabbitMQ raises a channel error instead, and asserting the exchange does not fix a typo.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="RabbitMQ 3+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the fourth mistake block on the Exchanges page. The messages that really are dropped silently are the unroutable ones, covered in the next subtopic.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="RabbitMQ Exchanges" topicRoute="/messaging/rabbitmq-exchanges"
+    [prev]="{ label: 'A Trailing .# Binding Also Matches the Bare Key', route: '/messaging/rabbitmq-exchanges/trailing-hash-matches-bare-key' }"
+    [next]="{ label: 'Unroutable Messages: mandatory Flag vs Alternate Exchange', route: '/messaging/rabbitmq-exchanges/mandatory-and-alternate-exchange' }" />
+</div>

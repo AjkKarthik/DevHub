@@ -3000,7 +3000,12 @@ export const routes: Routes = [
       { path: 'quorum-queues-replace-mirrored-queues', loadComponent: () => import('./components/data/messaging/rabbitmq-core/subtopics/quorum-queues-replace-mirrored-queues/quorum-queues-replace-mirrored-queues').then(m => m.QuorumQueuesReplaceMirroredQueuesSubtopic) },
       { path: 'no-prefetch-is-blind-round-robin', loadComponent: () => import('./components/data/messaging/rabbitmq-core/subtopics/no-prefetch-is-blind-round-robin/no-prefetch-is-blind-round-robin').then(m => m.NoPrefetchIsBlindRoundRobinSubtopic) },
     ] },
-    { path: 'rabbitmq-exchanges',        loadComponent: () => import('./components/data/messaging/rabbitmq-exchanges/rabbitmq-exchanges').then(m => m.RabbitMqExchanges) },
+    { path: 'rabbitmq-exchanges', children: [
+      { path: '', loadComponent: () => import('./components/data/messaging/rabbitmq-exchanges/rabbitmq-exchanges').then(m => m.RabbitMqExchanges) },
+      { path: 'trailing-hash-matches-bare-key', loadComponent: () => import('./components/data/messaging/rabbitmq-exchanges/subtopics/trailing-hash-matches-bare-key/trailing-hash-matches-bare-key').then(m => m.TrailingHashMatchesBareKeySubtopic) },
+      { path: 'missing-exchange-closes-the-channel', loadComponent: () => import('./components/data/messaging/rabbitmq-exchanges/subtopics/missing-exchange-closes-the-channel/missing-exchange-closes-the-channel').then(m => m.MissingExchangeClosesTheChannelSubtopic) },
+      { path: 'mandatory-and-alternate-exchange', loadComponent: () => import('./components/data/messaging/rabbitmq-exchanges/subtopics/mandatory-and-alternate-exchange/mandatory-and-alternate-exchange').then(m => m.MandatoryAndAlternateExchangeSubtopic) },
+    ] },
     { path: 'rabbitmq-patterns',         loadComponent: () => import('./components/data/messaging/rabbitmq-patterns/rabbitmq-patterns').then(m => m.RabbitMqPatterns) },
     { path: 'kafka-architecture',        loadComponent: () => import('./components/data/messaging/kafka-architecture/kafka-architecture').then(m => m.KafkaArchitecture) },
     { path: 'kafka-producers-consumers', loadComponent: () => import('./components/data/messaging/kafka-producers-consumers/kafka-producers-consumers').then(m => m.KafkaProducersConsumers) },

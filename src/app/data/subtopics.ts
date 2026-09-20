@@ -4142,4 +4142,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Classic Mirrored Queues Were Removed: Use Quorum Queues', route: '/messaging/rabbitmq-core/quorum-queues-replace-mirrored-queues' },
     { label: 'Without Prefetch RabbitMQ Deals Messages Round-Robin, Blind to Load', route: '/messaging/rabbitmq-core/no-prefetch-is-blind-round-robin' },
   ],
+  'rabbitmq-exchanges': [
+    { label: 'A Trailing .# Binding Also Matches the Bare Key', route: '/messaging/rabbitmq-exchanges/trailing-hash-matches-bare-key' },
+    { label: 'Publishing to a Missing Exchange Closes the Channel', route: '/messaging/rabbitmq-exchanges/missing-exchange-closes-the-channel' },
+    { label: 'Unroutable Messages: mandatory Flag vs Alternate Exchange', route: '/messaging/rabbitmq-exchanges/mandatory-and-alternate-exchange' },
+  ],
 };

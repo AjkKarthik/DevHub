@@ -31681,6 +31681,43 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Prefetch count (QoS) limits outstanding unacknowledged messages per consumer, preventing one slow consumer from being overwhelmed.',
     ],
   },
+  'messaging/rabbitmq-exchanges/trailing-hash-matches-bare-key': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'RabbitMQ Exchanges', route: '/messaging/rabbitmq-exchanges' },
+      { label: 'Publishing to a Missing Exchange Closes the Channel', route: '/messaging/rabbitmq-exchanges/missing-exchange-closes-the-channel' },
+    ],
+    tip: 'In a topic binding * is exactly one word and # is zero or more, so order.# matches the bare key order as well as order.item.created. order.* matches neither of those.',
+    gotchas: [
+      'A leading star still needs a word: *.stock.# matches usd.stock but not stock.nasdaq.',
+      'A binding of just # matches every routing key, like a fanout exchange.',
+    ],
+  },
+  'messaging/rabbitmq-exchanges/missing-exchange-closes-the-channel': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'RabbitMQ Exchanges', route: '/messaging/rabbitmq-exchanges' },
+      { label: 'A Trailing .# Binding Also Matches the Bare Key', route: '/messaging/rabbitmq-exchanges/trailing-hash-matches-bare-key' },
+      { label: 'Unroutable Messages: mandatory Flag vs Alternate Exchange', route: '/messaging/rabbitmq-exchanges/mandatory-and-alternate-exchange' },
+    ],
+    tip: 'Publishing to an exchange that does not exist is a 404 channel error that closes the channel. Only messages to an existing exchange with no matching binding are silently dropped.',
+    gotchas: [
+      'assertExchange creates the exchange if it is missing, so it turns a typo into a new empty exchange instead of catching it; use checkExchange.',
+      'publish() is fire-and-forget: attach error and close handlers on the channel to see the failure.',
+    ],
+  },
+  'messaging/rabbitmq-exchanges/mandatory-and-alternate-exchange': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'RabbitMQ Exchanges', route: '/messaging/rabbitmq-exchanges' },
+      { label: 'Publishing to a Missing Exchange Closes the Channel', route: '/messaging/rabbitmq-exchanges/missing-exchange-closes-the-channel' },
+    ],
+    tip: 'An unroutable message is dropped by default. mandatory returns it to the publisher (needs a return handler); a message routed via an alternate exchange still counts as routed, so it is not returned.',
+    gotchas: [
+      'Alternate exchanges can chain; the message is returned only if nothing in the chain can route it.',
+      'A return is not a delivery report: it only says no queue was found.',
+    ],
+  },
   'messaging/rabbitmq-exchanges': {
     apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
     related: [

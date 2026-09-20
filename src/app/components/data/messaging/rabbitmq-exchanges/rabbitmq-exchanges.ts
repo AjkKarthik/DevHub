@@ -193,22 +193,24 @@ await ch.bindQueue('queue-a', 'events', 'key-a');`,
     },
     {
       title: 'Confusing * and # in topic routing keys',
-      wrong: `// Expecting 'order.#' to match 'order' (no dot)
-// '#' matches zero or more words — 'order.#' does NOT match bare 'order'`,
-      right: `// Bind 'order' explicitly or use '#' on its own
-await ch.bindQueue('q', 'logs', 'order');    // exact match
-await ch.bindQueue('q', 'logs', 'order.#'); // order.anything`,
-      explanation: '# matches zero or more dot-separated words AFTER the preceding dot. Use a separate exact binding for the bare key.'
+      wrong: `// Expecting 'order.*' to also catch the bare key 'order' and 'order.item.created'
+await ch.bindQueue('q', 'logs', 'order.*');
+// '*' is exactly ONE word: matches order.created, but NOT 'order' and NOT order.item.created`,
+      right: `// '#' is zero or more words, so this one binding covers all three
+await ch.bindQueue('q', 'logs', 'order.#');
+// matches: order, order.created, order.item.created`,
+      explanation: '* needs exactly one word; # accepts zero or more. RabbitMQ\'s own docs show that "audit.events.#" matches "audit.events" as well as "audit.events.users.signup", so a trailing ".#" also matches the bare key.'
     },
     {
       title: 'Publishing to the wrong exchange name',
       wrong: `// Typo: 'notification' instead of 'notifications'
 ch.publish('notification', 'email', Buffer.from(msg));
-// No exchange named 'notification' — message silently dropped`,
-      right: `// Assert the exchange before publishing to catch typos
-await ch.assertExchange('notifications', 'direct', { durable: true });
+// No such exchange: the broker raises a 404 NOT_FOUND channel error and closes the channel`,
+      right: `// Verify the exchange exists (fails fast if it does not), and listen for channel errors
+ch.on('error', (err) => console.error('channel error', err));
+await ch.checkExchange('notifications');
 ch.publish('notifications', 'email', Buffer.from(msg));`,
-      explanation: 'AMQP drops messages published to non-existent exchanges. Always assert the exchange in producer code, or configure an alternate exchange to catch unroutable messages.'
+      explanation: 'Publishing to a non-existent exchange is a channel error that closes the channel, so later publishes on it fail too. Do not use assertExchange to catch typos: it creates whatever name you give it. Messages to an EXISTING exchange with no matching binding are the ones silently dropped (unless mandatory or an alternate exchange is used).'
     },
   ];
 
@@ -262,7 +264,7 @@ async function setup() {
     { q: 'Which exchange type broadcasts to ALL bound queues regardless of routing key?', options: ['direct', 'fanout', 'topic', 'headers'], answer: 1, explanation: 'Fanout ignores routing keys and delivers to every bound queue.' },
     { q: 'In a topic exchange, which binding key matches "order.item.shipped"?', options: ['order.*', 'order.#', 'order.item', 'order'], answer: 1, explanation: '"order.#" matches zero or more words after "order.". "order.*" only matches one word after "order.".' },
     { q: 'What does the default (nameless "") exchange provide?', options: ['Fanout to all queues', 'A direct exchange where queues bind by their own name', 'A topic exchange with # binding', 'Headers-based routing'], answer: 1, explanation: 'Every queue is auto-bound to the default exchange using its own name as the routing key.' },
-    { q: 'What happens to a message published to a topic exchange with no matching binding?', options: ['Delivered to all queues', 'Returned to producer', 'Dropped (or sent to alternate exchange)', 'Requeued with delay'], answer: 2, explanation: 'Unroutable messages are dropped unless an alternate exchange is configured on the exchange.' },
+    { q: 'What happens to a message published to a topic exchange with no matching binding?', options: ['Delivered to all queues', 'Always returned to the producer', 'Dropped (or sent to alternate exchange)', 'Requeued with delay'], answer: 2, explanation: 'By default an unroutable message is silently dropped, or sent to an alternate exchange if one is configured. It is returned to the publisher only when the publisher sets the mandatory flag.' },
     { q: 'Which exchange type uses binding keys with wildcard matching?', options: ['Direct exchange', 'Fanout exchange', 'Topic exchange', 'Headers exchange'], answer: 2, explanation: 'Topic exchange routes messages using routing key patterns with wildcards: * matches one word, # matches zero or more words. E.g., binding key news.* matches news.sport and news.finance but not news.sport.football.' },
     { q: 'What is a dead-letter exchange (DLX) and when do messages go there?', options: ['An exchange for test messages', 'An exchange that receives rejected, expired, or max-delivery-count messages', 'An exchange with no bound queues', 'An exchange for high-priority messages'], answer: 1, explanation: 'DLX receives messages when: consumer nacks with requeue=false, message TTL expires, or queue max-length is exceeded. Configure per-queue with x-dead-letter-exchange argument. Enables retry patterns and error inspection.' },
   ];
@@ -283,7 +285,8 @@ async function setup() {
       'Default exchange ("") auto-binds every queue by its own name',
       'Fanout ignores routing keys — all queues receive all messages',
       'Topic is the most flexible — subsumes direct and fanout with right binding keys',
-      'Unroutable messages are dropped unless alternate exchange configured',
+      'Unroutable messages are dropped unless an alternate exchange is configured or the publisher sets mandatory (then returned via basic.return)',
+      'Publishing to an exchange that does not exist closes the channel with 404 NOT_FOUND',
       'Queues can bind to multiple exchanges; one exchange can route to many queues',
     ],
     interviewFocus: [

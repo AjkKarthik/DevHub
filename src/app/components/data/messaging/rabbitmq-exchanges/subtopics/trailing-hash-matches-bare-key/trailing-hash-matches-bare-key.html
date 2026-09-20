@@ -1,0 +1,26 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="RabbitMQ Exchanges" topicRoute="/messaging/rabbitmq-exchanges"
+    subtopicLabel="A Trailing .# Binding Also Matches the Bare Key" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">A Trailing .# Binding Also Matches the Bare Key</h1>
+  <p class="page-subtitle">The page said order.# does not match the bare key order. It does: the hash matches zero or more words, so no extra binding is needed.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="RabbitMQ 3+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the third mistake block on the Exchanges page. The next subtopic covers what really happens when you publish to an exchange name that does not exist.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="RabbitMQ Exchanges" topicRoute="/messaging/rabbitmq-exchanges"
+    [next]="{ label: 'Publishing to a Missing Exchange Closes the Channel', route: '/messaging/rabbitmq-exchanges/missing-exchange-closes-the-channel' }" />
+</div>
