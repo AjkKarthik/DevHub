@@ -4177,4 +4177,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'BACKWARD Checks Only the Latest Version, Not the Whole History', route: '/messaging/schema-registry/backward-checks-only-the-latest-version' },
     { label: 'JSON Schema Messages Use the Same Schema-ID Header, and Protobuf Adds Message Indexes', route: '/messaging/schema-registry/same-wire-format-for-all-three-formats' },
   ],
+  'messaging-patterns': [
+    { label: 'Claim Check Limits Differ per Broker, and String Length Is Not Byte Size', route: '/messaging/messaging-patterns/claim-check-limits-and-byte-length' },
+    { label: 'The Scatter-Gather Example Had No Timeout, Contradicting Its Own Mistake Block', route: '/messaging/messaging-patterns/scatter-gather-example-needs-a-timeout' },
+    { label: 'The Aggregator Challenge Can Lose Orders: Auto-Commit and Delete-Before-Send', route: '/messaging/messaging-patterns/aggregator-loses-partial-orders' },
+  ],
 };

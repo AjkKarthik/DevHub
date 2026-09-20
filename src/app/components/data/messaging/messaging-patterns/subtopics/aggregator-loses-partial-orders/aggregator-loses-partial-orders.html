@@ -1,0 +1,26 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Enterprise Messaging Patterns" topicRoute="/messaging/messaging-patterns"
+    subtopicLabel="The Aggregator Challenge Can Lose Orders: Auto-Commit and Delete-Before-Send" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">The Aggregator Challenge Can Lose Orders: Auto-Commit and Delete-Before-Send</h1>
+  <p class="page-subtitle">The Aggregator reference solution deleted an order before its send succeeded, and combined auto-commit with in-memory state. The flush loop is fixed, and the crash case is explained.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Kafka 2+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the Message Aggregator challenge on the Patterns page. Related: the manual-commit and Kafka Streams subtopics cover committing offsets after the work is done.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Enterprise Messaging Patterns" topicRoute="/messaging/messaging-patterns"
+    [prev]="{ label: 'The Scatter-Gather Example Had No Timeout, Contradicting Its Own Mistake Block', route: '/messaging/messaging-patterns/scatter-gather-example-needs-a-timeout' }" />
+</div>

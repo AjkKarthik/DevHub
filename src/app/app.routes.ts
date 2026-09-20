@@ -3042,7 +3042,12 @@ export const routes: Routes = [
       { path: 'backward-checks-only-the-latest-version', loadComponent: () => import('./components/data/messaging/schema-registry/subtopics/backward-checks-only-the-latest-version/backward-checks-only-the-latest-version').then(m => m.BackwardChecksOnlyTheLatestVersionSubtopic) },
       { path: 'same-wire-format-for-all-three-formats', loadComponent: () => import('./components/data/messaging/schema-registry/subtopics/same-wire-format-for-all-three-formats/same-wire-format-for-all-three-formats').then(m => m.SameWireFormatForAllThreeFormatsSubtopic) },
     ] },
-    { path: 'messaging-patterns',        loadComponent: () => import('./components/data/messaging/messaging-patterns/messaging-patterns').then(m => m.MessagingPatterns) },
+    { path: 'messaging-patterns', children: [
+      { path: '', loadComponent: () => import('./components/data/messaging/messaging-patterns/messaging-patterns').then(m => m.MessagingPatterns) },
+      { path: 'claim-check-limits-and-byte-length', loadComponent: () => import('./components/data/messaging/messaging-patterns/subtopics/claim-check-limits-and-byte-length/claim-check-limits-and-byte-length').then(m => m.ClaimCheckLimitsAndByteLengthSubtopic) },
+      { path: 'scatter-gather-example-needs-a-timeout', loadComponent: () => import('./components/data/messaging/messaging-patterns/subtopics/scatter-gather-example-needs-a-timeout/scatter-gather-example-needs-a-timeout').then(m => m.ScatterGatherExampleNeedsATimeoutSubtopic) },
+      { path: 'aggregator-loses-partial-orders', loadComponent: () => import('./components/data/messaging/messaging-patterns/subtopics/aggregator-loses-partial-orders/aggregator-loses-partial-orders').then(m => m.AggregatorLosesPartialOrdersSubtopic) },
+    ] },
     { path: 'saga-pattern',              loadComponent: () => import('./components/data/messaging/saga-pattern/saga-pattern').then(m => m.SagaPattern) },
     { path: 'outbox-pattern',            loadComponent: () => import('./components/data/messaging/outbox-pattern/outbox-pattern').then(m => m.OutboxPattern) },
     { path: 'azure-service-bus',         loadComponent: () => import('./components/data/messaging/azure-service-bus/azure-service-bus').then(m => m.AzureServiceBus) },

@@ -31963,6 +31963,43 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The TTL-plus-dead-letter-exchange trick for delayed delivery works by expiring a message on a holding queue with no consumer.',
     ],
   },
+  'messaging/messaging-patterns/claim-check-limits-and-byte-length': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Enterprise Messaging Patterns', route: '/messaging/messaging-patterns' },
+      { label: 'The Scatter-Gather Example Had No Timeout, Contradicting Its Own Mistake Block', route: '/messaging/messaging-patterns/scatter-gather-example-needs-a-timeout' },
+    ],
+    tip: 'Broker size limits differ: Kafka about 1MB, RabbitMQ 16 MiB since 4.0, SQS 1 MiB since August 2025. Measure the UTF-8 byte length, not string.length, and pick a claim-check threshold below the smallest limit you must respect.',
+    gotchas: [
+      'A payload of non-ASCII text can be 3x larger in bytes than its string length.',
+      'Kafka needs the producer max.request.size and broker message.max.bytes aligned.',
+    ],
+  },
+  'messaging/messaging-patterns/scatter-gather-example-needs-a-timeout': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Enterprise Messaging Patterns', route: '/messaging/messaging-patterns' },
+      { label: 'Claim Check Limits Differ per Broker, and String Length Is Not Byte Size', route: '/messaging/messaging-patterns/claim-check-limits-and-byte-length' },
+      { label: 'The Aggregator Challenge Can Lose Orders: Auto-Commit and Delete-Before-Send', route: '/messaging/messaging-patterns/aggregator-loses-partial-orders' },
+    ],
+    tip: 'A Scatter-Gather needs a deadline: on timeout use the replies you have (flag the result as partial) or reject if none arrived, and close the connection on both paths.',
+    gotchas: [
+      'Waiting until reply count equals vendor count never finishes if one vendor is silent.',
+      'Set the timeout from the slowest reply you will wait for, not the slowest possible.',
+    ],
+  },
+  'messaging/messaging-patterns/aggregator-loses-partial-orders': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Enterprise Messaging Patterns', route: '/messaging/messaging-patterns' },
+      { label: 'The Scatter-Gather Example Had No Timeout, Contradicting Its Own Mistake Block', route: '/messaging/messaging-patterns/scatter-gather-example-needs-a-timeout' },
+    ],
+    tip: 'Delete an aggregated order from memory only after the send succeeds. Auto-commit plus in-memory state loses partial orders on a crash: use durable state or commit offsets after emission.',
+    gotchas: [
+      'Auto-commit commits when the handler returns, and an aggregator handler returns after storing the item in memory.',
+      'The order-items topic must be keyed by orderId so one consumer sees every item.',
+    ],
+  },
   'messaging/messaging-patterns': {
     apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
     related: [
