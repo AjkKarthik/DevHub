@@ -95,7 +95,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/messaging/rabbitmq-patterns" routerLinkActive="active"><span class="nl-text">RabbitMQ Patterns</span>@if(p.isDone('kafka-rabbitmq-patterns')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/messaging/rabbitmq-patterns" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">RabbitMQ Patterns</span>
+        @if(p.isDone('kafka-rabbitmq-patterns')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('rabbitmq-patterns')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('rabbitmq-patterns')"
+                  (click)="toggleSubtopics('rabbitmq-patterns', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('rabbitmq-patterns'); as rmqPatSubs) {
+        @if (isSubtopicsExpanded('rabbitmq-patterns')) {
+          <div class="nav-subtopics">
+            @for (s of rmqPatSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

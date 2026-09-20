@@ -4147,4 +4147,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Publishing to a Missing Exchange Closes the Channel', route: '/messaging/rabbitmq-exchanges/missing-exchange-closes-the-channel' },
     { label: 'Unroutable Messages: mandatory Flag vs Alternate Exchange', route: '/messaging/rabbitmq-exchanges/mandatory-and-alternate-exchange' },
   ],
+  'rabbitmq-patterns': [
+    { label: 'A Delay Queue TTL Is a Queue Argument, So Name the Queue After Its Delay', route: '/messaging/rabbitmq-patterns/delay-ttl-is-a-queue-argument' },
+    { label: 'Per-Message TTL Delays Can Be Held Back at the Head of the Queue', route: '/messaging/rabbitmq-patterns/per-message-ttl-head-of-line-blocking' },
+    { label: 'Direct Reply-To Lets RPC Skip Declaring a Reply Queue', route: '/messaging/rabbitmq-patterns/direct-reply-to-for-rpc' },
+  ],
 };

@@ -3006,7 +3006,12 @@ export const routes: Routes = [
       { path: 'missing-exchange-closes-the-channel', loadComponent: () => import('./components/data/messaging/rabbitmq-exchanges/subtopics/missing-exchange-closes-the-channel/missing-exchange-closes-the-channel').then(m => m.MissingExchangeClosesTheChannelSubtopic) },
       { path: 'mandatory-and-alternate-exchange', loadComponent: () => import('./components/data/messaging/rabbitmq-exchanges/subtopics/mandatory-and-alternate-exchange/mandatory-and-alternate-exchange').then(m => m.MandatoryAndAlternateExchangeSubtopic) },
     ] },
-    { path: 'rabbitmq-patterns',         loadComponent: () => import('./components/data/messaging/rabbitmq-patterns/rabbitmq-patterns').then(m => m.RabbitMqPatterns) },
+    { path: 'rabbitmq-patterns', children: [
+      { path: '', loadComponent: () => import('./components/data/messaging/rabbitmq-patterns/rabbitmq-patterns').then(m => m.RabbitMqPatterns) },
+      { path: 'delay-ttl-is-a-queue-argument', loadComponent: () => import('./components/data/messaging/rabbitmq-patterns/subtopics/delay-ttl-is-a-queue-argument/delay-ttl-is-a-queue-argument').then(m => m.DelayTtlIsAQueueArgumentSubtopic) },
+      { path: 'per-message-ttl-head-of-line-blocking', loadComponent: () => import('./components/data/messaging/rabbitmq-patterns/subtopics/per-message-ttl-head-of-line-blocking/per-message-ttl-head-of-line-blocking').then(m => m.PerMessageTtlHeadOfLineBlockingSubtopic) },
+      { path: 'direct-reply-to-for-rpc', loadComponent: () => import('./components/data/messaging/rabbitmq-patterns/subtopics/direct-reply-to-for-rpc/direct-reply-to-for-rpc').then(m => m.DirectReplyToForRpcSubtopic) },
+    ] },
     { path: 'kafka-architecture',        loadComponent: () => import('./components/data/messaging/kafka-architecture/kafka-architecture').then(m => m.KafkaArchitecture) },
     { path: 'kafka-producers-consumers', loadComponent: () => import('./components/data/messaging/kafka-producers-consumers/kafka-producers-consumers').then(m => m.KafkaProducersConsumers) },
     { path: 'kafka-streams',             loadComponent: () => import('./components/data/messaging/kafka-streams/kafka-streams').then(m => m.KafkaStreams) },

@@ -31729,6 +31729,43 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Headers exchanges route on message attributes rather than the routing key — less common but useful for multi-attribute routing decisions.',
     ],
   },
+  'messaging/rabbitmq-patterns/delay-ttl-is-a-queue-argument': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'RabbitMQ Patterns', route: '/messaging/rabbitmq-patterns' },
+      { label: 'Per-Message TTL Delays Can Be Held Back at the Head of the Queue', route: '/messaging/rabbitmq-patterns/per-message-ttl-head-of-line-blocking' },
+    ],
+    tip: 'x-message-ttl is a queue argument. Redeclaring a queue with a different TTL is a 406 PRECONDITION_FAILED error, so name each holding queue after its delay (email.delay.60000).',
+    gotchas: [
+      'Message TTL can be changed on a live queue through a policy, but that retunes the whole queue, not single messages.',
+      'Every holding queue dead-letters into the same target queue via the default exchange and its routing key.',
+    ],
+  },
+  'messaging/rabbitmq-patterns/per-message-ttl-head-of-line-blocking': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'RabbitMQ Patterns', route: '/messaging/rabbitmq-patterns' },
+      { label: 'A Delay Queue TTL Is a Queue Argument, So Name the Queue After Its Delay', route: '/messaging/rabbitmq-patterns/delay-ttl-is-a-queue-argument' },
+      { label: 'Direct Reply-To Lets RPC Skip Declaring a Reply Queue', route: '/messaging/rabbitmq-patterns/direct-reply-to-for-rpc' },
+    ],
+    tip: 'On classic queues an expired message is only dead-lettered once it reaches the head, so a long per-message expiration ahead of a short one holds the short one back.',
+    gotchas: [
+      'expiration is a string of milliseconds; with both queue and message TTL set, the lower value wins.',
+      'The delayed-message plugin avoids head-of-line blocking but stores delayed messages on a single node and is not meant for huge volumes.',
+    ],
+  },
+  'messaging/rabbitmq-patterns/direct-reply-to-for-rpc': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'RabbitMQ Patterns', route: '/messaging/rabbitmq-patterns' },
+      { label: 'Per-Message TTL Delays Can Be Held Back at the Head of the Queue', route: '/messaging/rabbitmq-patterns/per-message-ttl-head-of-line-blocking' },
+    ],
+    tip: 'Direct reply-to: consume amq.rabbitmq.reply-to in no-ack mode, then publish with replyTo set to it, on the same connection and channel. The responder replies to the rewritten replyTo unchanged.',
+    gotchas: [
+      'Replies are dropped if the requesting client disconnects; the requester must reconnect and resubmit.',
+      'Keep matching replies with correlationId and keep a request timeout.',
+    ],
+  },
   'messaging/rabbitmq-patterns': {
     apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
     related: [
