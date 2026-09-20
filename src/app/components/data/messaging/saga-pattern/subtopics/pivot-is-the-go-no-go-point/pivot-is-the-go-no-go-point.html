@@ -1,0 +1,26 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Saga Pattern" topicRoute="/messaging/saga-pattern"
+    subtopicLabel="The Pivot Transaction Is the Go/No-Go Point" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">The Pivot Transaction Is the Go/No-Go Point</h1>
+  <p class="page-subtitle">Steps before the pivot are undone on failure. Steps after it are retried until they succeed. Knowing which side a step sits on decides how it fails.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Saga pattern" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This expands the pivot bullet, the pivot quiz question and the revision summary on the main page.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Saga Pattern" topicRoute="/messaging/saga-pattern"
+    [prev]="{ label: 'Idempotent Compensation Needs One Atomic Guard', route: '/messaging/saga-pattern/idempotent-compensation-atomic-guard' }" />
+</div>

@@ -4182,4 +4182,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Scatter-Gather Example Had No Timeout, Contradicting Its Own Mistake Block', route: '/messaging/messaging-patterns/scatter-gather-example-needs-a-timeout' },
     { label: 'The Aggregator Challenge Can Lose Orders: Auto-Commit and Delete-Before-Send', route: '/messaging/messaging-patterns/aggregator-loses-partial-orders' },
   ],
+  'saga-pattern': [
+    { label: 'Compensate Only the Steps That Actually Completed', route: '/messaging/saga-pattern/compensate-only-completed-steps' },
+    { label: 'Idempotent Compensation Needs One Atomic Guard', route: '/messaging/saga-pattern/idempotent-compensation-atomic-guard' },
+    { label: 'The Pivot Transaction Is the Go/No-Go Point', route: '/messaging/saga-pattern/pivot-is-the-go-no-go-point' },
+  ],
 };

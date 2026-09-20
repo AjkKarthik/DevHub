@@ -28,7 +28,7 @@ export class SagaPattern {
     { name: 'Compensating transaction', type: 'keyword', desc: 'Undo operation that reverses the effect of a completed local transaction' },
     { name: 'Eventually consistent', type: 'keyword', desc: 'Distributed system reaches consistency after all compensations complete' },
     { name: 'Saga state', type: 'keyword', desc: 'Persistent record of saga progress used for recovery after crash' },
-    { name: 'Pivot transaction', type: 'keyword', desc: 'Last saga step that, once committed, cannot be rolled back' },
+    { name: 'Pivot transaction', type: 'keyword', desc: 'Go/no-go step: once it commits the saga must run to completion, and later steps are retried, not compensated' },
     { name: 'Idempotency', type: 'keyword', desc: 'Each saga step safe to replay without side effects on duplicate delivery' },
   ];
 
@@ -49,6 +49,7 @@ export class SagaPattern {
         'Orchestration: a dedicated saga orchestrator explicitly tells each service when to act and tracks global state. Easier to monitor but more coupled.',
         'Choreography suits simple, linear flows. Orchestration suits complex flows with branching logic and clear failure handling.',
         'Common orchestrators: AWS Step Functions, Temporal, custom state machine backed by a database.',
+        'Orchestration has a coupling and availability cost of its own: the orchestrator must know every participant and becomes a component whose failure stalls all sagas. Choose it for complex, many-step flows where central visibility matters, and choreography for simple flows or when avoiding a central coordinator is the priority.',
       ]
     },
     {
@@ -58,25 +59,10 @@ export class SagaPattern {
         'Compensating transactions must be idempotent — they may be called multiple times on retry.',
         'Semantic undo: compensating transactions do not simply "cancel" — they may create new events (e.g., "refund issued" rather than deleting a charge).',
         'Not all steps can be compensated — the pivot transaction is the point of no return.',
+        'Steps before the pivot are compensable and are undone if the saga fails. Steps after it are retryable and idempotent: once the pivot commits, they are retried until they succeed rather than compensated. The pivot can be the last compensable step or the first retryable one.',
+        'Not every operation has a clean compensating action: an email cannot be "unsent". Order the saga so irreversible steps run late, at or after the pivot, once the steps that can still fail have succeeded.',
+        'A compensation may run for a step whose forward action never completed (for example after a timeout), so it must tolerate that case. Compensating only the steps recorded as committed avoids most of these no-op compensations.',
       ]
-    },
-    {
-      heading: 'Orchestration vs. Choreography Saga Styles',
-      points: [
-        'Orchestration-style sagas use a central coordinator that explicitly tells each service what step to perform next and handles compensation logic centrally — easier to understand and debug the overall flow, since the entire saga\'s logic lives in one place.',
-        'Choreography-style sagas have each service react to events from other services and publish its own events in response, with no central coordinator — more decoupled, but the overall business process becomes implicit, spread across many services\' event handlers, making the full flow harder to trace.',
-        'Orchestration introduces a coupling risk of its own — the orchestrator becomes a central point that must know about every participating service, somewhat working against the decoupling that motivated using a saga in the first place.',
-        'Choosing between them is a genuine architectural tradeoff — orchestration for complex, many-step sagas where central visibility matters; choreography for simpler flows or when avoiding a central coordinator\'s coupling is the higher priority.',
-      ],
-    },
-    {
-      heading: 'Compensating Transactions and Their Limits',
-      points: [
-        'A compensating transaction attempts to semantically undo a previously completed step (refunding a payment rather than truly "un-charging" a card) since distributed transactions across services cannot use a true database ROLLBACK the way a local ACID transaction can.',
-        'Not every operation has a clean compensating action — sending an email cannot be "unsent," meaning saga design must account for steps that are genuinely irreversible and plan around them (delaying such steps until other steps have already succeeded) rather than assuming universal compensability.',
-        'Compensating transactions must themselves be idempotent and retry-safe, since the saga coordinator itself might crash and need to retry a compensation — a compensation that is not safe to retry can leave the system in an inconsistent state during recovery.',
-        'Sagas provide eventual consistency, not the immediate atomicity of a local transaction — application design (and user experience) must account for the window where a saga is mid-flight and different services temporarily disagree about the overall business transaction\'s state.',
-      ],
     },
   ];
 
@@ -118,12 +104,15 @@ async function processPayment(orderId: string, userId: string, total: number) {
 // On payment.failed → compensate by cancelling order
 // On payment.completed → fulfil order
 
-async function publish(topic: string, eventType: string, data: object) {
+// Key by orderId so every event of one order goes to the same partition, in order.
+// Keying by eventType would spread one order's events across partitions.
+// (Demo only: create one producer and reuse it instead of one per event.)
+async function publish(topic: string, eventType: string, data: { orderId: string; [key: string]: unknown }) {
   const producer = kafka.producer();
   await producer.connect();
   await producer.send({
     topic,
-    messages: [{ key: eventType, value: JSON.stringify({ type: eventType, ...data }) }],
+    messages: [{ key: data.orderId, value: JSON.stringify({ type: eventType, ...data }) }],
     acks: -1,
   });
   await producer.disconnect();
@@ -137,29 +126,39 @@ async function publish(topic: string, eventType: string, data: object) {
 type SagaStep = 'RESERVE_ORDER' | 'CHARGE_PAYMENT' | 'SHIP_ORDER' | 'COMPLETED' | 'COMPENSATING' | 'FAILED';
 
 interface SagaState {
-  sagaId:  string;
-  orderId: string;
-  step:    SagaStep;
-  error?:  string;
+  sagaId:    string;
+  orderId:   string;
+  step:      SagaStep;
+  completed: string[];   // commands whose local transaction committed
+  error?:    string;
 }
 
+// The compensation that undoes each compensable step
+const COMPENSATIONS: Record<string, [service: string, command: string]> = {
+  RESERVE_ORDER:  ['order-service',   'CANCEL_ORDER'],
+  CHARGE_PAYMENT: ['payment-service', 'REFUND_PAYMENT'],
+};
+
 async function startOrderSaga(orderId: string) {
-  const state: SagaState = { sagaId: crypto.randomUUID(), orderId, step: 'RESERVE_ORDER' };
+  const state: SagaState = { sagaId: crypto.randomUUID(), orderId, step: 'RESERVE_ORDER', completed: [] };
   await saveSagaState(state);
 
   try {
     // Step 1: Reserve order
     await sendCommand('order-service', 'RESERVE_ORDER', { orderId });
+    state.completed.push('RESERVE_ORDER');
     state.step = 'CHARGE_PAYMENT';
     await saveSagaState(state);
 
     // Step 2: Charge payment
     await sendCommand('payment-service', 'CHARGE_PAYMENT', { orderId });
+    state.completed.push('CHARGE_PAYMENT');
     state.step = 'SHIP_ORDER';
     await saveSagaState(state);
 
-    // Step 3: Ship order (pivot — no rollback after this)
+    // Step 3: Ship order (pivot: if it commits, the saga must finish)
     await sendCommand('shipping-service', 'SHIP_ORDER', { orderId });
+    state.completed.push('SHIP_ORDER');
     state.step = 'COMPLETED';
     await saveSagaState(state);
 
@@ -172,9 +171,11 @@ async function startOrderSaga(orderId: string) {
 }
 
 async function compensate(state: SagaState) {
-  // Run compensating transactions in reverse order
-  await sendCommand('payment-service', 'REFUND_PAYMENT', { orderId: state.orderId });
-  await sendCommand('order-service',   'CANCEL_ORDER',   { orderId: state.orderId });
+  // Undo only the steps that committed, newest first. The step that failed is not in the list.
+  for (const cmd of [...state.completed].reverse()) {
+    const comp = COMPENSATIONS[cmd];
+    if (comp) await sendCommand(comp[0], comp[1], { orderId: state.orderId });
+  }
   state.step = 'FAILED';
   await saveSagaState(state);
 }
@@ -190,18 +191,20 @@ async function sendCommand(svc: string, cmd: string, data: object) {
   readonly mistakes: CommonMistake[] = [
     {
       title: 'Not making compensating transactions idempotent',
-      wrong: `// CancelOrder called twice — deducts stock twice
+      wrong: `// CancelOrder called twice (a retry, or a replay after a crash) — stock is credited twice
 async function cancelOrder(orderId: string) {
   await db.stock.increment(orderId, quantity); // double credit if called twice
 }`,
-      right: `// Idempotent: check if already cancelled before compensating
+      right: `// Idempotent: a guarded update decides who does the work, in ONE local transaction
 async function cancelOrder(orderId: string) {
-  const order = await db.orders.findById(orderId);
-  if (order.status === 'cancelled') return; // already done
-  await db.stock.increment(orderId, quantity);
-  await db.orders.update(orderId, { status: 'cancelled' });
+  await db.transaction(async (tx) => {
+    const changed = await tx.orders.updateWhere(
+      { id: orderId, status: { not: 'cancelled' } }, { status: 'cancelled' });
+    if (changed === 0) return;                    // already cancelled: do nothing
+    await tx.stock.increment(orderId, quantity);  // rolls back with the status change on a crash
+  });
 }`,
-      explanation: 'Compensating transactions may be replayed on failure or retry. They must be idempotent — the same compensation applied twice must produce the same result as once.'
+      explanation: 'Compensating transactions may be replayed on failure or retry. They must be idempotent — the same compensation applied twice must produce the same result as once. The check and the change must be one atomic step: a separate read-then-write lets two concurrent calls both pass the check, and a crash between the stock credit and the status update makes the replay credit the stock again.'
     },
     {
       title: 'Assuming intermediate saga state is invisible to other services',
@@ -255,14 +258,12 @@ const bus = new EventEmitter();
 bus.on('order.created', async ({ orderId, qty }) => {
   console.log('[Inventory] Reserving', qty, 'units for', orderId);
   bus.emit('inventory.reserved', { orderId, qty });
-  // Uncomment to test compensation:
-  // bus.emit('inventory.failed', { orderId, reason: 'Out of stock' });
 });
 
 // Step 2: Payment Service (reacts to inventory.reserved)
 bus.on('inventory.reserved', async ({ orderId }) => {
   console.log('[Payment] Charging for', orderId);
-  const success = Math.random() > 0.3; // 70% success
+  const success = orderId !== 'ORD-002'; // deterministic: ORD-002 always fails, so compensation always runs
   if (success) {
     bus.emit('payment.completed', { orderId });
   } else {
@@ -289,13 +290,14 @@ async function startSaga(orderId: string) {
   bus.emit('order.created', { orderId, qty: 2 });
 }
 
-startSaga('ORD-001');`,
+startSaga('ORD-001');  // completes
+startSaga('ORD-002');  // payment fails, inventory is released`,
   };
 
   readonly quiz: QuizQuestion[] = [
     { q: 'What does a compensating transaction do in a saga?', options: ['Commits a global distributed transaction', 'Reverses the effect of a previously completed local transaction', 'Retries the failed step', 'Notifies all services of the failure'], answer: 1, explanation: 'Compensating transactions semantically undo completed saga steps when a later step fails, restoring eventual consistency.' },
     { q: 'Which saga coordination style has no central controller?', options: ['Orchestration', 'Choreography', '2PC saga', 'Event-sourced saga'], answer: 1, explanation: 'Choreography: each service reacts to events and emits its own — no central coordinator. Orchestration uses a dedicated saga manager.' },
-    { q: 'What is a pivot transaction in a saga?', options: ['The first step', 'The last step that cannot be compensated once committed', 'The compensation step', 'The failure handler'], answer: 1, explanation: 'The pivot transaction is the point of no return. Once committed, subsequent steps must succeed or be handled via semantic compensations (e.g., refunds), not rollbacks.' },
+    { q: 'What is a pivot transaction in a saga?', options: ['The first step', 'The go/no-go step: once it commits, the saga can no longer be rolled back and must run to completion', 'The compensation step', 'The failure handler'], answer: 1, explanation: 'The pivot transaction is the point of no return. Steps before it are compensable and are undone if the saga fails. Once it commits, the remaining steps are retryable and idempotent, and are retried until they succeed rather than compensated.' },
     { q: 'Why must saga compensating transactions be idempotent?', options: ['To support 2PC commit protocol', 'To allow safe retries when compensations are replayed on failure', 'To ensure ACID isolation', 'To synchronise distributed databases'], answer: 1, explanation: 'On crash/retry, the orchestrator may call the same compensation multiple times. Idempotent compensations produce the same result regardless of how many times they run.' },
     { q: 'What is the key difference between choreography and orchestration sagas?', options: ['Choreography uses a central coordinator; orchestration is event-driven', 'Choreography: services react to events independently; orchestration: a central saga orchestrator commands each step', 'They are identical but differ in implementation language', 'Orchestration is only for microservices'], answer: 1, explanation: 'Choreography: each service listens for events and decides its next action — decentralized, no SPOF, but harder to track flow. Orchestration: a saga orchestrator sends commands and tracks state — easier to visualize, single point of failure.' },
     { q: 'Why can a saga\'s compensating transaction not always achieve a true rollback to the exact prior state?', options: ['Compensations always achieve a perfect rollback — this is never a concern', 'A compensation can only semantically UNDO an action\'s effect (e.g. refund a charge), but cannot erase that the action happened at all — external side effects like a sent notification email or a third-party API call already made cannot be "unsent"', 'Compensations are only theoretical and are never actually implemented', 'Because saga steps never have external side effects'], answer: 1, explanation: 'A compensating transaction reverses the observable BUSINESS EFFECT of a step (refunding a charge, releasing reserved inventory) but cannot undo the fact that the original action occurred — if a step sent a confirmation email or called a non-reversible third-party API before a later step failed, no compensation can make it as if that email was never sent. This is a fundamental limitation of sagas versus true ACID rollback, and is why saga steps involving irreversible external effects need extra care (e.g. delaying notifications until the whole saga completes successfully).' },
@@ -304,7 +306,7 @@ startSaga('ORD-001');`,
   readonly qna: QnaItem[] = [
     { q: 'Does a saga guarantee ACID isolation?', a: 'No. Sagas guarantee eventual consistency, not ACID isolation. Other services see intermediate states during saga execution. Use read models (CQRS) that only show completed sagas, or expose "pending" states explicitly in the UI.' },
     { q: 'When should I choose orchestration over choreography?', a: 'Orchestration is better for complex flows with branching logic, long-running processes, and when you need a clear audit log of saga progress. Choreography is better for simple linear flows where decoupling between services is the priority.' },
-    { q: 'What is Temporal and how does it relate to sagas?', a: 'Temporal is a workflow orchestration platform that handles saga state persistence, retries, timeouts, and compensations automatically. It removes the need to hand-build saga state machines in your application, making orchestrated sagas production-ready with minimal code.' },
+    { q: 'What is Temporal and how does it relate to sagas?', a: 'Temporal is a workflow orchestration platform that makes saga state durable and handles retries and timeouts, so a workflow survives worker crashes without a hand-built state machine. It does not write the compensations for you: you register a compensation for each step in workflow code and run them in reverse order on failure, and each must be idempotent and tolerate a forward step that never ran. Temporal guarantees that this compensation code runs reliably.' },
     { q: 'How do you track saga state for observability?', a: 'The orchestrator maintains a <strong>saga state machine</strong> persisted in a database. Each step transition (PENDING → ORDER_PLACED → PAYMENT_CHARGED) is recorded with timestamp and correlation ID. Use a saga log/history for debugging. Tools: Temporal, Conductor, Axon Framework store saga state natively. Always include correlation IDs in all emitted events for distributed tracing.' },
     { q: 'What is the difference between a saga and a distributed transaction (2PC)?', a: '<strong>2PC</strong> (two-phase commit): locks resources across services until all commit — strong consistency but blocking, single point of failure (coordinator), poor performance at scale. <strong>Saga</strong>: sequence of local transactions with compensations on failure — no locking, eventual consistency, higher availability. Sagas sacrifice ACID guarantees for resilience and scalability.' },
     { q: 'How do you handle idempotency in saga steps?', a: 'Each saga step must be idempotent — if the step is retried (network failure, timeout), it should produce the same result. Implement: unique constraint on saga step ID in DB, check-before-execute, or idempotency key passed in command message. The orchestrator retries failed steps; idempotent handlers prevent double-charging or double-booking on retry.' },
@@ -318,7 +320,7 @@ startSaga('ORD-001');`,
       'Compensating transactions must be idempotent — they may be replayed on crash/retry',
       'Sagas achieve eventual consistency, not ACID isolation — plan for visible intermediate states',
       'Persist saga state before each step (write-ahead) for crash recovery',
-      'Pivot transaction: once committed, only semantic compensation (e.g., refund) is possible',
+      'Pivot transaction: the go/no-go point. Steps before it are compensable; steps after it are retried until they succeed',
     ],
     interviewFocus: [
       'Saga vs 2PC: why 2PC doesn\'t work across microservices',

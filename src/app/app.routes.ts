@@ -3048,7 +3048,12 @@ export const routes: Routes = [
       { path: 'scatter-gather-example-needs-a-timeout', loadComponent: () => import('./components/data/messaging/messaging-patterns/subtopics/scatter-gather-example-needs-a-timeout/scatter-gather-example-needs-a-timeout').then(m => m.ScatterGatherExampleNeedsATimeoutSubtopic) },
       { path: 'aggregator-loses-partial-orders', loadComponent: () => import('./components/data/messaging/messaging-patterns/subtopics/aggregator-loses-partial-orders/aggregator-loses-partial-orders').then(m => m.AggregatorLosesPartialOrdersSubtopic) },
     ] },
-    { path: 'saga-pattern',              loadComponent: () => import('./components/data/messaging/saga-pattern/saga-pattern').then(m => m.SagaPattern) },
+    { path: 'saga-pattern', children: [
+      { path: '', loadComponent: () => import('./components/data/messaging/saga-pattern/saga-pattern').then(m => m.SagaPattern) },
+      { path: 'compensate-only-completed-steps', loadComponent: () => import('./components/data/messaging/saga-pattern/subtopics/compensate-only-completed-steps/compensate-only-completed-steps').then(m => m.CompensateOnlyCompletedStepsSubtopic) },
+      { path: 'idempotent-compensation-atomic-guard', loadComponent: () => import('./components/data/messaging/saga-pattern/subtopics/idempotent-compensation-atomic-guard/idempotent-compensation-atomic-guard').then(m => m.IdempotentCompensationAtomicGuardSubtopic) },
+      { path: 'pivot-is-the-go-no-go-point', loadComponent: () => import('./components/data/messaging/saga-pattern/subtopics/pivot-is-the-go-no-go-point/pivot-is-the-go-no-go-point').then(m => m.PivotIsTheGoNoGoPointSubtopic) },
+    ] },
     { path: 'outbox-pattern',            loadComponent: () => import('./components/data/messaging/outbox-pattern/outbox-pattern').then(m => m.OutboxPattern) },
     { path: 'azure-service-bus',         loadComponent: () => import('./components/data/messaging/azure-service-bus/azure-service-bus').then(m => m.AzureServiceBus) },
     { path: 'azure-event-grid',          loadComponent: () => import('./components/data/messaging/azure-event-grid/azure-event-grid').then(m => m.AzureEventGrid) },

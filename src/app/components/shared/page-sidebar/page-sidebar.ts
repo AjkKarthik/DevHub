@@ -32000,6 +32000,43 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The order-items topic must be keyed by orderId so one consumer sees every item.',
     ],
   },
+  'messaging/saga-pattern/compensate-only-completed-steps': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Saga Pattern', route: '/messaging/saga-pattern' },
+      { label: 'Idempotent Compensation Needs One Atomic Guard', route: '/messaging/saga-pattern/idempotent-compensation-atomic-guard' },
+    ],
+    tip: 'Record a step in the saga state only after it succeeded, and compensate by walking that list in reverse. Never fire every compensation blindly.',
+    gotchas: [
+      'A refund sent for a charge that never happened can fail, and that failure lands inside the rollback path.',
+      'Persist the completed list with the saga state so a crashed orchestrator knows what still needs undoing.',
+    ],
+  },
+  'messaging/saga-pattern/idempotent-compensation-atomic-guard': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Saga Pattern', route: '/messaging/saga-pattern' },
+      { label: 'Compensate Only the Steps That Actually Completed', route: '/messaging/saga-pattern/compensate-only-completed-steps' },
+      { label: 'The Pivot Transaction Is the Go/No-Go Point', route: '/messaging/saga-pattern/pivot-is-the-go-no-go-point' },
+    ],
+    tip: 'Make the guard and the change one atomic step: a conditional update plus the stock credit in one local transaction, so a crash or a concurrent delivery cannot credit twice.',
+    gotchas: [
+      'A separate read then write lets two concurrent deliveries both pass the check.',
+      'A crash between the credit and the status write makes the replay credit again unless both roll back together.',
+    ],
+  },
+  'messaging/saga-pattern/pivot-is-the-go-no-go-point': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Saga Pattern', route: '/messaging/saga-pattern' },
+      { label: 'Idempotent Compensation Needs One Atomic Guard', route: '/messaging/saga-pattern/idempotent-compensation-atomic-guard' },
+    ],
+    tip: 'Steps before the pivot are compensated on failure; steps after it are retried until they succeed, so they must be idempotent. Put irreversible work at or after the pivot.',
+    gotchas: [
+      'A failure after the pivot never triggers compensation.',
+      'Putting the pivot first commits the saga before any check has run.',
+    ],
+  },
   'messaging/messaging-patterns': {
     apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
     related: [

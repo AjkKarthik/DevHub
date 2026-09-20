@@ -236,7 +236,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/messaging/saga-pattern" routerLinkActive="active"><span class="nl-text">Saga Pattern</span>@if(p.isDone('kafka-saga-pattern')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/messaging/saga-pattern" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Saga Pattern</span>
+        @if(p.isDone('kafka-saga-pattern')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('saga-pattern')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('saga-pattern')"
+                  (click)="toggleSubtopics('saga-pattern', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('saga-pattern'); as sagaSubs) {
+        @if (isSubtopicsExpanded('saga-pattern')) {
+          <div class="nav-subtopics">
+            @for (s of sagaSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/messaging/outbox-pattern" routerLinkActive="active"><span class="nl-text">Outbox Pattern</span>@if(p.isDone('kafka-outbox-pattern')){<span class="nl-done">✓</span>}</a>
     </div>
 
