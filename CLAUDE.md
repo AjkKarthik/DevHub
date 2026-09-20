@@ -10284,6 +10284,27 @@ Confirmed via direct file inspection before the pilot (`/messaging/messaging-fun
    skip-locked-parallel-relays-reorder-events). Bare `outbox-pattern` SUBTOPICS key collision-free (the existing
    `outbox` key belongs to Design Patterns). Build clean; browser-verified.
    **Messaging hub Phase 10: 13 of 20 topics complete.**
+17. **The `azure-service-bus` batch found and fixed EIGHT main-page issues, verified against Microsoft Learn
+   (message settlement and locks, dead-letter queues, duplicate detection, sessions, quotas), the
+   `@azure/service-bus` 7.9.5 source and type definitions installed in the scratchpad, and a Node model for each
+   behaviour**: (a) the first mistake block said forgetting `completeMessage()` inside `receiver.subscribe()`
+   redelivers the message -- `autoCompleteMessages` defaults to true, the SDK completes after the handler returns
+   and abandons if it throws (the mistake now uses `receiveMessages()`); (b) the lock-renewal mistake said a 2 minute
+   handler loses its 60 second lock -- `subscribe()` auto-renews for up to `maxAutoLockRenewalDurationInMs`
+   (default 5 minutes); manual `renewMessageLock` is for `receiveMessages()`; (c) the locks QnA gave a default lock
+   of 30s against 60s elsewhere on the page -- Learn says 1 minute, 5 minutes maximum; (d) the messageId
+   "deduplication key" comment and the dedup QnA ignored that duplicate detection is off by default and
+   `requiresDuplicateDetection` is settable only at creation (default window 10 minutes); (e) sessions were called
+   `EnabledForSessions` and said to "add latency" -- the setting is `requiresSession`, creation-time only, a missing
+   session id dead-letters with "Session ID is null"; (f) the quick reference said the DLQ receives messages that
+   "fail filter" -- a non-matching message is not dead-lettered, only a filter that throws with
+   `deadLetteringOnFilterEvaluationExceptions` on; (g) the 24 hour `timeToLive` comment omitted that expiry only
+   dead-letters when dead-lettering on expiration is enabled (creation-time only), otherwise the message is deleted;
+   (h) Premium "100MB" now says AMQP only, 1MB entity default (quiz and QnA). 3 subtopics
+   (subscribe-auto-completes-and-renews, settings-fixed-at-queue-creation, unmatched-filter-is-not-dead-lettered).
+   Bare `azure-service-bus` SUBTOPICS key collision-free (the Azure hub's own topic uses a different key). Build
+   clean; browser-verified.
+   **Messaging hub Phase 10: 14 of 20 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -10660,12 +10681,12 @@ Confirmed via direct file inspection before the pilot (`/messaging/messaging-fun
   All 22 cards `available: true` in `data/messaging/home/home.ts`. Progress: `kafkaTotal=20` in progress.service.ts.
   Messaging pages use `app-common-mistakes` AND `app-revision-card`. Reference pages (monitoring, messaging-security) have no PageComplete.
   Challenge.language: `'typescript'`. MessagingNavComponent at `shared/messaging-nav/messaging-nav.ts`.
-  Phase 10: **13 of 20 topics have subtopics** (`/messaging/messaging-fundamentals`, pilot batch,
+  Phase 10: **14 of 20 topics have subtopics** (`/messaging/messaging-fundamentals`, pilot batch,
   2026-09-20; `/messaging/message-queues-vs-streams`, 2026-09-20; `/messaging/rabbitmq-core`,
   2026-09-20; `/messaging/rabbitmq-exchanges`, 2026-09-20; `/messaging/rabbitmq-patterns`,
   2026-09-20; `/messaging/kafka-architecture`, 2026-09-20; `/messaging/kafka-producers-consumers`,
   2026-09-20; `/messaging/kafka-streams`, 2026-09-20; `/messaging/kafka-connect`, 2026-09-20;
-  `/messaging/schema-registry`, 2026-09-20; `/messaging/messaging-patterns`, 2026-09-20; `/messaging/saga-pattern`, 2026-09-20; `/messaging/outbox-pattern`, 2026-09-20) — see "Messaging/Kafka hub subtopic wiring" section above for the
+  `/messaging/schema-registry`, 2026-09-20; `/messaging/messaging-patterns`, 2026-09-20; `/messaging/saga-pattern`, 2026-09-20; `/messaging/outbox-pattern`, 2026-09-20; `/messaging/azure-service-bus`, 2026-09-20) — see "Messaging/Kafka hub subtopic wiring" section above for the
   `MessagingNavComponent` accordion structural fix (18th `*NavComponent` hub in a row) and the
   three genuine main-page inaccuracies found and fixed (DLX-less nack "sends to DLQ", RabbitMQ
   wrongly listed as pull-based, unscoped SQS FIFO exactly-once claim).

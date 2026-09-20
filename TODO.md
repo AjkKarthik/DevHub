@@ -9931,7 +9931,12 @@ off here with a date.
   inserted and deleted in one transaction); created_at now() is transaction start time (clock_timestamp());
   SKIP LOCKED does not preserve order; challenge retry-count and key consistency; inbox+outbox is
   effectively-once; duplicate theory sections merged. Messaging hub Phase 10: 13 of 20.
-- [ ] `/messaging/azure-service-bus` — Azure Service Bus
+- [x] 2026-09-20 `/messaging/azure-service-bus` — Azure Service Bus. 3 subtopics
+  (subscribe-auto-completes-and-renews, settings-fixed-at-queue-creation, unmatched-filter-is-not-dead-lettered).
+  Main-page fixes: subscribe() auto-completes/abandons/renews (mistake blocks now use receiveMessages); lock
+  default 1 minute; duplicate detection, sessions and expiry dead-lettering are creation-time settings; DLQ does
+  not receive filter non-matches; Premium 100MB is AMQP only. Bare `azure-service-bus` SUBTOPICS key
+  collision-free. Messaging hub Phase 10: 14 of 20.
 - [ ] `/messaging/azure-event-grid` — Event Grid & Event Hubs
 - [ ] `/messaging/aws-sqs` — AWS SQS
 - [ ] `/messaging/aws-sns-eventbridge` — AWS SNS & EventBridge
