@@ -10152,6 +10152,22 @@ Confirmed via direct file inspection before the pilot (`/messaging/messaging-fun
    direct-reply-to-for-rpc), each backed by a Node model. Bare `rabbitmq-patterns` SUBTOPICS key
    collision-free. Build clean; browser-verified. **Messaging hub Phase 10: 5 of 20 topics complete
    -- RabbitMQ nav group done.**
+9. **The `kafka-architecture` batch (first Apache Kafka group topic) found and fixed FIVE main-page
+   issues, verified against Apache KIP-926, the Kafka operations docs, Confluent log compaction docs
+   and the Kafka 4.0 release notes**: (a) `acks=all` was presented as preventing data loss -- it waits
+   for the CURRENT ISR, which can shrink to the leader alone, so with the default
+   `min.insync.replicas=1` it acts like `acks=1` (fixed in the replication bullet, the acks=0 fix, the
+   ISR QnA and the revision list; "RF=3 tolerates 2 broker failures" now says committed data survives);
+   (b) mistake #1 said to add partitions later -- adding partitions leaves existing data in place and
+   reshuffles `hash(key) % partitions`, and Kafka cannot reduce partitions; (c) the compaction bullet and
+   QnA said "retains only the latest value" -- the guarantee is AT LEAST the latest, the active segment is
+   never compacted, and tombstones live `delete.retention.ms` (24 h); (d) KRaft "replaces ZooKeeper from
+   3.3+" -- 3.3 made KRaft production-ready, Kafka 4.0 removed ZooKeeper mode. 3 subtopics
+   (acks-all-needs-min-insync-replicas, adding-partitions-remaps-keys,
+   compaction-keeps-at-least-the-latest), each backed by a Node model. Bare `kafka-architecture` SUBTOPICS
+   key collision-free (bare `architecture` belongs to another hub, so no clash); search key
+   `kafka-kafka-architecture/<slug>` resolves correctly via the `kafka-` prefix strip. Build clean;
+   browser-verified. **Messaging hub Phase 10: 6 of 20 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -10528,10 +10544,10 @@ Confirmed via direct file inspection before the pilot (`/messaging/messaging-fun
   All 22 cards `available: true` in `data/messaging/home/home.ts`. Progress: `kafkaTotal=20` in progress.service.ts.
   Messaging pages use `app-common-mistakes` AND `app-revision-card`. Reference pages (monitoring, messaging-security) have no PageComplete.
   Challenge.language: `'typescript'`. MessagingNavComponent at `shared/messaging-nav/messaging-nav.ts`.
-  Phase 10: **5 of 20 topics have subtopics** (`/messaging/messaging-fundamentals`, pilot batch,
+  Phase 10: **6 of 20 topics have subtopics** (`/messaging/messaging-fundamentals`, pilot batch,
   2026-09-20; `/messaging/message-queues-vs-streams`, 2026-09-20; `/messaging/rabbitmq-core`,
   2026-09-20; `/messaging/rabbitmq-exchanges`, 2026-09-20; `/messaging/rabbitmq-patterns`,
-  2026-09-20) — see "Messaging/Kafka hub subtopic wiring" section above for the
+  2026-09-20; `/messaging/kafka-architecture`, 2026-09-20) — see "Messaging/Kafka hub subtopic wiring" section above for the
   `MessagingNavComponent` accordion structural fix (18th `*NavComponent` hub in a row) and the
   three genuine main-page inaccuracies found and fixed (DLX-less nack "sends to DLQ", RabbitMQ
   wrongly listed as pull-based, unscoped SQS FIFO exactly-once claim).

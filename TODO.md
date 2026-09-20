@@ -9876,7 +9876,12 @@ off here with a date.
   wording (per-message expiration + head-of-line blocking, plugin limits), prefetch "first consumer gets
   all" claim, work queue "exactly once", "pauses polling". Bare `rabbitmq-patterns` SUBTOPICS key
   collision-free. Messaging hub Phase 10: 5 of 20 (RabbitMQ group done).
-- [ ] `/messaging/kafka-architecture` — Kafka Architecture
+- [x] 2026-09-20 `/messaging/kafka-architecture` — Kafka Architecture. 3 subtopics
+  (acks-all-needs-min-insync-replicas, adding-partitions-remaps-keys, compaction-keeps-at-least-the-latest).
+  Main-page fixes: acks=all needs min.insync.replicas (ISR can shrink to the leader), adding partitions
+  reshuffles key mapping and cannot be undone, compaction guarantees at least the latest value (active
+  segment, tombstones), KRaft 3.3 production-ready vs ZooKeeper removed in 4.0. Bare `kafka-architecture`
+  SUBTOPICS key collision-free. Messaging hub Phase 10: 6 of 20.
 - [ ] `/messaging/kafka-producers-consumers` — Producers & Consumers
 - [ ] `/messaging/kafka-streams` — Kafka Streams & KSQL
 - [ ] `/messaging/kafka-connect` — Kafka Connect
