@@ -3036,7 +3036,12 @@ export const routes: Routes = [
       { path: 'sink-offsets-live-in-consumer-groups', loadComponent: () => import('./components/data/messaging/kafka-connect/subtopics/sink-offsets-live-in-consumer-groups/sink-offsets-live-in-consumer-groups').then(m => m.SinkOffsetsLiveInConsumerGroupsSubtopic) },
       { path: 'debezium-config-drift-and-wal-level', loadComponent: () => import('./components/data/messaging/kafka-connect/subtopics/debezium-config-drift-and-wal-level/debezium-config-drift-and-wal-level').then(m => m.DebeziumConfigDriftAndWalLevelSubtopic) },
     ] },
-    { path: 'schema-registry',           loadComponent: () => import('./components/data/messaging/schema-registry/schema-registry').then(m => m.SchemaRegistry) },
+    { path: 'schema-registry', children: [
+      { path: '', loadComponent: () => import('./components/data/messaging/schema-registry/schema-registry').then(m => m.SchemaRegistry) },
+      { path: 'forward-compat-add-fields-remove-defaulted', loadComponent: () => import('./components/data/messaging/schema-registry/subtopics/forward-compat-add-fields-remove-defaulted/forward-compat-add-fields-remove-defaulted').then(m => m.ForwardCompatAddFieldsRemoveDefaultedSubtopic) },
+      { path: 'backward-checks-only-the-latest-version', loadComponent: () => import('./components/data/messaging/schema-registry/subtopics/backward-checks-only-the-latest-version/backward-checks-only-the-latest-version').then(m => m.BackwardChecksOnlyTheLatestVersionSubtopic) },
+      { path: 'same-wire-format-for-all-three-formats', loadComponent: () => import('./components/data/messaging/schema-registry/subtopics/same-wire-format-for-all-three-formats/same-wire-format-for-all-three-formats').then(m => m.SameWireFormatForAllThreeFormatsSubtopic) },
+    ] },
     { path: 'messaging-patterns',        loadComponent: () => import('./components/data/messaging/messaging-patterns/messaging-patterns').then(m => m.MessagingPatterns) },
     { path: 'saga-pattern',              loadComponent: () => import('./components/data/messaging/saga-pattern/saga-pattern').then(m => m.SagaPattern) },
     { path: 'outbox-pattern',            loadComponent: () => import('./components/data/messaging/outbox-pattern/outbox-pattern').then(m => m.OutboxPattern) },

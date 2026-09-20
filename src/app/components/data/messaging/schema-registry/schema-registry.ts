@@ -46,8 +46,9 @@ export class SchemaRegistry {
       heading: 'Compatibility Modes',
       points: [
         'BACKWARD: consumers using new schema can read messages written with old schema. New fields must have defaults.',
-        'FORWARD: consumers using old schema can read messages written with new schema. Old fields must not be removed.',
-        'FULL: both backward and forward — the safest mode but most restrictive. Required in regulated environments.',
+        'FORWARD: consumers using old schema can read messages written with new schema. Allowed changes: add fields, and remove fields that have a default (optional fields).',
+        'FULL: both backward and forward — only adding or removing optional fields (fields with defaults) is allowed, so it is the safest mode but the most restrictive.',
+        'The default compatibility mode is BACKWARD, and it checks a new schema only against the latest registered version. The _TRANSITIVE variants check against all previous versions.',
         'NONE: no compatibility checking — useful during development, dangerous in production.',
       ]
     },
@@ -64,7 +65,7 @@ export class SchemaRegistry {
       heading: 'Schema Evolution Compatibility Modes',
       points: [
         'Backward compatibility means a new schema can read data written with an older schema — safe for adding optional fields with defaults, but new required fields would break older data being read by a consumer expecting them.',
-        'Forward compatibility means data written with a new schema can be read by consumers still using an older schema — safe for removing fields consumers do not currently rely on, but adding a new required field could break older readers unaware of it.',
+        'Forward compatibility means data written with a new schema can be read by consumers still using an older schema — safe for adding fields (old readers ignore them) and for removing fields that have a default in the old schema. Removing a field with no default breaks old readers, because they still expect it.',
         'Full compatibility requires both backward AND forward compatibility simultaneously — the strictest and safest mode for a topic with many independent consumers deploying schema updates on their own uncoordinated timelines.',
         'Choosing too permissive a compatibility mode (or none at all) allows a schema change to silently break consumers that have not yet been updated — the schema registry\'s compatibility check acts as a build-time or publish-time safety gate against exactly this kind of breaking change.',
       ],
@@ -74,7 +75,7 @@ export class SchemaRegistry {
       points: [
         'Without a schema registry, producers and consumers must independently agree on message format out-of-band (documentation, tribal knowledge) — a fragile coordination mechanism that breaks down as the number of services and topics grows.',
         'A schema registry provides a single source of truth for what a given topic\'s message format actually is, letting new consumers discover and validate against the correct schema rather than reverse-engineering it from sample messages.',
-        'Serialization formats like Avro and Protobuf, combined with a schema registry, encode a compact schema ID in each message rather than the full schema — reducing message size compared to embedding a full schema (like JSON Schema) in every single message.',
+        'Serialization formats like Avro and Protobuf, combined with a schema registry, encode a compact schema ID in each message rather than the full schema — reducing message size compared to embedding a full schema in every single message. The same 5-byte schema-ID header is used for Avro, Protobuf and JSON Schema messages.',
         'Centralized schema governance also enables organization-wide policies (requiring specific compatibility modes, mandating field documentation) that would be impossible to enforce consistently if each team managed its own message formats independently.',
       ],
     },
@@ -136,8 +137,8 @@ async function produce() {
   const producer = kafka.producer();
   await producer.connect();
 
-  // Encode using the registered schema
-  const schemaId = 1;
+  // Encode using the registered schema: resolve the ID by subject, never hardcode it
+  const schemaId = await registry.getLatestSchemaId('orders-value');
   const encoded  = await registry.encode(schemaId, {
     orderId: 'ORD-001',
     userId:  'u123',
@@ -228,7 +229,7 @@ console.log('v2 schema ID:', id);`,
       right: `// Mark as deprecated, keep with a default for a transition period
 { "name": "legacyCode", "type": ["null", "string"], "default": null }
 // Remove only after all consumers are upgraded`,
-      explanation: 'Removing a field breaks forward compatibility. Old consumers cannot read new messages that lack a field they depend on. Use a nullable type with default null during migration.'
+      explanation: 'Removing a field that has no default breaks forward compatibility: old consumers cannot read new messages that lack a field they expect. Removing a field that has a default is allowed. Use a nullable type with default null during migration.'
     },
     {
       title: 'Using NONE compatibility in production',
@@ -242,12 +243,12 @@ curl -X PUT http://schema-registry:8081/config/orders-value \\
     },
     {
       title: 'Hardcoding schema IDs in producer code',
-      wrong: `// Schema ID 42 hardcoded — breaks when schema is re-registered
+      wrong: `// Schema ID 42 hardcoded — the same schema can have a different ID in another registry or environment
 const encoded = await registry.encode(42, payload);`,
       right: `// Look up the latest version by subject name
 const { id } = await registry.getLatestSchemaId('orders-value');
 const encoded = await registry.encode(id, payload);`,
-      explanation: 'Schema IDs are assigned by the registry at registration time and vary between environments. Always resolve by subject name rather than hardcoding.'
+      explanation: 'Schema IDs are assigned by the registry at registration time and can differ between registries and environments. Always resolve by subject name rather than hardcoding.'
     },
   ];
 

@@ -4172,4 +4172,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Sink Connector Offsets Live in a Consumer Group, Not the Offsets Topic', route: '/messaging/kafka-connect/sink-offsets-live-in-consumer-groups' },
     { label: 'Debezium 2.0 Renamed database.server.name, and wal_level Defaults to replica', route: '/messaging/kafka-connect/debezium-config-drift-and-wal-level' },
   ],
+  'schema-registry': [
+    { label: 'FORWARD Compatibility Allows Adding Fields and Removing Fields That Have Defaults', route: '/messaging/schema-registry/forward-compat-add-fields-remove-defaulted' },
+    { label: 'BACKWARD Checks Only the Latest Version, Not the Whole History', route: '/messaging/schema-registry/backward-checks-only-the-latest-version' },
+    { label: 'JSON Schema Messages Use the Same Schema-ID Header, and Protobuf Adds Message Indexes', route: '/messaging/schema-registry/same-wire-format-for-all-three-formats' },
+  ],
 };

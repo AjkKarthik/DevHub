@@ -31768,6 +31768,43 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Distributed mode runs connectors across a worker cluster with automatic task rebalancing for fault tolerance.',
     ],
   },
+  'messaging/schema-registry/forward-compat-add-fields-remove-defaulted': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Schema Registry', route: '/messaging/schema-registry' },
+      { label: 'BACKWARD Checks Only the Latest Version, Not the Whole History', route: '/messaging/schema-registry/backward-checks-only-the-latest-version' },
+    ],
+    tip: 'FORWARD (old readers, new data) allows adding fields and removing fields that have a default. BACKWARD (new readers, old data) allows removing fields and adding fields with defaults. FULL allows only optional-field changes.',
+    gotchas: [
+      'A reader can handle data if every field it expects is present or has a default; extra fields are ignored.',
+      'Keeping a field as nullable with default null is what makes a later removal FORWARD safe.',
+    ],
+  },
+  'messaging/schema-registry/backward-checks-only-the-latest-version': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Schema Registry', route: '/messaging/schema-registry' },
+      { label: 'FORWARD Compatibility Allows Adding Fields and Removing Fields That Have Defaults', route: '/messaging/schema-registry/forward-compat-add-fields-remove-defaulted' },
+      { label: 'JSON Schema Messages Use the Same Schema-ID Header, and Protobuf Adds Message Indexes', route: '/messaging/schema-registry/same-wire-format-for-all-three-formats' },
+    ],
+    tip: 'The default mode is BACKWARD, and BACKWARD checks a new schema only against the latest version. BACKWARD_TRANSITIVE checks all previous versions, which is what protects consumers that replay a topic from the beginning.',
+    gotchas: [
+      'Upgrade order: BACKWARD means consumers first, FORWARD means producers first, FULL lets either side go first.',
+      'A chain of individually compatible versions is not automatically compatible end to end.',
+    ],
+  },
+  'messaging/schema-registry/same-wire-format-for-all-three-formats': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Schema Registry', route: '/messaging/schema-registry' },
+      { label: 'BACKWARD Checks Only the Latest Version, Not the Whole History', route: '/messaging/schema-registry/backward-checks-only-the-latest-version' },
+    ],
+    tip: 'Avro, Protobuf and JSON Schema messages all start with a 0 byte and a 4-byte schema ID; none embeds the schema. Protobuf adds an array of message indexes before the payload.',
+    gotchas: [
+      'Do not assume the payload starts at byte 5 for Protobuf.',
+      'The same wire format applies to message keys and message values.',
+    ],
+  },
   'messaging/schema-registry': {
     apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
     related: [
@@ -31776,7 +31813,7 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     tip: 'Backward compatibility means new schemas can read old data; forward compatibility means old readers can read new data; full compatibility requires both — choosing too permissive a mode silently breaks consumers that haven\'t yet updated.',
     gotchas: [
       'Without a registry, producers and consumers must agree on message format out-of-band (docs, tribal knowledge) — a fragile mechanism that breaks down as service count grows.',
-      'Avro/Protobuf with a registry encode a compact schema ID per message rather than the full schema, reducing message size vs. embedding a full JSON Schema.',
+      'Avro, Protobuf and JSON Schema messages all carry a compact schema ID (a 5-byte header) rather than the full schema.',
     ],
   },
   'messaging/rabbitmq-core/retry-threshold-four-attempts': {

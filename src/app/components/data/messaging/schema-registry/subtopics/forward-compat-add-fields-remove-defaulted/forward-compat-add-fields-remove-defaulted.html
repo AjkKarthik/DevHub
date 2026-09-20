@@ -1,0 +1,26 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Schema Registry" topicRoute="/messaging/schema-registry"
+    subtopicLabel="FORWARD Compatibility Allows Adding Fields and Removing Fields That Have Defaults" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">FORWARD Compatibility Allows Adding Fields and Removing Fields That Have Defaults</h1>
+  <p class="page-subtitle">The page said FORWARD forbids removing fields and that adding a required field breaks old readers. Under Confluent's definitions it is the reverse for additions, and removal depends on defaults.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Confluent Platform" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the FORWARD, FULL and forward-compatibility theory bullets and the field-removal mistake block on the Schema Registry page. Next: which versions a compatibility check actually compares against.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Schema Registry" topicRoute="/messaging/schema-registry"
+    [next]="{ label: 'BACKWARD Checks Only the Latest Version, Not the Whole History', route: '/messaging/schema-registry/backward-checks-only-the-latest-version' }" />
+</div>

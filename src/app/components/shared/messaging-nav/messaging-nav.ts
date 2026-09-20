@@ -194,7 +194,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/messaging/schema-registry" routerLinkActive="active"><span class="nl-text">Schema Registry</span>@if(p.isDone('kafka-schema-registry')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/messaging/schema-registry" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Schema Registry</span>
+        @if(p.isDone('kafka-schema-registry')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('schema-registry')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('schema-registry')"
+                  (click)="toggleSubtopics('schema-registry', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('schema-registry'); as schemaRegSubs) {
+        @if (isSubtopicsExpanded('schema-registry')) {
+          <div class="nav-subtopics">
+            @for (s of schemaRegSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
