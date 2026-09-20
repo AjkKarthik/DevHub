@@ -255,7 +255,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/messaging/outbox-pattern" routerLinkActive="active"><span class="nl-text">Outbox Pattern</span>@if(p.isDone('kafka-outbox-pattern')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/messaging/outbox-pattern" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Outbox Pattern</span>
+        @if(p.isDone('kafka-outbox-pattern')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('outbox-pattern')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('outbox-pattern')"
+                  (click)="toggleSubtopics('outbox-pattern', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('outbox-pattern'); as outboxSubs) {
+        @if (isSubtopicsExpanded('outbox-pattern')) {
+          <div class="nav-subtopics">
+            @for (s of outboxSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

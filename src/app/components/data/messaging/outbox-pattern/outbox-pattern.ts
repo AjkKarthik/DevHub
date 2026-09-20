@@ -28,7 +28,7 @@ export class OutboxPattern {
     { name: 'CDC relay', type: 'keyword', desc: 'Relay reads DB WAL changes (Debezium) instead of polling' },
     { name: 'Dual write', type: 'keyword', desc: 'Anti-pattern: writing to DB and broker in separate operations (not atomic)' },
     { name: 'Idempotency key', type: 'keyword', desc: 'Unique event ID allowing consumers to deduplicate replayed events' },
-    { name: 'published_at', type: 'keyword', desc: 'Outbox column set when event is successfully relayed to broker' },
+    { name: 'published_at', type: 'keyword', desc: 'Polling-relay column set when an event is relayed to the broker (a CDC relay reads the log and needs no such column)' },
     { name: 'at-least-once', type: 'keyword', desc: 'Relay may publish duplicates on crash; consumers must be idempotent' },
   ];
 
@@ -40,6 +40,7 @@ export class OutboxPattern {
         'If the DB write succeeds but the broker publish fails (or vice versa), data becomes inconsistent across services.',
         'Retrying the publish can cause duplicates; not retrying loses the event. Neither is acceptable in production.',
         'The Outbox Pattern solves this by making both operations part of a single database transaction.',
+        'It trades some latency (the event is published slightly after the commit, not atomically with it) for a consistency guarantee between the database and the published event.',
       ]
     },
     {
@@ -49,6 +50,7 @@ export class OutboxPattern {
         'A separate message relay process reads unprocessed outbox rows and publishes them to the broker.',
         'Once published, mark the outbox row as done (or delete it).',
         'Even if the relay crashes mid-publish, it can restart and replay from the last unprocessed row.',
+        'The Kafka idempotent producer (<code>idempotent: true</code>) only removes duplicates from retries inside one producer session. A relay that crashes after sending and restarts is a new producer with a new producer id, so its resend is a new message and consumers still have to deduplicate.',
       ]
     },
     {
@@ -56,27 +58,11 @@ export class OutboxPattern {
       points: [
         'Polling relay: runs a SELECT on the outbox table every N seconds. Simple but adds DB load and has latency.',
         'CDC relay (Debezium): reads the database WAL and captures outbox inserts in near-real-time. No polling overhead.',
-        'CDC relay is the production standard for low-latency, high-volume event publishing.',
+        'CDC suits low-latency, high-volume publishing, at the cost of running CDC infrastructure (Kafka Connect and Debezium).',
         'Both approaches deliver at-least-once semantics — consumers must handle duplicate events idempotently.',
+        'A polling relay marks rows with <code>published_at</code> and needs a job that later purges them. A CDC relay does not read the table at all: Debezium tails the transaction log, so the row can be inserted and deleted in the same transaction and the table stays empty.',
+        'The relay still needs its own retry handling: the outbox solves the dual write at the database layer, but the hop from outbox to broker can fail.',
       ]
-    },
-    {
-      heading: 'The Dual-Write Problem the Outbox Pattern Solves',
-      points: [
-        'Writing to a database AND publishing a message as two separate operations creates a dual-write problem — if the service crashes between the database commit and the message publish, the database change happens but the message is never sent, leaving the two systems inconsistent.',
-        'The outbox pattern writes both the business data change AND the outgoing message (into an "outbox" table) within the SAME database transaction, guaranteeing atomicity — either both happen or neither does, eliminating the window where they could diverge.',
-        'A separate relay process (polling the outbox table, or using change data capture) then reads unpublished outbox rows and actually publishes them to the message broker, decoupling the atomic local write from the actual broker publish.',
-        'This pattern trades some latency (the message is published slightly after the transaction commits, not atomically with it) for a strong consistency guarantee that avoids the dual-write problem entirely — a worthwhile tradeoff whenever the consistency between the database and the published event genuinely matters.',
-      ],
-    },
-    {
-      heading: 'Outbox Relay Implementation Approaches',
-      points: [
-        'Polling-based relays periodically query the outbox table for unpublished rows and publish them — simple to implement, but introduces latency proportional to the polling interval and adds continuous read load on the database.',
-        'CDC-based relays (using a tool like Debezium to tail the database\'s transaction log) publish outbox rows near-instantly as they are written, with lower latency and database load than polling, at the cost of additional CDC infrastructure to operate.',
-        'Marking outbox rows as "published" (rather than deleting them immediately) after successful publish allows for auditing and recovery if the relay itself fails partway through a batch, at the cost of requiring a separate cleanup process to eventually purge old published rows.',
-        'The relay itself must handle publish failures with retry logic, since a message published from the outbox can still fail to reach the broker — the outbox pattern solves the dual-write problem at the database layer, but publish reliability from outbox to broker still needs its own handling.',
-      ],
     },
   ];
 
@@ -100,7 +86,7 @@ CREATE TABLE outbox (
   event_type   TEXT        NOT NULL,    -- e.g., 'order.placed'
   payload      JSONB       NOT NULL,
   published_at TIMESTAMPTZ,             -- NULL = pending; set when relayed
-  created_at   TIMESTAMPTZ DEFAULT now()
+  created_at   TIMESTAMPTZ DEFAULT clock_timestamp()  -- not now(): now() is the transaction START time
 );
 
 CREATE INDEX idx_outbox_pending ON outbox (created_at)
@@ -232,7 +218,7 @@ SELECT * FROM outbox WHERE published_at IS NULL LIMIT 100;
       right: `// SKIP LOCKED prevents two instances from reading the same rows
 SELECT * FROM outbox WHERE published_at IS NULL
 LIMIT 100 FOR UPDATE SKIP LOCKED;`,
-      explanation: 'SKIP LOCKED makes rows already locked by another relay instance invisible to this query, enabling safe parallel relay workers without duplicates.'
+      explanation: 'SKIP LOCKED makes rows already locked by another relay instance invisible to this query, enabling parallel relay workers without duplicates. It does not preserve order: two workers can publish two events of the same aggregate in the wrong order, so route each aggregate to a single worker if order matters.'
     },
     {
       title: 'Not making consumers idempotent for at-least-once delivery',
@@ -260,31 +246,31 @@ UPDATE outbox SET published_at = now() WHERE id = $1;
 DELETE FROM outbox
 WHERE published_at IS NOT NULL
   AND published_at < now() - INTERVAL '7 days';`,
-      explanation: 'Published rows accumulate over time. A background job should prune old published outbox rows to prevent table bloat and index degradation.'
+      explanation: 'Published rows accumulate over time. With a polling relay, a background job should prune old published outbox rows to prevent table bloat and index degradation. With a Debezium CDC relay there is nothing to prune: the row is deleted in the same transaction that inserts it, because Debezium captures the INSERT from the log and ignores the DELETE.'
     },
   ];
 
   readonly challenge: Challenge = {
     title: 'Outbox Relay with Retry Count',
     language: 'typescript',
-    description: 'Extend the outbox table with a retry_count column (default 0). Modify the polling relay to increment retry_count on publish failure. After 5 retries, move the row to an "outbox_dlq" table instead of retrying forever. Implement the relay loop in TypeScript with pg.',
+    description: 'Extend the outbox table with a retry_count column (default 0). Modify the polling relay to increment retry_count on publish failure. After 5 failed publish attempts, move the row to an "outbox_dlq" table instead of retrying forever. Implement the relay loop in TypeScript with pg.',
     hints: [
       'Add retry_count INT DEFAULT 0 and last_error TEXT to outbox',
       'On catch: UPDATE outbox SET retry_count = retry_count + 1, last_error = $err WHERE id = $id',
-      'Before retrying, check retry_count >= 5 → move to outbox_dlq',
+      'On the 5th failed attempt (retry_count is already 4) → move to outbox_dlq instead of incrementing',
     ],
-    starterCode: `async function processRow(client: any, row: { id: string; event_type: string; payload: unknown; retry_count: number }) {
+    starterCode: `async function processRow(client: any, row: { id: string; aggregate_id: string; event_type: string; payload: unknown; retry_count: number }) {
   // TODO: publish to Kafka; on error increment retry_count or move to DLQ
 }`,
     solution: `async function processRow(
   client: any,
   producer: any,
-  row: { id: string; event_type: string; payload: any; retry_count: number }
+  row: { id: string; aggregate_id: string; event_type: string; payload: any; retry_count: number }
 ) {
   try {
     await producer.send({
       topic: row.event_type.replace('.', '-'),
-      messages: [{ value: JSON.stringify(row.payload) }],
+      messages: [{ key: row.aggregate_id, value: JSON.stringify(row.payload) }],  // keyed: one aggregate stays in one partition, in order
       acks: -1,
     });
     await client.query(
@@ -323,11 +309,11 @@ WHERE published_at IS NOT NULL
 
   readonly qna: QnaItem[] = [
     { q: 'Can I use the Outbox Pattern with any database?', a: 'Yes — any database that supports transactions and can write to an outbox table works. The CDC relay approach (Debezium) requires WAL access (PostgreSQL logical replication, MySQL binlog, etc.). Polling works with any transactional database.' },
-    { q: 'How do I handle very high-volume event publishing with the outbox?', a: 'Use a CDC relay (Debezium) instead of polling to minimise database overhead. Run multiple relay workers with SKIP LOCKED for parallel processing. Partition the outbox table by aggregate type or time range for very high volumes. Archive or delete processed rows regularly.' },
-    { q: 'What is the Inbox pattern?', a: 'The Inbox pattern is the consumer-side counterpart to the Outbox. Instead of processing an event directly, the consumer writes it to a local "inbox" table (transactionally with its side effects), ensuring exactly-once processing even under at-least-once delivery.' },
+    { q: 'How do I handle very high-volume event publishing with the outbox?', a: 'Use a CDC relay (Debezium) instead of polling to minimise database overhead. Run multiple relay workers with SKIP LOCKED for parallel processing (assign each aggregate to one worker if per-aggregate order matters). Partition the outbox table by aggregate type or time range for very high volumes. Archive or delete processed rows regularly.' },
+    { q: 'What is the Inbox pattern?', a: 'The Inbox pattern is the consumer-side counterpart to the Outbox. Instead of processing an event directly, the consumer writes it to a local "inbox" table (transactionally with its side effects), so a redelivered event is detected and skipped: the effect happens once even though delivery is at-least-once.' },
     { q: 'How does Debezium implement the Outbox pattern?', a: 'Debezium is a CDC (Change Data Capture) connector that reads the database transaction log (WAL for PostgreSQL, binlog for MySQL). It monitors the outbox table and publishes each INSERT as a Kafka event in near real-time — no polling lag, no added DB load. The Debezium Outbox Event Router SMT transforms outbox rows into domain-specific Kafka topics automatically.' },
     { q: 'What is the difference between polling-based and CDC-based outbox relay?', a: '<strong>Polling relay</strong>: queries <code>SELECT * FROM outbox WHERE sent = false ORDER BY created_at LIMIT 100</code> on a schedule. Simple, portable, but adds DB load and has polling delay. <strong>CDC relay</strong> (Debezium): reads transaction log — near-real-time, no polling overhead, but requires CDC infrastructure. CDC is preferred for high-volume or low-latency requirements.' },
-    { q: 'How does the Inbox pattern complement the Outbox pattern?', a: 'The <strong>Inbox pattern</strong> handles idempotent message consumption: before processing, record the messageId in an inbox table within the same transaction as the business operation. If a duplicate arrives, the INSERT fails (unique constraint) and the message is discarded. Inbox + Outbox together provide reliable exactly-once semantics end-to-end without distributed transactions.' },
+    { q: 'How does the Inbox pattern complement the Outbox pattern?', a: 'The <strong>Inbox pattern</strong> handles idempotent message consumption: before processing, record the messageId in an inbox table within the same transaction as the business operation. If a duplicate arrives, the INSERT fails (unique constraint) and the message is discarded. Inbox + Outbox together give effectively-once processing end to end (at-least-once delivery plus deduplication) without distributed transactions.' },
   ];
 
   readonly revision: RevisionSummary = {
@@ -344,7 +330,7 @@ WHERE published_at IS NOT NULL
       'Why dual write fails and how outbox fixes it atomically',
       'Polling vs CDC relay: trade-offs in latency and DB load',
       'At-least-once semantics: how consumers handle relay duplicates',
-      'Outbox + inbox: full exactly-once pipeline across services',
+      'Outbox + inbox: effectively-once processing across services (at-least-once delivery plus deduplication)',
     ],
   };
 }

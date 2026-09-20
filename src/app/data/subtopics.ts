@@ -4187,4 +4187,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Idempotent Compensation Needs One Atomic Guard', route: '/messaging/saga-pattern/idempotent-compensation-atomic-guard' },
     { label: 'The Pivot Transaction Is the Go/No-Go Point', route: '/messaging/saga-pattern/pivot-is-the-go-no-go-point' },
   ],
+  'outbox-pattern': [
+    { label: 'A CDC Outbox Relay Never Marks Rows: Insert and Delete in One Transaction', route: '/messaging/outbox-pattern/cdc-outbox-rows-are-deleted-not-marked' },
+    { label: 'The Outbox created_at Default Is the Transaction Start Time, Not the Insert Time', route: '/messaging/outbox-pattern/created-at-is-transaction-start' },
+    { label: 'SKIP LOCKED Prevents Duplicates but Not Reordering Across Parallel Relays', route: '/messaging/outbox-pattern/skip-locked-parallel-relays-reorder-events' },
+  ],
 };

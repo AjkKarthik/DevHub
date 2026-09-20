@@ -1,0 +1,27 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Outbox Pattern" topicRoute="/messaging/outbox-pattern"
+    subtopicLabel="The Outbox created_at Default Is the Transaction Start Time, Not the Insert Time" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">The Outbox created_at Default Is the Transaction Start Time, Not the Insert Time</h1>
+  <p class="page-subtitle">The polling relay orders by created_at, but a DEFAULT now() column records when the transaction began. A transaction that waits on a lock can end up stamped earlier than the one it waited for.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="PostgreSQL" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the schema and the polling relay code tabs on the main page. The next page covers a second source of reordering: parallel relay workers.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Outbox Pattern" topicRoute="/messaging/outbox-pattern"
+    [prev]="{ label: 'A CDC Outbox Relay Never Marks Rows: Insert and Delete in One Transaction', route: '/messaging/outbox-pattern/cdc-outbox-rows-are-deleted-not-marked' }"
+    [next]="{ label: 'SKIP LOCKED Prevents Duplicates but Not Reordering Across Parallel Relays', route: '/messaging/outbox-pattern/skip-locked-parallel-relays-reorder-events' }" />
+</div>

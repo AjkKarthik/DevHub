@@ -3054,7 +3054,12 @@ export const routes: Routes = [
       { path: 'idempotent-compensation-atomic-guard', loadComponent: () => import('./components/data/messaging/saga-pattern/subtopics/idempotent-compensation-atomic-guard/idempotent-compensation-atomic-guard').then(m => m.IdempotentCompensationAtomicGuardSubtopic) },
       { path: 'pivot-is-the-go-no-go-point', loadComponent: () => import('./components/data/messaging/saga-pattern/subtopics/pivot-is-the-go-no-go-point/pivot-is-the-go-no-go-point').then(m => m.PivotIsTheGoNoGoPointSubtopic) },
     ] },
-    { path: 'outbox-pattern',            loadComponent: () => import('./components/data/messaging/outbox-pattern/outbox-pattern').then(m => m.OutboxPattern) },
+    { path: 'outbox-pattern', children: [
+      { path: '', loadComponent: () => import('./components/data/messaging/outbox-pattern/outbox-pattern').then(m => m.OutboxPattern) },
+      { path: 'cdc-outbox-rows-are-deleted-not-marked', loadComponent: () => import('./components/data/messaging/outbox-pattern/subtopics/cdc-outbox-rows-are-deleted-not-marked/cdc-outbox-rows-are-deleted-not-marked').then(m => m.CdcOutboxRowsAreDeletedNotMarkedSubtopic) },
+      { path: 'created-at-is-transaction-start', loadComponent: () => import('./components/data/messaging/outbox-pattern/subtopics/created-at-is-transaction-start/created-at-is-transaction-start').then(m => m.CreatedAtIsTransactionStartSubtopic) },
+      { path: 'skip-locked-parallel-relays-reorder-events', loadComponent: () => import('./components/data/messaging/outbox-pattern/subtopics/skip-locked-parallel-relays-reorder-events/skip-locked-parallel-relays-reorder-events').then(m => m.SkipLockedParallelRelaysReorderEventsSubtopic) },
+    ] },
     { path: 'azure-service-bus',         loadComponent: () => import('./components/data/messaging/azure-service-bus/azure-service-bus').then(m => m.AzureServiceBus) },
     { path: 'azure-event-grid',          loadComponent: () => import('./components/data/messaging/azure-event-grid/azure-event-grid').then(m => m.AzureEventGrid) },
     { path: 'aws-sqs',                   loadComponent: () => import('./components/data/messaging/aws-sqs/aws-sqs').then(m => m.AwsSqs) },

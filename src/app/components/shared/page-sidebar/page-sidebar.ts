@@ -32073,6 +32073,43 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The idempotency check and the operation must happen atomically in the same transaction — checking and acting as two separate steps reintroduces a race condition.',
     ],
   },
+  'messaging/outbox-pattern/cdc-outbox-rows-are-deleted-not-marked': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Outbox Pattern', route: '/messaging/outbox-pattern' },
+      { label: 'The Outbox created_at Default Is the Transaction Start Time, Not the Insert Time', route: '/messaging/outbox-pattern/created-at-is-transaction-start' },
+    ],
+    tip: 'A CDC (Debezium) relay reads the transaction log, so the outbox row can be inserted and deleted in the same transaction. A polling relay is the one that needs published_at and a purge job.',
+    gotchas: [
+      'Debezium captures the INSERT from the log and ignores the DELETE.',
+      'A published_at purge job is dead code with a CDC relay because nothing sets the column.',
+    ],
+  },
+  'messaging/outbox-pattern/created-at-is-transaction-start': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Outbox Pattern', route: '/messaging/outbox-pattern' },
+      { label: 'A CDC Outbox Relay Never Marks Rows: Insert and Delete in One Transaction', route: '/messaging/outbox-pattern/cdc-outbox-rows-are-deleted-not-marked' },
+      { label: 'SKIP LOCKED Prevents Duplicates but Not Reordering Across Parallel Relays', route: '/messaging/outbox-pattern/skip-locked-parallel-relays-reorder-events' },
+    ],
+    tip: 'DEFAULT now() is the transaction start time. Use clock_timestamp() so events of one aggregate are ordered by when their outbox rows were inserted.',
+    gotchas: [
+      'now() does not change during a transaction.',
+      'A transaction that waits on a row lock keeps its earlier start timestamp.',
+    ],
+  },
+  'messaging/outbox-pattern/skip-locked-parallel-relays-reorder-events': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Outbox Pattern', route: '/messaging/outbox-pattern' },
+      { label: 'The Outbox created_at Default Is the Transaction Start Time, Not the Insert Time', route: '/messaging/outbox-pattern/created-at-is-transaction-start' },
+    ],
+    tip: 'SKIP LOCKED avoids duplicate publishes, not reordering. If per-aggregate order matters, give each aggregate to a single relay worker.',
+    gotchas: [
+      'Each worker only orders its own batch.',
+      'Keying by aggregate id keeps a partition together, not the send order.',
+    ],
+  },
   'messaging/outbox-pattern': {
     apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
     related: [

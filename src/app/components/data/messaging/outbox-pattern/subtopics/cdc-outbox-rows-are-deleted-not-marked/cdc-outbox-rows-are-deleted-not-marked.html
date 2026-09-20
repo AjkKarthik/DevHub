@@ -1,0 +1,26 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Outbox Pattern" topicRoute="/messaging/outbox-pattern"
+    subtopicLabel="A CDC Outbox Relay Never Marks Rows: Insert and Delete in One Transaction" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">A CDC Outbox Relay Never Marks Rows: Insert and Delete in One Transaction</h1>
+  <p class="page-subtitle">The mark-then-prune lifecycle belongs to a polling relay. A log-based relay reads the transaction log, so the outbox table can stay empty.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Debezium Outbox Event Router" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the published-at quick reference entry, the polling-versus-CDC theory and the outbox-grows mistake block. The next page covers how the polling relay orders its rows.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Outbox Pattern" topicRoute="/messaging/outbox-pattern"
+    [next]="{ label: 'The Outbox created_at Default Is the Transaction Start Time, Not the Insert Time', route: '/messaging/outbox-pattern/created-at-is-transaction-start' }" />
+</div>
