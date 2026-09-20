@@ -4167,4 +4167,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'There Is No Default Grace Period, and Late Records Are Dropped from Closed Windows', route: '/messaging/kafka-streams/no-default-grace-period-late-records-dropped' },
     { label: 'Window by Event Time, Not by the Wall Clock of Your Consumer', route: '/messaging/kafka-streams/windowing-by-event-time-not-wall-clock' },
   ],
+  'kafka-connect': [
+    { label: 'ReplaceField Does Not Mask, and a Debezium Envelope Hides the Columns from It', route: '/messaging/kafka-connect/replacefield-does-not-mask-envelope-hides-columns' },
+    { label: 'Sink Connector Offsets Live in a Consumer Group, Not the Offsets Topic', route: '/messaging/kafka-connect/sink-offsets-live-in-consumer-groups' },
+    { label: 'Debezium 2.0 Renamed database.server.name, and wal_level Defaults to replica', route: '/messaging/kafka-connect/debezium-config-drift-and-wal-level' },
+  ],
 };

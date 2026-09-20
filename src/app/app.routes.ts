@@ -3030,7 +3030,12 @@ export const routes: Routes = [
       { path: 'no-default-grace-period-late-records-dropped', loadComponent: () => import('./components/data/messaging/kafka-streams/subtopics/no-default-grace-period-late-records-dropped/no-default-grace-period-late-records-dropped').then(m => m.NoDefaultGracePeriodLateRecordsDroppedSubtopic) },
       { path: 'windowing-by-event-time-not-wall-clock', loadComponent: () => import('./components/data/messaging/kafka-streams/subtopics/windowing-by-event-time-not-wall-clock/windowing-by-event-time-not-wall-clock').then(m => m.WindowingByEventTimeNotWallClockSubtopic) },
     ] },
-    { path: 'kafka-connect',             loadComponent: () => import('./components/data/messaging/kafka-connect/kafka-connect').then(m => m.KafkaConnect) },
+    { path: 'kafka-connect', children: [
+      { path: '', loadComponent: () => import('./components/data/messaging/kafka-connect/kafka-connect').then(m => m.KafkaConnect) },
+      { path: 'replacefield-does-not-mask-envelope-hides-columns', loadComponent: () => import('./components/data/messaging/kafka-connect/subtopics/replacefield-does-not-mask-envelope-hides-columns/replacefield-does-not-mask-envelope-hides-columns').then(m => m.ReplacefieldDoesNotMaskEnvelopeHidesColumnsSubtopic) },
+      { path: 'sink-offsets-live-in-consumer-groups', loadComponent: () => import('./components/data/messaging/kafka-connect/subtopics/sink-offsets-live-in-consumer-groups/sink-offsets-live-in-consumer-groups').then(m => m.SinkOffsetsLiveInConsumerGroupsSubtopic) },
+      { path: 'debezium-config-drift-and-wal-level', loadComponent: () => import('./components/data/messaging/kafka-connect/subtopics/debezium-config-drift-and-wal-level/debezium-config-drift-and-wal-level').then(m => m.DebeziumConfigDriftAndWalLevelSubtopic) },
+    ] },
     { path: 'schema-registry',           loadComponent: () => import('./components/data/messaging/schema-registry/schema-registry').then(m => m.SchemaRegistry) },
     { path: 'messaging-patterns',        loadComponent: () => import('./components/data/messaging/messaging-patterns/messaging-patterns').then(m => m.MessagingPatterns) },
     { path: 'saga-pattern',              loadComponent: () => import('./components/data/messaging/saga-pattern/saga-pattern').then(m => m.SagaPattern) },

@@ -31719,6 +31719,43 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Standby replicas reduce failover time by having a warm state-store copy ready on another instance.',
     ],
   },
+  'messaging/kafka-connect/replacefield-does-not-mask-envelope-hides-columns': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Kafka Connect', route: '/messaging/kafka-connect' },
+      { label: 'Sink Connector Offsets Live in a Consumer Group, Not the Offsets Topic', route: '/messaging/kafka-connect/sink-offsets-live-in-consumer-groups' },
+    ],
+    tip: 'ReplaceField filters and renames; MaskField masks. On a raw Debezium record the columns are nested in before/after, so unwrap with ExtractNewRecordState first, or use column.exclude.list on the connector.',
+    gotchas: [
+      'A transform that matches nothing fails silently: inspect the resulting topic to confirm the value is gone.',
+      'SMTs run in the order listed in transforms.',
+    ],
+  },
+  'messaging/kafka-connect/sink-offsets-live-in-consumer-groups': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Kafka Connect', route: '/messaging/kafka-connect' },
+      { label: 'ReplaceField Does Not Mask, and a Debezium Envelope Hides the Columns from It', route: '/messaging/kafka-connect/replacefield-does-not-mask-envelope-hides-columns' },
+      { label: 'Debezium 2.0 Renamed database.server.name, and wal_level Defaults to replica', route: '/messaging/kafka-connect/debezium-config-drift-and-wal-level' },
+    ],
+    tip: 'Source connector offsets live in the offsets topic (offset.storage.topic). Sink connector offsets are consumer group offsets under connect-<connector name>, so use kafka-consumer-groups.sh for sink lag.',
+    gotchas: [
+      'Since Kafka 3.6 the REST API can read, alter and reset offsets, but the connector must be STOPPED to alter or reset them.',
+      'The offsets topic name is configured, not fixed.',
+    ],
+  },
+  'messaging/kafka-connect/debezium-config-drift-and-wal-level': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Kafka Connect', route: '/messaging/kafka-connect' },
+      { label: 'Sink Connector Offsets Live in a Consumer Group, Not the Offsets Topic', route: '/messaging/kafka-connect/sink-offsets-live-in-consumer-groups' },
+    ],
+    tip: 'Debezium 2.0 renamed database.server.name to topic.prefix. PostgreSQL defaults to wal_level = replica; Debezium needs logical (restart required) and creates its replication slot by default.',
+    gotchas: [
+      'Stale keys copied from older snippets are how connector upgrades go wrong.',
+      'Creating the replication slot manually is optional when the Debezium user has the required privileges.',
+    ],
+  },
   'messaging/kafka-connect': {
     apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
     related: [
