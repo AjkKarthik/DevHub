@@ -278,7 +278,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
 
     <div class="nav-group">
       <p class="nav-group-label">Azure Service Bus</p>
-      <a routerLink="/messaging/azure-service-bus" routerLinkActive="active"><span class="nl-text">Azure Service Bus</span>@if(p.isDone('kafka-azure-service-bus')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/messaging/azure-service-bus" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Azure Service Bus</span>
+        @if(p.isDone('kafka-azure-service-bus')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('azure-service-bus')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('azure-service-bus')"
+                  (click)="toggleSubtopics('azure-service-bus', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('azure-service-bus'); as asbSubs) {
+        @if (isSubtopicsExpanded('azure-service-bus')) {
+          <div class="nav-subtopics">
+            @for (s of asbSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/messaging/azure-event-grid" routerLinkActive="active"><span class="nl-text">Event Grid &amp; Event Hubs</span>@if(p.isDone('kafka-azure-event-grid')){<span class="nl-done">✓</span>}</a>
     </div>
 

@@ -1,0 +1,26 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Service Bus" topicRoute="/messaging/azure-service-bus"
+    subtopicLabel="subscribe() Completes, Abandons and Renews Locks for You" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">subscribe() Completes, Abandons and Renews Locks for You</h1>
+  <p class="page-subtitle">The mistake blocks showed a subscribe() handler losing its message or its lock. With default options the SDK settles and renews for you; the mistakes apply to messages you receive yourself.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="@azure/service-bus 7" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the first and third mistake blocks and the lock-duration answer on the main page. The next page covers settings that cannot be changed after a queue is created.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Service Bus" topicRoute="/messaging/azure-service-bus"
+    [next]="{ label: 'Duplicate Detection, Sessions and Expiry Dead-Lettering Are All Fixed at Queue Creation', route: '/messaging/azure-service-bus/settings-fixed-at-queue-creation' }" />
+</div>

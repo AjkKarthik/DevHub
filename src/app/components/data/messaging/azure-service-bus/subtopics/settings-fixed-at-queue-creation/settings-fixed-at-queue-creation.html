@@ -1,0 +1,27 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Service Bus" topicRoute="/messaging/azure-service-bus"
+    subtopicLabel="Duplicate Detection, Sessions and Expiry Dead-Lettering Are All Fixed at Queue Creation" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">Duplicate Detection, Sessions and Expiry Dead-Lettering Are All Fixed at Queue Creation</h1>
+  <p class="page-subtitle">A messageId dedup key, a time to live and a session id only behave as described if the queue was created with the matching settings. None of them can be changed afterwards.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Service Bus Standard and Premium" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the send code tab, the sessions bullets and the deduplication answer on the main page. The next page covers what does and does not reach the dead-letter queue.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Service Bus" topicRoute="/messaging/azure-service-bus"
+    [prev]="{ label: 'subscribe() Completes, Abandons and Renews Locks for You', route: '/messaging/azure-service-bus/subscribe-auto-completes-and-renews' }"
+    [next]="{ label: 'A Message That Matches No Subscription Filter Is Not Dead-Lettered', route: '/messaging/azure-service-bus/unmatched-filter-is-not-dead-lettered' }" />
+</div>

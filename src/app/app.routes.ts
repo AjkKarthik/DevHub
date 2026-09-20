@@ -3060,7 +3060,12 @@ export const routes: Routes = [
       { path: 'created-at-is-transaction-start', loadComponent: () => import('./components/data/messaging/outbox-pattern/subtopics/created-at-is-transaction-start/created-at-is-transaction-start').then(m => m.CreatedAtIsTransactionStartSubtopic) },
       { path: 'skip-locked-parallel-relays-reorder-events', loadComponent: () => import('./components/data/messaging/outbox-pattern/subtopics/skip-locked-parallel-relays-reorder-events/skip-locked-parallel-relays-reorder-events').then(m => m.SkipLockedParallelRelaysReorderEventsSubtopic) },
     ] },
-    { path: 'azure-service-bus',         loadComponent: () => import('./components/data/messaging/azure-service-bus/azure-service-bus').then(m => m.AzureServiceBus) },
+    { path: 'azure-service-bus', children: [
+      { path: '', loadComponent: () => import('./components/data/messaging/azure-service-bus/azure-service-bus').then(m => m.AzureServiceBus) },
+      { path: 'subscribe-auto-completes-and-renews', loadComponent: () => import('./components/data/messaging/azure-service-bus/subtopics/subscribe-auto-completes-and-renews/subscribe-auto-completes-and-renews').then(m => m.SubscribeAutoCompletesAndRenewsSubtopic) },
+      { path: 'settings-fixed-at-queue-creation', loadComponent: () => import('./components/data/messaging/azure-service-bus/subtopics/settings-fixed-at-queue-creation/settings-fixed-at-queue-creation').then(m => m.SettingsFixedAtQueueCreationSubtopic) },
+      { path: 'unmatched-filter-is-not-dead-lettered', loadComponent: () => import('./components/data/messaging/azure-service-bus/subtopics/unmatched-filter-is-not-dead-lettered/unmatched-filter-is-not-dead-lettered').then(m => m.UnmatchedFilterIsNotDeadLetteredSubtopic) },
+    ] },
     { path: 'azure-event-grid',          loadComponent: () => import('./components/data/messaging/azure-event-grid/azure-event-grid').then(m => m.AzureEventGrid) },
     { path: 'aws-sqs',                   loadComponent: () => import('./components/data/messaging/aws-sqs/aws-sqs').then(m => m.AwsSqs) },
     { path: 'aws-sns-eventbridge',       loadComponent: () => import('./components/data/messaging/aws-sns-eventbridge/aws-sns-eventbridge').then(m => m.AwsSnsEventbridge) },

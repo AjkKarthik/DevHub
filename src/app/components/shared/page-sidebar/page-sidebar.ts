@@ -32191,6 +32191,43 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'SNS filter policies reduce unnecessary delivery but are configured per-subscription, not centrally like EventBridge rules.',
     ],
   },
+  'messaging/azure-service-bus/subscribe-auto-completes-and-renews': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Azure Service Bus', route: '/messaging/azure-service-bus' },
+      { label: 'Duplicate Detection, Sessions and Expiry Dead-Lettering Are All Fixed at Queue Creation', route: '/messaging/azure-service-bus/settings-fixed-at-queue-creation' },
+    ],
+    tip: 'With default options subscribe() completes the message after your handler returns, abandons it if the handler throws, and renews the lock for up to 5 minutes. Manual settlement and renewal are for receiveMessages().',
+    gotchas: [
+      'autoCompleteMessages defaults to true.',
+      'Lock auto-renewal stops after maxAutoLockRenewalDurationInMs (default 5 minutes).',
+    ],
+  },
+  'messaging/azure-service-bus/settings-fixed-at-queue-creation': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Azure Service Bus', route: '/messaging/azure-service-bus' },
+      { label: 'subscribe() Completes, Abandons and Renews Locks for You', route: '/messaging/azure-service-bus/subscribe-auto-completes-and-renews' },
+      { label: 'A Message That Matches No Subscription Filter Is Not Dead-Lettered', route: '/messaging/azure-service-bus/unmatched-filter-is-not-dead-lettered' },
+    ],
+    tip: 'Duplicate detection, sessions and dead-lettering on expiration are set when the queue is created and cannot be changed later. A dedup messageId must repeat across retries.',
+    gotchas: [
+      'requiresDuplicateDetection cannot be switched on later.',
+      'A fresh GUID per send attempt defeats deduplication.',
+    ],
+  },
+  'messaging/azure-service-bus/unmatched-filter-is-not-dead-lettered': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Azure Service Bus', route: '/messaging/azure-service-bus' },
+      { label: 'Duplicate Detection, Sessions and Expiry Dead-Lettering Are All Fixed at Queue Creation', route: '/messaging/azure-service-bus/settings-fixed-at-queue-creation' },
+    ],
+    tip: 'A message that matches no subscription filter is not dead-lettered; it gets no copy. Only a filter that throws, with dead-lettering on filter evaluation exceptions enabled, is captured in the DLQ.',
+    gotchas: [
+      'There is no automatic cleanup of the DLQ.',
+      'A topic with no matching subscription stores nothing.',
+    ],
+  },
   'messaging/azure-service-bus': {
     apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
     related: [

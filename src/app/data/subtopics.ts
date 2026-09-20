@@ -4192,4 +4192,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Outbox created_at Default Is the Transaction Start Time, Not the Insert Time', route: '/messaging/outbox-pattern/created-at-is-transaction-start' },
     { label: 'SKIP LOCKED Prevents Duplicates but Not Reordering Across Parallel Relays', route: '/messaging/outbox-pattern/skip-locked-parallel-relays-reorder-events' },
   ],
+  'azure-service-bus': [
+    { label: 'subscribe() Completes, Abandons and Renews Locks for You', route: '/messaging/azure-service-bus/subscribe-auto-completes-and-renews' },
+    { label: 'Duplicate Detection, Sessions and Expiry Dead-Lettering Are All Fixed at Queue Creation', route: '/messaging/azure-service-bus/settings-fixed-at-queue-creation' },
+    { label: 'A Message That Matches No Subscription Filter Is Not Dead-Lettered', route: '/messaging/azure-service-bus/unmatched-filter-is-not-dead-lettered' },
+  ],
 };
