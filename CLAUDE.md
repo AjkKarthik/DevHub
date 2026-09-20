@@ -10186,6 +10186,21 @@ Confirmed via direct file inspection before the pilot (`/messaging/messaging-fun
    bash double-quoted string dropped the backslash from `\'` in two strings; the Edit tool is safer for
    text with apostrophes.** Build clean; browser-verified. **Messaging hub Phase 10: 7 of 20 topics
    complete.**
+11. **The `kafka-streams` batch found and fixed FOUR main-page issues, verified against KIP-328,
+   KIP-633 and Confluent's Kafka Streams time-concepts docs**: (a) the theory bullet and QnA said windowed
+   results are "emitted as windows close" -- by default every update is emitted (KIP-328: all Streams
+   operators emit whenever new results are available), and `suppress(untilWindowCloses)` gives one final
+   result, emitted only once stream time passes window end + grace; (b) mistake #2 said "default grace=0,
+   dropped silently" -- KIP-633 retired the old 24-hour default and forced an explicit choice
+   (`ofSizeWithNoGrace` / `ofSizeAndGrace`), and records after window end + grace are dropped from that
+   window; (c) the Challenge asked for a "rolling" window but bucketed with `Date.now()` -- that is
+   processing time in tumbling buckets, wrong on replays and after downtime, so the solution now uses
+   `Number(message.timestamp)` and says its in-memory Map is demo-only (the page's own mistake #3);
+   (d) the KTable bullet said compaction keeps "only the latest" value -- at least the latest. 3
+   subtopics (windows-emit-updates-not-only-final-results, no-default-grace-period-late-records-dropped,
+   windowing-by-event-time-not-wall-clock), each backed by a Node model. Bare `kafka-streams` SUBTOPICS
+   key collision-free. Build clean; browser-verified. **Messaging hub Phase 10: 8 of 20 topics
+   complete.**
 
 ## Current state (update when it changes!)
 
@@ -10562,11 +10577,11 @@ Confirmed via direct file inspection before the pilot (`/messaging/messaging-fun
   All 22 cards `available: true` in `data/messaging/home/home.ts`. Progress: `kafkaTotal=20` in progress.service.ts.
   Messaging pages use `app-common-mistakes` AND `app-revision-card`. Reference pages (monitoring, messaging-security) have no PageComplete.
   Challenge.language: `'typescript'`. MessagingNavComponent at `shared/messaging-nav/messaging-nav.ts`.
-  Phase 10: **7 of 20 topics have subtopics** (`/messaging/messaging-fundamentals`, pilot batch,
+  Phase 10: **8 of 20 topics have subtopics** (`/messaging/messaging-fundamentals`, pilot batch,
   2026-09-20; `/messaging/message-queues-vs-streams`, 2026-09-20; `/messaging/rabbitmq-core`,
   2026-09-20; `/messaging/rabbitmq-exchanges`, 2026-09-20; `/messaging/rabbitmq-patterns`,
   2026-09-20; `/messaging/kafka-architecture`, 2026-09-20; `/messaging/kafka-producers-consumers`,
-  2026-09-20) — see "Messaging/Kafka hub subtopic wiring" section above for the
+  2026-09-20; `/messaging/kafka-streams`, 2026-09-20) — see "Messaging/Kafka hub subtopic wiring" section above for the
   `MessagingNavComponent` accordion structural fix (18th `*NavComponent` hub in a row) and the
   three genuine main-page inaccuracies found and fixed (DLX-less nack "sends to DLQ", RabbitMQ
   wrongly listed as pull-based, unscoped SQS FIFO exactly-once claim).

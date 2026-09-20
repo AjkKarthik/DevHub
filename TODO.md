@@ -9889,7 +9889,13 @@ off here with a date.
   commit = commitOffsets with offset+1), eachBatch resolveOffset only tracks progress and
   eachBatchAutoResolve resolves the whole batch, acks=all needs min.insync.replicas. Bare
   `kafka-producers-consumers` SUBTOPICS key collision-free. Messaging hub Phase 10: 7 of 20.
-- [ ] `/messaging/kafka-streams` — Kafka Streams & KSQL
+- [x] 2026-09-20 `/messaging/kafka-streams` — Kafka Streams & KSQL. 3 subtopics
+  (windows-emit-updates-not-only-final-results, no-default-grace-period-late-records-dropped,
+  windowing-by-event-time-not-wall-clock). Main-page fixes verified against KIP-328/KIP-633/Confluent
+  docs: windowed results are emitted per update (suppress for final), no default grace period (24h default
+  retired, late records dropped after grace), Challenge windowed by wall clock instead of event time,
+  compaction keeps at least the latest. Bare `kafka-streams` SUBTOPICS key collision-free. Messaging hub
+  Phase 10: 8 of 20.
 - [ ] `/messaging/kafka-connect` — Kafka Connect
 - [ ] `/messaging/schema-registry` — Schema Registry
 - [ ] `/messaging/messaging-patterns` — Enterprise Messaging Patterns
