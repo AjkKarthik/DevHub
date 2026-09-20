@@ -4162,4 +4162,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'With autoCommit Off You Commit Offset Plus One Yourself', route: '/messaging/kafka-producers-consumers/manual-commit-needs-offset-plus-one' },
     { label: 'eachBatch Auto-Resolves the Last Offset, and autoCommit False Commits Nothing', route: '/messaging/kafka-producers-consumers/eachbatch-autocommit-false-and-auto-resolve' },
   ],
+  'kafka-streams': [
+    { label: 'Windowed Aggregations Emit Every Update, Not Only the Final Result', route: '/messaging/kafka-streams/windows-emit-updates-not-only-final-results' },
+    { label: 'There Is No Default Grace Period, and Late Records Are Dropped from Closed Windows', route: '/messaging/kafka-streams/no-default-grace-period-late-records-dropped' },
+    { label: 'Window by Event Time, Not by the Wall Clock of Your Consumer', route: '/messaging/kafka-streams/windowing-by-event-time-not-wall-clock' },
+  ],
 };

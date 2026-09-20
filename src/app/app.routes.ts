@@ -3024,7 +3024,12 @@ export const routes: Routes = [
       { path: 'manual-commit-needs-offset-plus-one', loadComponent: () => import('./components/data/messaging/kafka-producers-consumers/subtopics/manual-commit-needs-offset-plus-one/manual-commit-needs-offset-plus-one').then(m => m.ManualCommitNeedsOffsetPlusOneSubtopic) },
       { path: 'eachbatch-autocommit-false-and-auto-resolve', loadComponent: () => import('./components/data/messaging/kafka-producers-consumers/subtopics/eachbatch-autocommit-false-and-auto-resolve/eachbatch-autocommit-false-and-auto-resolve').then(m => m.EachbatchAutocommitFalseAndAutoResolveSubtopic) },
     ] },
-    { path: 'kafka-streams',             loadComponent: () => import('./components/data/messaging/kafka-streams/kafka-streams').then(m => m.KafkaStreams) },
+    { path: 'kafka-streams', children: [
+      { path: '', loadComponent: () => import('./components/data/messaging/kafka-streams/kafka-streams').then(m => m.KafkaStreams) },
+      { path: 'windows-emit-updates-not-only-final-results', loadComponent: () => import('./components/data/messaging/kafka-streams/subtopics/windows-emit-updates-not-only-final-results/windows-emit-updates-not-only-final-results').then(m => m.WindowsEmitUpdatesNotOnlyFinalResultsSubtopic) },
+      { path: 'no-default-grace-period-late-records-dropped', loadComponent: () => import('./components/data/messaging/kafka-streams/subtopics/no-default-grace-period-late-records-dropped/no-default-grace-period-late-records-dropped').then(m => m.NoDefaultGracePeriodLateRecordsDroppedSubtopic) },
+      { path: 'windowing-by-event-time-not-wall-clock', loadComponent: () => import('./components/data/messaging/kafka-streams/subtopics/windowing-by-event-time-not-wall-clock/windowing-by-event-time-not-wall-clock').then(m => m.WindowingByEventTimeNotWallClockSubtopic) },
+    ] },
     { path: 'kafka-connect',             loadComponent: () => import('./components/data/messaging/kafka-connect/kafka-connect').then(m => m.KafkaConnect) },
     { path: 'schema-registry',           loadComponent: () => import('./components/data/messaging/schema-registry/schema-registry').then(m => m.SchemaRegistry) },
     { path: 'messaging-patterns',        loadComponent: () => import('./components/data/messaging/messaging-patterns/messaging-patterns').then(m => m.MessagingPatterns) },

@@ -156,7 +156,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/messaging/kafka-streams" routerLinkActive="active"><span class="nl-text">Kafka Streams &amp; KSQL</span>@if(p.isDone('kafka-kafka-streams')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/messaging/kafka-streams" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Kafka Streams &amp; KSQL</span>
+        @if(p.isDone('kafka-kafka-streams')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('kafka-streams')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('kafka-streams')"
+                  (click)="toggleSubtopics('kafka-streams', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('kafka-streams'); as kafkaStreamsSubs) {
+        @if (isSubtopicsExpanded('kafka-streams')) {
+          <div class="nav-subtopics">
+            @for (s of kafkaStreamsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/messaging/kafka-connect" routerLinkActive="active"><span class="nl-text">Kafka Connect</span>@if(p.isDone('kafka-kafka-connect')){<span class="nl-done">✓</span>}</a>
       <a routerLink="/messaging/schema-registry" routerLinkActive="active"><span class="nl-text">Schema Registry</span>@if(p.isDone('kafka-schema-registry')){<span class="nl-done">✓</span>}</a>
     </div>

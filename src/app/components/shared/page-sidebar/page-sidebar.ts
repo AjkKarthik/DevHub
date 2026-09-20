@@ -31671,6 +31671,43 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'For per-message control set eachBatchAutoResolve false and commit each processed offset plus one.',
     ],
   },
+  'messaging/kafka-streams/windows-emit-updates-not-only-final-results': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Kafka Streams & KSQL', route: '/messaging/kafka-streams' },
+      { label: 'There Is No Default Grace Period, and Late Records Are Dropped from Closed Windows', route: '/messaging/kafka-streams/no-default-grace-period-late-records-dropped' },
+    ],
+    tip: 'By default a windowed aggregation emits an updated result for every record. Add suppress(untilWindowCloses) for one final result, which is emitted only once stream time passes window end plus grace.',
+    gotchas: [
+      'Suppression waits for stream time, which advances with newer records; a quiet partition can leave the last window unemitted.',
+      'Alerts or writes triggered from an unsuppressed windowed stream fire once per update.',
+    ],
+  },
+  'messaging/kafka-streams/no-default-grace-period-late-records-dropped': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Kafka Streams & KSQL', route: '/messaging/kafka-streams' },
+      { label: 'Windowed Aggregations Emit Every Update, Not Only the Final Result', route: '/messaging/kafka-streams/windows-emit-updates-not-only-final-results' },
+      { label: 'Window by Event Time, Not by the Wall Clock of Your Consumer', route: '/messaging/kafka-streams/windowing-by-event-time-not-wall-clock' },
+    ],
+    tip: 'Choose the grace period explicitly: ofSizeWithNoGrace for zero, ofSizeAndGrace for a value. The old 24-hour default was deprecated by KIP-633, and records after window end plus grace are dropped from that window.',
+    gotchas: [
+      'A longer grace period keeps windows open for stragglers but delays every final result.',
+      'Size grace from how late your data really arrives, not from a guess.',
+    ],
+  },
+  'messaging/kafka-streams/windowing-by-event-time-not-wall-clock': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Kafka Streams & KSQL', route: '/messaging/kafka-streams' },
+      { label: 'There Is No Default Grace Period, and Late Records Are Dropped from Closed Windows', route: '/messaging/kafka-streams/no-default-grace-period-late-records-dropped' },
+    ],
+    tip: 'Bucket by the message timestamp (event time), not Date.now() (processing time): after downtime or a replay, wall-clock bucketing puts every old record in the window of the moment it was processed.',
+    gotchas: [
+      'message.timestamp is CreateTime or LogAppendTime depending on the topic message.timestamp.type.',
+      'Fixed buckets are tumbling windows, not rolling ones, and a plain Map loses its state on restart.',
+    ],
+  },
   'messaging/kafka-streams': {
     apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
     related: [

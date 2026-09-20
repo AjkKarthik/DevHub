@@ -39,7 +39,7 @@ export class KafkaStreams {
         'KStream models an unbounded sequence of events. Every record is meaningful in isolation (clicks, logins, purchases).',
         'KTable models the latest state per key. Duplicate keys update (upsert) rather than append — think of it as a materialised view.',
         'Joining KStream with KTable: stream records are enriched with the latest table value for their key.',
-        'KTable is backed by a compacted changelog topic; only the latest value per key is retained.',
+        'KTable is backed by a compacted changelog topic; compaction keeps at least the latest value per key.',
       ]
     },
     {
@@ -48,7 +48,8 @@ export class KafkaStreams {
         'Tumbling windows: fixed, non-overlapping time windows (e.g., 1-minute buckets). No overlap.',
         'Hopping windows: fixed-size windows that advance by a smaller step (e.g., 5-min window, 1-min advance). Records may appear in multiple windows.',
         'Session windows: gap-based grouping — records within inactivity-gap of each other form a session.',
-        'Results are emitted as windows close. Late records can update already-emitted windows within a grace period.',
+        'By default every update to a window is emitted downstream as it happens, so a result is refined many times until the window closes (record caching can merge some of these). Add suppress(untilWindowCloses) to get one final result per window.',
+        'Late records can still update a window within its grace period; records arriving after the grace period has elapsed are dropped from that window.',
       ]
     },
     {
@@ -135,6 +136,8 @@ views
   .windowedBy(TimeWindows.ofSizeWithNoGrace(Duration.ofMinutes(1)))
   .count()
   .toStream()
+  // Emits an updated count for every record in the window, not once when it closes.
+  // Add .suppress(Suppressed.untilWindowCloses(...)) before toStream() for final results only.
   .foreach((windowedKey, count) -> {
     System.out.println(
       windowedKey.key() + " views: " + count +
@@ -210,11 +213,11 @@ WITH (kafka_topic='user-profiles', value_format='JSON', key_format='KAFKA');`,
     },
     {
       title: 'Ignoring late data in windowed aggregations',
-      wrong: `// Window closes, but late records arrive 2 minutes later
-// Default grace=0 — late records dropped silently`,
-      right: `// Java Kafka Streams: add grace period
+      wrong: `// Zero grace: the window closes at its end, and a record arriving 2 minutes late is dropped from it
+TimeWindows.ofSizeWithNoGrace(Duration.ofMinutes(1))`,
+      right: `// Java Kafka Streams: choose a grace period that matches how late your data really is
 TimeWindows.ofSizeAndGrace(Duration.ofMinutes(1), Duration.ofMinutes(2))`,
-      explanation: 'Streaming data arrives out of order. Configure a grace period to allow late records to update already-closed windows, at the cost of delayed finalization.'
+      explanation: 'Streaming data arrives out of order. A record arriving after window end plus grace is dropped from that window, so set a grace period that allows late records to update it, at the cost of delayed finalization. There is no implicit default: Kafka 3.0 deprecated the old 24-hour default and made you choose between ofSizeWithNoGrace and ofSizeAndGrace.'
     },
     {
       title: 'Blocking eachMessage with heavy stateful aggregation',
@@ -241,10 +244,10 @@ TimeWindows.ofSizeAndGrace(Duration.ofMinutes(1), Duration.ofMinutes(2))`,
   readonly challenge: Challenge = {
     title: 'Rolling 5-Minute Revenue Counter',
     language: 'typescript',
-    description: 'Build a kafkajs consumer that reads "orders" topic messages (each has userId and total). Maintain a rolling 5-minute window count of total revenue per userId. Every 30 seconds, log the current window totals and prune expired windows.',
+    description: 'Build a kafkajs consumer that reads "orders" topic messages (each has userId and total). Maintain the total revenue per userId in 5-minute tumbling windows, assigning each message to a window by the timestamp on the message (event time), not by the wall-clock time at which your code runs. Every 30 seconds, log the current window totals and prune expired windows.',
     hints: [
       'Use a Map<string, {total, windowStart}> keyed by userId+windowBucket',
-      'windowBucket = Math.floor(Date.now() / 300000)',
+      'windowBucket = Math.floor(Number(message.timestamp) / 300000)',
       'Prune entries where windowStart < Date.now() - 300000',
     ],
     starterCode: `import { Kafka } from 'kafkajs';
@@ -259,11 +262,12 @@ async function startCounter() {
 }`,
     solution: `import { Kafka } from 'kafkajs';
 
+// Demo only: this in-memory state is lost on restart. Use a Kafka Streams state store in production.
 const windows = new Map<string, { total: number; windowStart: number }>();
 const WINDOW_MS = 5 * 60 * 1000;
 
-function getWindowKey(userId: string): string {
-  const bucket = Math.floor(Date.now() / WINDOW_MS);
+function getWindowKey(userId: string, ts: number): string {
+  const bucket = Math.floor(ts / WINDOW_MS);   // event time, from the message timestamp
   return \`\${userId}:\${bucket}\`;
 }
 
@@ -292,10 +296,11 @@ async function startCounter() {
   await consumer.run({
     eachMessage: async ({ message }) => {
       const { userId, total } = JSON.parse(message.value!.toString());
-      const key = getWindowKey(userId);
+      const ts  = Number(message.timestamp);
+      const key = getWindowKey(userId, ts);
       const w   = windows.get(key) ?? {
         total: 0,
-        windowStart: Math.floor(Date.now() / WINDOW_MS) * WINDOW_MS,
+        windowStart: Math.floor(ts / WINDOW_MS) * WINDOW_MS,
       };
       w.total += total;
       windows.set(key, w);
@@ -317,7 +322,7 @@ async function startCounter() {
     { q: 'What is the difference between Kafka Streams and ksqlDB?', a: 'Kafka Streams is a Java client library embedded in your application. ksqlDB is a standalone service with a SQL interface. Both compile to the same stream processing topology. Use ksqlDB for rapid prototyping and SQL familiarity; use Kafka Streams for custom logic and language flexibility.' },
     { q: 'How does Kafka Streams handle failures?', a: 'On restart, a Streams application rebuilds local state stores from their changelog topics and resumes from committed offsets. With standby replicas configured, a standby instance keeps a warm copy so failover is near-instant.' },
     { q: 'Can I do stateful processing in Node.js with kafkajs?', a: 'Yes, but kafkajs has no built-in state store. You manage state yourself (in-memory Map, Redis, or a database). For complex stateful processing (windowing, joins), use Kafka Streams (Java/Scala) or ksqlDB rather than implementing it manually.' },
-    { q: 'How does windowed aggregation work in Kafka Streams?', a: 'Kafka Streams supports: <strong>Tumbling windows</strong> (fixed, non-overlapping — count events per 5-minute window), <strong>Hopping windows</strong> (fixed size, overlapping — 5-min window every 1 min), <strong>Session windows</strong> (dynamic, gap-based — group events within inactivity gap). Aggregation results are emitted when the window closes or on late arrival (grace period).' },
+    { q: 'How does windowed aggregation work in Kafka Streams?', a: 'Kafka Streams supports: <strong>Tumbling windows</strong> (fixed, non-overlapping — count events per 5-minute window), <strong>Hopping windows</strong> (fixed size, overlapping — 5-min window every 1 min), <strong>Session windows</strong> (dynamic, gap-based — group events within inactivity gap). By default an updated result is emitted for every record in a window, refined until the window closes; use suppress(untilWindowCloses) for a single final result. Late records update a window while they arrive within its grace period.' },
     { q: 'What is the Kafka Streams processor topology?', a: 'A topology defines the stream processing graph: <strong>Source processors</strong> (read from Kafka topics), <strong>Stream processors</strong> (apply transformations: map, filter, join, aggregate), <strong>Sink processors</strong> (write to Kafka topics). Topologies are compiled to tasks distributed across stream threads. Use the DSL for common patterns; Processor API for custom logic.' },
     { q: 'How do you test Kafka Streams applications?', a: '<strong>TopologyTestDriver</strong>: unit-test a topology without a real Kafka cluster. Create test input records with TestInputTopic, read output with TestOutputTopic. Verify state stores directly. Fast, deterministic — no timing issues. For integration tests, use EmbeddedKafka (Testcontainers with Kafka image) with a real topology running against test topics.' },
   ];
