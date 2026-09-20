@@ -57,7 +57,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
 
     <div class="nav-group">
       <p class="nav-group-label">RabbitMQ</p>
-      <a routerLink="/messaging/rabbitmq-core" routerLinkActive="active"><span class="nl-text">RabbitMQ Core Concepts</span>@if(p.isDone('kafka-rabbitmq-core')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/messaging/rabbitmq-core" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">RabbitMQ Core Concepts</span>
+        @if(p.isDone('kafka-rabbitmq-core')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('rabbitmq-core')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('rabbitmq-core')"
+                  (click)="toggleSubtopics('rabbitmq-core', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('rabbitmq-core'); as rmqCoreSubs) {
+        @if (isSubtopicsExpanded('rabbitmq-core')) {
+          <div class="nav-subtopics">
+            @for (s of rmqCoreSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/messaging/rabbitmq-exchanges" routerLinkActive="active"><span class="nl-text">RabbitMQ Exchanges</span>@if(p.isDone('kafka-rabbitmq-exchanges')){<span class="nl-done">✓</span>}</a>
       <a routerLink="/messaging/rabbitmq-patterns" routerLinkActive="active"><span class="nl-text">RabbitMQ Patterns</span>@if(p.isDone('kafka-rabbitmq-patterns')){<span class="nl-done">✓</span>}</a>
     </div>

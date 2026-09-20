@@ -2994,7 +2994,12 @@ export const routes: Routes = [
       { path: 'rabbitmq-streams-can-replay-too', loadComponent: () => import('./components/data/messaging/message-queues-vs-streams/subtopics/rabbitmq-streams-can-replay-too/rabbitmq-streams-can-replay-too').then(m => m.RabbitmqStreamsCanReplayTooSubtopic) },
       { path: 'at-least-once-queues-need-idempotent-handlers', loadComponent: () => import('./components/data/messaging/message-queues-vs-streams/subtopics/at-least-once-queues-need-idempotent-handlers/at-least-once-queues-need-idempotent-handlers').then(m => m.AtLeastOnceQueuesNeedIdempotentHandlersSubtopic) },
     ] },
-    { path: 'rabbitmq-core',             loadComponent: () => import('./components/data/messaging/rabbitmq-core/rabbitmq-core').then(m => m.RabbitMqCore) },
+    { path: 'rabbitmq-core', children: [
+      { path: '', loadComponent: () => import('./components/data/messaging/rabbitmq-core/rabbitmq-core').then(m => m.RabbitMqCore) },
+      { path: 'retry-threshold-four-attempts', loadComponent: () => import('./components/data/messaging/rabbitmq-core/subtopics/retry-threshold-four-attempts/retry-threshold-four-attempts').then(m => m.RetryThresholdFourAttemptsSubtopic) },
+      { path: 'quorum-queues-replace-mirrored-queues', loadComponent: () => import('./components/data/messaging/rabbitmq-core/subtopics/quorum-queues-replace-mirrored-queues/quorum-queues-replace-mirrored-queues').then(m => m.QuorumQueuesReplaceMirroredQueuesSubtopic) },
+      { path: 'no-prefetch-is-blind-round-robin', loadComponent: () => import('./components/data/messaging/rabbitmq-core/subtopics/no-prefetch-is-blind-round-robin/no-prefetch-is-blind-round-robin').then(m => m.NoPrefetchIsBlindRoundRobinSubtopic) },
+    ] },
     { path: 'rabbitmq-exchanges',        loadComponent: () => import('./components/data/messaging/rabbitmq-exchanges/rabbitmq-exchanges').then(m => m.RabbitMqExchanges) },
     { path: 'rabbitmq-patterns',         loadComponent: () => import('./components/data/messaging/rabbitmq-patterns/rabbitmq-patterns').then(m => m.RabbitMqPatterns) },
     { path: 'kafka-architecture',        loadComponent: () => import('./components/data/messaging/kafka-architecture/kafka-architecture').then(m => m.KafkaArchitecture) },

@@ -4137,4 +4137,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'RabbitMQ Streams Can Replay Too', route: '/messaging/message-queues-vs-streams/rabbitmq-streams-can-replay-too' },
     { label: 'Queues Are At-Least-Once, So Handlers Must Be Idempotent', route: '/messaging/message-queues-vs-streams/at-least-once-queues-need-idempotent-handlers' },
   ],
+  'rabbitmq-core': [
+    { label: 'A Retry Threshold of 3 Means Four Attempts, Not Three', route: '/messaging/rabbitmq-core/retry-threshold-four-attempts' },
+    { label: 'Classic Mirrored Queues Were Removed: Use Quorum Queues', route: '/messaging/rabbitmq-core/quorum-queues-replace-mirrored-queues' },
+    { label: 'Without Prefetch RabbitMQ Deals Messages Round-Robin, Blind to Load', route: '/messaging/rabbitmq-core/no-prefetch-is-blind-round-robin' },
+  ],
 };

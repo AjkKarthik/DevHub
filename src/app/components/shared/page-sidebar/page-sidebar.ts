@@ -31631,6 +31631,44 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Avro/Protobuf with a registry encode a compact schema ID per message rather than the full schema, reducing message size vs. embedding a full JSON Schema.',
     ],
   },
+  'messaging/rabbitmq-core/retry-threshold-four-attempts': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'RabbitMQ Core Concepts', route: '/messaging/rabbitmq-core' },
+      { label: 'Classic Mirrored Queues Were Removed: Use Quorum Queues', route: '/messaging/rabbitmq-core/quorum-queues-replace-mirrored-queues' },
+      { label: 'Without Prefetch RabbitMQ Deals Messages Round-Robin, Blind to Load', route: '/messaging/rabbitmq-core/no-prefetch-is-blind-round-robin' },
+    ],
+    tip: 'Starting the count at 0, a threshold of retryCount >= 3 gives 3 retries and 4 attempts; retryCount > 3 gives 4 retries and 5 attempts. State whether your limit counts retries or attempts.',
+    gotchas: [
+      'Republish-then-ack is two operations: a crash between them duplicates the task.',
+      'On a confirm channel, ack the original only inside the publish confirm callback.',
+    ],
+  },
+  'messaging/rabbitmq-core/quorum-queues-replace-mirrored-queues': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'RabbitMQ Core Concepts', route: '/messaging/rabbitmq-core' },
+      { label: 'A Retry Threshold of 3 Means Four Attempts, Not Three', route: '/messaging/rabbitmq-core/retry-threshold-four-attempts' },
+      { label: 'Without Prefetch RabbitMQ Deals Messages Round-Robin, Blind to Load', route: '/messaging/rabbitmq-core/no-prefetch-is-blind-round-robin' },
+    ],
+    tip: 'Classic queue mirroring was removed in RabbitMQ 4.0. Quorum queues and streams are the replicated queue types; quorum queues persist messages regardless of delivery mode.',
+    gotchas: [
+      'x-delivery-limit counts redeliveries (default 20 since 4.0, -1 disables it); the message is then dead-lettered if a DLX exists, otherwise dropped.',
+      'The broker adds an x-delivery-count header to redelivered quorum queue messages.',
+    ],
+  },
+  'messaging/rabbitmq-core/no-prefetch-is-blind-round-robin': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'RabbitMQ Core Concepts', route: '/messaging/rabbitmq-core' },
+      { label: 'Classic Mirrored Queues Were Removed: Use Quorum Queues', route: '/messaging/rabbitmq-core/quorum-queues-replace-mirrored-queues' },
+    ],
+    tip: 'Without prefetch RabbitMQ sends messages round-robin by count and ignores how many unacked messages a consumer holds. prefetch(1) gives fair dispatch to whichever worker is free.',
+    gotchas: [
+      'A single connected consumer receives the whole backlog; that is the only case where one consumer gets everything.',
+      'prefetch(1) trades a round trip of idle time per message for fairness; fast uniform tasks usually want a higher value.',
+    ],
+  },
   'messaging/rabbitmq-core': {
     apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
     related: [

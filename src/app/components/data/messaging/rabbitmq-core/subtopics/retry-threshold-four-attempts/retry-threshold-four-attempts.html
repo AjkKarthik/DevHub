@@ -1,0 +1,26 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="RabbitMQ Core Concepts" topicRoute="/messaging/rabbitmq-core"
+    subtopicLabel="A Retry Threshold of 3 Means Four Attempts, Not Three" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">A Retry Threshold of 3 Means Four Attempts, Not Three</h1>
+  <p class="page-subtitle">The Challenge text said to dead-letter when the retry count is greater than 3, but its solution uses greater-or-equal. That is one whole attempt of difference, plus a republish-then-ack window worth understanding.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="RabbitMQ 3+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This clarifies the Durable Work Queue Challenge. The next subtopic covers RabbitMQ&rsquo;s built-in alternative to hand-counted retries, the quorum queue delivery limit.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="RabbitMQ Core Concepts" topicRoute="/messaging/rabbitmq-core"
+    [next]="{ label: 'Classic Mirrored Queues Were Removed: Use Quorum Queues', route: '/messaging/rabbitmq-core/quorum-queues-replace-mirrored-queues' }" />
+</div>
