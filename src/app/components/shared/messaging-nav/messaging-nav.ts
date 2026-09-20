@@ -118,7 +118,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
 
     <div class="nav-group">
       <p class="nav-group-label">Apache Kafka</p>
-      <a routerLink="/messaging/kafka-architecture" routerLinkActive="active"><span class="nl-text">Kafka Architecture</span>@if(p.isDone('kafka-kafka-architecture')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/messaging/kafka-architecture" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Kafka Architecture</span>
+        @if(p.isDone('kafka-kafka-architecture')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('kafka-architecture')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('kafka-architecture')"
+                  (click)="toggleSubtopics('kafka-architecture', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('kafka-architecture'); as kafkaArchSubs) {
+        @if (isSubtopicsExpanded('kafka-architecture')) {
+          <div class="nav-subtopics">
+            @for (s of kafkaArchSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/messaging/kafka-producers-consumers" routerLinkActive="active"><span class="nl-text">Producers &amp; Consumers</span>@if(p.isDone('kafka-kafka-producers-consumers')){<span class="nl-done">✓</span>}</a>
       <a routerLink="/messaging/kafka-streams" routerLinkActive="active"><span class="nl-text">Kafka Streams &amp; KSQL</span>@if(p.isDone('kafka-kafka-streams')){<span class="nl-done">✓</span>}</a>
       <a routerLink="/messaging/kafka-connect" routerLinkActive="active"><span class="nl-text">Kafka Connect</span>@if(p.isDone('kafka-kafka-connect')){<span class="nl-done">✓</span>}</a>

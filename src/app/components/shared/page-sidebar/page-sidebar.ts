@@ -31573,6 +31573,43 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Choose based on whether the use case needs a transient work-distribution buffer or a durable, replayable event log.',
     ],
   },
+  'messaging/kafka-architecture/acks-all-needs-min-insync-replicas': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Kafka Architecture', route: '/messaging/kafka-architecture' },
+      { label: 'Adding Partitions Later Changes Where a Key Lands', route: '/messaging/kafka-architecture/adding-partitions-remaps-keys' },
+    ],
+    tip: 'acks=all waits only for the current ISR, which can shrink to the leader alone. With RF=3 also set min.insync.replicas=2 so the broker rejects writes it cannot replicate.',
+    gotchas: [
+      'min.insync.replicas defaults to 1, which lets acks=all acknowledge a leader-only write.',
+      'NotEnoughReplicas is retriable: producers keep retrying while fewer than min.insync.replicas replicas are in sync.',
+    ],
+  },
+  'messaging/kafka-architecture/adding-partitions-remaps-keys': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Kafka Architecture', route: '/messaging/kafka-architecture' },
+      { label: 'acks=all Is Only as Safe as min.insync.replicas', route: '/messaging/kafka-architecture/acks-all-needs-min-insync-replicas' },
+      { label: 'Log Compaction Keeps At Least the Latest Value, Not Only the Latest', route: '/messaging/kafka-architecture/compaction-keeps-at-least-the-latest' },
+    ],
+    tip: 'Adding partitions does not move existing records, and for keyed topics it changes hash(key) modulo the count, so per-key ordering can break across the change. Kafka cannot reduce partitions.',
+    gotchas: [
+      'For keyed topics where order matters, plan partition headroom up front or migrate to a new topic.',
+      'Existing data stays on the old partitions, so load can stay skewed after the increase.',
+    ],
+  },
+  'messaging/kafka-architecture/compaction-keeps-at-least-the-latest': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Kafka Architecture', route: '/messaging/kafka-architecture' },
+      { label: 'Adding Partitions Later Changes Where a Key Lands', route: '/messaging/kafka-architecture/adding-partitions-remaps-keys' },
+    ],
+    tip: 'Compaction guarantees at least the last value per key, never only one record: the active segment is not compacted and the cleaner runs asynchronously. Live consumers still see every write.',
+    gotchas: [
+      'A null-value tombstone deletes a key and is kept for delete.retention.ms (24 hours by default) before it is purged.',
+      'Do not assume exactly one record per key in a compacted topic; keep the last value you have seen for each key.',
+    ],
+  },
   'messaging/kafka-architecture': {
     apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
     related: [
@@ -31581,7 +31618,7 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
     tip: 'Kafka writes sequentially (append-only log) rather than performing random-access writes — combined with page cache and zero-copy transfer, this is why it achieves throughput closer to sequential disk I/O than typical random-access databases.',
     gotchas: [
-      'Log compaction (retain only the latest value per key) is different from standard time/size-based retention — pick the strategy matching the topic\'s actual use case, or silently lose needed data.',
+      'Log compaction (keep at least the latest value per key) is different from standard time/size-based retention — pick the strategy matching the topic\'s actual use case, or silently lose needed data.',
       'Partitioning distributes load across brokers — throughput scales roughly linearly with partition count up to cluster limits.',
     ],
   },

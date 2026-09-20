@@ -4152,4 +4152,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Per-Message TTL Delays Can Be Held Back at the Head of the Queue', route: '/messaging/rabbitmq-patterns/per-message-ttl-head-of-line-blocking' },
     { label: 'Direct Reply-To Lets RPC Skip Declaring a Reply Queue', route: '/messaging/rabbitmq-patterns/direct-reply-to-for-rpc' },
   ],
+  'kafka-architecture': [
+    { label: 'acks=all Is Only as Safe as min.insync.replicas', route: '/messaging/kafka-architecture/acks-all-needs-min-insync-replicas' },
+    { label: 'Adding Partitions Later Changes Where a Key Lands', route: '/messaging/kafka-architecture/adding-partitions-remaps-keys' },
+    { label: 'Log Compaction Keeps At Least the Latest Value, Not Only the Latest', route: '/messaging/kafka-architecture/compaction-keeps-at-least-the-latest' },
+  ],
 };

@@ -1,0 +1,26 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Kafka Architecture" topicRoute="/messaging/kafka-architecture"
+    subtopicLabel="Log Compaction Keeps At Least the Latest Value, Not Only the Latest" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">Log Compaction Keeps At Least the Latest Value, Not Only the Latest</h1>
+  <p class="page-subtitle">The page said compaction retains only the latest value per key. The real guarantee is at least the latest, the active segment is never compacted, and tombstones live on for a while.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Kafka 3+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the compaction bullet and the log compaction answer on the Architecture page, and matches the wording already used for compaction on the Queues vs Event Streams page.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Kafka Architecture" topicRoute="/messaging/kafka-architecture"
+    [prev]="{ label: 'Adding Partitions Later Changes Where a Key Lands', route: '/messaging/kafka-architecture/adding-partitions-remaps-keys' }" />
+</div>

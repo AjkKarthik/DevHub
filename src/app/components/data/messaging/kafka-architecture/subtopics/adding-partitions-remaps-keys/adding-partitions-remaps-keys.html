@@ -1,0 +1,27 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Kafka Architecture" topicRoute="/messaging/kafka-architecture"
+    subtopicLabel="Adding Partitions Later Changes Where a Key Lands" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">Adding Partitions Later Changes Where a Key Lands</h1>
+  <p class="page-subtitle">The page said to start small and add partitions when needed. For keyed topics that reshuffles hash(key) modulo the count, and the count can never be reduced.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Kafka 3+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This adds the missing half to the first mistake block and the partition-count answer on the Architecture page. Next: what log compaction really guarantees.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Kafka Architecture" topicRoute="/messaging/kafka-architecture"
+    [prev]="{ label: 'acks=all Is Only as Safe as min.insync.replicas', route: '/messaging/kafka-architecture/acks-all-needs-min-insync-replicas' }"
+    [next]="{ label: 'Log Compaction Keeps At Least the Latest Value, Not Only the Latest', route: '/messaging/kafka-architecture/compaction-keeps-at-least-the-latest' }" />
+</div>

@@ -3012,7 +3012,12 @@ export const routes: Routes = [
       { path: 'per-message-ttl-head-of-line-blocking', loadComponent: () => import('./components/data/messaging/rabbitmq-patterns/subtopics/per-message-ttl-head-of-line-blocking/per-message-ttl-head-of-line-blocking').then(m => m.PerMessageTtlHeadOfLineBlockingSubtopic) },
       { path: 'direct-reply-to-for-rpc', loadComponent: () => import('./components/data/messaging/rabbitmq-patterns/subtopics/direct-reply-to-for-rpc/direct-reply-to-for-rpc').then(m => m.DirectReplyToForRpcSubtopic) },
     ] },
-    { path: 'kafka-architecture',        loadComponent: () => import('./components/data/messaging/kafka-architecture/kafka-architecture').then(m => m.KafkaArchitecture) },
+    { path: 'kafka-architecture', children: [
+      { path: '', loadComponent: () => import('./components/data/messaging/kafka-architecture/kafka-architecture').then(m => m.KafkaArchitecture) },
+      { path: 'acks-all-needs-min-insync-replicas', loadComponent: () => import('./components/data/messaging/kafka-architecture/subtopics/acks-all-needs-min-insync-replicas/acks-all-needs-min-insync-replicas').then(m => m.AcksAllNeedsMinInsyncReplicasSubtopic) },
+      { path: 'adding-partitions-remaps-keys', loadComponent: () => import('./components/data/messaging/kafka-architecture/subtopics/adding-partitions-remaps-keys/adding-partitions-remaps-keys').then(m => m.AddingPartitionsRemapsKeysSubtopic) },
+      { path: 'compaction-keeps-at-least-the-latest', loadComponent: () => import('./components/data/messaging/kafka-architecture/subtopics/compaction-keeps-at-least-the-latest/compaction-keeps-at-least-the-latest').then(m => m.CompactionKeepsAtLeastTheLatestSubtopic) },
+    ] },
     { path: 'kafka-producers-consumers', loadComponent: () => import('./components/data/messaging/kafka-producers-consumers/kafka-producers-consumers').then(m => m.KafkaProducersConsumers) },
     { path: 'kafka-streams',             loadComponent: () => import('./components/data/messaging/kafka-streams/kafka-streams').then(m => m.KafkaStreams) },
     { path: 'kafka-connect',             loadComponent: () => import('./components/data/messaging/kafka-connect/kafka-connect').then(m => m.KafkaConnect) },
