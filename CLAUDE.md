@@ -10251,6 +10251,22 @@ Confirmed via direct file inspection before the pilot (`/messaging/messaging-fun
    (claim-check-limits-and-byte-length, scatter-gather-example-needs-a-timeout,
    aggregator-loses-partial-orders), each backed by a Node model. Bare `messaging-patterns` SUBTOPICS key
    collision-free. Build clean; browser-verified. **Messaging hub Phase 10: 11 of 20 topics complete.**
+15. **The `saga-pattern` batch found and fixed SEVEN main-page issues, verified against the Azure
+   Architecture Center saga page, Temporal saga docs, the kafkajs partitioner and a Node model for each
+   behaviour**: (a) the orchestration codeTab sent both `REFUND_PAYMENT` and `CANCEL_ORDER` on any failure
+   without recording which steps had committed -- now a persisted `completed` list walked in reverse via a
+   `COMPENSATIONS` map; (b) the "not idempotent" mistake block used a check-then-act cancel that double-credits
+   stock on crash-and-replay or two concurrent deliveries -- now a guarded update plus the credit in one local
+   transaction; (c) the pivot was described only as a "point of no return" -- now the Azure taxonomy
+   (compensable before, pivot as go/no-go, retryable and idempotent after), in the quick reference, theory, quiz
+   Q3 and revision bullet; (d) the choreography `publish` had no key -- now keyed by `orderId` so one saga's
+   events stay in order on one partition; (e) the Challenge solution was non-deterministic and carried a
+   misleading commented `inventory.failed` -- now deterministic (`orderId !== 'ORD-002'`, a second
+   `startSaga`); (f) duplicated theory bullets merged; (g) the Temporal QnA claimed it writes compensations for
+   you -- it does not, you register them and run them in reverse. 3 subtopics
+   (compensate-only-completed-steps, idempotent-compensation-atomic-guard, pivot-is-the-go-no-go-point), each
+   backed by a Node model. Bare `saga-pattern` SUBTOPICS key collision-free. Build clean; browser-verified.
+   **Messaging hub Phase 10: 12 of 20 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -10627,12 +10643,12 @@ Confirmed via direct file inspection before the pilot (`/messaging/messaging-fun
   All 22 cards `available: true` in `data/messaging/home/home.ts`. Progress: `kafkaTotal=20` in progress.service.ts.
   Messaging pages use `app-common-mistakes` AND `app-revision-card`. Reference pages (monitoring, messaging-security) have no PageComplete.
   Challenge.language: `'typescript'`. MessagingNavComponent at `shared/messaging-nav/messaging-nav.ts`.
-  Phase 10: **11 of 20 topics have subtopics** (`/messaging/messaging-fundamentals`, pilot batch,
+  Phase 10: **12 of 20 topics have subtopics** (`/messaging/messaging-fundamentals`, pilot batch,
   2026-09-20; `/messaging/message-queues-vs-streams`, 2026-09-20; `/messaging/rabbitmq-core`,
   2026-09-20; `/messaging/rabbitmq-exchanges`, 2026-09-20; `/messaging/rabbitmq-patterns`,
   2026-09-20; `/messaging/kafka-architecture`, 2026-09-20; `/messaging/kafka-producers-consumers`,
   2026-09-20; `/messaging/kafka-streams`, 2026-09-20; `/messaging/kafka-connect`, 2026-09-20;
-  `/messaging/schema-registry`, 2026-09-20; `/messaging/messaging-patterns`, 2026-09-20) — see "Messaging/Kafka hub subtopic wiring" section above for the
+  `/messaging/schema-registry`, 2026-09-20; `/messaging/messaging-patterns`, 2026-09-20; `/messaging/saga-pattern`, 2026-09-20) — see "Messaging/Kafka hub subtopic wiring" section above for the
   `MessagingNavComponent` accordion structural fix (18th `*NavComponent` hub in a row) and the
   three genuine main-page inaccuracies found and fixed (DLX-less nack "sends to DLQ", RabbitMQ
   wrongly listed as pull-based, unscoped SQS FIFO exactly-once claim).

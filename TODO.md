@@ -9919,7 +9919,12 @@ off here with a date.
   the Aggregator challenge deleted the order before the send succeeded, ran overlapping flush passes, and
   is documented as demo-only (auto-commit plus in-memory state loses partial orders on a crash). Bare
   `messaging-patterns` SUBTOPICS key collision-free. Messaging hub Phase 10: 11 of 20.
-- [ ] `/messaging/saga-pattern` — Saga Pattern
+- [x] 2026-09-20 `/messaging/saga-pattern` — Saga Pattern. 3 subtopics
+  (compensate-only-completed-steps, idempotent-compensation-atomic-guard, pivot-is-the-go-no-go-point).
+  Main-page fixes: orchestrator now compensates only completed steps in reverse; idempotent compensation uses
+  one guarded local transaction; pivot/compensable/retryable taxonomy; choreography events keyed by orderId;
+  deterministic Challenge solution; Temporal QnA corrected (it does not write compensations for you). Bare
+  `saga-pattern` SUBTOPICS key collision-free. Messaging hub Phase 10: 12 of 20.
 - [ ] `/messaging/outbox-pattern` — Outbox Pattern
 - [ ] `/messaging/azure-service-bus` — Azure Service Bus
 - [ ] `/messaging/azure-event-grid` — Event Grid & Event Hubs
