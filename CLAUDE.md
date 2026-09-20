@@ -10168,6 +10168,24 @@ Confirmed via direct file inspection before the pilot (`/messaging/messaging-fun
    key collision-free (bare `architecture` belongs to another hub, so no clash); search key
    `kafka-kafka-architecture/<slug>` resolves correctly via the `kafka-` prefix strip. Build clean;
    browser-verified. **Messaging hub Phase 10: 6 of 20 topics complete.**
+10. **The `kafka-producers-consumers` batch found and fixed FIVE main-page issues, verified against
+   the kafkajs docs and the kafkajs `runner.js` source (fetched directly)**: (a) `linger.ms` and
+   `batch.size` were taught beside kafkajs code with a comment "Batch tuning (via underlying config)" --
+   kafkajs exposes neither (they are Java-client / librdkafka settings; batching is many messages per
+   `send`); the `maxInFlightRequests: 5 // required with idempotent` comment has no basis in the docs
+   (idempotent needs acks -1); (b) mistake #4 said `autoCommit` commits before the handler finishes and its
+   fix destructured a `commitOffsets` that is not in the `eachMessage` payload and never committed
+   anything -- kafkajs commits after the handler, a throwing handler is not committed, manual commits use
+   `consumer.commitOffsets` with offset + 1 (BigInt); (c) the `eachBatch` codeTab and quiz Q2 claimed
+   `resolveOffset` commits with `autoCommit: false` -- per `runner.js` it only tracks progress, and
+   `eachBatchAutoResolve` (default true) resolves the batch's last offset when the handler returns, so an
+   early `break` skips messages; (d) the acks=all bullet and quiz Q5 repeat the min.insync.replicas caveat
+   already verified on the Architecture page. 3 subtopics (kafkajs-has-no-linger-or-batch-size,
+   manual-commit-needs-offset-plus-one, eachbatch-autocommit-false-and-auto-resolve), each backed by a Node
+   model. Bare `kafka-producers-consumers` SUBTOPICS key collision-free. **Lesson: a node -e patch in a
+   bash double-quoted string dropped the backslash from `\'` in two strings; the Edit tool is safer for
+   text with apostrophes.** Build clean; browser-verified. **Messaging hub Phase 10: 7 of 20 topics
+   complete.**
 
 ## Current state (update when it changes!)
 
@@ -10544,10 +10562,11 @@ Confirmed via direct file inspection before the pilot (`/messaging/messaging-fun
   All 22 cards `available: true` in `data/messaging/home/home.ts`. Progress: `kafkaTotal=20` in progress.service.ts.
   Messaging pages use `app-common-mistakes` AND `app-revision-card`. Reference pages (monitoring, messaging-security) have no PageComplete.
   Challenge.language: `'typescript'`. MessagingNavComponent at `shared/messaging-nav/messaging-nav.ts`.
-  Phase 10: **6 of 20 topics have subtopics** (`/messaging/messaging-fundamentals`, pilot batch,
+  Phase 10: **7 of 20 topics have subtopics** (`/messaging/messaging-fundamentals`, pilot batch,
   2026-09-20; `/messaging/message-queues-vs-streams`, 2026-09-20; `/messaging/rabbitmq-core`,
   2026-09-20; `/messaging/rabbitmq-exchanges`, 2026-09-20; `/messaging/rabbitmq-patterns`,
-  2026-09-20; `/messaging/kafka-architecture`, 2026-09-20) — see "Messaging/Kafka hub subtopic wiring" section above for the
+  2026-09-20; `/messaging/kafka-architecture`, 2026-09-20; `/messaging/kafka-producers-consumers`,
+  2026-09-20) — see "Messaging/Kafka hub subtopic wiring" section above for the
   `MessagingNavComponent` accordion structural fix (18th `*NavComponent` hub in a row) and the
   three genuine main-page inaccuracies found and fixed (DLX-less nack "sends to DLQ", RabbitMQ
   wrongly listed as pull-based, unscoped SQS FIFO exactly-once claim).

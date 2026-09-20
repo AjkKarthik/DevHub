@@ -9882,7 +9882,13 @@ off here with a date.
   reshuffles key mapping and cannot be undone, compaction guarantees at least the latest value (active
   segment, tombstones), KRaft 3.3 production-ready vs ZooKeeper removed in 4.0. Bare `kafka-architecture`
   SUBTOPICS key collision-free. Messaging hub Phase 10: 6 of 20.
-- [ ] `/messaging/kafka-producers-consumers` — Producers & Consumers
+- [x] 2026-09-20 `/messaging/kafka-producers-consumers` — Producers & Consumers. 3 subtopics
+  (kafkajs-has-no-linger-or-batch-size, manual-commit-needs-offset-plus-one,
+  eachbatch-autocommit-false-and-auto-resolve). Main-page fixes verified against kafkajs docs and
+  runner.js source: no linger.ms/batch.size in kafkajs, autoCommit commits after the handler (manual
+  commit = commitOffsets with offset+1), eachBatch resolveOffset only tracks progress and
+  eachBatchAutoResolve resolves the whole batch, acks=all needs min.insync.replicas. Bare
+  `kafka-producers-consumers` SUBTOPICS key collision-free. Messaging hub Phase 10: 7 of 20.
 - [ ] `/messaging/kafka-streams` — Kafka Streams & KSQL
 - [ ] `/messaging/kafka-connect` — Kafka Connect
 - [ ] `/messaging/schema-registry` — Schema Registry
