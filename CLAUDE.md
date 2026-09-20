@@ -10136,6 +10136,22 @@ Confirmed via direct file inspection before the pilot (`/messaging/messaging-fun
    mandatory-and-alternate-exchange), each backed by a Node model. Bare `rabbitmq-exchanges`
    SUBTOPICS key collision-free. Build clean; browser-verified. **Messaging hub Phase 10: 4 of 20
    topics complete.**
+8. **The `rabbitmq-patterns` batch found and fixed FIVE main-page issues, verified against the
+   RabbitMQ TTL, queues, direct reply-to docs and the delayed-message plugin README**: (a) the Delayed
+   Queue codeTab declared one fixed queue name with `x-message-ttl: delayMs` on every call, so a second
+   call with a different delay is a 406 `PRECONDITION_FAILED` (queue arguments must match on
+   redeclaration) -- fixed by naming the holding queue after its delay; (b) the plugin-vs-TTL QnA and
+   revision bullet said TTL+DLX is "queue-wide" and per-message delays need the plugin -- per-message
+   `expiration` exists but on classic queues an expired message is only dead-lettered at the head of the
+   queue (head-of-line blocking), and the plugin has its own limits (single-node Mnesia, ~49 days max,
+   not for huge volumes); (c) mistake #1 repeated the "first consumer gets everything / starving others"
+   prefetch claim already corrected on the Core page (it is round-robin by count); (d) the work-queue
+   QnA said "exactly once" -- it is at-least-once with manual acks; (e) the circuit-breaker QnA said
+   "pauses polling" although RabbitMQ consumers are push-based (basic.cancel). Added a theory bullet for
+   direct reply-to. 3 subtopics (delay-ttl-is-a-queue-argument, per-message-ttl-head-of-line-blocking,
+   direct-reply-to-for-rpc), each backed by a Node model. Bare `rabbitmq-patterns` SUBTOPICS key
+   collision-free. Build clean; browser-verified. **Messaging hub Phase 10: 5 of 20 topics complete
+   -- RabbitMQ nav group done.**
 
 ## Current state (update when it changes!)
 
@@ -10512,9 +10528,10 @@ Confirmed via direct file inspection before the pilot (`/messaging/messaging-fun
   All 22 cards `available: true` in `data/messaging/home/home.ts`. Progress: `kafkaTotal=20` in progress.service.ts.
   Messaging pages use `app-common-mistakes` AND `app-revision-card`. Reference pages (monitoring, messaging-security) have no PageComplete.
   Challenge.language: `'typescript'`. MessagingNavComponent at `shared/messaging-nav/messaging-nav.ts`.
-  Phase 10: **4 of 20 topics have subtopics** (`/messaging/messaging-fundamentals`, pilot batch,
+  Phase 10: **5 of 20 topics have subtopics** (`/messaging/messaging-fundamentals`, pilot batch,
   2026-09-20; `/messaging/message-queues-vs-streams`, 2026-09-20; `/messaging/rabbitmq-core`,
-  2026-09-20; `/messaging/rabbitmq-exchanges`, 2026-09-20) — see "Messaging/Kafka hub subtopic wiring" section above for the
+  2026-09-20; `/messaging/rabbitmq-exchanges`, 2026-09-20; `/messaging/rabbitmq-patterns`,
+  2026-09-20) — see "Messaging/Kafka hub subtopic wiring" section above for the
   `MessagingNavComponent` accordion structural fix (18th `*NavComponent` hub in a row) and the
   three genuine main-page inaccuracies found and fixed (DLX-less nack "sends to DLQ", RabbitMQ
   wrongly listed as pull-based, unscoped SQS FIFO exactly-once claim).

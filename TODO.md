@@ -9870,7 +9870,12 @@ off here with a date.
   (not a silent drop) and assertExchange does not catch typos; unroutable messages return only with
   `mandatory`, and alternate-exchange routing counts as routed. Bare `rabbitmq-exchanges` SUBTOPICS key
   collision-free. Messaging hub Phase 10: 4 of 20.
-- [ ] `/messaging/rabbitmq-patterns` — RabbitMQ Patterns
+- [x] 2026-09-20 `/messaging/rabbitmq-patterns` — RabbitMQ Patterns. 3 subtopics
+  (delay-ttl-is-a-queue-argument, per-message-ttl-head-of-line-blocking, direct-reply-to-for-rpc).
+  Main-page fixes: delayed-queue sample redeclared one queue with different TTLs (406), TTL+DLX/plugin
+  wording (per-message expiration + head-of-line blocking, plugin limits), prefetch "first consumer gets
+  all" claim, work queue "exactly once", "pauses polling". Bare `rabbitmq-patterns` SUBTOPICS key
+  collision-free. Messaging hub Phase 10: 5 of 20 (RabbitMQ group done).
 - [ ] `/messaging/kafka-architecture` — Kafka Architecture
 - [ ] `/messaging/kafka-producers-consumers` — Producers & Consumers
 - [ ] `/messaging/kafka-streams` — Kafka Streams & KSQL
