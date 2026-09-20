@@ -1,0 +1,26 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Kafka Producers & Consumers" topicRoute="/messaging/kafka-producers-consumers"
+    subtopicLabel="eachBatch Auto-Resolves the Last Offset, and autoCommit False Commits Nothing" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">eachBatch Auto-Resolves the Last Offset, and autoCommit False Commits Nothing</h1>
+  <p class="page-subtitle">The eachBatch example set autoCommit false and relied on resolveOffset to commit. resolveOffset only tracks progress, and by default the whole batch is resolved when the handler returns.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Kafka 3+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the eachBatch code example and the manual-control quiz answer on the Producers page. It builds on the offset-plus-one rule from the previous subtopic.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Kafka Producers & Consumers" topicRoute="/messaging/kafka-producers-consumers"
+    [prev]="{ label: 'With autoCommit Off You Commit Offset Plus One Yourself', route: '/messaging/kafka-producers-consumers/manual-commit-needs-offset-plus-one' }" />
+</div>

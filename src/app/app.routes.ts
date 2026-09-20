@@ -3018,7 +3018,12 @@ export const routes: Routes = [
       { path: 'adding-partitions-remaps-keys', loadComponent: () => import('./components/data/messaging/kafka-architecture/subtopics/adding-partitions-remaps-keys/adding-partitions-remaps-keys').then(m => m.AddingPartitionsRemapsKeysSubtopic) },
       { path: 'compaction-keeps-at-least-the-latest', loadComponent: () => import('./components/data/messaging/kafka-architecture/subtopics/compaction-keeps-at-least-the-latest/compaction-keeps-at-least-the-latest').then(m => m.CompactionKeepsAtLeastTheLatestSubtopic) },
     ] },
-    { path: 'kafka-producers-consumers', loadComponent: () => import('./components/data/messaging/kafka-producers-consumers/kafka-producers-consumers').then(m => m.KafkaProducersConsumers) },
+    { path: 'kafka-producers-consumers', children: [
+      { path: '', loadComponent: () => import('./components/data/messaging/kafka-producers-consumers/kafka-producers-consumers').then(m => m.KafkaProducersConsumers) },
+      { path: 'kafkajs-has-no-linger-or-batch-size', loadComponent: () => import('./components/data/messaging/kafka-producers-consumers/subtopics/kafkajs-has-no-linger-or-batch-size/kafkajs-has-no-linger-or-batch-size').then(m => m.KafkajsHasNoLingerOrBatchSizeSubtopic) },
+      { path: 'manual-commit-needs-offset-plus-one', loadComponent: () => import('./components/data/messaging/kafka-producers-consumers/subtopics/manual-commit-needs-offset-plus-one/manual-commit-needs-offset-plus-one').then(m => m.ManualCommitNeedsOffsetPlusOneSubtopic) },
+      { path: 'eachbatch-autocommit-false-and-auto-resolve', loadComponent: () => import('./components/data/messaging/kafka-producers-consumers/subtopics/eachbatch-autocommit-false-and-auto-resolve/eachbatch-autocommit-false-and-auto-resolve').then(m => m.EachbatchAutocommitFalseAndAutoResolveSubtopic) },
+    ] },
     { path: 'kafka-streams',             loadComponent: () => import('./components/data/messaging/kafka-streams/kafka-streams').then(m => m.KafkaStreams) },
     { path: 'kafka-connect',             loadComponent: () => import('./components/data/messaging/kafka-connect/kafka-connect').then(m => m.KafkaConnect) },
     { path: 'schema-registry',           loadComponent: () => import('./components/data/messaging/schema-registry/schema-registry').then(m => m.SchemaRegistry) },

@@ -31630,8 +31630,45 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
     tip: 'acks=0 (fire-and-forget), acks=1 (leader only), and acks=all (all in-sync replicas) trade throughput against durability — choose per-topic based on the actual cost of losing a message for that use case.',
     gotchas: [
-      'Auto-commit can commit an offset before a message is fully processed — a crash mid-processing causes silent data loss unless manual commit-after-processing is used.',
+      'A timer-based auto-commit (Java client) can commit an offset before asynchronous processing finishes; kafkajs eachMessage commits after the handler returns.',
       'Committing too frequently adds broker load; committing too infrequently increases reprocessing after a restart.',
+    ],
+  },
+  'messaging/kafka-producers-consumers/kafkajs-has-no-linger-or-batch-size': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Kafka Producers & Consumers', route: '/messaging/kafka-producers-consumers' },
+      { label: 'With autoCommit Off You Commit Offset Plus One Yourself', route: '/messaging/kafka-producers-consumers/manual-commit-needs-offset-plus-one' },
+    ],
+    tip: 'kafkajs exposes neither linger.ms nor batch.size (those are Java-client and librdkafka settings). Batch by putting many messages in one send, or write a small size-or-timer batcher.',
+    gotchas: [
+      'The kafkajs idempotent producer needs acks -1; the docs state no maxInFlightRequests requirement.',
+      'A batcher you write owns retries for a failed flush.',
+    ],
+  },
+  'messaging/kafka-producers-consumers/manual-commit-needs-offset-plus-one': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Kafka Producers & Consumers', route: '/messaging/kafka-producers-consumers' },
+      { label: 'kafkajs Has No linger.ms or batch.size, So Batch Explicitly', route: '/messaging/kafka-producers-consumers/kafkajs-has-no-linger-or-batch-size' },
+      { label: 'eachBatch Auto-Resolves the Last Offset, and autoCommit False Commits Nothing', route: '/messaging/kafka-producers-consumers/eachbatch-autocommit-false-and-auto-resolve' },
+    ],
+    tip: 'With autoCommit off, commit yourself with consumer.commitOffsets and store the message offset plus one. The eachMessage payload has no commitOffsets function.',
+    gotchas: [
+      'With the default autoCommit, kafkajs commits after the handler returns; a handler that throws is not committed.',
+      'Offsets are strings that can exceed safe integers: add one with BigInt.',
+    ],
+  },
+  'messaging/kafka-producers-consumers/eachbatch-autocommit-false-and-auto-resolve': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Kafka Producers & Consumers', route: '/messaging/kafka-producers-consumers' },
+      { label: 'With autoCommit Off You Commit Offset Plus One Yourself', route: '/messaging/kafka-producers-consumers/manual-commit-needs-offset-plus-one' },
+    ],
+    tip: 'In eachBatch, resolveOffset only tracks progress. With autoCommit false nothing is committed for you, and with the default eachBatchAutoResolve the last offset of the batch is resolved when the handler returns.',
+    gotchas: [
+      'Leaving the batch loop early with break returns normally, so unprocessed messages can be resolved and committed.',
+      'For per-message control set eachBatchAutoResolve false and commit each processed offset plus one.',
     ],
   },
   'messaging/kafka-streams': {

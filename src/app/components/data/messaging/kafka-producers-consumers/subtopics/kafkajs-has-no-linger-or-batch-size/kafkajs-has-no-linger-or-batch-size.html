@@ -1,0 +1,26 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Kafka Producers & Consumers" topicRoute="/messaging/kafka-producers-consumers"
+    subtopicLabel="kafkajs Has No linger.ms or batch.size, So Batch Explicitly" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">kafkajs Has No linger.ms or batch.size, So Batch Explicitly</h1>
+  <p class="page-subtitle">The page taught linger.ms and batch.size next to kafkajs code. kafkajs has neither, so batching is something you do by sending arrays or writing a small batcher.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Kafka 3+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the batching bullets, the quick reference entries and the High-throughput Producer example on the Producers page. Next: how manual offset commits work.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Kafka Producers & Consumers" topicRoute="/messaging/kafka-producers-consumers"
+    [next]="{ label: 'With autoCommit Off You Commit Offset Plus One Yourself', route: '/messaging/kafka-producers-consumers/manual-commit-needs-offset-plus-one' }" />
+</div>

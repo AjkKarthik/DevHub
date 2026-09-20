@@ -4157,4 +4157,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Adding Partitions Later Changes Where a Key Lands', route: '/messaging/kafka-architecture/adding-partitions-remaps-keys' },
     { label: 'Log Compaction Keeps At Least the Latest Value, Not Only the Latest', route: '/messaging/kafka-architecture/compaction-keeps-at-least-the-latest' },
   ],
+  'kafka-producers-consumers': [
+    { label: 'kafkajs Has No linger.ms or batch.size, So Batch Explicitly', route: '/messaging/kafka-producers-consumers/kafkajs-has-no-linger-or-batch-size' },
+    { label: 'With autoCommit Off You Commit Offset Plus One Yourself', route: '/messaging/kafka-producers-consumers/manual-commit-needs-offset-plus-one' },
+    { label: 'eachBatch Auto-Resolves the Last Offset, and autoCommit False Commits Nothing', route: '/messaging/kafka-producers-consumers/eachbatch-autocommit-false-and-auto-resolve' },
+  ],
 };

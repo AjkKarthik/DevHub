@@ -24,8 +24,8 @@ export class KafkaProducersConsumers {
   readonly quickRef: QuickRefItem[] = [
     { name: 'acks', type: 'keyword', desc: '0=fire-forget, 1=leader-only, -1=all ISR; controls durability vs latency' },
     { name: 'idempotent producer', type: 'keyword', desc: 'Prevents duplicate records on producer retry (enable with idempotent:true)' },
-    { name: 'batch.size', type: 'keyword', desc: 'Max bytes to buffer per partition before sending' },
-    { name: 'linger.ms', type: 'keyword', desc: 'Wait time to accumulate a batch before sending' },
+    { name: 'batch.size', type: 'keyword', desc: 'Max bytes to buffer per partition before sending (Java client / librdkafka; kafkajs has no such option)' },
+    { name: 'linger.ms', type: 'keyword', desc: 'Wait time to accumulate a batch before sending (Java client / librdkafka; kafkajs has no such option)' },
     { name: 'eachMessage', type: 'method', desc: 'Process one message at a time; sequential within partition' },
     { name: 'eachBatch', type: 'method', desc: 'Process a batch of messages; higher throughput, manual offset commits' },
     { name: 'autoCommit', type: 'keyword', desc: 'Automatically commit offsets after eachMessage resolves (default: true)' },
@@ -37,7 +37,7 @@ export class KafkaProducersConsumers {
       heading: 'Producer Configuration and Batching',
       points: [
         'Producers buffer messages locally per partition and send in batches for efficiency.',
-        'linger.ms adds a deliberate wait to accumulate more records into a batch, increasing throughput at the cost of latency.',
+        'linger.ms adds a deliberate wait to accumulate more records into a batch, increasing throughput at the cost of latency. This is a Java-client and librdkafka setting: kafkajs, which this page\'s code uses, exposes neither linger.ms nor batch.size, so you batch explicitly by putting many messages in one send or sendBatch call.',
         'batch.size sets the max bytes per batch. Together with linger.ms, they control the throughput-latency tradeoff.',
         'Compression (GZIP, Snappy, LZ4) reduces network and disk usage at the cost of CPU. LZ4 is a good default.',
       ]
@@ -65,7 +65,7 @@ export class KafkaProducersConsumers {
       points: [
         'acks=0 sends messages without waiting for any broker acknowledgment — highest throughput, but messages can be silently lost if the broker fails before actually persisting them, making this appropriate only for genuinely loss-tolerant data like metrics.',
         'acks=1 waits for the partition leader to acknowledge the write, but not for follower replicas — a leader failure immediately after acknowledgment but before replication can still lose the message, a middle-ground tradeoff between throughput and durability.',
-        'acks=all (or acks=-1) waits for all in-sync replicas to acknowledge, providing the strongest durability guarantee at the cost of higher latency — the correct choice when message loss is unacceptable, such as financial transaction events.',
+        'acks=all (or acks=-1) waits for all in-sync replicas to acknowledge, the strongest durability setting at the cost of higher latency — the correct choice when message loss is unacceptable, such as financial transaction events. It is only as strong as the topic\'s min.insync.replicas (default 1): if the ISR has shrunk to the leader alone, acks=all behaves like acks=1, so set min.insync.replicas=2 for RF=3.',
         'Choosing an acks level should be driven by the actual cost of losing a message for that specific topic\'s use case — defaulting to acks=all everywhere sacrifices throughput unnecessarily for data where loss tolerance is genuinely acceptable.',
       ],
     },
@@ -89,9 +89,8 @@ export class KafkaProducersConsumers {
 const kafka = new Kafka({ clientId: 'producer', brokers: ['localhost:9092'] });
 
 const producer = kafka.producer({
-  idempotent: true,       // prevents duplicate records on retry
-  maxInFlightRequests: 5, // required with idempotent
-  // Batch tuning (via underlying config)
+  idempotent: true,       // prevents duplicate records on retry (kafkajs requires acks -1)
+  // kafkajs has no linger.ms / batch.size: batching means many messages per send
 });
 
 await producer.connect();
@@ -150,7 +149,8 @@ await consumer.connect();
 await consumer.subscribe({ topic: 'user-events' });
 
 await consumer.run({
-  autoCommit: false,  // manual offset control
+  autoCommit: false,          // nothing is committed for you
+  eachBatchAutoResolve: false, // do not treat the whole batch as resolved when the handler returns
   eachBatch: async ({ batch, resolveOffset, heartbeat, isRunning }: EachBatchPayload) => {
     for (const message of batch.messages) {
       if (!isRunning()) break;  // honour stop signal
@@ -158,10 +158,14 @@ await consumer.run({
       const event = JSON.parse(message.value!.toString());
       await handleEvent(event);
 
-      resolveOffset(message.offset);  // mark this offset as processed
+      resolveOffset(message.offset);  // tracks progress only; it does not commit
+      await consumer.commitOffsets([{
+        topic: batch.topic,
+        partition: batch.partition,
+        offset: (BigInt(message.offset) + 1n).toString(),  // NEXT offset to read
+      }]);
       await heartbeat();              // keep the session alive in long batches
     }
-    // Offset committed for all resolveOffset calls when eachBatch resolves
   },
 });
 
@@ -233,21 +237,25 @@ await consumer.subscribe({ topic: 'events', fromBeginning: true });`,
       explanation: 'Kafka consumers send heartbeats to signal liveness. If session.timeout.ms elapses without a heartbeat, the broker triggers a rebalance.'
     },
     {
-      title: 'Auto-committing before processing completes',
-      wrong: `// autoCommit with async work that can fail mid-message
-eachMessage: async ({ message }) => {
-  // If this throws after autoCommit, the offset is already committed
-  await riskyWork(message);
-}`,
-      right: `// Disable autoCommit and commit only after successful processing
+      title: 'Turning autoCommit off and never committing offsets',
+      wrong: `// autoCommit: false means nothing is ever committed for you
 consumer.run({
   autoCommit: false,
-  eachMessage: async ({ message, commitOffsets }) => {
-    await riskyWork(message);
-    // commit manually only on success
+  eachMessage: async ({ message }) => {
+    await riskyWork(message);   // offsets never advance: every restart reprocesses from the last commit
   },
 });`,
-      explanation: 'autoCommit can mark an offset consumed before the work succeeds. For at-least-once processing, commit only after confirmed success.'
+      right: `// Commit yourself, after success, with offset + 1 (the NEXT message to read)
+consumer.run({
+  autoCommit: false,
+  eachMessage: async ({ topic, partition, message }) => {
+    await riskyWork(message);
+    await consumer.commitOffsets([
+      { topic, partition, offset: (BigInt(message.offset) + 1n).toString() },
+    ]);
+  },
+});`,
+      explanation: 'With the default autoCommit: true, kafkajs commits after the eachMessage handler resolves, and a handler that throws is not committed, so the default is already at-least-once. If you turn it off, nothing is committed until you call consumer.commitOffsets (there is no commitOffsets in the eachMessage payload), and the offset to store is the message offset + 1.'
     },
   ];
 
@@ -313,10 +321,10 @@ async function processOrder(msg: { offset: string; value: Buffer | null }) {
 
   readonly quiz: QuizQuestion[] = [
     { q: 'What does linger.ms control in a Kafka producer?', options: ['Max message size', 'Wait time to batch messages before sending', 'Session timeout', 'Retry interval'], answer: 1, explanation: 'linger.ms introduces a deliberate delay to accumulate messages into a larger batch, improving throughput.' },
-    { q: 'Which consumer mode gives you manual offset control over a batch?', options: ['eachMessage with autoCommit=true', 'eachBatch with autoCommit=false', 'eachMessage with autoCommit=false', 'seekToBeginning'], answer: 1, explanation: 'eachBatch with autoCommit=false lets you call resolveOffset() per message and commit the batch only after all succeed.' },
+    { q: 'Which consumer mode gives you manual offset control over a batch?', options: ['eachMessage with autoCommit=true', 'eachBatch with autoCommit=false', 'eachMessage with autoCommit=false', 'seekToBeginning'], answer: 1, explanation: 'With autoCommit=false nothing is committed for you: resolveOffset() only tracks progress inside the batch, and you commit explicitly with consumer.commitOffsets() (offset + 1). Set eachBatchAutoResolve to false too, or the whole batch is resolved when the handler returns.' },
     { q: 'What happens if a Kafka consumer misses its heartbeat deadline?', options: ['Consumer is closed by the admin', 'Broker triggers a rebalance and reassigns partitions', 'Offsets are reset to beginning', 'Messages are dropped'], answer: 1, explanation: 'The broker considers the consumer dead after session.timeout.ms and triggers a group rebalance.' },
     { q: 'With idempotent=true, what does Kafka prevent?', options: ['Duplicate messages from consumers', 'Duplicate records from producer retries', 'Out-of-order messages', 'Consumer group rebalances'], answer: 1, explanation: 'Idempotent producers get a PID and per-partition sequence numbers; the broker deduplicates retries.' },
-    { q: 'What does acks=all (acks=-1) guarantee for Kafka producers?', options: ['Message written to disk only on leader', 'Message acknowledged by all ISR (in-sync replicas) before producer gets success', 'Exactly-once delivery to consumers', 'Message ordering across partitions'], answer: 1, explanation: 'acks=all requires all in-sync replicas to acknowledge the write before the producer gets a success response — strongest durability guarantee. Combined with min.insync.replicas, prevents data loss on broker failure.' },
+    { q: 'What does acks=all (acks=-1) guarantee for Kafka producers?', options: ['Message written to disk only on leader', 'Message acknowledged by all ISR (in-sync replicas) before producer gets success', 'Exactly-once delivery to consumers', 'Message ordering across partitions'], answer: 1, explanation: 'acks=all requires all in-sync replicas to acknowledge the write before the producer gets a success response — strongest durability guarantee. On its own it is only as strong as min.insync.replicas (default 1); set it to 2 with RF=3 so an ISR shrunk to the leader cannot acknowledge writes.' },
     { q: 'What is consumer group rebalancing and what causes it?', options: ['Compacting old log segments', 'Redistributing partition ownership when group membership changes', 'Resetting consumer offsets to earliest', 'Re-electing a partition leader'], answer: 1, explanation: 'Rebalancing reassigns partitions among consumers when: a consumer joins or leaves, heartbeat times out, or topic partitions change. During rebalance, all consumers pause processing (stop-the-world for classic protocol).' },
   ];
 
