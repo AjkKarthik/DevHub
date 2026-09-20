@@ -10106,6 +10106,22 @@ Confirmed via direct file inspection before the pilot (`/messaging/messaging-fun
    (a)-(c). Bare `message-queues-vs-streams` SUBTOPICS key collision-free; nav toggle block added to
    the topic own link in `messaging-nav.ts`. Build clean; browser-verified. **Messaging hub Phase 10:
    2 of 20 topics complete.**
+6. **The `rabbitmq-core` batch found and fixed FOUR main-page issues**: (a) the Producer/Consumer
+   codeTabs declared `order-processing` with no `x-dead-letter-exchange` yet commented the
+   `nack(requeue=false)` as "dead-lettered" (same DLX-less-nack finding as Messaging Fundamentals; the
+   fix declares `orders.dlx` + `order-processing.dead` and passes the same `arguments` in both tabs,
+   since RabbitMQ rejects a re-declaration with different arguments); (b) the prefetch bullet, mistake #3
+   and quiz Q6 claimed RabbitMQ sends to the "fastest consumer" and starves others -- it deals
+   round-robin by count, blind to unacked load; (c) the durability bullet implied durable queue +
+   persistent messages is an absolute guarantee -- the RabbitMQ tutorial documents a short window
+   before the broker saves an accepted message (publisher confirms close it); (d) the replication
+   bullet: classic mirroring was removed in RabbitMQ 4.0, quorum queues persist to disk regardless of
+   delivery mode; the Challenge description said "retryCount > 3" while the solution used `>= 3` (a
+   threshold of 3 = 4 attempts). 3 subtopics (retry-threshold-four-attempts,
+   quorum-queues-replace-mirrored-queues, no-prefetch-is-blind-round-robin), each backed by a Node model.
+   Bare `rabbitmq-core` SUBTOPICS key collision-free. Build clean; browser-verified (all main-page
+   fixes live, 3 pages with 4-level breadcrumb, 860px wrapper, no entity leaks, no console errors).
+   **Messaging hub Phase 10: 3 of 20 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -10482,8 +10498,9 @@ Confirmed via direct file inspection before the pilot (`/messaging/messaging-fun
   All 22 cards `available: true` in `data/messaging/home/home.ts`. Progress: `kafkaTotal=20` in progress.service.ts.
   Messaging pages use `app-common-mistakes` AND `app-revision-card`. Reference pages (monitoring, messaging-security) have no PageComplete.
   Challenge.language: `'typescript'`. MessagingNavComponent at `shared/messaging-nav/messaging-nav.ts`.
-  Phase 10: **2 of 20 topics have subtopics** (`/messaging/messaging-fundamentals`, pilot batch,
-  2026-09-20; `/messaging/message-queues-vs-streams`, 2026-09-20) — see "Messaging/Kafka hub subtopic wiring" section above for the
+  Phase 10: **3 of 20 topics have subtopics** (`/messaging/messaging-fundamentals`, pilot batch,
+  2026-09-20; `/messaging/message-queues-vs-streams`, 2026-09-20; `/messaging/rabbitmq-core`,
+  2026-09-20) — see "Messaging/Kafka hub subtopic wiring" section above for the
   `MessagingNavComponent` accordion structural fix (18th `*NavComponent` hub in a row) and the
   three genuine main-page inaccuracies found and fixed (DLX-less nack "sends to DLQ", RabbitMQ
   wrongly listed as pull-based, unscoped SQS FIFO exactly-once claim).

@@ -9858,7 +9858,12 @@ off here with a date.
   closes the channel), not redelivered forever; RabbitMQ 3.9+ streams can replay; queues are at-least-once
   not guaranteed single-processing; compaction keeps latest value per key, not everything. Bare
   `message-queues-vs-streams` SUBTOPICS key collision-free. Messaging hub Phase 10: 2 of 20.
-- [ ] `/messaging/rabbitmq-core` — RabbitMQ Core Concepts
+- [x] 2026-09-20 `/messaging/rabbitmq-core` — RabbitMQ Core Concepts. 3 subtopics
+  (retry-threshold-four-attempts, quorum-queues-replace-mirrored-queues, no-prefetch-is-blind-round-robin).
+  Main-page fixes: DLX-less nack "dead-lettered" in codeTabs (now declares DLX + dead queue), prefetch
+  "fastest consumer" claim (really blind round-robin), durability "guarantee" overstated, classic mirroring
+  removed in 4.0, Challenge `> 3` vs `>= 3` mismatch. Bare `rabbitmq-core` SUBTOPICS key collision-free.
+  Messaging hub Phase 10: 3 of 20.
 - [ ] `/messaging/rabbitmq-exchanges` — RabbitMQ Exchanges
 - [ ] `/messaging/rabbitmq-patterns` — RabbitMQ Patterns
 - [ ] `/messaging/kafka-architecture` — Kafka Architecture
