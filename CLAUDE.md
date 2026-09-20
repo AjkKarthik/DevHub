@@ -10201,6 +10201,22 @@ Confirmed via direct file inspection before the pilot (`/messaging/messaging-fun
    windowing-by-event-time-not-wall-clock), each backed by a Node model. Bare `kafka-streams` SUBTOPICS
    key collision-free. Build clean; browser-verified. **Messaging hub Phase 10: 8 of 20 topics
    complete.**
+12. **The `kafka-connect` batch found and fixed FIVE main-page issues, verified against Confluent's
+   ReplaceField/MaskField docs, KIP-875, the Debezium PostgreSQL docs and release notes, and the
+   PostgreSQL `wal_level` docs**: (a) the Debezium example and theory used ReplaceField to "mask" columns --
+   ReplaceField only filters/renames (`exclude`, `include`, `renames`), masking is MaskField, and on a raw
+   Debezium record the columns are nested in `before`/`after` so a top-level transform cannot see them
+   (unwrap first, or `column.exclude.list` on the connector, which the example now uses); (b) the example set
+   the stale `database.server.name` alongside `topic.prefix` (renamed in Debezium 2.0); (c) mistake #2 said
+   the Postgres default `wal_level` is `minimal` -- it is `replica`, changing it needs a restart, and
+   Debezium creates its replication slot by default; (d) two QnAs, a Quick Reference entry and a revision
+   bullet said connector offsets live in `connect-offsets` -- that is source connectors only, sink offsets
+   are consumer group offsets under `connect-<name>` (KIP-875, Kafka 3.6, adds offset REST endpoints that
+   need the connector STOPPED). 3 subtopics (replacefield-does-not-mask-envelope-hides-columns,
+   sink-offsets-live-in-consumer-groups, debezium-config-drift-and-wal-level), each backed by a Node model.
+   Bare `kafka-connect` SUBTOPICS key collision-free. Note: quick-ref `desc` binds via plain interpolation
+   (raw `<name>` is fine) but QnA answers and revision bullets bind via innerHTML (use `&lt;name&gt;`).
+   Build clean; browser-verified. **Messaging hub Phase 10: 9 of 20 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -10577,11 +10593,11 @@ Confirmed via direct file inspection before the pilot (`/messaging/messaging-fun
   All 22 cards `available: true` in `data/messaging/home/home.ts`. Progress: `kafkaTotal=20` in progress.service.ts.
   Messaging pages use `app-common-mistakes` AND `app-revision-card`. Reference pages (monitoring, messaging-security) have no PageComplete.
   Challenge.language: `'typescript'`. MessagingNavComponent at `shared/messaging-nav/messaging-nav.ts`.
-  Phase 10: **8 of 20 topics have subtopics** (`/messaging/messaging-fundamentals`, pilot batch,
+  Phase 10: **9 of 20 topics have subtopics** (`/messaging/messaging-fundamentals`, pilot batch,
   2026-09-20; `/messaging/message-queues-vs-streams`, 2026-09-20; `/messaging/rabbitmq-core`,
   2026-09-20; `/messaging/rabbitmq-exchanges`, 2026-09-20; `/messaging/rabbitmq-patterns`,
   2026-09-20; `/messaging/kafka-architecture`, 2026-09-20; `/messaging/kafka-producers-consumers`,
-  2026-09-20; `/messaging/kafka-streams`, 2026-09-20) — see "Messaging/Kafka hub subtopic wiring" section above for the
+  2026-09-20; `/messaging/kafka-streams`, 2026-09-20; `/messaging/kafka-connect`, 2026-09-20) — see "Messaging/Kafka hub subtopic wiring" section above for the
   `MessagingNavComponent` accordion structural fix (18th `*NavComponent` hub in a row) and the
   three genuine main-page inaccuracies found and fixed (DLX-less nack "sends to DLQ", RabbitMQ
   wrongly listed as pull-based, unscoped SQS FIFO exactly-once claim).

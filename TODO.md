@@ -9896,7 +9896,13 @@ off here with a date.
   retired, late records dropped after grace), Challenge windowed by wall clock instead of event time,
   compaction keeps at least the latest. Bare `kafka-streams` SUBTOPICS key collision-free. Messaging hub
   Phase 10: 8 of 20.
-- [ ] `/messaging/kafka-connect` — Kafka Connect
+- [x] 2026-09-20 `/messaging/kafka-connect` — Kafka Connect. 3 subtopics
+  (replacefield-does-not-mask-envelope-hides-columns, sink-offsets-live-in-consumer-groups,
+  debezium-config-drift-and-wal-level). Main-page fixes verified against Confluent SMT docs, KIP-875,
+  Debezium docs and PostgreSQL docs: ReplaceField does not mask and the Debezium envelope nests the
+  columns, stale `database.server.name` (renamed `topic.prefix` in 2.0), Postgres default wal_level is
+  replica and Debezium auto-creates its slot, sink offsets are consumer group offsets. Bare
+  `kafka-connect` SUBTOPICS key collision-free. Messaging hub Phase 10: 9 of 20.
 - [ ] `/messaging/schema-registry` — Schema Registry
 - [ ] `/messaging/messaging-patterns` — Enterprise Messaging Patterns
 - [ ] `/messaging/saga-pattern` — Saga Pattern
