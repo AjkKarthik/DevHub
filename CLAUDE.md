@@ -10267,6 +10267,23 @@ Confirmed via direct file inspection before the pilot (`/messaging/messaging-fun
    (compensate-only-completed-steps, idempotent-compensation-atomic-guard, pivot-is-the-go-no-go-point), each
    backed by a Node model. Bare `saga-pattern` SUBTOPICS key collision-free. Build clean; browser-verified.
    **Messaging hub Phase 10: 12 of 20 topics complete.**
+16. **The `outbox-pattern` batch found and fixed SEVEN main-page issues, verified against Debezium's outbox
+   article and Event Router docs, the PostgreSQL date/time functions docs, the kafkajs source and a Node model for
+   each behaviour**: (a) the mark-`published_at`-then-prune lifecycle was presented as the only one -- it is a
+   polling-relay lifecycle; a Debezium relay tails the transaction log, the row is inserted and deleted in the same
+   transaction and the table stays empty (quick reference, theory, outbox-grows mistake block); (b) the schema used
+   `created_at DEFAULT now()`, which is the transaction START time, and the polling relay orders by it -- now
+   `clock_timestamp()`; (c) `FOR UPDATE SKIP LOCKED` was sold as safe parallelism -- it prevents duplicate takes,
+   not reordering of one aggregate's events across workers (mistake explanation and high-volume QnA now say so);
+   (d) the Challenge said "after 5 retries" and hinted `retry_count >= 5` while the solution moved to the DLQ at
+   `>= 4` (5 attempts) -- now consistent; (e) the Challenge solution published without a key -- now keyed by
+   `aggregate_id`; (f) Inbox + Outbox was called "exactly-once" -- now effectively-once (at-least-once plus
+   deduplication); (g) two duplicated theory sections merged into the originals, plus a bullet that
+   kafkajs `idempotent: true` only dedupes retries within one producer session (a restarted relay gets a new
+   producer id). 3 subtopics (cdc-outbox-rows-are-deleted-not-marked, created-at-is-transaction-start,
+   skip-locked-parallel-relays-reorder-events). Bare `outbox-pattern` SUBTOPICS key collision-free (the existing
+   `outbox` key belongs to Design Patterns). Build clean; browser-verified.
+   **Messaging hub Phase 10: 13 of 20 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -10643,12 +10660,12 @@ Confirmed via direct file inspection before the pilot (`/messaging/messaging-fun
   All 22 cards `available: true` in `data/messaging/home/home.ts`. Progress: `kafkaTotal=20` in progress.service.ts.
   Messaging pages use `app-common-mistakes` AND `app-revision-card`. Reference pages (monitoring, messaging-security) have no PageComplete.
   Challenge.language: `'typescript'`. MessagingNavComponent at `shared/messaging-nav/messaging-nav.ts`.
-  Phase 10: **12 of 20 topics have subtopics** (`/messaging/messaging-fundamentals`, pilot batch,
+  Phase 10: **13 of 20 topics have subtopics** (`/messaging/messaging-fundamentals`, pilot batch,
   2026-09-20; `/messaging/message-queues-vs-streams`, 2026-09-20; `/messaging/rabbitmq-core`,
   2026-09-20; `/messaging/rabbitmq-exchanges`, 2026-09-20; `/messaging/rabbitmq-patterns`,
   2026-09-20; `/messaging/kafka-architecture`, 2026-09-20; `/messaging/kafka-producers-consumers`,
   2026-09-20; `/messaging/kafka-streams`, 2026-09-20; `/messaging/kafka-connect`, 2026-09-20;
-  `/messaging/schema-registry`, 2026-09-20; `/messaging/messaging-patterns`, 2026-09-20; `/messaging/saga-pattern`, 2026-09-20) — see "Messaging/Kafka hub subtopic wiring" section above for the
+  `/messaging/schema-registry`, 2026-09-20; `/messaging/messaging-patterns`, 2026-09-20; `/messaging/saga-pattern`, 2026-09-20; `/messaging/outbox-pattern`, 2026-09-20) — see "Messaging/Kafka hub subtopic wiring" section above for the
   `MessagingNavComponent` accordion structural fix (18th `*NavComponent` hub in a row) and the
   three genuine main-page inaccuracies found and fixed (DLX-less nack "sends to DLQ", RabbitMQ
   wrongly listed as pull-based, unscoped SQS FIFO exactly-once claim).

@@ -9925,7 +9925,12 @@ off here with a date.
   one guarded local transaction; pivot/compensable/retryable taxonomy; choreography events keyed by orderId;
   deterministic Challenge solution; Temporal QnA corrected (it does not write compensations for you). Bare
   `saga-pattern` SUBTOPICS key collision-free. Messaging hub Phase 10: 12 of 20.
-- [ ] `/messaging/outbox-pattern` — Outbox Pattern
+- [x] 2026-09-20 `/messaging/outbox-pattern` — Outbox Pattern. 3 subtopics
+  (cdc-outbox-rows-are-deleted-not-marked, created-at-is-transaction-start,
+  skip-locked-parallel-relays-reorder-events). Main-page fixes: CDC relay does not use published_at (row can be
+  inserted and deleted in one transaction); created_at now() is transaction start time (clock_timestamp());
+  SKIP LOCKED does not preserve order; challenge retry-count and key consistency; inbox+outbox is
+  effectively-once; duplicate theory sections merged. Messaging hub Phase 10: 13 of 20.
 - [ ] `/messaging/azure-service-bus` — Azure Service Bus
 - [ ] `/messaging/azure-event-grid` — Event Grid & Event Hubs
 - [ ] `/messaging/aws-sqs` — AWS SQS
