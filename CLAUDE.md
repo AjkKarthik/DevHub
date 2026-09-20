@@ -10217,6 +10217,22 @@ Confirmed via direct file inspection before the pilot (`/messaging/messaging-fun
    Bare `kafka-connect` SUBTOPICS key collision-free. Note: quick-ref `desc` binds via plain interpolation
    (raw `<name>` is fine) but QnA answers and revision bullets bind via innerHTML (use `&lt;name&gt;`).
    Build clean; browser-verified. **Messaging hub Phase 10: 9 of 20 topics complete.**
+13. **The `schema-registry` batch (last topic in the Apache Kafka nav group) found and fixed FOUR
+   main-page issues, verified against Confluent's schema-evolution and SerDes wire-format docs**: (a) the
+   FORWARD bullet said "old fields must not be removed" and another bullet said adding a required field
+   "could break older readers" -- Confluent defines FORWARD as add fields / remove optional fields
+   (reader/writer rule: a reader needs each expected field present or defaulted, extra fields are ignored),
+   so adding a field breaks BACKWARD, not FORWARD, and removal is only unsafe without a default; also dropped
+   an unsupported "required in regulated environments" claim for FULL; (b) the docs' statement that the
+   default mode is BACKWARD and checks only the latest version (the _TRANSITIVE modes check all versions)
+   was missing entirely; (c) a theory bullet contrasted a compact schema ID with "embedding a full schema
+   (like JSON Schema)" -- all three serializers use the same 5-byte header (0 + 4-byte ID), Protobuf adds
+   message indexes; (d) the Avro producer example hardcoded `schemaId = 1` while the page's own mistake block
+   forbids it (now `registry.getLatestSchemaId('orders-value')`). 3 subtopics
+   (forward-compat-add-fields-remove-defaulted, backward-checks-only-the-latest-version,
+   same-wire-format-for-all-three-formats), each backed by a Node model. Bare `schema-registry` SUBTOPICS key
+   collision-free. Build clean; browser-verified. **Messaging hub Phase 10: 10 of 20 topics complete --
+   RabbitMQ and Apache Kafka nav groups done.**
 
 ## Current state (update when it changes!)
 
@@ -10593,11 +10609,12 @@ Confirmed via direct file inspection before the pilot (`/messaging/messaging-fun
   All 22 cards `available: true` in `data/messaging/home/home.ts`. Progress: `kafkaTotal=20` in progress.service.ts.
   Messaging pages use `app-common-mistakes` AND `app-revision-card`. Reference pages (monitoring, messaging-security) have no PageComplete.
   Challenge.language: `'typescript'`. MessagingNavComponent at `shared/messaging-nav/messaging-nav.ts`.
-  Phase 10: **9 of 20 topics have subtopics** (`/messaging/messaging-fundamentals`, pilot batch,
+  Phase 10: **10 of 20 topics have subtopics** (`/messaging/messaging-fundamentals`, pilot batch,
   2026-09-20; `/messaging/message-queues-vs-streams`, 2026-09-20; `/messaging/rabbitmq-core`,
   2026-09-20; `/messaging/rabbitmq-exchanges`, 2026-09-20; `/messaging/rabbitmq-patterns`,
   2026-09-20; `/messaging/kafka-architecture`, 2026-09-20; `/messaging/kafka-producers-consumers`,
-  2026-09-20; `/messaging/kafka-streams`, 2026-09-20; `/messaging/kafka-connect`, 2026-09-20) — see "Messaging/Kafka hub subtopic wiring" section above for the
+  2026-09-20; `/messaging/kafka-streams`, 2026-09-20; `/messaging/kafka-connect`, 2026-09-20;
+  `/messaging/schema-registry`, 2026-09-20) — see "Messaging/Kafka hub subtopic wiring" section above for the
   `MessagingNavComponent` accordion structural fix (18th `*NavComponent` hub in a row) and the
   three genuine main-page inaccuracies found and fixed (DLX-less nack "sends to DLQ", RabbitMQ
   wrongly listed as pull-based, unscoped SQS FIFO exactly-once claim).

@@ -9903,7 +9903,13 @@ off here with a date.
   columns, stale `database.server.name` (renamed `topic.prefix` in 2.0), Postgres default wal_level is
   replica and Debezium auto-creates its slot, sink offsets are consumer group offsets. Bare
   `kafka-connect` SUBTOPICS key collision-free. Messaging hub Phase 10: 9 of 20.
-- [ ] `/messaging/schema-registry` — Schema Registry
+- [x] 2026-09-20 `/messaging/schema-registry` — Schema Registry. 3 subtopics
+  (forward-compat-add-fields-remove-defaulted, backward-checks-only-the-latest-version,
+  same-wire-format-for-all-three-formats). Main-page fixes verified against Confluent docs: FORWARD allows
+  adding fields and removing defaulted fields (adding breaks BACKWARD, not FORWARD), default BACKWARD checks
+  only the latest version (_TRANSITIVE checks all), JSON Schema uses the same schema-ID header (Protobuf adds
+  message indexes), Avro example no longer hardcodes schemaId. Bare `schema-registry` SUBTOPICS key
+  collision-free. Messaging hub Phase 10: 10 of 20 (RabbitMQ + Apache Kafka groups done).
 - [ ] `/messaging/messaging-patterns` — Enterprise Messaging Patterns
 - [ ] `/messaging/saga-pattern` — Saga Pattern
 - [ ] `/messaging/outbox-pattern` — Outbox Pattern
