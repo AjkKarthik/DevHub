@@ -32239,6 +32239,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Duplicate detection windows complement but do not replace consumer-side idempotency for messages arriving outside that window.',
     ],
   },
+  'messaging/azure-event-grid/retention-is-tier-capped': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Azure Event Grid', route: '/messaging/azure-event-grid' },
+      { label: 'Event Hubs\' Kafka Endpoint Doesn\'t Exist on Basic Tier', route: '/messaging/azure-event-grid/kafka-needs-standard-tier' },
+    ],
+    tip: 'Event Hub retention is capped per tier — 1 day fixed on Basic, 7 days on Standard, 90 on Premium/Dedicated — and Standard/Premium/Dedicated all default to just 1 hour until you explicitly configure it higher.',
+    gotchas: [
+      'Retention changes apply to existing events too, not just future writes.',
+      'Storage volume (84 GB per TU on Basic/Standard) can evict events before the day-based window expires.',
+    ],
+  },
+  'messaging/azure-event-grid/kafka-needs-standard-tier': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Azure Event Grid', route: '/messaging/azure-event-grid' },
+      { label: 'Event Hub Retention Is Tier-Capped, Not a Flat 1–90 Day Range', route: '/messaging/azure-event-grid/retention-is-tier-capped' },
+    ],
+    tip: 'The Kafka-compatible endpoint (port 9093) only exists on Standard tier and above. A Basic-tier namespace fails to connect, usually surfacing as a TopicAuthorizationException that reads like a credentials bug.',
+    gotchas: [
+      'Kafka consumer groups (1,000 on Standard+) are tracked separately from native consumer groups (just 1 on Basic).',
+      'There is no protocol choice at provisioning time — only a tier floor.',
+    ],
+  },
+  'messaging/azure-event-grid/domains-support-100000-topics': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Azure Event Grid', route: '/messaging/azure-event-grid' },
+      { label: 'Event Hubs\' Kafka Endpoint Doesn\'t Exist on Basic Tier', route: '/messaging/azure-event-grid/kafka-needs-standard-tier' },
+    ],
+    tip: 'An Event Grid domain supports 100,000 topics under one endpoint, not the commonly-assumed 1,000 — the real reason it exists is the 100-custom-topics-per-subscription wall.',
+    gotchas: [
+      'Domain-scope event subscriptions cap at 50, separately from the 500-per-topic limit.',
+      'Retention inside a domain topic is still 1 day, same as a standalone custom topic.',
+    ],
+  },
   'messaging/azure-event-grid': {
     apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
     related: [

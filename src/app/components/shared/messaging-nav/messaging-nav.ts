@@ -297,7 +297,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/messaging/azure-event-grid" routerLinkActive="active"><span class="nl-text">Event Grid &amp; Event Hubs</span>@if(p.isDone('kafka-azure-event-grid')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/messaging/azure-event-grid" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Event Grid &amp; Event Hubs</span>
+        @if(p.isDone('kafka-azure-event-grid')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('azure-event-grid')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('azure-event-grid')"
+                  (click)="toggleSubtopics('azure-event-grid', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('azure-event-grid'); as aegSubs) {
+        @if (isSubtopicsExpanded('azure-event-grid')) {
+          <div class="nav-subtopics">
+            @for (s of aegSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

@@ -3066,7 +3066,12 @@ export const routes: Routes = [
       { path: 'settings-fixed-at-queue-creation', loadComponent: () => import('./components/data/messaging/azure-service-bus/subtopics/settings-fixed-at-queue-creation/settings-fixed-at-queue-creation').then(m => m.SettingsFixedAtQueueCreationSubtopic) },
       { path: 'unmatched-filter-is-not-dead-lettered', loadComponent: () => import('./components/data/messaging/azure-service-bus/subtopics/unmatched-filter-is-not-dead-lettered/unmatched-filter-is-not-dead-lettered').then(m => m.UnmatchedFilterIsNotDeadLetteredSubtopic) },
     ] },
-    { path: 'azure-event-grid',          loadComponent: () => import('./components/data/messaging/azure-event-grid/azure-event-grid').then(m => m.AzureEventGrid) },
+    { path: 'azure-event-grid', children: [
+      { path: '', loadComponent: () => import('./components/data/messaging/azure-event-grid/azure-event-grid').then(m => m.AzureEventGrid) },
+      { path: 'retention-is-tier-capped', loadComponent: () => import('./components/data/messaging/azure-event-grid/subtopics/retention-is-tier-capped/retention-is-tier-capped').then(m => m.RetentionIsTierCappedSubtopic) },
+      { path: 'kafka-needs-standard-tier', loadComponent: () => import('./components/data/messaging/azure-event-grid/subtopics/kafka-needs-standard-tier/kafka-needs-standard-tier').then(m => m.KafkaNeedsStandardTierSubtopic) },
+      { path: 'domains-support-100000-topics', loadComponent: () => import('./components/data/messaging/azure-event-grid/subtopics/domains-support-100000-topics/domains-support-100000-topics').then(m => m.DomainsSupport100000TopicsSubtopic) },
+    ] },
     { path: 'aws-sqs',                   loadComponent: () => import('./components/data/messaging/aws-sqs/aws-sqs').then(m => m.AwsSqs) },
     { path: 'aws-sns-eventbridge',       loadComponent: () => import('./components/data/messaging/aws-sns-eventbridge/aws-sns-eventbridge').then(m => m.AwsSnsEventbridge) },
     { path: 'idempotency',               loadComponent: () => import('./components/data/messaging/idempotency/idempotency').then(m => m.Idempotency) },

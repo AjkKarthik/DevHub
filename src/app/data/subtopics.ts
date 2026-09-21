@@ -4197,4 +4197,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Duplicate Detection, Sessions and Expiry Dead-Lettering Are All Fixed at Queue Creation', route: '/messaging/azure-service-bus/settings-fixed-at-queue-creation' },
     { label: 'A Message That Matches No Subscription Filter Is Not Dead-Lettered', route: '/messaging/azure-service-bus/unmatched-filter-is-not-dead-lettered' },
   ],
+  'azure-event-grid': [
+    { label: 'Event Hub Retention Is Tier-Capped, Not a Flat 1–90 Day Range', route: '/messaging/azure-event-grid/retention-is-tier-capped' },
+    { label: 'Event Hubs\' Kafka Endpoint Doesn\'t Exist on Basic Tier', route: '/messaging/azure-event-grid/kafka-needs-standard-tier' },
+    { label: 'Event Grid Domains Support 100,000 Topics, Not 1,000', route: '/messaging/azure-event-grid/domains-support-100000-topics' },
+  ],
 };
