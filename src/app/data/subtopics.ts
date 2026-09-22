@@ -4207,4 +4207,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'SQS Dead-Lettering Is Queue-Side, Not a Lambda Destination', route: '/messaging/aws-sqs/dlq-is-queue-not-lambda-destination' },
     { label: 'Rescuing Successful Messages From a Failed Batch With ReportBatchItemFailures', route: '/messaging/aws-sqs/report-batch-item-failures' },
   ],
+  'aws-sns-eventbridge': [
+    { label: 'SNS FIFO Throughput Was Raised 10x, and Then Raised Again', route: '/messaging/aws-sns-eventbridge/sns-fifo-throughput-was-raised-10x' },
+    { label: 'SNS Retry Duration Depends Entirely on Endpoint Type', route: '/messaging/aws-sns-eventbridge/retry-duration-depends-on-endpoint-type' },
+    { label: 'Building an EventBridge Pipe: SQS Source to a Filtered Target', route: '/messaging/aws-sns-eventbridge/eventbridge-pipes-sqs-to-target' },
+  ],
 };

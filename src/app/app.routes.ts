@@ -3078,7 +3078,12 @@ export const routes: Routes = [
       { path: 'dlq-is-queue-not-lambda-destination', loadComponent: () => import('./components/data/messaging/aws-sqs/subtopics/dlq-is-queue-not-lambda-destination/dlq-is-queue-not-lambda-destination').then(m => m.DlqIsQueueNotLambdaDestinationSubtopic) },
       { path: 'report-batch-item-failures', loadComponent: () => import('./components/data/messaging/aws-sqs/subtopics/report-batch-item-failures/report-batch-item-failures').then(m => m.ReportBatchItemFailuresSubtopic) },
     ] },
-    { path: 'aws-sns-eventbridge',       loadComponent: () => import('./components/data/messaging/aws-sns-eventbridge/aws-sns-eventbridge').then(m => m.AwsSnsEventbridge) },
+    { path: 'aws-sns-eventbridge', children: [
+      { path: '', loadComponent: () => import('./components/data/messaging/aws-sns-eventbridge/aws-sns-eventbridge').then(m => m.AwsSnsEventbridge) },
+      { path: 'sns-fifo-throughput-was-raised-10x', loadComponent: () => import('./components/data/messaging/aws-sns-eventbridge/subtopics/sns-fifo-throughput-was-raised-10x/sns-fifo-throughput-was-raised-10x').then(m => m.SnsFifoThroughputWasRaised10xSubtopic) },
+      { path: 'retry-duration-depends-on-endpoint-type', loadComponent: () => import('./components/data/messaging/aws-sns-eventbridge/subtopics/retry-duration-depends-on-endpoint-type/retry-duration-depends-on-endpoint-type').then(m => m.RetryDurationDependsOnEndpointTypeSubtopic) },
+      { path: 'eventbridge-pipes-sqs-to-target', loadComponent: () => import('./components/data/messaging/aws-sns-eventbridge/subtopics/eventbridge-pipes-sqs-to-target/eventbridge-pipes-sqs-to-target').then(m => m.EventbridgePipesSqsToTargetSubtopic) },
+    ] },
     { path: 'idempotency',               loadComponent: () => import('./components/data/messaging/idempotency/idempotency').then(m => m.Idempotency) },
     { path: 'message-ordering',          loadComponent: () => import('./components/data/messaging/message-ordering/message-ordering').then(m => m.MessageOrdering) },
     { path: 'backpressure',              loadComponent: () => import('./components/data/messaging/backpressure/backpressure').then(m => m.Backpressure) },

@@ -32216,6 +32216,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Extending visibility timeout mid-processing is the correct approach for variable/unpredictable processing time rather than guessing a fixed value.',
     ],
   },
+  'messaging/aws-sns-eventbridge/sns-fifo-throughput-was-raised-10x': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'AWS SNS & EventBridge', route: '/messaging/aws-sns-eventbridge' },
+      { label: 'SNS Retry Duration Depends Entirely on Endpoint Type', route: '/messaging/aws-sns-eventbridge/retry-duration-depends-on-endpoint-type' },
+    ],
+    tip: 'FIFO SNS topics default to 3,000 msg/s since November 2023, not 300 — and High Throughput mode (FifoThroughputScope=MessageGroup) raises that further while scoping deduplication to each message group instead of the whole topic.',
+    gotchas: [
+      'The High Throughput ceiling is region-dependent — up to 30,000 msg/s in us-east-1, lower elsewhere.',
+      'A dedup ID reused across two different message groups is no longer caught once MessageGroup scope is enabled.',
+    ],
+  },
+  'messaging/aws-sns-eventbridge/retry-duration-depends-on-endpoint-type': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'AWS SNS & EventBridge', route: '/messaging/aws-sns-eventbridge' },
+      { label: 'SNS FIFO Throughput Was Raised 10x, and Then Raised Again', route: '/messaging/aws-sns-eventbridge/sns-fifo-throughput-was-raised-10x' },
+    ],
+    tip: '23 days of SNS retries applies to AWS-managed endpoints (SQS, Lambda) only. HTTP/S endpoints default to about a minute of retrying and cap at 3,600 seconds even with a custom delivery policy.',
+    gotchas: [
+      'Only HTTP/S subscriptions support a customizable delivery policy at all.',
+      'The 1-hour HTTP/S retry ceiling cannot be increased, even by request.',
+    ],
+  },
+  'messaging/aws-sns-eventbridge/eventbridge-pipes-sqs-to-target': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'AWS SNS & EventBridge', route: '/messaging/aws-sns-eventbridge' },
+      { label: 'SNS Retry Duration Depends Entirely on Endpoint Type', route: '/messaging/aws-sns-eventbridge/retry-duration-depends-on-endpoint-type' },
+    ],
+    tip: 'A Pipe filter pattern matches the structured record Pipes builds from the source, not the raw message body string — for SQS, the body must be parseable JSON for a body-field filter to match anything.',
+    gotchas: [
+      'CreatePipeCommand needs Source, Target, and RoleArn at minimum — filtering and enrichment are both optional.',
+      'When Enrichment is configured, the target receives the enrichment step\'s return value, not the original record.',
+    ],
+  },
   'messaging/aws-sns-eventbridge': {
     apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
     related: [

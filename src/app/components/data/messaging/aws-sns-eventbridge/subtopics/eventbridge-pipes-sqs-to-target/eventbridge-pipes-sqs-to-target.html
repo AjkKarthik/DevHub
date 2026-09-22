@@ -1,0 +1,26 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="AWS SNS &amp; EventBridge" topicRoute="/messaging/aws-sns-eventbridge"
+    subtopicLabel="Building an EventBridge Pipe: SQS Source to a Filtered Target" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">Building an EventBridge Pipe: SQS Source to a Filtered Target</h1>
+  <p class="page-subtitle">The main page names EventBridge Pipes as "no glue code" source-to-target routing but never shows one — here's the actual CreatePipeCommand shape, filtering, and enrichment.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Amazon EventBridge Pipes" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This closes a gap the main page never covers — Pipes is named in the theory and QnA but no codeTab ever builds one. Pairs with the main page's own EventBridge Rule example as the same content-based-filtering idea applied one step earlier in the pipeline.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="AWS SNS & EventBridge" topicRoute="/messaging/aws-sns-eventbridge"
+    [prev]="{ label: 'SNS Retry Duration Depends Entirely on Endpoint Type', route: '/messaging/aws-sns-eventbridge/retry-duration-depends-on-endpoint-type' }" />
+</div>

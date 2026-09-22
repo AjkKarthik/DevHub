@@ -339,7 +339,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/messaging/aws-sns-eventbridge" routerLinkActive="active"><span class="nl-text">AWS SNS &amp; EventBridge</span>@if(p.isDone('kafka-aws-sns-eventbridge')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/messaging/aws-sns-eventbridge" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">AWS SNS &amp; EventBridge</span>
+        @if(p.isDone('kafka-aws-sns-eventbridge')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('aws-sns-eventbridge')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('aws-sns-eventbridge')"
+                  (click)="toggleSubtopics('aws-sns-eventbridge', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('aws-sns-eventbridge'); as snsEbSubs) {
+        @if (isSubtopicsExpanded('aws-sns-eventbridge')) {
+          <div class="nav-subtopics">
+            @for (s of snsEbSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
