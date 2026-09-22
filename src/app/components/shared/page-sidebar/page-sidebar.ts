@@ -32049,6 +32049,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The claim-check pattern requires managing the externally stored payload\'s lifecycle separately from the message\'s own lifecycle.',
     ],
   },
+  'messaging/message-ordering/random-dedup-id-defeats-sqs-fifo-retry-safety': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Message Ordering', route: '/messaging/message-ordering' },
+      { label: 'Idempotency Keys for SQS Standard Queues (No Native Dedup)', route: '/messaging/idempotency/sqs-standard-has-no-native-dedup' },
+    ],
+    tip: 'A fresh randomUUID() per send guarantees uniqueness, not deduplication — a retry of the same send needs the SAME MessageDeduplicationId to be caught within the 5-minute window.',
+    gotchas: [
+      'A real GitHub issue reported this exact bug in a widely used Spring Cloud AWS library — random dedup IDs silently broke deduplication for its users.',
+      'A stable key that is too narrow can also collapse two genuinely different events — specificity has to match the actual retry boundary, not just "the order."',
+    ],
+  },
+  'messaging/message-ordering/how-idempotent-producer-prevents-retry-reordering': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Message Ordering', route: '/messaging/message-ordering' },
+      { label: 'kafkajs Does Not Enforce maxInFlightRequests for Idempotence', route: '/messaging/idempotency/kafkajs-does-not-enforce-max-in-flight' },
+    ],
+    tip: 'It is not "messages swap places" — an earlier message duplicates back into the log after a later one succeeds, and the broker\'s sequence tracking is what stops that duplicate from landing.',
+    gotchas: [
+      'The broker never re-sorts anything — order is preserved as a side effect of never re-appending an already-written sequence number.',
+      'This protection depends on maxInFlightRequests staying at or below 5 — the exact same tracked-window limit covered on the Idempotency topic.',
+    ],
+  },
+  'messaging/message-ordering/fifo-group-blocking-is-per-group-not-queue-wide': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Message Ordering', route: '/messaging/message-ordering' },
+      { label: 'AWS SQS', route: '/messaging/aws-sqs' },
+    ],
+    tip: 'A stuck message blocks only its own MessageGroupId — other groups keep delivering independently, though a very large single-group backlog can still delay other groups in practice.',
+    gotchas: [
+      'Only deleting the in-flight message (or handling its visibility-timeout redelivery) frees that group\'s single in-flight slot — a bigger receive batch size does not.',
+      'FIFO queues scan a bounded window of the queue to find deliverable messages — an unbounded backlog in one group can push other groups out of that window.',
+    ],
+  },
   'messaging/message-ordering': {
     apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
     related: [
@@ -32059,6 +32095,43 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Producer retries can reorder messages relative to a subsequent send unless max.in.flight.requests.per.connection=1 is set (at a throughput cost).',
       'A system claiming global ordering but actually only partition-ordered can produce subtle bugs if consumers assume stronger guarantees than actually provided.',
+    ],
+  },
+  'messaging/idempotency/kafkajs-does-not-enforce-max-in-flight': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Idempotency & Exactly-Once', route: '/messaging/idempotency' },
+      { label: 'The Redis SET NX Pattern Needs Two Phases, Not One', route: '/messaging/idempotency/redis-set-nx-needs-two-phases' },
+    ],
+    tip: 'kafkajs only validates acks against idempotent — it throws if acks !== -1. maxInFlightRequests is never checked, so exceeding 5 in-flight requests silently breaks the broker\'s own dedup window.',
+    gotchas: [
+      'The "5" is not arbitrary — it is the exact size of the broker\'s own tracked sequence-number window per producer-partition.',
+      'Nothing errors or warns when this is misconfigured; a duplicate write just slips through looking like ordinary new data.',
+    ],
+  },
+  'messaging/idempotency/redis-set-nx-needs-two-phases': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Idempotency & Exactly-Once', route: '/messaging/idempotency' },
+      { label: 'kafkajs Does Not Enforce maxInFlightRequests for Idempotence', route: '/messaging/idempotency/kafkajs-does-not-enforce-max-in-flight' },
+      { label: 'Idempotency Keys for SQS Standard Queues (No Native Dedup)', route: '/messaging/idempotency/sqs-standard-has-no-native-dedup' },
+    ],
+    tip: 'SET key result NX cannot work as literally described — the result does not exist before processing. Claim the key with a placeholder first, then overwrite it with the real result once work finishes.',
+    gotchas: [
+      'A key holding the "IN_PROGRESS" placeholder means the original request is still running (or crashed), not that a result is ready.',
+      'The EX ttl is the crash-recovery mechanism — it is what eventually unsticks a key stuck at the placeholder forever after a mid-processing crash.',
+    ],
+  },
+  'messaging/idempotency/sqs-standard-has-no-native-dedup': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Idempotency & Exactly-Once', route: '/messaging/idempotency' },
+      { label: 'AWS SQS', route: '/messaging/aws-sqs' },
+    ],
+    tip: 'Only FIFO queues get MessageDeduplicationId. Standard queues have zero native dedup — the same idempotency-key-table pattern from Kafka applies, sourced from the message body, never from MessageId.',
+    gotchas: [
+      'MessageId is a delivery-level identifier — the same logical message redelivered is not guaranteed to keep the same MessageId.',
+      'Standard queues can deliver duplicates even under completely normal operation, not just after a consumer failure or timeout.',
     ],
   },
   'messaging/idempotency': {
@@ -32134,6 +32207,41 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Compensating transactions must themselves be idempotent and retry-safe, since the coordinator might crash and need to retry a compensation.',
     ],
   },
+  'messaging/backpressure/kafka-pause-discards-its-own-resume-function': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Backpressure & Flow Control', route: '/messaging/backpressure' },
+      { label: 'kafkajs Has No buffer.memory or max.block.ms -- Those Are the Java Client\'s', route: '/messaging/backpressure/kafkajs-has-no-buffer-memory-or-max-block-ms' },
+    ],
+    tip: 'pause() returns the ONLY way to resume a partition — kafkajs never resumes automatically. Discarding that closure leaves the partition paused for the life of the consumer, regardless of any local boolean flag.',
+    gotchas: [
+      'A local JS variable flipping back to false has zero effect on the actual Kafka client state on its own.',
+      'This hub\'s own Challenge solution for this topic gets it right — capturing and calling the returned closure — while the theory codeTab originally did not.',
+    ],
+  },
+  'messaging/backpressure/kafkajs-has-no-buffer-memory-or-max-block-ms': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Backpressure & Flow Control', route: '/messaging/backpressure' },
+      { label: 'The Kafka Pause/Resume codeTab Discards Its Own Resume Function', route: '/messaging/backpressure/kafka-pause-discards-its-own-resume-function' },
+    ],
+    tip: 'kafkajs\'s ProducerConfig has exactly 8 fields — no bufferMemory, no maxBlockMs. Those are Java-client-only; kafkajs bounds send() only by maxInFlightRequests, so client-side rate limiting has to be built by hand.',
+    gotchas: [
+      'kafkajs silently ignores unrecognized config keys rather than throwing — a ported Java-client tuning setting has no effect and produces no error at all.',
+      'The Rate-Limited Producer codeTab on this same page is exactly the kind of hand-rolled mechanism kafkajs users need in place of a native buffer-memory ceiling.',
+    ],
+  },
+  'messaging/backpressure/nodejs-stream-backpressure-actually-running': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Backpressure & Flow Control', route: '/messaging/backpressure' },
+    ],
+    tip: 'write() returning false and the drain event, plus stream.pipeline()\'s automatic backpressure, were both confirmed here by actually running real Node.js stream code, not just modeling the documented behavior.',
+    gotchas: [
+      'Ignoring write()\'s boolean return value does not corrupt data — it defeats the memory-bounding purpose streams exist for, letting the internal buffer grow unboundedly.',
+      'pipeline() is doing the SAME write()/drain coordination internally — not a different mechanism, just automated.',
+    ],
+  },
   'messaging/backpressure': {
     apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
     related: [
@@ -32169,6 +32277,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Trace context must be explicitly propagated through message headers — async boundaries break the direct call chain distributed tracing relies on.',
     ],
   },
+  'messaging/aws-sqs/fifo-high-throughput-mode': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'AWS SQS', route: '/messaging/aws-sqs' },
+      { label: 'SQS Dead-Lettering Is Queue-Side, Not a Lambda Destination', route: '/messaging/aws-sqs/dlq-is-queue-not-lambda-destination' },
+    ],
+    tip: '3,000 msg/s (with batching) is the default FIFO throughput, not a ceiling — High Throughput Mode is a queue setting that raises it to tens of thousands of transactions per second per API action, no code change required.',
+    gotchas: [
+      'The throughput gain only appears when work is spread across many distinct MessageGroupIds.',
+      'Ordering and exactly-once guarantees per message group are unaffected by the mode.',
+    ],
+  },
+  'messaging/aws-sqs/dlq-is-queue-not-lambda-destination': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'AWS SQS', route: '/messaging/aws-sqs' },
+      { label: '3,000 msg/s Is FIFO\'s Default Throughput, Not Its Ceiling', route: '/messaging/aws-sqs/fifo-high-throughput-mode' },
+    ],
+    tip: 'Unlike DynamoDB Streams or Kinesis, an SQS event source mapping has no Lambda-side on-failure destination — dead-lettering is configured entirely by the RedrivePolicy on the SQS queue itself.',
+    gotchas: [
+      'A failed batch invocation is not lost by default — it just becomes visible again after the visibility timeout.',
+      'Swapping the Lambda consumer for a different one never requires reconfiguring dead-lettering, since it lives on the queue.',
+    ],
+  },
+  'messaging/aws-sqs/report-batch-item-failures': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'AWS SQS', route: '/messaging/aws-sqs' },
+      { label: 'SQS Dead-Lettering Is Queue-Side, Not a Lambda Destination', route: '/messaging/aws-sqs/dlq-is-queue-not-lambda-destination' },
+    ],
+    tip: 'ReportBatchItemFailures (FunctionResponseTypes on the event source mapping) narrows a failed batch down to only the message IDs actually reported as failed — everything else in the batch is deleted as successful.',
+    gotchas: [
+      'The event source mapping must have FunctionResponseTypes set, or the returned batchItemFailures is silently ignored.',
+      'A permanently-failing message still needs the queue\'s own maxReceiveCount/DLQ — this only controls which messages get retried, not how long.',
+    ],
+  },
   'messaging/aws-sqs': {
     apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
     related: [
@@ -32178,6 +32322,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'FIFO queues guarantee strict order and exactly-once (within a dedup window) at the cost of significantly lower throughput than standard queues.',
       'Extending visibility timeout mid-processing is the correct approach for variable/unpredictable processing time rather than guessing a fixed value.',
+    ],
+  },
+  'messaging/aws-sns-eventbridge/sns-fifo-throughput-was-raised-10x': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'AWS SNS & EventBridge', route: '/messaging/aws-sns-eventbridge' },
+      { label: 'SNS Retry Duration Depends Entirely on Endpoint Type', route: '/messaging/aws-sns-eventbridge/retry-duration-depends-on-endpoint-type' },
+    ],
+    tip: 'FIFO SNS topics default to 3,000 msg/s since November 2023, not 300 — and High Throughput mode (FifoThroughputScope=MessageGroup) raises that further while scoping deduplication to each message group instead of the whole topic.',
+    gotchas: [
+      'The High Throughput ceiling is region-dependent — up to 30,000 msg/s in us-east-1, lower elsewhere.',
+      'A dedup ID reused across two different message groups is no longer caught once MessageGroup scope is enabled.',
+    ],
+  },
+  'messaging/aws-sns-eventbridge/retry-duration-depends-on-endpoint-type': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'AWS SNS & EventBridge', route: '/messaging/aws-sns-eventbridge' },
+      { label: 'SNS FIFO Throughput Was Raised 10x, and Then Raised Again', route: '/messaging/aws-sns-eventbridge/sns-fifo-throughput-was-raised-10x' },
+    ],
+    tip: '23 days of SNS retries applies to AWS-managed endpoints (SQS, Lambda) only. HTTP/S endpoints default to about a minute of retrying and cap at 3,600 seconds even with a custom delivery policy.',
+    gotchas: [
+      'Only HTTP/S subscriptions support a customizable delivery policy at all.',
+      'The 1-hour HTTP/S retry ceiling cannot be increased, even by request.',
+    ],
+  },
+  'messaging/aws-sns-eventbridge/eventbridge-pipes-sqs-to-target': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'AWS SNS & EventBridge', route: '/messaging/aws-sns-eventbridge' },
+      { label: 'SNS Retry Duration Depends Entirely on Endpoint Type', route: '/messaging/aws-sns-eventbridge/retry-duration-depends-on-endpoint-type' },
+    ],
+    tip: 'A Pipe filter pattern matches the structured record Pipes builds from the source, not the raw message body string — for SQS, the body must be parseable JSON for a body-field filter to match anything.',
+    gotchas: [
+      'CreatePipeCommand needs Source, Target, and RoleArn at minimum — filtering and enrichment are both optional.',
+      'When Enrichment is configured, the target receives the enrichment step\'s return value, not the original record.',
     ],
   },
   'messaging/aws-sns-eventbridge': {
@@ -32237,6 +32417,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Topics with SQL-like filtered subscriptions enable pub/sub without every subscriber needing to filter irrelevant messages itself.',
       'Duplicate detection windows complement but do not replace consumer-side idempotency for messages arriving outside that window.',
+    ],
+  },
+  'messaging/azure-event-grid/retention-is-tier-capped': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Azure Event Grid', route: '/messaging/azure-event-grid' },
+      { label: 'Event Hubs\' Kafka Endpoint Doesn\'t Exist on Basic Tier', route: '/messaging/azure-event-grid/kafka-needs-standard-tier' },
+    ],
+    tip: 'Event Hub retention is capped per tier — 1 day fixed on Basic, 7 days on Standard, 90 on Premium/Dedicated — and Standard/Premium/Dedicated all default to just 1 hour until you explicitly configure it higher.',
+    gotchas: [
+      'Retention changes apply to existing events too, not just future writes.',
+      'Storage volume (84 GB per TU on Basic/Standard) can evict events before the day-based window expires.',
+    ],
+  },
+  'messaging/azure-event-grid/kafka-needs-standard-tier': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Azure Event Grid', route: '/messaging/azure-event-grid' },
+      { label: 'Event Hub Retention Is Tier-Capped, Not a Flat 1–90 Day Range', route: '/messaging/azure-event-grid/retention-is-tier-capped' },
+    ],
+    tip: 'The Kafka-compatible endpoint (port 9093) only exists on Standard tier and above. A Basic-tier namespace fails to connect, usually surfacing as a TopicAuthorizationException that reads like a credentials bug.',
+    gotchas: [
+      'Kafka consumer groups (1,000 on Standard+) are tracked separately from native consumer groups (just 1 on Basic).',
+      'There is no protocol choice at provisioning time — only a tier floor.',
+    ],
+  },
+  'messaging/azure-event-grid/domains-support-100000-topics': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Azure Event Grid', route: '/messaging/azure-event-grid' },
+      { label: 'Event Hubs\' Kafka Endpoint Doesn\'t Exist on Basic Tier', route: '/messaging/azure-event-grid/kafka-needs-standard-tier' },
+    ],
+    tip: 'An Event Grid domain supports 100,000 topics under one endpoint, not the commonly-assumed 1,000 — the real reason it exists is the 100-custom-topics-per-subscription wall.',
+    gotchas: [
+      'Domain-scope event subscriptions cap at 50, separately from the 500-per-topic limit.',
+      'Retention inside a domain topic is still 1 day, same as a standalone custom topic.',
     ],
   },
   'messaging/azure-event-grid': {

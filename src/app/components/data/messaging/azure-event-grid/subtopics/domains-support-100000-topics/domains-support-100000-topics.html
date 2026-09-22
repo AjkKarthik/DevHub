@@ -1,0 +1,26 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Event Grid &amp; Event Hubs" topicRoute="/messaging/azure-event-grid"
+    subtopicLabel="Event Grid Domains Support 100,000 Topics, Not 1,000" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">Event Grid Domains Support 100,000 Topics, Not 1,000</h1>
+  <p class="page-subtitle">A domain's real ceiling is 100,000 topics under one endpoint — the commonly-assumed "up to 1,000" figure undercounts it by two orders of magnitude.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Azure Event Grid" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the domain topic-count figure in the main page's quiz. Together with the retention and Kafka-tier subtopics, it rounds out the tier- and scale-limits picture Event Grid and Event Hubs don't spell out in one place.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Event Grid &amp; Event Hubs" topicRoute="/messaging/azure-event-grid"
+    [prev]="{ label: 'Event Hubs’ Kafka Endpoint Doesn’t Exist on Basic Tier', route: '/messaging/azure-event-grid/kafka-needs-standard-tier' }" />
+</div>

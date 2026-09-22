@@ -1,0 +1,26 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Backpressure & Flow Control" topicRoute="/messaging/backpressure"
+    subtopicLabel="The Kafka Pause/Resume codeTab Discards Its Own Resume Function" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">The Kafka Pause/Resume codeTab Discards Its Own Resume Function</h1>
+  <p class="page-subtitle">pause() returns the only way to resume a partition -- kafkajs never does it automatically, and the main page's own theory example throws that closure away.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="kafkajs" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the main page's own "Kafka Pause/Resume" codeTab, using the SAME correct pattern its own Challenge solution already demonstrates. The next subtopic moves to the producer side, checking a QnA's claim about kafkajs's own buffering configuration against its real, installed ProducerConfig.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Backpressure & Flow Control" topicRoute="/messaging/backpressure"
+    [next]="{ label: 'kafkajs Has No buffer.memory or max.block.ms -- Those Are the Java Client’s', route: '/messaging/backpressure/kafkajs-has-no-buffer-memory-or-max-block-ms' }" />
+</div>

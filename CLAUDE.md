@@ -10305,6 +10305,125 @@ Confirmed via direct file inspection before the pilot (`/messaging/messaging-fun
    Bare `azure-service-bus` SUBTOPICS key collision-free (the Azure hub's own topic uses a different key). Build
    clean; browser-verified.
    **Messaging hub Phase 10: 14 of 20 topics complete.**
+18. **The `aws-sqs` batch found and fixed TWO main-page issues**: the theory bullet claimed FIFO's default
+   throughput is a flat 300 msg/s ceiling — verified via WebSearch that AWS raised the default to 3,000 msg/s
+   (300 without batching, 3,000 with batching) back in 2020, and that High Throughput Mode (2023) removes the
+   per-queue cap entirely, scaling with the number of active message groups instead; and the Lambda-consumption
+   QnA described DLQ routing as configurable on the Lambda side — verified that SQS-triggered Lambda has no
+   on-failure destination at all (unlike DynamoDB Streams/Kinesis), dead-lettering is configured exclusively via
+   the queue's own RedrivePolicy. 3 subtopics (fifo-high-throughput-mode, dlq-is-queue-not-lambda-destination,
+   report-batch-item-failures — the last one demonstrating the real `{ batchItemFailures: [...] }` partial-batch-
+   failure return shape). Bare `aws-sqs` SUBTOPICS key collision-free. Build clean; browser-verified.
+   **Messaging hub Phase 10: 15 of 20 topics complete.**
+19. **The `aws-sns-eventbridge` batch found and fixed THREE main-page issues**: two QnAs repeating a stale
+   "300 msg/s" SNS FIFO throughput figure (verified via WebSearch: raised 10x to 3,000 msg/s in November 2023,
+   automatic, no migration needed) — one of the two deliberately left an ambiguous, unable-to-cleanly-verify
+   "100,000/s standard" comparison figure untouched rather than risk an incorrect correction; and mistake #2's
+   blanket "23 days" DLQ redelivery-window claim, which only applies to AWS-managed SNS endpoints — HTTP/S
+   subscriptions default to ~60 seconds with a 3,600-second (1 hour) maximum, a completely different scale. 3
+   subtopics (sns-fifo-throughput-was-raised-10x, retry-duration-depends-on-endpoint-type,
+   eventbridge-pipes-sqs-to-target). Bare `aws-sns-eventbridge` SUBTOPICS key collision-free. Build clean;
+   browser-verified. **Messaging hub Phase 10: 16 of 20 topics complete.**
+20. **The `idempotency` batch found and fixed one main-page issue, source-verified against a fresh, locally
+   installed `kafkajs@2.2.4`**: the "Kafka Idempotent Producer" codeTab's own comment claimed
+   `maxInFlightRequests: 5` is "required with idempotent" — reading kafkajs's real installed source
+   (`producer/messageProducer.js`) directly showed the ONLY validation it performs for an idempotent producer is
+   on `acks` (throws `KafkaJSNonRetriableError` if `acks !== -1`); `maxInFlightRequests` is never checked against
+   `idempotent` anywhere in the library. The real "why 5" reason is a Kafka broker/protocol constraint (the
+   broker only tracks the last 5 sequence numbers per producer-partition for dedup, confirmed via WebSearch
+   against Apache Kafka's own producer-configs docs and a KIP-98 discussion) — a real constraint, just not one
+   kafkajs enforces for you. 3 subtopics: the source-verified finding with a broker-dedup-window model (verified
+   via direct Node execution: `maxInFlightRequests=5` correctly deduplicates a retried batch, `=6` wrongly
+   accepts it as new); the Redis SET NX QnA's one-step "SET key result NX" description tightened into the real,
+   necessary two-phase pattern (claim with a placeholder, then overwrite with the real result — the QnA as
+   literally written can't work, since the result doesn't exist before processing), including the crash-mid-
+   processing edge case where a stuck "IN_PROGRESS" placeholder needs its TTL as the actual recovery mechanism;
+   and applying the same idempotency-key-table technique to SQS Standard queues, which (confirmed via this hub's
+   own already-verified AWS SQS page) have zero native deduplication, sourced from the message body rather than
+   the delivery-level `MessageId`. No `SUBTOPICS` collision for `idempotency` (checked both forms, confirmed
+   collision-free, left bare). Build clean (a first production-build attempt hung for 11+ hours under severe
+   concurrent-process CPU contention from a still-running dev server that a prior `pkill` attempt had failed to
+   actually kill — killed all stale processes and reran the build cleanly, isolated from any dev server, which
+   completed normally in the expected ~15 minutes). Browser-verified: no console errors; nav accordion opens with
+   all 3 subtopic links; the main-page fix confirmed rendering live only after clicking the code-block's own
+   specific tab button ("Kafka Idempotent & Transactional Producer") — a single "View Code" toggle expand alone
+   is insufficient when a codeTab has multiple tabs, since only the currently-ACTIVE tab's code is in the DOM;
+   all 3 subtopic pages checked individually — correct h1/breadcrumb, 860px wrapper via `getComputedStyle`.
+   **Messaging hub Phase 10: 17 of 20 topics complete.**
+21. **The `message-ordering` batch found and fixed a genuine retry-safety bug in the main page's own "SQS FIFO
+   Ordering" codeTab**: `MessageDeduplicationId: randomUUID()` generated a fresh ID on every send — verified via
+   WebSearch (and a real, publicly filed GitHub issue against a widely used Spring Cloud AWS library reporting
+   this EXACT bug, `SqsTemplate` auto-generating a random dedup ID and silently breaking content-based
+   deduplication) that this defeats the entire purpose of the field: a retry of the same send gets a DIFFERENT
+   ID and is never recognized as a duplicate. Fixed to a stable, business-derived key
+   (`` `${orderId}-${eventType}` ``), removing the now-unused `randomUUID` import. 3 subtopics, all Node-verified:
+   (1) the retry-safety fix reproduced via a `FakeFifoQueue` simulation (random ID: both the original send and
+   its retry are "delivered" — a real duplicate; stable ID: the retry is correctly "deduplicated"), with a Try
+   It on the opposite failure mode (a key TOO stable collapsing two genuinely different events); (2) the
+   precise mechanism behind the main page's own max.in.flight QnA claim that an idempotent producer "handles
+   reordering up to 5 in-flight safely" — corrected the common "messages swap places" mental model to the real
+   one (an earlier message DUPLICATES BACK into the log after a later one succeeds, verified via a corrected
+   two-attempt `IdempotentPartitionLog` model — an earlier, backwards-ordered draft of this exact model was
+   caught and rebuilt before publishing, once its own output revealed batch-A never landed in the log at all);
+   (3) the FIFO per-group (not queue-wide) head-of-line-blocking mechanism the main page's own quiz Q6 already
+   describes in prose but never demonstrates, verified via WebSearch against AWS's own FIFO-queue-logic and
+   backlog docs (including the practical caveat that FIFO's own bounded scan window means an unbounded single-
+   group backlog can still delay OTHER groups' visibility even though their ordering guarantee holds). Real
+   `SUBTOPICS` collision avoided: `message-ordering` itself was collision-free, left bare. **A genuine stale-
+   route artifact hit and resolved**: the 3 new subtopic routes initially fell through to the app's own `**`
+   wildcard redirect (silently landing on the home page, h1 "Learn. Build. Ship.") even after the dev server's
+   NG2008 timing error (from the `.ts` file existing before its `.html` sibling) had resolved — fixed with the
+   established remedy, a forced fresh file-write on `app.routes.ts` itself (append a blank line, then trim it
+   back out), confirmed via the log's own "Application bundle generation complete" timestamp that a genuine
+   fresh rebuild picked up the routes correctly afterward. Build clean (production build run in isolation, no
+   concurrent dev server, after the idempotency batch's own hang taught this lesson). Browser-verified together
+   with the idempotency batch in one combined Playwright pass: no console errors across all 8 pages spanning
+   both topics; both main-page fixes confirmed rendering live (required querying the stable `.toggle-btn` CSS
+   class rather than button TEXT, since "View Code"/"Hide Code" text changes after the first click and breaks a
+   text-based locator iterating over multiple toggles); all 3 subtopic pages checked individually — correct
+   h1/breadcrumb, 860px wrapper. **Both the `idempotency` and `message-ordering` batches were committed together
+   in one commit**, since their shared-file wiring (nav accordion, breadcrumb, sidebar, search index) landed in
+   single contiguous git diff hunks per file — confirmed via direct diff inspection that the two topics'
+   insertions were adjacent, non-separable line ranges, making a clean per-topic commit split impractical without
+   manual patch editing; the commit message names both topics and batches explicitly instead.
+   **Messaging hub Phase 10: 19 of 20 topics complete (this combined batch covered both 18/20 and
+   19/20).**
+22. **The `backpressure` batch — the 20th and FINAL topic — found and fixed THREE main-page issues, the star
+   finding source-verified via kafkajs's own installed `runner.js`**: the "Kafka Pause/Resume" codeTab called
+   `pause()` and discarded its return value, then claimed in a comment that "Kafka will automatically resume when
+   the consumer polls again after pause()" — reading `consumer/runner.js` directly showed `pause()` immediately
+   pauses the partition and RETURNS a closure (`() => this.consumerGroup.resume(...)`) that is the ONLY way to
+   resume it; there is no automatic-resume mechanism anywhere in kafkajs. The SAME page's own Challenge reference
+   solution already gets this right (`resumeFn = pause(); ... resumeFn?.();`), making this a real case of one
+   page's own two code samples disagreeing — fixed the theory codeTab to match the Challenge's own correct
+   pattern. Separately, a QnA described `max.block.ms`/`buffer.memory` as how "Kafka" implements producer-side
+   backpressure — verified by reading kafkajs's own installed `ProducerConfig` TypeScript type directly (exactly
+   8 fields: `createPartitioner`, `retry`, `metadataMaxAge`, `allowAutoTopicCreation`, `idempotent`,
+   `transactionalId`, `transactionTimeout`, `maxInFlightRequests` — neither field exists) that these are Java-
+   client-specific configs with no kafkajs equivalent at all — the SAME conflation bug already found on this
+   hub's own `kafka-producers-consumers` page (batch.size/linger.ms), now confirmed a THIRD time on a different
+   page. Tightened the QnA to state kafkajs has no buffer-memory backpressure mechanism, tying it directly to
+   the page's own Rate-Limited Producer codeTab as the real client-side mechanism kafkajs users need instead. A
+   third, minor fix: removed an unused `TopicPartitions` import from the Challenge solution (a real, valid
+   kafkajs type — confirmed via its own `.d.ts` — just never referenced anywhere in the solution code). 3
+   subtopics: (1) the pause/resume fix, with a Node-verified `FakePartition` model proving a discarded closure
+   leaves `partitionStillPaused: true` even after a local flag flips, while the captured-and-called closure
+   correctly resumes it; (2) the ProducerConfig finding, with a Node-verified check confirming no
+   `bufferMemory`/`maxBlockMs` field exists on the real config shape; (3) a genuinely different-in-kind subtopic
+   for this hub — real, ACTUALLY EXECUTED Node.js stream code (not a model) verifying the main page's own
+   streams QnA: `write()` returning `false` under a small `highWaterMark` plus the matching `drain` event
+   (measured: `true, false, [drain], true, false, [drain], true` across 5 writes), and `stream.pipeline()`'s
+   automatic backpressure (measured: a fast Readable piped into a 30ms-per-write slow Writable took ~156ms
+   total — proof it was genuinely held back to the Writable's pace, not buffered upfront). No `SUBTOPICS`
+   collision for `backpressure` (checked both forms, confirmed collision-free, left bare). Build clean
+   (production build run in isolation, no concurrent dev server). Browser-verified: no console errors; both
+   main-page fixes confirmed rendering live (the pause/resume fix required clicking the code-block's own
+   specific "Kafka Pause/Resume" tab button after expanding "View Code," matching the same multi-tab lesson
+   from the idempotency batch); all 3 subtopic pages checked individually — correct h1/breadcrumb, 860px
+   wrapper; **a final hub-wide check confirmed exactly 20 `.nav-subtopics-toggle` elements render across the
+   entire Messaging/Kafka hub, one per topic — every topic in the hub now has subtopics**.
+   **This completes the Messaging/Kafka hub's entire Phase 10 rollout — all 20 topics now have deep-dive
+   subtopic pages, 60 subtopic pages total across the hub, finished 2026-09-22.**
 
 ## Current state (update when it changes!)
 
@@ -10681,15 +10800,27 @@ Confirmed via direct file inspection before the pilot (`/messaging/messaging-fun
   All 22 cards `available: true` in `data/messaging/home/home.ts`. Progress: `kafkaTotal=20` in progress.service.ts.
   Messaging pages use `app-common-mistakes` AND `app-revision-card`. Reference pages (monitoring, messaging-security) have no PageComplete.
   Challenge.language: `'typescript'`. MessagingNavComponent at `shared/messaging-nav/messaging-nav.ts`.
-  Phase 10: **14 of 20 topics have subtopics** (`/messaging/messaging-fundamentals`, pilot batch,
-  2026-09-20; `/messaging/message-queues-vs-streams`, 2026-09-20; `/messaging/rabbitmq-core`,
+  Phase 10: **COMPLETE — 20 of 20 topics have subtopics** (`/messaging/messaging-fundamentals`,
+  pilot batch, 2026-09-20; `/messaging/message-queues-vs-streams`, 2026-09-20; `/messaging/rabbitmq-core`,
   2026-09-20; `/messaging/rabbitmq-exchanges`, 2026-09-20; `/messaging/rabbitmq-patterns`,
   2026-09-20; `/messaging/kafka-architecture`, 2026-09-20; `/messaging/kafka-producers-consumers`,
   2026-09-20; `/messaging/kafka-streams`, 2026-09-20; `/messaging/kafka-connect`, 2026-09-20;
-  `/messaging/schema-registry`, 2026-09-20; `/messaging/messaging-patterns`, 2026-09-20; `/messaging/saga-pattern`, 2026-09-20; `/messaging/outbox-pattern`, 2026-09-20; `/messaging/azure-service-bus`, 2026-09-20) — see "Messaging/Kafka hub subtopic wiring" section above for the
+  `/messaging/schema-registry`, 2026-09-20; `/messaging/messaging-patterns`, 2026-09-20;
+  `/messaging/saga-pattern`, 2026-09-20; `/messaging/outbox-pattern`, 2026-09-20;
+  `/messaging/azure-service-bus`, 2026-09-20; `/messaging/aws-sqs`, 2026-09-22; `/messaging/aws-sns-eventbridge`,
+  2026-09-22; `/messaging/idempotency`, 2026-09-22; `/messaging/message-ordering`, 2026-09-22;
+  `/messaging/backpressure`, 2026-09-22, finished 2026-09-22, 60 subtopic pages total across the hub) —
+  see "Messaging/Kafka hub subtopic wiring" section above for the
   `MessagingNavComponent` accordion structural fix (18th `*NavComponent` hub in a row) and the
-  three genuine main-page inaccuracies found and fixed (DLX-less nack "sends to DLQ", RabbitMQ
-  wrongly listed as pull-based, unscoped SQS FIFO exactly-once claim).
+  genuine main-page inaccuracies found and fixed throughout the rollout (a DLX-less nack "sends to
+  DLQ", RabbitMQ wrongly listed as pull-based, an unscoped SQS FIFO exactly-once claim, stale SNS
+  FIFO throughput/DLQ figures, a kafkajs `maxInFlightRequests` comment claiming an enforcement
+  kafkajs's own source never performs, an SQS FIFO codeTab generating its own `MessageDeduplicationId`
+  fresh per send — defeating retry safety, matching a real filed bug in a Spring Cloud AWS library —
+  and, on the hub's final topic, a Kafka `pause()`/resume codeTab that discarded its own resume
+  closure plus a QnA describing Java-client-only `max.block.ms`/`buffer.memory` producer configs as
+  if kafkajs supported them, when its real, installed `ProducerConfig` has no such fields at all).
+  **This completes the Messaging/Kafka hub's entire Phase 10 rollout.**
 - **Testing hub**: 19 trackable topic pages + 3 reference pages (22 cards total). Feature-complete.
   Indigo theme `$accent: #6366f1`, `$tint: #eef2ff`, dark `#a5b4fc`, dark bg `#1e1b4b`. Search prefix `test-`. Route: `/testing-hub`.
   CSS classes: `.test-page`, `.test-icon`, `.test-section`. Icon content: `✓` at `font-size: 1.8rem`. `tech="javascript"`.

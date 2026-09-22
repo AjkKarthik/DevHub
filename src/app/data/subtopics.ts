@@ -4197,4 +4197,34 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Duplicate Detection, Sessions and Expiry Dead-Lettering Are All Fixed at Queue Creation', route: '/messaging/azure-service-bus/settings-fixed-at-queue-creation' },
     { label: 'A Message That Matches No Subscription Filter Is Not Dead-Lettered', route: '/messaging/azure-service-bus/unmatched-filter-is-not-dead-lettered' },
   ],
+  'azure-event-grid': [
+    { label: 'Event Hub Retention Is Tier-Capped, Not a Flat 1–90 Day Range', route: '/messaging/azure-event-grid/retention-is-tier-capped' },
+    { label: 'Event Hubs\' Kafka Endpoint Doesn\'t Exist on Basic Tier', route: '/messaging/azure-event-grid/kafka-needs-standard-tier' },
+    { label: 'Event Grid Domains Support 100,000 Topics, Not 1,000', route: '/messaging/azure-event-grid/domains-support-100000-topics' },
+  ],
+  'aws-sqs': [
+    { label: '3,000 msg/s Is FIFO\'s Default Throughput, Not Its Ceiling', route: '/messaging/aws-sqs/fifo-high-throughput-mode' },
+    { label: 'SQS Dead-Lettering Is Queue-Side, Not a Lambda Destination', route: '/messaging/aws-sqs/dlq-is-queue-not-lambda-destination' },
+    { label: 'Rescuing Successful Messages From a Failed Batch With ReportBatchItemFailures', route: '/messaging/aws-sqs/report-batch-item-failures' },
+  ],
+  'aws-sns-eventbridge': [
+    { label: 'SNS FIFO Throughput Was Raised 10x, and Then Raised Again', route: '/messaging/aws-sns-eventbridge/sns-fifo-throughput-was-raised-10x' },
+    { label: 'SNS Retry Duration Depends Entirely on Endpoint Type', route: '/messaging/aws-sns-eventbridge/retry-duration-depends-on-endpoint-type' },
+    { label: 'Building an EventBridge Pipe: SQS Source to a Filtered Target', route: '/messaging/aws-sns-eventbridge/eventbridge-pipes-sqs-to-target' },
+  ],
+  'idempotency': [
+    { label: 'kafkajs Does Not Enforce maxInFlightRequests for Idempotence', route: '/messaging/idempotency/kafkajs-does-not-enforce-max-in-flight' },
+    { label: 'The Redis SET NX Pattern Needs Two Phases, Not One', route: '/messaging/idempotency/redis-set-nx-needs-two-phases' },
+    { label: 'Idempotency Keys for SQS Standard Queues (No Native Dedup)', route: '/messaging/idempotency/sqs-standard-has-no-native-dedup' },
+  ],
+  'message-ordering': [
+    { label: 'A Random MessageDeduplicationId Silently Defeats SQS FIFO\'s Retry Safety', route: '/messaging/message-ordering/random-dedup-id-defeats-sqs-fifo-retry-safety' },
+    { label: 'How the Idempotent Producer Actually Prevents Retry-Induced Reordering', route: '/messaging/message-ordering/how-idempotent-producer-prevents-retry-reordering' },
+    { label: 'FIFO Group Blocking Is Per-Group, Not Queue-Wide', route: '/messaging/message-ordering/fifo-group-blocking-is-per-group-not-queue-wide' },
+  ],
+  'backpressure': [
+    { label: 'The Kafka Pause/Resume codeTab Discards Its Own Resume Function', route: '/messaging/backpressure/kafka-pause-discards-its-own-resume-function' },
+    { label: 'kafkajs Has No buffer.memory or max.block.ms -- Those Are the Java Client\'s', route: '/messaging/backpressure/kafkajs-has-no-buffer-memory-or-max-block-ms' },
+    { label: 'Node.js Stream Backpressure, Actually Running', route: '/messaging/backpressure/nodejs-stream-backpressure-actually-running' },
+  ],
 };

@@ -1,0 +1,27 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Idempotency & Dedup" topicRoute="/messaging/idempotency"
+    subtopicLabel="The Redis SET NX Pattern Needs Two Phases, Not One" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">The Redis SET NX Pattern Needs Two Phases, Not One</h1>
+  <p class="page-subtitle">You cannot SET the result before you have computed it -- a real Redis idempotency key needs a placeholder claim first, then the real result second.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Redis" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This tightens the main page's own Redis QnA into a working two-phase implementation. The final subtopic moves to a broker this hub already covers in depth -- SQS -- where the "at-least-once, no native dedup" case is even starker than for Kafka.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Idempotency & Dedup" topicRoute="/messaging/idempotency"
+    [prev]="{ label: 'kafkajs Does Not Enforce maxInFlightRequests for Idempotence', route: '/messaging/idempotency/kafkajs-does-not-enforce-max-in-flight' }"
+    [next]="{ label: 'Idempotency Keys for SQS Standard Queues (No Native Dedup)', route: '/messaging/idempotency/sqs-standard-has-no-native-dedup' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="AWS SNS &amp; EventBridge" topicRoute="/messaging/aws-sns-eventbridge"
+    subtopicLabel="SNS FIFO Throughput Was Raised 10x, and Then Raised Again" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">SNS FIFO Throughput Was Raised 10x, and Then Raised Again</h1>
+  <p class="page-subtitle">300 msg/s per FIFO topic stopped being the default in November 2023 — and High Throughput mode raises it further, at the cost of scoping deduplication to the message group instead of the whole topic.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Amazon SNS" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the two QnAs restating the stale 300 msg/s figure. The next subtopic corrects a separate, similarly overgeneralized claim about SNS retry duration.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="AWS SNS & EventBridge" topicRoute="/messaging/aws-sns-eventbridge"
+    [next]="{ label: 'SNS Retry Duration Depends Entirely on Endpoint Type', route: '/messaging/aws-sns-eventbridge/retry-duration-depends-on-endpoint-type' }" />
+</div>

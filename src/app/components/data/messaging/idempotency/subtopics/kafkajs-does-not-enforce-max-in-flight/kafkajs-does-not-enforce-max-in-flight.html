@@ -1,0 +1,26 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Idempotency & Dedup" topicRoute="/messaging/idempotency"
+    subtopicLabel="kafkajs Does Not Enforce maxInFlightRequests for Idempotence" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">kafkajs Does Not Enforce maxInFlightRequests for Idempotence</h1>
+  <p class="page-subtitle">Unlike acks, which kafkajs actively rejects if set wrong, maxInFlightRequests is never validated against idempotent -- getting it wrong runs silently and just breaks the guarantee.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="kafkajs" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the main page's own "required with idempotent" comment on maxInFlightRequests. The next subtopic moves from the producer side to the consumer side of idempotency, fixing an imprecise Redis pattern the main page's own QnA describes.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Idempotency & Dedup" topicRoute="/messaging/idempotency"
+    [next]="{ label: 'The Redis SET NX Pattern Needs Two Phases, Not One', route: '/messaging/idempotency/redis-set-nx-needs-two-phases' }" />
+</div>

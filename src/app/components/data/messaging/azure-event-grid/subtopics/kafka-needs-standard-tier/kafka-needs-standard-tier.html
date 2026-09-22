@@ -1,0 +1,27 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Event Grid &amp; Event Hubs" topicRoute="/messaging/azure-event-grid"
+    subtopicLabel="Event Hubs' Kafka Endpoint Doesn't Exist on Basic Tier" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">Event Hubs' Kafka Endpoint Doesn't Exist on Basic Tier</h1>
+  <p class="page-subtitle">Kafka protocol support needs Standard tier or above — pointing a Kafka client at a Basic-tier namespace fails, usually looking like a credentials bug instead of a tier limit.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Azure Event Hubs" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the main page's Kafka-compatibility QnA, which never mentioned that Basic tier has no Kafka endpoint at all. The domain topic-count limit is a separate, Event-Grid-side correction covered next.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Event Grid &amp; Event Hubs" topicRoute="/messaging/azure-event-grid"
+    [prev]="{ label: 'Event Hub Retention Is Tier-Capped, Not a Flat 1-90 Day Range', route: '/messaging/azure-event-grid/retention-is-tier-capped' }"
+    [next]="{ label: 'Event Grid Domains Support 100,000 Topics, Not 1,000', route: '/messaging/azure-event-grid/domains-support-100000-topics' }" />
+</div>

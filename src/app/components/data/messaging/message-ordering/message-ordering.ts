@@ -168,7 +168,6 @@ async function processEvent(entityId: string, seq: number, event: unknown) {
       label: 'SQS FIFO Ordering',
       language: 'typescript',
       code: `import { SQSClient, SendMessageCommand, ReceiveMessageCommand, DeleteMessageCommand } from '@aws-sdk/client-sqs';
-import { randomUUID } from 'crypto';
 
 const sqs      = new SQSClient({ region: 'us-east-1' });
 const FIFO_URL = process.env.SQS_FIFO_URL!;  // must end in .fifo
@@ -182,7 +181,10 @@ async function publishOrderEvents(orderId: string) {
       QueueUrl:               FIFO_URL,
       MessageBody:            JSON.stringify({ orderId, eventType }),
       MessageGroupId:         orderId,         // FIFO within this group
-      MessageDeduplicationId: randomUUID(),    // prevent broker duplicates
+      // Stable, NOT random — a fresh UUID on every send defeats dedup:
+      // if this SendMessageCommand itself gets retried (network blip, SDK
+      // retry), a random ID makes the retry look like a brand-new message.
+      MessageDeduplicationId: \`\${orderId}-\${eventType}\`,
     }));
     console.log(\`Sent: \${orderId} → \${eventType}\`);
   }
