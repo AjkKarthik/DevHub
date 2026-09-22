@@ -9869,6 +9869,442 @@ this same check before any other new hub's first subtopic set:
    pages checked individually — correct h1/breadcrumb (all 4 levels), 860px wrapper via
    `getComputedStyle`, tailored (not DEFAULT) sidebar content confirmed on all three. **GraphQL
    hub Phase 10: 15 of 20 topics complete.**
+23. **The `client-caching` batch — the second topic in the Client nav group — found and fixed TWO
+   genuine main-page inaccuracies, both verified rather than assumed**: the `cache.modify` theory
+   bullet and a separate QnA both overstated what the `INVALIDATE` sentinel does — verified via
+   Apollo's own GitHub issue #7060 that `INVALIDATE` alone does NOT change a field's cached value
+   or force a network fetch; with the default `cache-first` fetchPolicy, a query re-reading an
+   invalidated-but-unchanged field sees the identical value and typically never hits the network
+   at all. The documented, actually-working pattern is wrapping the `cache.modify` call inside
+   `client.refetchQueries({ updateCache })`. Fixed both the theory bullet and the QnA. Separately,
+   the InMemoryCache normalization theory bullet had the embedded-vs-referenced relationship
+   backwards — it framed unnormalized objects (no `id`, or `keyFields: false`) as being "by
+   reference," when Apollo's own docs confirm the OPPOSITE: they're stored EMBEDDED (inline,
+   duplicated) inside their parent's own cache entry; Apollo's own `Reference` type (a `{ __ref:
+   'Type:id' }` pointer) specifically represents a NORMALIZED entity — the case an id-less/
+   keyFields:false object never becomes. Fixed the bullet to state this correctly. Three
+   subtopics: (1) **fix-adjacent** — the verified INVALIDATE-does-nothing-alone finding, with the
+   `refetchQueries({ updateCache })` pattern shown as the real fix; (2) **fix-adjacent** — the
+   embedded-vs-normalized distinction made concrete, contrasting a `Reference` object's shape
+   against an embedded object's inline duplication; (3) **gap-closing** — `apollo3-cache-persist`'s
+   real API (`await persistCache({ cache, storage })` MUST be awaited BEFORE `new ApolloClient()`
+   is constructed, to avoid a race where an already-mounted component reads from the still-empty
+   cache before restoration finishes), verified via research rather than assumed. **A real
+   delimiter-collision gotcha caught proactively during authoring, before it could break a
+   sibling page**: the second subtopic's title was initially drafted containing a literal double
+   quote (`'Unnormalized Objects Are Embedded, Not "By Reference"'`) — since a subtopic's own title
+   is embedded verbatim as a `[prev]`/`[next]` label on sibling pages, and the label string is
+   itself wrapped in a double-quoted Angular attribute, a literal `"` would have collided with the
+   OUTER delimiter the moment any sibling page referenced it, with no safe entity-escape available
+   for this specific case (unlike the apostrophe case, which uses the typographic curly quote).
+   Fixed by rephrasing to `'Unnormalized Objects Are Embedded, Never Referenced'` before any
+   sibling reference was ever created. A `’` JS-unicode-escape sequence typed literally into
+   both a `.ts` string field and an `.html` attribute was initially suspected as a mistake but
+   confirmed, via direct `Read`, to have already resolved correctly to the real curly-quote
+   character (’) at write time — a false alarm caught by verifying rather than assuming. Also
+   proactively kept the third subtopic's slug short (`persisting-cache-apollo3`, 24 chars) from
+   the start, avoiding the original, longer planned slug
+   (`persisting-cache-with-apollo3-cache-persist`, 44 chars) to stay well clear of the Windows
+   MAX_PATH ceiling before ever creating the folder. No `SUBTOPICS` collision for `client-caching`
+   (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed
+   collision-free, left bare). Build passed clean (`EXITCODE:0`, zero real `ERROR` lines).
+   Browser-verified: no console errors on any of the 4 pages; nav accordion opens with all 3
+   subtopic links (toggle count 16 across the hub); both main-page fixes confirmed rendering live
+   via direct component-data inspection; all 3 subtopic pages checked individually — correct
+   h1/breadcrumb (all 4 levels, including the curly-quote `[prev]`/`[next]` label rendering
+   correctly), 860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content
+   confirmed on all three. **GraphQL hub Phase 10: 16 of 20 topics complete.**
+24. **The `code-generation` batch — the third and final topic in the Client nav group — found and
+   fixed a genuine main-page inaccuracy, verified against GraphQL Code Generator's own client-
+   preset docs before publishing**: the "Client Usage" codeTab's own comment claimed
+   `data.post.author.name has type string` for a field spread with a fragment (`author {
+   ...AuthorFields }`) — but client-preset enables fragment masking ON BY DEFAULT, verified via
+   WebFetch against the-guild.dev's own client-preset page ("the client-preset comes with
+   Fragment Masking enabled by default"). A masked field is generated as an opaque
+   `FragmentType<...>`, not the fragment's real shape — direct access to `post.author.name` is a
+   TypeScript compile error, not a working shortcut; `useFragment(AUTHOR_FIELDS, post.author)` is
+   required to unmask it first. The codeTab's own JSX never actually tried to read
+   `.author.name` — only the trailing COMMENT made the incorrect claim, exactly the kind of gap a
+   build never catches since the code itself compiled fine either way. Fixed the codeTab's
+   comment and tightened the vague "Fragments are typed separately" theory bullet into a precise
+   statement of the real default behavior. Three subtopics, each verified before writing: (1)
+   **fix-adjacent** — a broken-vs-fixed codeTab pair (direct access producing the exact TS2339
+   error vs. the correct `useFragment()` unwrap), with a Try It on why casting a masked field to
+   `any` silently defeats the coupling-prevention masking exists for, rather than solving it; (2)
+   **gap-closing** — the QnA names `near-operation-file` in one sentence and never sets it up;
+   verified via WebFetch against the preset's own official docs that it needs TWO codegen
+   outputs (a plain `typescript`-plugin base-types file plus the preset itself, wired together via
+   `baseTypesPath`), plus a real gotcha the QnA never mentions — a documents glob broad enough to
+   match `.tsx` files re-scans the preset's own `.generated.tsx` output on the next run unless
+   explicitly excluded (`src/**/!(*.generated).{ts,tsx}`); (3) **gap-closing** — the QnA names two
+   ways to authenticate against a protected introspection endpoint (URL-config headers, or a
+   committed pre-downloaded schema file) in one sentence with zero code for either; verified the
+   real `schema` field's URL-keyed-object-with-headers config shape via WebSearch against
+   GraphQL Code Generator's own config reference, built both approaches, and traced the genuine,
+   unavoidable tradeoff neither one eliminates (a live-URL config fails the whole build on a brief
+   API outage; a committed file trades that risk for silent staleness if nobody refreshes it).
+   Nested `${...}` interpolation inside a backtick-wrapped auth header, and a shell
+   line-continuation backslash inside an illustrative curl comment, were both verified correct by
+   extracting the exact stored codeTab body and evaluating it as a real JS template literal before
+   trusting it, per the established verification technique — both resolved to the intended
+   literal output, not double-escaped stray backslashes. No `SUBTOPICS` collision for
+   `code-generation` (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly,
+   confirmed collision-free, left bare). All three `.ts` files and the main-page edit swept clean
+   via the standing apostrophe/bracket-balance/backtick-parity scripts — two flagged apostrophe
+   matches in the third subtopic confirmed safe (inside the backtick-delimited `code:` field's own
+   comment lines, which tolerate bare apostrophes fine). Build passed clean (`EXITCODE:0`, zero
+   real `ERROR` lines). Browser-verified against a fresh dev-server cold-start: no console errors
+   on any of the 4 pages; nav accordion opens with all 3 subtopic links (toggle count 17 across
+   the hub, confirmed both via `window.ng.getComponent()` direct calls and a live
+   `.nav-subtopic-link` DOM query); both main-page fixes confirmed rendering live via direct
+   component-data inspection; all 3 subtopic pages checked individually — correct h1/breadcrumb
+   (all 4 levels), 860px wrapper via `getComputedStyle`, tailored (not DEFAULT) sidebar content
+   confirmed on all three. **This completes the GraphQL hub's Client nav group** (apollo-client,
+   client-caching, code-generation — all 3 of 3 topics now have subtopics). **GraphQL hub Phase
+   10: 17 of 20 topics complete.**
+25. **The `performance` batch — the first topic in the Advanced nav group — found and fixed THREE
+   genuine main-page issues, verified against Apollo Server's own official caching docs and a
+   live graphql-js install rather than assumed**: the `@cacheControl` codeTab's own directive
+   definition used `CacheScope` for its enum, a name never actually declared anywhere in Apollo
+   Server's real schema-level convention — verified against Apollo's own docs the correct name is
+   `CacheControlScope`, and the full definition also needs `INTERFACE | UNION` locations plus an
+   `inheritMaxAge: Boolean` field the original omitted. Separately, the "minimum maxAge across
+   selected fields" theory bullet only stated HALF the real rule — verified via WebFetch that the
+   response's overall `scope` independently becomes `PRIVATE` if ANY selected field is `PRIVATE`,
+   a second axis the original bullet never mentioned at all. Third, and most substantial: the
+   "batched query" QnA conflated two genuinely unrelated mechanisms — its own example,
+   `mutation { m1: login(...) m2: login(...) }`, is ordinary aliased-root-field GraphQL syntax
+   within ONE operation, completely unaffected by any batching config, while "disabling query
+   batching" (the QnA's own listed mitigation) refers to Apollo Server 4's separate
+   `allowBatchedHttpRequests` option (off by default since v4), which only blocks an ARRAY of
+   independent operations in one POST body. The QnA's own prescribed fix does nothing for its own
+   example. Rewrote all three. Three subtopics, each independently verified: (1) **fix-adjacent**
+   — reproduces Apollo's own documented cache-header algorithm as a real function (`Math.min` for
+   maxAge, `.some()` for the PRIVATE-if-any-private scope rule), matching the main page's own
+   `Post` type example exactly (title maxAge 300 + author maxAge 0/PRIVATE → overall maxAge 0,
+   scope PRIVATE); (2) **fix-adjacent** — a real root-field-count `ValidationRule`, verified
+   end-to-end against a freshly-installed `graphql` package that it genuinely rejects a 5-field
+   aliased-login attack document with the exact claimed error message while passing a compliant
+   2-field mutation clean, closing the gap the batching-disable "fix" cannot; (3) **gap-closing**
+   — graphql-armor's real `block-field-suggestions` mechanism, verified by fetching its own source
+   directly (`error.message.replace(/Did you mean ".+"\?/g, mask)`, a post-hoc regex strip during
+   `onValidate`, NOT a suppression of graphql-js's own suggestion computation) and reproducing the
+   underlying leak itself — a plain validation error against a guessed near-miss field name leaks
+   the real field name via "Did you mean" with introspection fully disabled the whole time,
+   confirmed via direct execution against real graphql-js. **A real bare-`@word`-in-static-HTML
+   gotcha caught by the standard sweep, not the build**: the first subtopic's own page-subtitle
+   contained a literal `@cacheControl` as bare text-node content — fixed with the standard
+   `&#64;` entity escape, confirmed rendering as literal text afterward. SUBTOPICS key
+   hub-prefixed to `gql-performance` — bare `performance` collides with the Node.js hub's own
+   topic. All 6 touchpoints wired. Build passed clean (`EXITCODE:0`, zero real `ERROR` lines).
+   Browser-verified: no console errors on any of the 4 pages; nav accordion opens with all 3
+   subtopic links (toggle count 18 across the hub); all three main-page fixes confirmed rendering
+   live via direct component-data inspection; all 3 subtopic pages checked individually — correct
+   h1/breadcrumb (all 4 levels), 860px wrapper via `getComputedStyle`, tailored (not DEFAULT)
+   sidebar content confirmed on all three. **GraphQL hub Phase 10: 18 of 20 topics complete.**
+26. **The `federation` batch — the second topic in the Advanced nav group — found and fixed THREE
+   genuine main-page issues, verified via a dedicated research agent fetching Apollo's own
+   Federation docs (not assumed)**: (a) a theory bullet claimed "Federation v2 removes the gateway
+   in favor of the Apollo Router" — false: Federation v2 is a composition/spec version decoupled
+   from the runtime; `@apollo/gateway` 2.0+ still works with v2 subgraphs, Apollo Router is a
+   separate Rust runtime Apollo recommends for performance but does not require, and very recent
+   Router releases (1.60+) actually DROPPED Federation v1 supergraph support — the relationship
+   runs the opposite direction from the claim; (b) the "incremental adoption via `@link`" bullet
+   omitted that a missing `@link` does NOT fail composition — verified quote from Apollo's own
+   migration docs: without it "composition considers a schema to be a Federation 1 schema" — a
+   silent fallback, and opt-in is per-subgraph (the `federation_version` key exists only in rover's
+   `supergraph.yaml`, not in a subgraph's own SDL); (c) the `__resolveReference` bullet said the
+   Router "calls it with multiple references at once" — the Router batches into ONE `_entities`
+   call (network level), but the subgraph still resolves each representation separately, so
+   DataLoader batches the underlying DB lookups, not the GraphQL call. Verified (b)'s detection
+   regex and (c)'s batching via direct Node execution (naive: 4 DB calls; batched: 1 batch
+   invocation, 3 deduped lookups, results still in input order); verified the nested double-backslash
+   regex escaping in a codeTab by extracting and evaluating the exact stored body. Confirmed the
+   agent also verified two claims accurate and left them alone (`@requires` example shape, `rover
+   dev --supergraph-config` syntax). Bare `federation` checked collision-free (both `subtopics.ts`
+   forms and a direct `app.routes.ts` grep), left bare; `GqlNavComponent`'s federation link was a
+   plain single-line `<a>` before this batch and needed the full accordion block added. A bash
+   heredoc collapsed the backslashes in a Windows path inside a verification script (same gotcha as
+   before) — recreated it with the Write tool. Build passed clean (`EXITCODE:0`, zero real
+   `ERROR` lines). Browser-verified: no console errors on any page; nav toggle count 19; all three
+   main-page fixes confirmed via direct component-data inspection; all 3 subtopic pages checked —
+   correct h1/breadcrumb (all 4 levels, `&#64;link` decoding to `@link`), 860px wrapper, tailored
+   sidebar content. **GraphQL hub Phase 10: 19 of 20 topics complete.**
+27. **The `testing` batch — the 20th and FINAL GraphQL topic, the last in the Advanced nav group —
+   found and fixed THREE main-page inaccuracies, all verified by direct execution against a real
+   `@apollo/server@5.5.1` + `graphql` + `@graphql-tools/mock@9.1.14` install in the scratchpad rather
+   than read from docs**: (a) the theory said to call `server.start()` in beforeAll as a requirement --
+   `executeOperation` auto-starts the server (Apollo's own docs agree), so it is optional, and calling
+   `start()` AFTER an executeOperation has run throws "only call start() once", while `stop()` before any
+   start also throws (`stop()` twice did not); (b) the subscriptions QnA said Apollo Server 4's
+   executeOperation can run a subscription and collect async-iterator values -- it returns ONE single
+   result: an error for a non-null field, and `data: { tick: null }` with NO errors for a nullable one, a
+   silent false pass; the real tool is graphql-js `subscribe()` (verified [1,2,3] via for-await; an invalid
+   document or non-subscription operation returns a plain result with errors, not an iterator); (c) the
+   addMocksToSchema theory said "random strings, numbers, booleans" -- the String mock is always the literal
+   "Hello World", ID is a UUID, Int/Float/Boolean are random, mocks REPLACE real resolvers unless
+   `preserveResolvers: true`, and repeat queries on the same mocked schema return identical values. Also,
+   verified via WebSearch against the Apollo Client 4.0.0 release notes that MockedProvider moved to
+   `@apollo/client/testing/react` and `addTypename` was removed (__typename is always added; mocks must
+   include it) -- added as a version note plus a comment in the MockedProvider codeTab rather than
+   rewriting it, and added the missing `kind === 'single'` narrowing to a mistake example. 3 subtopics on
+   findings (a)-(c). **SUBTOPICS key hub-prefixed to `gql-testing`** -- bare `testing` collides with the
+   Angular hub's own UNQUOTED `testing:` key (checked both quoted and unquoted forms, plus
+   `app.routes.ts`); all four `GqlNavComponent` accordion touchpoints use `'gql-testing'`. A bare
+   `@graphql-tools/mock` in a static `.html` subtitle needed `&#64;` (caught by the standing sweep, not the
+   build). Build passed clean (`EXITCODE:0`). Browser-verified: no console errors; nav toggle count 20; all
+   three main-page fixes confirmed via direct component-data inspection; all 3 subtopic pages checked --
+   correct h1/breadcrumb (all 4 levels), 860px wrapper, no entity leaks, tailored sidebar content.
+   **GraphQL hub Phase 10: 20 of 20 topics complete -- the entire hub is done.**
+
+### Messaging/Kafka hub subtopic wiring — first pilot; the 18th `*NavComponent` in a row missing
+the subtopics-accordion structural fix
+
+Confirmed via direct file inspection before the pilot (`/messaging/messaging-fundamentals`,
+2026-09-20) — do this same check before any other new hub's first subtopic set:
+
+1. **`MessagingNavComponent` (`shared/messaging-nav/messaging-nav.ts`) had ZERO subtopics-accordion
+   support.** Fixed identically to every prior `*NavComponent` hub, copying `GqlNavComponent`'s
+   class body directly (signal + `Router`/`NavigationEnd` + `filter` + `SUBTOPICS`, three helper
+   methods, exact-match `autoExpandForCurrentUrl()`). Each topic's nav link then needs its own
+   toggle block — this nav is hand-written per topic (not a `@for` loop).
+2. **Bare `messaging-fundamentals` SUBTOPICS key is collision-free** (checked quoted/unquoted forms
+   and `app.routes.ts`) — left bare, so nav helper calls use `'messaging-fundamentals'`. Later topics
+   need the usual collision check per slug (e.g. `saga-pattern`, `idempotency`, `backpressure`).
+3. **Hub conventions**: search keys are `kafka-<topic>/<slug>` (`search.ts` maps `kafka-` →
+   `/messaging/`); `SIDEBAR_MAP` keys are `messaging/<topic>/<slug>` reusing `KAFKA_DEFAULT`;
+   breadcrumb map is `MESSAGING_LABELS` with bare composite keys (`'<topic>/<slug>'`). CSS classes
+   `.kafka-page`/`.kafka-icon`/`.kafka-section`; **`.kafka-page` is NOT global**, and the main page's
+   SCSS sets `.page-header-icon { background: $accent; color: #fff; font-size: 1.8rem }` locally, so
+   every subtopic `.scss` must carry the wrapper rule plus the icon/title/section rules (copy from
+   an existing Messaging subtopic). `$accent: #9a3412`, dark icon `#7c2d12`/`#fdba74`. No live
+   playground (`<app-code-block>` only); `tech="javascript"`; icon `⇄`.
+4. **The `messaging-fundamentals` batch found and fixed THREE main-page inaccuracies, verified via
+   WebFetch against primary docs**: (a) the RabbitMQ codeTab declared `orders` with no
+   `x-dead-letter-exchange` yet commented `nack(msg, false, false)` "send to DLQ" -- per RabbitMQ's
+   acknowledgements guide a requeue=false rejection is dead-lettered only if a DLX is configured,
+   otherwise discarded (also fixed the mistake-block claim that poison messages "block the queue
+   forever", which describes requeue=true, and the Challenge comment); (b) the push/pull QnA listed
+   "RabbitMQ poll" under pull, contradicting the page's own `ch.consume` + `ch.prefetch` codeTab --
+   RabbitMQ consumers are push-based and the guide strongly discourages `basic.get` polling; (c) the
+   exactly-once bullet gave SQS FIFO no scope -- AWS docs describe a send-side, 5-minute
+   deduplication interval, and content-based dedup hashes the body only. 3 subtopics on (a)-(c).
+   Build passed clean; browser-verified (nav toggle, all main-page fixes via component data, 3 pages
+   with 4-level breadcrumb, 860px wrapper, no entity leaks, no console errors). **Messaging hub
+   Phase 10: 1 of 20 topics complete.**
+5. **The `message-queues-vs-streams` batch found and fixed FIVE main-page inaccuracies, all verified
+   against primary docs**: (a) the ack mistake block and theory said an unacked message is
+   "redelivered forever" after a "consumer timeout" -- per the RabbitMQ consumers guide it is requeued
+   only when the channel closes, and the 30-minute delivery acknowledgement timeout (default) closes the
+   channel with PRECONDITION_FAILED; a connected consumer that never acks just stalls on its prefetch
+   slots (SQS is different: visibility timeout, default 30s); (b) a quiz option and a QnA said RabbitMQ
+   cannot replay / has no independent readers -- RabbitMQ 3.9 (2021) added streams (x-queue-type=stream,
+   QoS prefetch + manual ack required, x-stream-offset consumer arg); (c) queues were sold as
+   "guaranteed single-processing" / "exactly-once" -- delivery is at-least-once (AWS: more than one
+   copy may be delivered), handlers must be idempotent; (d) "indefinitely with compaction" -- compaction
+   keeps at least the latest value per key, indefinite retention is retention.ms=-1. 3 subtopics on
+   (a)-(c). Bare `message-queues-vs-streams` SUBTOPICS key collision-free; nav toggle block added to
+   the topic own link in `messaging-nav.ts`. Build clean; browser-verified. **Messaging hub Phase 10:
+   2 of 20 topics complete.**
+6. **The `rabbitmq-core` batch found and fixed FOUR main-page issues**: (a) the Producer/Consumer
+   codeTabs declared `order-processing` with no `x-dead-letter-exchange` yet commented the
+   `nack(requeue=false)` as "dead-lettered" (same DLX-less-nack finding as Messaging Fundamentals; the
+   fix declares `orders.dlx` + `order-processing.dead` and passes the same `arguments` in both tabs,
+   since RabbitMQ rejects a re-declaration with different arguments); (b) the prefetch bullet, mistake #3
+   and quiz Q6 claimed RabbitMQ sends to the "fastest consumer" and starves others -- it deals
+   round-robin by count, blind to unacked load; (c) the durability bullet implied durable queue +
+   persistent messages is an absolute guarantee -- the RabbitMQ tutorial documents a short window
+   before the broker saves an accepted message (publisher confirms close it); (d) the replication
+   bullet: classic mirroring was removed in RabbitMQ 4.0, quorum queues persist to disk regardless of
+   delivery mode; the Challenge description said "retryCount > 3" while the solution used `>= 3` (a
+   threshold of 3 = 4 attempts). 3 subtopics (retry-threshold-four-attempts,
+   quorum-queues-replace-mirrored-queues, no-prefetch-is-blind-round-robin), each backed by a Node model.
+   Bare `rabbitmq-core` SUBTOPICS key collision-free. Build clean; browser-verified (all main-page
+   fixes live, 3 pages with 4-level breadcrumb, 860px wrapper, no entity leaks, no console errors).
+   **Messaging hub Phase 10: 3 of 20 topics complete.**
+7. **The `rabbitmq-exchanges` batch found and fixed THREE main-page inaccuracies, verified against
+   the RabbitMQ exchanges, publishers and alternate-exchange docs plus the amqplib channel API**: (a)
+   mistake #3 claimed `order.#` does not match the bare key `order` -- `#` is zero or more words and
+   the docs example `audit.events.#` matches `audit.events`; it now contrasts `order.*` (exactly one
+   word) with `order.#`; (b) mistake #4 said publishing to a non-existent exchange is "silently
+   dropped" -- it is a 404 channel error that closes the channel (only unroutable messages to an
+   existing exchange are dropped), and its "assertExchange to catch typos" fix was wrong because
+   assertExchange creates the typo'd exchange; now `checkExchange` plus error/close handlers; (c) quiz
+   Q4 and the revision list implied unroutable messages come back to the producer -- only with
+   `mandatory`, and a message routed via an alternate exchange still counts as routed. 3 subtopics
+   (trailing-hash-matches-bare-key, missing-exchange-closes-the-channel,
+   mandatory-and-alternate-exchange), each backed by a Node model. Bare `rabbitmq-exchanges`
+   SUBTOPICS key collision-free. Build clean; browser-verified. **Messaging hub Phase 10: 4 of 20
+   topics complete.**
+8. **The `rabbitmq-patterns` batch found and fixed FIVE main-page issues, verified against the
+   RabbitMQ TTL, queues, direct reply-to docs and the delayed-message plugin README**: (a) the Delayed
+   Queue codeTab declared one fixed queue name with `x-message-ttl: delayMs` on every call, so a second
+   call with a different delay is a 406 `PRECONDITION_FAILED` (queue arguments must match on
+   redeclaration) -- fixed by naming the holding queue after its delay; (b) the plugin-vs-TTL QnA and
+   revision bullet said TTL+DLX is "queue-wide" and per-message delays need the plugin -- per-message
+   `expiration` exists but on classic queues an expired message is only dead-lettered at the head of the
+   queue (head-of-line blocking), and the plugin has its own limits (single-node Mnesia, ~49 days max,
+   not for huge volumes); (c) mistake #1 repeated the "first consumer gets everything / starving others"
+   prefetch claim already corrected on the Core page (it is round-robin by count); (d) the work-queue
+   QnA said "exactly once" -- it is at-least-once with manual acks; (e) the circuit-breaker QnA said
+   "pauses polling" although RabbitMQ consumers are push-based (basic.cancel). Added a theory bullet for
+   direct reply-to. 3 subtopics (delay-ttl-is-a-queue-argument, per-message-ttl-head-of-line-blocking,
+   direct-reply-to-for-rpc), each backed by a Node model. Bare `rabbitmq-patterns` SUBTOPICS key
+   collision-free. Build clean; browser-verified. **Messaging hub Phase 10: 5 of 20 topics complete
+   -- RabbitMQ nav group done.**
+9. **The `kafka-architecture` batch (first Apache Kafka group topic) found and fixed FIVE main-page
+   issues, verified against Apache KIP-926, the Kafka operations docs, Confluent log compaction docs
+   and the Kafka 4.0 release notes**: (a) `acks=all` was presented as preventing data loss -- it waits
+   for the CURRENT ISR, which can shrink to the leader alone, so with the default
+   `min.insync.replicas=1` it acts like `acks=1` (fixed in the replication bullet, the acks=0 fix, the
+   ISR QnA and the revision list; "RF=3 tolerates 2 broker failures" now says committed data survives);
+   (b) mistake #1 said to add partitions later -- adding partitions leaves existing data in place and
+   reshuffles `hash(key) % partitions`, and Kafka cannot reduce partitions; (c) the compaction bullet and
+   QnA said "retains only the latest value" -- the guarantee is AT LEAST the latest, the active segment is
+   never compacted, and tombstones live `delete.retention.ms` (24 h); (d) KRaft "replaces ZooKeeper from
+   3.3+" -- 3.3 made KRaft production-ready, Kafka 4.0 removed ZooKeeper mode. 3 subtopics
+   (acks-all-needs-min-insync-replicas, adding-partitions-remaps-keys,
+   compaction-keeps-at-least-the-latest), each backed by a Node model. Bare `kafka-architecture` SUBTOPICS
+   key collision-free (bare `architecture` belongs to another hub, so no clash); search key
+   `kafka-kafka-architecture/<slug>` resolves correctly via the `kafka-` prefix strip. Build clean;
+   browser-verified. **Messaging hub Phase 10: 6 of 20 topics complete.**
+10. **The `kafka-producers-consumers` batch found and fixed FIVE main-page issues, verified against
+   the kafkajs docs and the kafkajs `runner.js` source (fetched directly)**: (a) `linger.ms` and
+   `batch.size` were taught beside kafkajs code with a comment "Batch tuning (via underlying config)" --
+   kafkajs exposes neither (they are Java-client / librdkafka settings; batching is many messages per
+   `send`); the `maxInFlightRequests: 5 // required with idempotent` comment has no basis in the docs
+   (idempotent needs acks -1); (b) mistake #4 said `autoCommit` commits before the handler finishes and its
+   fix destructured a `commitOffsets` that is not in the `eachMessage` payload and never committed
+   anything -- kafkajs commits after the handler, a throwing handler is not committed, manual commits use
+   `consumer.commitOffsets` with offset + 1 (BigInt); (c) the `eachBatch` codeTab and quiz Q2 claimed
+   `resolveOffset` commits with `autoCommit: false` -- per `runner.js` it only tracks progress, and
+   `eachBatchAutoResolve` (default true) resolves the batch's last offset when the handler returns, so an
+   early `break` skips messages; (d) the acks=all bullet and quiz Q5 repeat the min.insync.replicas caveat
+   already verified on the Architecture page. 3 subtopics (kafkajs-has-no-linger-or-batch-size,
+   manual-commit-needs-offset-plus-one, eachbatch-autocommit-false-and-auto-resolve), each backed by a Node
+   model. Bare `kafka-producers-consumers` SUBTOPICS key collision-free. **Lesson: a node -e patch in a
+   bash double-quoted string dropped the backslash from `\'` in two strings; the Edit tool is safer for
+   text with apostrophes.** Build clean; browser-verified. **Messaging hub Phase 10: 7 of 20 topics
+   complete.**
+11. **The `kafka-streams` batch found and fixed FOUR main-page issues, verified against KIP-328,
+   KIP-633 and Confluent's Kafka Streams time-concepts docs**: (a) the theory bullet and QnA said windowed
+   results are "emitted as windows close" -- by default every update is emitted (KIP-328: all Streams
+   operators emit whenever new results are available), and `suppress(untilWindowCloses)` gives one final
+   result, emitted only once stream time passes window end + grace; (b) mistake #2 said "default grace=0,
+   dropped silently" -- KIP-633 retired the old 24-hour default and forced an explicit choice
+   (`ofSizeWithNoGrace` / `ofSizeAndGrace`), and records after window end + grace are dropped from that
+   window; (c) the Challenge asked for a "rolling" window but bucketed with `Date.now()` -- that is
+   processing time in tumbling buckets, wrong on replays and after downtime, so the solution now uses
+   `Number(message.timestamp)` and says its in-memory Map is demo-only (the page's own mistake #3);
+   (d) the KTable bullet said compaction keeps "only the latest" value -- at least the latest. 3
+   subtopics (windows-emit-updates-not-only-final-results, no-default-grace-period-late-records-dropped,
+   windowing-by-event-time-not-wall-clock), each backed by a Node model. Bare `kafka-streams` SUBTOPICS
+   key collision-free. Build clean; browser-verified. **Messaging hub Phase 10: 8 of 20 topics
+   complete.**
+12. **The `kafka-connect` batch found and fixed FIVE main-page issues, verified against Confluent's
+   ReplaceField/MaskField docs, KIP-875, the Debezium PostgreSQL docs and release notes, and the
+   PostgreSQL `wal_level` docs**: (a) the Debezium example and theory used ReplaceField to "mask" columns --
+   ReplaceField only filters/renames (`exclude`, `include`, `renames`), masking is MaskField, and on a raw
+   Debezium record the columns are nested in `before`/`after` so a top-level transform cannot see them
+   (unwrap first, or `column.exclude.list` on the connector, which the example now uses); (b) the example set
+   the stale `database.server.name` alongside `topic.prefix` (renamed in Debezium 2.0); (c) mistake #2 said
+   the Postgres default `wal_level` is `minimal` -- it is `replica`, changing it needs a restart, and
+   Debezium creates its replication slot by default; (d) two QnAs, a Quick Reference entry and a revision
+   bullet said connector offsets live in `connect-offsets` -- that is source connectors only, sink offsets
+   are consumer group offsets under `connect-<name>` (KIP-875, Kafka 3.6, adds offset REST endpoints that
+   need the connector STOPPED). 3 subtopics (replacefield-does-not-mask-envelope-hides-columns,
+   sink-offsets-live-in-consumer-groups, debezium-config-drift-and-wal-level), each backed by a Node model.
+   Bare `kafka-connect` SUBTOPICS key collision-free. Note: quick-ref `desc` binds via plain interpolation
+   (raw `<name>` is fine) but QnA answers and revision bullets bind via innerHTML (use `&lt;name&gt;`).
+   Build clean; browser-verified. **Messaging hub Phase 10: 9 of 20 topics complete.**
+13. **The `schema-registry` batch (last topic in the Apache Kafka nav group) found and fixed FOUR
+   main-page issues, verified against Confluent's schema-evolution and SerDes wire-format docs**: (a) the
+   FORWARD bullet said "old fields must not be removed" and another bullet said adding a required field
+   "could break older readers" -- Confluent defines FORWARD as add fields / remove optional fields
+   (reader/writer rule: a reader needs each expected field present or defaulted, extra fields are ignored),
+   so adding a field breaks BACKWARD, not FORWARD, and removal is only unsafe without a default; also dropped
+   an unsupported "required in regulated environments" claim for FULL; (b) the docs' statement that the
+   default mode is BACKWARD and checks only the latest version (the _TRANSITIVE modes check all versions)
+   was missing entirely; (c) a theory bullet contrasted a compact schema ID with "embedding a full schema
+   (like JSON Schema)" -- all three serializers use the same 5-byte header (0 + 4-byte ID), Protobuf adds
+   message indexes; (d) the Avro producer example hardcoded `schemaId = 1` while the page's own mistake block
+   forbids it (now `registry.getLatestSchemaId('orders-value')`). 3 subtopics
+   (forward-compat-add-fields-remove-defaulted, backward-checks-only-the-latest-version,
+   same-wire-format-for-all-three-formats), each backed by a Node model. Bare `schema-registry` SUBTOPICS key
+   collision-free. Build clean; browser-verified. **Messaging hub Phase 10: 10 of 20 topics complete --
+   RabbitMQ and Apache Kafka nav groups done.**
+14. **The `messaging-patterns` batch (first Patterns group topic) found and fixed FIVE main-page issues,
+   verified against AWS SQS release notes and quotas, the RabbitMQ 4.0 release notes and limits docs, and a
+   Node model for each behaviour**: (a) the Claim Check theory and mistake block listed "SQS: 256KB" and
+   "Kafka and RabbitMQ default 1MB" -- AWS raised SQS to 1 MiB on 4 Aug 2025, RabbitMQ 4.0 defaults to 16 MiB
+   (128 MiB in 3.8 to 3.13), Kafka is about 1MB (producer max.request.size 1048576, broker message.max.bytes
+   1048588); (b) the size test used `json.length > 900_000` -- length counts UTF-16 code units, so 400,000 euro
+   signs are length 400011 but 1,200,011 bytes; now Buffer.byteLength; (c) the Scatter-Gather codeTab
+   resolved only when replies.length === vendors.length, contradicting the page's own deadline mistake block,
+   and closed the connection only on the all-replied path -- now a 2s timer that resolves with the best
+   partial reply or rejects; (d) "exactly one consumer processes each message" (theory, quiz, quick reference)
+   -- delivery is at-least-once, handlers must be idempotent, and the "fixed round-robin could overload a
+   slow instance" claim now says it applies to push brokers without prefetch; (e) the Aggregator challenge
+   deleted the Map entry before `producer.send` succeeded and let flush passes overlap -- now delete after a
+   successful send, a `flushing` guard, and a demo-only note (auto-commit plus in-memory state loses partial
+   orders on a crash, and order-items must be keyed by orderId). 3 subtopics
+   (claim-check-limits-and-byte-length, scatter-gather-example-needs-a-timeout,
+   aggregator-loses-partial-orders), each backed by a Node model. Bare `messaging-patterns` SUBTOPICS key
+   collision-free. Build clean; browser-verified. **Messaging hub Phase 10: 11 of 20 topics complete.**
+15. **The `saga-pattern` batch found and fixed SEVEN main-page issues, verified against the Azure
+   Architecture Center saga page, Temporal saga docs, the kafkajs partitioner and a Node model for each
+   behaviour**: (a) the orchestration codeTab sent both `REFUND_PAYMENT` and `CANCEL_ORDER` on any failure
+   without recording which steps had committed -- now a persisted `completed` list walked in reverse via a
+   `COMPENSATIONS` map; (b) the "not idempotent" mistake block used a check-then-act cancel that double-credits
+   stock on crash-and-replay or two concurrent deliveries -- now a guarded update plus the credit in one local
+   transaction; (c) the pivot was described only as a "point of no return" -- now the Azure taxonomy
+   (compensable before, pivot as go/no-go, retryable and idempotent after), in the quick reference, theory, quiz
+   Q3 and revision bullet; (d) the choreography `publish` had no key -- now keyed by `orderId` so one saga's
+   events stay in order on one partition; (e) the Challenge solution was non-deterministic and carried a
+   misleading commented `inventory.failed` -- now deterministic (`orderId !== 'ORD-002'`, a second
+   `startSaga`); (f) duplicated theory bullets merged; (g) the Temporal QnA claimed it writes compensations for
+   you -- it does not, you register them and run them in reverse. 3 subtopics
+   (compensate-only-completed-steps, idempotent-compensation-atomic-guard, pivot-is-the-go-no-go-point), each
+   backed by a Node model. Bare `saga-pattern` SUBTOPICS key collision-free. Build clean; browser-verified.
+   **Messaging hub Phase 10: 12 of 20 topics complete.**
+16. **The `outbox-pattern` batch found and fixed SEVEN main-page issues, verified against Debezium's outbox
+   article and Event Router docs, the PostgreSQL date/time functions docs, the kafkajs source and a Node model for
+   each behaviour**: (a) the mark-`published_at`-then-prune lifecycle was presented as the only one -- it is a
+   polling-relay lifecycle; a Debezium relay tails the transaction log, the row is inserted and deleted in the same
+   transaction and the table stays empty (quick reference, theory, outbox-grows mistake block); (b) the schema used
+   `created_at DEFAULT now()`, which is the transaction START time, and the polling relay orders by it -- now
+   `clock_timestamp()`; (c) `FOR UPDATE SKIP LOCKED` was sold as safe parallelism -- it prevents duplicate takes,
+   not reordering of one aggregate's events across workers (mistake explanation and high-volume QnA now say so);
+   (d) the Challenge said "after 5 retries" and hinted `retry_count >= 5` while the solution moved to the DLQ at
+   `>= 4` (5 attempts) -- now consistent; (e) the Challenge solution published without a key -- now keyed by
+   `aggregate_id`; (f) Inbox + Outbox was called "exactly-once" -- now effectively-once (at-least-once plus
+   deduplication); (g) two duplicated theory sections merged into the originals, plus a bullet that
+   kafkajs `idempotent: true` only dedupes retries within one producer session (a restarted relay gets a new
+   producer id). 3 subtopics (cdc-outbox-rows-are-deleted-not-marked, created-at-is-transaction-start,
+   skip-locked-parallel-relays-reorder-events). Bare `outbox-pattern` SUBTOPICS key collision-free (the existing
+   `outbox` key belongs to Design Patterns). Build clean; browser-verified.
+   **Messaging hub Phase 10: 13 of 20 topics complete.**
+17. **The `azure-service-bus` batch found and fixed EIGHT main-page issues, verified against Microsoft Learn
+   (message settlement and locks, dead-letter queues, duplicate detection, sessions, quotas), the
+   `@azure/service-bus` 7.9.5 source and type definitions installed in the scratchpad, and a Node model for each
+   behaviour**: (a) the first mistake block said forgetting `completeMessage()` inside `receiver.subscribe()`
+   redelivers the message -- `autoCompleteMessages` defaults to true, the SDK completes after the handler returns
+   and abandons if it throws (the mistake now uses `receiveMessages()`); (b) the lock-renewal mistake said a 2 minute
+   handler loses its 60 second lock -- `subscribe()` auto-renews for up to `maxAutoLockRenewalDurationInMs`
+   (default 5 minutes); manual `renewMessageLock` is for `receiveMessages()`; (c) the locks QnA gave a default lock
+   of 30s against 60s elsewhere on the page -- Learn says 1 minute, 5 minutes maximum; (d) the messageId
+   "deduplication key" comment and the dedup QnA ignored that duplicate detection is off by default and
+   `requiresDuplicateDetection` is settable only at creation (default window 10 minutes); (e) sessions were called
+   `EnabledForSessions` and said to "add latency" -- the setting is `requiresSession`, creation-time only, a missing
+   session id dead-letters with "Session ID is null"; (f) the quick reference said the DLQ receives messages that
+   "fail filter" -- a non-matching message is not dead-lettered, only a filter that throws with
+   `deadLetteringOnFilterEvaluationExceptions` on; (g) the 24 hour `timeToLive` comment omitted that expiry only
+   dead-letters when dead-lettering on expiration is enabled (creation-time only), otherwise the message is deleted;
+   (h) Premium "100MB" now says AMQP only, 1MB entity default (quiz and QnA). 3 subtopics
+   (subscribe-auto-completes-and-renews, settings-fixed-at-queue-creation, unmatched-filter-is-not-dead-lettered).
+   Bare `azure-service-bus` SUBTOPICS key collision-free (the Azure hub's own topic uses a different key). Build
+   clean; browser-verified.
+   **Messaging hub Phase 10: 14 of 20 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -10152,7 +10588,7 @@ this same check before any other new hub's first subtopic set:
   All 22 cards `available: true` in `data/graphql/home/home.ts`. Progress: `gqlTotal=20` in progress.service.ts.
   GraphQL pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. GqlNavComponent at `shared/gql-nav/gql-nav.ts`.
-  Phase 10: **15 of 20 topics have subtopics** (`/graphql/fundamentals`, pilot batch, 2026-09-10;
+  Phase 10: **COMPLETE — 20 of 20 topics have subtopics** (`/graphql/fundamentals`, pilot batch, 2026-09-10;
   `/graphql/schema-definition-language`, 2026-09-10; `/graphql/type-system`, 2026-09-10;
   `/graphql/queries`, 2026-09-10; `/graphql/variables-arguments`, 2026-09-10;
   `/graphql/directives`, 2026-09-10 — Queries nav group fully done; `/graphql/mutations`,
@@ -10160,19 +10596,25 @@ this same check before any other new hub's first subtopic set:
   Mutations & Subscriptions nav group fully done; `/graphql/resolvers`, 2026-09-17;
   `/graphql/dataloader`, 2026-09-17; `/graphql/auth`, 2026-09-17; `/graphql/apollo-server`,
   2026-09-17; `/graphql/pagination`, 2026-09-17 — Server nav group fully done;
-  `/graphql/apollo-client`, 2026-09-17 — first topic in the Client nav group) —
+  `/graphql/apollo-client`, 2026-09-17; `/graphql/client-caching`, 2026-09-17;
+  `/graphql/code-generation`, 2026-09-17 — Client nav group fully done;
+  `/graphql/performance`, 2026-09-17 — first topic in the Advanced nav group;
+  `/graphql/federation`, 2026-09-20; `/graphql/testing`, 2026-09-20 — every nav group fully done) —
   see "GraphQL hub
   subtopic wiring" section above for the `GqlNavComponent` accordion structural fix (17th
   `*NavComponent`-based hub in a row missing it at pilot time), the `gql-fundamentals`/
-  `gql-directives`/`gql-error-handling` SUBTOPICS-map collision resolutions (`gql-fundamentals`
-  collided with the JavaScript hub's own bare `fundamentals` topic key; `gql-directives` collided
-  with the Angular hub's own `directives-demo` topic's unquoted bare `directives` key;
-  `gql-error-handling` collided with the JavaScript hub's own bare `error-handling` topic key;
-  `schema-definition-language`, `type-system`, `queries`, `variables-arguments`, `mutations`,
-  `subscriptions`, `resolvers`, `dataloader`, `auth`, `apollo-server`, `pagination`, and
-  `apollo-client` are all collision-free and left bare — confirmed via a direct grep that no other
-  hub's `app.routes.ts` route path is literally `auth`/`apollo-server`/`pagination`/
-  `apollo-client`), the
+  `gql-directives`/`gql-error-handling`/`gql-performance` SUBTOPICS-map collision resolutions
+  (`gql-fundamentals` collided with the JavaScript hub's own bare `fundamentals` topic key;
+  `gql-directives` collided with the Angular hub's own `directives-demo` topic's unquoted bare
+  `directives` key; `gql-error-handling` collided with the JavaScript hub's own bare
+  `error-handling` topic key; `gql-performance` collided with the Node.js hub's own bare
+  `performance` topic key; `gql-testing` collided with the Angular hub's own unquoted bare
+  `testing` key; `schema-definition-language`, `type-system`, `queries`,
+  `variables-arguments`, `mutations`, `subscriptions`, `resolvers`, `dataloader`, `auth`,
+  `apollo-server`, `pagination`, `apollo-client`, `client-caching`, `code-generation`, and
+  `federation` are all collision-free and left bare — confirmed via a direct grep that no other hub's `app.routes.ts`
+  route path is literally
+  `auth`/`apollo-server`/`pagination`/`apollo-client`/`client-caching`/`code-generation`), the
   no-live-playground
   note, and the
   genuine main-page fixes: the cross-codeTab undeclared-`Post.author`-field bug (Fundamentals);
@@ -10213,14 +10655,41 @@ this same check before any other new hub's first subtopic set:
   a QnA wrong on three separate counts about aborting an in-flight query (`fetchPolicy` is
   unrelated; `client.watchQuery().cancel()` doesn't exist; no such "React 18 AbortSignal
   integration" exists) — fixed with the real, verified `context.fetchOptions.signal` mechanism
-  (Apollo Client).
+  (Apollo Client); and TWO more genuine fixes on client-caching.ts — a `cache.modify`
+  theory bullet plus a QnA both overstating INVALIDATE's effect (it does not itself change a
+  field's cached value or force a network fetch, verified against Apollo's own GitHub issue
+  #7060; the documented fix is wrapping it in `client.refetchQueries({ updateCache })`), and a
+  normalization theory bullet with embedded-vs-referenced exactly backwards (unnormalized
+  objects are stored EMBEDDED inline in the parent, not "by reference" — Apollo's own
+  `Reference` type specifically represents a NORMALIZED entity) (Client Caching); and a "Client
+  Usage" codeTab comment claiming a masked fragment field (`author { ...AuthorFields }`) "has
+  type string" when client-preset enables fragment masking by default — direct access is a
+  TypeScript compile error; `useFragment()` is required to unmask it, verified against
+  client-preset's own official docs (Code Generation); and THREE more genuine fixes on
+  performance.ts — the `@cacheControl` codeTab's own directive definition used a nonexistent
+  `CacheScope` enum name instead of the real `CacheControlScope` and omitted `INTERFACE | UNION`
+  locations plus `inheritMaxAge`, verified against Apollo Server's own caching docs; a theory
+  bullet stating only half the response-header computation rule (added the independently-verified
+  "PRIVATE if any field is private" scope rule); and a "batched query" QnA conflating aliased
+  root fields in one operation (unaffected by any server config) with Apollo Server 4's separate,
+  off-by-default `allowBatchedHttpRequests` transport setting, whose own prescribed fix does
+  nothing for its own example (Performance & Security).
 - **Messaging/Kafka hub**: 20 trackable topic pages + 2 reference pages (22 cards total). Feature-complete.
   Burnt-orange theme `$accent: #9a3412`, `$tint: #fff7ed`, dark `#fdba74`, dark bg `#2d1a0e`. Search prefix `kafka-`. Route: `/messaging`.
   CSS classes: `.kafka-page`, `.kafka-icon`, `.kafka-section`. Icon content: `⇄` at `font-size: 1.8rem`. `tech="javascript"`.
-  Nav groups: Foundations, RabbitMQ, Kafka, Patterns, Cloud Messaging, Reliability, Reference.
+  Nav groups (corrected 2026-09-20 against the real `messaging-nav.ts`): Foundations, RabbitMQ, Apache Kafka, Patterns, Azure Service Bus, AWS SQS/SNS, Reliability, Reference.
   All 22 cards `available: true` in `data/messaging/home/home.ts`. Progress: `kafkaTotal=20` in progress.service.ts.
   Messaging pages use `app-common-mistakes` AND `app-revision-card`. Reference pages (monitoring, messaging-security) have no PageComplete.
   Challenge.language: `'typescript'`. MessagingNavComponent at `shared/messaging-nav/messaging-nav.ts`.
+  Phase 10: **14 of 20 topics have subtopics** (`/messaging/messaging-fundamentals`, pilot batch,
+  2026-09-20; `/messaging/message-queues-vs-streams`, 2026-09-20; `/messaging/rabbitmq-core`,
+  2026-09-20; `/messaging/rabbitmq-exchanges`, 2026-09-20; `/messaging/rabbitmq-patterns`,
+  2026-09-20; `/messaging/kafka-architecture`, 2026-09-20; `/messaging/kafka-producers-consumers`,
+  2026-09-20; `/messaging/kafka-streams`, 2026-09-20; `/messaging/kafka-connect`, 2026-09-20;
+  `/messaging/schema-registry`, 2026-09-20; `/messaging/messaging-patterns`, 2026-09-20; `/messaging/saga-pattern`, 2026-09-20; `/messaging/outbox-pattern`, 2026-09-20; `/messaging/azure-service-bus`, 2026-09-20) — see "Messaging/Kafka hub subtopic wiring" section above for the
+  `MessagingNavComponent` accordion structural fix (18th `*NavComponent` hub in a row) and the
+  three genuine main-page inaccuracies found and fixed (DLX-less nack "sends to DLQ", RabbitMQ
+  wrongly listed as pull-based, unscoped SQS FIFO exactly-once claim).
 - **Testing hub**: 19 trackable topic pages + 3 reference pages (22 cards total). Feature-complete.
   Indigo theme `$accent: #6366f1`, `$tint: #eef2ff`, dark `#a5b4fc`, dark bg `#1e1b4b`. Search prefix `test-`. Route: `/testing-hub`.
   CSS classes: `.test-page`, `.test-icon`, `.test-section`. Icon content: `✓` at `font-size: 1.8rem`. `tech="javascript"`.

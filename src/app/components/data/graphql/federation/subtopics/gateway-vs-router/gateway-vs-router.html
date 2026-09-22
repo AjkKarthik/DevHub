@@ -1,0 +1,26 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Schema Stitching &amp; Federation" topicRoute="/graphql/federation"
+    subtopicLabel="Federation v2 Doesn’t Replace the Gateway" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">Federation v2 Doesn’t Replace the Gateway</h1>
+  <p class="page-subtitle">The main page's own theory claimed Federation v2 "removes the gateway in favor of the Apollo Router." Verified against Apollo's own docs that this has the relationship backwards -- Gateway 2.0+ works fine with Federation v2, and Router is a separate, newer runtime, not a replacement.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Federation v2" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>The gateway-vs-router choice is one axis; the Federation v1-vs-v2 choice is a completely separate one. Next: what actually happens when a subgraph forgets to opt into v2 at all -- it's quieter than an error.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Schema Stitching &amp; Federation" topicRoute="/graphql/federation"
+    [next]="{ label: 'A Missing @link Silently Falls Back to v1', route: '/graphql/federation/missing-link-falls-back-to-v1' }" />
+</div>

@@ -4100,4 +4100,101 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Reactive Variables for Global Client-Side State', route: '/graphql/apollo-client/reactive-variables-global-state' },
     { label: 'The update Function for Manual Cache Writes', route: '/graphql/apollo-client/manual-cache-updates' },
   ],
+  'code-generation': [
+    { label: 'Fragment Masking Blocks Direct Field Access', route: '/graphql/code-generation/fragment-masking-blocks-direct-access' },
+    { label: 'Setting Up near-operation-file for Colocated Types', route: '/graphql/code-generation/near-operation-file-preset' },
+    { label: 'Authenticating codegen Against a Protected Endpoint', route: '/graphql/code-generation/authenticated-introspection-endpoint' },
+  ],
+  'client-caching': [
+    { label: 'INVALIDATE Alone Doesn’t Force a Refetch', route: '/graphql/client-caching/invalidate-does-not-force-refetch' },
+    { label: 'Unnormalized Objects Are Embedded, Never Referenced', route: '/graphql/client-caching/embedded-vs-normalized-objects' },
+    { label: 'Persisting the Cache with apollo3-cache-persist', route: '/graphql/client-caching/persisting-cache-apollo3' },
+  ],
+  // NOTE: hub-prefixed — bare 'performance' is already claimed by the Node.js hub's own topic.
+  'gql-performance': [
+    { label: 'Computing the Response’s Real Cache-Control Header', route: '/graphql/performance/cache-control-header-computation' },
+    { label: 'Aliased Root Fields Are Not Stopped by Disabling Batching', route: '/graphql/performance/aliased-root-fields-bypass-batching-disable' },
+    { label: 'How Field-Suggestion Blocking Actually Works', route: '/graphql/performance/field-suggestion-blocking-mechanism' },
+  ],
+  federation: [
+    { label: 'Federation v2 Doesn’t Replace the Gateway', route: '/graphql/federation/gateway-vs-router' },
+    { label: 'A Missing @link Silently Falls Back to v1', route: '/graphql/federation/missing-link-falls-back-to-v1' },
+    { label: 'Where DataLoader Actually Helps in __resolveReference', route: '/graphql/federation/dataloader-inside-resolve-reference' },
+  ],
+  // NOTE: hub-prefixed — bare 'testing' is already claimed by the Angular hub's own topic.
+  'gql-testing': [
+    { label: 'executeOperation Starts the Server for You', route: '/graphql/testing/executeoperation-starts-the-server' },
+    { label: 'Subscriptions Need graphql-js subscribe(), Not executeOperation', route: '/graphql/testing/subscriptions-need-graphql-js-subscribe' },
+    { label: 'addMocksToSchema Defaults, Memoization and preserveResolvers', route: '/graphql/testing/addmocks-hello-world-and-preserve-resolvers' },
+  ],
+  'messaging-fundamentals': [
+    { label: 'nack With requeue=false Discards Messages Unless a DLX Exists', route: '/messaging/messaging-fundamentals/nack-without-dlx-discards' },
+    { label: 'RabbitMQ Consumers Are Pushed To, Not Polled', route: '/messaging/messaging-fundamentals/rabbitmq-consumers-are-pushed' },
+    { label: 'SQS FIFO Deduplication Only Covers a Five-Minute Send Window', route: '/messaging/messaging-fundamentals/sqs-fifo-dedup-five-minute-window' },
+  ],
+  'message-queues-vs-streams': [
+    { label: 'Unacked Messages Are Not Redelivered Forever', route: '/messaging/message-queues-vs-streams/unacked-messages-not-redelivered-forever' },
+    { label: 'RabbitMQ Streams Can Replay Too', route: '/messaging/message-queues-vs-streams/rabbitmq-streams-can-replay-too' },
+    { label: 'Queues Are At-Least-Once, So Handlers Must Be Idempotent', route: '/messaging/message-queues-vs-streams/at-least-once-queues-need-idempotent-handlers' },
+  ],
+  'rabbitmq-core': [
+    { label: 'A Retry Threshold of 3 Means Four Attempts, Not Three', route: '/messaging/rabbitmq-core/retry-threshold-four-attempts' },
+    { label: 'Classic Mirrored Queues Were Removed: Use Quorum Queues', route: '/messaging/rabbitmq-core/quorum-queues-replace-mirrored-queues' },
+    { label: 'Without Prefetch RabbitMQ Deals Messages Round-Robin, Blind to Load', route: '/messaging/rabbitmq-core/no-prefetch-is-blind-round-robin' },
+  ],
+  'rabbitmq-exchanges': [
+    { label: 'A Trailing .# Binding Also Matches the Bare Key', route: '/messaging/rabbitmq-exchanges/trailing-hash-matches-bare-key' },
+    { label: 'Publishing to a Missing Exchange Closes the Channel', route: '/messaging/rabbitmq-exchanges/missing-exchange-closes-the-channel' },
+    { label: 'Unroutable Messages: mandatory Flag vs Alternate Exchange', route: '/messaging/rabbitmq-exchanges/mandatory-and-alternate-exchange' },
+  ],
+  'rabbitmq-patterns': [
+    { label: 'A Delay Queue TTL Is a Queue Argument, So Name the Queue After Its Delay', route: '/messaging/rabbitmq-patterns/delay-ttl-is-a-queue-argument' },
+    { label: 'Per-Message TTL Delays Can Be Held Back at the Head of the Queue', route: '/messaging/rabbitmq-patterns/per-message-ttl-head-of-line-blocking' },
+    { label: 'Direct Reply-To Lets RPC Skip Declaring a Reply Queue', route: '/messaging/rabbitmq-patterns/direct-reply-to-for-rpc' },
+  ],
+  'kafka-architecture': [
+    { label: 'acks=all Is Only as Safe as min.insync.replicas', route: '/messaging/kafka-architecture/acks-all-needs-min-insync-replicas' },
+    { label: 'Adding Partitions Later Changes Where a Key Lands', route: '/messaging/kafka-architecture/adding-partitions-remaps-keys' },
+    { label: 'Log Compaction Keeps At Least the Latest Value, Not Only the Latest', route: '/messaging/kafka-architecture/compaction-keeps-at-least-the-latest' },
+  ],
+  'kafka-producers-consumers': [
+    { label: 'kafkajs Has No linger.ms or batch.size, So Batch Explicitly', route: '/messaging/kafka-producers-consumers/kafkajs-has-no-linger-or-batch-size' },
+    { label: 'With autoCommit Off You Commit Offset Plus One Yourself', route: '/messaging/kafka-producers-consumers/manual-commit-needs-offset-plus-one' },
+    { label: 'eachBatch Auto-Resolves the Last Offset, and autoCommit False Commits Nothing', route: '/messaging/kafka-producers-consumers/eachbatch-autocommit-false-and-auto-resolve' },
+  ],
+  'kafka-streams': [
+    { label: 'Windowed Aggregations Emit Every Update, Not Only the Final Result', route: '/messaging/kafka-streams/windows-emit-updates-not-only-final-results' },
+    { label: 'There Is No Default Grace Period, and Late Records Are Dropped from Closed Windows', route: '/messaging/kafka-streams/no-default-grace-period-late-records-dropped' },
+    { label: 'Window by Event Time, Not by the Wall Clock of Your Consumer', route: '/messaging/kafka-streams/windowing-by-event-time-not-wall-clock' },
+  ],
+  'kafka-connect': [
+    { label: 'ReplaceField Does Not Mask, and a Debezium Envelope Hides the Columns from It', route: '/messaging/kafka-connect/replacefield-does-not-mask-envelope-hides-columns' },
+    { label: 'Sink Connector Offsets Live in a Consumer Group, Not the Offsets Topic', route: '/messaging/kafka-connect/sink-offsets-live-in-consumer-groups' },
+    { label: 'Debezium 2.0 Renamed database.server.name, and wal_level Defaults to replica', route: '/messaging/kafka-connect/debezium-config-drift-and-wal-level' },
+  ],
+  'schema-registry': [
+    { label: 'FORWARD Compatibility Allows Adding Fields and Removing Fields That Have Defaults', route: '/messaging/schema-registry/forward-compat-add-fields-remove-defaulted' },
+    { label: 'BACKWARD Checks Only the Latest Version, Not the Whole History', route: '/messaging/schema-registry/backward-checks-only-the-latest-version' },
+    { label: 'JSON Schema Messages Use the Same Schema-ID Header, and Protobuf Adds Message Indexes', route: '/messaging/schema-registry/same-wire-format-for-all-three-formats' },
+  ],
+  'messaging-patterns': [
+    { label: 'Claim Check Limits Differ per Broker, and String Length Is Not Byte Size', route: '/messaging/messaging-patterns/claim-check-limits-and-byte-length' },
+    { label: 'The Scatter-Gather Example Had No Timeout, Contradicting Its Own Mistake Block', route: '/messaging/messaging-patterns/scatter-gather-example-needs-a-timeout' },
+    { label: 'The Aggregator Challenge Can Lose Orders: Auto-Commit and Delete-Before-Send', route: '/messaging/messaging-patterns/aggregator-loses-partial-orders' },
+  ],
+  'saga-pattern': [
+    { label: 'Compensate Only the Steps That Actually Completed', route: '/messaging/saga-pattern/compensate-only-completed-steps' },
+    { label: 'Idempotent Compensation Needs One Atomic Guard', route: '/messaging/saga-pattern/idempotent-compensation-atomic-guard' },
+    { label: 'The Pivot Transaction Is the Go/No-Go Point', route: '/messaging/saga-pattern/pivot-is-the-go-no-go-point' },
+  ],
+  'outbox-pattern': [
+    { label: 'A CDC Outbox Relay Never Marks Rows: Insert and Delete in One Transaction', route: '/messaging/outbox-pattern/cdc-outbox-rows-are-deleted-not-marked' },
+    { label: 'The Outbox created_at Default Is the Transaction Start Time, Not the Insert Time', route: '/messaging/outbox-pattern/created-at-is-transaction-start' },
+    { label: 'SKIP LOCKED Prevents Duplicates but Not Reordering Across Parallel Relays', route: '/messaging/outbox-pattern/skip-locked-parallel-relays-reorder-events' },
+  ],
+  'azure-service-bus': [
+    { label: 'subscribe() Completes, Abandons and Renews Locks for You', route: '/messaging/azure-service-bus/subscribe-auto-completes-and-renews' },
+    { label: 'Duplicate Detection, Sessions and Expiry Dead-Lettering Are All Fixed at Queue Creation', route: '/messaging/azure-service-bus/settings-fixed-at-queue-creation' },
+    { label: 'A Message That Matches No Subscription Filter Is Not Dead-Lettered', route: '/messaging/azure-service-bus/unmatched-filter-is-not-dead-lettered' },
+  ],
 };

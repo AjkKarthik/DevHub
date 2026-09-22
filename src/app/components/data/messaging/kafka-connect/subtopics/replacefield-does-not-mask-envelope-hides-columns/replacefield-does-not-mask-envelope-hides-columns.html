@@ -1,0 +1,26 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Kafka Connect" topicRoute="/messaging/kafka-connect"
+    subtopicLabel="ReplaceField Does Not Mask, and a Debezium Envelope Hides the Columns from It" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">ReplaceField Does Not Mask, and a Debezium Envelope Hides the Columns from It</h1>
+  <p class="page-subtitle">The Debezium example used ReplaceField to mask a column. ReplaceField only filters and renames, and the column sits inside the before and after structs where a top-level transform cannot see it.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Kafka 3+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the Debezium Postgres example and the SMT list on the Connect page. Next: where connector offsets actually live.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Kafka Connect" topicRoute="/messaging/kafka-connect"
+    [next]="{ label: 'Sink Connector Offsets Live in a Consumer Group, Not the Offsets Topic', route: '/messaging/kafka-connect/sink-offsets-live-in-consumer-groups' }" />
+</div>

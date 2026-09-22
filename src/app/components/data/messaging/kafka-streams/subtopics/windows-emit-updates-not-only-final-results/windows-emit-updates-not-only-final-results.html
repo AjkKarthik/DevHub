@@ -1,0 +1,26 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Kafka Streams & KSQL" topicRoute="/messaging/kafka-streams"
+    subtopicLabel="Windowed Aggregations Emit Every Update, Not Only the Final Result" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">Windowed Aggregations Emit Every Update, Not Only the Final Result</h1>
+  <p class="page-subtitle">The page said results are emitted as windows close. By default Kafka Streams emits an updated result for every record, and suppress is how you ask for the final one.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Kafka Streams 3+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the windowed aggregation bullet, the windowed aggregation answer and the Windowed Count example on the Streams page. Next: the grace period and what happens to late records.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Kafka Streams & KSQL" topicRoute="/messaging/kafka-streams"
+    [next]="{ label: 'There Is No Default Grace Period, and Late Records Are Dropped from Closed Windows', route: '/messaging/kafka-streams/no-default-grace-period-late-records-dropped' }" />
+</div>

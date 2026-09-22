@@ -1,0 +1,26 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Kafka Connect" topicRoute="/messaging/kafka-connect"
+    subtopicLabel="Debezium 2.0 Renamed database.server.name, and wal_level Defaults to replica" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">Debezium 2.0 Renamed database.server.name, and wal_level Defaults to replica</h1>
+  <p class="page-subtitle">The Debezium example carried a property renamed in 2.0, and the mistake block said the Postgres default is minimal. The default is replica, and Debezium creates its own slot.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Debezium 2.0+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the Debezium Postgres example and the second mistake block on the Connect page. It closes the set of Connect corrections.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Kafka Connect" topicRoute="/messaging/kafka-connect"
+    [prev]="{ label: 'Sink Connector Offsets Live in a Consumer Group, Not the Offsets Topic', route: '/messaging/kafka-connect/sink-offsets-live-in-consumer-groups' }" />
+</div>

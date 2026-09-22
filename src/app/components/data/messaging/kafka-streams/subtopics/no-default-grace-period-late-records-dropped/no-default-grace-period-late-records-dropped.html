@@ -1,0 +1,27 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Kafka Streams & KSQL" topicRoute="/messaging/kafka-streams"
+    subtopicLabel="There Is No Default Grace Period, and Late Records Are Dropped from Closed Windows" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">There Is No Default Grace Period, and Late Records Are Dropped from Closed Windows</h1>
+  <p class="page-subtitle">The page said the default grace is zero. KIP-633 retired the old 24-hour default and made you choose, and a record after window end plus grace is dropped from that window.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Kafka Streams 3+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the second mistake block on the Streams page. The next subtopic is about which clock decides a record belongs to a window at all.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Kafka Streams & KSQL" topicRoute="/messaging/kafka-streams"
+    [prev]="{ label: 'Windowed Aggregations Emit Every Update, Not Only the Final Result', route: '/messaging/kafka-streams/windows-emit-updates-not-only-final-results' }"
+    [next]="{ label: 'Window by Event Time, Not by the Wall Clock of Your Consumer', route: '/messaging/kafka-streams/windowing-by-event-time-not-wall-clock' }" />
+</div>

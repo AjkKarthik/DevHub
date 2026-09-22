@@ -1,0 +1,26 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Kafka Architecture" topicRoute="/messaging/kafka-architecture"
+    subtopicLabel="acks=all Is Only as Safe as min.insync.replicas" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">acks=all Is Only as Safe as min.insync.replicas</h1>
+  <p class="page-subtitle">The page said acks=all prevents data loss. It waits for the current ISR, which can shrink to the leader alone, so it needs min.insync.replicas to mean anything.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Kafka 3+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the replication bullet, the acks=0 fix and the ISR answer on the Architecture page. Next: a related trap in the partition-count advice.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Kafka Architecture" topicRoute="/messaging/kafka-architecture"
+    [next]="{ label: 'Adding Partitions Later Changes Where a Key Lands', route: '/messaging/kafka-architecture/adding-partitions-remaps-keys' }" />
+</div>

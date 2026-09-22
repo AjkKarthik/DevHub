@@ -29,7 +29,7 @@ export class KafkaArchitecture {
     { name: 'Consumer Group', type: 'keyword', desc: 'Set of consumers sharing partition assignments' },
     { name: 'Replication Factor', type: 'keyword', desc: 'Number of broker replicas for fault tolerance (min 3 in prod)' },
     { name: 'Leader / Follower', type: 'keyword', desc: 'Leader handles reads/writes; followers replicate and failover' },
-    { name: 'ZooKeeper / KRaft', type: 'keyword', desc: 'Cluster metadata coordination; KRaft (built-in) replaces ZK from Kafka 3.3+' },
+    { name: 'ZooKeeper / KRaft', type: 'keyword', desc: 'Cluster metadata coordination; KRaft (built-in) is production-ready from Kafka 3.3 and ZooKeeper mode was removed in Kafka 4.0' },
   ];
 
   readonly theory: TheoryPoint[] = [
@@ -46,9 +46,9 @@ export class KafkaArchitecture {
       heading: 'Replication and Fault Tolerance',
       points: [
         'Each partition has a leader broker and follower replicas. Producers write to the leader; followers sync asynchronously.',
-        'If the leader fails, one follower is elected as the new leader. With RF=3, the cluster tolerates 2 broker failures.',
+        'If the leader fails, one follower is elected as the new leader. With RF=3, committed data survives the loss of 2 brokers; how many failures the cluster keeps ACCEPTING durable writes through depends on min.insync.replicas (see the acks=all point below).',
         'In-Sync Replicas (ISR) is the set of followers sufficiently caught up with the leader.',
-        'acks=all ensures the producer waits for all ISR replicas to confirm before considering the write successful.',
+        'acks=all makes the leader wait for every replica currently in the ISR, but the ISR can shrink to the leader alone. With the default min.insync.replicas=1 the write is then acknowledged with no follower copy, exactly like acks=1. Pair acks=all with min.insync.replicas=2 (for RF=3) so the broker rejects writes it cannot replicate.',
       ]
     },
     {
@@ -64,7 +64,7 @@ export class KafkaArchitecture {
       heading: 'Log Compaction vs. Retention-Based Deletion',
       points: [
         'Standard Kafka retention deletes messages after a configured time or size limit regardless of content — appropriate for event streams where only recent history matters, like application logs or metrics.',
-        'Log compaction instead retains only the LATEST value for each message key, deleting older values for the same key — appropriate for topics representing current state (like a changelog of "current value of account X") rather than a pure event history.',
+        'Log compaction instead guarantees to keep at least the LATEST value for each message key, and may delete older values for the same key over time — appropriate for topics representing current state (like a changelog of "current value of account X") rather than a pure event history.',
         'Compacted topics are commonly used to back Kafka Streams\' internal state stores and KTables, since they naturally represent "current state per key" rather than an ever-growing unbounded event log.',
         'Choosing the wrong retention strategy for a topic\'s actual use case — compacting an event-history topic, or time-deleting a current-state topic — silently loses data the consuming application actually needed.',
       ],
@@ -181,7 +181,7 @@ await admin.createTopics({
 await admin.createTopics({
   topics: [{ topic: 'user-events', numPartitions: 6, replicationFactor: 3 }],
 });`,
-      explanation: 'Each partition has overhead (file handles, memory, leader election). Over-partitioning wastes broker resources. Start conservatively and increase when throughput demands it.'
+      explanation: 'Each partition has overhead (file handles, memory, leader election). Over-partitioning wastes broker resources. You can add partitions later but never remove them, and adding them changes hash(key) % partitions, so for keyed topics leave growth headroom instead of relying on a later increase.'
     },
     {
       title: 'Using acks=0 in production (fire and forget)',
@@ -192,10 +192,10 @@ await admin.createTopics({
 });`,
       right: `await producer.send({
   topic: 'payments',
-  acks: -1,  // wait for all ISR replicas
+  acks: -1,  // wait for all ISR replicas (and set min.insync.replicas=2 on the topic)
   messages: [{ value: JSON.stringify(payment) }],
 });`,
-      explanation: 'acks=0 offers highest throughput but zero durability guarantee. For financial data, always use acks=-1 (all ISR).'
+      explanation: 'acks=0 offers highest throughput but zero durability guarantee. For financial data use acks=-1 (all ISR) together with min.insync.replicas=2 on the topic; acks=-1 alone still acknowledges a leader-only write if the ISR has shrunk to one.'
     },
     {
       title: 'Not setting a message key, breaking per-entity ordering',
@@ -284,18 +284,18 @@ async function inspectTopic(topicName: string) {
 
   readonly quiz: QuizQuestion[] = [
     { q: 'How does Kafka guarantee ordering within a topic?', options: ['Across all partitions', 'Within a single partition only', 'Per consumer group', 'Using timestamps'], answer: 1, explanation: 'Kafka guarantees order within a partition. Across partitions there is no ordering guarantee.' },
-    { q: 'What does replication factor 3 mean?', options: ['3 consumers per group', '3 partitions per topic', '3 copies of each partition on different brokers', '3 acks required'], answer: 2, explanation: 'RF=3 means each partition has 3 copies (1 leader + 2 followers) on separate brokers, tolerating 2 broker failures.' },
+    { q: 'What does replication factor 3 mean?', options: ['3 consumers per group', '3 partitions per topic', '3 copies of each partition on different brokers', '3 acks required'], answer: 2, explanation: 'RF=3 means each partition has 3 copies (1 leader + 2 followers) on separate brokers, so committed data survives the loss of 2 brokers.' },
     { q: 'What is the maximum number of consumers in one group that can actively read from a topic with 4 partitions?', options: ['1', '4', '8', 'Unlimited'], answer: 1, explanation: 'Each partition is assigned to at most one consumer per group. With 4 partitions, 4 consumers is the effective limit; extra consumers are idle.' },
     { q: 'What does setting idempotent=true on a Kafka producer enable?', options: ['Exactly-once delivery to consumers', 'Exactly-once send semantics (no duplicates on retry)', 'Message deduplication at consumer', 'Stronger acks requirement'], answer: 1, explanation: 'Idempotent producer prevents duplicate records from producer retries by assigning a sequence number to each record.' },
     { q: 'If a producer sends messages without a key (key = null), how does Kafka assign them to partitions, and what does that mean for ordering?', options: ['All null-key messages go to partition 0', 'The default partitioner distributes null-key messages round-robin (or sticky-batch) across all partitions, so there is no ordering guarantee between them at all', 'Null-key messages are rejected by the broker', 'Null-key messages always go to the same partition as the previous message'], answer: 1, explanation: 'Without a key, the default partitioner spreads messages across partitions (modern Kafka uses "sticky" batching for better batching efficiency, but still distributes across partitions over time) rather than sending them all to one partition — this maximizes throughput and load distribution, but means there is no meaningful ordering guarantee between any two unkeyed messages, since they can land on different partitions that consumers process independently and in parallel.' },
-    { q: 'What is the role of the KRaft controller in Kafka 3.3+?', options: ['Manages consumer group rebalancing only', 'Replaces ZooKeeper for cluster metadata management using Raft consensus', 'Handles message compaction', 'Acts as a proxy for producers'], answer: 1, explanation: 'KRaft (Kafka Raft) replaces ZooKeeper for storing and managing cluster metadata (broker registrations, topic configs, partition assignments) using the Raft consensus algorithm — simpler deployment, faster failover.' },
+    { q: 'What is the role of the KRaft controller in Kafka 3.3+?', options: ['Manages consumer group rebalancing only', 'Replaces ZooKeeper for cluster metadata management using Raft consensus', 'Handles message compaction', 'Acts as a proxy for producers'], answer: 1, explanation: 'KRaft (Kafka Raft) replaces ZooKeeper for storing and managing cluster metadata (broker registrations, topic configs, partition assignments) using the Raft consensus algorithm — simpler deployment, faster failover. It was declared production-ready in 3.3; Kafka 4.0 removed ZooKeeper mode entirely.' },
   ];
 
   readonly qna: QnaItem[] = [
-    { q: 'What replaced ZooKeeper in modern Kafka?', a: 'KRaft (Kafka Raft Metadata mode) was introduced in Kafka 2.8 and became production-ready in 3.3. It replaces ZooKeeper with a built-in Raft-based controller, simplifying deployment and improving metadata scalability.' },
+    { q: 'What replaced ZooKeeper in modern Kafka?', a: 'KRaft (Kafka Raft Metadata mode) was introduced in Kafka 2.8 and became production-ready in 3.3. It replaces ZooKeeper with a built-in Raft-based controller, simplifying deployment and improving metadata scalability. Kafka 4.0 (2025) removed ZooKeeper mode entirely, so a 3.x cluster must be migrated to KRaft before upgrading to 4.0.' },
     { q: 'How do I determine the right number of partitions for a topic?', a: 'A common rule: target throughput / throughput per partition. If your topic needs 100 MB/s and each partition can handle ~10 MB/s, use 10+ partitions. Also consider your consumer group size — you can\'t have more active consumers than partitions.' },
-    { q: 'What is In-Sync Replica (ISR) and why does it matter for acks=-1?', a: 'ISR is the set of replicas fully caught up with the leader\'s log. With acks=-1, the producer waits for confirmation from all ISR members. If a follower lags too far (replica.lag.time.max.ms), it is removed from ISR, and the write still succeeds without waiting for it.' },
-    { q: 'How does Kafka log compaction work and when do you use it?', a: 'Log compaction retains only the latest value per key — older records with the same key are removed during compaction. Enable with <code>cleanup.policy=compact</code>. Use for change-data-capture (CDC), event sourcing where you only need current state, or Kafka as a key-value store. Compaction runs in the background; consumers still read the compacted log.' },
+    { q: 'What is In-Sync Replica (ISR) and why does it matter for acks=-1?', a: 'ISR is the set of replicas fully caught up with the leader\'s log. With acks=-1, the producer waits for confirmation from all ISR members. If a follower lags too far (replica.lag.time.max.ms), it is removed from ISR, and the write still succeeds without waiting for it. With the default min.insync.replicas=1 that can mean only the leader has the record; set min.insync.replicas=2 with RF=3 so the broker rejects the write (NotEnoughReplicas) instead.' },
+    { q: 'How does Kafka log compaction work and when do you use it?', a: 'Log compaction guarantees to keep at least the latest value per key — older records with the same key are removed by the background cleaner, but not instantly, and never from the active segment. A record with a null value is a tombstone: it deletes the key and is itself kept for delete.retention.ms (24 hours by default). Enable with <code>cleanup.policy=compact</code>. Use for change-data-capture (CDC), event sourcing where you only need current state, or Kafka as a key-value store. Compaction runs in the background; consumers still read the compacted log.' },
     { q: 'What is the consumer group rebalance protocol and what triggers it?', a: 'Rebalancing redistributes partition ownership among consumers in a group. Triggered by: consumer joins/leaves, consumer heartbeat timeout, topic partition count change, or subscription change. During rebalance, all consumers stop processing (stop-the-world). Incremental Cooperative Rebalancing (Kafka 2.4+) minimizes disruption by only revoking partitions that need to move.' },
     { q: 'How does Kafka achieve high throughput for producers?', a: 'Key optimisations: (1) <strong>Batching</strong>: producers buffer messages (linger.ms, batch.size) and send in batches; (2) <strong>Compression</strong>: snappy/lz4/zstd reduces network I/O; (3) <strong>Sequential I/O</strong>: Kafka appends to partition logs (disk sequential writes are fast); (4) <strong>Zero-copy</strong>: sendfile syscall transfers data from disk to network without userspace copy.' },
   ];
@@ -305,10 +305,10 @@ async function inspectTopic(topicName: string) {
     mustKnow: [
       'Topic split into partitions; order guaranteed within partition, not across',
       'Consumer group: each partition assigned to one consumer; more consumers than partitions → idle consumers',
-      'Replication factor: RF=3 → 1 leader + 2 followers; tolerates 2 broker failures',
-      'acks=-1 (all ISR) for durability; acks=0 for fire-and-forget (data loss risk)',
+      'Replication factor: RF=3 → 1 leader + 2 followers; committed data survives 2 broker failures',
+      'acks=-1 (all ISR) plus min.insync.replicas=2 for durability; acks=0 for fire-and-forget (data loss risk)',
       'Message key → same partition → ordered processing per entity',
-      'KRaft replaces ZooKeeper from Kafka 3.3+ for simpler cluster management',
+      'KRaft is production-ready from Kafka 3.3; Kafka 4.0 removed ZooKeeper mode entirely',
     ],
     interviewFocus: [
       'Partition count impact on throughput and consumer parallelism',

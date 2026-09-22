@@ -25,7 +25,7 @@ export class AzureServiceBus {
     { name: 'Queue', type: 'keyword', desc: 'Point-to-point; one consumer receives each message' },
     { name: 'Topic', type: 'keyword', desc: 'Pub/sub; each subscription receives a copy of every message' },
     { name: 'Subscription', type: 'keyword', desc: 'Named consumer of a topic; can have filter rules' },
-    { name: 'Dead-letter queue', type: 'keyword', desc: 'Receives messages that exceed max delivery count or fail filter' },
+    { name: 'Dead-letter queue', type: 'keyword', desc: 'Receives messages that exceed max delivery count, are dead-lettered explicitly, or (if enabled) expire; a message that matches no subscription filter is not dead-lettered' },
     { name: 'Lock duration', type: 'keyword', desc: 'Time a message is locked to one receiver before being re-released' },
     { name: 'Session', type: 'keyword', desc: 'FIFO message ordering within a group (sessionId property)' },
     { name: 'Peek-lock', type: 'keyword', desc: 'Receive mode that locks message without removing until completed' },
@@ -58,7 +58,7 @@ export class AzureServiceBus {
         'Sessions enable FIFO processing within a group — all messages with the same sessionId are processed in order.',
         'A session receiver locks the entire session to one consumer at a time.',
         'Use sessions for order processing (all events for one orderId processed by one worker in sequence).',
-        'Sessions require EnabledForSessions=true on the queue/subscription.',
+        'Sessions are switched on with requiresSession (RequiresSession in .NET) when the queue or subscription is created; it cannot be changed later. Once on, every message must carry a sessionId, and a message without one is dead-lettered with the reason "Session ID is null".',
       ]
     },
     {
@@ -66,8 +66,8 @@ export class AzureServiceBus {
       points: [
         'Service Bus sessions group related messages (all messages for a given order ID, for example) and guarantee they are delivered in order to a single consumer at a time — without sessions, Service Bus makes no ordering guarantee across concurrent consumers.',
         'A session-enabled queue requires the consumer to explicitly accept a session before receiving its messages, and only one consumer can hold a given session at a time — this serializes processing per session while still allowing different sessions to be processed in parallel.',
-        'Sessions add meaningful latency and complexity compared to non-session queues, so they should be used specifically when true per-entity ordering matters, not applied as a default to every queue regardless of whether ordering is actually a requirement.',
-        'Duplicate detection (enabled via a duplicate-detection window) works alongside sessions to catch redelivered messages within a configurable time window, complementing rather than replacing consumer-side idempotency for messages arriving outside that window.',
+        'Sessions add complexity and limit parallelism to one receiver per session, and clients can no longer send or receive regular messages on a session-enabled entity, so use them when per-entity processing order matters rather than as a default for every queue.',
+        'Duplicate detection is off by default. Turn it on with requiresDuplicateDetection when the queue or topic is created (Standard and Premium only); the history window defaults to 10 minutes, with a minimum of 20 seconds and a maximum of 7 days. A duplicate send still succeeds but the message is dropped, and only the messageId is compared. It complements rather than replaces consumer-side idempotency for messages arriving outside the window.',
       ],
     },
     {
@@ -98,9 +98,9 @@ async function sendOrder(order: { id: string; total: number }) {
     await sender.sendMessages({
       body:          order,
       contentType:   'application/json',
-      messageId:     order.id,        // deduplication key
+      messageId:     order.id,        // dedup key, but only if duplicate detection was enabled when the queue was created
       subject:       'order.placed',
-      timeToLive:    24 * 60 * 60 * 1000, // 24 hours in ms
+      timeToLive:    24 * 60 * 60 * 1000, // 24 hours in ms; on expiry the message is dead-lettered only if dead-lettering on expiration is enabled, otherwise it is deleted
     });
     console.log('Sent order:', order.id);
   } finally {
@@ -198,20 +198,20 @@ await publishEvent('order.placed', { orderId: 'ORD-001', total: 99 });`,
 
   readonly mistakes: CommonMistake[] = [
     {
-      title: 'Not completing messages after successful processing',
-      wrong: `receiver.subscribe({
-  processMessage: async (msg) => {
-    await processOrder(msg.body);
-    // forgot completeMessage → message re-delivered after lock expires
-  },
-});`,
-      right: `receiver.subscribe({
-  processMessage: async (msg) => {
-    await processOrder(msg.body);
-    await receiver.completeMessage(msg); // remove from queue
-  },
-});`,
-      explanation: 'Without completeMessage(), the message stays locked until lock duration expires, then becomes visible again. It will be redelivered and eventually dead-lettered after maxDeliveryCount retries.'
+      title: 'Not settling messages you receive yourself',
+      wrong: `// receiveMessages() does not settle anything for you
+const messages = await receiver.receiveMessages(10, { maxWaitTimeInMs: 5000 });
+for (const msg of messages) {
+  await processOrder(msg.body);
+  // forgot completeMessage → message re-delivered after the lock expires
+}`,
+      right: `const messages = await receiver.receiveMessages(10, { maxWaitTimeInMs: 5000 });
+for (const msg of messages) {
+  await processOrder(msg.body);
+  await receiver.completeMessage(msg); // remove from queue
+}
+// subscribe() is different: autoCompleteMessages defaults to true, so it completes for you`,
+      explanation: 'With receiveMessages(), or with subscribe() when autoCompleteMessages is false, an unsettled message stays locked until the lock expires, then becomes visible again and is redelivered, and is dead-lettered after maxDeliveryCount (default 10). With subscribe() and the default settings the SDK completes the message after processMessage returns and abandons it if the handler throws.'
     },
     {
       title: 'Using receiveAndDelete mode for tasks that can fail',
@@ -225,20 +225,20 @@ const receiver = client.createReceiver('orders', { receiveMode: 'peekLock' });
     },
     {
       title: 'Not renewing the message lock for long-running operations',
-      wrong: `processMessage: async (msg) => {
-  await longRunningTask(msg.body); // takes 2 minutes
-  await receiver.completeMessage(msg); // lock expired at 60s → already re-queued!
-}`,
-      right: `processMessage: async (msg) => {
-  const renewLock = setInterval(async () => {
-    await receiver.renewMessageLock(msg);
-  }, 30_000); // renew every 30s
-  try {
-    await longRunningTask(msg.body);
-    await receiver.completeMessage(msg);
-  } finally { clearInterval(renewLock); }
-}`,
-      explanation: 'The default lock duration is 60s. Long-running processors must periodically renew the lock via renewMessageLock() to prevent the message from being re-queued mid-processing.'
+      wrong: `// Messages received with receiveMessages() are never auto-renewed
+const [msg] = await receiver.receiveMessages(1);
+await longRunningTask(msg.body); // takes 2 minutes
+await receiver.completeMessage(msg); // lock expired at 60s → MessageLockLost, already re-queued!`,
+      right: `const [msg] = await receiver.receiveMessages(1);
+const renewLock = setInterval(async () => {
+  await receiver.renewMessageLock(msg);
+}, 30_000); // renew every 30s
+try {
+  await longRunningTask(msg.body);
+  await receiver.completeMessage(msg);
+} finally { clearInterval(renewLock); }
+// With subscribe() the SDK renews for you, up to maxAutoLockRenewalDurationInMs (default 5 minutes)`,
+      explanation: 'The default lock duration is 1 minute and the maximum you can configure is 5 minutes. A message taken with receiveMessages() must be renewed by hand with renewMessageLock() if processing can outlast the lock. A subscribe() handler is renewed automatically for up to 5 minutes by default; raise maxAutoLockRenewalDurationInMs for longer work.'
     },
     {
       title: 'Not checking the dead-letter queue',
@@ -301,17 +301,17 @@ async function scheduleAndCancel(orderId: string) {
     { q: 'What is the difference between a Service Bus queue and a topic?', options: ['Queue is pub/sub; topic is point-to-point', 'Queue is point-to-point; topic delivers to all subscriptions', 'Topic has a DLQ; queue does not', 'Queue has sessions; topic does not'], answer: 1, explanation: 'A queue delivers each message to one consumer. A topic delivers each message to all subscriptions independently.' },
     { q: 'What happens when a message exceeds maxDeliveryCount?', options: ['It is silently deleted', 'It is moved to the dead-letter queue automatically', 'The consumer is disconnected', 'It is sent back to the producer'], answer: 1, explanation: 'Service Bus automatically moves a message to the DLQ when it has been delivered and abandoned maxDeliveryCount times.' },
     { q: 'Which receive mode should you use for tasks that must not be lost on failure?', options: ['receiveAndDelete', 'peekLock', 'sessionReceiver', 'prefetchCount'], answer: 1, explanation: 'peekLock keeps the message in the queue (locked) until the consumer explicitly completes, abandons, or dead-letters it.' },
-    { q: 'What does enableSessions on a queue provide?', options: ['Message deduplication', 'FIFO ordering within a session group', 'Dead-letter routing', 'Automatic retry delays'], answer: 1, explanation: 'Sessions guarantee that all messages with the same sessionId are processed by one receiver in order, enabling FIFO per-entity processing.' },
-    { q: 'What is the maximum message size on the Service Bus Standard tier?', options: ['1MB', '256KB', '100MB', 'Unlimited'], answer: 1, explanation: 'Standard tier caps message size at 256KB. Premium tier raises this to 100MB, useful for larger payloads without external blob references.' },
+    { q: 'What does enabling sessions (requiresSession) on a queue provide?', options: ['Message deduplication', 'FIFO ordering within a session group', 'Dead-letter routing', 'Automatic retry delays'], answer: 1, explanation: 'Sessions guarantee that all messages with the same sessionId are processed by one receiver in order, enabling FIFO per-entity processing.' },
+    { q: 'What is the maximum message size on the Service Bus Standard tier?', options: ['1MB', '256KB', '100MB', 'Unlimited'], answer: 1, explanation: 'Standard tier caps message size at 256KB. Premium tier raises this to 100MB over AMQP (the default per entity is 1MB and it is raised per entity), useful for larger payloads without external blob references.' },
     { q: 'What does AutoForwarding allow you to do between Service Bus entities?', options: ['Automatically retry failed deliveries', 'Chain a queue or subscription to forward messages to another queue/topic', 'Compress messages in transit', 'Convert AMQP messages to HTTP'], answer: 1, explanation: 'AutoForwarding lets a queue or subscription forward all its messages directly to another queue or topic, useful for building processing pipelines without custom relay code.' },
   ];
 
   readonly qna: QnaItem[] = [
-    { q: 'How does Service Bus message deduplication work?', a: 'Set duplicateDetectionHistoryTimeWindow on the queue. Within that window, messages with the same messageId are deduplicated at the broker level. Useful for idempotent publish when producers might retry on transient failures.' },
-    { q: 'What is the difference between Standard and Premium tiers?', a: 'Standard tier uses shared infrastructure with variable throughput. Premium tier provides dedicated processing units (messaging units), predictable performance, VNet integration, and supports larger message sizes (up to 100MB vs 256KB).' },
+    { q: 'How does Service Bus message deduplication work?', a: 'Enable it with requiresDuplicateDetection when the queue or topic is created (it cannot be switched on later, and the Basic tier does not support it), then set duplicateDetectionHistoryTimeWindow (default 10 minutes, 20 seconds to 7 days). Within that window a message with the same messageId is accepted but dropped, so a retrying producer sees a successful send. Only the messageId is compared, so it should be derived from the business operation, not a fresh GUID per attempt.' },
+    { q: 'What is the difference between Standard and Premium tiers?', a: 'Standard tier uses shared infrastructure with variable throughput. Premium tier provides dedicated processing units (messaging units), predictable performance, VNet integration, and supports larger message sizes (up to 100MB over AMQP vs 256KB; the Premium default per entity is 1MB and you raise it per queue or topic, and HTTP and SBMP stay at 1MB).' },
     { q: 'Can I use Service Bus with .NET and Node.js consumers simultaneously?', a: 'Yes. Service Bus is protocol-agnostic (AMQP 1.0). @azure/service-bus SDK for Node.js and Azure.Messaging.ServiceBus for .NET both use AMQP and can share the same queues and topics.' },
     { q: 'What happens if a Service Bus topic has zero subscriptions when a message is published to it?', a: 'The message is simply discarded — Service Bus topics have no built-in persistence or dead-lettering for messages published when no subscription exists to receive them (unlike a queue, which always retains the message until a consumer receives and completes it). This differs from Kafka topics, where messages persist for the retention period regardless of whether any consumer is currently subscribed — a subscription created AFTER a Service Bus message was published will never see that earlier message.' },
-    { q: 'How do Service Bus message locks work?', a: 'In PeekLock mode (default), receiving a message locks it for LockDuration (default 30s, max 5 min). Consumer must Complete() or Abandon() before expiry. If lock expires, message is redelivered. Use RenewMessageLockAsync for long-running tasks. ReceiveAndDelete deletes on receive immediately — no retry on failure.' },
+    { q: 'How do Service Bus message locks work?', a: 'In PeekLock mode (default), receiving a message locks it for LockDuration (default 1 minute, max 5 minutes). Consumer must Complete() or Abandon() before expiry. If the lock expires, the message is redelivered and Complete() fails with a lock-lost error. Use RenewMessageLockAsync for long-running tasks, or a processor or subscribe() handler, which renews for you for up to 5 minutes by default. ReceiveAndDelete deletes on receive immediately — no retry on failure.' },
     { q: 'When should you use Service Bus vs Event Grid vs Storage Queues?', a: 'Use Service Bus for ordered delivery (sessions), large messages (up to 100MB Premium), SQL filtering, or distributed transactions. Use Event Grid for event-driven notifications from Azure/SaaS services. Use Storage Queues for simple, cost-effective task queuing with no ordering needs and messages up to 64KB.' },
   ].filter(q => q.a) as QnaItem[];
 
@@ -323,7 +323,7 @@ async function scheduleAndCancel(orderId: string) {
       'completeMessage() removes the message; abandonMessage() releases lock for retry',
       'maxDeliveryCount exhausted → auto-dead-letter; always monitor DLQ',
       'Renew message lock (renewMessageLock) for long-running processors',
-      'Sessions: FIFO per sessionId; requires EnabledForSessions on queue/subscription',
+      'Sessions: FIFO per sessionId; requiresSession is set when the queue or subscription is created',
     ],
     interviewFocus: [
       'Queue vs topic/subscription: when to use each',

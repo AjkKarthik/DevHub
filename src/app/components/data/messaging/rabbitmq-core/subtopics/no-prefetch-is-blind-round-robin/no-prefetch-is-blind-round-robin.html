@@ -1,0 +1,26 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="RabbitMQ Core Concepts" topicRoute="/messaging/rabbitmq-core"
+    subtopicLabel="Without Prefetch RabbitMQ Deals Messages Round-Robin, Blind to Load" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">Without Prefetch RabbitMQ Deals Messages Round-Robin, Blind to Load</h1>
+  <p class="page-subtitle">The page said the fastest consumer gets everything when prefetch is unset. RabbitMQ actually alternates by count and never looks at how busy a consumer is.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="RabbitMQ 3+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the prefetch theory bullet, the third mistake block and the prefetch quiz explanation. The RabbitMQ Exchanges topic covers how messages reach these queues in the first place.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="RabbitMQ Core Concepts" topicRoute="/messaging/rabbitmq-core"
+    [prev]="{ label: 'Classic Mirrored Queues Were Removed: Use Quorum Queues', route: '/messaging/rabbitmq-core/quorum-queues-replace-mirrored-queues' }" />
+</div>

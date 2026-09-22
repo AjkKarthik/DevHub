@@ -26,7 +26,7 @@ export class KafkaConnect {
     { name: 'Sink Connector', type: 'keyword', desc: 'Pushes data from Kafka topic into external system' },
     { name: 'Worker', type: 'keyword', desc: 'JVM process running connector instances; distributed or standalone' },
     { name: 'Task', type: 'keyword', desc: 'Unit of parallelism within a connector; each worker runs tasks' },
-    { name: 'Offset Storage', type: 'keyword', desc: 'Kafka topic storing connector offsets (position in source data)' },
+    { name: 'Offset Storage', type: 'keyword', desc: 'Source connectors: a Kafka offsets topic (position in the source data). Sink connectors: the consumer group connect-<name> in __consumer_offsets' },
     { name: 'SMT', type: 'keyword', desc: 'Single Message Transform — lightweight record transformation in pipeline' },
     { name: 'Debezium', type: 'keyword', desc: 'CDC connector that reads database transaction logs as Kafka events' },
     { name: 'CDC', type: 'keyword', desc: 'Change Data Capture — stream DB changes (insert/update/delete) to Kafka' },
@@ -55,7 +55,8 @@ export class KafkaConnect {
       heading: 'Single Message Transforms (SMTs)',
       points: [
         'SMTs are lightweight transformations applied to records as they pass through a connector, before reaching the topic or sink.',
-        'Common SMTs: ReplaceField (rename/mask columns), InsertField (add metadata), TimestampConverter (normalise dates), Router (change destination topic).',
+        'Common SMTs: ReplaceField (rename or drop fields), MaskField (mask values), InsertField (add metadata), TimestampConverter (normalise dates), Router (change destination topic). ReplaceField filters and renames only; it does not mask values.',
+        'Order and nesting matter: on a raw Debezium record the row columns sit inside the before and after structs, so a top-level ReplaceField or MaskField cannot see them. Unwrap with ExtractNewRecordState first, or exclude or mask the column in the Debezium connector itself.',
         'SMTs are stateless — for complex transformations, use Kafka Streams or ksqlDB downstream.',
         'Chain multiple SMTs in order; they are applied sequentially to each record.',
       ]
@@ -96,13 +97,10 @@ const connectorConfig = {
     'database.user':                'debezium',
     'database.password':            'debezium',
     'database.dbname':              'shop',
-    'database.server.name':         'shop',
     'table.include.list':           'public.orders,public.users',
-    'topic.prefix':                 'shop',
-    // SMT: mask sensitive columns
-    'transforms':                        'maskSensitive',
-    'transforms.maskSensitive.type':     'org.apache.kafka.connect.transforms.ReplaceField\$Value',
-    'transforms.maskSensitive.blacklist':'credit_card_number',
+    'topic.prefix':                 'shop',   // replaced database.server.name in Debezium 2.0
+    // Keep the sensitive column out of the events entirely (schema.table.column)
+    'column.exclude.list':          'public.orders.credit_card_number',
   },
 };
 
@@ -191,12 +189,13 @@ connect-distributed.sh connect-distributed.properties
     {
       title: 'Not enabling WAL replication slots for Debezium Postgres',
       wrong: `-- Default Postgres config
--- wal_level = minimal → Debezium cannot read the WAL`,
-      right: `-- postgresql.conf
+-- wal_level = replica (the default) → no logical decoding, Debezium cannot stream changes`,
+      right: `-- postgresql.conf (changing wal_level needs a server restart)
 wal_level = logical
--- Create replication slot for Debezium
+-- Optional: Debezium creates its replication slot automatically if the user has the privileges.
+-- To create it yourself:
 SELECT pg_create_logical_replication_slot('debezium', 'pgoutput');`,
-      explanation: 'Debezium requires wal_level=logical to read the WAL. Without it, the connector fails to capture change events.'
+      explanation: 'Debezium needs logical decoding, so wal_level must be logical; the PostgreSQL default is replica, and changing it requires a restart. Debezium creates the configured replication slot by default when it starts, provided its user has the required privileges, so creating the slot by hand is optional.'
     },
     {
       title: 'Using stateful SMTs instead of Kafka Streams',
@@ -264,12 +263,12 @@ monitorConnectors('http://connect:8083');`,
   ];
 
   readonly qna: QnaItem[] = [
-    { q: 'Where does Kafka Connect store connector offsets?', a: 'In a Kafka topic (default: connect-offsets) in distributed mode. This is how connectors resume from where they left off after a restart without duplicating or missing records.' },
+    { q: 'Where does Kafka Connect store connector offsets?', a: 'It depends on the connector type. Source connectors keep their position in the source system (a log position, a table id) in an offsets topic, set with offset.storage.topic in distributed mode. Sink connectors do not use that topic: their offsets are ordinary consumer group offsets in __consumer_offsets, under the group connect-&lt;connector name&gt;. Either way, that is how a connector resumes after a restart. Since Kafka 3.6 the REST API can read and reset offsets (GET, PATCH and DELETE on /connectors/{name}/offsets) once the connector is stopped.' },
     { q: 'What is the ExtractNewRecordState SMT?', a: 'A Debezium-provided SMT that unwraps the Debezium envelope and returns just the after (new) state of the row. It also handles tombstones for delete propagation to sinks.' },
     { q: 'Can Kafka Connect handle schema evolution?', a: 'Yes, with Schema Registry and Avro/Protobuf serialization. When a schema changes, Kafka Connect checks compatibility (backward, forward, or full) and rejects incompatible changes, protecting downstream consumers.' },
     { q: 'What happens to a Kafka Connect sink connector if it receives a record with a schema that violates the registry\'s compatibility mode?', a: 'The sink connector\'s task fails and stops processing — Schema Registry rejects the incompatible schema registration attempt at the producer/source side, but if an incompatible schema somehow reaches a topic (e.g. compatibility checking was disabled or bypassed), the sink task consuming it throws a serialization/deserialization exception and dies rather than silently corrupting the downstream system. Operators typically monitor Connect task status (RUNNING vs FAILED) and configure errors.tolerance to control whether such records are skipped and logged (errors.tolerance=all) or halt the connector entirely (errors.tolerance=none, the default).' },
     { q: 'What are Single Message Transforms (SMTs) in Kafka Connect?', a: 'SMTs are lightweight transformations applied to messages in the Connect pipeline (source or sink). Examples: ReplaceField (rename/drop fields), ExtractField (promote a field), InsertField (add static value), MaskField (obfuscate PII), TimestampConverter (convert date formats). SMTs avoid needing a separate stream processor for simple transformations.' },
-    { q: 'What happens to in-flight offset tracking if a Kafka Connect worker crashes mid-task in distributed mode?', a: 'Because offsets are committed to the shared connect-offsets Kafka topic (not stored locally on the worker), a crashed worker\'s tasks are simply reassigned to a surviving worker in the cluster, which reads the last committed offset from that shared topic and resumes from there — no offset data is lost with the crashed process, since the offset state was never tied to that specific worker\'s local disk. This is why distributed mode\'s fault tolerance depends on the offsets topic itself being properly replicated (a common misconfiguration is leaving connect-offsets at replication factor 1 in production).' },
+    { q: 'What happens to in-flight offset tracking if a Kafka Connect worker crashes mid-task in distributed mode?', a: 'Because offsets are committed to Kafka rather than stored locally on the worker (an offsets topic for source connectors, the connect-&lt;name&gt; consumer group for sink connectors), a crashed worker\'s tasks are simply reassigned to a surviving worker in the cluster, which reads the last committed offset from Kafka and resumes from there — no offset data is lost with the crashed process, since the offset state was never tied to that specific worker\'s local disk. This is why distributed mode\'s fault tolerance depends on the offsets topic itself being properly replicated (a common misconfiguration is leaving connect-offsets at replication factor 1 in production).' },
   ];
 
   readonly revision: RevisionSummary = {
@@ -279,7 +278,7 @@ monitorConnectors('http://connect:8083');`,
       'Debezium reads WAL/binlog for CDC; requires wal_level=logical on Postgres',
       'SMTs are stateless per-record transforms; use Kafka Streams for stateful logic',
       'Distributed mode for production (fault tolerance); standalone for development',
-      'Connector offsets stored in a Kafka topic (connect-offsets)',
+      'Source connector offsets live in an offsets topic; sink connector offsets are consumer group offsets (connect-&lt;name&gt;)',
       'ExtractNewRecordState SMT unwraps Debezium envelope for sink connectors',
     ],
     interviewFocus: [

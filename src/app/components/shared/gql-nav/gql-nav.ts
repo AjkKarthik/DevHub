@@ -320,15 +320,105 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/graphql/client-caching" routerLinkActive="active"><span class="nl-text">Client Caching</span>@if(p.isDone('gql-client-caching')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/graphql/code-generation" routerLinkActive="active"><span class="nl-text">Code Generation</span>@if(p.isDone('gql-code-generation')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/graphql/client-caching" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Client Caching</span>
+        @if(p.isDone('gql-client-caching')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('client-caching')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('client-caching')"
+                  (click)="toggleSubtopics('client-caching', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('client-caching'); as clientCachingSubs) {
+        @if (isSubtopicsExpanded('client-caching')) {
+          <div class="nav-subtopics">
+            @for (s of clientCachingSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/graphql/code-generation" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Code Generation</span>
+        @if(p.isDone('gql-code-generation')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('code-generation')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('code-generation')"
+                  (click)="toggleSubtopics('code-generation', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('code-generation'); as codeGenerationSubs) {
+        @if (isSubtopicsExpanded('code-generation')) {
+          <div class="nav-subtopics">
+            @for (s of codeGenerationSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Advanced</p>
-      <a routerLink="/graphql/performance" routerLinkActive="active"><span class="nl-text">Performance &amp; Best Practices</span>@if(p.isDone('gql-performance')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/graphql/federation" routerLinkActive="active"><span class="nl-text">Schema Stitching &amp; Federation</span>@if(p.isDone('gql-federation')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/graphql/testing" routerLinkActive="active"><span class="nl-text">Testing GraphQL APIs</span>@if(p.isDone('gql-testing')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/graphql/performance" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Performance &amp; Best Practices</span>
+        @if(p.isDone('gql-performance')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('gql-performance')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('gql-performance')"
+                  (click)="toggleSubtopics('gql-performance', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('gql-performance'); as performanceSubs) {
+        @if (isSubtopicsExpanded('gql-performance')) {
+          <div class="nav-subtopics">
+            @for (s of performanceSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/graphql/federation" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Schema Stitching &amp; Federation</span>
+        @if(p.isDone('gql-federation')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('federation')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('federation')"
+                  (click)="toggleSubtopics('federation', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('federation'); as federationSubs) {
+        @if (isSubtopicsExpanded('federation')) {
+          <div class="nav-subtopics">
+            @for (s of federationSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/graphql/testing" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Testing GraphQL APIs</span>
+        @if(p.isDone('gql-testing')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('gql-testing')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('gql-testing')"
+                  (click)="toggleSubtopics('gql-testing', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('gql-testing'); as testingSubs) {
+        @if (isSubtopicsExpanded('gql-testing')) {
+          <div class="nav-subtopics">
+            @for (s of testingSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

@@ -1,0 +1,26 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Code Generation" topicRoute="/graphql/code-generation"
+    subtopicLabel="Authenticating codegen Against a Protected Endpoint" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">Authenticating codegen Against a Protected Endpoint</h1>
+  <p class="page-subtitle">The main page's own QnA names two ways to point codegen at an auth-protected schema in one sentence. Built both, verified the real headers-object config shape, and traced the real tradeoff neither approach avoids entirely.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This is the last subtopic in this batch. Together with fragment masking and near-operation-file, it rounds out the three gaps the main page's own theory and QnA name but never fully demonstrate. Return to the Code Generation topic overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Code Generation" topicRoute="/graphql/code-generation"
+    [prev]="{ label: 'Setting Up near-operation-file for Colocated Types', route: '/graphql/code-generation/near-operation-file-preset' }" />
+</div>

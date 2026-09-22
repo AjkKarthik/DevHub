@@ -73,7 +73,7 @@ export class GqlPerformance {
       points: [
         'GraphQL responses can be cached at field level with @cacheControl directives.',
         '@cacheControl(maxAge: 60, scope: PUBLIC) on a field tells Apollo Server to set Cache-Control headers.',
-        'The minimum maxAge across all selected fields determines the overall response Cache-Control header.',
+        'The overall response takes the MOST RESTRICTIVE setting across every selected field: the lowest maxAge (a single maxAge: 0 field makes the whole response uncacheable), and scope: PRIVATE if ANY field is private -- one private field downgrades an otherwise-public response.',
         'For private data (authenticated), use scope: PRIVATE — CDNs won\'t cache it, but browsers will.'
       ]
     }
@@ -134,10 +134,12 @@ const client = new ApolloClient({
     {
       label: '@cacheControl',
       language: 'typescript',
-      code: `# Apollo Server built-in cache control directive
-directive @cacheControl(maxAge: Int, scope: CacheScope) on FIELD_DEFINITION | OBJECT
+      code: `# You must add this directive definition to your OWN schema —
+# Apollo Server does not inject it automatically. Without it: "Unknown directive \\"@cacheControl\\"".
+directive @cacheControl(maxAge: Int, scope: CacheControlScope, inheritMaxAge: Boolean)
+  on FIELD_DEFINITION | OBJECT | INTERFACE | UNION
 
-enum CacheScope { PUBLIC PRIVATE }
+enum CacheControlScope { PUBLIC PRIVATE }
 
 type Query {
   # Public data — CDN can cache for 60 seconds
@@ -258,7 +260,7 @@ const server = new ApolloServer({
     { q: 'What is the difference between depth limiting and query complexity?', a: 'Depth limiting rejects based on nesting depth alone. Complexity analysis assigns cost scores to every field (including list multipliers) and rejects based on total cost. Use both: depth for obvious abuse, complexity for sophisticated attacks.' },
     { q: 'Should I use a query allowlist in production?', a: 'For high-security APIs where the client is known (e.g., your own mobile app), yes. A full allowlist (only registered hashes allowed) is the strongest security posture. For public APIs where third parties query your schema, allowlists are impractical.' },
     { q: 'How do I detect slow resolvers?', a: 'Use Apollo Studio for field-level tracing (opentelemetry-plugin, Apollo Router traces). Add custom timing in resolvers or plugins. The requestDidStart/willSendResponse lifecycle can log total duration; plugins can trace per-field timing.' },
-    { q: 'What is the "batched query" attack in GraphQL?', a: 'Sending multiple mutations in one HTTP request: `mutation { m1: login(...) m2: login(...) }` — bypasses per-request rate limits. Mitigate with per-mutation rate limiting, operation complexity, or disabling query batching.' },
+    { q: 'What is the "batched query" attack in GraphQL?', a: 'Two distinct things get conflated here. Aliasing multiple root fields in ONE operation — `mutation { m1: login(...) m2: login(...) }` — is ordinary GraphQL syntax, always available regardless of server config, and bypasses a per-HTTP-request rate limit since it is still one request. "Disabling query batching" (Apollo Server 4\'s allowBatchedHttpRequests, off by default) does NOT stop this — that setting only blocks a SEPARATE feature, an array of independent operations in one POST body. The real fix for aliased root fields is a validation rule capping root-field count per operation, plus rate limiting keyed on operation count rather than HTTP request count.' },
     { q: 'How do field suggestions pose a security risk?', a: 'When a client queries a non-existent field, GraphQL suggests "Did you mean \'secretAdminField\'?". This reveals field names even without introspection. Disable suggestions in production using a custom validation rule or server option.' },
     { q: 'What is query cost analysis vs complexity?', a: 'They are largely synonymous. "Query cost" typically refers to assigning numeric costs per field and checking against a budget. "Complexity" is often used interchangeably, though some libraries use the terms to distinguish between field-count (complexity) and server-load estimates (cost).' }
   ];

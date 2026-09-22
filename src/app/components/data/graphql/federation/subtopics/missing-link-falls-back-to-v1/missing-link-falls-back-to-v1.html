@@ -1,0 +1,27 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Schema Stitching &amp; Federation" topicRoute="/graphql/federation"
+    subtopicLabel="A Missing @link Silently Falls Back to v1" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">A Missing &#64;link Silently Falls Back to v1</h1>
+  <p class="page-subtitle">The main page says v2 is enabled with the &#64;link directive. It never says what happens when a subgraph forgets it: composition does not fail, it quietly treats that subgraph as Federation v1 -- which looks identical to success.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Federation v2" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>Previous: the runtime choice (Gateway vs. Router) is independent of this per-subgraph spec-version choice. Next: once subgraphs are correctly on v2, the main page's __resolveReference batching advice needs a precision fix about what actually gets batched.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Schema Stitching &amp; Federation" topicRoute="/graphql/federation"
+    [prev]="{ label: 'Federation v2 Doesn’t Replace the Gateway', route: '/graphql/federation/gateway-vs-router' }"
+    [next]="{ label: 'Where DataLoader Actually Helps in __resolveReference', route: '/graphql/federation/dataloader-inside-resolve-reference' }" />
+</div>

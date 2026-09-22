@@ -31486,6 +31486,81 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Deployment and scaling independence is a real benefit — producer and consumer can be redeployed or rewritten independently as long as the message contract stays stable.',
     ],
   },
+  'messaging/messaging-fundamentals/nack-without-dlx-discards': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Messaging Fundamentals', route: '/messaging/messaging-fundamentals' },
+      { label: 'RabbitMQ Consumers Are Pushed To, Not Polled', route: '/messaging/messaging-fundamentals/rabbitmq-consumers-are-pushed' },
+    ],
+    tip: 'A message rejected with requeue=false is routed to a dead letter exchange only if one is configured for the queue; otherwise RabbitMQ discards it. Declare the DLX and the x-dead-letter-exchange argument.',
+    gotchas: [
+      'nack with requeue=true is the case that loops a poison message forever; requeue=false with no DLX makes it disappear instead.',
+      'Producer and consumer must declare the source queue with identical arguments, or the second declaration is rejected.',
+    ],
+  },
+  'messaging/messaging-fundamentals/rabbitmq-consumers-are-pushed': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Messaging Fundamentals', route: '/messaging/messaging-fundamentals' },
+      { label: 'nack With requeue=false Discards Messages Unless a DLX Exists', route: '/messaging/messaging-fundamentals/nack-without-dlx-discards' },
+      { label: 'SQS FIFO Deduplication Only Covers a Five-Minute Send Window', route: '/messaging/messaging-fundamentals/sqs-fifo-dedup-five-minute-window' },
+    ],
+    tip: 'RabbitMQ consumers registered with basic.consume are push-based; prefetch caps how many unacknowledged deliveries are in flight, which is its backpressure mechanism.',
+    gotchas: [
+      'basic.get is polling and the RabbitMQ docs strongly discourage it outside integration tests.',
+      'SQS and Kafka are pull-based; SNS, EventBridge and webhooks push to an endpoint with no per-consumer in-flight cap.',
+    ],
+  },
+  'messaging/messaging-fundamentals/sqs-fifo-dedup-five-minute-window': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Messaging Fundamentals', route: '/messaging/messaging-fundamentals' },
+      { label: 'RabbitMQ Consumers Are Pushed To, Not Polled', route: '/messaging/messaging-fundamentals/rabbitmq-consumers-are-pushed' },
+    ],
+    tip: 'SQS FIFO deduplicates SendMessage retries inside a 5-minute interval. It does not make consumers exactly-once, so keep them idempotent.',
+    gotchas: [
+      'A retry that arrives after the 5-minute interval is accepted as a new message.',
+      'Content-based deduplication hashes the message body only; message attributes are not part of the deduplication ID.',
+    ],
+  },
+  'messaging/message-queues-vs-streams/unacked-messages-not-redelivered-forever': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Queues vs Event Streams', route: '/messaging/message-queues-vs-streams' },
+      { label: 'RabbitMQ Streams Can Replay Too', route: '/messaging/message-queues-vs-streams/rabbitmq-streams-can-replay-too' },
+      { label: 'Queues Are At-Least-Once, So Handlers Must Be Idempotent', route: '/messaging/message-queues-vs-streams/at-least-once-queues-need-idempotent-handlers' },
+    ],
+    tip: 'RabbitMQ requeues unacked deliveries when the channel closes; the delivery acknowledgement timeout (default 30 minutes) closes the channel with PRECONDITION_FAILED. A connected consumer that never acks is simply stuck, not redelivered to.',
+    gotchas: [
+      'Each unacked message holds a prefetch slot, so a missing ack stalls the consumer once the slots run out.',
+      'SQS differs: a received message reappears after the visibility timeout (default 30 seconds) unless it was deleted.',
+    ],
+  },
+  'messaging/message-queues-vs-streams/rabbitmq-streams-can-replay-too': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Queues vs Event Streams', route: '/messaging/message-queues-vs-streams' },
+      { label: 'Unacked Messages Are Not Redelivered Forever', route: '/messaging/message-queues-vs-streams/unacked-messages-not-redelivered-forever' },
+      { label: 'Queues Are At-Least-Once, So Handlers Must Be Idempotent', route: '/messaging/message-queues-vs-streams/at-least-once-queues-need-idempotent-handlers' },
+    ],
+    tip: 'RabbitMQ 3.9+ streams are an append-only log: declare with x-queue-type=stream, consume with a QoS prefetch, manual acks and an x-stream-offset argument.',
+    gotchas: [
+      'Acking a stream message only advances that reader; messages leave when x-max-age or x-max-length-bytes retention expires.',
+      'With neither retention argument set, no retention limit applies.',
+    ],
+  },
+  'messaging/message-queues-vs-streams/at-least-once-queues-need-idempotent-handlers': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Queues vs Event Streams', route: '/messaging/message-queues-vs-streams' },
+      { label: 'RabbitMQ Streams Can Replay Too', route: '/messaging/message-queues-vs-streams/rabbitmq-streams-can-replay-too' },
+    ],
+    tip: 'A queue hands each message to one consumer at a time, but delivery is at-least-once. Dedupe on a stable message id, recorded atomically with the side effect, then ack.',
+    gotchas: [
+      'SQS standard queues can deliver more than one copy of a message.',
+      'Acking before the work is committed trades duplicates for lost messages.',
+    ],
+  },
   'messaging/message-queues-vs-streams': {
     apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
     related: [
@@ -31498,6 +31573,43 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Choose based on whether the use case needs a transient work-distribution buffer or a durable, replayable event log.',
     ],
   },
+  'messaging/kafka-architecture/acks-all-needs-min-insync-replicas': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Kafka Architecture', route: '/messaging/kafka-architecture' },
+      { label: 'Adding Partitions Later Changes Where a Key Lands', route: '/messaging/kafka-architecture/adding-partitions-remaps-keys' },
+    ],
+    tip: 'acks=all waits only for the current ISR, which can shrink to the leader alone. With RF=3 also set min.insync.replicas=2 so the broker rejects writes it cannot replicate.',
+    gotchas: [
+      'min.insync.replicas defaults to 1, which lets acks=all acknowledge a leader-only write.',
+      'NotEnoughReplicas is retriable: producers keep retrying while fewer than min.insync.replicas replicas are in sync.',
+    ],
+  },
+  'messaging/kafka-architecture/adding-partitions-remaps-keys': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Kafka Architecture', route: '/messaging/kafka-architecture' },
+      { label: 'acks=all Is Only as Safe as min.insync.replicas', route: '/messaging/kafka-architecture/acks-all-needs-min-insync-replicas' },
+      { label: 'Log Compaction Keeps At Least the Latest Value, Not Only the Latest', route: '/messaging/kafka-architecture/compaction-keeps-at-least-the-latest' },
+    ],
+    tip: 'Adding partitions does not move existing records, and for keyed topics it changes hash(key) modulo the count, so per-key ordering can break across the change. Kafka cannot reduce partitions.',
+    gotchas: [
+      'For keyed topics where order matters, plan partition headroom up front or migrate to a new topic.',
+      'Existing data stays on the old partitions, so load can stay skewed after the increase.',
+    ],
+  },
+  'messaging/kafka-architecture/compaction-keeps-at-least-the-latest': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Kafka Architecture', route: '/messaging/kafka-architecture' },
+      { label: 'Adding Partitions Later Changes Where a Key Lands', route: '/messaging/kafka-architecture/adding-partitions-remaps-keys' },
+    ],
+    tip: 'Compaction guarantees at least the last value per key, never only one record: the active segment is not compacted and the cleaner runs asynchronously. Live consumers still see every write.',
+    gotchas: [
+      'A null-value tombstone deletes a key and is kept for delete.retention.ms (24 hours by default) before it is purged.',
+      'Do not assume exactly one record per key in a compacted topic; keep the last value you have seen for each key.',
+    ],
+  },
   'messaging/kafka-architecture': {
     apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
     related: [
@@ -31506,7 +31618,7 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
     tip: 'Kafka writes sequentially (append-only log) rather than performing random-access writes — combined with page cache and zero-copy transfer, this is why it achieves throughput closer to sequential disk I/O than typical random-access databases.',
     gotchas: [
-      'Log compaction (retain only the latest value per key) is different from standard time/size-based retention — pick the strategy matching the topic\'s actual use case, or silently lose needed data.',
+      'Log compaction (keep at least the latest value per key) is different from standard time/size-based retention — pick the strategy matching the topic\'s actual use case, or silently lose needed data.',
       'Partitioning distributes load across brokers — throughput scales roughly linearly with partition count up to cluster limits.',
     ],
   },
@@ -31518,8 +31630,82 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
     tip: 'acks=0 (fire-and-forget), acks=1 (leader only), and acks=all (all in-sync replicas) trade throughput against durability — choose per-topic based on the actual cost of losing a message for that use case.',
     gotchas: [
-      'Auto-commit can commit an offset before a message is fully processed — a crash mid-processing causes silent data loss unless manual commit-after-processing is used.',
+      'A timer-based auto-commit (Java client) can commit an offset before asynchronous processing finishes; kafkajs eachMessage commits after the handler returns.',
       'Committing too frequently adds broker load; committing too infrequently increases reprocessing after a restart.',
+    ],
+  },
+  'messaging/kafka-producers-consumers/kafkajs-has-no-linger-or-batch-size': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Kafka Producers & Consumers', route: '/messaging/kafka-producers-consumers' },
+      { label: 'With autoCommit Off You Commit Offset Plus One Yourself', route: '/messaging/kafka-producers-consumers/manual-commit-needs-offset-plus-one' },
+    ],
+    tip: 'kafkajs exposes neither linger.ms nor batch.size (those are Java-client and librdkafka settings). Batch by putting many messages in one send, or write a small size-or-timer batcher.',
+    gotchas: [
+      'The kafkajs idempotent producer needs acks -1; the docs state no maxInFlightRequests requirement.',
+      'A batcher you write owns retries for a failed flush.',
+    ],
+  },
+  'messaging/kafka-producers-consumers/manual-commit-needs-offset-plus-one': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Kafka Producers & Consumers', route: '/messaging/kafka-producers-consumers' },
+      { label: 'kafkajs Has No linger.ms or batch.size, So Batch Explicitly', route: '/messaging/kafka-producers-consumers/kafkajs-has-no-linger-or-batch-size' },
+      { label: 'eachBatch Auto-Resolves the Last Offset, and autoCommit False Commits Nothing', route: '/messaging/kafka-producers-consumers/eachbatch-autocommit-false-and-auto-resolve' },
+    ],
+    tip: 'With autoCommit off, commit yourself with consumer.commitOffsets and store the message offset plus one. The eachMessage payload has no commitOffsets function.',
+    gotchas: [
+      'With the default autoCommit, kafkajs commits after the handler returns; a handler that throws is not committed.',
+      'Offsets are strings that can exceed safe integers: add one with BigInt.',
+    ],
+  },
+  'messaging/kafka-producers-consumers/eachbatch-autocommit-false-and-auto-resolve': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Kafka Producers & Consumers', route: '/messaging/kafka-producers-consumers' },
+      { label: 'With autoCommit Off You Commit Offset Plus One Yourself', route: '/messaging/kafka-producers-consumers/manual-commit-needs-offset-plus-one' },
+    ],
+    tip: 'In eachBatch, resolveOffset only tracks progress. With autoCommit false nothing is committed for you, and with the default eachBatchAutoResolve the last offset of the batch is resolved when the handler returns.',
+    gotchas: [
+      'Leaving the batch loop early with break returns normally, so unprocessed messages can be resolved and committed.',
+      'For per-message control set eachBatchAutoResolve false and commit each processed offset plus one.',
+    ],
+  },
+  'messaging/kafka-streams/windows-emit-updates-not-only-final-results': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Kafka Streams & KSQL', route: '/messaging/kafka-streams' },
+      { label: 'There Is No Default Grace Period, and Late Records Are Dropped from Closed Windows', route: '/messaging/kafka-streams/no-default-grace-period-late-records-dropped' },
+    ],
+    tip: 'By default a windowed aggregation emits an updated result for every record. Add suppress(untilWindowCloses) for one final result, which is emitted only once stream time passes window end plus grace.',
+    gotchas: [
+      'Suppression waits for stream time, which advances with newer records; a quiet partition can leave the last window unemitted.',
+      'Alerts or writes triggered from an unsuppressed windowed stream fire once per update.',
+    ],
+  },
+  'messaging/kafka-streams/no-default-grace-period-late-records-dropped': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Kafka Streams & KSQL', route: '/messaging/kafka-streams' },
+      { label: 'Windowed Aggregations Emit Every Update, Not Only the Final Result', route: '/messaging/kafka-streams/windows-emit-updates-not-only-final-results' },
+      { label: 'Window by Event Time, Not by the Wall Clock of Your Consumer', route: '/messaging/kafka-streams/windowing-by-event-time-not-wall-clock' },
+    ],
+    tip: 'Choose the grace period explicitly: ofSizeWithNoGrace for zero, ofSizeAndGrace for a value. The old 24-hour default was deprecated by KIP-633, and records after window end plus grace are dropped from that window.',
+    gotchas: [
+      'A longer grace period keeps windows open for stragglers but delays every final result.',
+      'Size grace from how late your data really arrives, not from a guess.',
+    ],
+  },
+  'messaging/kafka-streams/windowing-by-event-time-not-wall-clock': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Kafka Streams & KSQL', route: '/messaging/kafka-streams' },
+      { label: 'There Is No Default Grace Period, and Late Records Are Dropped from Closed Windows', route: '/messaging/kafka-streams/no-default-grace-period-late-records-dropped' },
+    ],
+    tip: 'Bucket by the message timestamp (event time), not Date.now() (processing time): after downtime or a replay, wall-clock bucketing puts every old record in the window of the moment it was processed.',
+    gotchas: [
+      'message.timestamp is CreateTime or LogAppendTime depending on the topic message.timestamp.type.',
+      'Fixed buckets are tumbling windows, not rolling ones, and a plain Map loses its state on restart.',
     ],
   },
   'messaging/kafka-streams': {
@@ -31531,6 +31717,43 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'State stores are backed by compacted changelog topics — if an instance fails, state can be fully rebuilt by replaying the changelog, providing fault tolerance without manual backup.',
       'Standby replicas reduce failover time by having a warm state-store copy ready on another instance.',
+    ],
+  },
+  'messaging/kafka-connect/replacefield-does-not-mask-envelope-hides-columns': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Kafka Connect', route: '/messaging/kafka-connect' },
+      { label: 'Sink Connector Offsets Live in a Consumer Group, Not the Offsets Topic', route: '/messaging/kafka-connect/sink-offsets-live-in-consumer-groups' },
+    ],
+    tip: 'ReplaceField filters and renames; MaskField masks. On a raw Debezium record the columns are nested in before/after, so unwrap with ExtractNewRecordState first, or use column.exclude.list on the connector.',
+    gotchas: [
+      'A transform that matches nothing fails silently: inspect the resulting topic to confirm the value is gone.',
+      'SMTs run in the order listed in transforms.',
+    ],
+  },
+  'messaging/kafka-connect/sink-offsets-live-in-consumer-groups': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Kafka Connect', route: '/messaging/kafka-connect' },
+      { label: 'ReplaceField Does Not Mask, and a Debezium Envelope Hides the Columns from It', route: '/messaging/kafka-connect/replacefield-does-not-mask-envelope-hides-columns' },
+      { label: 'Debezium 2.0 Renamed database.server.name, and wal_level Defaults to replica', route: '/messaging/kafka-connect/debezium-config-drift-and-wal-level' },
+    ],
+    tip: 'Source connector offsets live in the offsets topic (offset.storage.topic). Sink connector offsets are consumer group offsets under connect-<connector name>, so use kafka-consumer-groups.sh for sink lag.',
+    gotchas: [
+      'Since Kafka 3.6 the REST API can read, alter and reset offsets, but the connector must be STOPPED to alter or reset them.',
+      'The offsets topic name is configured, not fixed.',
+    ],
+  },
+  'messaging/kafka-connect/debezium-config-drift-and-wal-level': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Kafka Connect', route: '/messaging/kafka-connect' },
+      { label: 'Sink Connector Offsets Live in a Consumer Group, Not the Offsets Topic', route: '/messaging/kafka-connect/sink-offsets-live-in-consumer-groups' },
+    ],
+    tip: 'Debezium 2.0 renamed database.server.name to topic.prefix. PostgreSQL defaults to wal_level = replica; Debezium needs logical (restart required) and creates its replication slot by default.',
+    gotchas: [
+      'Stale keys copied from older snippets are how connector upgrades go wrong.',
+      'Creating the replication slot manually is optional when the Debezium user has the required privileges.',
     ],
   },
   'messaging/kafka-connect': {
@@ -31545,6 +31768,43 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Distributed mode runs connectors across a worker cluster with automatic task rebalancing for fault tolerance.',
     ],
   },
+  'messaging/schema-registry/forward-compat-add-fields-remove-defaulted': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Schema Registry', route: '/messaging/schema-registry' },
+      { label: 'BACKWARD Checks Only the Latest Version, Not the Whole History', route: '/messaging/schema-registry/backward-checks-only-the-latest-version' },
+    ],
+    tip: 'FORWARD (old readers, new data) allows adding fields and removing fields that have a default. BACKWARD (new readers, old data) allows removing fields and adding fields with defaults. FULL allows only optional-field changes.',
+    gotchas: [
+      'A reader can handle data if every field it expects is present or has a default; extra fields are ignored.',
+      'Keeping a field as nullable with default null is what makes a later removal FORWARD safe.',
+    ],
+  },
+  'messaging/schema-registry/backward-checks-only-the-latest-version': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Schema Registry', route: '/messaging/schema-registry' },
+      { label: 'FORWARD Compatibility Allows Adding Fields and Removing Fields That Have Defaults', route: '/messaging/schema-registry/forward-compat-add-fields-remove-defaulted' },
+      { label: 'JSON Schema Messages Use the Same Schema-ID Header, and Protobuf Adds Message Indexes', route: '/messaging/schema-registry/same-wire-format-for-all-three-formats' },
+    ],
+    tip: 'The default mode is BACKWARD, and BACKWARD checks a new schema only against the latest version. BACKWARD_TRANSITIVE checks all previous versions, which is what protects consumers that replay a topic from the beginning.',
+    gotchas: [
+      'Upgrade order: BACKWARD means consumers first, FORWARD means producers first, FULL lets either side go first.',
+      'A chain of individually compatible versions is not automatically compatible end to end.',
+    ],
+  },
+  'messaging/schema-registry/same-wire-format-for-all-three-formats': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Schema Registry', route: '/messaging/schema-registry' },
+      { label: 'BACKWARD Checks Only the Latest Version, Not the Whole History', route: '/messaging/schema-registry/backward-checks-only-the-latest-version' },
+    ],
+    tip: 'Avro, Protobuf and JSON Schema messages all start with a 0 byte and a 4-byte schema ID; none embeds the schema. Protobuf adds an array of message indexes before the payload.',
+    gotchas: [
+      'Do not assume the payload starts at byte 5 for Protobuf.',
+      'The same wire format applies to message keys and message values.',
+    ],
+  },
   'messaging/schema-registry': {
     apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
     related: [
@@ -31553,7 +31813,45 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     tip: 'Backward compatibility means new schemas can read old data; forward compatibility means old readers can read new data; full compatibility requires both — choosing too permissive a mode silently breaks consumers that haven\'t yet updated.',
     gotchas: [
       'Without a registry, producers and consumers must agree on message format out-of-band (docs, tribal knowledge) — a fragile mechanism that breaks down as service count grows.',
-      'Avro/Protobuf with a registry encode a compact schema ID per message rather than the full schema, reducing message size vs. embedding a full JSON Schema.',
+      'Avro, Protobuf and JSON Schema messages all carry a compact schema ID (a 5-byte header) rather than the full schema.',
+    ],
+  },
+  'messaging/rabbitmq-core/retry-threshold-four-attempts': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'RabbitMQ Core Concepts', route: '/messaging/rabbitmq-core' },
+      { label: 'Classic Mirrored Queues Were Removed: Use Quorum Queues', route: '/messaging/rabbitmq-core/quorum-queues-replace-mirrored-queues' },
+      { label: 'Without Prefetch RabbitMQ Deals Messages Round-Robin, Blind to Load', route: '/messaging/rabbitmq-core/no-prefetch-is-blind-round-robin' },
+    ],
+    tip: 'Starting the count at 0, a threshold of retryCount >= 3 gives 3 retries and 4 attempts; retryCount > 3 gives 4 retries and 5 attempts. State whether your limit counts retries or attempts.',
+    gotchas: [
+      'Republish-then-ack is two operations: a crash between them duplicates the task.',
+      'On a confirm channel, ack the original only inside the publish confirm callback.',
+    ],
+  },
+  'messaging/rabbitmq-core/quorum-queues-replace-mirrored-queues': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'RabbitMQ Core Concepts', route: '/messaging/rabbitmq-core' },
+      { label: 'A Retry Threshold of 3 Means Four Attempts, Not Three', route: '/messaging/rabbitmq-core/retry-threshold-four-attempts' },
+      { label: 'Without Prefetch RabbitMQ Deals Messages Round-Robin, Blind to Load', route: '/messaging/rabbitmq-core/no-prefetch-is-blind-round-robin' },
+    ],
+    tip: 'Classic queue mirroring was removed in RabbitMQ 4.0. Quorum queues and streams are the replicated queue types; quorum queues persist messages regardless of delivery mode.',
+    gotchas: [
+      'x-delivery-limit counts redeliveries (default 20 since 4.0, -1 disables it); the message is then dead-lettered if a DLX exists, otherwise dropped.',
+      'The broker adds an x-delivery-count header to redelivered quorum queue messages.',
+    ],
+  },
+  'messaging/rabbitmq-core/no-prefetch-is-blind-round-robin': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'RabbitMQ Core Concepts', route: '/messaging/rabbitmq-core' },
+      { label: 'Classic Mirrored Queues Were Removed: Use Quorum Queues', route: '/messaging/rabbitmq-core/quorum-queues-replace-mirrored-queues' },
+    ],
+    tip: 'Without prefetch RabbitMQ sends messages round-robin by count and ignores how many unacked messages a consumer holds. prefetch(1) gives fair dispatch to whichever worker is free.',
+    gotchas: [
+      'A single connected consumer receives the whole backlog; that is the only case where one consumer gets everything.',
+      'prefetch(1) trades a round trip of idle time per message for fairness; fast uniform tasks usually want a higher value.',
     ],
   },
   'messaging/rabbitmq-core': {
@@ -31568,6 +31866,43 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Prefetch count (QoS) limits outstanding unacknowledged messages per consumer, preventing one slow consumer from being overwhelmed.',
     ],
   },
+  'messaging/rabbitmq-exchanges/trailing-hash-matches-bare-key': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'RabbitMQ Exchanges', route: '/messaging/rabbitmq-exchanges' },
+      { label: 'Publishing to a Missing Exchange Closes the Channel', route: '/messaging/rabbitmq-exchanges/missing-exchange-closes-the-channel' },
+    ],
+    tip: 'In a topic binding * is exactly one word and # is zero or more, so order.# matches the bare key order as well as order.item.created. order.* matches neither of those.',
+    gotchas: [
+      'A leading star still needs a word: *.stock.# matches usd.stock but not stock.nasdaq.',
+      'A binding of just # matches every routing key, like a fanout exchange.',
+    ],
+  },
+  'messaging/rabbitmq-exchanges/missing-exchange-closes-the-channel': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'RabbitMQ Exchanges', route: '/messaging/rabbitmq-exchanges' },
+      { label: 'A Trailing .# Binding Also Matches the Bare Key', route: '/messaging/rabbitmq-exchanges/trailing-hash-matches-bare-key' },
+      { label: 'Unroutable Messages: mandatory Flag vs Alternate Exchange', route: '/messaging/rabbitmq-exchanges/mandatory-and-alternate-exchange' },
+    ],
+    tip: 'Publishing to an exchange that does not exist is a 404 channel error that closes the channel. Only messages to an existing exchange with no matching binding are silently dropped.',
+    gotchas: [
+      'assertExchange creates the exchange if it is missing, so it turns a typo into a new empty exchange instead of catching it; use checkExchange.',
+      'publish() is fire-and-forget: attach error and close handlers on the channel to see the failure.',
+    ],
+  },
+  'messaging/rabbitmq-exchanges/mandatory-and-alternate-exchange': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'RabbitMQ Exchanges', route: '/messaging/rabbitmq-exchanges' },
+      { label: 'Publishing to a Missing Exchange Closes the Channel', route: '/messaging/rabbitmq-exchanges/missing-exchange-closes-the-channel' },
+    ],
+    tip: 'An unroutable message is dropped by default. mandatory returns it to the publisher (needs a return handler); a message routed via an alternate exchange still counts as routed, so it is not returned.',
+    gotchas: [
+      'Alternate exchanges can chain; the message is returned only if nothing in the chain can route it.',
+      'A return is not a delivery report: it only says no queue was found.',
+    ],
+  },
   'messaging/rabbitmq-exchanges': {
     apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
     related: [
@@ -31577,6 +31912,43 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Exchange-to-exchange bindings enable multi-stage routing but can make the topology hard to reason about if overused.',
       'Headers exchanges route on message attributes rather than the routing key — less common but useful for multi-attribute routing decisions.',
+    ],
+  },
+  'messaging/rabbitmq-patterns/delay-ttl-is-a-queue-argument': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'RabbitMQ Patterns', route: '/messaging/rabbitmq-patterns' },
+      { label: 'Per-Message TTL Delays Can Be Held Back at the Head of the Queue', route: '/messaging/rabbitmq-patterns/per-message-ttl-head-of-line-blocking' },
+    ],
+    tip: 'x-message-ttl is a queue argument. Redeclaring a queue with a different TTL is a 406 PRECONDITION_FAILED error, so name each holding queue after its delay (email.delay.60000).',
+    gotchas: [
+      'Message TTL can be changed on a live queue through a policy, but that retunes the whole queue, not single messages.',
+      'Every holding queue dead-letters into the same target queue via the default exchange and its routing key.',
+    ],
+  },
+  'messaging/rabbitmq-patterns/per-message-ttl-head-of-line-blocking': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'RabbitMQ Patterns', route: '/messaging/rabbitmq-patterns' },
+      { label: 'A Delay Queue TTL Is a Queue Argument, So Name the Queue After Its Delay', route: '/messaging/rabbitmq-patterns/delay-ttl-is-a-queue-argument' },
+      { label: 'Direct Reply-To Lets RPC Skip Declaring a Reply Queue', route: '/messaging/rabbitmq-patterns/direct-reply-to-for-rpc' },
+    ],
+    tip: 'On classic queues an expired message is only dead-lettered once it reaches the head, so a long per-message expiration ahead of a short one holds the short one back.',
+    gotchas: [
+      'expiration is a string of milliseconds; with both queue and message TTL set, the lower value wins.',
+      'The delayed-message plugin avoids head-of-line blocking but stores delayed messages on a single node and is not meant for huge volumes.',
+    ],
+  },
+  'messaging/rabbitmq-patterns/direct-reply-to-for-rpc': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'RabbitMQ Patterns', route: '/messaging/rabbitmq-patterns' },
+      { label: 'Per-Message TTL Delays Can Be Held Back at the Head of the Queue', route: '/messaging/rabbitmq-patterns/per-message-ttl-head-of-line-blocking' },
+    ],
+    tip: 'Direct reply-to: consume amq.rabbitmq.reply-to in no-ack mode, then publish with replyTo set to it, on the same connection and channel. The responder replies to the rewritten replyTo unchanged.',
+    gotchas: [
+      'Replies are dropped if the requesting client disconnects; the requester must reconnect and resubmit.',
+      'Keep matching replies with correlationId and keep a request timeout.',
     ],
   },
   'messaging/rabbitmq-patterns': {
@@ -31589,6 +31961,80 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'An RPC caller needs an explicit timeout — the responder might never reply if it crashed or the message was lost.',
       'The TTL-plus-dead-letter-exchange trick for delayed delivery works by expiring a message on a holding queue with no consumer.',
+    ],
+  },
+  'messaging/messaging-patterns/claim-check-limits-and-byte-length': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Enterprise Messaging Patterns', route: '/messaging/messaging-patterns' },
+      { label: 'The Scatter-Gather Example Had No Timeout, Contradicting Its Own Mistake Block', route: '/messaging/messaging-patterns/scatter-gather-example-needs-a-timeout' },
+    ],
+    tip: 'Broker size limits differ: Kafka about 1MB, RabbitMQ 16 MiB since 4.0, SQS 1 MiB since August 2025. Measure the UTF-8 byte length, not string.length, and pick a claim-check threshold below the smallest limit you must respect.',
+    gotchas: [
+      'A payload of non-ASCII text can be 3x larger in bytes than its string length.',
+      'Kafka needs the producer max.request.size and broker message.max.bytes aligned.',
+    ],
+  },
+  'messaging/messaging-patterns/scatter-gather-example-needs-a-timeout': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Enterprise Messaging Patterns', route: '/messaging/messaging-patterns' },
+      { label: 'Claim Check Limits Differ per Broker, and String Length Is Not Byte Size', route: '/messaging/messaging-patterns/claim-check-limits-and-byte-length' },
+      { label: 'The Aggregator Challenge Can Lose Orders: Auto-Commit and Delete-Before-Send', route: '/messaging/messaging-patterns/aggregator-loses-partial-orders' },
+    ],
+    tip: 'A Scatter-Gather needs a deadline: on timeout use the replies you have (flag the result as partial) or reject if none arrived, and close the connection on both paths.',
+    gotchas: [
+      'Waiting until reply count equals vendor count never finishes if one vendor is silent.',
+      'Set the timeout from the slowest reply you will wait for, not the slowest possible.',
+    ],
+  },
+  'messaging/messaging-patterns/aggregator-loses-partial-orders': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Enterprise Messaging Patterns', route: '/messaging/messaging-patterns' },
+      { label: 'The Scatter-Gather Example Had No Timeout, Contradicting Its Own Mistake Block', route: '/messaging/messaging-patterns/scatter-gather-example-needs-a-timeout' },
+    ],
+    tip: 'Delete an aggregated order from memory only after the send succeeds. Auto-commit plus in-memory state loses partial orders on a crash: use durable state or commit offsets after emission.',
+    gotchas: [
+      'Auto-commit commits when the handler returns, and an aggregator handler returns after storing the item in memory.',
+      'The order-items topic must be keyed by orderId so one consumer sees every item.',
+    ],
+  },
+  'messaging/saga-pattern/compensate-only-completed-steps': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Saga Pattern', route: '/messaging/saga-pattern' },
+      { label: 'Idempotent Compensation Needs One Atomic Guard', route: '/messaging/saga-pattern/idempotent-compensation-atomic-guard' },
+    ],
+    tip: 'Record a step in the saga state only after it succeeded, and compensate by walking that list in reverse. Never fire every compensation blindly.',
+    gotchas: [
+      'A refund sent for a charge that never happened can fail, and that failure lands inside the rollback path.',
+      'Persist the completed list with the saga state so a crashed orchestrator knows what still needs undoing.',
+    ],
+  },
+  'messaging/saga-pattern/idempotent-compensation-atomic-guard': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Saga Pattern', route: '/messaging/saga-pattern' },
+      { label: 'Compensate Only the Steps That Actually Completed', route: '/messaging/saga-pattern/compensate-only-completed-steps' },
+      { label: 'The Pivot Transaction Is the Go/No-Go Point', route: '/messaging/saga-pattern/pivot-is-the-go-no-go-point' },
+    ],
+    tip: 'Make the guard and the change one atomic step: a conditional update plus the stock credit in one local transaction, so a crash or a concurrent delivery cannot credit twice.',
+    gotchas: [
+      'A separate read then write lets two concurrent deliveries both pass the check.',
+      'A crash between the credit and the status write makes the replay credit again unless both roll back together.',
+    ],
+  },
+  'messaging/saga-pattern/pivot-is-the-go-no-go-point': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Saga Pattern', route: '/messaging/saga-pattern' },
+      { label: 'Idempotent Compensation Needs One Atomic Guard', route: '/messaging/saga-pattern/idempotent-compensation-atomic-guard' },
+    ],
+    tip: 'Steps before the pivot are compensated on failure; steps after it are retried until they succeed, so they must be idempotent. Put irreversible work at or after the pivot.',
+    gotchas: [
+      'A failure after the pivot never triggers compensation.',
+      'Putting the pivot first commits the saga before any check has run.',
     ],
   },
   'messaging/messaging-patterns': {
@@ -31625,6 +32071,43 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Naturally idempotent operations (setting a value) need no tracking; naturally non-idempotent operations (increment, send email) require explicit key-based enforcement.',
       'The idempotency check and the operation must happen atomically in the same transaction — checking and acting as two separate steps reintroduces a race condition.',
+    ],
+  },
+  'messaging/outbox-pattern/cdc-outbox-rows-are-deleted-not-marked': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Outbox Pattern', route: '/messaging/outbox-pattern' },
+      { label: 'The Outbox created_at Default Is the Transaction Start Time, Not the Insert Time', route: '/messaging/outbox-pattern/created-at-is-transaction-start' },
+    ],
+    tip: 'A CDC (Debezium) relay reads the transaction log, so the outbox row can be inserted and deleted in the same transaction. A polling relay is the one that needs published_at and a purge job.',
+    gotchas: [
+      'Debezium captures the INSERT from the log and ignores the DELETE.',
+      'A published_at purge job is dead code with a CDC relay because nothing sets the column.',
+    ],
+  },
+  'messaging/outbox-pattern/created-at-is-transaction-start': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Outbox Pattern', route: '/messaging/outbox-pattern' },
+      { label: 'A CDC Outbox Relay Never Marks Rows: Insert and Delete in One Transaction', route: '/messaging/outbox-pattern/cdc-outbox-rows-are-deleted-not-marked' },
+      { label: 'SKIP LOCKED Prevents Duplicates but Not Reordering Across Parallel Relays', route: '/messaging/outbox-pattern/skip-locked-parallel-relays-reorder-events' },
+    ],
+    tip: 'DEFAULT now() is the transaction start time. Use clock_timestamp() so events of one aggregate are ordered by when their outbox rows were inserted.',
+    gotchas: [
+      'now() does not change during a transaction.',
+      'A transaction that waits on a row lock keeps its earlier start timestamp.',
+    ],
+  },
+  'messaging/outbox-pattern/skip-locked-parallel-relays-reorder-events': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Outbox Pattern', route: '/messaging/outbox-pattern' },
+      { label: 'The Outbox created_at Default Is the Transaction Start Time, Not the Insert Time', route: '/messaging/outbox-pattern/created-at-is-transaction-start' },
+    ],
+    tip: 'SKIP LOCKED avoids duplicate publishes, not reordering. If per-aggregate order matters, give each aggregate to a single relay worker.',
+    gotchas: [
+      'Each worker only orders its own batch.',
+      'Keying by aggregate id keeps a partition together, not the send order.',
     ],
   },
   'messaging/outbox-pattern': {
@@ -31706,6 +32189,43 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'EventBridge natively supports scheduling and API destinations that would require additional custom infrastructure on SNS+SQS.',
       'SNS filter policies reduce unnecessary delivery but are configured per-subscription, not centrally like EventBridge rules.',
+    ],
+  },
+  'messaging/azure-service-bus/subscribe-auto-completes-and-renews': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Azure Service Bus', route: '/messaging/azure-service-bus' },
+      { label: 'Duplicate Detection, Sessions and Expiry Dead-Lettering Are All Fixed at Queue Creation', route: '/messaging/azure-service-bus/settings-fixed-at-queue-creation' },
+    ],
+    tip: 'With default options subscribe() completes the message after your handler returns, abandons it if the handler throws, and renews the lock for up to 5 minutes. Manual settlement and renewal are for receiveMessages().',
+    gotchas: [
+      'autoCompleteMessages defaults to true.',
+      'Lock auto-renewal stops after maxAutoLockRenewalDurationInMs (default 5 minutes).',
+    ],
+  },
+  'messaging/azure-service-bus/settings-fixed-at-queue-creation': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Azure Service Bus', route: '/messaging/azure-service-bus' },
+      { label: 'subscribe() Completes, Abandons and Renews Locks for You', route: '/messaging/azure-service-bus/subscribe-auto-completes-and-renews' },
+      { label: 'A Message That Matches No Subscription Filter Is Not Dead-Lettered', route: '/messaging/azure-service-bus/unmatched-filter-is-not-dead-lettered' },
+    ],
+    tip: 'Duplicate detection, sessions and dead-lettering on expiration are set when the queue is created and cannot be changed later. A dedup messageId must repeat across retries.',
+    gotchas: [
+      'requiresDuplicateDetection cannot be switched on later.',
+      'A fresh GUID per send attempt defeats deduplication.',
+    ],
+  },
+  'messaging/azure-service-bus/unmatched-filter-is-not-dead-lettered': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Azure Service Bus', route: '/messaging/azure-service-bus' },
+      { label: 'Duplicate Detection, Sessions and Expiry Dead-Lettering Are All Fixed at Queue Creation', route: '/messaging/azure-service-bus/settings-fixed-at-queue-creation' },
+    ],
+    tip: 'A message that matches no subscription filter is not dead-lettered; it gets no copy. Only a filter that throws, with dead-lettering on filter evaluation exceptions enabled, is captured in the DLQ.',
+    gotchas: [
+      'There is no automatic cleanup of the DLQ.',
+      'A topic with no matching subscription stores nothing.',
     ],
   },
   'messaging/azure-service-bus': {
@@ -39117,6 +39637,43 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Reactive variables and useQuery are two independent reactivity systems until a field policy explicitly connects them.',
     ],
   },
+  'graphql/client-caching/invalidate-does-not-force-refetch': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Embedded vs. Normalized Objects', route: '/graphql/client-caching/embedded-vs-normalized-objects' },
+      { label: 'Client-Side Caching', route: '/graphql/client-caching' },
+    ],
+    tip: 'INVALIDATE marks a field stale without changing its cached value -- with the default cache-first fetchPolicy, a watching query re-reads the SAME unchanged value and has no reason to hit the network. Wrap the call in client.refetchQueries({ updateCache }) to actually force a refetch.',
+    gotchas: [
+      'A component using cache-and-network WILL still hit the network after an INVALIDATE call -- but only because that fetchPolicy always fetches on every render, not because INVALIDATE did its documented job.',
+      'INVALIDATE and cache.evict() are not equivalent -- evict() genuinely removes the value (a real cache miss), INVALIDATE only marks it stale.',
+    ],
+  },
+  'graphql/client-caching/embedded-vs-normalized-objects': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'INVALIDATE Doesn’t Force a Refetch', route: '/graphql/client-caching/invalidate-does-not-force-refetch' },
+      { label: 'Persisting the Cache', route: '/graphql/client-caching/persisting-cache-apollo3' },
+      { label: 'Client-Side Caching', route: '/graphql/client-caching' },
+    ],
+    tip: 'A Reference ({ __ref: \'Type:id\' }) is Apollo\'s own term for a NORMALIZED entity. An object without a usable id (or keyFields: false) is the OPPOSITE -- embedded inline, duplicated wherever it appears, never referenced.',
+    gotchas: [
+      'Two queries returning the SAME normalized object share one cache entry (updates sync); two queries returning the SAME embedded object get two independent copies (updates never sync).',
+      'keyFields: false is a deliberate opt-out of normalization -- not a fallback that still gets some form of sharing.',
+    ],
+  },
+  'graphql/client-caching/persisting-cache-apollo3': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Embedded vs. Normalized Objects', route: '/graphql/client-caching/embedded-vs-normalized-objects' },
+      { label: 'Client-Side Caching', route: '/graphql/client-caching' },
+    ],
+    tip: 'persistCache({ cache, storage }) must be awaited BEFORE constructing ApolloClient -- creating the client first risks a component reading from the still-empty cache before restoration finishes.',
+    gotchas: [
+      'Gate the app\'s first render behind the persistCache() await (or show a splash screen) -- do not construct ApolloClient and render the tree in parallel with the restore.',
+      'The exact same API works for both web (LocalStorageWrapper) and React Native (an AsyncStorage-backed wrapper) -- it is not mobile-only.',
+    ],
+  },
   'graphql/apollo-client/manual-cache-updates': {
     apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
     related: [
@@ -39152,6 +39709,43 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Mocking resolvers for testing requires understanding the resolver execution order, since mocked parent resolvers affect what arguments child resolvers receive.',
     ],
   },
+  'graphql/testing/executeoperation-starts-the-server': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Testing GraphQL APIs', route: '/graphql/testing' },
+      { label: 'Subscriptions Need graphql-js subscribe(), Not executeOperation', route: '/graphql/testing/subscriptions-need-graphql-js-subscribe' },
+    ],
+    tip: 'executeOperation starts the ApolloServer itself on its first call, so an explicit start() in beforeAll is optional — but start() may only run once, and a second call throws.',
+    gotchas: [
+      'Calling start() AFTER an executeOperation has already run on the same instance throws — a shared helper plus a beforeAll start() on one server can fail in the setup hook.',
+      'stop() before the server ever started also throws, so a file whose tests are all skipped can fail in afterAll unless start() ran in beforeAll.',
+    ],
+  },
+  'graphql/testing/subscriptions-need-graphql-js-subscribe': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Testing GraphQL APIs', route: '/graphql/testing' },
+      { label: 'executeOperation Starts the Server for You', route: '/graphql/testing/executeoperation-starts-the-server' },
+      { label: 'addMocksToSchema Defaults, Memoization and preserveResolvers', route: '/graphql/testing/addmocks-hello-world-and-preserve-resolvers' },
+    ],
+    tip: 'executeOperation returns one result and cannot iterate a subscription. Use graphql-js subscribe() on the executable schema and for-await the iterator it returns.',
+    gotchas: [
+      'A nullable subscription field run through executeOperation returns data with a null value and NO errors — a test asserting only "no errors" passes while testing nothing.',
+      'subscribe() returns a plain result with errors (not an iterator) for an invalid document or a non-subscription operation, so check before iterating.',
+    ],
+  },
+  'graphql/testing/addmocks-hello-world-and-preserve-resolvers': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Testing GraphQL APIs', route: '/graphql/testing' },
+      { label: 'Subscriptions Need graphql-js subscribe(), Not executeOperation', route: '/graphql/testing/subscriptions-need-graphql-js-subscribe' },
+    ],
+    tip: 'addMocksToSchema mocks replace real resolvers unless you pass preserveResolvers: true, and String fields are always the literal "Hello World" — only numbers and booleans are random.',
+    gotchas: [
+      'The same mocked schema returns identical values on a repeat query (the mock store memoizes), so build a fresh mocked schema per test for fresh data.',
+      'A jest.fn() resolver on a fully mocked schema never runs by default — the data came from generated mocks, not your resolver.',
+    ],
+  },
   'graphql/performance': {
     apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
     related: [
@@ -39161,6 +39755,43 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Persisted queries (pre-registering allowed query strings server-side) both improve performance (smaller request payloads) and reduce attack surface by rejecting arbitrary ad-hoc queries.',
       'Resolver-level caching and DataLoader batching solve different performance problems — caching avoids redundant work, batching avoids the N+1 problem, and most production APIs need both.',
+    ],
+  },
+  'graphql/performance/cache-control-header-computation': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Performance & Best Practices', route: '/graphql/performance' },
+      { label: 'Aliased Root Fields Are Not Stopped by Disabling Batching', route: '/graphql/performance/aliased-root-fields-bypass-batching-disable' },
+    ],
+    tip: 'The @cacheControl directive is not built into Apollo Server\'s default schema — you declare it yourself with the real enum name, CacheControlScope, not CacheScope.',
+    gotchas: [
+      'The overall response header takes the LOWEST maxAge and the most-restrictive scope (PRIVATE if any field is private) across every selected field, computed as two separate, independent rules — fixing one axis never automatically fixes the other.',
+      'An unannotated field is not exempt from the calculation — it defaults to PUBLIC scope and maxAge: 0 for root/non-scalar fields, and can still be the field that drags the whole response down to uncacheable.',
+    ],
+  },
+  'graphql/performance/aliased-root-fields-bypass-batching-disable': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Performance & Best Practices', route: '/graphql/performance' },
+      { label: 'Computing the Response’s Real Cache-Control Header', route: '/graphql/performance/cache-control-header-computation' },
+      { label: 'How Field-Suggestion Blocking Actually Works', route: '/graphql/performance/field-suggestion-blocking-mechanism' },
+    ],
+    tip: 'Apollo Server 4\'s allowBatchedHttpRequests option (off by default) only controls an array of separate operations in one HTTP request — it has zero effect on aliased root fields inside a SINGLE operation, which is ordinary GraphQL syntax with no config to disable.',
+    gotchas: [
+      'A per-HTTP-request rate limiter counts requests, not root fields — a mutation aliasing 5 root-level calls in one operation still only consumes 1 unit from that budget.',
+      'A root-field-count validation rule is the real fix, measuring the same "how much work does this one operation ask for" question as depth limiting, just along a different (breadth, not depth) axis.',
+    ],
+  },
+  'graphql/performance/field-suggestion-blocking-mechanism': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Performance & Best Practices', route: '/graphql/performance' },
+      { label: 'Aliased Root Fields Are Not Stopped by Disabling Batching', route: '/graphql/performance/aliased-root-fields-bypass-batching-disable' },
+    ],
+    tip: 'The "Did you mean" field-suggestion leak comes from ordinary validation, not introspection — disabling introspection in production does nothing to stop it, since the two are independent code paths.',
+    gotchas: [
+      'graphql-js has no built-in option to stop itself from COMPUTING a suggestion during validation — the real fix (graphql-armor\'s block-field-suggestions plugin) strips the suggestion text from the already-generated error message afterward, via a regex.',
+      'The leak works identically on Mutation and Subscription root fields, not just Query fields — the suggestion mechanism runs the same way regardless of which root operation type is being validated.',
     ],
   },
   'graphql/client-caching': {
@@ -39246,6 +39877,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The gateway adds a query-planning step to fan out a client query across the right subgraphs — this adds latency compared to a single monolithic GraphQL server.',
     ],
   },
+  'graphql/federation/gateway-vs-router': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Schema Stitching & Federation', route: '/graphql/federation' },
+      { label: 'A Missing @link Silently Falls Back to v1', route: '/graphql/federation/missing-link-falls-back-to-v1' },
+    ],
+    tip: 'Federation v2 is a composition/spec version, not a runtime — @apollo/gateway (2.0+) still works fine with it. Apollo Router is a separate, newer runtime Apollo recommends for performance, not a replacement for the gateway.',
+    gotchas: [
+      'Very recent Apollo Router releases (v1.60+) actually dropped Federation v1 support — the opposite direction from "v2 removes the gateway."',
+      'Choosing Router over Gateway is a performance/operational decision (a standalone Rust binary vs. a Node/Apollo Server plugin), not something Federation v2 forces on you.',
+    ],
+  },
+  'graphql/federation/missing-link-falls-back-to-v1': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Federation v2 Doesn’t Replace the Gateway', route: '/graphql/federation/gateway-vs-router' },
+      { label: 'Where DataLoader Actually Helps in __resolveReference', route: '/graphql/federation/dataloader-inside-resolve-reference' },
+    ],
+    tip: 'Forgetting `extend schema @link(url: "https://specs.apollo.dev/federation/v2.0", ...)` does not fail composition — it silently falls back to Federation v1 semantics for backward compatibility, which is a much quieter failure mode than an error.',
+    gotchas: [
+      'A subgraph missing @link can compose successfully but silently lose access to v2-only directives like @shareable/@override/@inaccessible.',
+      'There is no `federation_version: 2` field inside a subgraph\'s own SDL to opt in instead — @link on the schema is the only mechanism.',
+    ],
+  },
+  'graphql/federation/dataloader-inside-resolve-reference': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Schema Stitching & Federation', route: '/graphql/federation' },
+      { label: 'DataLoader & N+1 Problem', route: '/graphql/dataloader' },
+    ],
+    tip: 'The Router already batches every reference to one entity type into ONE _entities call per operation — DataLoader inside __resolveReference batches the underlying DATABASE lookups for the representations arriving in that one call, not the GraphQL call itself.',
+    gotchas: [
+      'Because _entities results must return in the same order as the input representations, a naive per-reference DB call inside __resolveReference still reintroduces N+1 at the data-source level even though the GraphQL request was already batched.',
+      'This is a genuinely different N+1 than the one covered on the DataLoader & N+1 Problem topic — that one is about a parent-field resolver fanning out to a child field per item; this one is specifically about entity reference resolution across subgraphs.',
+    ],
+  },
   'graphql/code-generation': {
     apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
     related: [
@@ -39255,6 +39922,43 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Generated types go stale if code generation isn\'t re-run after a schema change — wiring it into the build/CI pipeline avoids silently outdated generated types.',
       'Overly generic generated types (falling back to any/unknown for complex union/interface cases) can reduce the actual type-safety benefit if not configured carefully.',
+    ],
+  },
+  'graphql/code-generation/fragment-masking-blocks-direct-access': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Setting Up near-operation-file for Colocated Types', route: '/graphql/code-generation/near-operation-file-preset' },
+      { label: 'Code Generation', route: '/graphql/code-generation' },
+    ],
+    tip: 'Verified against client-preset\'s own docs: fragment masking is ON by default. A field spreading a fragment is typed as an opaque FragmentType<...> — reading its fields directly is a compile error, not a shortcut. Call useFragment() to unmask it.',
+    gotchas: [
+      'Casting a masked field to any restores unmasked access but defeats the point of masking — it silently re-couples the component to that fragment\'s internal shape with zero compile-time protection.',
+      'useFragment() has a trivial runtime cost — it is essentially a type-level unwrap, not a network call or re-fetch.',
+    ],
+  },
+  'graphql/code-generation/near-operation-file-preset': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Fragment Masking Blocks Direct Field Access', route: '/graphql/code-generation/fragment-masking-blocks-direct-access' },
+      { label: 'Authenticating codegen Against a Protected Endpoint', route: '/graphql/code-generation/authenticated-introspection-endpoint' },
+      { label: 'Code Generation', route: '/graphql/code-generation' },
+    ],
+    tip: 'near-operation-file needs TWO codegen outputs — a plain typescript-plugin output for shared schema types, plus the preset itself for per-operation files pointed back at it via baseTypesPath.',
+    gotchas: [
+      'A documents glob broad enough to match .tsx files will re-scan the .generated.tsx files near-operation-file just produced — exclude the generated extension, e.g. src/**/!(*.generated).{ts,tsx}.',
+      'Deleting the shared base-types output (e.g. because it is gitignored) breaks every already-generated per-operation file until codegen is re-run to regenerate it.',
+    ],
+  },
+  'graphql/code-generation/authenticated-introspection-endpoint': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Setting Up near-operation-file for Colocated Types', route: '/graphql/code-generation/near-operation-file-preset' },
+      { label: 'Code Generation', route: '/graphql/code-generation' },
+    ],
+    tip: 'The schema field accepts an object keyed by URL with a headers property for authenticated introspection — schema: { url: { headers: { Authorization: "Bearer ..." } } } — verified against GraphQL Code Generator\'s own schema-field config reference.',
+    gotchas: [
+      'A live-URL schema config makes a real network request as part of every codegen run — a brief API outage fails the whole build step, with no built-in fallback.',
+      'A committed schema file removes that live dependency but introduces its own staleness risk if nobody remembers to re-download it after a schema change.',
     ],
   },
 

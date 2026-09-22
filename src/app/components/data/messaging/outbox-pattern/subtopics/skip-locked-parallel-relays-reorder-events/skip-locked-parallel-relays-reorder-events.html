@@ -1,0 +1,26 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Outbox Pattern" topicRoute="/messaging/outbox-pattern"
+    subtopicLabel="SKIP LOCKED Prevents Duplicates but Not Reordering Across Parallel Relays" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">SKIP LOCKED Prevents Duplicates but Not Reordering Across Parallel Relays</h1>
+  <p class="page-subtitle">Two workers never take the same row, but they can publish two events of the same aggregate in the wrong order. Order needs one owner per aggregate.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="PostgreSQL 9.5+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This adds a caveat to the SKIP LOCKED mistake block and to the high-volume Q&amp;A. The Message Ordering topic covers ordering guarantees in the broker itself.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Outbox Pattern" topicRoute="/messaging/outbox-pattern"
+    [prev]="{ label: 'The Outbox created_at Default Is the Transaction Start Time, Not the Insert Time', route: '/messaging/outbox-pattern/created-at-is-transaction-start' }" />
+</div>

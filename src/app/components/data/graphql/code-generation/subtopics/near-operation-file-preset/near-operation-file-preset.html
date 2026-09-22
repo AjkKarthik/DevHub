@@ -1,0 +1,27 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Code Generation" topicRoute="/graphql/code-generation"
+    subtopicLabel="Setting Up near-operation-file for Colocated Types" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">Setting Up near-operation-file for Colocated Types</h1>
+  <p class="page-subtitle">The main page's own QnA describes near-operation-file in one sentence and never sets it up. Built the real two-output config, verified against the preset's own docs, plus the document-glob exclusion gotcha the QnA never mentions.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic covers a third gap the main page's QnA names but never demonstrates -- authenticating codegen itself against a protected schema introspection endpoint.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Code Generation" topicRoute="/graphql/code-generation"
+    [prev]="{ label: 'Fragment Masking Blocks Direct Field Access', route: '/graphql/code-generation/fragment-masking-blocks-direct-access' }"
+    [next]="{ label: 'Authenticating codegen Against a Protected Endpoint', route: '/graphql/code-generation/authenticated-introspection-endpoint' }" />
+</div>

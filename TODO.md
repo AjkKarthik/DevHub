@@ -9769,28 +9769,174 @@ off here with a date.
   function — the main page's own QnA prefers it over `refetchQueries` in prose but every codeTab
   only ever uses `refetchQueries`. SUBTOPICS key `apollo-client` collision-free, left bare. All 6
   touchpoints wired.
-- [ ] `/graphql/client-caching` — Client-Side Caching
-- [ ] `/graphql/code-generation` — Code Generation
-- [ ] `/graphql/performance` — Performance & Security
-- [ ] `/graphql/federation` — Schema Federation
-- [ ] `/graphql/testing` — Testing GraphQL
+- [x] 2026-09-17 — `/graphql/client-caching` — Client-Side Caching. Fixed a `cache.modify` theory
+  bullet plus a QnA both overstating INVALIDATE's effect — it does not itself change a field's
+  cached value or force a network fetch (verified against Apollo's own GitHub issue #7060); the
+  documented fix is wrapping it in `client.refetchQueries({ updateCache })`. Also fixed a
+  normalization theory bullet with embedded-vs-referenced backwards — unnormalized objects are
+  stored EMBEDDED inline in the parent, not "by reference"; Apollo's own `Reference` type
+  specifically represents a NORMALIZED entity. 3 subtopics: (1) the verified
+  INVALIDATE-does-nothing-alone finding with the `refetchQueries` fix; (2) the embedded-vs-
+  normalized distinction made concrete; (3) `apollo3-cache-persist`'s real await-before-construct
+  ordering requirement. Caught and rephrased a subtopic title containing a literal double quote
+  before it could break a sibling `[prev]`/`[next]` reference (no safe escape exists for that
+  collision). SUBTOPICS key `client-caching` collision-free, left bare. All 6 touchpoints wired.
+  This completes the Client nav group's 2nd of however-many topics so far.
+- [x] 2026-09-17 — `/graphql/code-generation` — Code Generation. Fixed the "Client Usage"
+  codeTab's own comment claiming a masked fragment field (author { ...AuthorFields }) "has
+  type string" -- verified against client-preset's own docs that fragment masking is ON by
+  default; direct access is a TS2339 compile error, useFragment() is required to unmask it.
+  3 subtopics: (1) the verified masking fix with a broken-vs-fixed codeTab pair; (2)
+  near-operation-file's real two-output config plus the documents-glob exclusion gotcha; (3)
+  the two ways to authenticate a protected introspection endpoint, with the real tradeoff
+  neither avoids. SUBTOPICS key `code-generation` collision-free, left bare. All 6
+  touchpoints wired. This completes the Client nav group (apollo-client, client-caching,
+  code-generation).
+- [x] 2026-09-17 — `/graphql/performance` — Performance & Security. Fixed the `@cacheControl`
+  codeTab's own directive definition -- it used a nonexistent `CacheScope` enum name instead of
+  the real `CacheControlScope`, and omitted `INTERFACE | UNION` locations plus `inheritMaxAge` --
+  verified against Apollo Server's own caching docs. Tightened a theory bullet stating only half
+  the response-header computation rule (added the independently-verified "scope: PRIVATE if any
+  field is private" half). Rewrote the "batched query" QnA, which conflated aliased root fields
+  in ONE operation (ordinary GraphQL syntax, unaffected by any server config) with Apollo Server
+  4's separate, off-by-default `allowBatchedHttpRequests` transport setting -- the QnA's own
+  prescribed fix does nothing for its own example. 3 subtopics: (1) the verified two-part
+  cache-header computation rule as a real function matching Apollo's own algorithm; (2) a real
+  root-field-count validation rule, verified end-to-end against a live graphql-js install that it
+  rejects the exact 5-field aliased-login attack; (3) graphql-armor's real block-field-suggestions
+  mechanism (a post-hoc regex strip, not a suppression), reproducing the underlying field-name
+  leak via graphql-js's own suggestion text with introspection fully disabled. SUBTOPICS key
+  hub-prefixed to `gql-performance` -- bare `performance` collides with the Node.js hub's own
+  topic. All 6 touchpoints wired. First topic in the Advanced nav group.
+- [x] 2026-09-20 — `/graphql/federation` — Schema Federation. Fixed a wrong main-page claim
+  that "Federation v2 removes the gateway in favor of the Apollo Router" -- verified against
+  Apollo's own docs that v2 is a composition/spec version, `@apollo/gateway` 2.0+ still works with
+  it, Router is a separate recommended runtime, and Router 1.60+ actually DROPPED v1 supergraph
+  support (the opposite direction). Added that a missing `@link` does not fail composition -- the
+  subgraph is silently treated as Federation v1. Corrected the `__resolveReference` batching
+  bullet: the Router batches into ONE `_entities` call, but the subgraph still resolves each
+  representation separately, so DataLoader batches the DB lookups behind it (verified via a direct
+  simulation: 4 naive DB calls vs 1 batch invocation / 3 deduped lookups, order preserved).
+  3 subtopics matching those three findings. Bare `federation` SUBTOPICS key checked
+  collision-free, left bare. All 6 touchpoints wired. Verified `@link` detection regex output and
+  nested-escape display by direct execution.
+- [x] 2026-09-20 — `/graphql/testing` — Testing GraphQL APIs. Verified against a real
+  @apollo/server 5.5.1 install: `executeOperation` auto-starts the server, so the main page's
+  "call start() in beforeAll" requirement is optional -- and calling start() AFTER an
+  executeOperation throws (as does stop() before any start). The subscriptions QnA claimed
+  executeOperation can collect async-iterator values; it returns one single result (an error for
+  a non-null field, and `data: { tick: null }` with NO errors for a nullable one -- a silent false
+  pass), so subscriptions need graphql-js `subscribe()`. `addMocksToSchema` (@graphql-tools/mock
+  9.1.14): the String mock is always "Hello World" (not random), mocks REPLACE real resolvers
+  unless `preserveResolvers: true`, and repeat queries on the same mocked schema return identical
+  values. Also noted (via the Apollo Client 4.0.0 release notes) that MockedProvider moved to
+  `@apollo/client/testing/react` and `addTypename` was removed, and added the missing
+  `kind === 'single'` narrowing to a mistake example. 3 subtopics on the first three findings.
+  SUBTOPICS key hub-prefixed to `gql-testing` -- bare `testing` collides with Angular's own
+  unquoted key. All 6 touchpoints wired. **This completes the GraphQL hub's Phase 10 (20 of 20).**
 
 #### Messaging/Kafka — 20 topic pages
 
-- [ ] `/messaging/messaging-fundamentals` — Messaging Fundamentals
-- [ ] `/messaging/message-queues-vs-streams` — Message Queues vs Event Streams
-- [ ] `/messaging/rabbitmq-core` — RabbitMQ Core Concepts
-- [ ] `/messaging/rabbitmq-exchanges` — RabbitMQ Exchanges
-- [ ] `/messaging/rabbitmq-patterns` — RabbitMQ Patterns
-- [ ] `/messaging/kafka-architecture` — Kafka Architecture
-- [ ] `/messaging/kafka-producers-consumers` — Producers & Consumers
-- [ ] `/messaging/kafka-streams` — Kafka Streams & KSQL
-- [ ] `/messaging/kafka-connect` — Kafka Connect
-- [ ] `/messaging/schema-registry` — Schema Registry
-- [ ] `/messaging/messaging-patterns` — Enterprise Messaging Patterns
-- [ ] `/messaging/saga-pattern` — Saga Pattern
-- [ ] `/messaging/outbox-pattern` — Outbox Pattern
-- [ ] `/messaging/azure-service-bus` — Azure Service Bus
+- [x] 2026-09-20 — `/messaging/messaging-fundamentals` — Messaging Fundamentals (hub pilot).
+  Verified against RabbitMQ's acknowledgements guide that `nack`/`reject` with requeue=false is
+  routed to a DLX only if one is configured, otherwise DISCARDED -- but the page's codeTab
+  declared the queue with no `x-dead-letter-exchange` and commented "send to DLQ" (also fixed the
+  mistake block and Challenge comment; the codeTab now shares one queue-args constant with the DLX
+  argument). Fixed the push/pull QnA: RabbitMQ consumers are push-based (`basic.consume` + prefetch;
+  `basic.get` polling is strongly discouraged), not "RabbitMQ poll". Qualified the exactly-once
+  bullet: SQS FIFO dedup is a send-side 5-minute window (AWS docs). 3 subtopics on those three
+  findings. Structural fix: `MessagingNavComponent` had no subtopics-accordion support (18th
+  `*NavComponent` hub in a row) -- added the standard signal/router/`SUBTOPICS` wiring copied from
+  `GqlNavComponent`. Bare `messaging-fundamentals` SUBTOPICS key checked collision-free. Kafka hub
+  conventions: `.kafka-page` wrapper NOT global (each subtopic SCSS carries wrapper + icon rules),
+  sidebar keys `messaging/<topic>/<slug>`, search keys `kafka-<topic>/<slug>`, breadcrumb
+  `MESSAGING_LABELS` composite bare keys. Messaging hub Phase 10: 1 of 20.
+- [x] 2026-09-20 `/messaging/message-queues-vs-streams` — Message Queues vs Event Streams. 3 subtopics
+  (unacked-messages-not-redelivered-forever, rabbitmq-streams-can-replay-too,
+  at-least-once-queues-need-idempotent-handlers). Main-page fixes verified against RabbitMQ docs, AWS SQS
+  docs and Kafka docs: unacked RabbitMQ messages are requeued only on channel close (30-min ack timeout
+  closes the channel), not redelivered forever; RabbitMQ 3.9+ streams can replay; queues are at-least-once
+  not guaranteed single-processing; compaction keeps latest value per key, not everything. Bare
+  `message-queues-vs-streams` SUBTOPICS key collision-free. Messaging hub Phase 10: 2 of 20.
+- [x] 2026-09-20 `/messaging/rabbitmq-core` — RabbitMQ Core Concepts. 3 subtopics
+  (retry-threshold-four-attempts, quorum-queues-replace-mirrored-queues, no-prefetch-is-blind-round-robin).
+  Main-page fixes: DLX-less nack "dead-lettered" in codeTabs (now declares DLX + dead queue), prefetch
+  "fastest consumer" claim (really blind round-robin), durability "guarantee" overstated, classic mirroring
+  removed in 4.0, Challenge `> 3` vs `>= 3` mismatch. Bare `rabbitmq-core` SUBTOPICS key collision-free.
+  Messaging hub Phase 10: 3 of 20.
+- [x] 2026-09-20 `/messaging/rabbitmq-exchanges` — RabbitMQ Exchanges. 3 subtopics
+  (trailing-hash-matches-bare-key, missing-exchange-closes-the-channel, mandatory-and-alternate-exchange).
+  Main-page fixes: `order.#` does match bare `order`; publishing to a missing exchange closes the channel
+  (not a silent drop) and assertExchange does not catch typos; unroutable messages return only with
+  `mandatory`, and alternate-exchange routing counts as routed. Bare `rabbitmq-exchanges` SUBTOPICS key
+  collision-free. Messaging hub Phase 10: 4 of 20.
+- [x] 2026-09-20 `/messaging/rabbitmq-patterns` — RabbitMQ Patterns. 3 subtopics
+  (delay-ttl-is-a-queue-argument, per-message-ttl-head-of-line-blocking, direct-reply-to-for-rpc).
+  Main-page fixes: delayed-queue sample redeclared one queue with different TTLs (406), TTL+DLX/plugin
+  wording (per-message expiration + head-of-line blocking, plugin limits), prefetch "first consumer gets
+  all" claim, work queue "exactly once", "pauses polling". Bare `rabbitmq-patterns` SUBTOPICS key
+  collision-free. Messaging hub Phase 10: 5 of 20 (RabbitMQ group done).
+- [x] 2026-09-20 `/messaging/kafka-architecture` — Kafka Architecture. 3 subtopics
+  (acks-all-needs-min-insync-replicas, adding-partitions-remaps-keys, compaction-keeps-at-least-the-latest).
+  Main-page fixes: acks=all needs min.insync.replicas (ISR can shrink to the leader), adding partitions
+  reshuffles key mapping and cannot be undone, compaction guarantees at least the latest value (active
+  segment, tombstones), KRaft 3.3 production-ready vs ZooKeeper removed in 4.0. Bare `kafka-architecture`
+  SUBTOPICS key collision-free. Messaging hub Phase 10: 6 of 20.
+- [x] 2026-09-20 `/messaging/kafka-producers-consumers` — Producers & Consumers. 3 subtopics
+  (kafkajs-has-no-linger-or-batch-size, manual-commit-needs-offset-plus-one,
+  eachbatch-autocommit-false-and-auto-resolve). Main-page fixes verified against kafkajs docs and
+  runner.js source: no linger.ms/batch.size in kafkajs, autoCommit commits after the handler (manual
+  commit = commitOffsets with offset+1), eachBatch resolveOffset only tracks progress and
+  eachBatchAutoResolve resolves the whole batch, acks=all needs min.insync.replicas. Bare
+  `kafka-producers-consumers` SUBTOPICS key collision-free. Messaging hub Phase 10: 7 of 20.
+- [x] 2026-09-20 `/messaging/kafka-streams` — Kafka Streams & KSQL. 3 subtopics
+  (windows-emit-updates-not-only-final-results, no-default-grace-period-late-records-dropped,
+  windowing-by-event-time-not-wall-clock). Main-page fixes verified against KIP-328/KIP-633/Confluent
+  docs: windowed results are emitted per update (suppress for final), no default grace period (24h default
+  retired, late records dropped after grace), Challenge windowed by wall clock instead of event time,
+  compaction keeps at least the latest. Bare `kafka-streams` SUBTOPICS key collision-free. Messaging hub
+  Phase 10: 8 of 20.
+- [x] 2026-09-20 `/messaging/kafka-connect` — Kafka Connect. 3 subtopics
+  (replacefield-does-not-mask-envelope-hides-columns, sink-offsets-live-in-consumer-groups,
+  debezium-config-drift-and-wal-level). Main-page fixes verified against Confluent SMT docs, KIP-875,
+  Debezium docs and PostgreSQL docs: ReplaceField does not mask and the Debezium envelope nests the
+  columns, stale `database.server.name` (renamed `topic.prefix` in 2.0), Postgres default wal_level is
+  replica and Debezium auto-creates its slot, sink offsets are consumer group offsets. Bare
+  `kafka-connect` SUBTOPICS key collision-free. Messaging hub Phase 10: 9 of 20.
+- [x] 2026-09-20 `/messaging/schema-registry` — Schema Registry. 3 subtopics
+  (forward-compat-add-fields-remove-defaulted, backward-checks-only-the-latest-version,
+  same-wire-format-for-all-three-formats). Main-page fixes verified against Confluent docs: FORWARD allows
+  adding fields and removing defaulted fields (adding breaks BACKWARD, not FORWARD), default BACKWARD checks
+  only the latest version (_TRANSITIVE checks all), JSON Schema uses the same schema-ID header (Protobuf adds
+  message indexes), Avro example no longer hardcodes schemaId. Bare `schema-registry` SUBTOPICS key
+  collision-free. Messaging hub Phase 10: 10 of 20 (RabbitMQ + Apache Kafka groups done).
+- [x] 2026-09-20 `/messaging/messaging-patterns` — Enterprise Messaging Patterns. 3 subtopics
+  (claim-check-limits-and-byte-length, scatter-gather-example-needs-a-timeout,
+  aggregator-loses-partial-orders). Main-page fixes: stale/wrong message-size limits (SQS 1 MiB since
+  Aug 2025, RabbitMQ 16 MiB since 4.0, Kafka about 1MB) and a string-length size test now Buffer.byteLength;
+  the Scatter-Gather example had no timeout despite its own mistake block and leaked its connection;
+  "exactly one consumer" replaced with at-least-once wording, and competing-consumer load claim tightened;
+  the Aggregator challenge deleted the order before the send succeeded, ran overlapping flush passes, and
+  is documented as demo-only (auto-commit plus in-memory state loses partial orders on a crash). Bare
+  `messaging-patterns` SUBTOPICS key collision-free. Messaging hub Phase 10: 11 of 20.
+- [x] 2026-09-20 `/messaging/saga-pattern` — Saga Pattern. 3 subtopics
+  (compensate-only-completed-steps, idempotent-compensation-atomic-guard, pivot-is-the-go-no-go-point).
+  Main-page fixes: orchestrator now compensates only completed steps in reverse; idempotent compensation uses
+  one guarded local transaction; pivot/compensable/retryable taxonomy; choreography events keyed by orderId;
+  deterministic Challenge solution; Temporal QnA corrected (it does not write compensations for you). Bare
+  `saga-pattern` SUBTOPICS key collision-free. Messaging hub Phase 10: 12 of 20.
+- [x] 2026-09-20 `/messaging/outbox-pattern` — Outbox Pattern. 3 subtopics
+  (cdc-outbox-rows-are-deleted-not-marked, created-at-is-transaction-start,
+  skip-locked-parallel-relays-reorder-events). Main-page fixes: CDC relay does not use published_at (row can be
+  inserted and deleted in one transaction); created_at now() is transaction start time (clock_timestamp());
+  SKIP LOCKED does not preserve order; challenge retry-count and key consistency; inbox+outbox is
+  effectively-once; duplicate theory sections merged. Messaging hub Phase 10: 13 of 20.
+- [x] 2026-09-20 `/messaging/azure-service-bus` — Azure Service Bus. 3 subtopics
+  (subscribe-auto-completes-and-renews, settings-fixed-at-queue-creation, unmatched-filter-is-not-dead-lettered).
+  Main-page fixes: subscribe() auto-completes/abandons/renews (mistake blocks now use receiveMessages); lock
+  default 1 minute; duplicate detection, sessions and expiry dead-lettering are creation-time settings; DLQ does
+  not receive filter non-matches; Premium 100MB is AMQP only. Bare `azure-service-bus` SUBTOPICS key
+  collision-free. Messaging hub Phase 10: 14 of 20.
 - [ ] `/messaging/azure-event-grid` — Event Grid & Event Hubs
 - [ ] `/messaging/aws-sqs` — AWS SQS
 - [ ] `/messaging/aws-sns-eventbridge` — AWS SNS & EventBridge

@@ -56,7 +56,7 @@ export class GqlCodeGeneration {
         'The modern `client-preset` is the recommended starting point for Apollo Client + React.',
         'It generates: TypeScript types for all schema types, operation-specific result types, and typed DocumentNodes.',
         'Import from the generated barrel: `import { graphql } from "./__generated__/gql"` instead of gql tag from apollo.',
-        'Fragments are typed separately: the generated `FragmentType` utility ensures you can only use fragments where intended.'
+        'Fragment masking is ON by default: a field spreading a fragment (e.g. `author { ...AuthorFields }`) is typed as an opaque `FragmentType<...>`, not the actual shape — reading `post.author.name` directly is a compile error. Call `useFragment(AuthorFieldsDoc, post.author)` first to unmask it.'
       ]
     },
     {
@@ -143,13 +143,16 @@ const AUTHOR_FIELDS = graphql(\`
 \`);
 
 function PostPage({ id }: { id: string }) {
-  // useQuery is fully typed — data.post.author.name has type string
+  // useQuery is fully typed — data.post.title has type string
   const { data, loading } = useQuery(GET_POST, { variables: { id } });
 
   if (loading) return null;
 
-  // TypeScript knows the exact shape of data
   const post = data?.post;
+  // NOTE: post.author is MASKED (client-preset enables fragment masking
+  // by default) — it is typed FragmentType<typeof AUTHOR_FIELDS>, not the
+  // real shape. Reading post.author.name here would be a compile error.
+  // Unmask it first: const author = useFragment(AUTHOR_FIELDS, post?.author);
   return <h1>{post?.title}</h1>;
 }`
     },

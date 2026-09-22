@@ -1,0 +1,26 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Schema Stitching &amp; Federation" topicRoute="/graphql/federation"
+    subtopicLabel="Where DataLoader Actually Helps in __resolveReference" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">Where DataLoader Actually Helps in __resolveReference</h1>
+  <p class="page-subtitle">The Router already batches references into one _entities call. What DataLoader adds is batching the database lookups behind that one call -- a different level of the stack, verified with a direct simulation of both versions.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Federation v2" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This is the entity-resolution cousin of the DataLoader &amp; N+1 topic, which covers a parent resolver fanning out to a child field per item. The mechanism is the same; the trigger here is a batched _entities call instead of a list field.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Schema Stitching &amp; Federation" topicRoute="/graphql/federation"
+    [prev]="{ label: 'A Missing @link Silently Falls Back to v1', route: '/graphql/federation/missing-link-falls-back-to-v1' }" />
+</div>

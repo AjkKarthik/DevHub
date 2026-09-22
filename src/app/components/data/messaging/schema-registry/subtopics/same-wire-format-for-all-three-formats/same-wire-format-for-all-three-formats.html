@@ -1,0 +1,26 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Schema Registry" topicRoute="/messaging/schema-registry"
+    subtopicLabel="JSON Schema Messages Use the Same Schema-ID Header, and Protobuf Adds Message Indexes" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">JSON Schema Messages Use the Same Schema-ID Header, and Protobuf Adds Message Indexes</h1>
+  <p class="page-subtitle">A theory bullet said JSON Schema embeds a full schema in every message. All three formats use the same 5-byte header with a schema ID, and Protobuf adds message indexes after it.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Confluent Platform" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This corrects a theory bullet on the Schema Registry page. The same page also had a producer example that hardcoded a schema ID while its own mistake block forbids it; that now resolves the ID by subject name.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Schema Registry" topicRoute="/messaging/schema-registry"
+    [prev]="{ label: 'BACKWARD Checks Only the Latest Version, Not the Whole History', route: '/messaging/schema-registry/backward-checks-only-the-latest-version' }" />
+</div>

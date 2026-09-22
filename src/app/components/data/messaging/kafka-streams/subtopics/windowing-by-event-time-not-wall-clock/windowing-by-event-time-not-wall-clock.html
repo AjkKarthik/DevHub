@@ -1,0 +1,26 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Kafka Streams & KSQL" topicRoute="/messaging/kafka-streams"
+    subtopicLabel="Window by Event Time, Not by the Wall Clock of Your Consumer" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">Window by Event Time, Not by the Wall Clock of Your Consumer</h1>
+  <p class="page-subtitle">The Challenge bucketed orders by Date.now() and called the result rolling. That is processing time with tumbling buckets, and it breaks on replays and after downtime.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Kafka 3+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This explains the changes to the Rolling 5-Minute Revenue Counter Challenge on the Streams page, and ties back to the in-memory-state mistake block.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Kafka Streams & KSQL" topicRoute="/messaging/kafka-streams"
+    [prev]="{ label: 'There Is No Default Grace Period, and Late Records Are Dropped from Closed Windows', route: '/messaging/kafka-streams/no-default-grace-period-late-records-dropped' }" />
+</div>

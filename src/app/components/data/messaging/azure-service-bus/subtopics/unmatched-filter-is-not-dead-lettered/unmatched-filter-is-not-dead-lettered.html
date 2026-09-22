@@ -1,0 +1,26 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Service Bus" topicRoute="/messaging/azure-service-bus"
+    subtopicLabel="A Message That Matches No Subscription Filter Is Not Dead-Lettered" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">A Message That Matches No Subscription Filter Is Not Dead-Lettered</h1>
+  <p class="page-subtitle">The quick reference said the DLQ receives messages that fail a filter. A non-matching message just gets no copy; only a filter that throws, with the option on, is dead-lettered.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Service Bus Standard and Premium" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the dead-letter queue entry in the quick reference. The Azure Event Grid topic covers a different way of routing events.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Service Bus" topicRoute="/messaging/azure-service-bus"
+    [prev]="{ label: 'Duplicate Detection, Sessions and Expiry Dead-Lettering Are All Fixed at Queue Creation', route: '/messaging/azure-service-bus/settings-fixed-at-queue-creation' }" />
+</div>

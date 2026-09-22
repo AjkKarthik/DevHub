@@ -64,8 +64,8 @@ export class MessagingPatterns {
       heading: 'Competing Consumers Pattern for Work Distribution',
       points: [
         'The competing consumers pattern runs multiple identical consumer instances against the same queue, each processing a subset of messages — this horizontally scales throughput simply by adding more consumer instances, without changing the producer or message format.',
-        'This pattern naturally load-balances work — a faster consumer instance processes proportionally more messages than a slower one, since each pulls the next available message only when ready, unlike a fixed round-robin assignment that could overload a slow instance.',
-        'Ensuring exactly one consumer processes each message (rather than duplicate processing) relies on the broker\'s delivery semantics — competing consumers on a standard queue naturally divide work, but care is needed with pub/sub-style topics where every subscriber may receive every message by default.',
+        'This pattern naturally load-balances work — a faster consumer instance processes proportionally more messages than a slower one, when each consumer takes the next message only when it is ready (SQS and Kafka polling, or RabbitMQ with prefetch(1)). A push broker that deals messages round-robin without prefetch, such as RabbitMQ by default, ignores how busy each instance is and can overload a slow one.',
+        'Each message goes to one consumer at a time, but queue delivery is at-least-once: a message can be redelivered after a crash or timeout, so handlers should be idempotent. Competing consumers on a standard queue naturally divide work, but care is needed with pub/sub-style topics where every subscriber may receive every message by default.',
         'This pattern is a common way to parallelize processing of an inherently serial-arriving workload (a stream of image resize jobs, order processing tasks) without needing to manually partition work upfront.',
       ],
     },
@@ -73,7 +73,7 @@ export class MessagingPatterns {
       heading: 'Claim Check Pattern for Large Payloads',
       points: [
         'The claim check pattern stores a large payload (a big file, a large document) in external storage (blob storage, S3) and sends only a reference/pointer through the message broker, avoiding the broker\'s typical message size limits.',
-        'Message brokers are generally optimized for high-throughput delivery of small-to-moderate messages — sending multi-megabyte payloads directly through the broker can degrade throughput and hit hard size limits (SQS: 256KB, Kafka: default 1MB) that the claim check pattern sidesteps entirely.',
+        'Message brokers are generally optimized for high-throughput delivery of small-to-moderate messages — sending multi-megabyte payloads directly through the broker can degrade throughput and hit hard size limits (SQS: 1 MiB since August 2025, 256 KiB before; Kafka: about 1MB by default; RabbitMQ: 16 MiB by default since 4.0, 128 MiB before) that the claim check pattern sidesteps entirely.',
         'Consumers retrieve the actual payload from external storage using the reference in the message, decoupling the message broker\'s concerns (routing, delivery guarantees) from the storage system\'s concerns (durability, large-object handling).',
         'This pattern requires managing the lifecycle of the externally stored payload (cleanup after processing, or a retention policy) separately from the message\'s own lifecycle, an additional operational concern not present when payloads are small enough to travel directly in the message.',
       ],
@@ -121,7 +121,7 @@ await producer.connect();
 // Claim Check Pattern: store large payload, send only reference
 async function publishWithClaimCheck(payload: object) {
   const json = JSON.stringify(payload);
-  const isTooLarge = json.length > 900_000; // Kafka default max 1MB
+  const isTooLarge = Buffer.byteLength(json) > 900_000; // bytes, not string length; Kafka default max is about 1MB
 
   if (isTooLarge) {
     // Store in object storage (pseudo-code)
@@ -167,16 +167,24 @@ async function getBestPrice(productId: string, vendors = ['v1', 'v2', 'v3']) {
   const { queue: replyQ } = await ch.assertQueue('', { exclusive: true });
   const replies: { vendor: string; price: number }[] = [];
 
-  return new Promise<{ vendor: string; price: number }>((resolve) => {
+  return new Promise<{ vendor: string; price: number }>((resolve, reject) => {
+    const best = () => replies.reduce((a, b) => a.price < b.price ? a : b);
+
+    // Deadline: after 2s use the replies we have, or fail if there are none
+    const timer = setTimeout(() => {
+      conn.close();
+      if (replies.length) resolve(best());
+      else reject(new Error('No price replies within timeout'));
+    }, 2000);
+
     // Collect replies until we have them all
     ch.consume(replyQ, (msg) => {
       if (!msg || msg.properties.correlationId !== corrId) return;
-      const reply = JSON.parse(msg.content.toString());
-      replies.push(reply);
+      replies.push(JSON.parse(msg.content.toString()));
       if (replies.length === vendors.length) {
-        const best = replies.reduce((a, b) => a.price < b.price ? a : b);
+        clearTimeout(timer);
         conn.close();
-        resolve(best);
+        resolve(best());
       }
     }, { noAck: true });
 
@@ -238,7 +246,7 @@ await producer.send({ topic: 'orders',
 const ref = await s3.upload(hugePayload);
 await producer.send({ topic: 'orders',
   messages: [{ value: JSON.stringify({ type: 'claim-check', ref }) }] });`,
-      explanation: 'Kafka and RabbitMQ have message size limits (default 1MB). Use the Claim Check pattern: store large data externally and publish only a reference.'
+      explanation: 'Brokers have message size limits (Kafka about 1MB by default, RabbitMQ 16 MiB since 4.0, SQS 1 MiB since August 2025) and large messages hurt throughput even below the limit. Use the Claim Check pattern: store large data externally and publish only a reference.'
     },
     {
       title: 'Not correlating aggregated messages, mixing results from different requests',
@@ -288,22 +296,38 @@ async function startAggregator() {
   await producer.connect();
   await consumer.subscribe({ topic: 'order-items' });
 
+  // Demo only. Two caveats for real use:
+  //  - order-items must be keyed by orderId so one consumer sees every item of an order
+  //  - offsets are auto-committed as items arrive, so a crash loses orders still in this Map;
+  //    use Kafka Streams state stores, or commit offsets only after the order is emitted
+
   // Flush idle orders every second
+  let flushing = false;               // do not start a new pass while the last one is still sending
   setInterval(async () => {
-    const now = Date.now();
-    for (const [orderId, state] of pending.entries()) {
-      if (now - state.lastSeen >= IDLE_MS) {
-        pending.delete(orderId);
-        await producer.send({
-          topic: 'completed-orders',
-          messages: [{
-            key:   orderId,
-            value: JSON.stringify({ orderId, items: state.items }),
-          }],
-          acks: -1,
-        });
-        console.log(\`Emitted order \${orderId} with \${state.items.length} items\`);
+    if (flushing) return;
+    flushing = true;
+    try {
+      const now = Date.now();
+      for (const [orderId, state] of [...pending.entries()]) {
+        if (now - state.lastSeen >= IDLE_MS) {
+          try {
+            await producer.send({
+              topic: 'completed-orders',
+              messages: [{
+                key:   orderId,
+                value: JSON.stringify({ orderId, items: state.items }),
+              }],
+              acks: -1,
+            });
+            pending.delete(orderId);   // only after the send succeeded, so a failed send is retried next tick
+            console.log(\`Emitted order \${orderId} with \${state.items.length} items\`);
+          } catch (err) {
+            console.error(\`Failed to emit order \${orderId}, will retry\`, err);
+          }
+        }
       }
+    } finally {
+      flushing = false;
     }
   }, 1000);
 
@@ -323,8 +347,8 @@ async function startAggregator() {
     { q: 'What is the Claim Check pattern used for?', options: ['Routing messages by content', 'Storing large payloads externally and sending only a reference', 'Aggregating replies from multiple services', 'Dead-lettering failed messages'], answer: 1, explanation: 'Claim Check avoids broker size limits by storing large payloads in object storage and sending only a reference URL in the message.' },
     { q: 'Which pattern collects responses from multiple services before returning?', options: ['Content-Based Router', 'Pub/Sub', 'Scatter-Gather', 'Message Filter'], answer: 2, explanation: 'Scatter-Gather fans out to N workers and aggregates all replies into one result before responding to the caller.' },
     { q: 'What does Event-Carried State Transfer avoid?', options: ['Message ordering issues', 'Synchronous queries back to the source service', 'Schema evolution', 'Large payload problems'], answer: 1, explanation: 'By including all necessary data in the event, consumers do not need to call back to the originating service synchronously.' },
-    { q: 'How do Competing Consumers scale throughput?', options: ['By increasing partition count', 'By adding multiple workers to the same queue', 'By using a fanout exchange', 'By compressing messages'], answer: 1, explanation: 'Multiple workers consume from the same queue; each message is processed by exactly one worker, distributing the load.' },
-    { q: 'What is the competing consumers pattern?', options: ['Multiple producers sending to the same queue', 'Multiple consumers on the same queue, each processing different messages for parallel throughput', 'Consumers that check each other for duplicates', 'A pattern for fan-out delivery'], answer: 1, explanation: 'Competing consumers: multiple consumers read from the same queue; each message is processed by exactly one consumer. Enables parallel processing and horizontal scaling — add more consumers to increase throughput.' },
+    { q: 'How do Competing Consumers scale throughput?', options: ['By increasing partition count', 'By adding multiple workers to the same queue', 'By using a fanout exchange', 'By compressing messages'], answer: 1, explanation: 'Multiple workers consume from the same queue; each message is delivered to one worker at a time, distributing the load (delivery is at-least-once, so handlers should be idempotent).' },
+    { q: 'What is the competing consumers pattern?', options: ['Multiple producers sending to the same queue', 'Multiple consumers on the same queue, each processing different messages for parallel throughput', 'Consumers that check each other for duplicates', 'A pattern for fan-out delivery'], answer: 1, explanation: 'Competing consumers: multiple consumers read from the same queue; each message goes to one consumer at a time (at-least-once, so make handlers idempotent). Enables parallel processing and horizontal scaling — add more consumers to increase throughput.' },
     { q: 'What is a key risk of the Claim Check pattern that does not exist when the full payload is in the message itself?', options: ['There is no additional risk — it is strictly an improvement', 'The blob storage reference and the message can become inconsistent: the blob could be deleted, overwritten, or simply not yet visible (eventual consistency) by the time a consumer tries to fetch it', 'Claim checks make messages larger, not smaller', 'It only works with XML message formats'], answer: 1, explanation: 'Splitting a message into "reference in the queue, payload in blob storage" introduces a two-system consistency problem: if the blob upload hasn\'t finished replicating (eventually-consistent storage), or if a lifecycle policy deletes the blob before the consumer processes the reference, the consumer fails despite the message itself being delivered successfully — a failure mode with no equivalent when the payload travels inline with the message.' },
   ];
 

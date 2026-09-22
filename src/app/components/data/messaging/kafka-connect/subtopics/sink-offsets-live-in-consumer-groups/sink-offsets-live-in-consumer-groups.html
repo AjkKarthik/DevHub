@@ -1,0 +1,27 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Kafka Connect" topicRoute="/messaging/kafka-connect"
+    subtopicLabel="Sink Connector Offsets Live in a Consumer Group, Not the Offsets Topic" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">Sink Connector Offsets Live in a Consumer Group, Not the Offsets Topic</h1>
+  <p class="page-subtitle">The page said connector offsets live in connect-offsets. That is true for source connectors only; a sink connector commits to a consumer group named connect-name.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Kafka 3.6+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the offset storage entries and answers on the Connect page. Next: stale configuration in the Debezium example and the Postgres wal_level default.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Kafka Connect" topicRoute="/messaging/kafka-connect"
+    [prev]="{ label: 'ReplaceField Does Not Mask, and a Debezium Envelope Hides the Columns from It', route: '/messaging/kafka-connect/replacefield-does-not-mask-envelope-hides-columns' }"
+    [next]="{ label: 'Debezium 2.0 Renamed database.server.name, and wal_level Defaults to replica', route: '/messaging/kafka-connect/debezium-config-drift-and-wal-level' }" />
+</div>

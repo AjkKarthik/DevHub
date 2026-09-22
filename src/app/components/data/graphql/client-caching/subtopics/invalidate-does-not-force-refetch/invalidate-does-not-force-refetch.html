@@ -1,0 +1,26 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Client-Side Caching" topicRoute="/graphql/client-caching"
+    subtopicLabel="INVALIDATE Alone Doesn't Force a Refetch" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">INVALIDATE Alone Doesn't Force a Refetch</h1>
+  <p class="page-subtitle">The main page's own theory bullet and QnA both overstated what INVALIDATE does -- verified against a real Apollo Client GitHub issue and fixed with the documented client.refetchQueries pattern.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This corrects a genuinely overstated claim on the main page with the real, documented mechanism. Next: another backwards-terminology fix on the same page, about how objects without an id are actually stored in the cache.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Client-Side Caching" topicRoute="/graphql/client-caching"
+    [next]="{ label: 'Unnormalized Objects Are Embedded, Never Referenced', route: '/graphql/client-caching/embedded-vs-normalized-objects' }" />
+</div>

@@ -1,0 +1,27 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Performance &amp; Security" topicRoute="/graphql/performance"
+    subtopicLabel="Aliased Root Fields Are Not Stopped by Disabling Batching" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">Aliased Root Fields Are Not Stopped by Disabling Batching</h1>
+  <p class="page-subtitle">The main page's own QnA names "disabling query batching" as a fix for its own batched-mutation example -- but that example uses a completely different mechanism the batching setting has no effect on. Verified the real distinction and built the fix that actually works.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This sits alongside the main page's own depth-limiting and complexity-analysis validation rules -- a root-field-count limit is the same class of defense, just measuring a different dimension of the query. Next: the main page's own field-suggestion QnA names a fix in one clause without ever showing the real mechanism behind it.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Performance &amp; Security" topicRoute="/graphql/performance"
+    [prev]="{ label: 'Computing the Response’s Real Cache-Control Header', route: '/graphql/performance/cache-control-header-computation' }"
+    [next]="{ label: 'How Field-Suggestion Blocking Actually Works', route: '/graphql/performance/field-suggestion-blocking-mechanism' }" />
+</div>

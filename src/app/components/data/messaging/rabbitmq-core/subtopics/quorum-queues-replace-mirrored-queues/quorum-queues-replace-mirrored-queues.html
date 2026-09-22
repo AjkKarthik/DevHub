@@ -1,0 +1,27 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="RabbitMQ Core Concepts" topicRoute="/messaging/rabbitmq-core"
+    subtopicLabel="Classic Mirrored Queues Were Removed: Use Quorum Queues" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">Classic Mirrored Queues Were Removed: Use Quorum Queues</h1>
+  <p class="page-subtitle">The page recommended mirrored or quorum queues for surviving a node failure. Mirroring is gone as of RabbitMQ 4.0, and quorum queues bring a built-in delivery limit as a bonus.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="RabbitMQ 4.0+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the durability theory bullet that named mirrored queues. The next subtopic corrects what the main page says happens when a consumer has no prefetch limit.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="RabbitMQ Core Concepts" topicRoute="/messaging/rabbitmq-core"
+    [prev]="{ label: 'A Retry Threshold of 3 Means Four Attempts, Not Three', route: '/messaging/rabbitmq-core/retry-threshold-four-attempts' }"
+    [next]="{ label: 'Without Prefetch RabbitMQ Deals Messages Round-Robin, Blind to Load', route: '/messaging/rabbitmq-core/no-prefetch-is-blind-round-robin' }" />
+</div>

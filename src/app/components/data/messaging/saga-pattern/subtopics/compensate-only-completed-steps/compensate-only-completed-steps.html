@@ -1,0 +1,26 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Saga Pattern" topicRoute="/messaging/saga-pattern"
+    subtopicLabel="Compensate Only the Steps That Actually Completed" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">Compensate Only the Steps That Actually Completed</h1>
+  <p class="page-subtitle">The orchestration example sent both undo commands on any failure. A saga should undo only the steps that committed, newest first.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Saga pattern" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the orchestration code tab on the main page. The next page shows why each compensation must also be safe to replay.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Saga Pattern" topicRoute="/messaging/saga-pattern"
+    [next]="{ label: 'Idempotent Compensation Needs One Atomic Guard', route: '/messaging/saga-pattern/idempotent-compensation-atomic-guard' }" />
+</div>

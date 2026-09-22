@@ -1,0 +1,27 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Messaging Fundamentals" topicRoute="/messaging/messaging-fundamentals"
+    subtopicLabel="RabbitMQ Consumers Are Pushed To, Not Polled" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">RabbitMQ Consumers Are Pushed To, Not Polled</h1>
+  <p class="page-subtitle">The QnA filed RabbitMQ under pull delivery. Its own code uses basic.consume, which is push, and prefetch is what keeps a slow consumer from being flooded.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="RabbitMQ 3+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the push-versus-pull QnA on the main page. RabbitMQ Core Concepts covers consumers and prefetch in more depth, and the Backpressure topic covers flow control across brokers.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Messaging Fundamentals" topicRoute="/messaging/messaging-fundamentals"
+    [prev]="{ label: 'nack With requeue=false Discards Messages Unless a DLX Exists', route: '/messaging/messaging-fundamentals/nack-without-dlx-discards' }"
+    [next]="{ label: 'SQS FIFO Deduplication Only Covers a Five-Minute Send Window', route: '/messaging/messaging-fundamentals/sqs-fifo-dedup-five-minute-window' }" />
+</div>

@@ -1,0 +1,27 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="RabbitMQ Patterns" topicRoute="/messaging/rabbitmq-patterns"
+    subtopicLabel="Per-Message TTL Delays Can Be Held Back at the Head of the Queue" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">Per-Message TTL Delays Can Be Held Back at the Head of the Queue</h1>
+  <p class="page-subtitle">Per-message expiration lets delays vary without a plugin, but on classic queues a message only expires at the head of the queue, so a long delay ahead of a short one holds it back.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="RabbitMQ 3+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This completes the picture behind the plugin-versus-TTL question answer on the Patterns page. Next: the request/reply side of the page, and a way to skip declaring reply queues.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="RabbitMQ Patterns" topicRoute="/messaging/rabbitmq-patterns"
+    [prev]="{ label: 'A Delay Queue TTL Is a Queue Argument, So Name the Queue After Its Delay', route: '/messaging/rabbitmq-patterns/delay-ttl-is-a-queue-argument' }"
+    [next]="{ label: 'Direct Reply-To Lets RPC Skip Declaring a Reply Queue', route: '/messaging/rabbitmq-patterns/direct-reply-to-for-rpc' }" />
+</div>

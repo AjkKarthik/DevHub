@@ -1,0 +1,26 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Enterprise Messaging Patterns" topicRoute="/messaging/messaging-patterns"
+    subtopicLabel="Claim Check Limits Differ per Broker, and String Length Is Not Byte Size" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">Claim Check Limits Differ per Broker, and String Length Is Not Byte Size</h1>
+  <p class="page-subtitle">The Claim Check examples used a 256KB SQS limit, a 1MB limit for RabbitMQ, and a string-length test. SQS is now 1 MiB, RabbitMQ defaults to 16 MiB, and size must be measured in bytes.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Kafka 3+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the Claim Check theory bullet, the large-payload mistake block and the size test in the Claim Check example. Next: the Scatter-Gather example and its missing deadline.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Enterprise Messaging Patterns" topicRoute="/messaging/messaging-patterns"
+    [next]="{ label: 'The Scatter-Gather Example Had No Timeout, Contradicting Its Own Mistake Block', route: '/messaging/messaging-patterns/scatter-gather-example-needs-a-timeout' }" />
+</div>

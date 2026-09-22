@@ -1,0 +1,26 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="RabbitMQ Exchanges" topicRoute="/messaging/rabbitmq-exchanges"
+    subtopicLabel="Unroutable Messages: mandatory Flag vs Alternate Exchange" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">Unroutable Messages: mandatory Flag vs Alternate Exchange</h1>
+  <p class="page-subtitle">An unroutable message is dropped by default. The mandatory flag returns it to the publisher, an alternate exchange catches it, and a message caught that way counts as routed.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="RabbitMQ 3+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This sharpens the fourth quiz question and the alternate-exchange notes on the Exchanges page. The RabbitMQ Patterns topic builds on these routing rules.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="RabbitMQ Exchanges" topicRoute="/messaging/rabbitmq-exchanges"
+    [prev]="{ label: 'Publishing to a Missing Exchange Closes the Channel', route: '/messaging/rabbitmq-exchanges/missing-exchange-closes-the-channel' }" />
+</div>

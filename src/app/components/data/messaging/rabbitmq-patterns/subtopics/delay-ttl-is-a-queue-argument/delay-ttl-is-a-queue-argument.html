@@ -1,0 +1,26 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="RabbitMQ Patterns" topicRoute="/messaging/rabbitmq-patterns"
+    subtopicLabel="A Delay Queue TTL Is a Queue Argument, So Name the Queue After Its Delay" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">A Delay Queue TTL Is a Queue Argument, So Name the Queue After Its Delay</h1>
+  <p class="page-subtitle">The delayed-queue sample passed a different delay into the same queue name on every call. RabbitMQ rejects the second declaration, so each delay needs its own holding queue.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="RabbitMQ 3+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the Delayed Queue code example and the queue-wide TTL wording on the Patterns page. Next: what happens when delays vary per message.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="RabbitMQ Patterns" topicRoute="/messaging/rabbitmq-patterns"
+    [next]="{ label: 'Per-Message TTL Delays Can Be Held Back at the Head of the Queue', route: '/messaging/rabbitmq-patterns/per-message-ttl-head-of-line-blocking' }" />
+</div>

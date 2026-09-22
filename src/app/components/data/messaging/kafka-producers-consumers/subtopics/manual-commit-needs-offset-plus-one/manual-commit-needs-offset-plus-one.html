@@ -1,0 +1,27 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Kafka Producers & Consumers" topicRoute="/messaging/kafka-producers-consumers"
+    subtopicLabel="With autoCommit Off You Commit Offset Plus One Yourself" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">With autoCommit Off You Commit Offset Plus One Yourself</h1>
+  <p class="page-subtitle">The mistake block said autoCommit commits before processing and showed a manual fix that never committed. In kafkajs the default commits after the handler, and a manual commit must store offset plus one.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Kafka 3+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the fourth mistake block on the Producers page. The next subtopic covers the same manual-commit rule inside eachBatch.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Kafka Producers & Consumers" topicRoute="/messaging/kafka-producers-consumers"
+    [prev]="{ label: 'kafkajs Has No linger.ms or batch.size, So Batch Explicitly', route: '/messaging/kafka-producers-consumers/kafkajs-has-no-linger-or-batch-size' }"
+    [next]="{ label: 'eachBatch Auto-Resolves the Last Offset, and autoCommit False Commits Nothing', route: '/messaging/kafka-producers-consumers/eachbatch-autocommit-false-and-auto-resolve' }" />
+</div>

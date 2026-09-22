@@ -47,7 +47,7 @@ export class RabbitMqCore {
       points: [
         'A durable queue is re-created after broker restart. Without it, queue metadata is lost on restart.',
         'A persistent message (deliveryMode=2) is written to disk. Without it, the message is lost on restart.',
-        'Both must be set to guarantee no message loss across broker restarts.',
+        'Both are needed to survive a broker restart, but even together they are not an absolute guarantee: the RabbitMQ tutorial notes there is still a short window when the broker has accepted a message and not yet saved it to disk. Use publisher confirms when that window matters.',
         'Performance trade-off: persistent messages have higher write latency than transient ones.',
       ]
     },
@@ -57,7 +57,7 @@ export class RabbitMqCore {
         'Manual ack (noAck=false) lets the consumer control when a message is removed from the queue.',
         'If the consumer crashes before acking, the broker redelivers to another consumer.',
         'prefetch(N) tells the broker not to send more than N unacked messages to a consumer at once.',
-        'Without prefetch, one slow consumer can receive the entire queue backlog and stall.',
+        'Without prefetch, RabbitMQ dispatches messages round-robin by count and never looks at how many unacked messages a consumer already holds, so a slow consumer falls further and further behind while a fast one sits idle (a lone consumer simply receives the whole backlog).',
       ]
     },
     {
@@ -74,7 +74,7 @@ export class RabbitMqCore {
       points: [
         'A queue must be declared durable (surviving a broker restart) AND messages must be marked persistent (delivery_mode=2) for messages to survive a RabbitMQ broker restart — missing either half of this pairing means messages can still be lost on restart despite appearing "durable."',
         'Persistent messages are written to disk before being acknowledged to the publisher, trading some throughput for durability — this is a deliberate tradeoff that should be made per-queue based on whether that queue\'s messages can tolerate loss on broker restart.',
-        'Mirrored/quorum queues replicate queue contents across multiple broker nodes, protecting against a single node failure in addition to protecting against a full-cluster restart — durability alone does not protect against a node crash if that queue is not also replicated.',
+        'Quorum queues (and streams) replicate their contents across multiple broker nodes, protecting against a single node failure in addition to a full-cluster restart — durability alone does not protect against a node crash if the queue is not also replicated. Classic queue mirroring was removed in RabbitMQ 4.0, and messages in a quorum queue are persisted to disk regardless of their delivery mode.',
         'Transient (non-durable) queues and non-persistent messages are appropriate for genuinely disposable data (like real-time metrics where losing a few recent updates on a broker restart is acceptable) where the throughput gain outweighs the durability cost.',
       ],
     },
@@ -90,9 +90,16 @@ async function publish(message: object) {
   const conn = await amqplib.connect('amqp://localhost');
   const ch   = await conn.createChannel();
 
-  // Declare exchange and queue
+  // Declare exchange and queue. The dead-letter exchange and its queue give
+  // nack(requeue=false) somewhere to send failed messages (see the Consumer tab).
   await ch.assertExchange('orders', 'direct', { durable: true });
-  await ch.assertQueue('order-processing', { durable: true });
+  await ch.assertExchange('orders.dlx', 'fanout', { durable: true });
+  await ch.assertQueue('order-processing.dead', { durable: true });
+  await ch.bindQueue('order-processing.dead', 'orders.dlx', '');
+  await ch.assertQueue('order-processing', {
+    durable: true,
+    arguments: { 'x-dead-letter-exchange': 'orders.dlx' },
+  });
   await ch.bindQueue('order-processing', 'orders', 'new');
 
   ch.publish('orders', 'new',
@@ -115,7 +122,11 @@ async function startWorker() {
   const conn = await amqplib.connect('amqp://localhost');
   const ch   = await conn.createChannel();
 
-  await ch.assertQueue('order-processing', { durable: true });
+  // Same arguments as the producer: RabbitMQ rejects a re-declaration that differs
+  await ch.assertQueue('order-processing', {
+    durable: true,
+    arguments: { 'x-dead-letter-exchange': 'orders.dlx' },
+  });
   ch.prefetch(5);   // max 5 in-flight messages
 
   console.log('Waiting for orders…');
@@ -127,7 +138,7 @@ async function startWorker() {
       await processOrder(order);
       ch.ack(msg);              // success → remove from queue
     } catch (err) {
-      ch.nack(msg, false, false); // fail → send to DLQ
+      ch.nack(msg, false, false); // fail → dead-lettered (queue has a DLX)
     }
   }, { noAck: false });
 }
@@ -169,11 +180,11 @@ ch.sendToQueue('tasks', Buffer.from(data), { persistent: true });`,
     },
     {
       title: 'Not setting prefetch, causing one consumer to receive all messages',
-      wrong: `// No prefetch — broker pushes everything to the first consumer
+      wrong: `// No prefetch — broker deals messages out round-robin, blind to how busy each consumer is
 ch.consume('tasks', async (msg) => { await slowTask(msg); ch.ack(msg); });`,
       right: `ch.prefetch(10);   // fairness: max 10 unacked per consumer
 ch.consume('tasks', async (msg) => { await slowTask(msg); ch.ack(msg); });`,
-      explanation: 'Without prefetch, a slow consumer accumulates the entire queue. Prefetch enables fair load distribution.'
+      explanation: 'Without prefetch, a slow consumer keeps receiving its round-robin share and accumulates unacked messages. Prefetch enables fair load distribution.'
     },
     {
       title: 'Nacking with requeue=true on a processing error (infinite loop)',
@@ -185,16 +196,16 @@ ch.consume('tasks', async (msg) => { await slowTask(msg); ch.ack(msg); });`,
       right: `ch.consume('q', (msg) => {
   if (!msg) return;
   try { process(msg); ch.ack(msg); }
-  catch { ch.nack(msg, false, false); } // send to DLQ
+  catch { ch.nack(msg, false, false); } // dead-lettered only if the queue has x-dead-letter-exchange
 });`,
-      explanation: 'Requeuing on persistent errors causes infinite retry loops. Use DLQ (requeue=false) with retry counts tracked in message headers.'
+      explanation: 'Requeuing on persistent errors causes infinite retry loops. Use a DLQ (requeue=false, with x-dead-letter-exchange set on the queue — otherwise the message is discarded) and track retry counts in message headers.'
     },
   ];
 
   readonly challenge: Challenge = {
     title: 'Durable Work Queue with Dead Letter Queue',
     language: 'typescript',
-    description: 'Create a durable RabbitMQ setup where failed messages (after 3 retries tracked in headers) are routed to a dead-letter queue. Use amqplib. The consumer should increment a retryCount header and nack without requeue when retryCount > 3.',
+    description: 'Create a durable RabbitMQ setup where failed messages (after 3 retries tracked in headers) are routed to a dead-letter queue. Use amqplib. The consumer should increment a retryCount header and nack without requeue once retryCount reaches 3 (retryCount >= 3), so a failing message gets 3 retries — 4 attempts in total.',
     hints: [
       'Use x-dead-letter-exchange when asserting the main queue',
       'Read headers from msg.properties.headers',
@@ -253,7 +264,7 @@ async function processTask(task: unknown) { throw new Error('simulated failure')
     { q: 'Which combination ensures messages survive a broker restart?', options: ['durable queue only', 'persistent message only', 'durable queue + persistent message', 'noAck=true'], answer: 2, explanation: 'Both the queue (metadata) and message (data) must be persisted to survive a restart.' },
     { q: 'What happens when nack is called with requeue=false?', options: ['Message is immediately redelivered', 'Message is deleted silently', 'Message is routed to the dead-letter exchange if configured', 'Connection is closed'], answer: 2, explanation: 'With requeue=false, the broker routes the message to the DLX/DLQ if configured, or drops it.' },
     { q: 'What is the difference between a durable and transient queue in RabbitMQ?', options: ['Durable queues are faster', 'Durable queues survive broker restart; transient queues are lost on restart', 'Durable queues support more consumers', 'Transient queues are cloud-only'], answer: 1, explanation: 'A durable queue persists its metadata to disk and survives broker restarts. For messages to survive too, they must also be marked persistent (delivery_mode=2). Transient queues and non-persistent messages are faster but not crash-safe.' },
-    { q: 'What is the RabbitMQ prefetch count and why should you set it?', options: ['Number of queues per connection', 'Max unacknowledged messages delivered to a consumer before it must ACK', 'Number of consumers per queue', 'Max message size in bytes'], answer: 1, explanation: 'Prefetch (basic.qos) limits unacknowledged messages per consumer. Without it, RabbitMQ delivers all messages to the fastest consumer, starving others. Set to 1 for even distribution; higher for throughput.' },
+    { q: 'What is the RabbitMQ prefetch count and why should you set it?', options: ['Number of queues per connection', 'Max unacknowledged messages delivered to a consumer before it must ACK', 'Number of consumers per queue', 'Max message size in bytes'], answer: 1, explanation: 'Prefetch (basic.qos) limits unacknowledged messages per consumer. Without it, RabbitMQ dispatches round-robin by message count without checking how many unacked messages a consumer holds, so a slow consumer can be handed as many messages as a fast one. Set to 1 for even distribution; higher for throughput.' },
   ];
 
   readonly qna: QnaItem[] = [

@@ -38,8 +38,8 @@ export class MessageQueuesVsStreams {
       points: [
         'A message queue holds messages until a consumer picks them up. Once consumed, the message is gone.',
         'Best for task distribution: send an email, resize an image, process a payment — each job done exactly by one worker.',
-        'Broker tracks acknowledgements; unacknowledged messages are redelivered after a timeout.',
-        'RabbitMQ, AWS SQS, and Azure Service Bus are classic queue systems.',
+        'Broker tracks acknowledgements. How an unacknowledged message comes back depends on the broker: SQS hides it for a visibility timeout and then redelivers it; RabbitMQ requeues it when the channel or connection closes (including when the 30-minute delivery acknowledgement timeout closes the channel) — a healthy, connected consumer that simply never acks is not redelivered to.',
+        'RabbitMQ classic queues, AWS SQS, and Azure Service Bus are classic queue systems. (RabbitMQ 3.9+ also offers a separate stream type — see the next section.)',
       ]
     },
     {
@@ -47,14 +47,14 @@ export class MessageQueuesVsStreams {
       points: [
         'An event stream is an immutable, time-ordered log. Consumers track their own offset and can re-read history.',
         'Multiple independent consumers (analytics, audit, ML) each see every event — no competition for messages.',
-        'Kafka, AWS Kinesis, and Azure Event Hubs are streaming platforms.',
+        'Kafka, AWS Kinesis, and Azure Event Hubs are streaming platforms. RabbitMQ 3.9 (2021) added streams too — an append-only, non-destructive log inside a broker best known for queues — so the queue-versus-stream split is about the data structure, not the product name.',
         'Retention policy, not consumption, determines when data is deleted.',
       ]
     },
     {
       heading: 'When to Choose Which',
       points: [
-        'Use a queue when you need guaranteed single-processing of a task (order fulfilment, payment processing).',
+        'Use a queue when each task should be handled by exactly one worker at a time (order fulfilment, payment processing). Delivery is at-least-once, so a handler can still run twice for one message — make it idempotent.',
         'Use a stream when multiple systems need the same events or you need time-travel / replay.',
         'Queues are simpler; streams add operational complexity but enable event sourcing and CQRS patterns.',
         'Hybrid: use Kafka for the event backbone, project into per-service queues for task workers.',
@@ -64,7 +64,7 @@ export class MessageQueuesVsStreams {
       heading: 'Message Lifetime: Consumed-and-Gone vs. Retained Log',
       points: [
         'Traditional message queues typically delete a message once it has been successfully consumed and acknowledged — the queue is a transient buffer, not a durable historical record of what happened.',
-        'Streaming platforms like Kafka retain messages for a configured retention period (or indefinitely with compaction) regardless of consumption — multiple independent consumers can each read the same message at different times without one consumer\'s reading affecting another\'s ability to read it later.',
+        'Streaming platforms like Kafka retain messages for a configured retention period (indefinitely with <code>retention.ms=-1</code>, or with compaction, which keeps at least the latest value per key rather than the full history) regardless of consumption — multiple independent consumers can each read the same message at different times without one consumer\'s reading affecting another\'s ability to read it later.',
         'This retention difference is why streams support replaying historical data (reprocessing the last 24 hours of events after a bug fix) while traditional queues generally cannot — once a queue message is consumed and deleted, it is gone.',
         'Choosing between them should be driven by whether the actual use case needs a transient work-distribution buffer (queue) or a durable, replayable event log that multiple independent consumers can process at their own pace (stream).',
       ],
@@ -170,14 +170,14 @@ await producer.send({ topic: 'order-placed', messages: [msg] });`,
       title: 'Forgetting acknowledgements in queue consumers',
       wrong: `ch.consume('tasks', (msg) => {
   processTask(msg);
-  // never acks — message redelivered forever
+  // never acks — stays unacked, holds a prefetch slot
 });`,
       right: `ch.consume('tasks', async (msg) => {
   if (!msg) return;
   await processTask(msg);
   ch.ack(msg);   // only ack after successful processing
 });`,
-      explanation: 'Without ack, the broker re-queues the message after consumer timeout, causing duplicate processing.'
+      explanation: 'Without an ack the message stays unacknowledged and keeps occupying a prefetch slot, so the consumer eventually stalls. RabbitMQ only requeues it when the channel closes — a connection drop, or the 30-minute delivery acknowledgement timeout closing the channel — at which point it is redelivered and processed again. SQS instead redelivers after the visibility timeout.'
     },
     {
       title: 'Treating Kafka consumer offset as automatic',
@@ -248,15 +248,15 @@ function fulfilmentHandler(e: Event)   { console.log('fulfil:', e); }`,
     { q: 'Which Kafka feature enables ordered processing of messages from the same entity?', options: ['Consumer group', 'Partition key', 'Retention policy', 'Replication factor'], answer: 1, explanation: 'Messages with the same key land on the same partition, preserving order.' },
     { q: 'When should you prefer a message queue over an event stream?', options: ['Analytics fan-out', 'Audit logging', 'Single-worker task processing', 'Event replay'], answer: 2, explanation: 'Queues are ideal when exactly one consumer should process each task (work queues).' },
     { q: 'What is the key difference between a message queue and an event stream?', options: ['Message queues are slower', 'Queues deliver messages once then discard; streams retain messages for replay by multiple consumers', 'Streams only support one consumer', 'They are functionally identical'], answer: 1, explanation: 'Message queues: consumed and removed — task distribution model. Event streams: messages persisted and replayable — multiple independent consumer groups read at their own offset.' },
-    { q: 'Which system supports replaying historical events from an arbitrary point?', options: ['RabbitMQ', 'SQS Standard', 'Kafka (by resetting consumer offsets)', 'SNS'], answer: 2, explanation: 'Kafka retains messages for a configurable retention period. Consumers can reset offsets (--to-earliest, --to-datetime, --to-offset) to replay historical events — critical for rebuilding state or onboarding new consumers.' },
+    { q: 'Which system supports replaying historical events from an arbitrary point?', options: ['RabbitMQ classic queue', 'SQS Standard', 'Kafka (by resetting consumer offsets)', 'SNS Standard topic'], answer: 2, explanation: '(RabbitMQ streams, added in 3.9, can also replay — but a classic queue cannot.) Kafka retains messages for a configurable retention period. Consumers can reset offsets (--to-earliest, --to-datetime, --to-offset) to replay historical events — critical for rebuilding state or onboarding new consumers.' },
   ];
 
   readonly qna: QnaItem[] = [
-    { q: 'Can I use both queues and streams in the same system?', a: 'Yes — this is common. Kafka acts as the event backbone; downstream services project events into SQS/RabbitMQ queues for task workers that need exactly-once processing semantics.' },
+    { q: 'Can I use both queues and streams in the same system?', a: 'Yes — this is common. Kafka acts as the event backbone; downstream services project events into SQS/RabbitMQ queues for task workers. Those queues are at-least-once, so pair them with idempotent handlers (or SQS FIFO deduplication) rather than expecting exactly-once processing.' },
     { q: 'How does Kafka differ from RabbitMQ in terms of push vs pull?', a: 'Kafka is pull-based: consumers poll at their own pace. RabbitMQ pushes messages to consumers via a channel, which is why prefetch and ack management are important to avoid overwhelming slow consumers.' },
     { q: 'What is a dead-letter queue (DLQ) and when is it needed?', a: 'A DLQ receives messages that failed delivery after a configured number of retries. It prevents poison messages from blocking healthy queue processing and provides a place to inspect and replay failed events.' },
     { q: 'What happens to consumer scaling behavior differently between a message queue and an event stream when you add more consumer instances?', a: 'With a message queue (RabbitMQ, SQS), adding more consumer instances to the same queue simply increases parallel throughput — each message still goes to exactly one consumer, so N consumers process roughly N× the messages per second with no coordination needed beyond the queue itself. With an event stream (Kafka), adding consumer instances within the same consumer group only helps up to the number of partitions — a topic with 4 partitions can have at most 4 active consumers in a group processing in parallel; a 5th consumer sits idle until a partition frees up, which is why partition count must be planned for your expected maximum consumer parallelism upfront.' },
-    { q: 'How do consumer groups differ between Kafka and RabbitMQ?', a: 'In <strong>Kafka</strong>, consumer groups partition messages — each partition assigned to one consumer in the group; different groups read all messages independently. In <strong>RabbitMQ</strong>, multiple consumers on the same queue compete for messages (round-robin) — there is no concept of independent groups reading the same messages. Add a new consumer group in Kafka = zero overhead on producers.' },
+    { q: 'How do consumer groups differ between Kafka and RabbitMQ?', a: 'In <strong>Kafka</strong>, consumer groups partition messages — each partition assigned to one consumer in the group; different groups read all messages independently. In <strong>RabbitMQ</strong>, multiple consumers on the same queue compete for messages (round-robin) — there is no concept of independent groups reading the same messages on a classic queue (RabbitMQ streams, 3.9+, do let many consumers read the same data non-destructively). Add a new consumer group in Kafka = zero overhead on producers.' },
     { q: 'What is log retention in Kafka and how does it differ from queue TTL?', a: 'Kafka log retention is time-based (<code>retention.ms</code>) or size-based (<code>retention.bytes</code>) — messages are deleted after the retention period regardless of consumption. Queue TTL (SQS, RabbitMQ) expires individual unprocessed messages. Kafka retention enables replay; queue TTL prevents unbounded growth of unconsumed messages.' },
   ];
 

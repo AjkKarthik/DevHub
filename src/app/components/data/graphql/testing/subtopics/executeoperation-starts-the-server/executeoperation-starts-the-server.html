@@ -1,0 +1,26 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Testing GraphQL APIs" topicRoute="/graphql/testing"
+    subtopicLabel="executeOperation Starts the Server for You" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">executeOperation Starts the Server for You</h1>
+  <p class="page-subtitle">The main page tells you to call start() in beforeAll. Verified against a real Apollo Server: executeOperation auto-starts the server, so start() is optional, and calling it afterwards is what actually throws.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Apollo Server 4+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>This corrects one bullet in the Integration Testing section of the main Testing page. The next subtopic covers an operation type executeOperation cannot run at all: subscriptions.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Testing GraphQL APIs" topicRoute="/graphql/testing"
+    [next]="{ label: 'Subscriptions Need graphql-js subscribe(), Not executeOperation', route: '/graphql/testing/subscriptions-need-graphql-js-subscribe' }" />
+</div>

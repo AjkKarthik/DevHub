@@ -1,0 +1,27 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Schema Registry" topicRoute="/messaging/schema-registry"
+    subtopicLabel="BACKWARD Checks Only the Latest Version, Not the Whole History" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">BACKWARD Checks Only the Latest Version, Not the Whole History</h1>
+  <p class="page-subtitle">The page recommended BACKWARD or FULL without saying what they compare against. The non-transitive modes check only the latest schema; the transitive modes check every version.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Confluent Platform" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This fills a gap in the compatibility modes and the NONE-in-production advice on the Schema Registry page. Next: the wire format that carries the schema ID.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Schema Registry" topicRoute="/messaging/schema-registry"
+    [prev]="{ label: 'FORWARD Compatibility Allows Adding Fields and Removing Fields That Have Defaults', route: '/messaging/schema-registry/forward-compat-add-fields-remove-defaulted' }"
+    [next]="{ label: 'JSON Schema Messages Use the Same Schema-ID Header, and Protobuf Adds Message Indexes', route: '/messaging/schema-registry/same-wire-format-for-all-three-formats' }" />
+</div>

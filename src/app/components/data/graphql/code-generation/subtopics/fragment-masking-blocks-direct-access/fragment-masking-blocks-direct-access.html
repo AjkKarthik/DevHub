@@ -1,0 +1,26 @@
+<div class="gql-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Code Generation" topicRoute="/graphql/code-generation"
+    subtopicLabel="Fragment Masking Blocks Direct Field Access" />
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">Fragment Masking Blocks Direct Field Access</h1>
+  <p class="page-subtitle">The main page's own Client Usage codeTab claimed a masked fragment field could be read directly with a plain type. Verified against client-preset's own docs that fragment masking is on by default -- direct access is a compile error, not a shortcut.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="gql-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="gql-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic builds the near-operation-file preset the main page's own QnA names but never sets up -- a second config shape alongside client-preset for teams that colocate types next to each operation file.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Code Generation" topicRoute="/graphql/code-generation"
+    [next]="{ label: 'Setting Up near-operation-file for Colocated Types', route: '/graphql/code-generation/near-operation-file-preset' }" />
+</div>

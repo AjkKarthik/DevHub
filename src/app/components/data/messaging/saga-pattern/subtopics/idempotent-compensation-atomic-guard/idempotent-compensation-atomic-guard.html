@@ -1,0 +1,27 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Saga Pattern" topicRoute="/messaging/saga-pattern"
+    subtopicLabel="Idempotent Compensation Needs One Atomic Guard" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">Idempotent Compensation Needs One Atomic Guard</h1>
+  <p class="page-subtitle">A status check followed by the work is not idempotent. A crash or a concurrent delivery double-credits the stock unless the guard and the change are one transaction.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Saga pattern" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This is the first mistake block on the main page, worked through with numbers. The next page covers which steps need compensating at all.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Saga Pattern" topicRoute="/messaging/saga-pattern"
+    [prev]="{ label: 'Compensate Only the Steps That Actually Completed', route: '/messaging/saga-pattern/compensate-only-completed-steps' }"
+    [next]="{ label: 'The Pivot Transaction Is the Go/No-Go Point', route: '/messaging/saga-pattern/pivot-is-the-go-no-go-point' }" />
+</div>

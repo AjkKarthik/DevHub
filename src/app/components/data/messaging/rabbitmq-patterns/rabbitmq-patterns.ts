@@ -49,6 +49,7 @@ export class RabbitMqPatterns {
         'The server processes the request and publishes the result to the replyTo queue with the same correlationId.',
         'The client consumes from the replyTo queue and matches responses using correlationId.',
         'Use exclusive, auto-delete reply queues per client to avoid cross-contamination.',
+        'RabbitMQ also offers direct reply-to: consume the pseudo-queue amq.rabbitmq.reply-to in no-ack mode and set it as replyTo, so no reply queue has to be declared at all.',
       ]
     },
     {
@@ -176,8 +177,11 @@ async function setupDelayedQueue(delayMs: number) {
   // Target queue — receives messages after delay expires
   await ch.assertQueue('email.send', { durable: true });
 
-  // Holding queue: messages expire here and route to email.send via DLX
-  await ch.assertQueue('email.delay', {
+  // Holding queue: messages expire here and route to email.send via DLX.
+  // x-message-ttl is a QUEUE argument, so name the queue after its delay:
+  // re-declaring the same name with a different TTL fails (PRECONDITION_FAILED).
+  const holding = 'email.delay.' + delayMs;
+  await ch.assertQueue(holding, {
     durable: true,
     arguments: {
       'x-dead-letter-exchange':    '',       // default exchange
@@ -186,12 +190,12 @@ async function setupDelayedQueue(delayMs: number) {
     },
   });
 
-  return ch;
+  return { ch, holding };
 }
 
 async function scheduleEmail(to: string, delayMs: number) {
-  const ch = await setupDelayedQueue(delayMs);
-  ch.sendToQueue('email.delay',
+  const { ch, holding } = await setupDelayedQueue(delayMs);
+  ch.sendToQueue(holding,
     Buffer.from(JSON.stringify({ to, subject: 'Reminder' })),
     { persistent: true }
   );
@@ -205,7 +209,7 @@ scheduleEmail('user@example.com', 60_000);`,
   readonly mistakes: CommonMistake[] = [
     {
       title: 'Missing prefetch in work queue causing uneven load',
-      wrong: `// No prefetch — first consumer gets all messages
+      wrong: `// No prefetch — messages are dealt round-robin by count, blind to how busy each consumer is
 ch.consume('jobs', async (msg) => {
   await slowJob(msg);
   ch.ack(msg);
@@ -215,7 +219,7 @@ ch.consume('jobs', async (msg) => {
   await slowJob(msg);
   ch.ack(msg);
 });`,
-      explanation: 'Without prefetch, the broker pre-buffers many messages to the first connected consumer, starving others.'
+      explanation: 'Without prefetch, RabbitMQ hands each consumer the next message in turn without looking at how many it still holds unacknowledged, so a slow consumer keeps its full share while a fast one idles. prefetch(1) sends the next message only to a consumer that has acked the last.'
     },
     {
       title: 'Sharing replyTo queue across RPC clients',
@@ -316,12 +320,12 @@ run();`,
   ];
 
   readonly qna: QnaItem[] = [
-    { q: 'What is the difference between work queues and pub/sub in RabbitMQ?', a: 'Work queues (competing consumers on one queue) process each message exactly once. Pub/sub (fanout exchange, one queue per consumer) delivers each message to all subscribers.' },
-    { q: 'When should I use the rabbitmq-delayed-message-exchange plugin vs. TTL+DLX?', a: 'The plugin is simpler and more accurate for per-message delays via x-delay header. TTL+DLX works without plugins but applies the same delay to all messages in the holding queue, which is a limitation when delays vary per message.' },
+    { q: 'What is the difference between work queues and pub/sub in RabbitMQ?', a: 'Work queues (competing consumers on one queue) hand each message to exactly one consumer at a time; with manual acks delivery is at-least-once, so a message can be redelivered after a crash and handlers should be idempotent. Pub/sub (fanout exchange, one queue per consumer) delivers each message to all subscribers.' },
+    { q: 'When should I use the rabbitmq-delayed-message-exchange plugin vs. TTL+DLX?', a: 'The plugin gives a true per-message delay via the x-delay header, but its delayed messages live in a Mnesia table on a single node (lose the node, lose them), the maximum delay is about 49 days, and it is not designed for hundreds of thousands of delayed messages. TTL+DLX needs no plugin: a queue-level x-message-ttl gives one delay per holding queue, so use one holding queue per delay tier. A per-message expiration property lets delays vary, but in classic queues an expired message is only dead-lettered once it reaches the head of the queue, so a long delay ahead of a short one holds the short one back.' },
     { q: 'Is RPC over AMQP suitable for high-throughput services?', a: 'For moderate throughput, yes. For high-throughput, synchronous request-reply adds latency and connection overhead. Consider async responses via topic events or HTTP/gRPC for latency-sensitive paths.' },
     { q: 'How do you implement the routing slip pattern in RabbitMQ?', a: 'Routing slip: a message carries a list of processing steps in its headers. Each processor reads the next step from the header, processes, removes that step, and re-publishes to the next exchange. Allows dynamic workflows without hard-coding the processing pipeline. Useful for order processing where steps vary by order type.' },
     { q: 'What is the exclusive consumer pattern in RabbitMQ?', a: 'Declare a queue with <code>exclusive: true</code> — only the declaring connection can consume from it. Automatically deleted when the connection closes. Use for: private reply queues in request-reply pattern (each requestor gets a unique reply queue); temporary task queues per session. Prevents multiple consumers from competing on a private channel.' },
-    { q: 'How do you implement circuit breaker with RabbitMQ?', a: 'Pattern: consumer tracks consecutive failures. On N failures, it stops consuming (closes channel or pauses polling) for a backoff period (circuit open). After timeout, attempt one message (half-open). On success, resume (circuit closed). Prevents cascading failures when downstream is unavailable. Pair with DLQ for messages that arrive during open circuit.' },
+    { q: 'How do you implement circuit breaker with RabbitMQ?', a: 'Pattern: consumer tracks consecutive failures. On N failures, it stops consuming (cancels its consumer with basic.cancel, or closes the channel) for a backoff period (circuit open). After timeout, attempt one message (half-open). On success, resume (circuit closed). Prevents cascading failures when downstream is unavailable. Pair with DLQ for messages that arrive during open circuit.' },
   ];
 
   readonly revision: RevisionSummary = {
@@ -332,7 +336,7 @@ run();`,
       'Delayed message: TTL holding queue + DLX → real processing queue',
       'Priority queue: x-max-priority on queue; priority property on message',
       'correlationId prevents cross-contamination in concurrent RPC calls',
-      'TTL+DLX delay is queue-wide; for per-message delays use the delayed-message plugin',
+      'TTL+DLX: a queue-level x-message-ttl is one delay per holding queue; per-message expiration can be held back by a longer delay at the head of a classic queue; the delayed-message plugin gives per-message x-delay with its own limits',
     ],
     interviewFocus: [
       'Work queue pattern: prefetch, fair dispatch, horizontal scaling',

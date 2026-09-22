@@ -1,0 +1,26 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="RabbitMQ Patterns" topicRoute="/messaging/rabbitmq-patterns"
+    subtopicLabel="Direct Reply-To Lets RPC Skip Declaring a Reply Queue" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">Direct Reply-To Lets RPC Skip Declaring a Reply Queue</h1>
+  <p class="page-subtitle">The RPC example declares an exclusive reply queue per call. RabbitMQ can route replies through the amq.rabbitmq.reply-to pseudo-queue instead, with a no-ack, same-channel rule and a durability trade-off.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="RabbitMQ 3+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This adds a built-in alternative to the reply-queue handling in the RPC example on the Patterns page. Whichever reply mechanism you use, the requester still needs a timeout.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="RabbitMQ Patterns" topicRoute="/messaging/rabbitmq-patterns"
+    [prev]="{ label: 'Per-Message TTL Delays Can Be Held Back at the Head of the Queue', route: '/messaging/rabbitmq-patterns/per-message-ttl-head-of-line-blocking' }" />
+</div>
