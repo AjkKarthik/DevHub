@@ -32169,6 +32169,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Trace context must be explicitly propagated through message headers — async boundaries break the direct call chain distributed tracing relies on.',
     ],
   },
+  'messaging/aws-sqs/fifo-high-throughput-mode': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'AWS SQS', route: '/messaging/aws-sqs' },
+      { label: 'SQS Dead-Lettering Is Queue-Side, Not a Lambda Destination', route: '/messaging/aws-sqs/dlq-is-queue-not-lambda-destination' },
+    ],
+    tip: '3,000 msg/s (with batching) is the default FIFO throughput, not a ceiling — High Throughput Mode is a queue setting that raises it to tens of thousands of transactions per second per API action, no code change required.',
+    gotchas: [
+      'The throughput gain only appears when work is spread across many distinct MessageGroupIds.',
+      'Ordering and exactly-once guarantees per message group are unaffected by the mode.',
+    ],
+  },
+  'messaging/aws-sqs/dlq-is-queue-not-lambda-destination': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'AWS SQS', route: '/messaging/aws-sqs' },
+      { label: '3,000 msg/s Is FIFO\'s Default Throughput, Not Its Ceiling', route: '/messaging/aws-sqs/fifo-high-throughput-mode' },
+    ],
+    tip: 'Unlike DynamoDB Streams or Kinesis, an SQS event source mapping has no Lambda-side on-failure destination — dead-lettering is configured entirely by the RedrivePolicy on the SQS queue itself.',
+    gotchas: [
+      'A failed batch invocation is not lost by default — it just becomes visible again after the visibility timeout.',
+      'Swapping the Lambda consumer for a different one never requires reconfiguring dead-lettering, since it lives on the queue.',
+    ],
+  },
+  'messaging/aws-sqs/report-batch-item-failures': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'AWS SQS', route: '/messaging/aws-sqs' },
+      { label: 'SQS Dead-Lettering Is Queue-Side, Not a Lambda Destination', route: '/messaging/aws-sqs/dlq-is-queue-not-lambda-destination' },
+    ],
+    tip: 'ReportBatchItemFailures (FunctionResponseTypes on the event source mapping) narrows a failed batch down to only the message IDs actually reported as failed — everything else in the batch is deleted as successful.',
+    gotchas: [
+      'The event source mapping must have FunctionResponseTypes set, or the returned batchItemFailures is silently ignored.',
+      'A permanently-failing message still needs the queue\'s own maxReceiveCount/DLQ — this only controls which messages get retried, not how long.',
+    ],
+  },
   'messaging/aws-sqs': {
     apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
     related: [

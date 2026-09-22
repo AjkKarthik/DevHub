@@ -4202,4 +4202,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Event Hubs\' Kafka Endpoint Doesn\'t Exist on Basic Tier', route: '/messaging/azure-event-grid/kafka-needs-standard-tier' },
     { label: 'Event Grid Domains Support 100,000 Topics, Not 1,000', route: '/messaging/azure-event-grid/domains-support-100000-topics' },
   ],
+  'aws-sqs': [
+    { label: '3,000 msg/s Is FIFO\'s Default Throughput, Not Its Ceiling', route: '/messaging/aws-sqs/fifo-high-throughput-mode' },
+    { label: 'SQS Dead-Lettering Is Queue-Side, Not a Lambda Destination', route: '/messaging/aws-sqs/dlq-is-queue-not-lambda-destination' },
+    { label: 'Rescuing Successful Messages From a Failed Batch With ReportBatchItemFailures', route: '/messaging/aws-sqs/report-batch-item-failures' },
+  ],
 };

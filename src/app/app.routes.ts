@@ -3072,7 +3072,12 @@ export const routes: Routes = [
       { path: 'kafka-needs-standard-tier', loadComponent: () => import('./components/data/messaging/azure-event-grid/subtopics/kafka-needs-standard-tier/kafka-needs-standard-tier').then(m => m.KafkaNeedsStandardTierSubtopic) },
       { path: 'domains-support-100000-topics', loadComponent: () => import('./components/data/messaging/azure-event-grid/subtopics/domains-support-100000-topics/domains-support-100000-topics').then(m => m.DomainsSupport100000TopicsSubtopic) },
     ] },
-    { path: 'aws-sqs',                   loadComponent: () => import('./components/data/messaging/aws-sqs/aws-sqs').then(m => m.AwsSqs) },
+    { path: 'aws-sqs', children: [
+      { path: '', loadComponent: () => import('./components/data/messaging/aws-sqs/aws-sqs').then(m => m.AwsSqs) },
+      { path: 'fifo-high-throughput-mode', loadComponent: () => import('./components/data/messaging/aws-sqs/subtopics/fifo-high-throughput-mode/fifo-high-throughput-mode').then(m => m.FifoHighThroughputModeSubtopic) },
+      { path: 'dlq-is-queue-not-lambda-destination', loadComponent: () => import('./components/data/messaging/aws-sqs/subtopics/dlq-is-queue-not-lambda-destination/dlq-is-queue-not-lambda-destination').then(m => m.DlqIsQueueNotLambdaDestinationSubtopic) },
+      { path: 'report-batch-item-failures', loadComponent: () => import('./components/data/messaging/aws-sqs/subtopics/report-batch-item-failures/report-batch-item-failures').then(m => m.ReportBatchItemFailuresSubtopic) },
+    ] },
     { path: 'aws-sns-eventbridge',       loadComponent: () => import('./components/data/messaging/aws-sns-eventbridge/aws-sns-eventbridge').then(m => m.AwsSnsEventbridge) },
     { path: 'idempotency',               loadComponent: () => import('./components/data/messaging/idempotency/idempotency').then(m => m.Idempotency) },
     { path: 'message-ordering',          loadComponent: () => import('./components/data/messaging/message-ordering/message-ordering').then(m => m.MessageOrdering) },
