@@ -1,0 +1,26 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Idempotency & Dedup" topicRoute="/messaging/idempotency"
+    subtopicLabel="Idempotency Keys for SQS Standard Queues (No Native Dedup)" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">Idempotency Keys for SQS Standard Queues (No Native Dedup)</h1>
+  <p class="page-subtitle">Only FIFO gets MessageDeduplicationId -- Standard queues need exactly the same idempotency-key pattern this page already builds for Kafka, sourced from the message body instead of MessageId.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="AWS SQS" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This closes the gap between Kafka-flavored idempotency and this hub's own AWS SQS page, showing the SAME key-table technique applies to a broker with no native deduplication at all. This completes the Idempotency & Dedup topic's subtopics.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Idempotency & Dedup" topicRoute="/messaging/idempotency"
+    [prev]="{ label: 'The Redis SET NX Pattern Needs Two Phases, Not One', route: '/messaging/idempotency/redis-set-nx-needs-two-phases' }" />
+</div>

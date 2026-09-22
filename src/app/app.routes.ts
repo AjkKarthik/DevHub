@@ -3084,8 +3084,24 @@ export const routes: Routes = [
       { path: 'retry-duration-depends-on-endpoint-type', loadComponent: () => import('./components/data/messaging/aws-sns-eventbridge/subtopics/retry-duration-depends-on-endpoint-type/retry-duration-depends-on-endpoint-type').then(m => m.RetryDurationDependsOnEndpointTypeSubtopic) },
       { path: 'eventbridge-pipes-sqs-to-target', loadComponent: () => import('./components/data/messaging/aws-sns-eventbridge/subtopics/eventbridge-pipes-sqs-to-target/eventbridge-pipes-sqs-to-target').then(m => m.EventbridgePipesSqsToTargetSubtopic) },
     ] },
-    { path: 'idempotency',               loadComponent: () => import('./components/data/messaging/idempotency/idempotency').then(m => m.Idempotency) },
-    { path: 'message-ordering',          loadComponent: () => import('./components/data/messaging/message-ordering/message-ordering').then(m => m.MessageOrdering) },
+    {
+      path: 'idempotency',
+      children: [
+        { path: '', loadComponent: () => import('./components/data/messaging/idempotency/idempotency').then(m => m.Idempotency) },
+        { path: 'kafkajs-does-not-enforce-max-in-flight', loadComponent: () => import('./components/data/messaging/idempotency/subtopics/kafkajs-does-not-enforce-max-in-flight/kafkajs-does-not-enforce-max-in-flight').then(m => m.KafkajsDoesNotEnforceMaxInFlightSubtopic) },
+        { path: 'redis-set-nx-needs-two-phases', loadComponent: () => import('./components/data/messaging/idempotency/subtopics/redis-set-nx-needs-two-phases/redis-set-nx-needs-two-phases').then(m => m.RedisSetNxNeedsTwoPhasesSubtopic) },
+        { path: 'sqs-standard-has-no-native-dedup', loadComponent: () => import('./components/data/messaging/idempotency/subtopics/sqs-standard-has-no-native-dedup/sqs-standard-has-no-native-dedup').then(m => m.SqsStandardHasNoNativeDedupSubtopic) },
+      ],
+    },
+    {
+      path: 'message-ordering',
+      children: [
+        { path: '', loadComponent: () => import('./components/data/messaging/message-ordering/message-ordering').then(m => m.MessageOrdering) },
+        { path: 'random-dedup-id-defeats-sqs-fifo-retry-safety', loadComponent: () => import('./components/data/messaging/message-ordering/subtopics/random-dedup-id-defeats-sqs-fifo-retry-safety/random-dedup-id-defeats-sqs-fifo-retry-safety').then(m => m.RandomDedupIdDefeatsSqsFifoRetrySafetySubtopic) },
+        { path: 'how-idempotent-producer-prevents-retry-reordering', loadComponent: () => import('./components/data/messaging/message-ordering/subtopics/how-idempotent-producer-prevents-retry-reordering/how-idempotent-producer-prevents-retry-reordering').then(m => m.HowIdempotentProducerPreventsRetryReorderingSubtopic) },
+        { path: 'fifo-group-blocking-is-per-group-not-queue-wide', loadComponent: () => import('./components/data/messaging/message-ordering/subtopics/fifo-group-blocking-is-per-group-not-queue-wide/fifo-group-blocking-is-per-group-not-queue-wide').then(m => m.FifoGroupBlockingIsPerGroupNotQueueWideSubtopic) },
+      ],
+    },
     { path: 'backpressure',              loadComponent: () => import('./components/data/messaging/backpressure/backpressure').then(m => m.Backpressure) },
     { path: 'monitoring',                loadComponent: () => import('./components/data/messaging/monitoring/monitoring').then(m => m.MonitoringMessaging) },
     { path: 'messaging-security',        loadComponent: () => import('./components/data/messaging/messaging-security/messaging-security').then(m => m.MessagingSecurity) },

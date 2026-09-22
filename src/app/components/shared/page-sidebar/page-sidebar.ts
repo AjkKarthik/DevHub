@@ -32049,6 +32049,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The claim-check pattern requires managing the externally stored payload\'s lifecycle separately from the message\'s own lifecycle.',
     ],
   },
+  'messaging/message-ordering/random-dedup-id-defeats-sqs-fifo-retry-safety': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Message Ordering', route: '/messaging/message-ordering' },
+      { label: 'Idempotency Keys for SQS Standard Queues (No Native Dedup)', route: '/messaging/idempotency/sqs-standard-has-no-native-dedup' },
+    ],
+    tip: 'A fresh randomUUID() per send guarantees uniqueness, not deduplication — a retry of the same send needs the SAME MessageDeduplicationId to be caught within the 5-minute window.',
+    gotchas: [
+      'A real GitHub issue reported this exact bug in a widely used Spring Cloud AWS library — random dedup IDs silently broke deduplication for its users.',
+      'A stable key that is too narrow can also collapse two genuinely different events — specificity has to match the actual retry boundary, not just "the order."',
+    ],
+  },
+  'messaging/message-ordering/how-idempotent-producer-prevents-retry-reordering': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Message Ordering', route: '/messaging/message-ordering' },
+      { label: 'kafkajs Does Not Enforce maxInFlightRequests for Idempotence', route: '/messaging/idempotency/kafkajs-does-not-enforce-max-in-flight' },
+    ],
+    tip: 'It is not "messages swap places" — an earlier message duplicates back into the log after a later one succeeds, and the broker\'s sequence tracking is what stops that duplicate from landing.',
+    gotchas: [
+      'The broker never re-sorts anything — order is preserved as a side effect of never re-appending an already-written sequence number.',
+      'This protection depends on maxInFlightRequests staying at or below 5 — the exact same tracked-window limit covered on the Idempotency topic.',
+    ],
+  },
+  'messaging/message-ordering/fifo-group-blocking-is-per-group-not-queue-wide': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Message Ordering', route: '/messaging/message-ordering' },
+      { label: 'AWS SQS', route: '/messaging/aws-sqs' },
+    ],
+    tip: 'A stuck message blocks only its own MessageGroupId — other groups keep delivering independently, though a very large single-group backlog can still delay other groups in practice.',
+    gotchas: [
+      'Only deleting the in-flight message (or handling its visibility-timeout redelivery) frees that group\'s single in-flight slot — a bigger receive batch size does not.',
+      'FIFO queues scan a bounded window of the queue to find deliverable messages — an unbounded backlog in one group can push other groups out of that window.',
+    ],
+  },
   'messaging/message-ordering': {
     apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
     related: [
@@ -32059,6 +32095,43 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Producer retries can reorder messages relative to a subsequent send unless max.in.flight.requests.per.connection=1 is set (at a throughput cost).',
       'A system claiming global ordering but actually only partition-ordered can produce subtle bugs if consumers assume stronger guarantees than actually provided.',
+    ],
+  },
+  'messaging/idempotency/kafkajs-does-not-enforce-max-in-flight': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Idempotency & Exactly-Once', route: '/messaging/idempotency' },
+      { label: 'The Redis SET NX Pattern Needs Two Phases, Not One', route: '/messaging/idempotency/redis-set-nx-needs-two-phases' },
+    ],
+    tip: 'kafkajs only validates acks against idempotent — it throws if acks !== -1. maxInFlightRequests is never checked, so exceeding 5 in-flight requests silently breaks the broker\'s own dedup window.',
+    gotchas: [
+      'The "5" is not arbitrary — it is the exact size of the broker\'s own tracked sequence-number window per producer-partition.',
+      'Nothing errors or warns when this is misconfigured; a duplicate write just slips through looking like ordinary new data.',
+    ],
+  },
+  'messaging/idempotency/redis-set-nx-needs-two-phases': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Idempotency & Exactly-Once', route: '/messaging/idempotency' },
+      { label: 'kafkajs Does Not Enforce maxInFlightRequests for Idempotence', route: '/messaging/idempotency/kafkajs-does-not-enforce-max-in-flight' },
+      { label: 'Idempotency Keys for SQS Standard Queues (No Native Dedup)', route: '/messaging/idempotency/sqs-standard-has-no-native-dedup' },
+    ],
+    tip: 'SET key result NX cannot work as literally described — the result does not exist before processing. Claim the key with a placeholder first, then overwrite it with the real result once work finishes.',
+    gotchas: [
+      'A key holding the "IN_PROGRESS" placeholder means the original request is still running (or crashed), not that a result is ready.',
+      'The EX ttl is the crash-recovery mechanism — it is what eventually unsticks a key stuck at the placeholder forever after a mid-processing crash.',
+    ],
+  },
+  'messaging/idempotency/sqs-standard-has-no-native-dedup': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Idempotency & Exactly-Once', route: '/messaging/idempotency' },
+      { label: 'AWS SQS', route: '/messaging/aws-sqs' },
+    ],
+    tip: 'Only FIFO queues get MessageDeduplicationId. Standard queues have zero native dedup — the same idempotency-key-table pattern from Kafka applies, sourced from the message body, never from MessageId.',
+    gotchas: [
+      'MessageId is a delivery-level identifier — the same logical message redelivered is not guaranteed to keep the same MessageId.',
+      'Standard queues can deliver duplicates even under completely normal operation, not just after a consumer failure or timeout.',
     ],
   },
   'messaging/idempotency': {

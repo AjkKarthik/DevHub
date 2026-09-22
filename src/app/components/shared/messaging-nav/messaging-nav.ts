@@ -362,8 +362,44 @@ import { SUBTOPICS } from '../../../data/subtopics';
 
     <div class="nav-group">
       <p class="nav-group-label">Reliability</p>
-      <a routerLink="/messaging/idempotency" routerLinkActive="active"><span class="nl-text">Idempotency &amp; Exactly-Once</span>@if(p.isDone('kafka-idempotency')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/messaging/message-ordering" routerLinkActive="active"><span class="nl-text">Message Ordering</span>@if(p.isDone('kafka-message-ordering')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/messaging/idempotency" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Idempotency &amp; Exactly-Once</span>
+        @if(p.isDone('kafka-idempotency')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('idempotency')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('idempotency')"
+                  (click)="toggleSubtopics('idempotency', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('idempotency'); as idemSubs) {
+        @if (isSubtopicsExpanded('idempotency')) {
+          <div class="nav-subtopics">
+            @for (s of idemSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/messaging/message-ordering" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Message Ordering</span>
+        @if(p.isDone('kafka-message-ordering')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('message-ordering')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('message-ordering')"
+                  (click)="toggleSubtopics('message-ordering', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('message-ordering'); as ordSubs) {
+        @if (isSubtopicsExpanded('message-ordering')) {
+          <div class="nav-subtopics">
+            @for (s of ordSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/messaging/backpressure" routerLinkActive="active"><span class="nl-text">Backpressure &amp; Flow Control</span>@if(p.isDone('kafka-backpressure')){<span class="nl-done">✓</span>}</a>
     </div>
 

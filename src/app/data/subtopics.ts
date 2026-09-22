@@ -4212,4 +4212,14 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'SNS Retry Duration Depends Entirely on Endpoint Type', route: '/messaging/aws-sns-eventbridge/retry-duration-depends-on-endpoint-type' },
     { label: 'Building an EventBridge Pipe: SQS Source to a Filtered Target', route: '/messaging/aws-sns-eventbridge/eventbridge-pipes-sqs-to-target' },
   ],
+  'idempotency': [
+    { label: 'kafkajs Does Not Enforce maxInFlightRequests for Idempotence', route: '/messaging/idempotency/kafkajs-does-not-enforce-max-in-flight' },
+    { label: 'The Redis SET NX Pattern Needs Two Phases, Not One', route: '/messaging/idempotency/redis-set-nx-needs-two-phases' },
+    { label: 'Idempotency Keys for SQS Standard Queues (No Native Dedup)', route: '/messaging/idempotency/sqs-standard-has-no-native-dedup' },
+  ],
+  'message-ordering': [
+    { label: 'A Random MessageDeduplicationId Silently Defeats SQS FIFO\'s Retry Safety', route: '/messaging/message-ordering/random-dedup-id-defeats-sqs-fifo-retry-safety' },
+    { label: 'How the Idempotent Producer Actually Prevents Retry-Induced Reordering', route: '/messaging/message-ordering/how-idempotent-producer-prevents-retry-reordering' },
+    { label: 'FIFO Group Blocking Is Per-Group, Not Queue-Wide', route: '/messaging/message-ordering/fifo-group-blocking-is-per-group-not-queue-wide' },
+  ],
 };

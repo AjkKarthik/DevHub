@@ -1,0 +1,26 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Message Ordering" topicRoute="/messaging/message-ordering"
+    subtopicLabel="FIFO Group Blocking Is Per-Group, Not Queue-Wide" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">FIFO Group Blocking Is Per-Group, Not Queue-Wide</h1>
+  <p class="page-subtitle">A stuck message blocks only its own MessageGroupId -- other groups keep delivering independently, with one practical caveat worth knowing about backlog size.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="AWS SQS" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This builds the exact mechanism the main page's own quiz already describes in prose. This completes the Message Ordering topic's subtopics.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Message Ordering" topicRoute="/messaging/message-ordering"
+    [prev]="{ label: 'How the Idempotent Producer Actually Prevents Retry-Induced Reordering', route: '/messaging/message-ordering/how-idempotent-producer-prevents-retry-reordering' }" />
+</div>
