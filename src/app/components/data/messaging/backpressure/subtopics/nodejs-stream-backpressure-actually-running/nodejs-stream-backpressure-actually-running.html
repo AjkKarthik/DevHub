@@ -1,0 +1,26 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Backpressure & Flow Control" topicRoute="/messaging/backpressure"
+    subtopicLabel="Node.js Stream Backpressure, Actually Running" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">Node.js Stream Backpressure, Actually Running</h1>
+  <p class="page-subtitle">The main page's QnA describes write()/drain and pipeline()'s automatic backpressure in prose -- both are verified here with real, executed Node.js stream code, not a simulation.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Node.js" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This builds the exact mechanism the main page's own Node.js streams QnA describes in prose, verified by actually running the code rather than modeling it. This completes the Backpressure & Flow Control topic's subtopics -- and the Messaging/Kafka hub's entire Phase 10 rollout.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Backpressure & Flow Control" topicRoute="/messaging/backpressure"
+    [prev]="{ label: 'kafkajs Has No buffer.memory or max.block.ms -- Those Are the Java Client’s', route: '/messaging/backpressure/kafkajs-has-no-buffer-memory-or-max-block-ms' }" />
+</div>

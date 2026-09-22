@@ -400,7 +400,25 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/messaging/backpressure" routerLinkActive="active"><span class="nl-text">Backpressure &amp; Flow Control</span>@if(p.isDone('kafka-backpressure')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/messaging/backpressure" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Backpressure &amp; Flow Control</span>
+        @if(p.isDone('kafka-backpressure')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('backpressure')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('backpressure')"
+                  (click)="toggleSubtopics('backpressure', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('backpressure'); as bpSubs) {
+        @if (isSubtopicsExpanded('backpressure')) {
+          <div class="nav-subtopics">
+            @for (s of bpSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

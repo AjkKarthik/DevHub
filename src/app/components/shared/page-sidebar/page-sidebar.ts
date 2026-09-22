@@ -32207,6 +32207,41 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Compensating transactions must themselves be idempotent and retry-safe, since the coordinator might crash and need to retry a compensation.',
     ],
   },
+  'messaging/backpressure/kafka-pause-discards-its-own-resume-function': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Backpressure & Flow Control', route: '/messaging/backpressure' },
+      { label: 'kafkajs Has No buffer.memory or max.block.ms -- Those Are the Java Client\'s', route: '/messaging/backpressure/kafkajs-has-no-buffer-memory-or-max-block-ms' },
+    ],
+    tip: 'pause() returns the ONLY way to resume a partition — kafkajs never resumes automatically. Discarding that closure leaves the partition paused for the life of the consumer, regardless of any local boolean flag.',
+    gotchas: [
+      'A local JS variable flipping back to false has zero effect on the actual Kafka client state on its own.',
+      'This hub\'s own Challenge solution for this topic gets it right — capturing and calling the returned closure — while the theory codeTab originally did not.',
+    ],
+  },
+  'messaging/backpressure/kafkajs-has-no-buffer-memory-or-max-block-ms': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Backpressure & Flow Control', route: '/messaging/backpressure' },
+      { label: 'The Kafka Pause/Resume codeTab Discards Its Own Resume Function', route: '/messaging/backpressure/kafka-pause-discards-its-own-resume-function' },
+    ],
+    tip: 'kafkajs\'s ProducerConfig has exactly 8 fields — no bufferMemory, no maxBlockMs. Those are Java-client-only; kafkajs bounds send() only by maxInFlightRequests, so client-side rate limiting has to be built by hand.',
+    gotchas: [
+      'kafkajs silently ignores unrecognized config keys rather than throwing — a ported Java-client tuning setting has no effect and produces no error at all.',
+      'The Rate-Limited Producer codeTab on this same page is exactly the kind of hand-rolled mechanism kafkajs users need in place of a native buffer-memory ceiling.',
+    ],
+  },
+  'messaging/backpressure/nodejs-stream-backpressure-actually-running': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Backpressure & Flow Control', route: '/messaging/backpressure' },
+    ],
+    tip: 'write() returning false and the drain event, plus stream.pipeline()\'s automatic backpressure, were both confirmed here by actually running real Node.js stream code, not just modeling the documented behavior.',
+    gotchas: [
+      'Ignoring write()\'s boolean return value does not corrupt data — it defeats the memory-bounding purpose streams exist for, letting the internal buffer grow unboundedly.',
+      'pipeline() is doing the SAME write()/drain coordination internally — not a different mechanism, just automated.',
+    ],
+  },
   'messaging/backpressure': {
     apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
     related: [

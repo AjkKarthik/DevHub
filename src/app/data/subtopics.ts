@@ -4222,4 +4222,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'How the Idempotent Producer Actually Prevents Retry-Induced Reordering', route: '/messaging/message-ordering/how-idempotent-producer-prevents-retry-reordering' },
     { label: 'FIFO Group Blocking Is Per-Group, Not Queue-Wide', route: '/messaging/message-ordering/fifo-group-blocking-is-per-group-not-queue-wide' },
   ],
+  'backpressure': [
+    { label: 'The Kafka Pause/Resume codeTab Discards Its Own Resume Function', route: '/messaging/backpressure/kafka-pause-discards-its-own-resume-function' },
+    { label: 'kafkajs Has No buffer.memory or max.block.ms -- Those Are the Java Client\'s', route: '/messaging/backpressure/kafkajs-has-no-buffer-memory-or-max-block-ms' },
+    { label: 'Node.js Stream Backpressure, Actually Running', route: '/messaging/backpressure/nodejs-stream-backpressure-actually-running' },
+  ],
 };

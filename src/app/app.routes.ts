@@ -3102,7 +3102,15 @@ export const routes: Routes = [
         { path: 'fifo-group-blocking-is-per-group-not-queue-wide', loadComponent: () => import('./components/data/messaging/message-ordering/subtopics/fifo-group-blocking-is-per-group-not-queue-wide/fifo-group-blocking-is-per-group-not-queue-wide').then(m => m.FifoGroupBlockingIsPerGroupNotQueueWideSubtopic) },
       ],
     },
-    { path: 'backpressure',              loadComponent: () => import('./components/data/messaging/backpressure/backpressure').then(m => m.Backpressure) },
+    {
+      path: 'backpressure',
+      children: [
+        { path: '', loadComponent: () => import('./components/data/messaging/backpressure/backpressure').then(m => m.Backpressure) },
+        { path: 'kafka-pause-discards-its-own-resume-function', loadComponent: () => import('./components/data/messaging/backpressure/subtopics/kafka-pause-discards-its-own-resume-function/kafka-pause-discards-its-own-resume-function').then(m => m.KafkaPauseDiscardsItsOwnResumeFunctionSubtopic) },
+        { path: 'kafkajs-has-no-buffer-memory-or-max-block-ms', loadComponent: () => import('./components/data/messaging/backpressure/subtopics/kafkajs-has-no-buffer-memory-or-max-block-ms/kafkajs-has-no-buffer-memory-or-max-block-ms').then(m => m.KafkajsHasNoBufferMemoryOrMaxBlockMsSubtopic) },
+        { path: 'nodejs-stream-backpressure-actually-running', loadComponent: () => import('./components/data/messaging/backpressure/subtopics/nodejs-stream-backpressure-actually-running/nodejs-stream-backpressure-actually-running').then(m => m.NodejsStreamBackpressureActuallyRunningSubtopic) },
+      ],
+    },
     { path: 'monitoring',                loadComponent: () => import('./components/data/messaging/monitoring/monitoring').then(m => m.MonitoringMessaging) },
     { path: 'messaging-security',        loadComponent: () => import('./components/data/messaging/messaging-security/messaging-security').then(m => m.MessagingSecurity) },
   ] },
