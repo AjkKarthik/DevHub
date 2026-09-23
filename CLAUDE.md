@@ -10498,6 +10498,38 @@ Confirmed via direct file inspection before the pilot (`/messaging/messaging-fun
   Phase 10: 1 of 21 topics have subtopics (`/go/fundamentals`, pilot batch, 2026-07-17) — see
   "Go hub subtopic wiring" section above for the `SUBTOPICS` circular-import fix
   (`src/app/data/subtopics.ts`) every future `*NavComponent`-based hub's own pilot needs too.
+- **Rust hub**: 1 trackable topic page live (21 total planned) + 2 reference pages planned
+  (23 cards total). **In progress — Phase 11A, scaffolded 2026-09-23.** Rust-orange theme
+  `$accent: #ce422b`, tint `#fdf2ee`, dark `#f4795e`, dark icon bg `#2b120c`. Search prefix
+  `rust-`. Route: `/rust`. CSS classes: `.rust-page`, `.rust-icon`, `.rust-section`. Icon
+  content: `Rs` (light-tint icon generation, matching Go/Python — NOT solid-fill).
+  `tech="rust"` in `app-page-meta` — Rust got its own dedicated playground branch (unlike Go/
+  Python/Node, which share `tech="javascript"`), linking to the real official Rust Playground
+  (`https://play.rust-lang.org/`), matching the precedent set by hubs with a genuine official
+  playground (C# → .NET Fiddle). `Challenge.language`/`CodeTab.language` both extended with
+  `'rust'` (register `hljs`'s own `rust` language module in `code-block.ts`).
+  Nav groups: Foundations (9), Memory & Concurrency (4), Building Things (5), Craft & Ops (3),
+  Reference (2). `available: true` so far only for `rust-fundamentals`; every other card in
+  `backend/rust/home/home.ts` is `available: false` (SOON) until written. Progress:
+  `rustTotal=1` in progress.service.ts — **bump this as more topic pages ship**, it does not
+  auto-track the full planned count the way a finished hub's total does. Rust pages use
+  `app-common-mistakes` AND `app-revision-card`, standard topic-page anatomy (no subtopics yet
+  — Phase 10 subtopic rollout comes only after this hub's topic-page tier is complete, per the
+  standing "no Phase 10 subtopics on a hub still building its topic-page tier" rule).
+  `RustNavComponent` at `shared/rust-nav/rust-nav.ts` — built as a proper `*NavComponent` from
+  day one, copying `GoNavComponent`'s structure directly (no accordion-support retrofit needed,
+  unlike almost every earlier `*NavComponent` hub's own pilot). `SUBTOPICS` key proactively
+  hub-prefixed to `rust-fundamentals` (not bare `fundamentals`) specifically to avoid the
+  well-documented collision with the JavaScript hub's own bare `fundamentals` topic — confirmed
+  collision-free before use, per the standing collision-detection discipline. DevHub home card
+  (`hub-home.ts`) flipped to `available: true` with `topics: 23` (the FULL planned count, not
+  just the 1 shipped so far) immediately upon the hub itself becoming reachable — matching the
+  precedent set by the Web Performance hub's own in-progress rollout, where the top-level card
+  goes live as soon as the hub has a working home page listing every planned topic (with its own
+  per-topic SOON badges), not only once every page is written. Remaining 20 topic pages + 2
+  reference pages (`rust-cheatsheet`, `rust-interview-prep`) still need to be written — see
+  TODO.md's Phase 11A section for the proposed topic list (a starting shape, not a locked spec;
+  each page still needs its own accuracy/research pass, same discipline as every other hub).
 - **Python hub**: 21 trackable topic pages + 2 reference pages (23 cards total). Feature-complete.
   Blue theme `$accent: #3776ab`, tint `#eff8ff`. Search prefix `py-`. Route: `/python`.
   CSS classes: `.py-page`, `.py-icon`, `.py-section` (corrected 2026-07-16 — previously misdocumented as

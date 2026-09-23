@@ -1564,6 +1564,10 @@ const PYTHON_LABELS: Record<string, string> = {
   'interview-prep':            'Python Interview Prep',
 };
 
+const RUST_LABELS: Record<string, string> = {
+  'fundamentals': 'Rust Fundamentals',
+};
+
 const GO_LABELS: Record<string, string> = {
   'fundamentals':       'Go Fundamentals',
   'fundamentals/go-122-gives-each-loop-iteration-its-own-variable': 'Go 1.22 Gives Each Loop Iteration Its Own Variable',
@@ -3406,6 +3410,7 @@ const TECH_SECTIONS: Record<string, { label: string; path: string }> = {
   'node':            { label: 'Node.js',               path: '/node'            },
   'python':          { label: 'Python',                path: '/python'          },
   'go':              { label: 'Go',                    path: '/go'              },
+  'rust':            { label: 'Rust',                  path: '/rust'            },
   'mongodb':         { label: 'MongoDB / NoSQL',       path: '/mongodb'         },
   'redis':           { label: 'Redis',                 path: '/redis'           },
   'graphql':         { label: 'GraphQL',               path: '/graphql'         },
@@ -3553,6 +3558,7 @@ export class BreadcrumbComponent {
                  : hubSlug === 'node'         ? NODE_LABELS
                  : hubSlug === 'python'       ? PYTHON_LABELS
                  : hubSlug === 'go'           ? GO_LABELS
+                 : hubSlug === 'rust'         ? RUST_LABELS
                  : hubSlug === 'devops'       ? DEVOPS_LABELS
                  : hubSlug === 'containers'   ? CONTAINERS_LABELS
                  : hubSlug === 'aws'          ? AWS_LABELS

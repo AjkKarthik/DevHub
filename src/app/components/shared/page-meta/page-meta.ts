@@ -22,6 +22,8 @@ import { Component, input } from '@angular/core';
       } @else if (tech() === 'javascript') {
         <a class="pm-play pm-play--javascript" href="https://playcode.io/new" target="_blank" rel="noopener">▶ PlayCode</a>
         <a class="pm-play pm-play--javascript" href="https://codepen.io/pen" target="_blank" rel="noopener">▶ CodePen</a>
+      } @else if (tech() === 'rust') {
+        <a class="pm-play pm-play--rust" href="https://play.rust-lang.org/" target="_blank" rel="noopener">▶ Rust Playground</a>
       } @else if (!hidePlayground()) {
         @if (stackblitzUrl()) {
           <a class="pm-play" [href]="stackblitzUrl()" target="_blank" rel="noopener">▶ Playground</a>
@@ -62,6 +64,7 @@ import { Component, input } from '@angular/core';
       &--typescript  { background: #3178c6; }
       &--react       { background: #0ea5e9; }
       &--javascript  { background: #854d0e; color: #fef9c3; }
+      &--rust        { background: #ce422b; }
     }
     .pm-play {
       font-size: .78rem; font-weight: 600; color: #0ea5e9;
@@ -74,6 +77,7 @@ import { Component, input } from '@angular/core';
       &--sql        { color: #e05c00; border-color: #e05c00; }
       &--typescript  { color: #3178c6; border-color: #3178c6; }
       &--javascript  { color: #854d0e; border-color: #854d0e; }
+      &--rust        { color: #ce422b; border-color: #ce422b; }
     }
   `],
 })
@@ -81,7 +85,7 @@ export class PageMetaComponent {
   readingTime    = input.required<number>();
   difficulty     = input<'beginner' | 'intermediate' | 'advanced'>('intermediate');
   since          = input<string>('');
-  tech           = input<'angular' | 'csharp' | 'dotnet' | 'node' | 'python' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript'>('angular');
+  tech           = input<'angular' | 'csharp' | 'dotnet' | 'node' | 'python' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'rust'>('angular');
   stackblitzUrl  = input<string>('');
   hidePlayground = input<boolean>(false);
 }

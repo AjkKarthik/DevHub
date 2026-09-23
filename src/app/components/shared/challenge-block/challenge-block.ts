@@ -9,7 +9,7 @@ export interface Challenge {
   description: string;
   starterCode: string;
   solution: string;
-  language: 'typescript' | 'html' | 'scss' | 'csharp' | 'sql';
+  language: 'typescript' | 'html' | 'scss' | 'csharp' | 'sql' | 'rust';
   hints?: string[];
   playgroundUrl?: string;
 }
@@ -104,6 +104,7 @@ export interface Challenge {
     }
     .playground-btn--csharp      { background: #7c3aed; &:hover { background: #6b21a8; } }
     .playground-btn--sql         { background: #e05c00; &:hover { background: #c24f00; } }
+    .playground-btn--rust        { background: #ce422b; &:hover { background: #a83521; } }
     .playground-btn--typescript  { background: #3178c6; &:hover { background: #1d4ed8; } }
     .playground-btn--javascript  { background: #854d0e; &:hover { background: #713f12; } }
     .playground-btn--react       { background: #0ea5e9; &:hover { background: #0284c7; } }
@@ -146,6 +147,7 @@ export class ChallengeBlockComponent {
   playgroundUrl = computed(() => {
     if (this.item().language === 'csharp') return 'https://dotnetfiddle.net/';
     if (this.item().language === 'sql')    return 'https://dbfiddle.uk/';
+    if (this.item().language === 'rust')   return 'https://play.rust-lang.org/';
     const s = this.section();
     if (s === 'javascript')  return 'https://playcode.io/new';
     if (s === 'typescript')  return 'https://www.typescriptlang.org/play';
@@ -156,6 +158,7 @@ export class ChallengeBlockComponent {
   playgroundLabel = computed(() => {
     if (this.item().language === 'csharp') return 'Try in .NET Fiddle';
     if (this.item().language === 'sql')    return 'Try in DB Fiddle';
+    if (this.item().language === 'rust')   return 'Try in Rust Playground';
     const s = this.section();
     if (s === 'javascript')  return 'Try in PlayCode';
     if (s === 'typescript')  return 'Try in TS Playground';
@@ -166,6 +169,7 @@ export class ChallengeBlockComponent {
   playgroundStyle = computed(() => {
     if (this.item().language === 'csharp') return 'csharp';
     if (this.item().language === 'sql')    return 'sql';
+    if (this.item().language === 'rust')   return 'rust';
     const s = this.section();
     if (s === 'javascript')  return 'javascript';
     if (s === 'typescript')  return 'typescript';

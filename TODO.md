@@ -131,7 +131,7 @@ that specific concept. See Phase 10 for the full plan.
 | DSA | 22 | 0 | Complete — 21 topics + home |
 | Testing | 22 | 0 | Complete — 19 topics + 3 reference |
 | AI/ML | 22 | 0 | Complete — 19 topics + 3 reference |
-| Rust | 0 | ~23 | **NOT STARTED — planned, see Phase 11** |
+| Rust | 1 | ~22 | **IN PROGRESS — hub scaffolded, Fundamentals shipped, see Phase 11** |
 | QA Engineering | 0 | ~24 | **NOT STARTED — planned, see Phase 11** |
 
 ---
@@ -10027,7 +10027,7 @@ off here with a date.
 
 ## Phase 11 — New Hubs: Rust & QA Engineering
 
-**Status: PLANNING (added 2026-07-03). Not started.** These are two ordinary new hubs, built
+**Status: IN PROGRESS (added 2026-07-03; Rust scaffolding started 2026-09-23).** These are two ordinary new hubs, built
 the same way every hub in Phase 1–8 was: full topic-page tier (Phase 2 Enhanced Content
 Standard — theory, code tabs, common mistakes, challenge, quiz, Q&A, revision card), following
 the "Adding a whole NEW technology hub" checklist in `CLAUDE.md`. They are not part of Phase 10
@@ -10035,6 +10035,23 @@ the "Adding a whole NEW technology hub" checklist in `CLAUDE.md`. They are not p
 other hub.
 
 ### 11A — Rust hub
+
+**Status: IN PROGRESS.** Hub scaffolded (route, nav component, breadcrumb, sidebar, search,
+progress service, hub-home card) and the first content page (`/rust/fundamentals`) shipped
+2026-09-23. Accent confirmed as `#ce422b` (kept the proposed value — checked against DSA's
+`#92400e` and Messaging's `#9a3412`, distinct enough). Icon glyph confirmed as `Rs` (text
+glyph, light-tint icon generation — `background: $tint; color: $accent`, matching Go/Python's
+generation, not solid-fill). `Challenge.language`/`CodeTab.language` both extended with `'rust'`;
+`page-meta.tech` got its own `'rust'` branch linking to the official Rust Playground
+(`https://play.rust-lang.org/`), following the precedent of giving a hub with a real official
+playground its own dedicated link (like C#'s .NET Fiddle) rather than falling back to
+`tech="javascript"`. `RustNavComponent` built from scratch as a proper `*NavComponent` from day
+one (unlike most other hubs, which only got one retroactively) — no inline `app.html` nav ever
+existed for Rust. `SUBTOPICS` key proactively hub-prefixed to `rust-fundamentals` to avoid the
+well-documented bare-`fundamentals` collision with the JavaScript hub. Remaining 20 topic pages
++ 2 reference pages (cheatsheet, interview-prep) still need to be written — see the proposed
+topic list below (treat it as a starting shape; each page still needs its own accuracy pass
+before publishing, same discipline as every other hub's Phase 10 rollout).
 
 **Why:** Rust is now a mainstream, high-demand systems language (used in browsers, OS kernels,
 CLI tooling, and increasingly backend services) and is a clear gap next to the existing Go and

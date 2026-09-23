@@ -89,6 +89,9 @@
         } @else if (currentSection() === 'go') {
           <div class="nav-progress-bar" [style.width.%]="progress.goPct()"></div>
           <span class="nav-progress-label">{{ progress.goCount() }}/{{ progress.goTotal }} topics done</span>
+        } @else if (currentSection() === 'rust') {
+          <div class="nav-progress-bar" [style.width.%]="progress.rustPct()"></div>
+          <span class="nav-progress-label">{{ progress.rustCount() }}/{{ progress.rustTotal }} topics done</span>
         } @else if (currentSection() === 'devops') {
           <div class="nav-progress-bar" [style.width.%]="progress.devopsPct()"></div>
           <span class="nav-progress-label">{{ progress.devopsCount() }}/{{ progress.devopsTotal }} topics done</span>
@@ -6128,6 +6131,11 @@
       <app-go-nav />
     }
 
+    <!-- ── Rust Navigation ───────────────────────────────────────── -->
+    @if (currentSection() === 'rust') {
+      <app-rust-nav />
+    }
+
     <!-- ── DevOps Navigation ─────────────────────────────────────── -->
     @if (currentSection() === 'devops') {
       <app-devops-nav />
@@ -8574,6 +8582,8 @@
         Python &mdash; Data Types &bull; OOP &bull; FastAPI &bull; Asyncio &bull; Pydantic &bull; Data Science &bull; Tooling
       } @else if (currentSection() === 'go') {
         Go &mdash; Goroutines &bull; Channels &bull; Interfaces &bull; Context &bull; HTTP &bull; Gin &bull; Generics
+      } @else if (currentSection() === 'rust') {
+        Rust &mdash; Ownership &bull; Borrowing &bull; Lifetimes &bull; Traits &bull; Async &bull; Axum &bull; Cargo
       } @else if (currentSection() === 'devops') {
         DevOps &mdash; CI/CD &bull; GitHub Actions &bull; GitOps &bull; ArgoCD &bull; Docker &bull; Kubernetes &bull; SRE
       } @else if (currentSection() === 'containers') {

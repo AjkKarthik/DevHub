@@ -2592,6 +2592,10 @@ export const routes: Routes = [
     { path: 'cheatsheet',     loadComponent: () => import('./components/backend/go/cheatsheet/cheatsheet').then(m => m.GoCheatsheet) },
     { path: 'interview-prep', loadComponent: () => import('./components/backend/go/interview-prep/interview-prep').then(m => m.GoInterviewPrep) },
   ] },
+  { path: 'rust', children: [
+    { path: '',              loadComponent: () => import('./components/backend/rust/home/home').then(m => m.RustHome) },
+    { path: 'fundamentals',  loadComponent: () => import('./components/backend/rust/fundamentals/fundamentals').then(m => m.RustFundamentals) },
+  ] },
   // ── Data Hubs ─────────────────────────────────────────────────────────────
   { path: 'mongodb', children: [
     { path: '', loadComponent: () => import('./components/data/mongodb/home/home').then(m => m.MongodbHome) },

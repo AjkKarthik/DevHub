@@ -532,6 +532,28 @@ const GO_DEFAULT: SidebarData = {
   ],
 };
 
+const RUST_DEFAULT: SidebarData = {
+  apis: ['Result<T, E>', 'Option<T>', 'ownership / borrowing', 'trait', '&mut', 'impl'],
+  related: [
+    { label: 'Rust Home',         route: '/rust' },
+    { label: 'Rust Fundamentals', route: '/rust/fundamentals' },
+  ],
+  tip: 'The borrow checker rejects code at compile time that other languages would let crash or corrupt memory at runtime — a rejected borrow is Rust doing its job, not a bug in your code.',
+  docs: [
+    { label: 'The Rust Book',        url: 'https://doc.rust-lang.org/book/' },
+    { label: 'Rust Standard Library', url: 'https://doc.rust-lang.org/std/' },
+    { label: 'Rust by Example',      url: 'https://doc.rust-lang.org/rust-by-example/' },
+  ],
+  resources: [
+    { label: 'Rust Playground',   url: 'https://play.rust-lang.org/', badge: 'tool' },
+    { label: 'rust-lang/rust',    url: 'https://github.com/rust-lang/rust', badge: 'code' },
+  ],
+  gotchas: [
+    'A value moved into a function is gone from the caller\'s scope afterward — pass a reference (&T) if the caller still needs it.',
+    'The borrow checker allows either one mutable reference OR any number of immutable references to a value at once, never both at the same time.',
+  ],
+};
+
 const BLAZOR_DEFAULT: SidebarData = {
   apis: ['@code {}', '[Parameter]', 'StateHasChanged()', 'IJSRuntime', 'EditForm', 'CascadingValue'],
   related: [
@@ -776,6 +798,16 @@ const DP_DEFAULT: SidebarData = {
 };
 
 export const SIDEBAR_MAP: Record<string, SidebarData> = {
+
+  // ── Rust ──────────────────────────────────────────────────────────────────
+  'rust/fundamentals': {
+    apis: RUST_DEFAULT.apis, docs: RUST_DEFAULT.docs, resources: RUST_DEFAULT.resources,
+    related: [
+      { label: 'Rust Home', route: '/rust' },
+    ],
+    tip: RUST_DEFAULT.tip,
+    gotchas: RUST_DEFAULT.gotchas,
+  },
 
   // ── Signals & State ────────────────────────────────────────────────────────
   counter: {
@@ -50112,6 +50144,7 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     '[class.section-javascript]':  'section() === "javascript"',
     '[class.section-html]':        'section() === "html"',
     '[class.section-css]':         'section() === "css"',
+    '[class.section-rust]':        'section() === "rust"',
   },
 })
 export class PageSidebarComponent {
@@ -50130,7 +50163,7 @@ export class PageSidebarComponent {
     this.currentUrl().replace(/^\//, '').split('?')[0]
   );
 
-  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css' | 'security' | 'api-design' | 'observability' | 'mongodb' | 'redis' | 'graphql' | 'messaging' | 'testing-hub' | 'dsa' | 'ai' | 'python' | 'node' | 'go' | 'blazor' | 'devops' | 'aws' | 'azure' | 'linux' | 'terraform' | 'containers' | 'service-mesh' | 'system-design' | 'arch-patterns' | 'design-patterns'>(() =>
+  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css' | 'security' | 'api-design' | 'observability' | 'mongodb' | 'redis' | 'graphql' | 'messaging' | 'testing-hub' | 'dsa' | 'ai' | 'python' | 'node' | 'go' | 'rust' | 'blazor' | 'devops' | 'aws' | 'azure' | 'linux' | 'terraform' | 'containers' | 'service-mesh' | 'system-design' | 'arch-patterns' | 'design-patterns'>(() =>
     this.currentUrl().startsWith('/csharp')         ? 'csharp'
     : this.currentUrl().startsWith('/aspnet')       ? 'aspnet'
     : this.currentUrl().startsWith('/sql')          ? 'sql'
@@ -50152,6 +50185,7 @@ export class PageSidebarComponent {
     : this.currentUrl().startsWith('/python')        ? 'python'
     : this.currentUrl().startsWith('/node')          ? 'node'
     : this.currentUrl().startsWith('/go')            ? 'go'
+    : this.currentUrl().startsWith('/rust')          ? 'rust'
     : this.currentUrl().startsWith('/blazor')        ? 'blazor'
     : this.currentUrl().startsWith('/devops')        ? 'devops'
     : this.currentUrl().startsWith('/aws')           ? 'aws'
@@ -50190,6 +50224,7 @@ export class PageSidebarComponent {
            : this.section() === 'python'        ? PYTHON_DEFAULT
            : this.section() === 'node'          ? NODE_DEFAULT
            : this.section() === 'go'            ? GO_DEFAULT
+           : this.section() === 'rust'          ? RUST_DEFAULT
            : this.section() === 'blazor'        ? BLAZOR_DEFAULT
            : this.section() === 'devops'        ? DEVOPS_DEFAULT
            : this.section() === 'aws'           ? AWS_DEFAULT
@@ -50227,6 +50262,7 @@ export class PageSidebarComponent {
       case 'python':          return '📖 Python Docs';
       case 'node':            return '📖 Node.js Docs';
       case 'go':              return '📖 Go Docs';
+      case 'rust':            return '📖 Rust Docs';
       case 'blazor':          return '📖 Blazor Docs';
       case 'devops':          return '📖 DevOps Docs';
       case 'aws':             return '📖 AWS Docs';

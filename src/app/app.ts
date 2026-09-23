@@ -12,6 +12,7 @@ import { PageSidebarComponent } from './components/shared/page-sidebar/page-side
 import { SearchComponent } from './components/shared/search/search';
 import { BackToTopComponent } from './components/shared/back-to-top/back-to-top';
 import { GoNavComponent } from './components/shared/go-nav/go-nav';
+import { RustNavComponent } from './components/shared/rust-nav/rust-nav';
 import { DevopsNavComponent } from './components/shared/devops-nav/devops-nav';
 import { ContainersNavComponent } from './components/shared/containers-nav/containers-nav';
 import { AwsNavComponent } from './components/shared/aws-nav/aws-nav';
@@ -42,7 +43,7 @@ const DIFF: Record<string, string> = Object.fromEntries(
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, RouterLink, RouterLinkActive, BreadcrumbComponent,
-            PageSidebarComponent, SearchComponent, BackToTopComponent, GoNavComponent, DevopsNavComponent, ContainersNavComponent, AwsNavComponent, AzureNavComponent, LinuxNavComponent, TerraformNavComponent, MeshNavComponent, SysdesignNavComponent, ArchNavComponent, DpNavComponent, SecurityNavComponent, ApiDesignNavComponent, ObsNavComponent, MongoNavComponent, RedisNavComponent, GqlNavComponent, MessagingNavComponent, TestingNavComponent, DsaNavComponent, AiNavComponent],
+            PageSidebarComponent, SearchComponent, BackToTopComponent, GoNavComponent, RustNavComponent, DevopsNavComponent, ContainersNavComponent, AwsNavComponent, AzureNavComponent, LinuxNavComponent, TerraformNavComponent, MeshNavComponent, SysdesignNavComponent, ArchNavComponent, DpNavComponent, SecurityNavComponent, ApiDesignNavComponent, ObsNavComponent, MongoNavComponent, RedisNavComponent, GqlNavComponent, MessagingNavComponent, TestingNavComponent, DsaNavComponent, AiNavComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
@@ -78,7 +79,7 @@ export class App {
     const url = this.currentUrl();
     return !['/','','/angular','/csharp','/aspnet','/sql',
       '/html','/css','/javascript','/typescript','/react','/blazor','/performance',
-      '/node','/python','/go',
+      '/node','/python','/go','/rust',
       '/mongodb','/redis','/graphql','/messaging',
       '/design-patterns','/arch-patterns','/api-design','/system-design','/security','/observability',
       '/devops','/linux','/containers','/terraform','/azure','/aws','/service-mesh',
@@ -86,7 +87,7 @@ export class App {
     ].includes(url);
   });
 
-  currentSection = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css' | 'performance' | 'blazor' | 'node' | 'python' | 'go' | 'devops' | 'containers' | 'aws' | 'azure' | 'linux' | 'terraform' | 'mesh' | 'system-design' | 'arch-patterns' | 'design-patterns' | 'security' | 'api-design' | 'observability' | 'mongodb' | 'redis' | 'graphql' | 'messaging' | 'testing-hub' | 'dsa' | 'ai' | 'hub'>(() => {
+  currentSection = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css' | 'performance' | 'blazor' | 'node' | 'python' | 'go' | 'rust' | 'devops' | 'containers' | 'aws' | 'azure' | 'linux' | 'terraform' | 'mesh' | 'system-design' | 'arch-patterns' | 'design-patterns' | 'security' | 'api-design' | 'observability' | 'mongodb' | 'redis' | 'graphql' | 'messaging' | 'testing-hub' | 'dsa' | 'ai' | 'hub'>(() => {
     const url = this.currentUrl();
     if (url.startsWith('/angular'))    return 'angular';
     if (url.startsWith('/csharp'))     return 'csharp';
@@ -102,6 +103,7 @@ export class App {
     if (url.startsWith('/node'))       return 'node';
     if (url.startsWith('/python'))     return 'python';
     if (url.startsWith('/go'))         return 'go';
+    if (url.startsWith('/rust'))       return 'rust';
     if (url.startsWith('/devops'))     return 'devops';
     if (url.startsWith('/containers')) return 'containers';
     if (url.startsWith('/aws'))        return 'aws';

@@ -314,6 +314,20 @@ export class HubHome {
         'CLI tools, cross-compilation, single binary deploys',
       ],
     },
+    {
+      group: 'backend', name: 'Rust', time: '~9 hrs',
+      tagline: 'Memory safety without a garbage collector — ownership, borrowing, and Axum web services.',
+      icon: '🦀', gradient: 'linear-gradient(135deg, #ce422b 0%, #a83521 100%)',
+      textDark: false, route: '/rust', available: true, topics: 23,
+      sub: 'Ownership · Traits · Async · Axum',
+      roles: ['backend', 'architect'],
+      highlights: [
+        'Ownership, borrowing, and the borrow checker',
+        'Traits, generics, and pattern matching',
+        'Async/await with Tokio, web APIs with Axum',
+        'CLI tools with clap, testing, and Cargo workflow',
+      ],
+    },
 
     // ── Data: SQL → NoSQL → Redis → GraphQL → Messaging ──────────────────────
     {
