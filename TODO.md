@@ -9991,7 +9991,14 @@ off here with a date.
   "Build in O(n)" claim -- fixed to match the correct single-forward-loop pattern already used in
   the page's own mistake block. Bare `arrays` SUBTOPICS key collides with the C# hub's own topic
   -- hub-prefixed to `dsa-arrays`. DSA hub Phase 10: 2 of 21.
-- [ ] `/dsa/strings` — Strings
+- [x] 2026-10-08 `/dsa/strings` — Strings. 3 subtopics
+  (longest-substring-without-repeating-sliding-window, z-algorithm-pattern-matching,
+  rabin-karp-rolling-hash). Main-page fix: a duplicate "String Immutability" theory section
+  restated the first section's own facts under a mismatched heading, with one genuinely new
+  sliding-window bullet buried inside -- fixed by removing the duplicates and retitling into a
+  proper "Sliding Window for Substring Problems" section, closing a real gap (the revision list
+  names "longest substring without repeating characters" but no codeTab ever showed it). Bare
+  `strings` SUBTOPICS key collision-free. DSA hub Phase 10: 3 of 21.
 - [ ] `/dsa/hash-tables` — Hash Tables
 - [ ] `/dsa/stacks-queues` — Stacks & Queues
 - [ ] `/dsa/linked-lists` — Singly Linked Lists

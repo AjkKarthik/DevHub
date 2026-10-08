@@ -10574,6 +10574,58 @@ check before any other new hub's first subtopic set:
    entries for `dsa-arrays` and all three composite subtopic keys, and the `dsa-arrays` nav-toggle
    wiring in `main.js` were all present with matching content. **DSA hub Phase 10: 2 of 21 topics
    complete.**
+9. **The `strings` batch found and fixed a genuine duplicate-theory-section issue, matching the
+   recurring authoring pattern already found on several other hubs this session (Caching
+   Patterns, Redis Cluster, Redis Stack, Redis Node.js): the page had TWO sections both
+   substantially about "String Immutability" — the first ("String Immutability and Building")
+   and the fifth ("String Immutability and Its Performance Implications"), with the fifth
+   restating the SAME concatenation-is-O(n²) and comparison-cost facts the first already covered.
+   Buried inside the fifth section, under the mismatched "String Immutability" heading, was one
+   genuinely new, unrelated bullet about the sliding window technique being the dominant pattern
+   for substring problems — a real gap, since the page's own revision `mustKnow` and
+   `interviewFocus` lists both name "longest substring without repeating characters (sliding
+   window)" by name, but NO codeTab on the page ever shows sliding-window code for that specific
+   problem (the only sliding-window code visible is the Minimum Window Substring Challenge, which
+   solves a different, more complex problem). Fixed by removing the duplicate bullets and
+   retitling/expanding the fifth section into a properly-scoped "Sliding Window for Substring
+   Problems" theory section. No `SUBTOPICS` map collision for bare `strings` (checked both
+   `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed collision-free, left
+   bare). Three subtopics, each independently verified via direct Node.js execution against a
+   brute-force reference before publishing: (1) **fix-adjacent** — builds the exact
+   "longest substring without repeating characters" function the page's own lists name but never
+   show, verified against a brute-force O(n²) check across six test strings including the tricky
+   "abba" case that breaks a naive implementation missing the `>= left` staleness guard, with a
+   Try It tracing through "abba" step by step to show precisely where the guard matters; (2)
+   **gap-closing** — the QnA describes the Z-algorithm precisely ("simpler to implement than KMP
+   with similar performance") with zero code anywhere; built the Z-array construction plus the
+   pattern+separator+text search trick, verified against a brute-force O(nm) reference across
+   three cases, with a Try It on why the separator character must be guaranteed absent from both
+   strings; (3) **gap-closing** — the Quick Reference and QnA both describe the Rabin-Karp rolling
+   hash in prose with zero code anywhere; built it using exact BigInt arithmetic (to sidestep any
+   floating-point precision concern), verified against a brute-force O(nm) reference across four
+   cases — the hash-match-is-only-a-candidate verification step the page's own quiz explanation
+   already correctly names was built in from the start, and a Try It on JavaScript's BigInt `%`
+   operator genuinely returning a negative remainder for a negative left operand (confirmed via
+   direct execution: `-5n % 3n` evaluates to `-2n`, not the mathematically-expected `1n`), which is
+   exactly why the rolling-hash update needs its own correction step. **A false alarm
+   self-investigated and ruled out, not a real bug**: a literal `’` string initially looked
+   like it might have been written as broken escape-sequence TEXT rather than the resolved
+   character inside two `.html` files (a static `subtopicLabel` attribute and a bound `[next]`
+   label) — verified via direct raw-byte inspection (`\xe2\x80\x99`, the correct UTF-8 encoding
+   for U+2019) that the actual file content was always the genuine curly-quote character, matching
+   the proven-correct pattern from the pilot batch; no fix was needed. All three
+   `exercise.solution`/`theory.points`/`misconceptions` fields swept clean via the standing
+   bracket-balance/backtick-parity/apostrophe scripts (the two flagged apostrophe matches
+   confirmed safe, inside a backtick-delimited `code:` field's own comments). Build passed clean
+   (foreground execution under Node 22.23.2, explicit `EXITCODE:$?` capture, zero real `ERROR`
+   lines). **No interactive browser/preview tool was available in this session** — verified via
+   the same compiled-bundle-inspection fallback as the prior two batches: isolated the main
+   `DsaStrings` component's own lazy chunk (by searching for `kmpSearch`, a string unique to it)
+   and confirmed the fixed "Sliding Window for Substring Problems" heading was present there with
+   the old duplicate heading absent; confirmed all three subtopic titles compiled into their own
+   separate lazy chunks; confirmed the `SUBTOPICS`/`SIDEBAR_MAP`/breadcrumb/search-index entries
+   for `strings` (bare) and all three composite subtopic keys were present with matching content.
+   **DSA hub Phase 10: 3 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -10991,8 +11043,8 @@ check before any other new hub's first subtopic set:
   needs the full `.dsa-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }`
   rule (copied from the main topic page's own `.scss`, which defines it locally). No live
   playground (DSA theory/analysis content has no in-browser runtime) — plain `<app-code-block>`.
-  Phase 10: 2 of 21 topics have subtopics (`/dsa/big-o`, pilot batch; `/dsa/arrays`, both
-  2026-10-08) — see "DSA hub subtopic wiring" section below for the `DsaNavComponent` accordion
+  Phase 10: 3 of 21 topics have subtopics (`/dsa/big-o`, pilot batch; `/dsa/arrays`; `/dsa/strings`,
+  all 2026-10-08) — see "DSA hub subtopic wiring" section below for the `DsaNavComponent` accordion
   structural fix (19th `*NavComponent`-based hub in a row missing it at pilot time), the
   `dsa-arrays` SUBTOPICS-map collision resolution (bare `arrays` collides with the C# hub's own
   topic), and the genuine main-page fixes found and verified by direct Node execution.

@@ -4934,7 +4934,12 @@ export const routes: Routes = [
       { path: '2d-prefix-sums-submatrix-queries', loadComponent: () => import('./components/fundamentals/dsa/arrays/subtopics/2d-prefix-sums-submatrix-queries/2d-prefix-sums-submatrix-queries').then(m => m.TwoDPrefixSumsSubmatrixQueriesSubtopic) },
       { path: 'subarray-sum-equals-k-prefix-hashmap', loadComponent: () => import('./components/fundamentals/dsa/arrays/subtopics/subarray-sum-equals-k-prefix-hashmap/subarray-sum-equals-k-prefix-hashmap').then(m => m.SubarraySumEqualsKPrefixHashmapSubtopic) },
     ] },
-    { path: 'strings',                loadComponent: () => import('./components/fundamentals/dsa/strings/strings').then(m => m.DsaStrings) },
+    { path: 'strings', children: [
+      { path: '', loadComponent: () => import('./components/fundamentals/dsa/strings/strings').then(m => m.DsaStrings) },
+      { path: 'longest-substring-without-repeating-sliding-window', loadComponent: () => import('./components/fundamentals/dsa/strings/subtopics/longest-substring-without-repeating-sliding-window/longest-substring-without-repeating-sliding-window').then(m => m.LongestSubstringWithoutRepeatingSlidingWindowSubtopic) },
+      { path: 'z-algorithm-pattern-matching', loadComponent: () => import('./components/fundamentals/dsa/strings/subtopics/z-algorithm-pattern-matching/z-algorithm-pattern-matching').then(m => m.ZAlgorithmPatternMatchingSubtopic) },
+      { path: 'rabin-karp-rolling-hash', loadComponent: () => import('./components/fundamentals/dsa/strings/subtopics/rabin-karp-rolling-hash/rabin-karp-rolling-hash').then(m => m.RabinKarpRollingHashSubtopic) },
+    ] },
     { path: 'hash-tables',            loadComponent: () => import('./components/fundamentals/dsa/hash-tables/hash-tables').then(m => m.DsaHashTables) },
     { path: 'stacks-queues',          loadComponent: () => import('./components/fundamentals/dsa/stacks-queues/stacks-queues').then(m => m.DsaStacksQueues) },
     { path: 'linked-lists',           loadComponent: () => import('./components/fundamentals/dsa/linked-lists/linked-lists').then(m => m.DsaLinkedLists) },

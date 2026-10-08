@@ -34416,6 +34416,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Building up a large string one small piece at a time should use a mutable buffer (StringBuilder-equivalent), not repeated concatenation.',
     ],
   },
+  'dsa/strings/longest-substring-without-repeating-sliding-window': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'The Z-Algorithm for Pattern Matching', route: '/dsa/strings/z-algorithm-pattern-matching' },
+      { label: 'Strings (topic overview)', route: '/dsa/strings' },
+    ],
+    tip: 'The guard "only jump left if the last-seen index is still inside the window" is what makes this correct on inputs like "abba" — a naive version that ignores whether the earlier sighting is stale will shrink the window incorrectly.',
+    gotchas: [
+      'This needs only ONE map (last-seen index), unlike Minimum Window Substring’s two frequency maps — a different condition (no repeats vs. covering a target set) needs a different amount of state.',
+    ],
+  },
+  'dsa/strings/z-algorithm-pattern-matching': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Longest Substring Without Repeating Characters', route: '/dsa/strings/longest-substring-without-repeating-sliding-window' },
+      { label: 'Rabin-Karp’s Rolling Hash, Verified', route: '/dsa/strings/rabin-karp-rolling-hash' },
+    ],
+    tip: 'The pattern + separator + text trick only works if the separator cannot appear in either string — a reused ordinary character can produce a false Z-match across the boundary.',
+    gotchas: [
+      'The Z-array and KMP’s failure function answer different questions — Z measures a prefix-match length starting at EACH position in a string; KMP’s LPS measures a prefix-is-also-suffix property WITHIN the pattern itself.',
+    ],
+  },
+  'dsa/strings/rabin-karp-rolling-hash': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'The Z-Algorithm for Pattern Matching', route: '/dsa/strings/z-algorithm-pattern-matching' },
+      { label: 'Strings (topic overview)', route: '/dsa/strings' },
+    ],
+    tip: 'A rolling-hash match is only a CANDIDATE — always verify with a direct string comparison before reporting a real match, since a hash collision can otherwise produce a false positive.',
+    gotchas: [
+      'JavaScript’s BigInt % can return a negative remainder for a negative left operand — a rolling hash update needs to correct this back into the non-negative range or it will silently stop matching.',
+    ],
+  },
   'dsa/linked-lists': {
     apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
     related: [

@@ -1,0 +1,26 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Strings" topicRoute="/dsa/strings"
+    subtopicLabel="Rabin-Karp’s Rolling Hash, Verified" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">Rabin-Karp&#8217;s Rolling Hash, Verified</h1>
+  <p class="page-subtitle">The main page's Quick Reference and QnA both describe the rolling hash in prose -- built here with BigInt arithmetic and verified against a brute-force reference across four test cases.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This builds the rolling-hash mechanism the main page's own Quick Reference and QnA describe but never demonstrate, including the hash-collision verification step the page's own quiz explanation already correctly names as necessary.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Strings" topicRoute="/dsa/strings"
+    [prev]="{ label: 'The Z-Algorithm for Pattern Matching', route: '/dsa/strings/z-algorithm-pattern-matching' }" />
+</div>

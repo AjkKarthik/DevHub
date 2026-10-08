@@ -4241,4 +4241,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: '2D Prefix Sums for Submatrix Range Queries', route: '/dsa/arrays/2d-prefix-sums-submatrix-queries' },
     { label: 'Counting Subarrays With Sum = K via Prefix Sum + Hash Map', route: '/dsa/arrays/subarray-sum-equals-k-prefix-hashmap' },
   ],
+  'strings': [
+    { label: 'Longest Substring Without Repeating Characters', route: '/dsa/strings/longest-substring-without-repeating-sliding-window' },
+    { label: 'The Z-Algorithm for Pattern Matching', route: '/dsa/strings/z-algorithm-pattern-matching' },
+    { label: 'Rabin-Karp’s Rolling Hash, Verified', route: '/dsa/strings/rabin-karp-rolling-hash' },
+  ],
 };

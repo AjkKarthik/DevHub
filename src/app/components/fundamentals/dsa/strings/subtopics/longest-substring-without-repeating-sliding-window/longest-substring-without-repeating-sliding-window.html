@@ -1,0 +1,26 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Strings" topicRoute="/dsa/strings"
+    subtopicLabel="Longest Substring Without Repeating Characters" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">Longest Substring Without Repeating Characters, With the Sliding Window</h1>
+  <p class="page-subtitle">The main page's own revision list names this pattern but never shows it in code -- built here, verified against brute force, including the "abba" edge case that breaks a naive implementation.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This fills a real gap: the main page names "longest substring without repeating characters (sliding window)" in its own mustKnow and interviewFocus lists, but never shows the code -- built and verified here, and connected to the main page's own newly-retitled "Sliding Window for Substring Problems" theory section.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Strings" topicRoute="/dsa/strings"
+    [next]="{ label: 'The Z-Algorithm for Pattern Matching', route: '/dsa/strings/z-algorithm-pattern-matching' }" />
+</div>
