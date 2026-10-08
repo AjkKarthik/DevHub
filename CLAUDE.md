@@ -11134,6 +11134,65 @@ check before any other new hub's first subtopic set:
    `graph-algorithms` (bare) and all three composite subtopic keys were present with matching
    content in the compiled `main-*.js`.
    **DSA hub Phase 10: 12 of 21 topics complete.**
+19. **The `basic-sorts` batch found and fixed a genuine, self-contained quantitative claim
+   wrong in TWO places on the page, found by comparing the page's own theory/quiz text against
+   the page's own codeTab rather than any external research**: the theory and a quiz explanation
+   both stated selection sort "always does exactly n-1 swaps" — but the page's own `selectionSort`
+   codeTab includes `if (minIdx !== i) [a[i], a[minIdx]] = [a[minIdx], a[i]];`, a guard specifically
+   written to SKIP the swap when the minimum is already in its correct position. Instrumented
+   that exact function with a swap counter: ZERO swaps on an already-sorted 10-element array (every
+   `minIdx` already equals `i`), 5 on a reverse-sorted array of the same size, 7 on one random
+   trial — never reliably hitting the "exactly n-1" (9) the claim promised, and a 1,000-trial
+   random-input sweep showed counts clustering anywhere from 3 to 9. Verified a clean, well-defined
+   contrast at the same time: the COMPARISON count genuinely IS an exact invariant — precisely
+   n(n-1)/2 (45 for n=10) on every single input tested, sorted or not — confirming the real
+   distinction is "comparisons are fixed, swaps are bounded but variable," not "both are exactly
+   n-1." Fixed both the theory bullet and the quiz explanation to state "at most n-1," and
+   retitled theory section 5's first bullet (which had duplicated the Insertion Sort section's own
+   "hybrid sorts" point almost verbatim) with this verified swap-vs-comparison distinction instead.
+   Three subtopics: (1) **fix-adjacent** — reproduces the exact instrumented counts (sorted,
+   reverse-sorted, and one random trial, all matching the main-page fix's own cited numbers
+   precisely) via direct execution, with a Try It on what removing the `if` guard entirely would do
+   (restore "exactly n-1" unconditionally, at the cost of doing pointless no-op swap work even when
+   nothing needs to move); (2) **gap-closing** — a quiz question's own explanation asserts insertion
+   sort runs "O(nk) total" on an "almost sorted" array (each element at most k positions displaced)
+   with zero codeTab measuring it; instrumented the page's own `insertionSort` with a shift counter
+   across bounded-displacement arrays (k=2) at n=20/50/100/500, measuring 8/24/48/258 shifts —
+   growing roughly linearly with n — directly contrasted against fully random (unbounded
+   displacement) arrays of the identical sizes measuring 111/619/2,572/62,669 shifts, tracking the
+   expected ~n²/4 average closely; (3) **gap-closing** — a QnA names the multi-key stable-sort
+   technique ("sort by least important key first, then most important") with zero code demonstrating
+   WHY the order matters; built both the correct order and the reversed order on an identical
+   5-person dataset (name/department/age), verified directly that reversing the order strands one
+   Engineering employee (age 35) after the entire Sales department group in the final output,
+   destroying the grouping the correct order would have preserved — tied to Array.sort()'s
+   ES2019-guaranteed stability as the specific mechanism that makes the correct order work at all.
+   No `SUBTOPICS` collision for `basic-sorts` (checked both `subtopics.ts` forms and grepped
+   `app.routes.ts` directly, confirmed collision-free, left bare). A near-miss self-caught during
+   authoring, not the standing sweep: an initial draft of a QuickRef addition for the swap-count fix
+   was reconsidered and REMOVED before the build — the claim's actual two wrong locations were the
+   theory bullet and the quiz explanation, not the QuickRef (which never made the "exactly n-1"
+   claim at all), so a new QuickRef entry would have been additive noise rather than a fix; caught
+   by re-checking exactly which locations stated the wrong claim before editing, not after. All
+   three `exercise.solution`/`theory.points`/`misconceptions` fields swept clean via the standing
+   bracket-balance/backtick-parity/apostrophe scripts (all three new files balanced, backtick counts
+   even, zero unescaped possessive apostrophes found outside backtick-delimited `code:` fields,
+   where they are safe); the main page's own pre-existing 69/67 brace-count "imbalance" was checked
+   against `git show HEAD` and confirmed byte-for-byte identical before and after this batch's edit
+   — a pre-existing false positive, not introduced by this batch, per the established documented
+   precedent for this exact category of sweep false-positive. Build passed clean (background
+   execution under Node 22.23.2, explicit `EXITCODE:$?` capture, zero real `ERROR` lines). **No
+   interactive browser/preview tool was available in this session** — verified via the same
+   compiled-bundle-inspection fallback as the prior twelve batches: confirmed BOTH old "exactly n-1
+   swaps total"/"Selection sort always does exactly n-1 swaps" text strings were absent from the
+   main page's own compiled chunk, confirmed both new "AT MOST n-1 swaps total"/"does at most n-1
+   swaps" replacement text was present; confirmed all three subtopic classes
+   (`SelectionSortsSwapCountIsAtMostN1NotExactlySubtopic`/`MeasuringInsertionSortsRealAdaptiveCostSubtopic`/
+   `SortingByMultipleKeysTheOrderMattersSubtopic`) each compiled into their own separate lazy chunk;
+   confirmed the `SUBTOPICS`/`SIDEBAR_MAP`/breadcrumb/search-index entries for `basic-sorts` (bare)
+   and all three composite subtopic keys were present with matching content in the compiled
+   `main-*.js`.
+   **DSA hub Phase 10: 13 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -11551,9 +11610,10 @@ check before any other new hub's first subtopic set:
   needs the full `.dsa-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }`
   rule (copied from the main topic page's own `.scss`, which defines it locally). No live
   playground (DSA theory/analysis content has no in-browser runtime) — plain `<app-code-block>`.
-  Phase 10: 12 of 21 topics have subtopics (`/dsa/big-o`, pilot batch; `/dsa/arrays`; `/dsa/strings`;
+  Phase 10: 13 of 21 topics have subtopics (`/dsa/big-o`, pilot batch; `/dsa/arrays`; `/dsa/strings`;
   `/dsa/hash-tables`; `/dsa/stacks-queues`; `/dsa/linked-lists`; `/dsa/doubly-linked-lists`;
-  `/dsa/binary-trees`; `/dsa/bst`; `/dsa/heaps`; `/dsa/graphs-bfs-dfs`; `/dsa/graph-algorithms`,
+  `/dsa/binary-trees`; `/dsa/bst`; `/dsa/heaps`; `/dsa/graphs-bfs-dfs`; `/dsa/graph-algorithms`;
+  `/dsa/basic-sorts`,
   all 2026-10-08) — see "DSA hub
   subtopic wiring" section below for the `DsaNavComponent` accordion
   structural fix (19th `*NavComponent`-based hub in a row missing it at pilot time), the

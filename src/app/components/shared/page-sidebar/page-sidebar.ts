@@ -34955,6 +34955,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Understanding basic sorts builds the invariant-reasoning skill needed to analyze and debug more advanced algorithms.',
     ],
   },
+  'dsa/basic-sorts/selection-sorts-swap-count-is-at-most-n-1-not-exactly': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Measuring Insertion Sort’s Real Adaptive Cost', route: '/dsa/basic-sorts/measuring-insertion-sorts-real-adaptive-cost' },
+      { label: 'Basic Sorts (topic overview)', route: '/dsa/basic-sorts' },
+    ],
+    tip: 'The page\'s own theory and a quiz both said selection sort does "exactly n-1 swaps" — but the page\'s own codeTab skips the swap when the minimum is already in place. Measured zero swaps on an already-sorted array; comparisons stayed a fixed n(n-1)/2 regardless.',
+    gotchas: [
+      'Comparison count is a true invariant for selection sort; swap count is not — "at most n-1," never "exactly."',
+    ],
+  },
+  'dsa/basic-sorts/measuring-insertion-sorts-real-adaptive-cost': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Selection Sort’s Swap Count Is At Most n-1, Not Exactly', route: '/dsa/basic-sorts/selection-sorts-swap-count-is-at-most-n-1-not-exactly' },
+      { label: 'Sorting By Multiple Keys: the Order Matters', route: '/dsa/basic-sorts/sorting-by-multiple-keys-the-order-matters' },
+    ],
+    tip: 'A quiz explanation claims O(nk) for insertion sort on almost-sorted input with zero code measuring it. Instrumented the page\'s own sort: bounded-displacement arrays scaled near-linearly (8 to 258 shifts, n=20 to 500) versus random arrays scaling near-quadratically (111 to 62,669).',
+    gotchas: [
+      'Shift count and comparison count happen to be equal only because of THIS specific code\'s structure — a binary-search-based insertion sort would decouple them.',
+    ],
+  },
+  'dsa/basic-sorts/sorting-by-multiple-keys-the-order-matters': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Measuring Insertion Sort’s Real Adaptive Cost', route: '/dsa/basic-sorts/measuring-insertion-sorts-real-adaptive-cost' },
+      { label: 'Basic Sorts (topic overview)', route: '/dsa/basic-sorts' },
+    ],
+    tip: 'The page\'s own QnA names "least important key first, most important last" with zero code. Built both orders — reversing them strands an Engineering employee outside their own department group, verified directly.',
+    gotchas: [
+      'The technique specifically needs Array.sort()\'s ES2019-guaranteed stability — an unstable sort would not preserve the earlier pass\'s grouping through the final pass.',
+    ],
+  },
 
   // ── MongoDB: per-page entries ────────────────────────────────────────────────
   'mongodb/fundamentals': {

@@ -1,0 +1,26 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Basic Sorts" topicRoute="/dsa/basic-sorts"
+    subtopicLabel="Selection Sort's Swap Count Is At Most n-1, Not Exactly" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">Selection Sort's Swap Count Is At Most n-1, Not Exactly</h1>
+  <p class="page-subtitle">The main page's theory and a quiz said selection sort "always does exactly n-1 swaps" -- but its own codeTab skips the swap when the minimum is already in place. Measured the real count: zero on sorted input.</p>
+  <app-page-meta [readingTime]="6" difficulty="beginner" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This fixes a real measurable claim on the main page -- "exactly n-1 swaps" -- by instrumenting the page's own selectionSort implementation directly.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Basic Sorts" topicRoute="/dsa/basic-sorts"
+    [next]="{ label: 'Measuring Insertion Sort’s Real Adaptive Cost', route: '/dsa/basic-sorts/measuring-insertion-sorts-real-adaptive-cost' }" />
+</div>

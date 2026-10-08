@@ -10091,6 +10091,20 @@ off here with a date.
   classic 5-node textbook graph) and A* (named in theory, zero code, measured 87.1% fewer nodes
   visited than Dijkstra for the identical optimal distance on a 30x30 grid). Bare
   `graph-algorithms` SUBTOPICS key collision-free. DSA hub Phase 10: 12 of 21.
+- [x] 2026-10-08 `/dsa/basic-sorts` — Basic Sorts. 3 subtopics
+  (selection-sorts-swap-count-is-at-most-n-1-not-exactly, measuring-insertion-sorts-real-adaptive-cost,
+  sorting-by-multiple-keys-the-order-matters). Main-page fix: theory and a quiz explanation both
+  claimed selection sort "always does exactly n-1 swaps" -- but the page's own codeTab has an
+  `if (minIdx !== i)` guard specifically written to skip the swap when the minimum is already in
+  place. Instrumented it directly: 0 swaps on an already-sorted array, 5 on reverse-sorted (n=10),
+  7 on a random trial -- never reliably exactly n-1. Comparison count, by contrast, is a true
+  invariant: always exactly n(n-1)/2 regardless of input order. Fixed to "at most n-1" in both the
+  theory bullet and the quiz explanation, and retitled a duplicate theory bullet with this finding.
+  Subtopics measure the real O(nk) adaptive cost claim (near-linear growth on bounded-displacement
+  input vs near-quadratic on random input, both directly instrumented) and demonstrate why the
+  QnA's "least important key first" multi-key-sort ordering rule actually matters (reversing it
+  strands an employee outside their own department group). Bare `basic-sorts` SUBTOPICS key
+  collision-free. DSA hub Phase 10: 13 of 21.
 - [ ] `/dsa/heaps` — Heaps & Priority Queues
 - [ ] `/dsa/graphs-bfs-dfs` — Graphs: BFS & DFS
 - [ ] `/dsa/graph-algorithms` — Graph Algorithms

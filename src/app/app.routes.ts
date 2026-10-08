@@ -4994,7 +4994,12 @@ export const routes: Routes = [
       { path: 'kruskals-mst-with-the-pages-own-union-find', loadComponent: () => import('./components/fundamentals/dsa/graph-algorithms/subtopics/kruskals-mst-with-the-pages-own-union-find/kruskals-mst-with-the-pages-own-union-find').then(m => m.KruskalsMstWithThePagesOwnUnionFindSubtopic) },
       { path: 'a-star-visits-far-fewer-nodes-than-dijkstra', loadComponent: () => import('./components/fundamentals/dsa/graph-algorithms/subtopics/a-star-visits-far-fewer-nodes-than-dijkstra/a-star-visits-far-fewer-nodes-than-dijkstra').then(m => m.AStarVisitsFarFewerNodesThanDijkstraSubtopic) },
     ]},
-    { path: 'basic-sorts',            loadComponent: () => import('./components/fundamentals/dsa/basic-sorts/basic-sorts').then(m => m.DsaBasicSorts) },
+    { path: 'basic-sorts', children: [
+      { path: '', loadComponent: () => import('./components/fundamentals/dsa/basic-sorts/basic-sorts').then(m => m.DsaBasicSorts) },
+      { path: 'selection-sorts-swap-count-is-at-most-n-1-not-exactly', loadComponent: () => import('./components/fundamentals/dsa/basic-sorts/subtopics/selection-sorts-swap-count-is-at-most-n-1-not-exactly/selection-sorts-swap-count-is-at-most-n-1-not-exactly').then(m => m.SelectionSortsSwapCountIsAtMostN1NotExactlySubtopic) },
+      { path: 'measuring-insertion-sorts-real-adaptive-cost', loadComponent: () => import('./components/fundamentals/dsa/basic-sorts/subtopics/measuring-insertion-sorts-real-adaptive-cost/measuring-insertion-sorts-real-adaptive-cost').then(m => m.MeasuringInsertionSortsRealAdaptiveCostSubtopic) },
+      { path: 'sorting-by-multiple-keys-the-order-matters', loadComponent: () => import('./components/fundamentals/dsa/basic-sorts/subtopics/sorting-by-multiple-keys-the-order-matters/sorting-by-multiple-keys-the-order-matters').then(m => m.SortingByMultipleKeysTheOrderMattersSubtopic) },
+    ]},
     { path: 'advanced-sorts',         loadComponent: () => import('./components/fundamentals/dsa/advanced-sorts/advanced-sorts').then(m => m.DsaAdvancedSorts) },
     { path: 'binary-search',          loadComponent: () => import('./components/fundamentals/dsa/binary-search/binary-search').then(m => m.DsaBinarySearch) },
     { path: 'recursion-backtracking', loadComponent: () => import('./components/fundamentals/dsa/recursion-backtracking/recursion-backtracking').then(m => m.DsaRecursionBacktracking) },

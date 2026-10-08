@@ -248,7 +248,24 @@ import { SUBTOPICS } from '../../../data/subtopics';
 
     <div class="nav-group">
       <p class="nav-group-label">Sorting</p>
-      <a routerLink="/dsa/basic-sorts" routerLinkActive="active"><span class="nl-text">Basic Sorts</span>@if(p.isDone('dsa-basic-sorts')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/dsa/basic-sorts" routerLinkActive="active">
+        <span class="nl-text">Basic Sorts</span>
+        @if(p.isDone('dsa-basic-sorts')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('basic-sorts'); as bsortSubs) {
+          <button type="button" class="nav-subtopics-toggle" (click)="toggleSubtopics('basic-sorts', $event)">
+            {{ isSubtopicsExpanded('basic-sorts') ? '▾' : '▸' }}
+          </button>
+        }
+      </a>
+      @if (subtopicsOf('basic-sorts'); as bsortSubs) {
+        @if (isSubtopicsExpanded('basic-sorts')) {
+          <div class="nav-subtopics">
+            @for (sub of bsortSubs; track sub.route) {
+              <a [routerLink]="sub.route" routerLinkActive="active" class="nav-subtopic-link">{{ sub.label }}</a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/dsa/advanced-sorts" routerLinkActive="active"><span class="nl-text">Merge &amp; Quick Sort</span>@if(p.isDone('dsa-advanced-sorts')){<span class="nl-done">✓</span>}</a>
       <a routerLink="/dsa/binary-search" routerLinkActive="active"><span class="nl-text">Binary Search</span>@if(p.isDone('dsa-binary-search')){<span class="nl-done">✓</span>}</a>
     </div>

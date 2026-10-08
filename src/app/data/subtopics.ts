@@ -4291,4 +4291,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Kruskal’s MST with the Page’s Own Union-Find', route: '/dsa/graph-algorithms/kruskals-mst-with-the-pages-own-union-find' },
     { label: 'A* Visits Far Fewer Nodes Than Dijkstra', route: '/dsa/graph-algorithms/a-star-visits-far-fewer-nodes-than-dijkstra' },
   ],
+  'basic-sorts': [
+    { label: 'Selection Sort’s Swap Count Is At Most n-1, Not Exactly', route: '/dsa/basic-sorts/selection-sorts-swap-count-is-at-most-n-1-not-exactly' },
+    { label: 'Measuring Insertion Sort’s Real Adaptive Cost', route: '/dsa/basic-sorts/measuring-insertion-sorts-real-adaptive-cost' },
+    { label: 'Sorting By Multiple Keys: the Order Matters', route: '/dsa/basic-sorts/sorting-by-multiple-keys-the-order-matters' },
+  ],
 };
