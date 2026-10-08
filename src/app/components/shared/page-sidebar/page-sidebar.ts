@@ -32781,6 +32781,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'TDD\'s tight feedback loop catches mistakes immediately; writing tests after the fact often just confirms existing behavior rather than driving design.',
     ],
   },
+  "testing-hub/tdd/outside-in-test-asked-for-a-name-it-never-sent": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "One Behaviour per Test, Not One Assertion", route: '/testing-hub/tdd/one-behaviour-per-test-not-one-assertion' },
+      { label: "Test-Driven Development (overview)", route: '/testing-hub/tdd' },
+    ],
+    tip: "Every value an assertion expects must come from the arrange step (or a documented rule). If the test cannot say where Alice comes from, the implementation cannot either.",
+    gotchas: ["expect.stringContaining is case-sensitive: \"alice\" does not contain \"Alice\".","Deriving a display name from an email address is a hidden product rule; if you want it, write a separate test that states it."],
+  },
+  "testing-hub/tdd/one-behaviour-per-test-not-one-assertion": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "The Outside-In Test Asked for a Name It Never Sent", route: '/testing-hub/tdd/outside-in-test-asked-for-a-name-it-never-sent' },
+      { label: "A Refactor That Drops the Empty-String Guard", route: '/testing-hub/tdd/refactor-that-drops-the-empty-string-guard' },
+      { label: "Test-Driven Development (overview)", route: '/testing-hub/tdd' },
+    ],
+    tip: "Split tests by behaviour, not by expect() count. Several assertions that all describe one outcome belong together.",
+    gotchas: ["Jest stops at the first failing expect in a test, so later assertions in the same test are not reported until the first is fixed.","Splitting one outcome across many tests repeats the arrange and act steps and makes the suite slower without adding information."],
+  },
+  "testing-hub/tdd/refactor-that-drops-the-empty-string-guard": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "One Behaviour per Test, Not One Assertion", route: '/testing-hub/tdd/one-behaviour-per-test-not-one-assertion' },
+      { label: "Test-Driven Development (overview)", route: '/testing-hub/tdd' },
+    ],
+    tip: "Run the whole suite after every refactor step. The oldest, simplest tests often catch the regressions a refactor introduces.",
+    gotchas: ["\"\".split(\",\") returns [\"\"] (one empty string), not an empty array.","parseInt(\"\", 10) is NaN, and NaN poisons any sum it touches."],
+  },
   'testing-hub/test-doubles': {
     apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
     related: [
@@ -32792,6 +32820,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Overusing mocks (verifying HOW a collaborator was called) couples tests to implementation details — preferring stubs/fakes produces tests that survive refactoring better.',
       'Matching the double\'s complexity to what the test actually needs to verify keeps suites maintainable.',
     ],
+  },
+  "testing-hub/test-doubles/jest-fn-verified-afterwards-is-a-spy": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "spyOn Calls the Real Method by Default", route: '/testing-hub/test-doubles/spyon-calls-through-by-default' },
+      { label: "Test Doubles (overview)", route: '/testing-hub/test-doubles' },
+    ],
+    tip: "Ask when the expectation is stated. Before the act and self-verifying: mock. Recorded during the act and asserted afterwards: spy.",
+    gotchas: ["Jest names every recording function a mock function, so \"mock\" in Jest docs does not mean the Meszaros mock.","Classic mocks with up-front expectations still exist in other libraries (for example Moq strict mocks in .NET, or Sinon mock().expects())."],
+  },
+  "testing-hub/test-doubles/spyon-calls-through-by-default": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "jest.fn() Checked Afterwards Is a Spy, Not a Mock", route: '/testing-hub/test-doubles/jest-fn-verified-afterwards-is-a-spy' },
+      { label: "clearAllMocks Keeps Return Values, resetAllMocks Removes Them", route: '/testing-hub/test-doubles/clearallmocks-keeps-return-values' },
+      { label: "Test Doubles (overview)", route: '/testing-hub/test-doubles' },
+    ],
+    tip: "jest.spyOn keeps the original behaviour unless you add mockImplementation or mockReturnValue. Choose deliberately: observe only, or observe and replace.",
+    gotchas: ["Adding mockImplementation(() => {}) to silence a side effect also stops the real method from running.","Restore spies after the test (mockRestore or restoreMocks: true in config), or the wrapper leaks into later tests."],
+  },
+  "testing-hub/test-doubles/clearallmocks-keeps-return-values": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "spyOn Calls the Real Method by Default", route: '/testing-hub/test-doubles/spyon-calls-through-by-default' },
+      { label: "Test Doubles (overview)", route: '/testing-hub/test-doubles' },
+    ],
+    tip: "clear = forget calls; reset = forget calls and canned behaviour; restore = put the original method back (for spyOn). Pick the weakest one that isolates your tests.",
+    gotchas: ["If a stub is configured once at module scope, resetAllMocks in beforeEach wipes its return value and every test sees undefined.","The config options clearMocks, resetMocks and restoreMocks run the matching call before every test automatically."],
   },
   'testing-hub/mocking-spies': {
     apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
@@ -32942,6 +32998,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Most frameworks automatically "shrink" a failing case to the smallest input that still reproduces it, turning an obscure random failure into a minimal reproduction.',
       'Property-based testing complements rather than replaces example-based tests for specific known edge cases.',
     ],
+  },
+  "testing-hub/property-based-testing/a-symmetric-bug-cannot-break-commutativity": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "fc.integer Ignores Positional min and max in v4", route: '/testing-hub/property-based-testing/fc-integer-ignores-positional-min-max' },
+      { label: "Property-Based Testing (overview)", route: '/testing-hub/property-based-testing' },
+    ],
+    tip: "Before trusting a demo property, ask whether the bug can actually violate it. A property only catches bugs that break that specific invariant.",
+    gotchas: ["A passing property is not evidence the code is correct; it only shows that invariant held for the inputs tried.","Pair a weak algebraic property with an oracle (compare to a + b) when one is available."],
+  },
+  "testing-hub/property-based-testing/fc-integer-ignores-positional-min-max": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "A Symmetric Bug Cannot Break Commutativity", route: '/testing-hub/property-based-testing/a-symmetric-bug-cannot-break-commutativity' },
+      { label: "Model-Based Testing with fc.commands", route: '/testing-hub/property-based-testing/model-based-testing-with-fc-commands' },
+      { label: "Property-Based Testing (overview)", route: '/testing-hub/property-based-testing' },
+    ],
+    tip: "Use the constraints object: fc.integer({ min: -1000, max: 1000 }). TypeScript reports the positional form as an error, but plain JavaScript silently ignores it.",
+    gotchas: ["The same change applies to other arbitraries that used to take positional bounds, such as fc.nat and fc.float.","A silently ignored range can still pass the tests, which is how this kind of mistake survives."],
+  },
+  "testing-hub/property-based-testing/model-based-testing-with-fc-commands": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "fc.integer Ignores Positional min and max in v4", route: '/testing-hub/property-based-testing/fc-integer-ignores-positional-min-max' },
+      { label: "Property-Based Testing (overview)", route: '/testing-hub/property-based-testing' },
+    ],
+    tip: "Keep the model as simple as possible (an array, a Map) and compare the real system to it after every command.",
+    gotchas: ["check(model) decides whether a command is allowed at that point, for example pop only when the model is non-empty.","Commands should implement toString so the shrunk sequence is readable in the failure output."],
   },
   'testing-hub/mutation-testing': {
     apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,

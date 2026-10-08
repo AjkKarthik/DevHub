@@ -4341,4 +4341,19 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: "A Relative toHaveURL Needs a baseURL", route: '/testing-hub/testing-fundamentals/relative-tohaveurl-needs-a-baseurl' },
     { label: "The Integration Test Never Started a Container", route: '/testing-hub/testing-fundamentals/integration-test-never-started-a-container' },
   ],
+  'tdd': [
+    { label: "The Outside-In Test Asked for a Name It Never Sent", route: '/testing-hub/tdd/outside-in-test-asked-for-a-name-it-never-sent' },
+    { label: "One Behaviour per Test, Not One Assertion", route: '/testing-hub/tdd/one-behaviour-per-test-not-one-assertion' },
+    { label: "A Refactor That Drops the Empty-String Guard", route: '/testing-hub/tdd/refactor-that-drops-the-empty-string-guard' },
+  ],
+  'test-doubles': [
+    { label: "jest.fn() Checked Afterwards Is a Spy, Not a Mock", route: '/testing-hub/test-doubles/jest-fn-verified-afterwards-is-a-spy' },
+    { label: "spyOn Calls the Real Method by Default", route: '/testing-hub/test-doubles/spyon-calls-through-by-default' },
+    { label: "clearAllMocks Keeps Return Values, resetAllMocks Removes Them", route: '/testing-hub/test-doubles/clearallmocks-keeps-return-values' },
+  ],
+  'property-based-testing': [
+    { label: "A Symmetric Bug Cannot Break Commutativity", route: '/testing-hub/property-based-testing/a-symmetric-bug-cannot-break-commutativity' },
+    { label: "fc.integer Ignores Positional min and max in v4", route: '/testing-hub/property-based-testing/fc-integer-ignores-positional-min-max' },
+    { label: "Model-Based Testing with fc.commands", route: '/testing-hub/property-based-testing/model-based-testing-with-fc-commands' },
+  ],
 };

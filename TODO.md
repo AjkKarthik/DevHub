@@ -10201,8 +10201,8 @@ off here with a date.
 - [ ] `/testing-hub/jest-fundamentals` — Jest Fundamentals
 - [ ] `/testing-hub/mocking-spies` — Mocking & Spies
 - [ ] `/testing-hub/xunit` — xUnit (.NET Testing)
-- [ ] `/testing-hub/tdd` — Test-Driven Development
-- [ ] `/testing-hub/test-doubles` — Test Doubles
+- [x] 2026-10-08 `/testing-hub/tdd` — Test-Driven Development — fixed the Outside-in tab (asserted the welcome email contains 'Alice' but only sent alice@example.com; stringContaining is case-sensitive, checked with Jest's expect package) and the 'one assertion per test' advice (contradicted Testing Fundamentals; now one behaviour per test). Subtopics: outside-in test missing input, one behaviour not one assertion, a refactor that drops the empty-string guard (''.split(',') is [''] -> NaN, Node-verified).
+- [x] 2026-10-08 `/testing-hub/test-doubles` — Test Doubles — fixed the Stub & Mock tab (a jest.fn() checked after the act was labelled a pre-programmed mock; in Meszaros/Fowler terms it is a spy) and the spy/mock mistake. Subtopics: jest.fn checked afterwards is a spy, spyOn calls through by default (the Challenge relies on it), clearAllMocks vs resetAllMocks vs restoreAllMocks — all measured with jest-mock 30.5.
 - [ ] `/testing-hub/integration-testing` — Integration Testing
 - [ ] `/testing-hub/testing-databases` — Testing with Databases
 - [ ] `/testing-hub/angular-testing` — Angular Testing
@@ -10215,7 +10215,7 @@ off here with a date.
 - [ ] `/testing-hub/vitest` — Vitest
 - [ ] `/testing-hub/msw` — MSW — Mock Service Worker
 - [ ] `/testing-hub/visual-regression` — Visual Regression Testing
-- [ ] `/testing-hub/property-based-testing` — Property-Based Testing
+- [x] 2026-10-08 `/testing-hub/property-based-testing` — Property-Based Testing — fixed the Shrinking Example (its bug was symmetric in a and b, so commutativity never failed in 100,000 fast-check runs; now asymmetric, seed 42 shrinks to [101,-1]) and the Challenge's fc.integer(-1000, 1000) (v4 ignores positional bounds: sampled 1743045805). Subtopics: symmetric bug, positional args, model-based testing with fc.commands (buggy bounded stack shrinks to four pushes).
 
 #### AI/ML — 19 topic pages
 

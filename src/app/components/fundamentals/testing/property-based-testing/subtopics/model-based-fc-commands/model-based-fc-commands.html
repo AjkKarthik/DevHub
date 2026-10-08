@@ -1,0 +1,26 @@
+<div class="test-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Property-Based Testing" topicRoute="/testing-hub/property-based-testing"
+    subtopicLabel="Model-Based Testing with fc.commands" />
+  <div class="page-header-icon test-icon">✓</div>
+  <h1 class="page-title">Model-Based Testing with fc.commands</h1>
+  <p class="page-subtitle">A quiz question on the page defines model-based testing but no example shows it. Here a bounded stack is checked against a plain array model, and an off-by-one bug shrinks to four pushes.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Testing" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="test-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="test-section">
+    <h2>Where this fits</h2>
+    <p>This builds the technique from the Property-Based Testing quiz. Mutation Testing, in the Reference group, is another way to measure whether properties are strong enough.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Property-Based Testing" topicRoute="/testing-hub/property-based-testing"
+    [prev]="{ label: 'fc.integer Ignores Positional min and max in v4', route: '/testing-hub/property-based-testing/fc-integer-ignores-positional-min-max' }" />
+</div>

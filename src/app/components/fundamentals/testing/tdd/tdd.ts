@@ -127,7 +127,9 @@ test('user can register and receive welcome email', async () => {
   const emailSpy = jest.fn();
   const app = new App({ emailClient: { send: emailSpy } });
 
-  await app.register({ email: 'alice@example.com', password: 'secret' });
+  // The name must be part of the input: stringContaining is case-sensitive,
+  // so 'Alice' cannot appear in the email if only 'alice@example.com' is sent.
+  await app.register({ name: 'Alice', email: 'alice@example.com', password: 'secret' });
 
   expect(emailSpy).toHaveBeenCalledWith(
     'alice@example.com',
@@ -143,7 +145,7 @@ test('user can register and receive welcome email', async () => {
   mistakes: CommonMistake[] = [
     { title: 'Writing multiple tests before any code', wrong: 'write 10 failing tests then implement', right: 'one failing test → pass it → refactor → next test', explanation: 'TDD works in tiny cycles. Writing many tests first turns it into test-last with extra steps and a large compilation backlog.' },
     { title: 'Skipping the refactor step', wrong: 'Red → Green → Red → Green (never refactor)', right: 'Red → Green → Refactor before the next Red', explanation: 'Without refactoring, TDD produces test-driven spaghetti. The refactor step is not optional — it is what keeps the design clean.' },
-    { title: 'Writing too-large tests', wrong: 'test("user registration flow", () => { /* 50 lines */ })', right: 'one assertion per test; one behaviour per test', explanation: 'A large test that tests multiple behaviours makes it hard to identify which behaviour broke. Each test should have one reason to fail.' },
+    { title: 'Writing too-large tests', wrong: 'test("user registration flow", () => { /* 50 lines */ })', right: 'one behaviour per test (several assertions about that one behaviour are fine)', explanation: 'A large test that tests multiple behaviours makes it hard to identify which behaviour broke. Each test should have one reason to fail: one behaviour, not literally one expect() call.' },
     { title: 'Not running tests after each change', wrong: 'write 5 lines then run tests', right: 'run after every one-line change during the Green step', explanation: 'The cycle only gives fast feedback if you run tests constantly. Many IDEs support auto-run on save.' },
     { title: 'Hardcoding forever', wrong: 'return 5; // hardcoded, never generalised', right: 'hardcode to go Green, then write the NEXT test that forces generalisation', explanation: 'Hardcoding is correct in the Green step — but you must write the next test that forces real implementation. Hardcoding is a temporary scaffold, not a destination.' },
   ];
