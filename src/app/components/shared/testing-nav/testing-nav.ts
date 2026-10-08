@@ -191,9 +191,36 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/testing-hub/cypress" routerLinkActive="active"><span class="nl-text">Cypress</span>@if(p.isDone('test-cypress')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/testing-hub/api-testing" routerLinkActive="active"><span class="nl-text">API Testing</span>@if(p.isDone('test-api-testing')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/testing-hub/contract-testing" routerLinkActive="active"><span class="nl-text">Contract Testing</span>@if(p.isDone('test-contract-testing')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/testing-hub/cypress" routerLinkActive="active"><span class="nl-text">Cypress</span>@if(p.isDone('test-cypress')){<span class="nl-done">✓</span>}@if (subtopicsOf('cypress'); as cypressSubs) {<button type="button" class="nav-subtopics-toggle" (click)="toggleSubtopics('cypress', $event)">{{ isSubtopicsExpanded('cypress') ? '▾' : '▸' }}</button>}</a>
+      @if (subtopicsOf('cypress'); as cypressSubs) {
+        @if (isSubtopicsExpanded('cypress')) {
+          <div class="nav-subtopics">
+            @for (sub of cypressSubs; track sub.route) {
+              <a [routerLink]="sub.route" routerLinkActive="active" class="nav-subtopic-link">{{ sub.label }}</a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/testing-hub/api-testing" routerLinkActive="active"><span class="nl-text">API Testing</span>@if(p.isDone('test-api-testing')){<span class="nl-done">✓</span>}@if (subtopicsOf('api-testing'); as apiTestingSubs) {<button type="button" class="nav-subtopics-toggle" (click)="toggleSubtopics('api-testing', $event)">{{ isSubtopicsExpanded('api-testing') ? '▾' : '▸' }}</button>}</a>
+      @if (subtopicsOf('api-testing'); as apiTestingSubs) {
+        @if (isSubtopicsExpanded('api-testing')) {
+          <div class="nav-subtopics">
+            @for (sub of apiTestingSubs; track sub.route) {
+              <a [routerLink]="sub.route" routerLinkActive="active" class="nav-subtopic-link">{{ sub.label }}</a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/testing-hub/contract-testing" routerLinkActive="active"><span class="nl-text">Contract Testing</span>@if(p.isDone('test-contract-testing')){<span class="nl-done">✓</span>}@if (subtopicsOf('contract-testing'); as contractTestingSubs) {<button type="button" class="nav-subtopics-toggle" (click)="toggleSubtopics('contract-testing', $event)">{{ isSubtopicsExpanded('contract-testing') ? '▾' : '▸' }}</button>}</a>
+      @if (subtopicsOf('contract-testing'); as contractTestingSubs) {
+        @if (isSubtopicsExpanded('contract-testing')) {
+          <div class="nav-subtopics">
+            @for (sub of contractTestingSubs; track sub.route) {
+              <a [routerLink]="sub.route" routerLinkActive="active" class="nav-subtopic-link">{{ sub.label }}</a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

@@ -33057,6 +33057,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'cy.intercept() decouples frontend test reliability from real backend availability and response times.',
     ],
   },
+  "testing-hub/cypress/cypress-react18-mount-import-is-gone": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "cy.session Is Cached Per Spec Unless You Opt In", route: '/testing-hub/cypress/cy-session-is-per-spec-unless-cache-across-specs' },
+      { label: "Cypress (overview)", route: '/testing-hub/cypress' },
+    ],
+    tip: "Use import { mount } from \"cypress/react\" and register it once as cy.mount in cypress/support/component.ts.",
+    gotchas: ["The old path fails at bundling time with a module-not-found style error, before any test runs.","Older blog posts and some docs pages still show cypress/react18."],
+  },
+  "testing-hub/cypress/cy-session-is-per-spec-unless-cache-across-specs": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "The cypress/react18 Mount Import Is Gone", route: '/testing-hub/cypress/cypress-react18-mount-import-is-gone' },
+      { label: "Spec and App Run in Separate Iframes", route: '/testing-hub/cypress/spec-and-app-run-in-separate-iframes' },
+      { label: "Cypress (overview)", route: '/testing-hub/cypress' },
+    ],
+    tip: "Give every cy.session a validate() function, for example a request to /api/me that must return 200, so an expired session is rebuilt automatically.",
+    gotchas: ["The session id must change when the login data changes (for example include the role), otherwise a cached session for another user is restored.","Cypress 12 also turned test isolation on by default, which clears the page, cookies and storage between tests; cy.session is how you keep a login across that."],
+  },
+  "testing-hub/cypress/spec-and-app-run-in-separate-iframes": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "cy.session Is Cached Per Spec Unless You Opt In", route: '/testing-hub/cypress/cy-session-is-per-spec-unless-cache-across-specs' },
+      { label: "Cypress (overview)", route: '/testing-hub/cypress' },
+    ],
+    tip: "Read or stub app globals through cy.window(), or before the app starts with cy.visit(url, { onBeforeLoad(win) { ... } }).",
+    gotchas: ["window.localStorage in a spec happens to work for same-origin apps, but window.myStore set by the app is undefined in the spec.","Stubbing must target the app window object yielded by cy.window(), or the app never sees the stub."],
+  },
   'testing-hub/playwright': {
     apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
     related: [
@@ -33109,6 +33137,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Schema validation libraries can be layered onto existing API tests to add contract verification without a full rewrite.',
     ],
   },
+  "testing-hub/api-testing/supertest-binds-an-ephemeral-port": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "Test Tokens Need the Same Secret as the App", route: '/testing-hub/api-testing/test-tokens-need-the-same-secret-as-the-app' },
+      { label: "API Testing (overview)", route: '/testing-hub/api-testing' },
+    ],
+    tip: "Pass the app (not a listening server) so Supertest owns the lifecycle; if you pass a server you started yourself, close it in afterAll.",
+    gotchas: ["Because the request goes over loopback, middleware sees a real socket: req.socket.localPort is a real port number.","An app that calls app.listen(3000) when imported will still bind 3000; export the app and call listen in a separate entry file."],
+  },
+  "testing-hub/api-testing/test-tokens-need-the-same-secret-as-the-app": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "Supertest Binds an Ephemeral Port for You", route: '/testing-hub/api-testing/supertest-binds-an-ephemeral-port' },
+      { label: "Zod datetime Rejects Timezone Offsets by Default", route: '/testing-hub/api-testing/zod-datetime-rejects-timezone-offsets' },
+      { label: "API Testing (overview)", route: '/testing-hub/api-testing' },
+    ],
+    tip: "Read the secret from one place (process.env.JWT_SECRET) in both the app and the tests, and set it in a Jest setupFiles script so it exists before any module loads.",
+    gotchas: ["A test that only checks 401 for a missing token still passes, which hides the problem.","If the app caches the secret at import time, setting the env var inside the test file is too late because imports run first."],
+  },
+  "testing-hub/api-testing/zod-datetime-rejects-timezone-offsets": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "Test Tokens Need the Same Secret as the App", route: '/testing-hub/api-testing/test-tokens-need-the-same-secret-as-the-app' },
+      { label: "API Testing (overview)", route: '/testing-hub/api-testing' },
+    ],
+    tip: "Match the schema to what the API promises: z.iso.datetime() for UTC-only, z.iso.datetime({ offset: true }) if the API may send +02:00.",
+    gotchas: ["A too-strict schema fails tests for valid data; a too-loose one (plain z.string()) misses real regressions.","Deprecated methods still work in Zod 4, so nothing breaks until they are removed."],
+  },
   'testing-hub/contract-testing': {
     apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
     related: [
@@ -33120,6 +33176,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Pact generates an executable, versioned agreement from consumer tests that the provider replays against its own implementation.',
       'Contract testing scales better than full integration testing across many microservices, since each pairwise relationship is verified independently.',
     ],
+  },
+  "testing-hub/contract-testing/extra-provider-fields-do-not-break-a-pact": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "Publishing a Pact Requires a Version", route: '/testing-hub/contract-testing/publishing-a-pact-requires-a-version' },
+      { label: "Contract Testing (overview)", route: '/testing-hub/contract-testing' },
+    ],
+    tip: "Use type matchers (integer, string, like) for every field and list only the fields the consumer reads; never paste a full real response into a pact.",
+    gotchas: ["Removing or renaming a field the consumer listed does fail verification, which is exactly the breaking change you want caught.","Arrays need eachLike() or a fixed length is expected."],
+  },
+  "testing-hub/contract-testing/publishing-a-pact-requires-a-version": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "Extra Provider Fields Do Not Break a Pact", route: '/testing-hub/contract-testing/extra-provider-fields-do-not-break-a-pact' },
+      { label: "Verifying Local Pact Files and Provider States", route: '/testing-hub/contract-testing/verifying-local-pact-files-and-provider-states' },
+      { label: "Contract Testing (overview)", route: '/testing-hub/contract-testing' },
+    ],
+    tip: "Use the git SHA as the version and pass --branch; in CI you can let --auto-detect-version-properties read them from the environment.",
+    gotchas: ["can-i-deploy asks about a specific version, so a pact published without the same version can never answer yes.","The pact-broker command is installed by @pact-foundation/pact-cli, not by @pact-foundation/pact."],
+  },
+  "testing-hub/contract-testing/verifying-local-pact-files-and-provider-states": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "Publishing a Pact Requires a Version", route: '/testing-hub/contract-testing/publishing-a-pact-requires-a-version' },
+      { label: "Contract Testing (overview)", route: '/testing-hub/contract-testing' },
+    ],
+    tip: "Make each state handler create exactly the data its given text describes, and reset it, so a pass never depends on leftover data.",
+    gotchas: ["A test that passes only because the database happened to contain user 1 will fail on a fresh CI database.","Local pactUrls verification does not publish results unless you set publishVerificationResult and a provider version."],
   },
   'testing-hub/integration-testing': {
     apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,

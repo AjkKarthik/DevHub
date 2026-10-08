@@ -4416,4 +4416,19 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: "networkidle Means Zero Connections and Is Discouraged", route: '/testing-hub/playwright/networkidle-means-zero-connections-and-is-discouraged' },
     { label: "Locators Are Strict About Multiple Matches", route: '/testing-hub/playwright/locators-are-strict-about-multiple-matches' },
   ],
+  'cypress': [
+    { label: "The cypress/react18 Mount Import Is Gone", route: '/testing-hub/cypress/cypress-react18-mount-import-is-gone' },
+    { label: "cy.session Is Cached Per Spec Unless You Opt In", route: '/testing-hub/cypress/cy-session-is-per-spec-unless-cache-across-specs' },
+    { label: "Spec and App Run in Separate Iframes", route: '/testing-hub/cypress/spec-and-app-run-in-separate-iframes' },
+  ],
+  'api-testing': [
+    { label: "Supertest Binds an Ephemeral Port for You", route: '/testing-hub/api-testing/supertest-binds-an-ephemeral-port' },
+    { label: "Test Tokens Need the Same Secret as the App", route: '/testing-hub/api-testing/test-tokens-need-the-same-secret-as-the-app' },
+    { label: "Zod datetime Rejects Timezone Offsets by Default", route: '/testing-hub/api-testing/zod-datetime-rejects-timezone-offsets' },
+  ],
+  'contract-testing': [
+    { label: "Extra Provider Fields Do Not Break a Pact", route: '/testing-hub/contract-testing/extra-provider-fields-do-not-break-a-pact' },
+    { label: "Publishing a Pact Requires a Version", route: '/testing-hub/contract-testing/publishing-a-pact-requires-a-version' },
+    { label: "Verifying Local Pact Files and Provider States", route: '/testing-hub/contract-testing/verifying-local-pact-files-and-provider-states' },
+  ],
 };

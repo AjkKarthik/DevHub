@@ -5117,9 +5117,24 @@ export const routes: Routes = [
       { path: 'networkidle-means-zero-connections-and-is-discouraged', loadComponent: () => import('./components/fundamentals/testing/playwright/subtopics/networkidle-discouraged/networkidle-discouraged').then(m => m.NetworkidleDiscouragedSubtopic) },
       { path: 'locators-are-strict-about-multiple-matches', loadComponent: () => import('./components/fundamentals/testing/playwright/subtopics/strict-mode-violation/strict-mode-violation').then(m => m.StrictModeViolationSubtopic) },
     ] },
-    { path: 'cypress',               loadComponent: () => import('./components/fundamentals/testing/cypress/cypress').then(m => m.CypressTesting) },
-    { path: 'api-testing',           loadComponent: () => import('./components/fundamentals/testing/api-testing/api-testing').then(m => m.ApiTesting) },
-    { path: 'contract-testing',      loadComponent: () => import('./components/fundamentals/testing/contract-testing/contract-testing').then(m => m.ContractTesting) },
+    { path: 'cypress', children: [
+      { path: '', loadComponent: () => import('./components/fundamentals/testing/cypress/cypress').then(m => m.CypressTesting) },
+      { path: 'cypress-react18-mount-import-is-gone', loadComponent: () => import('./components/fundamentals/testing/cypress/subtopics/cypress-react-mount/cypress-react-mount').then(m => m.CypressReactMountSubtopic) },
+      { path: 'cy-session-is-per-spec-unless-cache-across-specs', loadComponent: () => import('./components/fundamentals/testing/cypress/subtopics/cy-session-scope/cy-session-scope').then(m => m.CySessionScopeSubtopic) },
+      { path: 'spec-and-app-run-in-separate-iframes', loadComponent: () => import('./components/fundamentals/testing/cypress/subtopics/spec-and-app-iframes/spec-and-app-iframes').then(m => m.SpecAndAppIframesSubtopic) },
+    ] },
+    { path: 'api-testing', children: [
+      { path: '', loadComponent: () => import('./components/fundamentals/testing/api-testing/api-testing').then(m => m.ApiTesting) },
+      { path: 'supertest-binds-an-ephemeral-port', loadComponent: () => import('./components/fundamentals/testing/api-testing/subtopics/supertest-ephemeral-port/supertest-ephemeral-port').then(m => m.SupertestEphemeralPortSubtopic) },
+      { path: 'test-tokens-need-the-same-secret-as-the-app', loadComponent: () => import('./components/fundamentals/testing/api-testing/subtopics/test-jwt-shared-secret/test-jwt-shared-secret').then(m => m.TestJwtSharedSecretSubtopic) },
+      { path: 'zod-datetime-rejects-timezone-offsets', loadComponent: () => import('./components/fundamentals/testing/api-testing/subtopics/zod4-datetime-offsets/zod4-datetime-offsets').then(m => m.Zod4DatetimeOffsetsSubtopic) },
+    ] },
+    { path: 'contract-testing', children: [
+      { path: '', loadComponent: () => import('./components/fundamentals/testing/contract-testing/contract-testing').then(m => m.ContractTesting) },
+      { path: 'extra-provider-fields-do-not-break-a-pact', loadComponent: () => import('./components/fundamentals/testing/contract-testing/subtopics/extra-fields-pass/extra-fields-pass').then(m => m.ExtraFieldsPassSubtopic) },
+      { path: 'publishing-a-pact-requires-a-version', loadComponent: () => import('./components/fundamentals/testing/contract-testing/subtopics/publish-needs-version/publish-needs-version').then(m => m.PublishNeedsVersionSubtopic) },
+      { path: 'verifying-local-pact-files-and-provider-states', loadComponent: () => import('./components/fundamentals/testing/contract-testing/subtopics/local-verify-states/local-verify-states').then(m => m.LocalVerifyStatesSubtopic) },
+    ] },
     { path: 'snapshot-testing', children: [
       { path: '', loadComponent: () => import('./components/fundamentals/testing/snapshot-testing/snapshot-testing').then(m => m.SnapshotTesting) },
       { path: 'jest-on-ci-refuses-to-write-new-snapshots', loadComponent: () => import('./components/fundamentals/testing/snapshot-testing/subtopics/ci-refuses-new-snapshots/ci-refuses-new-snapshots').then(m => m.CiRefusesNewSnapshotsSubtopic) },

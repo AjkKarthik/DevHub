@@ -33,7 +33,7 @@ export class CypressTesting {
   theory: TheoryPoint[] = [
     { heading: 'In-Browser Architecture', points: [
       'Cypress runs inside the same browser as your app — giving direct access to window, DOM, and network.',
-      'Tests and app share the same JavaScript context — you can call app internals from tests.',
+      'Tests and app run in the same browser tab but in two separate iframes (a spec iframe and an app iframe) — reach app globals with cy.window() and cy.document(), not the spec\'s own window.',
       'The Cypress proxy sits between the browser and the internet — enabling request interception.',
       'This architecture makes the time-travel debugger possible: every command is snapshotted.',
     ]},
@@ -143,7 +143,7 @@ describe('Dashboard', () => {
 });` },
     { label: 'Component Testing', language: 'typescript', code:
 `// counter.cy.tsx — Cypress component test
-import { mount } from 'cypress/react18';
+import { mount } from 'cypress/react';  // cypress/react18 is gone in current Cypress; cypress/react supports React 18 and 19
 import { Counter } from './Counter';
 
 describe('Counter component', () => {
@@ -212,11 +212,11 @@ describe('Users page', () => {
   ];
 
   qna: QnaItem[] = [
-    { q: 'What is Cypress component testing and when should I use it?', a: 'Cypress component testing mounts a single component in a real Chromium browser using cy.mount(). Use it when you want real browser rendering (unlike jsdom) but don\'t need a full application. It\'s faster than E2E and catches CSS and layout issues that jsdom-based tests miss.' },
+    { q: 'What is Cypress component testing and when should I use it?', a: 'Cypress component testing mounts a single component in a real browser (Chrome, Edge, Firefox or Electron) using cy.mount(). Use it when you want real browser rendering (unlike jsdom) but don\'t need a full application. It\'s faster than E2E and catches CSS and layout issues that jsdom-based tests miss.' },
     { q: 'How do I seed database state for Cypress tests?', a: 'Use cy.task() to run Node.js code from the test — cy.task("seedDb", { user: {...} }). Define tasks in cypress.config.ts under on("task", {...}). This keeps DB logic on the server side while Cypress controls it from the test.' },
     { q: 'Should I choose Cypress or Playwright for a new project?', a: 'Both are production-ready. Playwright: stronger for multi-browser, multi-tab, and iframe scenarios; better in CI headless performance; supports Firefox and WebKit natively. Cypress: superior time-travel debugger; excellent developer experience; larger plugin ecosystem. For teams new to E2E, Cypress is often easier to adopt; Playwright scales better for complex apps.' },
-  { q: 'How do you test file uploads in Cypress?', a: 'Use cy-file-upload plugin or the native approach: cy.get(\'input[type=file]\').selectFile(\'cypress/fixtures/upload.pdf\'). For drag-and-drop: cy.get(\'.dropzone\').selectFile(\'file.pdf\', { action: \'drag-drop\' }). Verify the upload succeeded by checking the response or DOM state after upload.' },
-  { q: 'How do you share login state across Cypress tests?', a: 'Use cy.session() (Cypress 9+): cy.session(username, () => { cy.visit(\'/login\'); cy.get(\'#username\').type(username); cy.get(\'form\').submit(); cy.url().should(\'include\', \'/dashboard\'); }). The session is cached between tests — eliminates repeated login flows. Invalidate with { cacheAcrossSpecs: true } for cross-spec sharing.' },
+  { q: 'How do you test file uploads in Cypress?', a: 'The old cypress-file-upload plugin is no longer needed — use the built-in command: cy.get(\'input[type=file]\').selectFile(\'cypress/fixtures/upload.pdf\'). For drag-and-drop: cy.get(\'.dropzone\').selectFile(\'file.pdf\', { action: \'drag-drop\' }). Verify the upload succeeded by checking the response or DOM state after upload.' },
+  { q: 'How do you share login state across Cypress tests?', a: 'Use cy.session() (experimental in 8.x/9.x, generally available since Cypress 12): cy.session(username, () => { cy.visit(\'/login\'); cy.get(\'#username\').type(username); cy.get(\'form\').submit(); cy.url().should(\'include\', \'/dashboard\'); }). The session is cached between tests — eliminates repeated login flows. By default a cached session is only reused within the same spec file; pass { cacheAcrossSpecs: true } to reuse it across all specs in the run. Add a validate() callback so a stale session is rebuilt instead of silently reused.' },
   { q: 'What are Cypress custom commands and how do you create them?', a: 'Add to cypress/support/commands.ts: Cypress.Commands.add(\'login\', (email, password) => { cy.visit(\'/login\'); cy.get(\'#email\').type(email); cy.get(\'#password\').type(password); cy.get(\'form\').submit(); }). Use in tests: cy.login(\'admin@example.com\', \'password\'). TypeScript: add types in cypress.d.ts or the commands file.' },
   ];
 
