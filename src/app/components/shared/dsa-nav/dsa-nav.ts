@@ -154,7 +154,24 @@ import { SUBTOPICS } from '../../../data/subtopics';
 
     <div class="nav-group">
       <p class="nav-group-label">Trees &amp; Graphs</p>
-      <a routerLink="/dsa/binary-trees" routerLinkActive="active"><span class="nl-text">Binary Trees</span>@if(p.isDone('dsa-binary-trees')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/dsa/binary-trees" routerLinkActive="active">
+        <span class="nl-text">Binary Trees</span>
+        @if(p.isDone('dsa-binary-trees')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('binary-trees'); as btSubs) {
+          <button type="button" class="nav-subtopics-toggle" (click)="toggleSubtopics('binary-trees', $event)">
+            {{ isSubtopicsExpanded('binary-trees') ? '▾' : '▸' }}
+          </button>
+        }
+      </a>
+      @if (subtopicsOf('binary-trees'); as btSubs) {
+        @if (isSubtopicsExpanded('binary-trees')) {
+          <div class="nav-subtopics">
+            @for (sub of btSubs; track sub.route) {
+              <a [routerLink]="sub.route" routerLinkActive="active" class="nav-subtopic-link">{{ sub.label }}</a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/dsa/bst" routerLinkActive="active"><span class="nl-text">Binary Search Trees</span>@if(p.isDone('dsa-bst')){<span class="nl-done">✓</span>}</a>
       <a routerLink="/dsa/heaps" routerLinkActive="active"><span class="nl-text">Heaps &amp; Priority Queues</span>@if(p.isDone('dsa-heaps')){<span class="nl-done">✓</span>}</a>
       <a routerLink="/dsa/graphs-bfs-dfs" routerLinkActive="active"><span class="nl-text">Graphs — BFS &amp; DFS</span>@if(p.isDone('dsa-graphs-bfs-dfs')){<span class="nl-done">✓</span>}</a>

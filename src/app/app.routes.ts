@@ -4964,7 +4964,12 @@ export const routes: Routes = [
       { path: 'what-happens-without-the-empty-list-guard', loadComponent: () => import('./components/fundamentals/dsa/doubly-linked-lists/subtopics/what-happens-without-the-empty-list-guard/what-happens-without-the-empty-list-guard').then(m => m.WhatHappensWithoutTheEmptyListGuardSubtopic) },
       { path: 'building-a-blocked-deque-like-pythons', loadComponent: () => import('./components/fundamentals/dsa/doubly-linked-lists/subtopics/building-a-blocked-deque-like-pythons/building-a-blocked-deque-like-pythons').then(m => m.BuildingABlockedDequeLikePythonsSubtopic) },
     ]},
-    { path: 'binary-trees',           loadComponent: () => import('./components/fundamentals/dsa/binary-trees/binary-trees').then(m => m.DsaBinaryTrees) },
+    { path: 'binary-trees', children: [
+      { path: '', loadComponent: () => import('./components/fundamentals/dsa/binary-trees/binary-trees').then(m => m.DsaBinaryTrees) },
+      { path: 'morris-traversal-restores-the-tree-unless-you-forget', loadComponent: () => import('./components/fundamentals/dsa/binary-trees/subtopics/morris-traversal-restores-the-tree-unless-you-forget/morris-traversal-restores-the-tree-unless-you-forget').then(m => m.MorrisTraversalRestoresTheTreeUnlessYouForgetSubtopic) },
+      { path: 'bfs-can-use-less-memory-than-dfs-on-a-skewed-tree', loadComponent: () => import('./components/fundamentals/dsa/binary-trees/subtopics/bfs-can-use-less-memory-than-dfs-on-a-skewed-tree/bfs-can-use-less-memory-than-dfs-on-a-skewed-tree').then(m => m.BfsCanUseLessMemoryThanDfsOnASkewedTreeSubtopic) },
+      { path: 'inorder-alone-cannot-reconstruct-a-binary-tree', loadComponent: () => import('./components/fundamentals/dsa/binary-trees/subtopics/inorder-alone-cannot-reconstruct-a-binary-tree/inorder-alone-cannot-reconstruct-a-binary-tree').then(m => m.InorderAloneCannotReconstructABinaryTreeSubtopic) },
+    ]},
     { path: 'bst',                    loadComponent: () => import('./components/fundamentals/dsa/bst/bst').then(m => m.DsaBst) },
     { path: 'heaps',                  loadComponent: () => import('./components/fundamentals/dsa/heaps/heaps').then(m => m.DsaHeaps) },
     { path: 'graphs-bfs-dfs',         loadComponent: () => import('./components/fundamentals/dsa/graphs-bfs-dfs/graphs-bfs-dfs').then(m => m.DsaGraphsBfsDfs) },

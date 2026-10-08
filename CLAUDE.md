@@ -10855,6 +10855,62 @@ check before any other new hub's first subtopic set:
    confirmed the `SUBTOPICS`/`SIDEBAR_MAP`/breadcrumb/search-index entries for `doubly-linked-lists`
    (bare) and all three composite subtopic keys were present with matching content.
    **DSA hub Phase 10: 7 of 21 topics complete.**
+14. **The `binary-trees` batch found and fixed a genuine partial theory-section duplicate — the
+   same pattern already seen on this hub's own Hash Tables and Doubly Linked Lists batches, just
+   with a single duplicate bullet this time rather than a whole section**: the page's own fifth
+   theory section ("Choosing Between Recursive and Iterative Tree Traversals") had one bullet
+   ("Level-order traversal fundamentally requires a queue rather than a stack... must process all
+   nodes at one depth before moving to the next") that restated the page's own third theory
+   section's opening bullet ("Uses a queue. Process all nodes at depth d before depth d+1") nearly
+   verbatim — the other three bullets in the section were genuinely new. Replaced the duplicate
+   with a Node-verified, genuinely counterintuitive fact: measured DFS recursion depth and BFS
+   peak queue size directly on two different tree shapes — a 1,000-node completely skewed
+   (linked-list-shaped) tree gave DFS depth 1,001 vs. BFS queue size 1 (BFS over 1,000x cheaper),
+   while a 1,023-node balanced (perfect) tree gave DFS depth 11 vs. BFS queue size 512 (DFS over
+   46x cheaper) — proving which traversal wins on memory depends entirely on tree shape, not a
+   fixed rule either direction. No `SUBTOPICS` collision for `binary-trees` (checked both quoted
+   and unquoted forms in `subtopics.ts`, and grepped `app.routes.ts` directly, confirmed
+   collision-free, left bare). Every codeTab and the Challenge's own `rightSideView` solution were
+   independently verified first via direct Node.js execution (`inorder`/`inorderIterative` matched
+   each other exactly; `height`, `diameterOfBinaryTree`, and `maxPathSum` all matched their own
+   expected outputs, including the page's own quiz Q4 height-of-complete-tree formula
+   `floor(log2(n))`, cross-checked against a direct index-based depth computation for every n from
+   1 to 1000 with zero mismatches). Three subtopics, each independently verified: (1)
+   **fix-adjacent** — ties to the page's own fourth theory bullet naming Morris traversal; built a
+   correct implementation and verified via a full structural serialization (every left/right
+   pointer, not just values) that the tree is restored byte-for-byte after the call, THEN
+   deliberately deleted the one "remove the thread" line and verified the broken version still
+   returns the CORRECT traversal values on its first call while leaving a real, permanent cycle in
+   the tree (a leaf node's own `.right` pointer left pointing back to its own ancestor) — confirmed
+   by running an ordinary, unrelated recursive inorder traversal on the now-corrupted tree
+   afterward and getting garbage repeated-value output instead of the correct 7 distinct values;
+   (2) **gap-closing** — the measured BFS-vs-DFS memory finding behind the main-page fix, with a
+   Try It on a partially-skewed tree shape testing whether the reader generalizes "BFS tracks
+   width, DFS tracks depth" correctly; (3) **gap-closing** — the page's own "Mixing up preorder and
+   inorder" mistake block states inorder alone "is not enough to reconstruct a generic binary
+   tree" with no demonstration; built and verified two structurally different 3-node trees (a
+   balanced tree and a completely right-skewed chain) producing the IDENTICAL inorder sequence
+   `[1, 2, 3]`, then built and round-tripped the real fix (preorder + null markers) the page's own
+   QnA describes in prose, verified via a full structural comparison that the rebuilt tree matches
+   the original exactly. All three `exercise.solution`/`theory.points`/`misconceptions` fields
+   swept clean via the standing bracket-balance/backtick-parity/apostrophe scripts (all three files
+   balanced, all backtick counts even, zero unescaped possessive apostrophes found); the main
+   page's own pre-existing 68/70 brace-count "imbalance" was checked against `git show HEAD` and
+   confirmed byte-for-byte identical before and after this batch's edit — a pre-existing false
+   positive from a lone brace character inside a string literal, not introduced by this batch, per
+   the established documented precedent for this exact category of sweep false-positive. Build
+   passed clean (foreground execution under Node 22.23.2, explicit `EXITCODE:$?` capture, zero
+   real `ERROR` lines). **No interactive browser/preview tool was available in this session** —
+   verified via the same compiled-bundle-inspection fallback as the prior seven batches: confirmed
+   the OLD duplicate bullet was absent from every compiled chunk, confirmed the NEW BFS-vs-DFS
+   memory fact was present in the main page's own chunk; confirmed all three subtopic classes
+   (`MorrisTraversalRestoresTheTreeUnlessYouForgetSubtopic`/
+   `BfsCanUseLessMemoryThanDfsOnASkewedTreeSubtopic`/
+   `InorderAloneCannotReconstructABinaryTreeSubtopic`) each compiled into their own separate lazy
+   chunk, with the em-dash title correctly encoded as a `—` escape in the compiled `SUBTOPICS`
+   map; confirmed the `SUBTOPICS`/`SIDEBAR_MAP`/breadcrumb/search-index entries for `binary-trees`
+   (bare) and all three composite subtopic keys were present with matching content.
+   **DSA hub Phase 10: 8 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -11272,13 +11328,14 @@ check before any other new hub's first subtopic set:
   needs the full `.dsa-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }`
   rule (copied from the main topic page's own `.scss`, which defines it locally). No live
   playground (DSA theory/analysis content has no in-browser runtime) — plain `<app-code-block>`.
-  Phase 10: 7 of 21 topics have subtopics (`/dsa/big-o`, pilot batch; `/dsa/arrays`; `/dsa/strings`;
-  `/dsa/hash-tables`; `/dsa/stacks-queues`; `/dsa/linked-lists`; `/dsa/doubly-linked-lists`, all
-  2026-10-08) — see "DSA hub
+  Phase 10: 8 of 21 topics have subtopics (`/dsa/big-o`, pilot batch; `/dsa/arrays`; `/dsa/strings`;
+  `/dsa/hash-tables`; `/dsa/stacks-queues`; `/dsa/linked-lists`; `/dsa/doubly-linked-lists`;
+  `/dsa/binary-trees`, all 2026-10-08) — see "DSA hub
   subtopic wiring" section below for the `DsaNavComponent` accordion
   structural fix (19th `*NavComponent`-based hub in a row missing it at pilot time), the
   `dsa-arrays` SUBTOPICS-map collision resolution (bare `arrays` collides with the C# hub's own
-  topic; `stacks-queues`, `linked-lists`, and `doubly-linked-lists` all confirmed collision-free,
+  topic; `stacks-queues`, `linked-lists`, `doubly-linked-lists`, and `binary-trees` all confirmed
+  collision-free,
   left bare), and the
   genuine main-page fixes
   found and verified by direct Node execution.

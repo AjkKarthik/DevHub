@@ -1,0 +1,26 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Binary Trees" topicRoute="/dsa/binary-trees"
+    subtopicLabel="Inorder Alone Cannot Reconstruct a Binary Tree" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">Inorder Alone Cannot Reconstruct a Binary Tree</h1>
+  <p class="page-subtitle">The main page's own mistake block states this in prose with no demonstration. Proved it directly by finding two different tree shapes with identical inorder sequences, then built the real fix.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This proves the main page's own "Mixing up preorder and inorder" mistake block and builds the exact serialize/deserialize fix the page's own QnA describes in prose.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Binary Trees" topicRoute="/dsa/binary-trees"
+    [prev]="{ label: 'BFS Can Use Less Memory Than DFS on a Skewed Tree', route: '/dsa/binary-trees/bfs-can-use-less-memory-than-dfs-on-a-skewed-tree' }" />
+</div>

@@ -10032,7 +10032,13 @@ off here with a date.
   bullets) with new, verified content: real deques use blocked (not node-per-element) DLLs for
   cache locality, and the sentinel-boundary null-dereference risk if a guard clause is forgotten.
   Bare `doubly-linked-lists` SUBTOPICS key collision-free. DSA hub Phase 10: 7 of 21.
-- [ ] `/dsa/binary-trees` — Binary Trees
+- [x] 2026-10-08 `/dsa/binary-trees` — Binary Trees. 3 subtopics
+  (morris-traversal-restores-the-tree-unless-you-forget, bfs-can-use-less-memory-than-dfs-on-a-skewed-tree,
+  inorder-alone-cannot-reconstruct-a-binary-tree). Main-page fix: replaced a duplicate theory
+  bullet (restating the BFS-uses-a-queue fact already stated two sections up) with a Node-verified
+  counterintuitive finding -- measured DFS recursion depth vs BFS peak queue size on a skewed tree
+  (BFS 1000x cheaper) and a balanced tree (DFS 46x cheaper), proving the memory winner depends
+  entirely on tree shape. Bare `binary-trees` SUBTOPICS key collision-free. DSA hub Phase 10: 8 of 21.
 - [ ] `/dsa/bst` — Binary Search Trees
 - [ ] `/dsa/heaps` — Heaps & Priority Queues
 - [ ] `/dsa/graphs-bfs-dfs` — Graphs: BFS & DFS

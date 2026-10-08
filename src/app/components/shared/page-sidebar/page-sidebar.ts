@@ -34671,8 +34671,41 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
     tip: 'Recursive traversals map naturally to a tree\'s recursive structure but risk stack overflow on very deep/unbalanced trees — iterative traversals with an explicit stack avoid this at the cost of code complexity.',
     gotchas: [
-      'Level-order traversal fundamentally requires a QUEUE, not a stack, since it must process each depth level before moving to the next.',
+      'Which traversal uses less memory, DFS or BFS, depends entirely on the tree\'s shape — measured 1,000x less peak memory for BFS on a skewed tree, but 46x less for DFS on a balanced one.',
       'Morris traversal achieves O(1)-space inorder traversal by temporarily modifying tree structure — an advanced space-optimization technique.',
+    ],
+  },
+  'dsa/binary-trees/morris-traversal-restores-the-tree-unless-you-forget': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'BFS Can Use Less Memory Than DFS on a Skewed Tree', route: '/dsa/binary-trees/bfs-can-use-less-memory-than-dfs-on-a-skewed-tree' },
+      { label: 'Binary Trees (topic overview)', route: '/dsa/binary-trees' },
+    ],
+    tip: 'A correct Morris traversal was verified to fully restore the tree\'s structure afterward. Deleting the single "remove the thread" line still returns the right traversal VALUES on that first call, but leaves a real, permanent cycle in the tree.',
+    gotchas: [
+      'A function can be "correct" by its own return value and still permanently corrupt a mutable structure it was given — confirmed by a later, unrelated traversal returning garbage on the now-cyclic tree.',
+    ],
+  },
+  'dsa/binary-trees/bfs-can-use-less-memory-than-dfs-on-a-skewed-tree': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Morris Traversal Restores the Tree — Unless You Forget', route: '/dsa/binary-trees/morris-traversal-restores-the-tree-unless-you-forget' },
+      { label: 'Inorder Alone Cannot Reconstruct a Binary Tree', route: '/dsa/binary-trees/inorder-alone-cannot-reconstruct-a-binary-tree' },
+    ],
+    tip: 'Measured directly: on a 1,000-node skewed tree, BFS\'s peak queue size was 1 while DFS\'s stack depth reached 1,001. On a 1,023-node balanced tree, the result flips -- DFS peaked at 11 while BFS peaked at 512.',
+    gotchas: [
+      'BFS\'s memory cost tracks the tree\'s WIDTH at its widest level; DFS\'s tracks the tree\'s total DEPTH — neither is a universally safer choice.',
+    ],
+  },
+  'dsa/binary-trees/inorder-alone-cannot-reconstruct-a-binary-tree': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'BFS Can Use Less Memory Than DFS on a Skewed Tree', route: '/dsa/binary-trees/bfs-can-use-less-memory-than-dfs-on-a-skewed-tree' },
+      { label: 'Binary Trees (topic overview)', route: '/dsa/binary-trees' },
+    ],
+    tip: 'A small balanced tree and a completely skewed chain were built and confirmed to produce the IDENTICAL inorder sequence [1, 2, 3] — proving traversal output alone cannot determine tree shape, let alone reconstruct it.',
+    gotchas: [
+      'Preorder alone has the same ambiguity problem as inorder — null markers, not traversal order, are what actually remove it.',
     ],
   },
   'dsa/heaps': {

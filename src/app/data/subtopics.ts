@@ -4266,4 +4266,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'What Happens Without the Empty-List Guard', route: '/dsa/doubly-linked-lists/what-happens-without-the-empty-list-guard' },
     { label: 'Building a Blocked Deque Like Python’s collections.deque', route: '/dsa/doubly-linked-lists/building-a-blocked-deque-like-pythons' },
   ],
+  'binary-trees': [
+    { label: 'Morris Traversal Restores the Tree — Unless You Forget', route: '/dsa/binary-trees/morris-traversal-restores-the-tree-unless-you-forget' },
+    { label: 'BFS Can Use Less Memory Than DFS on a Skewed Tree', route: '/dsa/binary-trees/bfs-can-use-less-memory-than-dfs-on-a-skewed-tree' },
+    { label: 'Inorder Alone Cannot Reconstruct a Binary Tree', route: '/dsa/binary-trees/inorder-alone-cannot-reconstruct-a-binary-tree' },
+  ],
 };
