@@ -10064,6 +10064,20 @@ off here with a date.
   sort-based solution never implemented, verified by distance multiset across 200 trials
   (individual tied points can validly differ between heap and sort approaches). Bare `heaps`
   SUBTOPICS key collision-free. DSA hub Phase 10: 10 of 21.
+- [x] 2026-10-08 `/dsa/graphs-bfs-dfs` — Graphs - BFS & DFS. 3 subtopics
+  (shifts-on-v-squared-risk-depends-on-graph-width, detecting-a-directed-cycle-with-three-state-dfs,
+  checking-bipartiteness-with-two-coloring-bfs). Main-page fix: the canonical `bfs` function used
+  `queue.shift()!` -- the EXACT anti-pattern the page's own "Common Mistakes" section warns against
+  ("For large graphs, BFS with shift() is O(V^2)"). Fixed to an index-pointer dequeue. Verified the
+  real blowup is width-dependent, not vertex-count-dependent: a 400K-node chain graph showed no
+  difference between shift() and pointer BFS, but a 160K-node wide tree showed shift() running 33x
+  slower. Also retitled 2 of 4 duplicate bullets in the "When to Choose BFS/DFS" section with the
+  width-dependent finding and a three-state-DFS verification. Subtopics build the directed-cycle
+  detection (white/gray/black) and bipartiteness check (2-coloring) the page's own QnA describes in
+  prose but never shows in code, both verified via direct execution against DAG/cyclic/diamond and
+  even-cycle/odd-cycle/tree test cases. Bare `graphs-bfs-dfs` SUBTOPICS key collision-free. Self-caught
+  and fixed a `\'`-in-bound-attribute mistake before the build (needed the typographic curly quote).
+  DSA hub Phase 10: 11 of 21.
 - [ ] `/dsa/heaps` — Heaps & Priority Queues
 - [ ] `/dsa/graphs-bfs-dfs` — Graphs: BFS & DFS
 - [ ] `/dsa/graph-algorithms` — Graph Algorithms

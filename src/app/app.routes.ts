@@ -4982,7 +4982,12 @@ export const routes: Routes = [
       { path: 'popping-a-heap-n-times-is-heap-sort', loadComponent: () => import('./components/fundamentals/dsa/heaps/subtopics/popping-a-heap-n-times-is-heap-sort/popping-a-heap-n-times-is-heap-sort').then(m => m.PoppingAHeapNTimesIsHeapSortSubtopic) },
       { path: 'the-real-on-log-k-k-closest-points-solution', loadComponent: () => import('./components/fundamentals/dsa/heaps/subtopics/the-real-on-log-k-k-closest-points-solution/the-real-on-log-k-k-closest-points-solution').then(m => m.TheRealOnLogKKClosestPointsSolutionSubtopic) },
     ]},
-    { path: 'graphs-bfs-dfs',         loadComponent: () => import('./components/fundamentals/dsa/graphs-bfs-dfs/graphs-bfs-dfs').then(m => m.DsaGraphsBfsDfs) },
+    { path: 'graphs-bfs-dfs', children: [
+      { path: '', loadComponent: () => import('./components/fundamentals/dsa/graphs-bfs-dfs/graphs-bfs-dfs').then(m => m.DsaGraphsBfsDfs) },
+      { path: 'shifts-on-v-squared-risk-depends-on-graph-width', loadComponent: () => import('./components/fundamentals/dsa/graphs-bfs-dfs/subtopics/shifts-on-v-squared-risk-depends-on-graph-width/shifts-on-v-squared-risk-depends-on-graph-width').then(m => m.ShiftsOnVSquaredRiskDependsOnGraphWidthSubtopic) },
+      { path: 'detecting-a-directed-cycle-with-three-state-dfs', loadComponent: () => import('./components/fundamentals/dsa/graphs-bfs-dfs/subtopics/detecting-a-directed-cycle-with-three-state-dfs/detecting-a-directed-cycle-with-three-state-dfs').then(m => m.DetectingADirectedCycleWithThreeStateDfsSubtopic) },
+      { path: 'checking-bipartiteness-with-two-coloring-bfs', loadComponent: () => import('./components/fundamentals/dsa/graphs-bfs-dfs/subtopics/checking-bipartiteness-with-two-coloring-bfs/checking-bipartiteness-with-two-coloring-bfs').then(m => m.CheckingBipartitenessWithTwoColoringBfsSubtopic) },
+    ]},
     { path: 'graph-algorithms',       loadComponent: () => import('./components/fundamentals/dsa/graph-algorithms/graph-algorithms').then(m => m.DsaGraphAlgorithms) },
     { path: 'basic-sorts',            loadComponent: () => import('./components/fundamentals/dsa/basic-sorts/basic-sorts').then(m => m.DsaBasicSorts) },
     { path: 'advanced-sorts',         loadComponent: () => import('./components/fundamentals/dsa/advanced-sorts/advanced-sorts').then(m => m.DsaAdvancedSorts) },

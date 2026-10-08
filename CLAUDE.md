@@ -11003,6 +11003,72 @@ check before any other new hub's first subtopic set:
    (bare) and all three composite subtopic keys were present with matching content in the
    compiled `main-*.js`.
    **DSA hub Phase 10: 10 of 21 topics complete.**
+17. **The `graphs-bfs-dfs` batch found and fixed a genuine, self-contained anti-pattern in the
+   main page's own canonical BFS codeTab — the "correct"/canonical function used the exact
+   technique its own "Common Mistakes" section warns against**: the mistake block states plainly
+   "Array.shift() is O(n). For large graphs, BFS with shift() is O(V²). Use an index pointer or a
+   proper deque" — but the `bfs` function in the page's primary "BFS & DFS on Graph" codeTab
+   dequeued via `queue.shift()!`, exactly what the block below it warns against. Fixed it to the
+   index-pointer technique, with an explanatory comment pointing at the mistake block. Verified a
+   genuinely interesting, non-obvious nuance before publishing anything: the O(V²) risk is NOT a
+   flat property of vertex count alone — it depends on graph SHAPE. A pure isolated test (shift()
+   draining a plain array, no BFS logic at all) confirmed the quadratic blowup directly (731ms at
+   100K elements, 2,943ms at 200K, over 18 SECONDS at 400K, versus under 1ms for an index-pointer
+   drain at every size) — but a REAL BFS run on a 400,000-node CHAIN graph showed almost no
+   difference between shift() and pointer-based BFS at all, because a chain graph's BFS queue
+   never grows large (it stays at 1-2 entries throughout). Only once a WIDE graph was tested (a
+   160,401-node, 2-level wide tree, where the queue genuinely grows to hold tens of thousands of
+   entries at once) did the predicted blowup reappear — measured 33x slower for shift() versus
+   pointer-based BFS, on a graph under half the chain graph's own vertex count. Also partially
+   retitled theory section 5 ("When to Choose BFS Over DFS"), which duplicated 2 of its 4 bullets
+   against sections 2/3's own BFS/DFS descriptions — replaced bullet 1 with the verified width-
+   dependent shift() finding and bullet 3 with a verified three-state-DFS distinction (kept the
+   two genuinely new bullets, on DFS's memory advantage and the shared O(V+E) complexity class,
+   unchanged). Three subtopics: (1) **fix-adjacent** — reproduces the isolated shift()-drain
+   blowup and the chain-vs-wide-graph contrast directly, with a Try It on a star graph (a single
+   hub connected to 50,000 leaves), verified matching the measured ~12x slowdown exactly; (2)
+   **gap-closing** — the main page's own QnA describes three-state (white/gray/black) directed-
+   cycle detection in prose ("track three states... a cycle exists if DFS encounters an
+   in-progress node") with zero codeTab building it; built it, verified against a plain DAG (no
+   cycle, correctly false), a 3-node ring (real cycle, correctly true), and — the case that
+   actually tests the white/gray/black distinction rather than a plain visited-set check — a
+   diamond-shaped DAG where two paths converge on the same descendant (correctly false, since the
+   shared node is BLACK/finished on its second visit, never GRAY/in-progress); (3) **gap-closing**
+   — the QnA's own bipartiteness-via-2-coloring description ("if you ever try to assign a node the
+   same color as its neighbor, the graph is NOT bipartite... bipartite iff no odd-length cycles")
+   also had zero codeTab; built it, verified against a 4-node even cycle (bipartite, true), a
+   3-node triangle and a 5-node pentagon (both odd cycles, correctly false), and a tree with zero
+   cycles (correctly true, confirming trees are always bipartite). **A real, self-caught mistake
+   caught and fixed before the build, not the standing sweep**: an early draft of subtopic 2's own
+   `.html` file used `\'` (the single-quoted-TS-field convention) for the apostrophe in
+   "shift()'s" inside a `[prev]` bound attribute's label string — the exact mistake this file has
+   documented many times before for other hubs (Node.js, Linux, Service Mesh) — caught
+   immediately via direct review before the build ever ran and fixed to the typographic curly
+   quote (`'`, U+2019), the established `.html`-bound-attribute convention. No `SUBTOPICS`
+   collision for `graphs-bfs-dfs` (checked both `subtopics.ts` forms and grepped `app.routes.ts`
+   directly, confirmed collision-free, left bare). All three `exercise.solution`/`theory.points`/
+   `misconceptions` fields swept clean via the standing bracket-balance/backtick-parity/apostrophe
+   scripts (all three new files balanced, backtick counts even, zero unescaped possessive
+   apostrophes found outside backtick-delimited `code:` fields, where they are safe); the main
+   page's own pre-existing 76/74 brace-count "imbalance" was checked against `git show HEAD` and
+   confirmed byte-for-byte identical before and after this batch's edit — a pre-existing false
+   positive, not introduced by this batch, per the established documented precedent for this exact
+   category of sweep false-positive. Build passed clean (background execution under Node 22.23.2,
+   explicit `EXITCODE:$?` capture, zero real `ERROR` lines). **No interactive browser/preview tool
+   was available in this session** — verified via the same compiled-bundle-inspection fallback as
+   the prior ten batches: confirmed the OLD `queue.shift()!`-based `bfs` function was replaced with
+   the index-pointer version (the OTHER, deliberately-unfixed codeTabs on the same page — grid BFS,
+   the Rotting Oranges Challenge — still legitimately use `queue.shift()!`, confirmed those matches
+   belong to different, untouched chunks and codeTabs, not a failed edit); confirmed the NEW
+   retitled theory bullets' own distinguishing text ("is not a flat property of graph SIZE") was
+   present and the OLD duplicate bullets' text was absent from the main page's own compiled chunk;
+   confirmed all three subtopic classes
+   (`ShiftsOnVSquaredRiskDependsOnGraphWidthSubtopic`/`DetectingADirectedCycleWithThreeStateDfsSubtopic`/
+   `CheckingBipartitenessWithTwoColoringBfsSubtopic`) each compiled into their own separate lazy
+   chunk; confirmed the `SUBTOPICS`/`SIDEBAR_MAP`/breadcrumb/search-index entries for
+   `graphs-bfs-dfs` (bare) and all three composite subtopic keys were present with matching
+   content in the compiled `main-*.js`.
+   **DSA hub Phase 10: 11 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -11420,9 +11486,9 @@ check before any other new hub's first subtopic set:
   needs the full `.dsa-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }`
   rule (copied from the main topic page's own `.scss`, which defines it locally). No live
   playground (DSA theory/analysis content has no in-browser runtime) — plain `<app-code-block>`.
-  Phase 10: 10 of 21 topics have subtopics (`/dsa/big-o`, pilot batch; `/dsa/arrays`; `/dsa/strings`;
+  Phase 10: 11 of 21 topics have subtopics (`/dsa/big-o`, pilot batch; `/dsa/arrays`; `/dsa/strings`;
   `/dsa/hash-tables`; `/dsa/stacks-queues`; `/dsa/linked-lists`; `/dsa/doubly-linked-lists`;
-  `/dsa/binary-trees`; `/dsa/bst`; `/dsa/heaps`, all 2026-10-08) — see "DSA hub
+  `/dsa/binary-trees`; `/dsa/bst`; `/dsa/heaps`; `/dsa/graphs-bfs-dfs`, all 2026-10-08) — see "DSA hub
   subtopic wiring" section below for the `DsaNavComponent` accordion
   structural fix (19th `*NavComponent`-based hub in a row missing it at pilot time), the
   `dsa-arrays` SUBTOPICS-map collision resolution (bare `arrays` collides with the C# hub's own

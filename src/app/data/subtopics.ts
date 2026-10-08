@@ -4281,4 +4281,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Popping a Heap n Times Is Heap Sort', route: '/dsa/heaps/popping-a-heap-n-times-is-heap-sort' },
     { label: 'The Real O(n log k) K Closest Points Solution', route: '/dsa/heaps/the-real-on-log-k-k-closest-points-solution' },
   ],
+  'graphs-bfs-dfs': [
+    { label: 'shift()’s O(V²) Risk Depends on Graph Width', route: '/dsa/graphs-bfs-dfs/shifts-on-v-squared-risk-depends-on-graph-width' },
+    { label: 'Detecting a Directed Cycle with Three-State DFS', route: '/dsa/graphs-bfs-dfs/detecting-a-directed-cycle-with-three-state-dfs' },
+    { label: 'Checking Bipartiteness with Two-Coloring BFS', route: '/dsa/graphs-bfs-dfs/checking-bipartiteness-with-two-coloring-bfs' },
+  ],
 };

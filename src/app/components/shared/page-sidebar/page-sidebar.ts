@@ -34797,6 +34797,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'BFS is the natural choice for "minimum number of steps" problems; DFS for exhaustive path exploration or cycle detection.',
     ],
   },
+  'dsa/graphs-bfs-dfs/shifts-on-v-squared-risk-depends-on-graph-width': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Detecting a Directed Cycle with Three-State DFS', route: '/dsa/graphs-bfs-dfs/detecting-a-directed-cycle-with-three-state-dfs' },
+      { label: 'Graphs — BFS & DFS (topic overview)', route: '/dsa/graphs-bfs-dfs' },
+    ],
+    tip: 'Measured directly: a 400,000-node chain graph showed no meaningful difference between queue.shift() and index-pointer BFS — but a 160,401-node wide tree showed shift()-based BFS running 33x slower. The O(V²) risk tracks queue WIDTH, not vertex count alone.',
+    gotchas: [
+      'The main page\'s own canonical BFS used queue.shift() — the exact pattern its own "Common Mistakes" section warns against. Now fixed to the index-pointer technique.',
+    ],
+  },
+  'dsa/graphs-bfs-dfs/detecting-a-directed-cycle-with-three-state-dfs': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'shift()’s O(V²) Risk Depends on Graph Width', route: '/dsa/graphs-bfs-dfs/shifts-on-v-squared-risk-depends-on-graph-width' },
+      { label: 'Checking Bipartiteness with Two-Coloring BFS', route: '/dsa/graphs-bfs-dfs/checking-bipartiteness-with-two-coloring-bfs' },
+    ],
+    tip: 'Verified directly: a diamond-shaped DAG (two paths converging on the same node) correctly reports no cycle, while a 3-node ring correctly reports one — a plain visited-set check (no gray/black distinction) would incorrectly flag the diamond as a cycle.',
+    gotchas: [
+      'A node going BLACK (fully explored) and being visited again via a different path is normal in a DAG — only re-visiting a GRAY (still-active) node is a genuine cycle.',
+    ],
+  },
+  'dsa/graphs-bfs-dfs/checking-bipartiteness-with-two-coloring-bfs': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Detecting a Directed Cycle with Three-State DFS', route: '/dsa/graphs-bfs-dfs/detecting-a-directed-cycle-with-three-state-dfs' },
+      { label: 'Graphs — BFS & DFS (topic overview)', route: '/dsa/graphs-bfs-dfs' },
+    ],
+    tip: 'Verified directly against the main page\'s own QnA claim: a 4-node even cycle reports bipartite, a 3-node triangle and a 5-node pentagon (both odd cycles) correctly report NOT bipartite, and a tree with zero cycles reports bipartite.',
+    gotchas: [
+      'A tree always reports bipartite — not because it is a trivial/skipped case, but because having no cycles at all means it structurally cannot have an odd-length one.',
+    ],
+  },
   'dsa/graph-algorithms': {
     apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
     related: [
