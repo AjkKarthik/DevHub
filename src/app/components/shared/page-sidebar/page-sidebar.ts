@@ -32979,6 +32979,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'userEvent more accurately simulates real user interaction sequences than fireEvent, which dispatches a single synthetic event.',
     ],
   },
+  "testing-hub/react-testing-library/role-status-has-no-name-from-its-text": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "Testing Library Has No getByClassName", route: '/testing-hub/react-testing-library/testing-library-has-no-getbyclassname' },
+      { label: "React Testing Library (overview)", route: '/testing-hub/react-testing-library' },
+    ],
+    tip: "For live regions (status, alert, log), query by role and check the text with toHaveTextContent, or give the element an aria-label if it needs a name.",
+    gotchas: ["Buttons, links and headings do take their name from their text, which is why { name } works for them.","The error message lists the accessible roles and names it found; read it to see that the status has an empty name."],
+  },
+  "testing-hub/react-testing-library/testing-library-has-no-getbyclassname": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "role=status Has No Name from Its Text", route: '/testing-hub/react-testing-library/role-status-has-no-name-from-its-text' },
+      { label: "findBy Gives Up After One Second", route: '/testing-hub/react-testing-library/findby-gives-up-after-one-second' },
+      { label: "React Testing Library (overview)", route: '/testing-hub/react-testing-library' },
+    ],
+    tip: "The real anti-pattern is container.querySelector(\".submit-btn\"). Testing Library deliberately offers no class-name query.",
+    gotchas: ["container.querySelector returns null instead of throwing, so a missing element surfaces later as a confusing null error.","getByTestId is the documented escape hatch when no accessible query fits."],
+  },
+  "testing-hub/react-testing-library/findby-gives-up-after-one-second": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "Testing Library Has No getByClassName", route: '/testing-hub/react-testing-library/testing-library-has-no-getbyclassname' },
+      { label: "React Testing Library (overview)", route: '/testing-hub/react-testing-library' },
+    ],
+    tip: "Pass a timeout for slow cases, findByText(\"Done\", {}, { timeout: 3000 }), or raise asyncUtilTimeout with configure() for the whole suite.",
+    gotchas: ["The timeout is the third argument to findBy (after the matcher and query options).","Fake timers change the picture: advance them instead of waiting on real time."],
+  },
   'testing-hub/angular-testing': {
     apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
     related: [
@@ -33088,6 +33116,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Seeding minimal, purpose-built test data makes each test\'s assumptions explicit, reducing the chance an unrelated data change breaks a seemingly unrelated test.',
     ],
   },
+  "testing-hub/testing-databases/rollback-only-isolates-its-own-connection": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "Seeding Explicit IDs Leaves the Sequence Behind", route: '/testing-hub/testing-databases/seeding-explicit-ids-leaves-the-sequence-behind' },
+      { label: "Testing with Databases (overview)", route: '/testing-hub/testing-databases' },
+    ],
+    tip: "Per-test rollback works only when the code under test runs its queries on the same client or transaction object the test opened. Inject it.",
+    gotchas: ["Code that opens its own transaction inside the test transaction needs savepoints, or its COMMIT ends the outer test transaction.","Rows written on another connection are invisible to the test client until committed, so assertions can fail in confusing ways."],
+  },
+  "testing-hub/testing-databases/seeding-explicit-ids-leaves-the-sequence-behind": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "Rollback Only Isolates Its Own Connection", route: '/testing-hub/testing-databases/rollback-only-isolates-its-own-connection' },
+      { label: "TRUNCATE and ROLLBACK Do Not Reset IDs", route: '/testing-hub/testing-databases/truncate-and-rollback-do-not-reset-ids' },
+      { label: "Testing with Databases (overview)", route: '/testing-hub/testing-databases' },
+    ],
+    tip: "After seeding rows with explicit ids, call setval(pg_get_serial_sequence(table, column), max(id)), or seed without ids and read back the generated ones.",
+    gotchas: ["skipDuplicates: true in createMany hides duplicate-key errors on the seed itself, but not on later inserts.","Quoted table names (Prisma uses \"User\") must be quoted inside the pg_get_serial_sequence argument too."],
+  },
+  "testing-hub/testing-databases/truncate-and-rollback-do-not-reset-ids": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "Seeding Explicit IDs Leaves the Sequence Behind", route: '/testing-hub/testing-databases/seeding-explicit-ids-leaves-the-sequence-behind' },
+      { label: "Testing with Databases (overview)", route: '/testing-hub/testing-databases' },
+    ],
+    tip: "Use TRUNCATE ... RESTART IDENTITY when tests depend on ids starting at 1, or better, never assert on generated ids.",
+    gotchas: ["Sequences are non-transactional by design, so a rolled-back insert still uses up its id.","TRUNCATE takes an exclusive lock and ignores triggers; DELETE is slower but behaves like ordinary writes."],
+  },
   'testing-hub/msw': {
     apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
     related: [
@@ -33099,6 +33155,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Because app code is unaware, MSW exercises real request-building and response-parsing logic that a higher-level "mock the fetch function" approach would miss.',
       'MSW handlers simulate error responses and edge-case payloads just as easily as happy-path responses.',
     ],
+  },
+  "testing-hub/msw/the-override-test-never-imported-server": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "warn Lets Unhandled Requests Hit the Network", route: '/testing-hub/msw/warn-lets-unhandled-requests-hit-the-network' },
+      { label: "MSW — Mock Service Worker (overview)", route: '/testing-hub/msw' },
+    ],
+    tip: "Export the server from the setup file and import it, together with http and HttpResponse from msw, in any test that overrides a handler.",
+    gotchas: ["If the setup file is registered in setupFiles and also imported by tests, make sure it creates only one server.","With globals off in Vitest, test helpers like expect also need importing."],
+  },
+  "testing-hub/msw/warn-lets-unhandled-requests-hit-the-network": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "The Override Test Never Imported server", route: '/testing-hub/msw/the-override-test-never-imported-server' },
+      { label: "Relative Handler URLs Need a DOM Environment", route: '/testing-hub/msw/relative-handler-urls-need-a-dom-environment' },
+      { label: "MSW — Mock Service Worker (overview)", route: '/testing-hub/msw' },
+    ],
+    tip: "Use onUnhandledRequest: \"error\" in tests. A missing handler then fails the test that needed it, instead of letting that test talk to a real server.",
+    gotchas: ["\"error\" applies to every request, including ones to localhost dev servers; add explicit handlers or passthrough() for those.","A custom function lets you allow some hosts (for example static assets) and error on the rest."],
+  },
+  "testing-hub/msw/relative-handler-urls-need-a-dom-environment": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "warn Lets Unhandled Requests Hit the Network", route: '/testing-hub/msw/warn-lets-unhandled-requests-hit-the-network' },
+      { label: "MSW — Mock Service Worker (overview)", route: '/testing-hub/msw' },
+    ],
+    tip: "In node-environment tests, use absolute URLs in both the app code and the handlers, for example http.get(`${API_BASE}/users`).",
+    gotchas: ["A relative handler never matches http://localhost/api/users in Node, because there is no location to resolve it against.","Read the API base URL from one config value so app code and handlers stay in sync."],
   },
   'testing-hub/property-based-testing': {
     apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,

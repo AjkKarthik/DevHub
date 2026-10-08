@@ -1,0 +1,27 @@
+<div class="test-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="MSW — Mock Service Worker" topicRoute="/testing-hub/msw"
+    subtopicLabel="warn Lets Unhandled Requests Hit the Network" />
+  <div class="page-header-icon test-icon">✓</div>
+  <h1 class="page-title">warn Lets Unhandled Requests Hit the Network</h1>
+  <p class="page-subtitle">The page warned that onUnhandledRequest error crashes the suite and recommended warn. With msw 2.15, warn sends the request for real, while error fails only the request that had no handler.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Testing" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="test-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="test-section">
+    <h2>Where this fits</h2>
+    <p>This corrects a mistake on the MSW page. The last subtopic covers relative handler URLs.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="MSW — Mock Service Worker" topicRoute="/testing-hub/msw"
+    [prev]="{ label: 'The Override Test Never Imported server', route: '/testing-hub/msw/the-override-test-never-imported-server' }"
+    [next]="{ label: 'Relative Handler URLs Need a DOM Environment', route: '/testing-hub/msw/relative-handler-urls-need-a-dom-environment' }" />
+</div>

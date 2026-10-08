@@ -4386,4 +4386,19 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: "PostgreSqlContainer Needs an Image and a stop()", route: '/testing-hub/integration-testing/postgresqlcontainer-needs-an-image-and-a-stop' },
     { label: "In-Memory SQLite Dies with Its Connection", route: '/testing-hub/integration-testing/in-memory-sqlite-dies-with-its-connection' },
   ],
+  'testing-databases': [
+    { label: "Rollback Only Isolates Its Own Connection", route: '/testing-hub/testing-databases/rollback-only-isolates-its-own-connection' },
+    { label: "Seeding Explicit IDs Leaves the Sequence Behind", route: '/testing-hub/testing-databases/seeding-explicit-ids-leaves-the-sequence-behind' },
+    { label: "TRUNCATE and ROLLBACK Do Not Reset IDs", route: '/testing-hub/testing-databases/truncate-and-rollback-do-not-reset-ids' },
+  ],
+  'test-msw': [
+    { label: "The Override Test Never Imported server", route: '/testing-hub/msw/the-override-test-never-imported-server' },
+    { label: "warn Lets Unhandled Requests Hit the Network", route: '/testing-hub/msw/warn-lets-unhandled-requests-hit-the-network' },
+    { label: "Relative Handler URLs Need a DOM Environment", route: '/testing-hub/msw/relative-handler-urls-need-a-dom-environment' },
+  ],
+  'react-testing-library': [
+    { label: "role=status Has No Name from Its Text", route: '/testing-hub/react-testing-library/role-status-has-no-name-from-its-text' },
+    { label: "Testing Library Has No getByClassName", route: '/testing-hub/react-testing-library/testing-library-has-no-getbyclassname' },
+    { label: "findBy Gives Up After One Second", route: '/testing-hub/react-testing-library/findby-gives-up-after-one-second' },
+  ],
 };

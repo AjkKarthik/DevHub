@@ -5,8 +5,10 @@ const spec = require(specPath); const H = spec.hub;
 const W = JSON.parse(fs.readFileSync(specPath + '.wiring.json', 'utf8'));
 const rd = f => fs.readFileSync(f, 'utf8'); const wr = (f, s) => fs.writeFileSync(f, s);
 const fail = m => { throw new Error(m); };
-// 1 routes
-{ const f = 'src/app/app.routes.ts'; let s = rd(f); const lines = s.split('\n');
+// 0 pre-check: refuse before touching any file
+{ const k = H.subtopicsKey; if (new RegExp(`^\\s*'?${k}'?:`, 'm').test(rd('src/app/data/subtopics.ts'))) fail('subtopics key exists ' + k + ' (set a hub-prefixed subtopicsKey)'); }
+// 1 routes (skipped if already converted)
+if (!rd('src/app/app.routes.ts').includes(`${H.routeImportBase}/${H.topicSlug}/subtopics/`)) { const f = 'src/app/app.routes.ts'; let s = rd(f); const lines = s.split('\n');
   const hubIdx = lines.findIndex(l => l.includes(`path: '${H.hubRoutePath}'`)); if (hubIdx < 0) fail('hub route');
   const re = new RegExp(`\\{ path: '${H.topicSlug}',\\s*loadComponent: (.*?) \\},\\s*$`);
   let i = hubIdx; for (; i < lines.length; i++) if (re.test(lines[i])) break; if (i >= lines.length) fail('topic route');
