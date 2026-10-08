@@ -4296,4 +4296,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Measuring Insertion Sort’s Real Adaptive Cost', route: '/dsa/basic-sorts/measuring-insertion-sorts-real-adaptive-cost' },
     { label: 'Sorting By Multiple Keys: the Order Matters', route: '/dsa/basic-sorts/sorting-by-multiple-keys-the-order-matters' },
   ],
+  'advanced-sorts': [
+    { label: 'Quicksort Is Not Actually O(1) Space', route: '/dsa/advanced-sorts/quicksort-recursion-stack-overflow' },
+    { label: 'Radix Sort Runs Counting Sort Digit by Digit', route: '/dsa/advanced-sorts/radix-sort-digit-by-digit' },
+    { label: 'Why Timsort Exploits Natural Ascending Runs', route: '/dsa/advanced-sorts/timsort-natural-ascending-runs' },
+  ],
 };

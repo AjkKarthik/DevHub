@@ -11193,6 +11193,23 @@ check before any other new hub's first subtopic set:
    and all three composite subtopic keys were present with matching content in the compiled
    `main-*.js`.
    **DSA hub Phase 10: 13 of 21 topics complete.**
+20. **The `advanced-sorts` batch found and fixed a self-contained contradiction**: the revision
+   `mustKnow` and the "Using merge sort when O(1) space is required" mistake both called quicksort
+   O(1) space, while the page's own theory correctly says O(log n) average / O(n) worst-case stack.
+   Instrumented the page's own Lomuto quicksort for maximum simultaneously-active calls: depth = n
+   on a sorted array (99/999 at n=100/1000) and a real `RangeError: Maximum call stack size
+   exceeded` at n=10,000; recursing into the smaller partition and looping on the larger kept depth
+   at 2 through n=100,000. Fixed both wrong spots; replaced two duplicate bullets in theory section 5
+   with the stack-depth finding and a radix-sort bullet. 3 subtopics: the stack-depth fix
+   (fix-adjacent), radix sort built on per-digit counting sort (verified against a reference sort,
+   pass count = digits of max), and natural-run detection behind Timsort (100 runs on 100
+   concatenated runs vs ~n/2 on random data). Physical folders kept short
+   (`quicksort-stack-overflow`, `radix-sort-digit-passes`, `timsort-natural-runs`) with descriptive
+   route paths. **Self-caught before any sibling referenced it**: the first draft title contained a
+   straight apostrophe and quotes ("Quicksort's 'O(1) Space' Claim...") — renamed to "Quicksort Is
+   Not Actually O(1) Space" since titles are reused in `[prev]`/`[next]` labels. Bare
+   `advanced-sorts` key collision-free. Build clean; bundle-verified.
+   **DSA hub Phase 10: 14 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -11610,10 +11627,10 @@ check before any other new hub's first subtopic set:
   needs the full `.dsa-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }`
   rule (copied from the main topic page's own `.scss`, which defines it locally). No live
   playground (DSA theory/analysis content has no in-browser runtime) — plain `<app-code-block>`.
-  Phase 10: 13 of 21 topics have subtopics (`/dsa/big-o`, pilot batch; `/dsa/arrays`; `/dsa/strings`;
+  Phase 10: 14 of 21 topics have subtopics (`/dsa/big-o`, pilot batch; `/dsa/arrays`; `/dsa/strings`;
   `/dsa/hash-tables`; `/dsa/stacks-queues`; `/dsa/linked-lists`; `/dsa/doubly-linked-lists`;
   `/dsa/binary-trees`; `/dsa/bst`; `/dsa/heaps`; `/dsa/graphs-bfs-dfs`; `/dsa/graph-algorithms`;
-  `/dsa/basic-sorts`,
+  `/dsa/basic-sorts`; `/dsa/advanced-sorts`,
   all 2026-10-08) — see "DSA hub
   subtopic wiring" section below for the `DsaNavComponent` accordion
   structural fix (19th `*NavComponent`-based hub in a row missing it at pilot time), the

@@ -34988,6 +34988,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The technique specifically needs Array.sort()\'s ES2019-guaranteed stability — an unstable sort would not preserve the earlier pass\'s grouping through the final pass.',
     ],
   },
+  'dsa/advanced-sorts/quicksort-recursion-stack-overflow': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Radix Sort Runs Counting Sort Digit by Digit', route: '/dsa/advanced-sorts/radix-sort-digit-by-digit' },
+      { label: 'Advanced Sorts (topic overview)', route: '/dsa/advanced-sorts' },
+    ],
+    tip: 'A mistake block and the revision summary called quicksort O(1) space, contradicting the page\'s own theory section. Instrumented the real recursion depth: it grew to n on a sorted array and genuinely crashed with a RangeError at n=10,000.',
+    gotchas: [
+      'The array partition being in-place says nothing about the call stack — recursing into the smaller side first (not the larger one) is what actually bounds depth to O(log n).',
+    ],
+  },
+  'dsa/advanced-sorts/radix-sort-digit-by-digit': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Quicksort Is Not Actually O(1) Space', route: '/dsa/advanced-sorts/quicksort-recursion-stack-overflow' },
+      { label: 'Why Timsort Exploits Natural Ascending Runs', route: '/dsa/advanced-sorts/timsort-natural-ascending-runs' },
+    ],
+    tip: 'The QnA describes radix sort precisely with zero code. Built it on the page\'s own countingSort idea, scoped to one digit (10 buckets) per pass instead of the full value range — verified the pass count tracks digit count, not element count.',
+    gotchas: [
+      'Each digit pass must be stable relative to the PREVIOUS pass, which is why radix sort processes least-significant-digit first, not most-significant-digit first.',
+    ],
+  },
+  'dsa/advanced-sorts/timsort-natural-ascending-runs': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Radix Sort Runs Counting Sort Digit by Digit', route: '/dsa/advanced-sorts/radix-sort-digit-by-digit' },
+      { label: 'Advanced Sorts (topic overview)', route: '/dsa/advanced-sorts' },
+    ],
+    tip: 'A quiz explanation claims Timsort finds and merges natural runs with zero measurement. Built a run detector: found exactly 100 runs on data built from 100 concatenated ascending runs, vs. close to n/2 runs on fully random data of the same size.',
+    gotchas: [
+      'The detector only catches ASCENDING runs — a strictly descending array produces n runs of length 1, which real Timsort handles with a separate reverse-in-place optimization this simplified version omits.',
+    ],
+  },
 
   // ── MongoDB: per-page entries ────────────────────────────────────────────────
   'mongodb/fundamentals': {

@@ -10105,6 +10105,18 @@ off here with a date.
   QnA's "least important key first" multi-key-sort ordering rule actually matters (reversing it
   strands an employee outside their own department group). Bare `basic-sorts` SUBTOPICS key
   collision-free. DSA hub Phase 10: 13 of 21.
+- [x] 2026-10-08 `/dsa/advanced-sorts` — Merge & Quick Sort. 3 subtopics (routes
+  quicksort-recursion-stack-overflow, radix-sort-digit-by-digit, timsort-natural-ascending-runs;
+  short physical folders quicksort-stack-overflow, radix-sort-digit-passes, timsort-natural-runs).
+  Main-page fix: the revision summary and the "merge sort when O(1) space is required" mistake
+  called quicksort O(1) space, contradicting the page's own theory (O(log n) avg / O(n) worst
+  stack). Instrumented active recursion depth: n on a sorted array (99 at n=100, 999 at n=1000),
+  real RangeError at n=10,000; recursing into the smaller partition and looping on the larger kept
+  depth at 2 up to n=100,000. Replaced two duplicate bullets in the "Choosing" theory section
+  (stack-depth finding; radix sort). Subtopics: the stack-depth fix, radix sort built on per-digit
+  counting sort (verified vs reference sort), natural-run detection (100 runs on 100 concatenated
+  runs vs ~n/2 on random data). Bare `advanced-sorts` SUBTOPICS key collision-free. DSA hub
+  Phase 10: 14 of 21.
 - [ ] `/dsa/heaps` — Heaps & Priority Queues
 - [ ] `/dsa/graphs-bfs-dfs` — Graphs: BFS & DFS
 - [ ] `/dsa/graph-algorithms` — Graph Algorithms

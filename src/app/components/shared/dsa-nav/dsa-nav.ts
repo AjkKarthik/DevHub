@@ -266,7 +266,24 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/dsa/advanced-sorts" routerLinkActive="active"><span class="nl-text">Merge &amp; Quick Sort</span>@if(p.isDone('dsa-advanced-sorts')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/dsa/advanced-sorts" routerLinkActive="active">
+        <span class="nl-text">Merge &amp; Quick Sort</span>
+        @if(p.isDone('dsa-advanced-sorts')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('advanced-sorts'); as advSortSubs) {
+          <button type="button" class="nav-subtopics-toggle" (click)="toggleSubtopics('advanced-sorts', $event)">
+            {{ isSubtopicsExpanded('advanced-sorts') ? '▾' : '▸' }}
+          </button>
+        }
+      </a>
+      @if (subtopicsOf('advanced-sorts'); as advSortSubs) {
+        @if (isSubtopicsExpanded('advanced-sorts')) {
+          <div class="nav-subtopics">
+            @for (sub of advSortSubs; track sub.route) {
+              <a [routerLink]="sub.route" routerLinkActive="active" class="nav-subtopic-link">{{ sub.label }}</a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/dsa/binary-search" routerLinkActive="active"><span class="nl-text">Binary Search</span>@if(p.isDone('dsa-binary-search')){<span class="nl-done">✓</span>}</a>
     </div>
 

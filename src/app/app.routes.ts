@@ -5000,7 +5000,12 @@ export const routes: Routes = [
       { path: 'measuring-insertion-sorts-real-adaptive-cost', loadComponent: () => import('./components/fundamentals/dsa/basic-sorts/subtopics/measuring-insertion-sorts-real-adaptive-cost/measuring-insertion-sorts-real-adaptive-cost').then(m => m.MeasuringInsertionSortsRealAdaptiveCostSubtopic) },
       { path: 'sorting-by-multiple-keys-the-order-matters', loadComponent: () => import('./components/fundamentals/dsa/basic-sorts/subtopics/sorting-by-multiple-keys-the-order-matters/sorting-by-multiple-keys-the-order-matters').then(m => m.SortingByMultipleKeysTheOrderMattersSubtopic) },
     ]},
-    { path: 'advanced-sorts',         loadComponent: () => import('./components/fundamentals/dsa/advanced-sorts/advanced-sorts').then(m => m.DsaAdvancedSorts) },
+    { path: 'advanced-sorts', children: [
+      { path: '', loadComponent: () => import('./components/fundamentals/dsa/advanced-sorts/advanced-sorts').then(m => m.DsaAdvancedSorts) },
+      { path: 'quicksort-recursion-stack-overflow', loadComponent: () => import('./components/fundamentals/dsa/advanced-sorts/subtopics/quicksort-stack-overflow/quicksort-stack-overflow').then(m => m.QuicksortStackOverflowSubtopic) },
+      { path: 'radix-sort-digit-by-digit', loadComponent: () => import('./components/fundamentals/dsa/advanced-sorts/subtopics/radix-sort-digit-passes/radix-sort-digit-passes').then(m => m.RadixSortDigitPassesSubtopic) },
+      { path: 'timsort-natural-ascending-runs', loadComponent: () => import('./components/fundamentals/dsa/advanced-sorts/subtopics/timsort-natural-runs/timsort-natural-runs').then(m => m.TimsortNaturalRunsSubtopic) },
+    ]},
     { path: 'binary-search',          loadComponent: () => import('./components/fundamentals/dsa/binary-search/binary-search').then(m => m.DsaBinarySearch) },
     { path: 'recursion-backtracking', loadComponent: () => import('./components/fundamentals/dsa/recursion-backtracking/recursion-backtracking').then(m => m.DsaRecursionBacktracking) },
     { path: 'dynamic-programming',    loadComponent: () => import('./components/fundamentals/dsa/dynamic-programming/dynamic-programming').then(m => m.DsaDynamicProgramming) },
