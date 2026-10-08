@@ -1,0 +1,27 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Backpressure & Flow Control" topicRoute="/messaging/backpressure"
+    subtopicLabel="kafkajs Has No buffer.memory or max.block.ms -- Those Are the Java Client's" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">kafkajs Has No buffer.memory or max.block.ms -- Those Are the Java Client's</h1>
+  <p class="page-subtitle">kafkajs's own installed ProducerConfig has exactly eight fields, and neither of these two commonly-cited Kafka backpressure settings is one of them.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="kafkajs" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This tightens the main page's own producer-backpressure QnA, and connects directly to the main page's own Rate-Limited Producer codeTab as the real mechanism kafkajs applications need. The final subtopic moves away from Kafka entirely, verifying the main page's Node.js streams QnA with real, executed code.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Backpressure & Flow Control" topicRoute="/messaging/backpressure"
+    [prev]="{ label: 'The Kafka Pause/Resume codeTab Discards Its Own Resume Function', route: '/messaging/backpressure/kafka-pause-discards-its-own-resume-function' }"
+    [next]="{ label: 'Node.js Stream Backpressure, Actually Running', route: '/messaging/backpressure/nodejs-stream-backpressure-actually-running' }" />
+</div>

@@ -1,0 +1,27 @@
+<div class="test-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Visual Regression Testing" topicRoute="/testing-hub/visual-regression"
+    subtopicLabel="A Missing Baseline Fails the First Run" />
+  <div class="page-header-icon test-icon">✓</div>
+  <h1 class="page-title">A Missing Baseline Fails the First Run</h1>
+  <p class="page-subtitle">The quiz said toHaveScreenshot creates a baseline and passes on the first run, and a mistake said uncommitted baselines make CI pass vacuously. By default Playwright writes the file and fails the test.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Testing" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="test-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="test-section">
+    <h2>Where this fits</h2>
+    <p>This fixes a quiz answer and a mistake on Visual Regression. The last subtopic covers waiting and animations.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Visual Regression Testing" topicRoute="/testing-hub/visual-regression"
+    [prev]="{ label: 'threshold Is Colour Sensitivity, Not a Percentage', route: '/testing-hub/visual-regression/threshold-is-colour-sensitivity-not-percent' }"
+    [next]="{ label: 'Animations Are Already Off, and networkidle Is Discouraged', route: '/testing-hub/visual-regression/animations-are-already-off-and-networkidle-is-discouraged' }" />
+</div>

@@ -68,12 +68,12 @@ export class DsaHashTables {
       ],
     },
     {
-      heading: 'Collision Resolution Strategies and Their Tradeoffs',
+      heading: 'Collision Resolution: Deletion and Hash Quality',
       points: [
         'Separate chaining (storing a linked list or small array at each bucket) handles collisions gracefully and degrades predictably, but incurs extra memory overhead per bucket and worse cache locality compared to open addressing schemes.',
         'Open addressing (linear probing, quadratic probing, double hashing) stores all entries directly within the underlying array, improving cache locality and memory efficiency, but requires careful handling of deletions (typically via tombstone markers) to avoid breaking probe sequences.',
-        'A poor hash function that clusters many keys into the same bucket destroys the O(1) average-case guarantee entirely, degrading operations toward O(n) — this is why cryptographically-inspired hash functions with strong avalanche properties are preferred even for non-cryptographic hash tables.',
-        'Load factor (ratio of stored elements to bucket count) directly determines expected performance — most production hash table implementations automatically resize (rehash) once load factor crosses a threshold (commonly 0.75) to maintain amortized O(1) operations.',
+        'A poor hash function that clusters many keys into the same bucket destroys the O(1) average-case guarantee entirely, degrading operations toward O(n) — but the fix is NOT a cryptographic hash function. Production hash tables (Java HashMap, JS engines, Python dict) use fast, non-cryptographic functions (MurmurHash, xxHash, polynomial rolling hashes) specifically because cryptographic hashes (SHA-256, etc.) are deliberately slow by design, a tradeoff that is undesirable when speed is the whole point.',
+        'The one case where a keyed, SipHash-style function matters is HashDoS: an attacker who can choose every key can force them all into one bucket IF they can predict the hash. SipHash defends against this with a secret per-table key, not with cryptographic strength — Wikipedia itself classifies SipHash as a non-cryptographic hash function, since its security comes entirely from the key being secret, not from any crypto primitive.',
       ],
     },
   ];

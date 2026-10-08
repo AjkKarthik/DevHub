@@ -131,7 +131,7 @@ that specific concept. See Phase 10 for the full plan.
 | DSA | 22 | 0 | Complete — 21 topics + home |
 | Testing | 22 | 0 | Complete — 19 topics + 3 reference |
 | AI/ML | 22 | 0 | Complete — 19 topics + 3 reference |
-| Rust | 0 | ~23 | **NOT STARTED — planned, see Phase 11** |
+| Rust | 1 | ~22 | **IN PROGRESS — hub scaffolded, Fundamentals shipped, see Phase 11** |
 | QA Engineering | 0 | ~24 | **NOT STARTED — planned, see Phase 11** |
 
 ---
@@ -1136,12 +1136,9 @@ When a hub's audit is complete, note it in Done History.
 
 ## Phase 10 — Deep-Dive Subtopic Pages ("Learn Mode")
 
-**Status: IN PROGRESS (rollout approved 2026-07-02 — user said "continue todo and implement
-for all topics", skipping a separate manual review pause). 2 of ~34 Angular topics done
-(counter, todo) — 836 topics total across all hubs, most with 3-6 subtopics each, so this is
-a multi-session effort worked one topic at a time per the Rollout plan below. Read this whole
-section before touching any code — it defines a new content tier and a new routing/nav/progress
-layer, not just more pages.**
+**Status: COMPLETE (2026-10-08). Every topic in every hub listed in the checklist below now has
+its deep-dive subtopic pages; the AI/ML hub (19/19, 57 subtopic pages) was the last to finish. No
+unchecked items remain. The history below is kept as the record of how the rollout was done.**
 
 ### Why this phase exists
 
@@ -9937,80 +9934,307 @@ off here with a date.
   default 1 minute; duplicate detection, sessions and expiry dead-lettering are creation-time settings; DLQ does
   not receive filter non-matches; Premium 100MB is AMQP only. Bare `azure-service-bus` SUBTOPICS key
   collision-free. Messaging hub Phase 10: 14 of 20.
-- [ ] `/messaging/azure-event-grid` — Event Grid & Event Hubs
-- [ ] `/messaging/aws-sqs` — AWS SQS
-- [ ] `/messaging/aws-sns-eventbridge` — AWS SNS & EventBridge
-- [ ] `/messaging/idempotency` — Idempotency & Exactly-Once
-- [ ] `/messaging/message-ordering` — Message Ordering
-- [ ] `/messaging/backpressure` — Backpressure & Flow Control
+- [x] 2026-09-20 `/messaging/azure-event-grid` — Event Grid & Event Hubs. 3 subtopics. Messaging
+  hub Phase 10: 15 of 20.
+- [x] 2026-09-22 `/messaging/aws-sqs` — AWS SQS. 3 subtopics (fifo-high-throughput-mode,
+  dlq-is-queue-not-lambda-destination, report-batch-item-failures). Main-page fixes: FIFO default
+  throughput is 3,000 msg/s with batching (raised from 300 in 2020), not a flat 300 msg/s ceiling;
+  SQS-triggered Lambda has no on-failure destination of its own, DLQ routing is configured on the
+  queue's RedrivePolicy only. Bare `aws-sqs` SUBTOPICS key collision-free. Messaging hub Phase 10:
+  16 of 20.
+- [x] 2026-09-22 `/messaging/aws-sns-eventbridge` — AWS SNS & EventBridge. 3 subtopics
+  (sns-fifo-throughput-was-raised-10x, retry-duration-depends-on-endpoint-type,
+  eventbridge-pipes-sqs-to-target). Main-page fixes: SNS FIFO throughput raised 10x to 3,000 msg/s
+  (Nov 2023, no migration needed); the "23 days" DLQ redelivery window only applies to AWS-managed
+  SNS endpoints, HTTP/S subscriptions default to ~60s with a 3,600s max. Bare
+  `aws-sns-eventbridge` SUBTOPICS key collision-free. Messaging hub Phase 10: 17 of 20.
+- [x] 2026-09-22 `/messaging/idempotency` — Idempotency & Exactly-Once. 3 subtopics
+  (kafkajs-does-not-enforce-max-in-flight, redis-set-nx-needs-two-phases,
+  sqs-standard-has-no-native-dedup). Main-page fix verified against a real installed kafkajs
+  source: `maxInFlightRequests: 5` is never checked against `idempotent` by the library itself —
+  the "why 5" reason is a broker-side sequence-number dedup window (KIP-98), not a kafkajs-enforced
+  rule. Bare `idempotency` SUBTOPICS key collision-free. Messaging hub Phase 10: 18 of 20.
+- [x] 2026-09-22 `/messaging/message-ordering` — Message Ordering. 3 subtopics
+  (random-dedup-id-defeats-sqs-fifo-retry-safety, how-idempotent-producer-prevents-retry-reordering,
+  fifo-group-blocking-is-per-group-not-queue-wide). Main-page fix: the SQS FIFO codeTab generated a
+  fresh `MessageDeduplicationId` (`randomUUID()`) on every send, defeating retry-safety dedup —
+  fixed to a stable, business-derived key. Bare `message-ordering` SUBTOPICS key collision-free.
+  Messaging hub Phase 10: 19 of 20.
+- [x] 2026-09-22 `/messaging/backpressure` — Backpressure & Flow Control (FINAL topic). 3 subtopics
+  (kafka-pause-discards-its-own-resume-function, kafkajs-has-no-buffer-memory-or-max-block-ms,
+  nodejs-stream-backpressure-actually-running — the last one using real executed Node.js stream
+  code, not a model). Main-page fixes: the Kafka Pause/Resume codeTab discarded `pause()`'s own
+  returned resume closure while claiming an automatic-resume mechanism that doesn't exist in
+  kafkajs; a QnA described Java-client-only `max.block.ms`/`buffer.memory` producer configs as if
+  kafkajs supported them, verified against the real installed `ProducerConfig` type to have no
+  such fields. Bare `backpressure` SUBTOPICS key collision-free. **Messaging/Kafka hub Phase 10
+  rollout complete — all 20/20 topics done, 60 subtopic pages total, confirmed via a hub-wide
+  check showing exactly 20 nav toggle elements.**
 
 #### DSA — 21 topic pages
 
-- [ ] `/dsa/big-o` — Big-O Notation
-- [ ] `/dsa/arrays` — Arrays
-- [ ] `/dsa/strings` — Strings
-- [ ] `/dsa/hash-tables` — Hash Tables
-- [ ] `/dsa/stacks-queues` — Stacks & Queues
-- [ ] `/dsa/linked-lists` — Singly Linked Lists
-- [ ] `/dsa/doubly-linked-lists` — Doubly Linked Lists
-- [ ] `/dsa/binary-trees` — Binary Trees
-- [ ] `/dsa/bst` — Binary Search Trees
-- [ ] `/dsa/heaps` — Heaps & Priority Queues
-- [ ] `/dsa/graphs-bfs-dfs` — Graphs: BFS & DFS
-- [ ] `/dsa/graph-algorithms` — Graph Algorithms
-- [ ] `/dsa/basic-sorts` — Basic Sorting Algorithms
-- [ ] `/dsa/advanced-sorts` — Advanced Sorting Algorithms
-- [ ] `/dsa/binary-search` — Binary Search
-- [ ] `/dsa/recursion-backtracking` — Recursion & Backtracking
-- [ ] `/dsa/dynamic-programming` — Dynamic Programming
-- [ ] `/dsa/dp-patterns` — DP Patterns
-- [ ] `/dsa/trie` — Tries
-- [ ] `/dsa/bit-manipulation` — Bit Manipulation
-- [ ] `/dsa/greedy` — Greedy Algorithms
+- [x] 2026-10-08 `/dsa/big-o` — Big-O Notation (DSA hub Phase 10 pilot). 3 subtopics
+  (arithmetic-vs-harmonic-shrinking-loops, master-theorem-epsilon-and-regularity,
+  dynamic-array-amortized-proof). Main-page fix verified via direct Node execution: the "Common
+  Pitfalls" bullet pointed at the wrong example ("checking only unprocessed elements") for landing
+  on O(n log n) -- that pattern is the arithmetic shrink already covered by mistake #4 and stays
+  O(n²); the real O(n log n) pattern is the Challenge's own harmonic shrink. Fixed
+  `DsaNavComponent`'s missing subtopics-accordion structural gap (19th `*NavComponent` hub in a
+  row). Bare `big-o` SUBTOPICS key collision-free. DSA hub Phase 10: 1 of 21.
+- [x] 2026-10-08 `/dsa/arrays` — Arrays. 3 subtopics (prefix-sum-codetab-was-actually-on2,
+  2d-prefix-sums-submatrix-queries, subarray-sum-equals-k-prefix-hashmap). Main-page fix verified
+  via exact op-counting: the "Prefix sum" code sample built the array with a slice+reduce per
+  index (confirmed O(n²), ratio to n² converges to exactly 1.0), contradicting the theory's own
+  "Build in O(n)" claim -- fixed to match the correct single-forward-loop pattern already used in
+  the page's own mistake block. Bare `arrays` SUBTOPICS key collides with the C# hub's own topic
+  -- hub-prefixed to `dsa-arrays`. DSA hub Phase 10: 2 of 21.
+- [x] 2026-10-08 `/dsa/strings` — Strings. 3 subtopics
+  (longest-substring-without-repeating-sliding-window, z-algorithm-pattern-matching,
+  rabin-karp-rolling-hash). Main-page fix: a duplicate "String Immutability" theory section
+  restated the first section's own facts under a mismatched heading, with one genuinely new
+  sliding-window bullet buried inside -- fixed by removing the duplicates and retitling into a
+  proper "Sliding Window for Substring Problems" section, closing a real gap (the revision list
+  names "longest substring without repeating characters" but no codeTab ever showed it). Bare
+  `strings` SUBTOPICS key collision-free. DSA hub Phase 10: 3 of 21.
+- [x] 2026-10-08 `/dsa/hash-tables` — Hash Tables. 3 subtopics (naive-salt-does-not-defeat-hashdos,
+  consistent-hashing-verified-remap-counts, first-non-repeating-character-two-ways). Main-page fix
+  verified via WebSearch: "cryptographically-inspired hash functions... preferred even for
+  non-cryptographic hash tables" has the real story backwards -- ordinary hash tables use FAST
+  non-cryptographic functions precisely because crypto hashes are slow by design; only HashDoS
+  needs a keyed function (SipHash), whose security comes from a secret key, not "crypto
+  inspiration". Also removed a genuinely duplicate load-factor bullet. Bare `hash-tables`
+  SUBTOPICS key collision-free. DSA hub Phase 10: 4 of 21.
+- [x] 2026-10-08 `/dsa/stacks-queues` — Stacks & Queues. 3 subtopics
+  (two-stack-queue-moves-each-element-once, rpn-expression-evaluation-with-a-stack,
+  min-stack-pairs-vs-two-aux-stacks). Main-page fix verified via direct Node instrumentation: "each
+  element is moved between stacks at most twice total across its lifetime" was wrong -- a real
+  move-counted TwoStackQueue over 20,000 ops found the true max is exactly 1, never 2. Also
+  replaced a duplicate theory bullet (restating the already-covered Monotonic Stack section) with a
+  cross-reference to the Big-O topic's own amortized-doubling proof. Bare `stacks-queues` SUBTOPICS
+  key collision-free. DSA hub Phase 10: 5 of 21.
+- [x] 2026-10-08 `/dsa/linked-lists` — Singly Linked Lists. 3 subtopics
+  (palindrome-check-mutates-the-list-without-restoring, recursive-reversal-call-stack-depth-measured,
+  deleting-a-middle-node-without-the-predecessor). Main-page fix verified via direct Node execution:
+  the Palindrome Challenge solution permanently shortens the caller's list (traversing from head
+  after the call returns one node fewer) -- traced the exact mechanism and built the restore fix.
+  Also replaced a wholesale duplicate theory section (restating the already-covered Floyd's
+  algorithm section) with the new palindrome-mutation finding. Bare `linked-lists` SUBTOPICS key
+  collision-free. DSA hub Phase 10: 6 of 21.
+- [x] 2026-10-08 `/dsa/doubly-linked-lists` — Doubly Linked Lists. 3 subtopics
+  (javascript-map-is-not-a-doubly-linked-list, what-happens-without-the-empty-list-guard,
+  building-a-blocked-deque-like-pythons). Main-page fix verified via WebSearch against V8's own
+  source (ordered-hash-table.h): "JavaScript's Map internally" was wrongly listed as a real-world
+  DLL example -- V8 actually implements Map/Set as an array-backed OrderedHashTable with no prev
+  pointer anywhere. Also replaced two partial-duplicate theory sections (restating earlier
+  bullets) with new, verified content: real deques use blocked (not node-per-element) DLLs for
+  cache locality, and the sentinel-boundary null-dereference risk if a guard clause is forgotten.
+  Bare `doubly-linked-lists` SUBTOPICS key collision-free. DSA hub Phase 10: 7 of 21.
+- [x] 2026-10-08 `/dsa/binary-trees` — Binary Trees. 3 subtopics
+  (morris-traversal-restores-the-tree-unless-you-forget, bfs-can-use-less-memory-than-dfs-on-a-skewed-tree,
+  inorder-alone-cannot-reconstruct-a-binary-tree). Main-page fix: replaced a duplicate theory
+  bullet (restating the BFS-uses-a-queue fact already stated two sections up) with a Node-verified
+  counterintuitive finding -- measured DFS recursion depth vs BFS peak queue size on a skewed tree
+  (BFS 1000x cheaper) and a balanced tree (DFS 46x cheaper), proving the memory winner depends
+  entirely on tree shape. Bare `binary-trees` SUBTOPICS key collision-free. DSA hub Phase 10: 8 of 21.
+- [x] 2026-10-08 `/dsa/bst` — Binary Search Trees. 3 subtopics
+  (sorted-array-to-bst-is-actually-on-log-n, one-rotation-rebalances-an-ascending-insert,
+  generic-tree-lca-visits-the-whole-tree). Main-page fix: `sortedArrayToBST`'s own comment claimed
+  "O(n)" but `slice()` makes it O(n log n) -- verified via a measured copy-ratio that climbs with n
+  (1.90 to 14.69) rather than staying constant; fixed the comment and built the real O(n) index-based
+  version. Also retitled a theory section that duplicated section 1's own self-balancing content,
+  replacing it with a Node-verified single-rotation rebalancing demonstration (ascending 1,2,3 insert:
+  height 3/balance -2 -> one rotateLeft -> height 2/balance 0, inorder unchanged). Third subtopic
+  measured the real complexity gap between BST-LCA and generic-tree LCA via instrumented node-visit
+  counting on a 1023-node balanced tree (6 vs 2043 visits, 340x). Bare `bst` SUBTOPICS key
+  collision-free. DSA hub Phase 10: 9 of 21.
+- [x] 2026-10-08 `/dsa/heaps` — Heaps / Priority Queues. 3 subtopics
+  (mergeklists-never-actually-used-its-own-heap, popping-a-heap-n-times-is-heap-sort,
+  the-real-on-log-k-k-closest-points-solution). Main-page fix: `mergeKLists` declared a
+  `MinHeap` and never pushed or popped from it -- its real work came entirely from
+  `.flat().sort().filter()`, dead-code heap. Built the real tuple-heap merge, verified
+  output-equivalent to the sort version across 200+ randomized trials, each element costing
+  one O(log k) push + pop (8 pushes/8 pops for 8 elements across 3 lists). Also retitled a
+  theory section that duplicated the Top-K and Two-Heap sections, replacing it with a
+  Node-verified heap-sort demonstration (heapify builds a valid but unsorted heap; popping
+  n times matches Array.sort() exactly across 50 trials). Third subtopic built the real
+  max-heap-of-size-k K Closest Points solution the Challenge's own hints asked for but its
+  sort-based solution never implemented, verified by distance multiset across 200 trials
+  (individual tied points can validly differ between heap and sort approaches). Bare `heaps`
+  SUBTOPICS key collision-free. DSA hub Phase 10: 10 of 21.
+- [x] 2026-10-08 `/dsa/graphs-bfs-dfs` — Graphs - BFS & DFS. 3 subtopics
+  (shifts-on-v-squared-risk-depends-on-graph-width, detecting-a-directed-cycle-with-three-state-dfs,
+  checking-bipartiteness-with-two-coloring-bfs). Main-page fix: the canonical `bfs` function used
+  `queue.shift()!` -- the EXACT anti-pattern the page's own "Common Mistakes" section warns against
+  ("For large graphs, BFS with shift() is O(V^2)"). Fixed to an index-pointer dequeue. Verified the
+  real blowup is width-dependent, not vertex-count-dependent: a 400K-node chain graph showed no
+  difference between shift() and pointer BFS, but a 160K-node wide tree showed shift() running 33x
+  slower. Also retitled 2 of 4 duplicate bullets in the "When to Choose BFS/DFS" section with the
+  width-dependent finding and a three-state-DFS verification. Subtopics build the directed-cycle
+  detection (white/gray/black) and bipartiteness check (2-coloring) the page's own QnA describes in
+  prose but never shows in code, both verified via direct execution against DAG/cyclic/diamond and
+  even-cycle/odd-cycle/tree test cases. Bare `graphs-bfs-dfs` SUBTOPICS key collision-free. Self-caught
+  and fixed a `\'`-in-bound-attribute mistake before the build (needed the typographic curly quote).
+  DSA hub Phase 10: 11 of 21.
+- [x] 2026-10-08 `/dsa/graph-algorithms` — Graph Algorithms. 3 subtopics
+  (dijkstras-fake-heap-was-sort-plus-shift, kruskals-mst-with-the-pages-own-union-find,
+  a-star-visits-far-fewer-nodes-than-dijkstra). Main-page fix: Dijkstra's own codeTab simulated
+  a "min-heap" via `heap.sort()` + `heap.shift()!` on every iteration (comment admitted "In real
+  code: use proper min-heap") while the page's own Quick Reference claims O((V+E) log V). Fixed
+  to a real binary min-heap. Verified a widening performance gap on dense random graphs (9x at
+  2K nodes, 37x at 8K, 114x at 20K) confirming an asymptotically wrong complexity (~O(V^2 log V)),
+  not just a constant-factor cost -- both versions always produced identical correct distances.
+  Also retitled a duplicate theory bullet with this finding. Subtopics build Kruskal's MST
+  (named in a quiz, zero code, reuses the page's own UnionFind class, verified weight 16 on the
+  classic 5-node textbook graph) and A* (named in theory, zero code, measured 87.1% fewer nodes
+  visited than Dijkstra for the identical optimal distance on a 30x30 grid). Bare
+  `graph-algorithms` SUBTOPICS key collision-free. DSA hub Phase 10: 12 of 21.
+- [x] 2026-10-08 `/dsa/basic-sorts` — Basic Sorts. 3 subtopics
+  (selection-sorts-swap-count-is-at-most-n-1-not-exactly, measuring-insertion-sorts-real-adaptive-cost,
+  sorting-by-multiple-keys-the-order-matters). Main-page fix: theory and a quiz explanation both
+  claimed selection sort "always does exactly n-1 swaps" -- but the page's own codeTab has an
+  `if (minIdx !== i)` guard specifically written to skip the swap when the minimum is already in
+  place. Instrumented it directly: 0 swaps on an already-sorted array, 5 on reverse-sorted (n=10),
+  7 on a random trial -- never reliably exactly n-1. Comparison count, by contrast, is a true
+  invariant: always exactly n(n-1)/2 regardless of input order. Fixed to "at most n-1" in both the
+  theory bullet and the quiz explanation, and retitled a duplicate theory bullet with this finding.
+  Subtopics measure the real O(nk) adaptive cost claim (near-linear growth on bounded-displacement
+  input vs near-quadratic on random input, both directly instrumented) and demonstrate why the
+  QnA's "least important key first" multi-key-sort ordering rule actually matters (reversing it
+  strands an employee outside their own department group). Bare `basic-sorts` SUBTOPICS key
+  collision-free. DSA hub Phase 10: 13 of 21.
+- [x] 2026-10-08 `/dsa/advanced-sorts` — Merge & Quick Sort. 3 subtopics (routes
+  quicksort-recursion-stack-overflow, radix-sort-digit-by-digit, timsort-natural-ascending-runs;
+  short physical folders quicksort-stack-overflow, radix-sort-digit-passes, timsort-natural-runs).
+  Main-page fix: the revision summary and the "merge sort when O(1) space is required" mistake
+  called quicksort O(1) space, contradicting the page's own theory (O(log n) avg / O(n) worst
+  stack). Instrumented active recursion depth: n on a sorted array (99 at n=100, 999 at n=1000),
+  real RangeError at n=10,000; recursing into the smaller partition and looping on the larger kept
+  depth at 2 up to n=100,000. Replaced two duplicate bullets in the "Choosing" theory section
+  (stack-depth finding; radix sort). Subtopics: the stack-depth fix, radix sort built on per-digit
+  counting sort (verified vs reference sort), natural-run detection (100 runs on 100 concatenated
+  runs vs ~n/2 on random data). Bare `advanced-sorts` SUBTOPICS key collision-free. DSA hub
+  Phase 10: 14 of 21.
+- [x] 2026-10-08 `/dsa/binary-search` — Binary Search. 3 subtopics (routes
+  bit-shift-midpoint-overflows-in-javascript, linked-list-binary-search-never-beats-a-scan,
+  rotated-search-with-duplicates-is-o-n; short folders shift-mid-overflow,
+  linked-list-binary-search, rotated-duplicates-worst-case). Main-page fixes: the Quick Reference
+  midpoint (lo+hi)>>1 truncates to 32 bits in JS ((2**31+2**31)>>1 is 0; integer sqrt of 2^31-1
+  returned 0 instead of 46340), contradicting the mistake block's "overflow is unlikely in JS"
+  (both corrected); the linked-list bullet said O(n log n) — that is only the restart-from-head
+  version (measured exactly n log2 n), walking from the lo node costs n - 1, never better than a
+  scan; the rotated-duplicates bullet now states the O(n) worst case; removed leftover dead code
+  ("Hmm — wait" and an unused canFinish) from the Koko codeTab. Third subtopic shows the page's own
+  searchRotated returns -1 for 2 in [1,1,1,2,1,1,1,1,1] and the tie-break fix's n/2 iterations on
+  an all-equal array. Bare `binary-search` SUBTOPICS key collision-free. DSA hub Phase 10: 15 of 21.
+- [x] 2026-10-08 `/dsa/recursion-backtracking` — Recursion & Backtracking. 3 subtopics (routes
+  tail-calls-spec-mandated-but-only-safari, sort-and-break-prunes-earlier,
+  skip-duplicates-at-the-same-tree-level; short folders tail-calls-safari-only,
+  combination-sum-sort-break, subsets-skip-duplicates). Main-page fixes: the tail-recursion bullet
+  said JavaScript does not optimize tail calls — ES2015 requires proper tail calls in strict mode,
+  only Safari/JavaScriptCore ships them, V8 removed its implementation (in Node 22 a correct
+  tail-recursive sum overflowed at 10,000 calls); the duplicate "Pruning: brute force vs
+  backtracking" theory section was retitled and rewritten with measured findings (sort+break: 28 ->
+  10 calls on [2,3,6,7]/7 but only ~12% with 608 answers; duplicate skip: 1,048,576 -> 121 subsets
+  for ten 1s and ten 2s). Third subtopic shows i > 0 instead of i > start drops [1,2,2] and [2,2].
+  Bare `recursion-backtracking` SUBTOPICS key collision-free. DSA hub Phase 10: 16 of 21.
+- [x] 2026-10-08 `/dsa/dynamic-programming` — Dynamic Programming. 3 subtopics (routes
+  coin-ways-loop-order-combinations-vs-permutations, lcs-one-row-needs-a-diagonal-variable,
+  top-down-vs-bottom-up-measured; short folders coin-ways-loop-order, lcs-diagonal-variable,
+  memo-vs-table-measured). Main-page fixes: the count-of-ways QnA said "same structure" as min
+  coins — with the page's amount-outer loops it counts ordered sequences (9 vs 4 combinations for
+  [1,2,5]/5); the space-optimization QnA said one-row LCS can "iterate right-to-left" — wrong on 579
+  of 2,000 random pairs vs the 2D table, a saved diagonal variable fixes it; quiz "generally faster"
+  answered "top-down for sparse", contradicting the theory's "bottom-up usually faster" (answer
+  corrected, sparse kept as the exception); the coin-guard mistake said "undefined behavior" — in JS
+  it is NaN poisoning that returns NaN; replaced a quiz question duplicating Q1 with a loop-order
+  question. Third subtopic: memo visited 5 states vs 10,000 on a sparse case, overflowed the stack
+  at amount 20,000 on a dense one. Bare `dynamic-programming` SUBTOPICS key collision-free. DSA hub
+  Phase 10: 17 of 21.
+- [x] 2026-10-08 `/dsa/dp-patterns` — DP Patterns. 3 subtopics (routes
+  circular-kadane-fails-on-all-negative-input, longest-palindromic-substring-of-character,
+  word-break-with-slice-is-cubic; short folders circular-kadane-all-negative,
+  palindrome-substring-vs-subsequence, word-break-cubic-slice). Main-page fixes: the circular Kadane
+  formula returns 0 for all-negative input (empty wrap-around; wrong on 2,311 of 20,000 random arrays
+  vs brute force, all of them all-negative) — added the guard; the substring-vs-subsequence QnA said
+  "character" has no palindromic substring longer than 1 — the page's own expand-around-center
+  returns "ara"; the Word Break comment said O(n²) — s.slice makes it O(n³) (characters copied grew
+  8x per doubling of n, ~86M at n = 800), bounding j by the longest word copied 2,403. Bare
+  `dp-patterns` SUBTOPICS key collision-free. DSA hub Phase 10: 18 of 21.
+- [x] 2026-10-08 `/dsa/trie` — Trie. 3 subtopics (routes sorted-array-answers-prefix-queries,
+  compressed-trie-saves-nodes-not-characters, word-search-ii-prune-found-branches; short folders
+  sorted-array-prefix-search, compressed-trie-node-count, word-search-ii-pruning). Main-page fixes:
+  theory grouped sorted arrays with hash sets as unable to do prefix queries — a lower-bound
+  search finds the contiguous block (10 comparisons on 1,000 words, same results as the trie); the
+  HashMap QnA said O(1) lookup — hashing a string is O(L); the compressed-trie QnA said space drops
+  to O(n) — node count does (12,577 -> 1,411 on 1,000 random words, under 2n), label characters do
+  not; the Word Search II code never pruned — measured isEnd = false alone changes nothing (7,985
+  calls both ways), deleting empty branches cut it to 36, so the code now does both. Bare `trie`
+  SUBTOPICS key collision-free. DSA hub Phase 10: 19 of 21.
+- [x] 2026-10-08 `/dsa/bit-manipulation` — Bit Manipulation. 3 subtopics (routes
+  right-shift-is-floor-not-division, bit-tricks-wrong-above-2-to-32,
+  bitmask-loop-breaks-at-31-elements; short folders right-shift-floors-negatives,
+  bit-tricks-beyond-32-bits, bitmask-subset-limit). Main-page fixes: Quick Reference called >> "divide
+  by 2^k" and << "multiply by 2^k" — >> floors negatives (-5 >> 1 is -3) and both convert to int32
+  (2**30 << 1 negative, 3e9 >> 1 negative); the quiz claimed shifts are faster than multiplication
+  (removed, replaced with the 32-bit caveat); the 32-bit mistake now notes the page's own
+  isPowerOfTwo(3 * 2**32) returns true and hammingWeight(2**53 - 1) returns 32. Third subtopic: the
+  page's allSubsets loop runs zero times for 31 elements because 1 << 31 is negative. Bare
+  `bit-manipulation` SUBTOPICS key collision-free. DSA hub Phase 10: 20 of 21.
+- [x] 2026-10-08 `/dsa/greedy` — Greedy Algorithms. 3 subtopics (routes
+  canonical-coins-are-not-divisibility, merge-intervals-mutates-the-input,
+  job-sequencing-greedy-by-profit; short folders canonical-coin-systems, merge-intervals-mutation,
+  job-sequencing-by-profit). Main-page fixes: the coin mistake said greedy needs each coin to divide
+  the next — US and euro coins fail that and are canonical, [1,10,25] fails at 30 (Kozen-Zaks bound
+  cited); the merge codeTab sorted and edited the caller's intervals ([1,3] became [1,6]) and returned
+  [undefined] for [] — now copies first; the deadlines QnA said "greedy by deadline" — unit-time job
+  sequencing is greedy by profit with latest free slot (0 wrong vs 1,502 wrong by deadline on 3,000
+  random sets); the gas-station start is one past the lowest running total, not "where the tank last
+  hit 0". Bare `greedy` SUBTOPICS key collision-free. **DSA hub Phase 10 COMPLETE: 21 of 21 topics,
+  63 subtopic pages.**
 
 #### Testing — 19 topic pages
 
-- [ ] `/testing-hub/testing-fundamentals` — Testing Fundamentals
-- [ ] `/testing-hub/jest-fundamentals` — Jest Fundamentals
-- [ ] `/testing-hub/mocking-spies` — Mocking & Spies
-- [ ] `/testing-hub/xunit` — xUnit (.NET Testing)
-- [ ] `/testing-hub/tdd` — Test-Driven Development
-- [ ] `/testing-hub/test-doubles` — Test Doubles
-- [ ] `/testing-hub/integration-testing` — Integration Testing
-- [ ] `/testing-hub/testing-databases` — Testing with Databases
-- [ ] `/testing-hub/angular-testing` — Angular Testing
-- [ ] `/testing-hub/react-testing-library` — React Testing Library
-- [ ] `/testing-hub/playwright` — Playwright
-- [ ] `/testing-hub/cypress` — Cypress
-- [ ] `/testing-hub/api-testing` — API Testing
-- [ ] `/testing-hub/contract-testing` — Contract Testing (Pact)
-- [ ] `/testing-hub/snapshot-testing` — Snapshot Testing
-- [ ] `/testing-hub/vitest` — Vitest
-- [ ] `/testing-hub/msw` — MSW — Mock Service Worker
-- [ ] `/testing-hub/visual-regression` — Visual Regression Testing
-- [ ] `/testing-hub/property-based-testing` — Property-Based Testing
+- [x] 2026-10-08 `/testing-hub/testing-fundamentals` — Testing Fundamentals — fixed three main-page bugs, each verified against installed packages: the mistake block's "right" RTL assertion used toHaveText (Playwright-only; jest-dom ships toHaveTextContent); the E2E example asserted toHaveURL('/dashboard') after goto() to an absolute URL with no baseURL (Playwright's own urlMatches() returns false for that, true with a baseURL); the integration example claimed Testcontainers but never started one and shared DB state between tests (now PostgreSqlContainer + migrate + beforeEach reset + teardown). 3 subtopics, one per fix. TestingNavComponent accordion fix (20th *NavComponent).
+- [x] 2026-10-08 `/testing-hub/jest-fundamentals` — Jest Fundamentals — fixed the expect.assertions quiz (exact count, not 'at least': three assertions under assertions(2) fail too, checked with Jest 30's expect), the toThrowError recommendation (alias removed in Jest 30, also fixed in the Testing cheat sheet), and coverage.provider (Jest's option is coverageProvider, default babel). 3 subtopics, one per fix.
+- [x] 2026-10-08 `/testing-hub/mocking-spies` — Mocking & Spies — fixed the quiz claim that mockResolvedValue is shorthand for mockReturnValue(Promise.resolve(v)) (it is mockImplementation(() => Promise.resolve(v)); with rejections the eager form causes an unhandled rejection, measured with jest-mock 30.5), a spyOn comment naming Math.random instead of mathUtils.random, and a misleading test name. Subtopics: eager Promise.reject, spy targets, mock.invocationCallOrder.
+- [x] 2026-10-08 `/testing-hub/xunit` — xUnit — fixed the Challenge hint (asserted InsufficientFundsException while the code throws InvalidOperationException; Assert.Throws is exact-type), the async mistake (Assert.Throws with an async lambda is a compile error via [Obsolete(..., true)], not a silent pass), a nonsense Assert.Equal failure-message example, and the IAsyncLifetime QnA (on a test class it runs per test). 3 subtopics.
+- [x] 2026-10-08 `/testing-hub/tdd` — Test-Driven Development — fixed the Outside-in tab (asserted the welcome email contains 'Alice' but only sent alice@example.com; stringContaining is case-sensitive, checked with Jest's expect package) and the 'one assertion per test' advice (contradicted Testing Fundamentals; now one behaviour per test). Subtopics: outside-in test missing input, one behaviour not one assertion, a refactor that drops the empty-string guard (''.split(',') is [''] -> NaN, Node-verified).
+- [x] 2026-10-08 `/testing-hub/test-doubles` — Test Doubles — fixed the Stub & Mock tab (a jest.fn() checked after the act was labelled a pre-programmed mock; in Meszaros/Fowler terms it is a spy) and the spy/mock mistake. Subtopics: jest.fn checked afterwards is a spy, spyOn calls through by default (the Challenge relies on it), clearAllMocks vs resetAllMocks vs restoreAllMocks — all measured with jest-mock 30.5.
+- [x] 2026-10-08 `/testing-hub/integration-testing` — Integration Testing — fixed --testPathPattern (Jest 30 exits 1 with a replacement notice; now --testPathPatterns, run against jest-cli 30), the Testcontainers tab (missing required image, no container.stop(), placeholder migration SQL), and the .NET UseSqlite('Data Source=:memory:') example (each connection gets an empty DB and no schema was created; now a kept-open SqliteConnection + EnsureCreated). 3 subtopics.
+- [x] 2026-10-08 `/testing-hub/testing-databases` — Testing with Databases — verified on a local PostgreSQL 16 with node-postgres: per-test BEGIN/ROLLBACK only isolates its own client (pool writes from app code survive), explicit-id seeding leaves the serial sequence behind (next insert fails on id 1 until setval), and TRUNCATE without RESTART IDENTITY / ROLLBACK never reset sequences. Fixed the rollback tab (unused Prisma import, same-connection note), the seeding tab (setval note), and a QnA PostgreSqlContainer() without the required image.
+- [x] 2026-10-08 `/testing-hub/angular-testing` — Angular Testing (3 subtopics: provideHttpClientTesting, TestBed.tick, RouterTestingHarness)
+- [x] 2026-10-08 `/testing-hub/react-testing-library` — React Testing Library — checked with @testing-library/dom 10.4 + jsdom: getByRole('status', { name: /loading/i }) fails on a plain Loading… div (status/alert take names from aria-label only), getByClassName does not exist, and findBy gives up after asyncUtilTimeout 1000 ms. Fixed the loading test (now toHaveTextContent and awaits the fetch), the className mistake's 'wrong' example, and a missing userEvent import.
+- [x] 2026-10-08 `/testing-hub/playwright` — Playwright (3 subtopics: actionTimeout defaults to 0, networkidle discouraged, strict mode violations)
+- [x] 2026-10-08 `/testing-hub/cypress` — Cypress (3 subtopics: cypress/react mount import, cy.session scope, spec vs app iframes)
+- [x] 2026-10-08 `/testing-hub/api-testing` — API Testing (3 subtopics: Supertest ephemeral port, shared JWT secret, Zod 4 datetime offsets)
+- [x] 2026-10-08 `/testing-hub/contract-testing` — Contract Testing (3 subtopics: extra fields pass, publish needs a version, local verification and provider states)
+- [x] 2026-10-08 `/testing-hub/snapshot-testing` — Snapshot Testing — fixed the gitignored-snapshots mistake and --ci QnA (Jest 30 source: ci defaults from ci-info, updateSnapshot becomes 'none' on CI, missing snapshots fail with 'New snapshot was not written'), and a Challenge regex /\s+/g stored in a template literal that rendered as /s+/g (slug 'widget pro' instead of 'widget-pro'). Third subtopic: pretty-format sorts object keys. 
+- [x] 2026-10-08 `/testing-hub/vitest` — Vitest — fixed the vitest.workspace.ts quiz (renamed to test.projects in 3.2, file removed in 4; Vitest 5.0.3 dist has no reference to it), the in-source-tests mistake (import.meta.vitest is undefined, not truthy, in production; define must be the string 'undefined' to strip the code), and the config example missing /// <reference types='vitest/config' /> (Vite's UserConfig has no test key otherwise). 3 subtopics, one per fix.
+- [x] 2026-10-08 `/testing-hub/msw` — MSW — fixed the Component Test tab (used server, http and HttpResponse without importing them), the onUnhandledRequest mistake (measured with msw 2.15: 'warn' sends unhandled requests to the real network, 'error' rejects only that fetch — no suite crash; setup now uses 'error'). Third subtopic: relative handler URLs fail in a plain Node environment (fetch('/api/users') throws ERR_INVALID_URL before MSW). SUBTOPICS key hub-prefixed to test-msw (Angular owns bare msw).
+- [x] 2026-10-08 `/testing-hub/visual-regression` — Visual Regression Testing (3 subtopics: threshold vs maxDiffPixelRatio, missing baseline fails, animations and networkidle)
+- [x] 2026-10-08 `/testing-hub/property-based-testing` — Property-Based Testing — fixed the Shrinking Example (its bug was symmetric in a and b, so commutativity never failed in 100,000 fast-check runs; now asymmetric, seed 42 shrinks to [101,-1]) and the Challenge's fc.integer(-1000, 1000) (v4 ignores positional bounds: sampled 1743045805). Subtopics: symmetric bug, positional args, model-based testing with fc.commands (buggy bounded stack shrinks to four pushes).
 
 #### AI/ML — 19 topic pages
 
-- [ ] `/ai/ml-fundamentals` — AI & ML Fundamentals
-- [ ] `/ai/math-for-ml` — Mathematics for ML
-- [ ] `/ai/linear-logistic-regression` — Linear & Logistic Regression
-- [ ] `/ai/decision-trees` — Decision Trees & Random Forests
-- [ ] `/ai/gradient-boosting` — Gradient Boosting (XGBoost)
-- [ ] `/ai/clustering` — Clustering & Dimensionality Reduction
-- [ ] `/ai/neural-networks` — Neural Networks
-- [ ] `/ai/computer-vision` — CNNs & Computer Vision
-- [ ] `/ai/transformers` — Transformers & Attention
-- [ ] `/ai/llm-fundamentals` — LLM Fundamentals
-- [ ] `/ai/fine-tuning` — Fine-tuning & RLHF
-- [ ] `/ai/rag` — RAG
-- [ ] `/ai/prompt-engineering` — Prompt Engineering
-- [ ] `/ai/ai-agents` — AI Agents & Tool Use
-- [ ] `/ai/vector-databases` — Vector Databases
-- [ ] `/ai/mlops` — MLOps & Model Deployment
-- [ ] `/ai/hugging-face` — Hugging Face & Model Hub
-- [ ] `/ai/evaluating-llms` — Evaluating LLM Outputs
-- [ ] `/ai/ai-engineering` — AI Engineering Patterns
+- [x] 2026-10-08 `/ai/ml-fundamentals` — AI & ML Fundamentals (pilot; 3 subtopics: biased sort shuffle, NaN precision, learning-rate limit)
+- [x] 2026-10-08 `/ai/math-for-ml` — Mathematics for ML (3 subtopics: silent matmul shape bug, gradient at w=1, L1 soft-threshold)
+- [x] 2026-10-08 `/ai/linear-logistic-regression` — Linear & Logistic Regression (3 subtopics: separable data diverges, MSE vs CE gradient, odds ratios)
+- [x] 2026-10-08 `/ai/decision-trees` — Decision Trees & Random Forests (3 subtopics: ccp_alpha default 0, max_features defaults, impurity importance bias)
+- [x] 2026-10-08 `/ai/gradient-boosting` — Gradient Boosting (3 subtopics: LightGBM callbacks in fit, subsample_freq, target scaling)
+- [x] 2026-10-08 `/ai/clustering` — Clustering & Dimensionality Reduction (3 subtopics: k-means assign bug, PCA power iteration, n_init)
+- [x] 2026-10-08 `/ai/neural-networks` — Neural Networks (3 subtopics: Dropout before BatchNorm, measured vanishing gradients, Xavier vs He)
+- [x] 2026-10-08 `/ai/computer-vision` — CNNs & Computer Vision (3 subtopics: weights API, cross-correlation, pooling shift)
+- [x] 2026-10-08 `/ai/transformers` — Transformers & Attention (3 subtopics: equivariance, sqrt(d_k) measured, fully masked row NaN)
+- [x] 2026-10-08 `/ai/llm-fundamentals` — LLM Fundamentals (3 subtopics; fixed temperature-0 NaN sampler, js-tiktoken API, model scale/vocab/context claims)
+- [x] 2026-10-08 `/ai/fine-tuning` — Fine-tuning & RLHF (3 subtopics; fixed LoRA param count, TRL trainer arguments, SFT on output-only text)
+- [x] 2026-10-08 `/ai/rag` — RAG (3 subtopics; fixed character-based chunkSize, LangChain 1.x imports, quiz chunk size)
+- [x] 2026-10-08 `/ai/prompt-engineering` — Prompt Engineering (3 subtopics; fixed fence-stripping regex, CoT challenge prompt, JSON mode claim)
+- [x] 2026-10-08 `/ai/ai-agents` — AI Agents (3 subtopics; fixed eval in calculator tool, unhandled stop reasons, ReAct parser)
+- [x] 2026-10-08 `/ai/vector-databases` — Vector Databases (3 subtopics; fixed FAISS cosine conversion, HNSW/PQ memory, Pinecone v9 upsert)
+- [x] 2026-10-08 `/ai/mlops` — MLOps (3 subtopics; fixed vLLM command, throughput claims, pd.cut bins, MLflow stages)
+- [x] 2026-10-08 `/ai/hugging-face` — Hugging Face (3 subtopics; fixed apply_chat_template flow, InferenceClient, fp32 memory claim)
+- [x] 2026-10-08 `/ai/evaluating-llms` — Evaluating LLMs (3 subtopics; fixed ROUGE example outputs, judge position-bias figure)
+- [x] 2026-10-08 `/ai/ai-engineering` — AI Engineering (3 subtopics; fixed stream cancellation, abort handling, exact usage)
 
 ---
 
@@ -10027,7 +10251,7 @@ off here with a date.
 
 ## Phase 11 — New Hubs: Rust & QA Engineering
 
-**Status: PLANNING (added 2026-07-03). Not started.** These are two ordinary new hubs, built
+**Status: IN PROGRESS (added 2026-07-03; Rust scaffolding started 2026-09-23).** These are two ordinary new hubs, built
 the same way every hub in Phase 1–8 was: full topic-page tier (Phase 2 Enhanced Content
 Standard — theory, code tabs, common mistakes, challenge, quiz, Q&A, revision card), following
 the "Adding a whole NEW technology hub" checklist in `CLAUDE.md`. They are not part of Phase 10
@@ -10035,6 +10259,23 @@ the "Adding a whole NEW technology hub" checklist in `CLAUDE.md`. They are not p
 other hub.
 
 ### 11A — Rust hub
+
+**Status: IN PROGRESS.** Hub scaffolded (route, nav component, breadcrumb, sidebar, search,
+progress service, hub-home card) and the first content page (`/rust/fundamentals`) shipped
+2026-09-23. Accent confirmed as `#ce422b` (kept the proposed value — checked against DSA's
+`#92400e` and Messaging's `#9a3412`, distinct enough). Icon glyph confirmed as `Rs` (text
+glyph, light-tint icon generation — `background: $tint; color: $accent`, matching Go/Python's
+generation, not solid-fill). `Challenge.language`/`CodeTab.language` both extended with `'rust'`;
+`page-meta.tech` got its own `'rust'` branch linking to the official Rust Playground
+(`https://play.rust-lang.org/`), following the precedent of giving a hub with a real official
+playground its own dedicated link (like C#'s .NET Fiddle) rather than falling back to
+`tech="javascript"`. `RustNavComponent` built from scratch as a proper `*NavComponent` from day
+one (unlike most other hubs, which only got one retroactively) — no inline `app.html` nav ever
+existed for Rust. `SUBTOPICS` key proactively hub-prefixed to `rust-fundamentals` to avoid the
+well-documented bare-`fundamentals` collision with the JavaScript hub. Remaining 20 topic pages
++ 2 reference pages (cheatsheet, interview-prep) still need to be written — see the proposed
+topic list below (treat it as a starting shape; each page still needs its own accuracy pass
+before publishing, same discipline as every other hub's Phase 10 rollout).
 
 **Why:** Rust is now a mainstream, high-demand systems language (used in browsers, OS kernels,
 CLI tooling, and increasingly backend services) and is a clear gap next to the existing Go and
@@ -10172,6 +10413,528 @@ overlap-avoidance rule with the existing Testing hub — so doing Rust first ban
 leaves more attention for getting the QA hub's angle right). Same "one page at a time, no
 batching" discipline as every other phase. Update the Current State table and this file's Done
 History after each page, same as always.
+
+---
+
+## Phase 12 — Site-Wide Content Accuracy Audit
+
+**Status: NOT STARTED (planned 2026-10-08).** This is a correction pass over EXISTING main topic
+pages, not a content-expansion phase — no new subtopics, no new hubs, no restructuring. Its only
+job is to re-verify factual claims on pages that were written before this project's verification
+discipline existed, and fix what turns out to be wrong.
+
+### Why this phase exists
+
+Every Phase 10 subtopic batch (documented at exhausting length in `CLAUDE.md`'s per-hub subtopic
+sections) independently converged on the same practice: before publishing a claim — a version
+number, a default value, an API's exact behavior, a "this was introduced in X" statement, a
+performance figure — verify it against official docs (WebFetch/WebSearch) or, where no live
+runtime exists, against the library's own source. That discipline caught a large number of real,
+previously-published inaccuracies across dozens of hubs: stale version claims (Redis eviction
+defaults, Kafka throughput figures, MongoDB connection limits, Istio GA dates), backwards
+semantics (DENY/ALLOW precedence, HTTPRoute conflict resolution, ACL log field meanings),
+fabricated citations (an RFC number attributed to the wrong spec), and internal
+self-contradictions where one section of a page quietly disagreed with another.
+
+That discipline did not exist from day one. Hubs and pages built in the earlier phases of this
+project (**Phase 1–8** — Angular, C#, ASP.NET Core, SQL, TypeScript, React, JavaScript, CSS, HTML,
+Web Performance, and the first wave of Phase 2 "Enhanced Content Standard" topic pages generally)
+were written without this systematic fact-checking step. Their content is not assumed wrong — most
+of it is almost certainly fine — but it has never been checked the way every later hub's Phase 10
+subtopic content has been, and version-sensitive ecosystems (fast-moving frameworks, cloud
+services, package defaults) drift over time regardless of whether anyone touches the page again.
+
+### What this phase is and is not
+
+- **Is**: re-reading an existing main topic page end to end, identifying every checkable factual
+  claim, verifying each one, and fixing what is demonstrably wrong (plus tightening anything
+  that's accurate but dangerously imprecise, per the "precision is not correctness" lesson learned
+  repeatedly in Phase 10 — see e.g. the Redis/Kafka/Observability hub notes in `CLAUDE.md`).
+- **Is not**: adding new subtopic pages, adding new sections, restructuring the page's anatomy,
+  changing theming/wiring, or re-litigating stylistic choices. Surgical fixes only — the
+  "Karpathy guidelines" discipline (touch only what you must) applies directly here.
+- **Is not** re-auditing anything already covered by a completed Phase 10 subtopic batch for that
+  specific topic — those pages already went through exactly this verification discipline as part
+  of their own subtopic authoring (confirmed via the hub's own Phase 10 log in `CLAUDE.md`). Check
+  the hub's "Current state" entry before starting a page to avoid duplicate work.
+- **Is not** blocked on, or blocking, Phase 11 (Rust/QA Engineering) — this phase can run whenever
+  a session has nothing more specific queued, independently of Phase 11's progress.
+
+### Per-page audit checklist
+
+1. Read the full page (`.ts` + rendered content) — do not skim; every theory bullet, mistake,
+   quiz question, QnA answer and revision bullet is a candidate.
+2. Extract every checkable factual claim: version numbers, "introduced in"/"deprecated since"
+   statements, specific default values, specific performance/capacity figures, specific API
+   behavior, named tool/library status claims.
+3. Verify each claim:
+   - Prefer the official docs (WebFetch a specific page, not a general WebSearch summary where
+     avoidable — several Phase 10 batches found that a plausible-sounding secondary-source summary
+     was itself wrong; the primary source is what settles it).
+   - Where no live runtime exists to test against (C#/.NET, Blazor, Node.js-adjacent-but-still-
+     research-only claims), research discipline substitutes for direct execution — do not assume a
+     plausible-sounding claim is correct without a citation.
+   - Where a runtime IS available in this browser (JS/TS/CSS/HTML, and increasingly anything with
+     an installable npm package), prefer directly executing the claim over trusting documentation
+     prose, per the precedent set throughout Phase 10.
+4. Cross-check internal consistency: does this page's own theory contradict its own QnA, mistakes
+   block, or quiz explanation? Self-contained contradictions (findable with zero external research)
+   were some of the highest-value catches in Phase 10 and cost nothing to check first.
+5. Cross-check against sibling pages in the same hub that have ALREADY been through Phase 10
+   verification — an already-verified fact from one page is a cheap, authoritative check against a
+   related claim on another, used repeatedly and explicitly in `CLAUDE.md`'s own Phase 10 notes.
+6. Fix only what's wrong or dangerously imprecise. Leave correct-but-differently-styled content
+   alone. Do not add scope beyond the correction itself.
+7. Run the production build (`npx ng build --configuration=production`) — must stay green.
+8. Browser-verify the specific fix renders correctly (expand whatever accordion/tab/toggle the
+   fixed content lives behind — collapsed-by-default sections have repeatedly hidden fixes from a
+   shallow text-search check elsewhere in this project).
+9. Log the finding the same way every Phase 10 batch has been logged: what was wrong, how it was
+   verified, what changed. If a page comes back completely clean, say so plainly — a clean result
+   is itself useful information for future audits of that hub.
+
+### Suggested prioritization (a starting shape, not a locked order)
+
+Audit hubs in roughly this order — oldest-built and most version-sensitive first, since that's
+where drift is most likely to have accumulated:
+
+1. **Angular** — the very first hub built, and a framework that ships frequent breaking changes.
+2. **React** — equally fast-moving (hooks ecosystem, Next.js, server components landscape).
+3. **TypeScript** — frequent releases, each adding real type-system features.
+4. **ASP.NET Core / C#** — .NET's yearly release cadence means version-gated claims age quickly.
+5. **JavaScript / CSS / HTML** — slower-moving at the language level, but tooling claims
+   (bundlers, browser support tables, "Baseline" status) can still drift.
+6. **SQL, Web Performance** — lowest churn of the Phase 1–8 cohort; lowest priority, but not skip.
+
+Within a hub, prioritize pages whose own content names a specific version, a specific tool's
+current status, or a specific numeric figure — those are exactly the claims Phase 10 found most
+often to be stale. A page with no such claims (pure, timeless conceptual content) may come back
+clean quickly, which is a fine outcome.
+
+### Sequencing
+
+One page (or a small, related cluster of pages) per session, same "no batching, update the log
+after each one" discipline as every other phase in this file. There is no fixed page count target
+— this phase ends when a pass through the prioritized hub list above comes back clean, at which
+point a fresh prioritization can be drawn up if the project is still growing.
+
+### Phase 10 subtopic-count floor: a related correction (added 2026-10-08)
+
+A second, distinct gap surfaced while planning this phase, worth fixing alongside the factual
+audit above since it's the same spirit of correction — checking existing work against a standard
+it was always supposed to meet, not adding new scope.
+
+**The gap:** `CLAUDE.md`'s own Phase 10 rules never state a maximum subtopic count per topic — "3
+entries typical" appears once, describing `Misconception[]` array length, not a subtopic quota.
+Yet across the ENTIRE project, "3 subtopics" (or "all 3 subtopic") appears 304 times in
+`CLAUDE.md`'s batch logs, versus essentially a single batch that shipped more. The very first
+pilot that locked in the whole subtopic format — `/angular/counter`, Signals & Reactive State —
+actually shipped **6** subtopics. Somewhere after that pilot, "3" calcified from a floor into a
+fixed quota that nearly every subsequent batch across 30+ hubs followed by habit, even in batches
+whose own write-up names more distinct, genuinely separate findings (an independent main-page fix,
+a second unrelated fix, a gap-closing addition) than subtopics were actually created to cover.
+
+**Two tasks, both in scope for this phase:**
+
+1. **Rule-text fix (do this first, it's small and low-risk):** amend the Phase 10 rules section of
+   `CLAUDE.md` to state explicitly that 3 is a FLOOR, not a cap — a topic batch should ship as many
+   subtopics as it has genuinely distinct, worthwhile findings, and stopping at exactly 3 when a
+    4th or 5th finding exists and deserves its own page is under-covering the topic, not following
+   the convention correctly. This is a pure documentation fix — no page content changes.
+2. **Retroactive check (the larger piece, do per-hub alongside the Phase 12 factual audit rather
+   than as one giant pass):** while auditing a hub's main topic pages for factual accuracy (per the
+   checklist above), also re-read that hub's OWN Phase 10 batch notes in `CLAUDE.md` for any batch
+   whose write-up names more distinct findings than subtopics shipped — language like "found and
+   fixed three issues" immediately followed by "2 subtopics" is the exact pattern to look for. Where
+   a genuine, already-identified-but-uncovered finding exists, write the missing subtopic using the
+   same wiring checklist as any other Phase 10 page (route, nav accordion entry, breadcrumb,
+   sidebar, search index — the full per-subtopic checklist already documented in `CLAUDE.md`'s
+   "WIRING CHECKLIST — adding a subtopic page" section). Do not go looking for NEW findings on
+   already-audited pages here — that's what the factual-accuracy pass is for. This task only
+   closes gaps between findings ALREADY written down in a batch's own notes and what was actually
+   published.
+
+This check rides along with the per-page factual audit (same hub, same session) rather than being
+a separate pass over the whole site twice — when a hub's main pages are being re-verified anyway,
+its Phase 10 batch notes are worth a quick re-read for this specific pattern at the same time.
+
+---
+
+## Phase 13 — Reference-Page Parity, a New Hub, and a Cross-Hub Engagement Feature
+
+**Status: NOT STARTED (planned 2026-10-08, brainstormed with the user before writing).** Three
+independent tracks bundled under one phase number because they were scoped together, not because
+they depend on each other — any one can be picked up on its own, in any order, whenever Phase 11
+and Phase 12 aren't the priority for a given session. Each sub-phase below is a starting shape,
+same as every other phase in this file — refine during that sub-phase's own pre-work research
+before committing to specifics.
+
+### 13A — Reference-page parity across newer hubs
+
+**Why:** `CLAUDE.md`'s own "Practice & Reference pages (exist in BOTH hubs — keep parity)" table
+defines nine reference/practice page types: Cheat Sheet, Common Errors, Quiz Practice, Interview
+Prep, Design Patterns, Decision Guides, Glossary, Mini Projects, Learning Paths (plus a tenth,
+What's New, for Angular specifically). Only the four EARLIEST hubs — Angular (10), C# (9), ASP.NET
+Core (9), SQL (9) — have anything close to the full set. Every one of the 28+ hubs built since
+(Go, Python, Redis, GraphQL, MongoDB, Security, Terraform, Service Mesh, Architecture Patterns,
+Design Patterns, and the rest — see `CLAUDE.md`'s "Current state" section for the exact
+per-hub count) has only 1–3 reference pages, almost always just a cheatsheet and an
+interview-prep page. That is a real, large, well-documented asymmetry, not a guess.
+
+**Scope:** for each newer hub, decide which of the remaining reference-page types would genuinely
+add value for that technology (not every type fits every hub equally — a Glossary earns its
+keep for a terminology-dense hub like Security or Design Patterns more than for, say, Redis, which
+already has a dense Cheat Sheet) and build the ones that do, following the SAME page anatomy and
+wiring checklist already established for Angular/C#'s own reference pages (do not invent a new
+reference-page shape — reuse the existing one). Treat each hub's own missing-reference-page set as
+its own small checklist, same granularity as a Phase 10 subtopic batch.
+
+**Explicitly out of scope:** do not touch the four hubs that already have full parity (Angular, C#,
+ASP.NET Core, SQL) — this phase is about closing the gap for everyone else, not revisiting hubs
+that are already done. Do not invent an 11th reference-page type without a clear, hub-specific
+reason — the existing nine are themselves a studied, intentional list.
+
+**Suggested priority:** hubs with the most topic pages (and therefore the most quiz/QnA content
+already available to mine for a Quiz Practice or Interview Prep page) first — Design Patterns (36
+topics), System Design (24), Architecture Patterns (22), Containers/K8s (22), Security (23) — since
+those have the richest existing content to build a reference page FROM, making the page itself
+cheaper to write well.
+
+### 13B — A new hub beyond Rust/QA Engineering
+
+**Why:** the site's breadth has grown mostly by filling adjacent gaps next to what already
+exists (Go next to Python/Node.js, MongoDB/Redis next to SQL, Service Mesh next to
+Containers/Terraform). A genuinely new area is worth considering once Phase 11 (Rust, QA
+Engineering) lands, so the hub-scaffolding muscle stays warm rather than going stale between uses.
+
+**Candidate list (pick ONE during this sub-phase's own pre-hub research — do not start two new
+hubs in parallel):**
+- **Mobile Development** — React Native and/or Flutter, native iOS (Swift/SwiftUI) and Android
+  (Kotlin/Jetpack Compose) fundamentals. A clear, large gap: nothing on the site currently covers
+  mobile-specific concerns (app lifecycle, platform-specific UI, app store release process).
+- **Data Engineering** — Spark, Airflow, dbt, data warehousing concepts, batch vs streaming
+  pipelines. Distinct from the existing AI/ML hub (which is model-and-training focused) and from
+  Messaging/Kafka (which is message-broker focused, not pipeline-orchestration focused).
+- **Functional Programming** — a language-and-paradigm hub (Haskell, Elixir, or a paradigm-first
+  treatment using F#/Scala) teaching functional concepts most other hubs only touch in passing
+  (immutability, pure functions, monads/Result-as-monad, pattern matching as a first-class idea).
+  Thematically close to Rust's own ownership/pattern-matching content, which could make it a
+  natural next hub once Rust ships.
+- **Game Development** — Unity/C# or Godot fundamentals, game loops, physics basics. A genuinely
+  different audience from the rest of the site, which is a reason both for and against it — worth
+  explicitly weighing during pre-hub research rather than defaulting to it.
+
+Follow the full "Adding a whole NEW technology hub" checklist in `CLAUDE.md` once a candidate is
+chosen, same as Phase 11A/11B.
+
+### 13C — A cross-hub engagement feature
+
+**Why:** every prior phase has added either more content (new hubs, new subtopics) or corrected
+existing content (Phase 12). This sub-phase is different in kind: it reuses content the site
+already has — hundreds of quiz questions and QnA pairs across 30+ hubs — rather than adding more
+of it, trading content-volume growth for a better experience on what already exists.
+
+**Candidate features (pick one, or sequence both — this is lower-risk to attempt both than 13B,
+since neither touches hub content):**
+- **Cross-hub mock interview mode** — a page (or small flow) that pulls from every hub's existing
+  `quiz`/`qna` data to assemble a randomized or role-targeted interview session (e.g. "Frontend
+  interview: 10 questions from Angular, TypeScript, React, CSS"), distinct from each hub's own
+  single-hub Quiz Practice / Interview Prep reference pages. Needs a data-aggregation layer over
+  the existing per-hub `SEARCH_INDEX`-style data, not new per-hub content.
+- **Spaced-repetition review queue** — surface topics the user marked complete (via the existing
+  `ProgressService`) on a recurring schedule for review, using existing quiz questions as the
+  review mechanism. Needs browser-storage-backed scheduling state, no new hub content.
+
+Research both against the existing `ProgressService`/`search.service.ts` data shapes before
+committing to one — the right choice depends on how reusable the current per-hub quiz/QnA data
+structures turn out to be for a cross-hub aggregation, which is worth confirming before designing
+either feature's UI.
+
+### Sequencing
+
+No fixed order between 13A/13B/13C — each is independent. Within 13A, one hub's reference-page set
+per session; within 13B, the usual "one hub, one page at a time" discipline once a candidate is
+picked; within 13C, research first, then build whichever feature research points to. Update the
+Current State table and this file's Done History after each unit of work, same as always.
+
+---
+
+## Phase 14 — Each Topic Becomes a Full Learning Portal (vision stage, not yet scoped)
+
+**Status: NOT STARTED — VISION/DESIGN STAGE (planned 2026-10-08).** The user's own framing: "a
+full-fledged learning portal" for each topic, inside its hub — not the single flat content page
+every topic is today. This is explicitly the biggest phase on this list. It reshapes the SHARED
+topic-page template every hub depends on, so it needs real design work before any building starts,
+and should not be attempted as a direct, site-wide edit.
+
+### Why this is different in kind from Phases 10–13
+
+Every prior phase (new hubs, subtopic rollout, content audit, reference parity, engagement
+features) adds or corrects content within the EXISTING topic-page shape: one page, one scroll,
+fixed component order (quick-ref → theory → code → mistakes → challenge → quiz → qna → revision →
+complete), with Phase 10 subtopics as separate, optional deep-dive pages nested one level under it.
+Phase 14 is about the SHAPE itself — turning a topic from "one page with sections" into something
+that reads and behaves like a self-contained course: a structured, trackable, multi-stage learning
+experience, not a long article.
+
+### Entry point (clarified by the user with a screenshot, 2026-10-08)
+
+Each HUB's own home page (e.g. `/html`, `/rust`, `/redis` — the page with that hub's hero, stat
+row, and "All Topics" card grid; NOT the top-level DevHub home at `/`) gets a link near its hero
+section pointing to a NEW, separate "full learning portal" version of that same hub. This answers
+design question 1 below directly: **this is additive, not a rewrite** — the existing hub home and
+existing flat topic pages stay exactly as they are, and the portal is a parallel experience reached
+through this link, at least for however long both versions need to coexist. This also shapes the
+rollout: per-hub, opt-in via the link, which fits naturally with piloting on one hub before any
+wider rollout (see "Recommended approach" below) — build the link and the portal for ONE hub
+first, confirm it's right, then decide whether to add the link to every other hub's home page.
+
+### Once inside: its own dedicated portal shell, not the regular site chrome
+
+Clarified further by the user: crossing through the entry-point link should feel like ARRIVING
+somewhere new, not like a reshaped page sitting inside the same frame. Today, every page on the
+site (every hub, every topic) shares one global shell — the same top header, the same collapsible
+left nav sidebar, the same breadcrumb style, the same page-sidebar panel — defined once in `app.ts`
+/`app.html` and reused everywhere. The portal should NOT just be the existing topic-page template
+redecorated while still living inside that shared shell. It needs its own distinct navigation and
+presentation once you're inside it — its own dedicated layout for that hub's portal specifically,
+distinguishable at a glance from "a DevHub page" in general. Concretely, this likely means the
+portal's route tree renders its OWN top-level layout component (its own header/nav treatment)
+rather than nesting inside the existing `app.html` shell the rest of the site shares — confirm this
+architecturally (can Angular's router swap out the root layout for one route subtree without
+disturbing every other route) before assuming it's a simple template swap within the current shell.
+
+### Content discipline: extensive research per topic, current information only
+
+The user was explicit that this is not a reshuffling of existing prose into a new layout — each
+topic's full portal content needs its own round of extensive research before writing, using the
+most CURRENT information available for that topic, not whatever the existing flat page already
+says. In practice this means applying Phase 12's own verification discipline (WebFetch/WebSearch
+against primary sources, direct execution where a runtime exists, checking version-sensitive
+claims against current releases) proactively, DURING Phase 14 content creation — rather than
+reusing existing page text and auditing it for staleness afterward. A topic's portal content
+should read as freshly researched, not as the existing page restyled.
+
+### Content depth bar: documentation-site completeness, not a curated subset
+
+Clarified further by the user, in capitals, twice: the portal's content must be as thorough as
+official documentation for that technology — "full detailed explanation, example, everything" —
+and "nothing should miss related to that hub." This is a real escalation from how every existing
+topic page on this site is scoped today. The "Session Guidelines" section of this very file
+instructs writing to "5–8 core concepts a developer must understand" per topic — a deliberately
+CURATED subset, not full coverage. The portal explicitly abandons that ceiling: for whatever
+technology a hub covers, its portal content should approach the completeness of that technology's
+own official docs (think MDN for web platform topics, doc.rust-lang.org for Rust, the React/Angular
+docs for their own frameworks) — every notable feature, every API surface worth knowing, edge
+cases, advanced usage, not just the handful of concepts judged "most important" for a quick page.
+
+**What this means in practice, and what it costs:**
+- A single portal topic is likely to require substantially MORE content, MORE examples, and MORE
+  research time than today's flat topic page for the same subject — official documentation sites
+  are, by nature, much larger than a single curated page. Size this expectation correctly before
+  estimating how long a pilot topic will take; "a few hours like a normal topic page" is very
+  likely the wrong estimate once this bar is taken seriously.
+- "Nothing should miss" needs an operational definition before writing, not just an aspiration: for
+  the pilot topic, enumerate the technology's own official doc's table of contents (or the
+  equivalent — a language reference, an API index) FIRST, then check the portal's planned content
+  against that list explicitly, rather than trusting a prose pass to have naturally covered
+  everything. This is the same "verify against a primary source, don't assume" discipline this
+  project already applies everywhere else, applied to coverage/completeness rather than to a single
+  claim's accuracy.
+- This depth bar is specific to the PORTAL. It does not retroactively apply to the existing curated
+  flat topic pages, which stay exactly as scoped today (5–8 core concepts) unless Phase 14 is
+  eventually extended to replace them — see the "additive, not a rewrite" resolution above.
+
+### A draft shape (starting point only — needs real design decisions before anything is built)
+
+One reasonable way to read "full-fledged learning portal" using pieces this site already has:
+
+- A **topic syllabus/overview** — replacing today's flat page header, framing the topic like a
+  course landing page: learning objectives, prerequisites (the existing `app-prerequisites`
+  component already does part of this), estimated total time, and a visible roadmap of stages.
+- **Discrete stages** instead of one continuous scroll, each a step in a structured path — largely
+  the SAME content the site already has, reframed as sequential lessons rather than page sections:
+  theory/concepts, guided code walkthrough, common pitfalls, a hands-on challenge, deep-dive
+  subtopics (Phase 10 content, strengthened by Phase 12's subtopic-floor fix), a knowledge check,
+  interview-style Q&A, and a completion/review stage.
+- A **per-topic progress indicator** ("Stage 3 of 8"), distinct from today's site-wide
+  completed/not-completed flag (`ProgressService`), so a learner can see how far through a
+  specific topic's own portal they are, not just whether they've marked it done.
+- Possibly a **completion artifact** once every stage is finished (a badge or certificate),
+  which would connect naturally with Phase 13C's engagement-feature brainstorm rather than
+  duplicate it.
+
+### Open design questions to resolve BEFORE touching any code
+
+These are genuinely undecided and should not be guessed at mid-implementation:
+
+1. ~~Is this a new visual/navigational skin over existing content, or a content rewrite?~~
+   **Resolved:** additive and freshly researched — see "Entry point" and "Content discipline"
+   above. The existing hub home and flat topic pages are untouched; the portal is a new, parallel
+   experience per hub, reached via a link, with its own per-topic content written from fresh
+   research rather than reused from the existing page.
+2. **Separate routes per stage, or one page with a stepper UI?** Separate routes mirror how Phase
+   10 subtopics already work (their own URLs, breadcrumb depth, nav entries) but multiply the
+   routing/wiring surface area by roughly the number of stages, across every topic, in every hub.
+   A single-page stepper avoids that multiplication but is a different UI pattern than anything
+   currently on the site. Still open.
+3. **Which hub(s), and in what order, get the entry-point link?** The link/portal pair is built and
+   proven on ONE pilot hub first (see "Recommended approach" below). After that pilot, decide
+   hub-by-hub whether to add the link — there is no requirement that every hub gets one in the same
+   sweep; existing hubs without the link keep working exactly as they do today in the meantime.
+4. **Relationship to Phase 10 subtopics:** do existing subtopic pages become one of the stages
+   as-is, or do they need their own reshaping to fit a "lesson" format?
+5. **Relationship to Phase 13A (reference-page parity):** reference/practice pages are explicitly
+   NOT topics (no `app-page-complete`, different anatomy per `CLAUDE.md`) — confirm this phase is
+   scoped to trackable topic pages only, not reference pages, before starting.
+
+### A concrete architecture starting point (for the "dedicated shell" requirement)
+
+To make the "own dedicated portal shell" requirement from above actionable rather than aspirational:
+
+- Give the portal its OWN top-level route per hub, e.g. `/html/portal` (or a distinct segment
+  name — `/learn`, `/academy`, exact naming is a detail to settle during the pilot), registered in
+  `app.routes.ts` as its own subtree with a DIFFERENT root component than the one every other route
+  renders inside of today.
+- That root component owns its own header/nav treatment entirely — it does not import or reuse
+  `AppComponent`'s left-nav/breadcrumb/page-sidebar components, even if it visually borrows the
+  hub's accent color for continuity. Confirm during the pilot whether Angular's router can swap the
+  rendered root for one route subtree without affecting every other route (this is a real
+  architectural question, not a styling one — resolve it with a throwaway spike before committing
+  to the approach for the real pilot topic).
+- Stage content underneath that portal root can still read from the SAME underlying topic data
+  shape (`quickRef`/`theory`/`codeTabs`/etc.) if the "reuse pieces, re-research the prose" framing
+  holds, or from entirely new portal-specific data files if the pilot shows the existing shape
+  doesn't fit a staged/lesson format well — this is explicitly one of the things the pilot should
+  settle, not something to assume up front.
+
+### Candidate pilot hub (pick one, confirm during pre-work)
+
+- **HTML hub** — the hub actually shown in the user's own screenshot when this idea was raised,
+  which makes it a natural first candidate; also a moderate size (25 topics) that's big enough to
+  be representative but not so large that a pilot drags on.
+- **Rust hub** — currently mid-build (11 of ~21 topics shipped as of 2026-10-08, Phase 11A), so a
+  portal-first approach could be tried on a handful of its REMAINING un-written topics, building
+  them portal-native from the start rather than retrofitting already-shipped flat pages. Lower risk
+  in one sense (nothing existing to disturb) but means the pilot can't test retrofitting old
+  content, which the eventual wider rollout will mostly consist of.
+
+Either is reasonable; the two differ mainly in whether the pilot tests "retrofit an existing hub"
+(HTML) or "build portal-native from scratch" (Rust) — and the wider rollout will eventually need to
+handle both cases regardless of which one is piloted first.
+
+### Success criteria for pilot sign-off
+
+Before declaring the pilot shape locked in (the same bar Phase 10's own pilot had to clear before
+being rolled out to 30+ hubs), confirm ALL of:
+
+- The entry-point link is visible and reachable from the pilot hub's own home page.
+- The portal renders with its own dedicated shell (confirmed by inspection, not assumption — does
+  it actually look and navigate differently from a regular DevHub page, per the user's own stated
+  bar: "look like a new portal dedicated to that hub").
+- The pilot topic's content is demonstrably freshly researched (cite what was checked and against
+  what source, same logging discipline as every Phase 10 batch) rather than copy-pasted from the
+  existing flat page.
+- Dark mode, mobile/responsive layout, and basic navigation (forward/back through stages, a way
+  back out to the regular hub) all work with no console errors.
+- The existing flat topic page and hub home for that same topic/hub are completely unaffected —
+  confirmed by loading them after the portal work, not assumed safe because the portal is "new
+  routes."
+- Explicit user sign-off that the shape matches what they pictured, before any second topic or hub
+  is attempted.
+
+### Sequencing
+
+Not yet sequenced — this phase does not start until the open design questions above are answered
+and a pilot topic is chosen. Treat any work here before that point as design exploration, not
+implementation.
+
+---
+
+## Phase 15 — Full Site Re-Verification: Content, Design & UI, with Independent Review
+
+**Status: NOT STARTED — VISION STAGE (planned 2026-10-08).** Broader than Phase 12. Phase 12 only
+re-verifies CONTENT accuracy on the earliest hubs (Phase 1–8). Phase 15 is a full pass across the
+ENTIRE site — every hub, not just the early ones — across three dimensions (content, design, UI),
+and explicitly requires an INDEPENDENT reviewer, not just the same agent/session grading its own
+work.
+
+### Why this is distinct from Phase 12
+
+Phase 12 exists because early hubs predate the fact-verification discipline Phase 10 established.
+Phase 15 exists for a different reason: even hubs built WITH that discipline can still carry bugs
+the author never catches, precisely because the same mind that wrote something is bad at spotting
+its own mistakes in it. This project's own history already proves the point — the breadcrumb-label
+bug fixed in this very session (six Rust topics' labels silently landing in the JavaScript hub's
+labels map, from a non-unique anchor string in a wiring helper script) survived an entire session
+of content-writing, multiple production builds, and browser spot-checks, and was only caught
+because the rendered breadcrumb was LOOKED AT directly and found to say the wrong thing. A
+same-agent self-review process has a structural blind spot; this phase is built around closing it
+with a genuinely separate reviewer.
+
+### Three verification dimensions
+
+1. **Content** — same substance as Phase 12 (factual accuracy, internal consistency, current vs.
+   stale version claims), but in scope for EVERY hub eventually, including ones built after the
+   verification discipline existed — not because they're assumed wrong, but because "built with
+   the discipline" and "never independently checked" are different things.
+2. **Design consistency** — audit every hub against `CLAUDE.md`'s own documented rules, since those
+   rules exist specifically because violations have happened before and are easy to reintroduce:
+   - The theming table (exact `$accent`/`$tint`/dark-accent values per hub).
+   - The hub CSS naming table (page wrapper class, section class, icon class, icon content,
+     `tech=` value) — using the wrong hub's class is called out in `CLAUDE.md` as "a design bug,"
+     not a cosmetic nitpick.
+   - The icon pattern rules (solid-fill vs. light-tint generation, inline-code-in-subtitle always
+     light-tint regardless of hub fill pattern).
+   - Dark mode implemented via `:host-context(body.dark)`, never `@media
+     (prefers-color-scheme: dark)` — `CLAUDE.md` notes this exact mistake "caused a major rendering
+     bug once already," meaning it's a realistic regression to check for, not a hypothetical one.
+   - Consistent padding within a hub's own topic pages.
+   - The nav home-link pattern (standalone, not nested inside a `nav-group`).
+3. **UI/UX** — actually driving the site in the browser, not just reading source: dark mode
+   rendering on a sample of pages per hub, mobile/responsive behavior, breadcrumb depth on nested
+   routes, sidebar tailored content vs. silent `DEFAULT` fallback (a gap this project has found and
+   fixed for real, more than once, on more than one hub), search index completeness, nav accordion
+   expand/collapse (including auto-expand on direct navigation), and a basic console-error sweep.
+
+### The independent-review requirement
+
+This is the piece that makes Phase 15 different from "just do Phase 12 again, but bigger." Content,
+design, and UI findings from this phase should be checked by someone OTHER than whoever produced
+the page being reviewed, through one or more of:
+
+- This session's own `/code-review` skill (and its `ultra` mode, which runs a multi-agent cloud
+  review) for an independent pass over a batch of changes or a whole hub's diff history.
+- A separate agent/subagent explicitly briefed to review rather than to build — spawned fresh, with
+  no memory of why the original content was written the way it was, so it isn't anchored to the
+  original author's own assumptions. (This mirrors the project's own stated principle: "trust but
+  verify — an agent's summary describes what it intended to do, not necessarily what it did.")
+- Real human spot-checks on a sample, where available — an AI reviewing AI-written content shares
+  blind spots with the AI that wrote it in a way a human reviewer may not.
+
+Whichever mechanism is used, the review must be done by something that did NOT write the content
+being checked, on at least a meaningful sample of what's being verified — not 100% self-certified.
+
+### Scale and sequencing
+
+This is a very large phase — 30+ hubs × 3 dimensions, on top of Phase 12's own already-large scope.
+Make it tractable the same way every other phase in this file already is: one hub (or a clearly
+bounded sample of pages within a hub) per session, logged the same way every Phase 10/12 batch has
+been logged. Because the independent-review requirement means this phase can meaningfully RECUR
+(a hub re-verified once isn't permanently immune to future regressions), treat it as an ongoing
+practice once started, not a single pass with a defined end state — similar in spirit to how Phase
+12 itself has no fixed page-count target, just a standard every hub should periodically meet.
+
+### Relationship to Phase 12 and Phase 14
+
+Run Phase 15's CONTENT dimension as a superset of Phase 12 rather than a duplicate effort — a hub
+audited under Phase 12 does not need its content re-audited again immediately under Phase 15,
+though it still needs the DESIGN and UI dimensions checked, and still benefits from an independent
+second pair of eyes rather than the same session's own self-certification. Any hub or topic built
+under Phase 14 (the new learning-portal experience) should go through Phase 15's full three-
+dimension check before being considered done, given how new and unproven that whole UI pattern will
+be — do not let "it's new" become a reason to skip review just because Phase 12's prioritization
+list doesn't mention it yet.
 
 ---
 

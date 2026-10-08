@@ -1,0 +1,27 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Neural Networks" topicRoute="/ai/neural-networks"
+    subtopicLabel="Measuring Vanishing Gradients Through 20 Layers" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">Measuring Vanishing Gradients Through 20 Layers</h1>
+  <p class="page-subtitle">The page says sigmoid gradients shrink exponentially with depth. Backpropagating through 20 sigmoid layers, the first layer's weight gradient was about 5e-14 times the last layer's.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This quantifies the vanishing-gradient bullet. The last subtopic shows why initialisation must match the activation.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Neural Networks" topicRoute="/ai/neural-networks"
+    [prev]="{ label: 'Dropout Before BatchNorm Shifts the Variance', route: '/ai/neural-networks/dropout-before-batchnorm-shifts-the-variance' }"
+    [next]="{ label: 'Xavier Init Shrinks ReLU Activations', route: '/ai/neural-networks/xavier-init-shrinks-relu-activations' }" />
+</div>

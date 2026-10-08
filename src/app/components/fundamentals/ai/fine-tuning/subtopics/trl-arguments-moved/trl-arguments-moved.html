@@ -1,0 +1,27 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Fine-tuning & RLHF" topicRoute="/ai/fine-tuning"
+    subtopicLabel="TRL Trainer Arguments Moved to the Config" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">TRL Trainer Arguments Moved to the Config</h1>
+  <p class="page-subtitle">The page passed dataset_text_field to SFTTrainer and tokenizer to DPOTrainer. In current TRL neither argument exists on the trainer: dataset_text_field lives on SFTConfig and the tokenizer is passed as processing_class.</p>
+  <app-page-meta [readingTime]="4" difficulty="intermediate" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This fixes both code tabs. The last subtopic looks at which text the SFT loss is computed on.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Fine-tuning & RLHF" topicRoute="/ai/fine-tuning"
+    [prev]="{ label: 'Counting LoRA Parameters with Grouped-Query Attention', route: '/ai/fine-tuning/lora-parameter-count-with-gqa' }"
+    [next]="{ label: 'Training Only on the Output Field Drops the Instruction', route: '/ai/fine-tuning/training-only-on-the-output-field' }" />
+</div>

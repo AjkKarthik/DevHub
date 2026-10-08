@@ -37,7 +37,7 @@ export class AwsSqs {
       heading: 'Standard vs FIFO Queues',
       points: [
         'Standard queues offer maximum throughput with at-least-once delivery and best-effort ordering.',
-        'FIFO queues guarantee exactly-once processing and strict ordering within a message group, but are limited to 3,000 msg/s (with batching) per queue.',
+        'FIFO queues guarantee exactly-once processing and strict ordering within a message group. The default throughput is 3,000 msg/s with batching (300 without) — but that is a default, not a hard ceiling: opting into High Throughput Mode on the queue raises it to tens of thousands of transactions per second per API action, no application code change required.',
         'Use Standard for high-throughput workloads where occasional duplicates and out-of-order delivery are acceptable.',
         'Use FIFO when order matters and duplicates must be prevented (financial transactions, state machines).',
       ]
@@ -347,11 +347,11 @@ async function simulateProcess(body: string) {
 
   readonly qna: QnaItem[] = [
     { q: 'What is the maximum message size in SQS?', a: 'SQS supports messages up to 256KB. For larger payloads, use the SQS Extended Client Library which stores the body in S3 and sends only a reference in the SQS message — the Claim Check pattern.' },
-    { q: 'Can Lambda consume SQS directly?', a: 'Yes. Lambda SQS event source mapping polls the queue, batches messages, and invokes Lambda. On success, processed messages are deleted automatically. On function error, the batch is returned to the queue (or sent to DLQ if configured as a Lambda destination).' },
+    { q: 'Can Lambda consume SQS directly?', a: 'Yes. Lambda SQS event source mapping polls the queue, batches messages, and invokes Lambda. On success, processed messages are deleted automatically. On function error, the whole batch is returned to the queue by default. Unlike stream-based sources (DynamoDB, Kinesis), SQS event source mappings have no Lambda-side "on-failure destination" — dead-lettering is handled exclusively by the redrive policy configured on the SQS queue itself.' },
     { q: 'How does FIFO deduplication work?', a: 'Within a 5-minute window, FIFO queues deduplicate messages with the same MessageDeduplicationId. If the content-based deduplication option is enabled, AWS hashes the message body automatically. Use explicit IDs for critical deduplication scenarios.' },
     { q: 'How does SQS dead-letter queue (DLQ) work?', a: 'When a message exceeds <strong>maxReceiveCount</strong> (receive attempts without deletion), SQS automatically moves it to the DLQ. Configure a DLQ with a longer retention period to inspect failed messages. CloudWatch alarms on DLQ depth detect processing failures. Redrive policy lets you move messages back to the source queue after fixing bugs.' },
     { q: 'What happens to a ReceiveMessage call during long polling if a message arrives one second after the call started?', a: 'The API call returns immediately with that message, rather than waiting out the full WaitTimeSeconds window — long polling holds the connection open only until EITHER a message becomes available OR the timeout elapses, whichever happens first. This is why long polling reduces both latency (no need to wait the full timeout when messages are already flowing) and empty-response API costs (no need to poll again every few hundred milliseconds), unlike a naive fixed-delay polling loop.' },
-    { q: 'How does SQS FIFO ensure exactly-once processing?', a: 'FIFO queues use <strong>MessageDeduplicationId</strong> (5-minute deduplication window) to reject duplicate sends. <strong>MessageGroupId</strong> groups messages for strict ordering within the group. <strong>ContentBasedDeduplication</strong> auto-generates dedup ID from SHA-256 of the body. Throughput is capped at 300 msg/s (3,000 with batching).' },
+    { q: 'How does SQS FIFO ensure exactly-once processing?', a: 'FIFO queues use <strong>MessageDeduplicationId</strong> (5-minute deduplication window) to reject duplicate sends. <strong>MessageGroupId</strong> groups messages for strict ordering within the group. <strong>ContentBasedDeduplication</strong> auto-generates dedup ID from SHA-256 of the body. Default throughput is 300 msg/s (3,000 with batching) — High Throughput Mode raises that default by more than an order of magnitude, since deduplication and ordering are enforced per message group, not by a single global sequential writer.' },
   ];
 
   readonly revision: RevisionSummary = {

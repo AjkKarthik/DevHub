@@ -1,0 +1,26 @@
+<div class="test-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Jest Fundamentals" topicRoute="/testing-hub/jest-fundamentals"
+    subtopicLabel="expect.assertions Checks an Exact Count" />
+  <div class="page-header-icon test-icon">✓</div>
+  <h1 class="page-title">expect.assertions Checks an Exact Count</h1>
+  <p class="page-subtitle">The quiz said expect.assertions(2) fails when fewer than 2 assertions run. It also fails when more run. For an at-least-one check, use expect.hasAssertions().</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="Testing" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="test-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="test-section">
+    <h2>Where this fits</h2>
+    <p>This corrects a quiz answer on the Jest Fundamentals page. The next subtopic covers matcher aliases that Jest 30 removed.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Jest Fundamentals" topicRoute="/testing-hub/jest-fundamentals"
+    [next]="{ label: 'Jest 30 Removed toThrowError and Other Aliases', route: '/testing-hub/jest-fundamentals/jest-30-removed-tothrowerror-and-other-aliases' }" />
+</div>

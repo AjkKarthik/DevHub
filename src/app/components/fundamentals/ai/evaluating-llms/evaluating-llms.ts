@@ -57,7 +57,7 @@ export class AiEvaluatingLlms {
       points: [
         'Use a strong LLM (GPT-4, Claude Opus) to grade outputs: provide rubric, question, and response; ask for a score 1–5 with reasoning.',
         'Pairwise comparison: show judge two responses (A vs B), ask which is better. More reliable than absolute scoring.',
-        'Positional bias: LLM judges prefer whichever response appears first. Mitigate by swapping order and averaging.',
+        'Positional bias: verdicts can flip when the two answers are swapped. In the MT-Bench study GPT-4 gave the same verdict both ways only 65% of the time, favouring the first answer in 30% of cases. Run both orders and count a win only when the same answer wins twice.',
         'Self-serving bias: a model tends to prefer its own outputs. Use a different model as judge, or use multi-model judging.',
         'Constitutional AI and Prometheus: fine-tuned judge models with rubric-following ability — cheaper and less biased than GPT-4.',
       ],
@@ -196,7 +196,7 @@ const result = rougeN(
   "The cat is sitting on the mat",
 );
 console.log('ROUGE-1:', result);
-// { precision: 0.625, recall: 0.714, f1: 0.667 }
+// { precision: 0.556, recall: 0.714, f1: 0.625 }  (5 shared words / 9 and / 7)
 
 // BERTScore (Python via bert_score library)
 // from bert_score import score
@@ -211,7 +211,8 @@ console.log('ROUGE-1:', result);
       wrong: `# n-gram overlap metrics miss paraphrase quality
 hypothesis = "The Eiffel Tower is located in Paris, France"
 reference  = "France's capital, Paris, is home to the Eiffel Tower"
-# ROUGE-1 F1 ≈ 0.47 despite being equally correct!
+# ROUGE-1 F1 ≈ 0.59 with the tokeniser above — "France's" becomes "frances" and
+# no longer matches "france", although the answers say the same thing
 # These metrics were designed for machine translation, not LLM evaluation`,
       right: `# Combine metrics:
 # BLEU/ROUGE: good for translation/summarisation with short, constrained outputs
@@ -223,14 +224,14 @@ reference  = "France's capital, Paris, is home to the Eiffel Tower"
     {
       title: 'Not accounting for positional bias in LLM-as-judge',
       wrong: `# Always put new model as Answer A, baseline as Answer B
-# LLM judges prefer whichever comes first ~65% of the time
+# In MT-Bench, GPT-4 kept its verdict after a swap only 65% of the time
 result = judge(question, new_model_answer, baseline_answer)
 # Result inflated in favour of the new model`,
       right: `# Run twice with swapped order, treat inconsistency as "tie"
 r1 = judge(question, answerA=new, answerB=baseline)  # → "A"
 r2 = judge(question, answerA=baseline, answerB=new)   # → "B" means A still wins
 # Both say new wins → new wins. Disagreement → tie`,
-      explanation: 'LLM judges have strong positional bias — the first answer wins ~65% of the time regardless of quality. Always run pairwise evaluation in both orders and aggregate. A consistent winner across both orderings is reliable.',
+      explanation: 'LLM judges have real positional bias — in the MT-Bench study GPT-4 gave the same verdict after swapping the answers only 65% of the time, and favoured the first answer in 30% of cases. Always run pairwise evaluation in both orders and aggregate. A consistent winner across both orderings is reliable.',
     },
     {
       title: 'Evaluating on a single metric for a multi-dimensional task',
@@ -311,7 +312,7 @@ score = claude.judge(question, answer)   # cross-model judging
         'The judge ignores answers after the first paragraph',
       ],
       answer: 1,
-      explanation: 'Research shows LLM judges prefer the first response ~65% of the time independently of quality. Mitigate by running pairwise comparisons in both A→B and B→A orderings and treating inconsistency as a tie.',
+      explanation: 'In the MT-Bench study (Zheng et al., 2023) GPT-4 was consistent across swapped orders in 65% of cases and favoured the first answer in 30%. Mitigate by running pairwise comparisons in both A→B and B→A orderings and treating inconsistency as a tie.',
     },
     {
       q: 'In RAG evaluation, what does "faithfulness" measure?',

@@ -1,0 +1,26 @@
+<div class="test-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Test Doubles" topicRoute="/testing-hub/test-doubles"
+    subtopicLabel="clearAllMocks Keeps Return Values, resetAllMocks Removes Them" />
+  <div class="page-header-icon test-icon">✓</div>
+  <h1 class="page-title">clearAllMocks Keeps Return Values, resetAllMocks Removes Them</h1>
+  <p class="page-subtitle">The page fixes leaking call counts with jest.clearAllMocks(). That clears recorded calls but keeps mockReturnValue setups, which is different from resetAllMocks and restoreAllMocks.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Testing" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="test-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="test-section">
+    <h2>Where this fits</h2>
+    <p>This expands the reset mistake on the Test Doubles page. The Mocking and Spies topic covers jest.mock module mocking and timers.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Test Doubles" topicRoute="/testing-hub/test-doubles"
+    [prev]="{ label: 'spyOn Calls the Real Method by Default', route: '/testing-hub/test-doubles/spyon-calls-through-by-default' }" />
+</div>

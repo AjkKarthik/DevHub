@@ -1,0 +1,27 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="AI & ML Fundamentals" topicRoute="/ai/ml-fundamentals"
+    subtopicLabel="Precision Is NaN When Nothing Is Predicted Positive" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">Precision Is NaN When Nothing Is Predicted Positive</h1>
+  <p class="page-subtitle">The page warns that always predicting the majority class gives 95% accuracy. Running its own confusionMatrix on that case gives precision and F1 of NaN, not 0.</p>
+  <app-page-meta [readingTime]="4" difficulty="beginner" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This fixes the metrics tab. The last subtopic finds the exact learning rate where the page's gradient descent breaks.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="AI & ML Fundamentals" topicRoute="/ai/ml-fundamentals"
+    [prev]="{ label: 'A Sort-Based Shuffle Is Biased', route: '/ai/ml-fundamentals/sort-based-shuffle-is-biased' }"
+    [next]="{ label: 'Where Gradient Descent Starts to Diverge', route: '/ai/ml-fundamentals/where-gradient-descent-starts-to-diverge' }" />
+</div>

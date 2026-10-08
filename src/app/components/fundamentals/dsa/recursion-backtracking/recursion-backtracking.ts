@@ -37,7 +37,7 @@ export class DsaRecursionBacktracking {
         'Every recursive function needs a base case (stops recursion) and a recursive case (reduces the problem).',
         'Trust the recursion: assume the recursive call returns the correct answer for the subproblem.',
         'Call stack depth = recursion depth. Each frame holds local variables — O(depth) space.',
-        'Tail recursion: recursive call is the last operation — some languages optimize this to O(1) stack. JavaScript does not.',
+        'Tail recursion: recursive call is the last operation. The ES2015 spec requires proper tail calls in strict mode (O(1) stack), but only Safari\'s JavaScriptCore implements them — V8 (Chrome, Node) removed its support, so in practice rewrite deep tail recursion as a loop or trampoline.',
       ],
     },
     {
@@ -68,12 +68,11 @@ export class DsaRecursionBacktracking {
       ],
     },
     {
-      heading: 'Pruning: The Difference Between Brute Force and Efficient Backtracking',
+      heading: 'Pruning, Measured: Where the Savings Actually Come From',
       points: [
-        'Pure brute-force recursion explores every possible combination regardless of whether a partial solution can still succeed, while backtracking adds pruning — abandoning a branch as soon as it is known to be invalid or suboptimal, avoiding wasted exploration of doomed subtrees.',
-        'Effective pruning conditions (like checking a partial sum has not already exceeded a target, or a partial board state does not already violate constraints) can reduce backtracking\'s practical running time by orders of magnitude versus unpruned brute force, even though both share the same worst-case complexity bound.',
+        'Where a pruning check sits matters. The combination-sum codeTab checks remaining &lt; 0 at the top of the NEXT call, so every overshoot still costs one call. Sorting the candidates and breaking out of the loop once candidates[i] &gt; remaining skips those calls and every larger candidate after them: measured 28 calls down to 10 for [2,3,6,7] with target 7, and 5,448 down to 4,803 for a 7-candidate set with target 40 — real, but far smaller than "orders of magnitude" on inputs where most paths are valid.',
+        'The bigger win is often removing duplicate work rather than invalid work. For 20 elements made of ten 1s and ten 2s, plain subset generation produces 1,048,576 subsets; sorting and skipping a repeated value at the same tree level produces only the 121 distinct ones.',
         'The order in which choices are tried can meaningfully affect performance even with correct pruning — trying the most constrained or most likely-to-fail choice first (as in Sudoku solvers using "most constrained variable" heuristics) prunes the search tree faster than an arbitrary ordering.',
-        'Backtracking\'s "choose, explore, unchoose" pattern requires correctly undoing state changes on the way back up the recursion — a common bug is forgetting to remove an element from a "current path" array or reset a visited flag after the recursive call returns, corrupting subsequent branches.',
       ],
     },
   ];

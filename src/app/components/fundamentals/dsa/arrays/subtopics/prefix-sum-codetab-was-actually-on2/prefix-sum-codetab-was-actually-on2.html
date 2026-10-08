@@ -1,0 +1,26 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Arrays" topicRoute="/dsa/arrays"
+    subtopicLabel="The Prefix Sum CodeTab Was Actually O(n²)" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">The Prefix Sum CodeTab Was Actually O(n&#178;)</h1>
+  <p class="page-subtitle">The main page's own theory claims prefix sums "Build in O(n)" -- its own code sample instead built one with a slice+reduce per index, which is O(n²). Measured exactly, then fixed.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This directly fixes the main page's own "Prefix sum" code sample, which contradicted its own "Build in O(n)" theory claim -- the correct pattern was already sitting two sections away in the page's own mistake block.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Arrays" topicRoute="/dsa/arrays"
+    [next]="{ label: '2D Prefix Sums for Submatrix Range Queries', route: '/dsa/arrays/2d-prefix-sums-submatrix-queries' }" />
+</div>

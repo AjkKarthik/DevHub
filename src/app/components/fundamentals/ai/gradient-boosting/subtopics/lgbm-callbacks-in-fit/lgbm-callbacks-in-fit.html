@@ -1,0 +1,26 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Gradient Boosting (XGBoost)" topicRoute="/ai/gradient-boosting"
+    subtopicLabel="LightGBM Callbacks Belong in fit()" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">LightGBM Callbacks Belong in fit()</h1>
+  <p class="page-subtitle">The page passed early_stopping callbacks to the LGBMClassifier constructor. LightGBM 4.7 accepts that without error and then ignores it: all 1,000 trees were built.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This fixes the LightGBM tab. Next, a parameter that does nothing on its own.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Gradient Boosting (XGBoost)" topicRoute="/ai/gradient-boosting"
+    [next]="{ label: 'LightGBM subsample Needs subsample_freq', route: '/ai/gradient-boosting/lightgbm-subsample-needs-subsample-freq' }" />
+</div>

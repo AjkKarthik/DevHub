@@ -1,0 +1,26 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Fine-tuning & RLHF" topicRoute="/ai/fine-tuning"
+    subtopicLabel="Training Only on the Output Field Drops the Instruction" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">Training Only on the Output Field Drops the Instruction</h1>
+  <p class="page-subtitle">The page loaded Alpaca-style rows and set dataset_text_field to output, so the model would only ever see the answers, never the instructions they answer.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This finishes the SFT example. RAG is the alternative when the goal is new knowledge rather than new behaviour.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Fine-tuning & RLHF" topicRoute="/ai/fine-tuning"
+    [prev]="{ label: 'TRL Trainer Arguments Moved to the Config', route: '/ai/fine-tuning/trl-trainer-arguments-moved' }" />
+</div>

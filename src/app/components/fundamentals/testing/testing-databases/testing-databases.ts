@@ -96,12 +96,10 @@ test('saves and retrieves a user', async () => {
   expect(users[0].name).toBe('Alice');
 });` },
     { label: 'Transaction Rollback', language: 'typescript', code:
-`import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
-
-// Prisma does not natively support savepoints — use per-test schema instead.
-// With raw pg or typeorm you can use beginTransaction / rollback:
+`// Per-test transaction with node-postgres.
+// IMPORTANT: rollback only isolates queries sent on THIS client. Code under
+// test that takes its own connection from the pool neither sees these rows
+// nor gets rolled back, so inject this client into the code under test.
 import { Pool, PoolClient } from 'pg';
 
 const pool = new Pool({ connectionString: process.env.TEST_DB_URL });
@@ -154,6 +152,10 @@ public class UserRepositoryTests
 }` },
     { label: 'Seeding Pattern', language: 'typescript', code:
 `// seed helper — deterministic fixture data
+// NOTE (PostgreSQL): inserting explicit ids does not advance a SERIAL/IDENTITY
+// sequence. Reset it after seeding or the next insert without an id fails
+// with a duplicate key on id 1:
+//   SELECT setval(pg_get_serial_sequence('"User"', 'id'), (SELECT max(id) FROM "User"));
 async function seedUsers(prisma: PrismaClient) {
   return prisma.user.createMany({
     data: [
@@ -258,7 +260,7 @@ describe('TodoRepository', () => {
     { q: 'How do I handle database migrations in test setups?', a: 'Run migrations as part of the test setup (beforeAll). With Testcontainers, start the container, then apply migrations before seeding. With SQLite, `synchronize: true` is acceptable for tests. Never apply migrations to the production DB during test runs.' },
     { q: 'What is a good seeding strategy for complex relational data?', a: 'Use the builder pattern (UserBuilder, OrderBuilder) for flexible test data, and factory functions for common fixtures. Keep seed data minimal — only create what each test actually needs. Shared fixtures lead to tests that are hard to understand in isolation.' },
   { q: 'How do you test database transactions in integration tests?', a: 'Verify atomicity: insert rows in a transaction, force a failure mid-transaction (throw inside the TX), assert the previously inserted rows do NOT exist after rollback. Test idempotency: run the same operation twice, assert DB state is consistent. Use the real DB — mocking transactions gives false confidence.' },
-  { q: 'How do you use Testcontainers for database tests in Node.js?', a: 'const container = await new PostgreSqlContainer().start(). Get connection string with container.getConnectionUri(). Run Prisma: DATABASE_URL=container.getConnectionUri() npx prisma migrate deploy. Run tests against the container. In afterAll: await container.stop(). Each CI run gets a fresh container with no shared state.' },
+  { q: 'How do you use Testcontainers for database tests in Node.js?', a: 'const container = await new PostgreSqlContainer("postgres:16").start() (the image argument is required). Get connection string with container.getConnectionUri(). Run Prisma: DATABASE_URL=container.getConnectionUri() npx prisma migrate deploy. Run tests against the container. In afterAll: await container.stop(). Each CI run gets a fresh container with no shared state.' },
   { q: 'What is a seed script in database testing?', a: 'A seed script pre-populates the database with reference data needed for tests (lookup tables, admin users, test accounts). Run in beforeAll for expensive data or beforeEach for mutable data. Keep seeds minimal — only what tests actually need. Organise seed factories that generate realistic test data for different scenarios.' },
   ];
 

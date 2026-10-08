@@ -1,0 +1,27 @@
+<div class="test-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Property-Based Testing" topicRoute="/testing-hub/property-based-testing"
+    subtopicLabel="fc.integer Ignores Positional min and max in v4" />
+  <div class="page-header-icon test-icon">✓</div>
+  <h1 class="page-title">fc.integer Ignores Positional min and max in v4</h1>
+  <p class="page-subtitle">The Challenge built its ranges with fc.integer(-1000, 1000). In fast-check 4 that signature is gone: the numbers are ignored at runtime and the generator produces the full 32-bit range.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Testing" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="test-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="test-section">
+    <h2>Where this fits</h2>
+    <p>This fixes the Challenge on the Property-Based Testing page. The next subtopic builds the model-based test that the page's quiz describes.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Property-Based Testing" topicRoute="/testing-hub/property-based-testing"
+    [prev]="{ label: 'A Symmetric Bug Cannot Break Commutativity', route: '/testing-hub/property-based-testing/a-symmetric-bug-cannot-break-commutativity' }"
+    [next]="{ label: 'Model-Based Testing with fc.commands', route: '/testing-hub/property-based-testing/model-based-testing-with-fc-commands' }" />
+</div>

@@ -119,7 +119,7 @@ class SimpleVectorStore {
   }
 }
 
-// Reciprocal Rank Fusion for hybrid search
+// Reciprocal Rank Fusion for hybrid search (ranks are 0-based here, hence + 1)
 function rrfScore(ranks: number[], k = 60): number {
   return ranks.reduce((sum, rank) => sum + 1 / (k + rank + 1), 0);
 }`,
@@ -127,20 +127,25 @@ function rrfScore(ranks: number[], k = 60): number {
     {
       label: 'RAG Pipeline',
       language: 'typescript',
-      code: `// Full RAG pipeline using LangChain.js (TypeScript)
-// npm install langchain @langchain/openai @langchain/community
+      code: `// Full RAG pipeline using LangChain.js (TypeScript), LangChain 1.x package layout
+// npm install @langchain/classic @langchain/core @langchain/openai @langchain/textsplitters js-tiktoken
+// (in LangChain 1.x the memory store and these chains moved from langchain to @langchain/classic)
 
-// import { OpenAIEmbeddings } from '@langchain/openai';
-// import { MemoryVectorStore } from 'langchain/vectorstores/memory';
-// import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
-// import { ChatOpenAI } from '@langchain/openai';
-// import { createRetrievalChain } from 'langchain/chains/retrieval';
-// import { createStuffDocumentsChain } from 'langchain/chains/combine_documents';
+// import { OpenAIEmbeddings, ChatOpenAI } from '@langchain/openai';
+// import { MemoryVectorStore } from '@langchain/classic/vectorstores/memory';
+// import { RecursiveCharacterTextSplitter } from '@langchain/textsplitters';
+// import { createRetrievalChain } from '@langchain/classic/chains/retrieval';
+// import { createStuffDocumentsChain } from '@langchain/classic/chains/combine_documents';
+// import { encodingForModel } from 'js-tiktoken';
 // import { ChatPromptTemplate } from '@langchain/core/prompts';
 
 async function buildRagPipeline(documents: string[]) {
-  // 1. Chunk documents
-  // const splitter = new RecursiveCharacterTextSplitter({ chunkSize: 512, chunkOverlap: 50 });
+  // 1. Chunk documents (chunkSize counts characters unless you pass a token lengthFunction)
+  // const enc = encodingForModel('gpt-4');
+  // const splitter = new RecursiveCharacterTextSplitter({
+  //   chunkSize: 512, chunkOverlap: 50,
+  //   lengthFunction: (text) => enc.encode(text).length,   // measure in tokens
+  // });
   // const chunks = await splitter.createDocuments(documents);
 
   // 2. Embed and store
@@ -177,7 +182,8 @@ async function buildRagPipeline(documents: string[]) {
 splitter = RecursiveCharacterTextSplitter(chunk_size=2000)`,
       right: `// 256–512 tokens per chunk with 50-token overlap
 // Focused chunks → better semantic match with the query
-splitter = RecursiveCharacterTextSplitter(chunk_size=512, chunk_overlap=50)`,
+// chunk_size counts characters by default, so measure it in tokens:
+splitter = RecursiveCharacterTextSplitter.from_tiktoken_encoder(chunk_size=512, chunk_overlap=50)`,
       explanation: 'Large chunks dilute the embedding — the vector represents many topics at once and won\'t match specific queries well. Small, focused chunks (256–512 tokens) give precise retrieval. Use overlap to avoid splitting mid-concept.',
     },
     {
@@ -286,7 +292,7 @@ function topKChunks(
       explanation: 'Bi-encoder retrieval is fast but imprecise (query and chunk embedded independently). A reranker (cross-encoder) reads query + chunk together, capturing fine-grained relevance signals. Retrieve top-20, rerank to top-5 is the standard pattern.',
     },
   { q: 'What is the retrieval step in RAG and how is it implemented?', options: ['Keyword search on document titles', 'Semantic search using vector embeddings — query is embedded, nearest document chunks retrieved by cosine similarity', 'Full document scan for every query', 'Fine-tuning the LLM on documents'], answer: 1, explanation: 'RAG retrieval: embed the query with an embedding model, search a vector database (Pinecone, Weaviate, pgvector) for the k nearest chunks by cosine/dot-product similarity. The retrieved chunks provide the context injected into the LLM prompt.' },
-  { q: 'What is chunking strategy in RAG and why does it matter?', options: ['It does not matter — use full documents', 'How documents are split into passages affects retrieval quality — too small loses context; too large dilutes relevance', 'Always split by exactly 100 words', 'Chunking is only needed for PDFs'], answer: 1, explanation: 'Chunking affects both what gets embedded and what context the LLM receives. Fixed-size with overlap: 500-1000 tokens, 10-20% overlap (prevents splitting mid-sentence). Semantic chunking: split at natural boundaries (paragraphs, sections). Small-to-big: index small chunks, retrieve parent for context.' },
+  { q: 'What is chunking strategy in RAG and why does it matter?', options: ['It does not matter — use full documents', 'How documents are split into passages affects retrieval quality — too small loses context; too large dilutes relevance', 'Always split by exactly 100 words', 'Chunking is only needed for PDFs'], answer: 1, explanation: 'Chunking affects both what gets embedded and what context the LLM receives. Fixed-size with overlap: 256-512 tokens, about 10% overlap (so a concept split at a boundary still appears whole in one chunk). Semantic chunking: split at natural boundaries (paragraphs, sections). Small-to-big: index small chunks, retrieve parent for context.' },
   { q: 'What is the difference between sparse and dense retrieval?', options: ['Sparse is for images; dense for text', 'Sparse (BM25): keyword matching using TF-IDF; dense: semantic vector search using embeddings', 'Dense retrieval is always better', 'Sparse retrieval requires more compute'], answer: 1, explanation: 'BM25 (sparse): ranks documents by keyword frequency — exact match, fast, no meaning. Dense: semantic embeddings — finds relevant docs without exact keywords, handles synonyms. Hybrid: combine sparse + dense scores (RRF, weighted sum). Best RAG systems use hybrid retrieval.' },
   ];
 

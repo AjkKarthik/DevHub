@@ -52,7 +52,7 @@ export class VisualRegression {
       'Mask dynamic regions: await expect(page).toHaveScreenshot({ mask: [page.locator(".timestamp")] })',
       'Freeze animations: page.addStyleTag({ content: "* { animation: none !important; transition: none !important; }" })',
       'Use deterministic data — seed the same data before every visual test.',
-      'Wait for fonts and images to load before capturing: await page.waitForLoadState("networkidle").',
+      'Wait for the content you are comparing before capturing (for example await expect(page.getByRole("main")).toBeVisible()); Playwright marks waitForLoadState("networkidle") as discouraged.',
     ]},
     { heading: 'Handling Visual Diff Noise in CI', points: [
       'Font rendering, anti-aliasing, and GPU differences between local machines and CI runners commonly produce pixel-level differences that are not genuine regressions — running visual tests in a consistent, containerized environment minimizes this noise.',
@@ -68,12 +68,15 @@ export class VisualRegression {
 
 test('homepage looks correct', async ({ page }) => {
   await page.goto('/');
-  await page.waitForLoadState('networkidle');
+  // Wait for real content, not 'networkidle' (Playwright marks it DISCOURAGED).
+  // toHaveScreenshot also retries until two consecutive captures match.
+  await expect(page.getByRole('main')).toBeVisible();
 
   // Full-page screenshot comparison
   await expect(page).toHaveScreenshot('homepage.png', {
     fullPage: true,
-    threshold: 0.1,  // 10% pixel difference tolerance
+    maxDiffPixelRatio: 0.01,  // up to 1% of pixels may differ
+    // (threshold is different: per-pixel colour sensitivity 0..1, default 0.2)
   });
 });
 
@@ -119,7 +122,8 @@ import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
   use: {
-    // Freeze all CSS animations and transitions for stable screenshots
+    // toHaveScreenshot already defaults to animations: 'disabled'.
+    // This flag only helps CSS that honours prefers-reduced-motion.
     launchOptions: {
       args: ['--force-prefers-reduced-motion'],
     },
@@ -157,10 +161,10 @@ npx playwright test homepage.spec.ts --update-snapshots` },
   ];
 
   mistakes: CommonMistake[] = [
-    { title: 'Not waiting for page to settle before screenshotting', wrong: 'await page.goto("/"); await expect(page).toHaveScreenshot()', right: 'await page.goto("/"); await page.waitForLoadState("networkidle"); await expect(page).toHaveScreenshot()', explanation: 'Screenshots taken before fonts, images, or animations finish produce flaky diffs. Always wait for the page to be fully loaded and settled.' },
+    { title: 'Not waiting for page to settle before screenshotting', wrong: 'await page.goto("/"); await expect(page).toHaveScreenshot()', right: 'await page.goto("/"); await expect(page.getByRole("main")).toBeVisible(); await expect(page).toHaveScreenshot()', explanation: 'Screenshots taken before data, fonts or images arrive produce flaky diffs. Wait for the content you are about to compare; Playwright marks waitForLoadState("networkidle") as discouraged, and toHaveScreenshot itself already retries until two consecutive captures are identical.' },
     { title: 'Not masking dynamic content', wrong: 'screenshot includes timestamps, ads, or user-specific data', right: 'mask: [page.locator(".timestamp"), page.locator(".ad-banner")]', explanation: 'Dynamic content changes every run, causing the baseline to differ even when nothing visual has changed intentionally.' },
-    { title: 'Not committing baseline screenshots', wrong: '.gitignore: **-snapshots/', right: 'commit __screenshots__/ and *-snapshots/ directories to git', explanation: 'Baselines that are not committed means CI always creates a new baseline — every run passes vacuously without any comparison.' },
-    { title: 'Setting threshold too high', wrong: 'threshold: 0.9 // 90% diff allowed', right: 'threshold: 0.01 to 0.05 for strict pixel matching, up to 0.1 for animation-heavy UIs', explanation: 'A 90% threshold lets major regressions pass. Start strict (1–5%) and increase only for specific known-flaky areas.' },
+    { title: 'Not committing baseline screenshots', wrong: '.gitignore: **-snapshots/', right: 'commit __screenshots__/ and *-snapshots/ directories to git', explanation: 'Without committed baselines every CI run starts with none. Under Playwright\'s default updateSnapshots mode (\'default\') the missing screenshot is written but the test fails, so CI is red on every run rather than silently passing — and the written file is thrown away with the runner.' },
+    { title: 'Setting threshold too high', wrong: 'threshold: 0.9 // read as "90% of pixels may differ"', right: 'keep threshold near its 0.2 default and bound the AREA with maxDiffPixels or maxDiffPixelRatio (e.g. 0.01)', explanation: 'threshold is per-pixel colour sensitivity (0 strict to 1 lax, default 0.2), not a share of pixels; at 0.9 almost any colour change is ignored. The share of pixels allowed to differ is maxDiffPixelRatio (or a count with maxDiffPixels).' },
     { title: 'Running visual tests on every unit test run', wrong: 'visual tests in the same jest suite as unit tests', right: 'run visual tests separately in CI — after unit tests pass', explanation: 'Visual tests are slow (browser launch, screenshot, upload). Run them in a dedicated CI step after fast tests pass.' },
   ];
 
@@ -177,7 +181,7 @@ npx playwright test homepage.spec.ts --update-snapshots` },
 
 test('profile page visual regression', async ({ page }) => {
   await page.goto('/profile');
-  // 1. Wait for network to settle
+  // 1. Wait for the page content to render
   // 2. Freeze animations
   // 3. Take screenshot with dynamic areas masked
 });`,
@@ -186,7 +190,7 @@ test('profile page visual regression', async ({ page }) => {
 
 test('profile page visual regression', async ({ page }) => {
   await page.goto('/profile');
-  await page.waitForLoadState('networkidle');
+  await expect(page.getByRole('heading', { name: /profile/i })).toBeVisible();
 
   // Freeze animations for stable screenshots
   await page.addStyleTag({
@@ -195,7 +199,7 @@ test('profile page visual regression', async ({ page }) => {
 
   await expect(page).toHaveScreenshot('profile.png', {
     fullPage: true,
-    threshold: 0.05,
+    maxDiffPixelRatio: 0.01,
     mask: [
       page.locator('.avatar-upload-date'),
       page.locator('.user-id'),
@@ -205,7 +209,7 @@ test('profile page visual regression', async ({ page }) => {
   };
 
   quiz: QuizQuestion[] = [
-    { q: 'What does Playwright\'s toHaveScreenshot() do on the first run?', options: ['It fails — no baseline exists', 'It creates a baseline screenshot and passes', 'It uploads to a cloud service', 'It prompts you to approve the screenshot'], answer: 1, explanation: 'The first run creates the baseline PNG file in the snapshots directory and passes. Subsequent runs diff against this baseline and fail if the difference exceeds the threshold.' },
+    { q: 'What does Playwright\'s toHaveScreenshot() do on the first run?', options: ['It writes the screenshot as the new baseline but fails the test', 'It creates a baseline screenshot and passes', 'It uploads to a cloud service', 'It prompts you to approve the screenshot'], answer: 0, explanation: 'With the default updateSnapshots mode (\'default\'), a missing baseline is written ("A snapshot doesn\'t exist ..., writing actual") and the test fails, so a new test cannot pass silently in CI. Re-run (or use --update-snapshots=missing) to accept it; later runs diff against the committed baseline.' },
     { q: 'Why should you mask dynamic elements in visual tests?', options: ['To make tests run faster', 'Dynamic content (timestamps, user IDs) changes every run, causing false failures when nothing visual changed', 'Masking is required by Playwright', 'It reduces the screenshot file size'], answer: 1, explanation: 'A timestamp or ad banner changes on every page load. Without masking, the diff always shows a change even when the layout is identical — creating a constant false failure.' },
     { q: 'What is the main advantage of Chromatic over Playwright screenshots for component testing?', options: ['Chromatic is faster', 'Chromatic integrates directly with Storybook — every story is a visual test without extra code', 'Chromatic works without a browser', 'Playwright does not support visual testing'], answer: 1, explanation: 'Chromatic uses Storybook stories as visual test cases automatically. No additional test code is needed — just write stories and Chromatic diffs them in CI.' },
   { q: 'What is visual regression testing?', options: ['Testing for performance regressions', 'Comparing screenshots of UI components to detect unintended visual changes', 'Checking accessibility violations', 'Testing cross-browser CSS compatibility'], answer: 1, explanation: 'Visual regression testing captures screenshots of UI components/pages and compares them pixel-by-pixel to baseline images. Any visual diff (layout, color, font) is flagged as a potential regression.' },
@@ -216,7 +220,7 @@ test('profile page visual regression', async ({ page }) => {
   qna: QnaItem[] = [
     { q: 'Should I use Playwright screenshots or Chromatic for visual testing?', a: 'Chromatic (or Percy) for component-level visual testing when you already use Storybook — zero extra test code. Playwright screenshots for page-level and flow-level visual tests (e.g. dashboard after login). Use both: Chromatic for components, Playwright for full-page scenarios.' },
     { q: 'How do I handle visual test failures in CI?', a: 'Playwright generates an HTML report with side-by-side diffs. Review it, fix the regression or update the baseline with --update-snapshots if the change was intentional, commit the new PNG, and re-run CI. Chromatic shows diffs in its own UI and blocks the PR until changes are accepted.' },
-    { q: 'How do I make visual tests less flaky?', a: '1. Freeze all CSS animations. 2. Wait for networkidle before screenshotting. 3. Mask all dynamic content. 4. Use a fixed viewport size. 5. Use a fixed font (system fonts render differently across OS). 6. Seed deterministic data. Most flakiness comes from timing or dynamic content.' },
+    { q: 'How do I make visual tests less flaky?', a: '1. Keep animations disabled (the toHaveScreenshot default). 2. Wait for the content you compare to be visible. 3. Mask all dynamic content. 4. Use a fixed viewport size. 5. Use a fixed font (system fonts render differently across OS). 6. Seed deterministic data. Most flakiness comes from timing or dynamic content.' },
   { q: 'How do you manage visual regression baselines in CI?', a: 'Baselines are stored in version control (git-lfs for images) or in the cloud (Chromatic, Percy). On PR: compare new screenshots to the baseline. If no baseline exists, the first run becomes the baseline. Approve visual diffs in the review tool to update the baseline. Never auto-approve visual diffs — always review changes before accepting.' },
   { q: 'How do you handle dynamic content in visual regression tests?', a: 'Dynamic content (timestamps, counters, random data) causes false positives. Solutions: (1) Freeze time/seed random data in tests; (2) Replace dynamic content with static fixtures; (3) Use ignore regions in your visual testing tool to mask dynamic areas; (4) Use content-agnostic component states in Storybook stories. Always test with stable, deterministic data.' },
   { q: 'What is the difference between visual regression testing and functional testing?', a: '<strong>Visual regression</strong>: catches unintended changes in appearance (layout shifts, color changes, font sizes) — cannot tell if the app works. <strong>Functional testing</strong>: verifies behaviour and interaction (buttons work, forms submit, data loads) — cannot detect subtle visual regressions. Use both: functional tests for behaviour, visual tests for appearance guard.' },
@@ -226,7 +230,7 @@ test('profile page visual regression', async ({ page }) => {
     oneLiner: 'Visual regression tests capture pixel-perfect screenshots and fail when they change — Playwright for pages, Chromatic for Storybook stories.',
     mustKnow: [
       'toHaveScreenshot(): creates baseline on first run; diffs on subsequent runs',
-      'Always waitForLoadState("networkidle") before capturing',
+      'Wait for the compared content to be visible before capturing',
       'Freeze animations with CSS overrides or --force-prefers-reduced-motion',
       'mask: [] to exclude dynamic elements from diff',
       'Commit baseline PNGs to git — without them CI never compares',

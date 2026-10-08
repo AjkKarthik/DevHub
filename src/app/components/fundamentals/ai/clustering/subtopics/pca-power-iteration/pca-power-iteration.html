@@ -1,0 +1,27 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Clustering & Dimensionality Reduction" topicRoute="/ai/clustering"
+    subtopicLabel="PCA by Power Iteration Matches scikit-learn" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">PCA by Power Iteration Matches scikit-learn</h1>
+  <p class="page-subtitle">The PCA tab stopped at the covariance matrix and returned the first k rows of data as a placeholder. A short power-iteration loop finishes the job and gives the same explained variance as scikit-learn.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This completes the PCA tab. The last subtopic measures how often k-means++ still finds a bad solution.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Clustering & Dimensionality Reduction" topicRoute="/ai/clustering"
+    [prev]="{ label: 'The K-Means Assign Step Put Every Point in One Cluster', route: '/ai/clustering/the-kmeans-assign-step-put-every-point-in-one-cluster' }"
+    [next]="{ label: 'One k-means++ Run Is Not Enough', route: '/ai/clustering/one-kmeans-plus-plus-run-is-not-enough' }" />
+</div>

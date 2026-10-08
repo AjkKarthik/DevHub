@@ -1,0 +1,27 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="AI Engineering" topicRoute="/ai/ai-engineering"
+    subtopicLabel="An Aborted Stream Can End Without Throwing" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">An Aborted Stream Can End Without Throwing</h1>
+  <p class="page-subtitle">The page assumed an aborted stream would throw an AbortError into its catch block. In the test with openai 7.30.1, aborting mid-stream simply ended the for-await loop, so the code after it — writing [DONE] — still ran.</p>
+  <app-page-meta [readingTime]="4" difficulty="intermediate" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This finishes the abort path. The last subtopic gets exact token counts from the stream.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="AI Engineering" topicRoute="/ai/ai-engineering"
+    [prev]="{ label: 'req close Fires Before the Stream Starts', route: '/ai/ai-engineering/req-close-fires-before-the-stream' }"
+    [next]="{ label: 'Getting Exact Token Usage from a Stream', route: '/ai/ai-engineering/exact-token-usage-from-a-stream' }" />
+</div>

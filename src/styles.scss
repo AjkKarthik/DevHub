@@ -155,6 +155,7 @@ body.dark {
 .page-header-icon.linux-icon { background: #fef9e7; color: #92400e; border: 1px solid rgba(252,198,36,.3); font-size: 1.8rem; }
 .page-header-icon.tf-icon    { background: #f5f3ff; color: #5b21b6; border: 1px solid rgba(123,66,188,.3);  font-size: 1.4rem; font-weight: 700; letter-spacing: .04em; }
 .page-header-icon.mesh-icon  { background: #eef2fb; color: #2d4f8a; border: 1px solid rgba(70,107,176,.3);  font-size: 1.8rem; }
+.page-header-icon.rust-icon  { background: #fdf2ee; color: #ce422b; border: 1px solid rgba(206,66,43,.25); font-size: 1.1rem; font-weight: 800; }
 
 body.dark {
   /* Solid-fill hubs darken the fill slightly in dark mode */
@@ -181,6 +182,7 @@ body.dark {
   .page-header-icon.linux-icon { background: #1c1a04; color: #fde68a; border-color: rgba(253,230,138,.2); }
   .page-header-icon.tf-icon    { background: #1a1229; color: #c4b5fd; border-color: rgba(196,181,253,.2); }
   .page-header-icon.mesh-icon  { background: #1a1f35; color: #93c5fd; border-color: rgba(147,197,253,.2); }
+  .page-header-icon.rust-icon  { background: #2b120c; color: #f4795e; border-color: rgba(244,121,94,.25); }
 }
 
 /* ── Global page wrapper defaults — canonical dimensions per hub ─────────────

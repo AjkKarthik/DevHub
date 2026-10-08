@@ -297,20 +297,128 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/messaging/azure-event-grid" routerLinkActive="active"><span class="nl-text">Event Grid &amp; Event Hubs</span>@if(p.isDone('kafka-azure-event-grid')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/messaging/azure-event-grid" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Event Grid &amp; Event Hubs</span>
+        @if(p.isDone('kafka-azure-event-grid')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('azure-event-grid')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('azure-event-grid')"
+                  (click)="toggleSubtopics('azure-event-grid', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('azure-event-grid'); as aegSubs) {
+        @if (isSubtopicsExpanded('azure-event-grid')) {
+          <div class="nav-subtopics">
+            @for (s of aegSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">AWS SQS/SNS</p>
-      <a routerLink="/messaging/aws-sqs" routerLinkActive="active"><span class="nl-text">AWS SQS</span>@if(p.isDone('kafka-aws-sqs')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/messaging/aws-sns-eventbridge" routerLinkActive="active"><span class="nl-text">AWS SNS &amp; EventBridge</span>@if(p.isDone('kafka-aws-sns-eventbridge')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/messaging/aws-sqs" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">AWS SQS</span>
+        @if(p.isDone('kafka-aws-sqs')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('aws-sqs')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('aws-sqs')"
+                  (click)="toggleSubtopics('aws-sqs', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('aws-sqs'); as sqsSubs) {
+        @if (isSubtopicsExpanded('aws-sqs')) {
+          <div class="nav-subtopics">
+            @for (s of sqsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/messaging/aws-sns-eventbridge" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">AWS SNS &amp; EventBridge</span>
+        @if(p.isDone('kafka-aws-sns-eventbridge')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('aws-sns-eventbridge')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('aws-sns-eventbridge')"
+                  (click)="toggleSubtopics('aws-sns-eventbridge', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('aws-sns-eventbridge'); as snsEbSubs) {
+        @if (isSubtopicsExpanded('aws-sns-eventbridge')) {
+          <div class="nav-subtopics">
+            @for (s of snsEbSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Reliability</p>
-      <a routerLink="/messaging/idempotency" routerLinkActive="active"><span class="nl-text">Idempotency &amp; Exactly-Once</span>@if(p.isDone('kafka-idempotency')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/messaging/message-ordering" routerLinkActive="active"><span class="nl-text">Message Ordering</span>@if(p.isDone('kafka-message-ordering')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/messaging/backpressure" routerLinkActive="active"><span class="nl-text">Backpressure &amp; Flow Control</span>@if(p.isDone('kafka-backpressure')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/messaging/idempotency" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Idempotency &amp; Exactly-Once</span>
+        @if(p.isDone('kafka-idempotency')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('idempotency')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('idempotency')"
+                  (click)="toggleSubtopics('idempotency', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('idempotency'); as idemSubs) {
+        @if (isSubtopicsExpanded('idempotency')) {
+          <div class="nav-subtopics">
+            @for (s of idemSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/messaging/message-ordering" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Message Ordering</span>
+        @if(p.isDone('kafka-message-ordering')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('message-ordering')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('message-ordering')"
+                  (click)="toggleSubtopics('message-ordering', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('message-ordering'); as ordSubs) {
+        @if (isSubtopicsExpanded('message-ordering')) {
+          <div class="nav-subtopics">
+            @for (s of ordSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/messaging/backpressure" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Backpressure &amp; Flow Control</span>
+        @if(p.isDone('kafka-backpressure')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('backpressure')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('backpressure')"
+                  (click)="toggleSubtopics('backpressure', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('backpressure'); as bpSubs) {
+        @if (isSubtopicsExpanded('backpressure')) {
+          <div class="nav-subtopics">
+            @for (s of bpSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

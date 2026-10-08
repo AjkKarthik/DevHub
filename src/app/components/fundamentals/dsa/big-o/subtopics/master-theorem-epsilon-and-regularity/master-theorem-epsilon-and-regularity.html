@@ -1,0 +1,27 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Big-O Notation" topicRoute="/dsa/big-o"
+    subtopicLabel="Master Theorem&#8217;s Precise Conditions" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">Master Theorem&#8217;s Precise Conditions: Epsilon and Regularity</h1>
+  <p class="page-subtitle">The main page's QnA states the three Master Theorem cases as a plain size comparison. The real theorem needs polynomial separation (epsilon) and, for case 3, a regularity condition -- verified with the classic counterexample where it fails.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="CLRS" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This tightens the main page's own simplified Master Theorem QnA into its precise, textbook form -- the epsilon-separated cases and the regularity condition that case 3 additionally requires, demonstrated with the standard counterexample where the simplified version would give a confident but wrong answer.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Big-O Notation" topicRoute="/dsa/big-o"
+    [prev]="{ label: 'Arithmetic vs. Harmonic Shrinking Loops', route: '/dsa/big-o/arithmetic-vs-harmonic-shrinking-loops' }"
+    [next]="{ label: 'Proving Amortized O(1) With the Aggregate Method', route: '/dsa/big-o/dynamic-array-amortized-proof' }" />
+</div>

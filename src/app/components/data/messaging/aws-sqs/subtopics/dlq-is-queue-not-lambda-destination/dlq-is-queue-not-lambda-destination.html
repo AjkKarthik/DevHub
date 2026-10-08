@@ -1,0 +1,27 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="AWS SQS" topicRoute="/messaging/aws-sqs"
+    subtopicLabel="SQS Dead-Lettering Is Queue-Side, Not a Lambda Destination" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">SQS Dead-Lettering Is Queue-Side, Not a Lambda Destination</h1>
+  <p class="page-subtitle">Unlike DynamoDB Streams or Kinesis, an SQS event source mapping has no on-failure destination — dead-lettering only ever happens through the queue's own redrive policy.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="AWS Lambda" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the main page's Lambda-consumption QnA, which described DLQ routing as a Lambda destination option. The next subtopic builds the partial-batch-failure mechanism this page names only in the "batch is returned to the queue" default.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="AWS SQS" topicRoute="/messaging/aws-sqs"
+    [prev]="{ label: '3,000 msg/s Is FIFO’s Default Throughput, Not Its Ceiling', route: '/messaging/aws-sqs/fifo-high-throughput-mode' }"
+    [next]="{ label: 'Rescuing Successful Messages From a Failed Batch With ReportBatchItemFailures', route: '/messaging/aws-sqs/report-batch-item-failures' }" />
+</div>

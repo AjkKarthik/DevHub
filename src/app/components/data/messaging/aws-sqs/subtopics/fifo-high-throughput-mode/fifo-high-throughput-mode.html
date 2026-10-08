@@ -1,0 +1,26 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="AWS SQS" topicRoute="/messaging/aws-sqs"
+    subtopicLabel="3,000 msg/s Is FIFO's Default Throughput, Not Its Ceiling" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">3,000 msg/s Is FIFO's Default Throughput, Not Its Ceiling</h1>
+  <p class="page-subtitle">High Throughput Mode raises a FIFO queue's real ceiling to tens of thousands of transactions per second — a queue setting, not a rewrite, and ordering per message group is unaffected.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Amazon SQS" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the throughput figures repeated across the main page's theory and QnA. The next subtopic corrects a separate claim about how Lambda handles SQS failures.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="AWS SQS" topicRoute="/messaging/aws-sqs"
+    [next]="{ label: 'SQS Dead-Lettering Is Queue-Side, Not a Lambda Destination', route: '/messaging/aws-sqs/dlq-is-queue-not-lambda-destination' }" />
+</div>

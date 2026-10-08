@@ -1,0 +1,26 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Basic Sorts" topicRoute="/dsa/basic-sorts"
+    subtopicLabel="Sorting By Multiple Keys: the Order Matters" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">Sorting By Multiple Keys: the Order Matters</h1>
+  <p class="page-subtitle">The main page's QnA describes sorting by least important key first, most important last, with zero code. Built both orders -- the wrong one strands a department's own employee outside their group.</p>
+  <app-page-meta [readingTime]="6" difficulty="beginner" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This builds the multi-key stable sort technique the main page's own QnA describes in prose but never demonstrates, showing exactly what breaks if the key order is reversed.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Basic Sorts" topicRoute="/dsa/basic-sorts"
+    [prev]="{ label: 'Measuring Insertion Sort’s Real Adaptive Cost', route: '/dsa/basic-sorts/measuring-insertion-sorts-real-adaptive-cost' }" />
+</div>

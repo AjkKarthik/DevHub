@@ -1,0 +1,27 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="AWS SNS &amp; EventBridge" topicRoute="/messaging/aws-sns-eventbridge"
+    subtopicLabel="SNS Retry Duration Depends Entirely on Endpoint Type" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">SNS Retry Duration Depends Entirely on Endpoint Type</h1>
+  <p class="page-subtitle">"SNS retries for 23 days" is true for SQS and Lambda subscriptions — an HTTP/S endpoint gets roughly a minute by default, capped at one hour even with a custom policy.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Amazon SNS" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the "SNS retries for up to 23 days" mistake explanation, which was accurate only for the SQS-target example it was attached to. The next subtopic builds EventBridge Pipes, a mechanism the main page names but never demonstrates.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="AWS SNS & EventBridge" topicRoute="/messaging/aws-sns-eventbridge"
+    [prev]="{ label: 'SNS FIFO Throughput Was Raised 10x, and Then Raised Again', route: '/messaging/aws-sns-eventbridge/sns-fifo-throughput-was-raised-10x' }"
+    [next]="{ label: 'Building an EventBridge Pipe: SQS Source to a Filtered Target', route: '/messaging/aws-sns-eventbridge/eventbridge-pipes-sqs-to-target' }" />
+</div>

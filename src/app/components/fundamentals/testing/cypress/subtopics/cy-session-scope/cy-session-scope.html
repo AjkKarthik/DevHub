@@ -1,0 +1,27 @@
+<div class="test-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Cypress" topicRoute="/testing-hub/cypress"
+    subtopicLabel="cy.session Is Cached Per Spec Unless You Opt In" />
+  <div class="page-header-icon test-icon">✓</div>
+  <h1 class="page-title">cy.session Is Cached Per Spec Unless You Opt In</h1>
+  <p class="page-subtitle">The page said cy.session arrived in Cypress 9 and that cacheAcrossSpecs invalidates the cache. cy.session became generally available in Cypress 12, and cacheAcrossSpecs does the opposite: it keeps the session for every spec in the run.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Testing" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="test-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="test-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the shared-login QnA. The last subtopic explains how the spec and the app are separated inside the browser.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Cypress" topicRoute="/testing-hub/cypress"
+    [prev]="{ label: 'The cypress/react18 Mount Import Is Gone', route: '/testing-hub/cypress/cypress-react18-mount-import-is-gone' }"
+    [next]="{ label: 'Spec and App Run in Separate Iframes', route: '/testing-hub/cypress/spec-and-app-run-in-separate-iframes' }" />
+</div>

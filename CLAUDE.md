@@ -10305,6 +10305,1056 @@ Confirmed via direct file inspection before the pilot (`/messaging/messaging-fun
    Bare `azure-service-bus` SUBTOPICS key collision-free (the Azure hub's own topic uses a different key). Build
    clean; browser-verified.
    **Messaging hub Phase 10: 14 of 20 topics complete.**
+18. **The `aws-sqs` batch found and fixed TWO main-page issues**: the theory bullet claimed FIFO's default
+   throughput is a flat 300 msg/s ceiling — verified via WebSearch that AWS raised the default to 3,000 msg/s
+   (300 without batching, 3,000 with batching) back in 2020, and that High Throughput Mode (2023) removes the
+   per-queue cap entirely, scaling with the number of active message groups instead; and the Lambda-consumption
+   QnA described DLQ routing as configurable on the Lambda side — verified that SQS-triggered Lambda has no
+   on-failure destination at all (unlike DynamoDB Streams/Kinesis), dead-lettering is configured exclusively via
+   the queue's own RedrivePolicy. 3 subtopics (fifo-high-throughput-mode, dlq-is-queue-not-lambda-destination,
+   report-batch-item-failures — the last one demonstrating the real `{ batchItemFailures: [...] }` partial-batch-
+   failure return shape). Bare `aws-sqs` SUBTOPICS key collision-free. Build clean; browser-verified.
+   **Messaging hub Phase 10: 15 of 20 topics complete.**
+19. **The `aws-sns-eventbridge` batch found and fixed THREE main-page issues**: two QnAs repeating a stale
+   "300 msg/s" SNS FIFO throughput figure (verified via WebSearch: raised 10x to 3,000 msg/s in November 2023,
+   automatic, no migration needed) — one of the two deliberately left an ambiguous, unable-to-cleanly-verify
+   "100,000/s standard" comparison figure untouched rather than risk an incorrect correction; and mistake #2's
+   blanket "23 days" DLQ redelivery-window claim, which only applies to AWS-managed SNS endpoints — HTTP/S
+   subscriptions default to ~60 seconds with a 3,600-second (1 hour) maximum, a completely different scale. 3
+   subtopics (sns-fifo-throughput-was-raised-10x, retry-duration-depends-on-endpoint-type,
+   eventbridge-pipes-sqs-to-target). Bare `aws-sns-eventbridge` SUBTOPICS key collision-free. Build clean;
+   browser-verified. **Messaging hub Phase 10: 16 of 20 topics complete.**
+20. **The `idempotency` batch found and fixed one main-page issue, source-verified against a fresh, locally
+   installed `kafkajs@2.2.4`**: the "Kafka Idempotent Producer" codeTab's own comment claimed
+   `maxInFlightRequests: 5` is "required with idempotent" — reading kafkajs's real installed source
+   (`producer/messageProducer.js`) directly showed the ONLY validation it performs for an idempotent producer is
+   on `acks` (throws `KafkaJSNonRetriableError` if `acks !== -1`); `maxInFlightRequests` is never checked against
+   `idempotent` anywhere in the library. The real "why 5" reason is a Kafka broker/protocol constraint (the
+   broker only tracks the last 5 sequence numbers per producer-partition for dedup, confirmed via WebSearch
+   against Apache Kafka's own producer-configs docs and a KIP-98 discussion) — a real constraint, just not one
+   kafkajs enforces for you. 3 subtopics: the source-verified finding with a broker-dedup-window model (verified
+   via direct Node execution: `maxInFlightRequests=5` correctly deduplicates a retried batch, `=6` wrongly
+   accepts it as new); the Redis SET NX QnA's one-step "SET key result NX" description tightened into the real,
+   necessary two-phase pattern (claim with a placeholder, then overwrite with the real result — the QnA as
+   literally written can't work, since the result doesn't exist before processing), including the crash-mid-
+   processing edge case where a stuck "IN_PROGRESS" placeholder needs its TTL as the actual recovery mechanism;
+   and applying the same idempotency-key-table technique to SQS Standard queues, which (confirmed via this hub's
+   own already-verified AWS SQS page) have zero native deduplication, sourced from the message body rather than
+   the delivery-level `MessageId`. No `SUBTOPICS` collision for `idempotency` (checked both forms, confirmed
+   collision-free, left bare). Build clean (a first production-build attempt hung for 11+ hours under severe
+   concurrent-process CPU contention from a still-running dev server that a prior `pkill` attempt had failed to
+   actually kill — killed all stale processes and reran the build cleanly, isolated from any dev server, which
+   completed normally in the expected ~15 minutes). Browser-verified: no console errors; nav accordion opens with
+   all 3 subtopic links; the main-page fix confirmed rendering live only after clicking the code-block's own
+   specific tab button ("Kafka Idempotent & Transactional Producer") — a single "View Code" toggle expand alone
+   is insufficient when a codeTab has multiple tabs, since only the currently-ACTIVE tab's code is in the DOM;
+   all 3 subtopic pages checked individually — correct h1/breadcrumb, 860px wrapper via `getComputedStyle`.
+   **Messaging hub Phase 10: 17 of 20 topics complete.**
+21. **The `message-ordering` batch found and fixed a genuine retry-safety bug in the main page's own "SQS FIFO
+   Ordering" codeTab**: `MessageDeduplicationId: randomUUID()` generated a fresh ID on every send — verified via
+   WebSearch (and a real, publicly filed GitHub issue against a widely used Spring Cloud AWS library reporting
+   this EXACT bug, `SqsTemplate` auto-generating a random dedup ID and silently breaking content-based
+   deduplication) that this defeats the entire purpose of the field: a retry of the same send gets a DIFFERENT
+   ID and is never recognized as a duplicate. Fixed to a stable, business-derived key
+   (`` `${orderId}-${eventType}` ``), removing the now-unused `randomUUID` import. 3 subtopics, all Node-verified:
+   (1) the retry-safety fix reproduced via a `FakeFifoQueue` simulation (random ID: both the original send and
+   its retry are "delivered" — a real duplicate; stable ID: the retry is correctly "deduplicated"), with a Try
+   It on the opposite failure mode (a key TOO stable collapsing two genuinely different events); (2) the
+   precise mechanism behind the main page's own max.in.flight QnA claim that an idempotent producer "handles
+   reordering up to 5 in-flight safely" — corrected the common "messages swap places" mental model to the real
+   one (an earlier message DUPLICATES BACK into the log after a later one succeeds, verified via a corrected
+   two-attempt `IdempotentPartitionLog` model — an earlier, backwards-ordered draft of this exact model was
+   caught and rebuilt before publishing, once its own output revealed batch-A never landed in the log at all);
+   (3) the FIFO per-group (not queue-wide) head-of-line-blocking mechanism the main page's own quiz Q6 already
+   describes in prose but never demonstrates, verified via WebSearch against AWS's own FIFO-queue-logic and
+   backlog docs (including the practical caveat that FIFO's own bounded scan window means an unbounded single-
+   group backlog can still delay OTHER groups' visibility even though their ordering guarantee holds). Real
+   `SUBTOPICS` collision avoided: `message-ordering` itself was collision-free, left bare. **A genuine stale-
+   route artifact hit and resolved**: the 3 new subtopic routes initially fell through to the app's own `**`
+   wildcard redirect (silently landing on the home page, h1 "Learn. Build. Ship.") even after the dev server's
+   NG2008 timing error (from the `.ts` file existing before its `.html` sibling) had resolved — fixed with the
+   established remedy, a forced fresh file-write on `app.routes.ts` itself (append a blank line, then trim it
+   back out), confirmed via the log's own "Application bundle generation complete" timestamp that a genuine
+   fresh rebuild picked up the routes correctly afterward. Build clean (production build run in isolation, no
+   concurrent dev server, after the idempotency batch's own hang taught this lesson). Browser-verified together
+   with the idempotency batch in one combined Playwright pass: no console errors across all 8 pages spanning
+   both topics; both main-page fixes confirmed rendering live (required querying the stable `.toggle-btn` CSS
+   class rather than button TEXT, since "View Code"/"Hide Code" text changes after the first click and breaks a
+   text-based locator iterating over multiple toggles); all 3 subtopic pages checked individually — correct
+   h1/breadcrumb, 860px wrapper. **Both the `idempotency` and `message-ordering` batches were committed together
+   in one commit**, since their shared-file wiring (nav accordion, breadcrumb, sidebar, search index) landed in
+   single contiguous git diff hunks per file — confirmed via direct diff inspection that the two topics'
+   insertions were adjacent, non-separable line ranges, making a clean per-topic commit split impractical without
+   manual patch editing; the commit message names both topics and batches explicitly instead.
+   **Messaging hub Phase 10: 19 of 20 topics complete (this combined batch covered both 18/20 and
+   19/20).**
+22. **The `backpressure` batch — the 20th and FINAL topic — found and fixed THREE main-page issues, the star
+   finding source-verified via kafkajs's own installed `runner.js`**: the "Kafka Pause/Resume" codeTab called
+   `pause()` and discarded its return value, then claimed in a comment that "Kafka will automatically resume when
+   the consumer polls again after pause()" — reading `consumer/runner.js` directly showed `pause()` immediately
+   pauses the partition and RETURNS a closure (`() => this.consumerGroup.resume(...)`) that is the ONLY way to
+   resume it; there is no automatic-resume mechanism anywhere in kafkajs. The SAME page's own Challenge reference
+   solution already gets this right (`resumeFn = pause(); ... resumeFn?.();`), making this a real case of one
+   page's own two code samples disagreeing — fixed the theory codeTab to match the Challenge's own correct
+   pattern. Separately, a QnA described `max.block.ms`/`buffer.memory` as how "Kafka" implements producer-side
+   backpressure — verified by reading kafkajs's own installed `ProducerConfig` TypeScript type directly (exactly
+   8 fields: `createPartitioner`, `retry`, `metadataMaxAge`, `allowAutoTopicCreation`, `idempotent`,
+   `transactionalId`, `transactionTimeout`, `maxInFlightRequests` — neither field exists) that these are Java-
+   client-specific configs with no kafkajs equivalent at all — the SAME conflation bug already found on this
+   hub's own `kafka-producers-consumers` page (batch.size/linger.ms), now confirmed a THIRD time on a different
+   page. Tightened the QnA to state kafkajs has no buffer-memory backpressure mechanism, tying it directly to
+   the page's own Rate-Limited Producer codeTab as the real client-side mechanism kafkajs users need instead. A
+   third, minor fix: removed an unused `TopicPartitions` import from the Challenge solution (a real, valid
+   kafkajs type — confirmed via its own `.d.ts` — just never referenced anywhere in the solution code). 3
+   subtopics: (1) the pause/resume fix, with a Node-verified `FakePartition` model proving a discarded closure
+   leaves `partitionStillPaused: true` even after a local flag flips, while the captured-and-called closure
+   correctly resumes it; (2) the ProducerConfig finding, with a Node-verified check confirming no
+   `bufferMemory`/`maxBlockMs` field exists on the real config shape; (3) a genuinely different-in-kind subtopic
+   for this hub — real, ACTUALLY EXECUTED Node.js stream code (not a model) verifying the main page's own
+   streams QnA: `write()` returning `false` under a small `highWaterMark` plus the matching `drain` event
+   (measured: `true, false, [drain], true, false, [drain], true` across 5 writes), and `stream.pipeline()`'s
+   automatic backpressure (measured: a fast Readable piped into a 30ms-per-write slow Writable took ~156ms
+   total — proof it was genuinely held back to the Writable's pace, not buffered upfront). No `SUBTOPICS`
+   collision for `backpressure` (checked both forms, confirmed collision-free, left bare). Build clean
+   (production build run in isolation, no concurrent dev server). Browser-verified: no console errors; both
+   main-page fixes confirmed rendering live (the pause/resume fix required clicking the code-block's own
+   specific "Kafka Pause/Resume" tab button after expanding "View Code," matching the same multi-tab lesson
+   from the idempotency batch); all 3 subtopic pages checked individually — correct h1/breadcrumb, 860px
+   wrapper; **a final hub-wide check confirmed exactly 20 `.nav-subtopics-toggle` elements render across the
+   entire Messaging/Kafka hub, one per topic — every topic in the hub now has subtopics**.
+   **This completes the Messaging/Kafka hub's entire Phase 10 rollout — all 20 topics now have deep-dive
+   subtopic pages, 60 subtopic pages total across the hub, finished 2026-09-22.**
+
+### DSA hub subtopic wiring — first pilot; the 19th `*NavComponent` in a row missing the
+subtopics-accordion structural fix
+
+Confirmed via direct file inspection before the pilot (`/dsa/big-o`, 2026-10-08) — do this same
+check before any other new hub's first subtopic set:
+
+1. **`DsaNavComponent` (`shared/dsa-nav/dsa-nav.ts`) had ZERO subtopics-accordion support** — the
+   same structural gap already hit and fixed on every `*NavComponent`-based hub's own pilot before
+   it (Go, DevOps, Containers, AWS, Azure, Linux, Terraform, Service Mesh, System Design,
+   Architecture Patterns, Design Patterns, Security, API Design, Observability, MongoDB, Redis,
+   GraphQL, Messaging — this is the 19th in a row). Fixed identically: added `signal` to the
+   `@angular/core` import, `Router`/`NavigationEnd` from `@angular/router`, `filter` from `rxjs`,
+   and `SUBTOPICS` from `../../../data/subtopics`, then the same three methods
+   (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`) reading a private
+   `expandedTopics = signal<Set<string>>(new Set())`, plus a constructor router subscription
+   calling an exact-match `autoExpandForCurrentUrl()` — copied directly from `RedisNavComponent`'s
+   own implementation (read directly, not reconstructed from memory, per the established
+   copy-fidelity discipline). The toggle markup was added only to the `big-o` nav link (this
+   hub's own nav is hand-written per topic, one `<a>` per link, not a `@for` loop).
+2. **No `SUBTOPICS` map bare-key collision for `big-o`** (checked both quoted and unquoted forms
+   in `subtopics.ts`, and grepped `app.routes.ts` directly, confirmed collision-free) — left as a
+   bare key.
+3. **`DSA_LABELS` breadcrumb map uses bare keys** (`'big-o'`), matching the generic pattern every
+   hub's own dedicated labels map shares — composite subtopic keys there are bare too
+   (`'big-o/<slug>'`).
+4. **`SIDEBAR_MAP` keys are FULL-PATH PREFIXED** (`'dsa/big-o'`, confirmed the base entry already
+   existed) — subtopic composite keys follow suit: `'dsa/big-o/<slug>'`. The base entry's own
+   `tip` field repeated the same imprecise claim the main-page fix below corrects (a shrinking
+   inner loop "may be lower, such as O(n log n)") — tightened alongside the main-page fix, per
+   the established precedent of syncing a sidebar tip when it restates a claim being corrected.
+5. **Progress/search keys are `dsa-` PREFIXED** (`dsa-big-o`), confirmed via the pre-existing
+   `p.isDone('dsa-big-o')` nav markup — `search.ts`'s own dedicated `dsa-` → `/dsa/` prefix-strip
+   rule already handles composite subtopic routes (`dsa-big-o/<slug>` → `/dsa/big-o/<slug>`)
+   correctly with no special-casing needed.
+6. **`.dsa-page` wrapper rule is NOT global** (confirmed absent from `src/styles.scss` — it is
+   defined locally inside the main topic page's own `.scss`) — every subtopic `.scss` needs the
+   full `.dsa-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }` rule, copied
+   verbatim from `big-o.scss`. No live playground — DSA theory/complexity-analysis content has no
+   in-browser runtime — every code tab uses plain TypeScript illustrative snippets inside
+   `<app-code-block>`, matching the main page's own `codeTabs` style exactly.
+7. **The `big-o` pilot batch found and fixed a genuine, self-contained inaccuracy, caught by
+   cross-referencing the page's own "Common Pitfalls" theory bullet against its own mistake #4,
+   and confirmed via direct Node.js execution rather than assumed**: the Common Pitfalls bullet
+   claimed a shrinking inner loop that checks only "unprocessed elements" could land on O(n log n)
+   — but that exact pattern (selection sort's `for j = i+1 to n`) is what the SAME page's mistake
+   #4 already calls "still quadratic." Measured directly: an arithmetic shrink (range decreases by
+   a constant amount each pass) held a flat 0.5 ratio to n² from n=100 to n=10,000 — confirmed
+   O(n²), not O(n log n) — while its ratio to n·log₂n grew unboundedly (7.45 → 50.1 → 376.3) across
+   the same range, directly disproving the claim. The main page's own Challenge function (inner
+   loop step size grows each pass, `j += i + 1`) is the pattern that genuinely IS O(n log n) — a
+   harmonic shrink, verified separately (ratio to n·log₂n converged toward ln(2) ≈ 0.693 as n grew).
+   A third pattern — inner range halving while the outer loop runs only log n times — was also
+   checked and found to be neither: a geometric series bounded by ~2n, i.e. O(n), not O(n log n).
+   Fixed the theory bullet to state which shrink SHAPE gives which complexity, rather than
+   pointing at the wrong example. Three subtopics, each independently verified via direct Node.js
+   execution before publishing: (1) **fix-adjacent** — reproduces all three shrink patterns side
+   by side with their measured op-count ratios, plus a Try It on why "log n outer passes × max
+   inner range" overcounts the geometric-shrink case (the range only hits that max on the first
+   pass, so the real total is a geometric series, not a product); (2) **gap-closing** — the main
+   page's own QnA states the Master Theorem as a plain size comparison with no epsilon separation
+   or regularity condition; verified via WebSearch against the standard textbook (CLRS-style)
+   statement that case 1/3 require polynomial separation by some epsilon > 0, and case 3
+   additionally requires regularity (`a·f(n/b) ≤ c·f(n)` for a constant `c < 1`) — built and
+   verified the classic counterexample `f(n) = n(2 − cos n)` (a=1, b=2), confirming via direct
+   execution that the regularity ratio `f(n/2)/f(n)` holds at EXACTLY 1.5 for n = 2πk at k = 1,
+   3, 5, 101, 1001, and 100001 — proof no constant `c < 1` can ever bound it, so the Master
+   Theorem simply does not apply to that recurrence despite its growth rate checking out; a Try
+   It applies the generalised case 2 (any `k ≥ 0` log-power multiplier) to `T(n) = 4T(n/2) +
+   n²log(n)`, verified by hand to land on `Θ(n²log²(n))`; (3) **gap-closing** — the main page's
+   own "Amortised Analysis" codeTab asserts dynamic-array push is amortized O(1) without proving
+   it; built and verified the aggregate-method proof via direct execution — for a doubling array,
+   total work divided by n (the amortized cost per push) stayed bounded between ~2.0 and ~2.7
+   across six orders of magnitude of n (10 to 1,000,000), confirming it does NOT grow with n; a
+   contrasting codeTab with linear (+1) growth instead of doubling was also verified, showing its
+   amortized cost grows linearly with n (≈ n/2) instead — proving the growth FACTOR, not merely
+   "growth happens," is what makes doubling's O(1) guarantee work; a Try It extends the aggregate
+   method to tripling growth (1, 3, 9, 27, ...), reasoning through why any multiplicative growth
+   factor keeps the resize costs a bounded geometric series. All three subtopic titles used the
+   typographic curly quote (`'`/`’`) for the one possessive apostrophe ("Theorem's") rather
+   than a straight quote, avoiding the established `[prev]`/`[next]`-label delimiter-collision risk
+   from the start; a planned raw-angle-bracket subtopic title ("Not Just &lt;, =, &gt;") was
+   reworded entirely before being used in any cross-page reference, since even though bare `<`/`>`
+   followed by a non-letter character is safe as static `.html` text (the browser's tokenizer only
+   starts a tag on `<` + a letter), avoiding the ambiguity outright was simpler than relying on that
+   distinction. All three `exercise.solution`/`theory.points`/`misconceptions` fields swept clean
+   via the standing bracket-balance/backtick-parity/apostrophe scripts (every flagged apostrophe
+   match confirmed safe — inside backtick-delimited `code:` fields, which tolerate them fine).
+   Build passed clean (foreground execution, explicit `EXITCODE:$?` capture, zero real `ERROR`
+   lines) — note this session's sandboxed Node.js (v22.22.2) initially failed the Angular CLI's own
+   minimum-version check (requires ≥22.22.3); resolved by installing Node 22.23.2 via the
+   pre-existing `/opt/nvm` installation and rebuilding under it, with zero project-file changes
+   needed. **No interactive browser/preview tool was available in this session** (no
+   `preview_start`/Playwright/computer-use access) — verification fell back to directly inspecting
+   the compiled production bundle: grepped the built `main-*.js`/`chunk-*.js` files to confirm the
+   old wrong theory text was absent, the new corrected text was present verbatim, all three
+   subtopic titles compiled into their own separate lazy chunks (confirming the route-level code
+   splitting worked), and the `SUBTOPICS`/`SIDEBAR_MAP`/breadcrumb-label/search-index entries for
+   `big-o` and all three subtopic composite keys were present with matching content — the
+   authoritative correctness check per this project's own established precedent when interactive
+   browser verification isn't available. **DSA hub Phase 10: 1 of 21 topics complete.**
+8. **The `arrays` batch found and fixed another genuine, self-contained inaccuracy, caught by
+   cross-referencing the page's own "Prefix Sum Array" theory bullet ("Build in O(n)") against its
+   own "Prefix sum" code sample, and confirmed via exact Node.js operation-counting rather than
+   wall-clock timing (which proved too noisy to trust at this scale)**: the code sample built the
+   prefix array via `arr.map((_, i) => arr.slice(0, i + 1).reduce(...))` — a slice PLUS a reduce
+   per index, each touching i+1 elements. Counted exactly: total ops across all n indices is
+   n(n+1), and the measured ratio of ops to n² converged to EXACTLY 1.0000 at n=100, 1,000,
+   10,000, and 100,000 — genuinely O(n²), not the O(n) the surrounding theory claims. The correct
+   pattern was already sitting two sections away, in the page's own "Prefix sum index confusion"
+   mistake block's own "right" example — fixed the codeTab to match it (a single forward loop).
+   Real `SUBTOPICS` map collision: bare `arrays` is already claimed by the C# hub's own
+   `/csharp/arrays` topic (the JavaScript hub's own `/javascript/arrays` was already hub-prefixed
+   to `js-arrays` for the identical reason) — hub-prefixed to `dsa-arrays`, matching this hub's
+   own established `dsa-` progress/search key prefix, with all `DsaNavComponent` accordion
+   touchpoints and the search-index composite keys using the prefixed key consistently; `search.
+   ts`'s existing `dsa-` → `/dsa/` prefix-strip rule required no special-casing since `dsa-arrays`
+   already starts with that exact prefix. Three subtopics, each independently verified via direct
+   Node.js execution against a brute-force reference before publishing: (1) **fix-adjacent** —
+   reproduces the exact op-count bug/fix (also confirming both versions return byte-identical
+   output — correctness was never the problem, only the amount of work), with a Try It on why
+   dropping `reduce`'s initial-value argument ("to save a step") changes nothing about the
+   complexity; (2) **gap-closing** — the theory names "Extend to 2D for submatrix sum queries" in
+   one sentence with zero code anywhere; built the real 2D prefix sum (inclusion-exclusion build +
+   query), verified against a brute-force sum over four different rectangles on a 5x5 grid,
+   including the full-matrix case — every result matched exactly; a Try It traces precisely which
+   queries a missing correction term would silently break (only row 0 survives by coincidence,
+   every row below it would double-count); (3) **gap-closing** — the QnA names "counting subarrays
+   with target sum (hash map on prefix sums)" in one clause with zero code; built and verified the
+   real technique against a brute-force O(n²) double loop across four cases including negative
+   numbers, explicitly contrasted against the page's own EARLIER sliding-window QnA, which states
+   outright that its own monotonicity guarantee requires non-negative values — a genuinely
+   different applicability boundary between two superficially similar O(n) techniques on the same
+   page. All three `exercise.solution`/`theory.points`/`misconceptions` fields swept clean via the
+   standing bracket-balance/backtick-parity/apostrophe scripts (the two flagged apostrophe matches
+   confirmed safe, inside backtick-delimited `code:` fields). A pre-existing, unrelated 3-brace
+   imbalance was found in `page-sidebar.ts` during the sweep — confirmed via `git diff` that the
+   lines THIS batch added were perfectly balanced (10 open / 10 close) and the imbalance already
+   existed at `HEAD` before any edit, consistent with this file's own documented "a raw brace-count
+   sweep is a heuristic, not authoritative" caveat for a 34,000+ line file. Build passed clean
+   (foreground execution under Node 22.23.2, explicit `EXITCODE:$?` capture, zero real `ERROR`
+   lines). **No interactive browser/preview tool was available in this session again** — verified
+   via the same compiled-bundle-inspection fallback as the pilot batch: confirmed the old wrong
+   code string survives only inside this batch's OWN subtopic's descriptive prose (quoting what the
+   bug WAS, as context) and is genuinely absent from the main `DsaArrays` component's own lazy
+   chunk (isolated by searching for a string unique to that component, "Maximum Product
+   Subarray"); confirmed the fixed code, the `SUBTOPICS`/`SIDEBAR_MAP`/breadcrumb/search-index
+   entries for `dsa-arrays` and all three composite subtopic keys, and the `dsa-arrays` nav-toggle
+   wiring in `main.js` were all present with matching content. **DSA hub Phase 10: 2 of 21 topics
+   complete.**
+9. **The `strings` batch found and fixed a genuine duplicate-theory-section issue, matching the
+   recurring authoring pattern already found on several other hubs this session (Caching
+   Patterns, Redis Cluster, Redis Stack, Redis Node.js): the page had TWO sections both
+   substantially about "String Immutability" — the first ("String Immutability and Building")
+   and the fifth ("String Immutability and Its Performance Implications"), with the fifth
+   restating the SAME concatenation-is-O(n²) and comparison-cost facts the first already covered.
+   Buried inside the fifth section, under the mismatched "String Immutability" heading, was one
+   genuinely new, unrelated bullet about the sliding window technique being the dominant pattern
+   for substring problems — a real gap, since the page's own revision `mustKnow` and
+   `interviewFocus` lists both name "longest substring without repeating characters (sliding
+   window)" by name, but NO codeTab on the page ever shows sliding-window code for that specific
+   problem (the only sliding-window code visible is the Minimum Window Substring Challenge, which
+   solves a different, more complex problem). Fixed by removing the duplicate bullets and
+   retitling/expanding the fifth section into a properly-scoped "Sliding Window for Substring
+   Problems" theory section. No `SUBTOPICS` map collision for bare `strings` (checked both
+   `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed collision-free, left
+   bare). Three subtopics, each independently verified via direct Node.js execution against a
+   brute-force reference before publishing: (1) **fix-adjacent** — builds the exact
+   "longest substring without repeating characters" function the page's own lists name but never
+   show, verified against a brute-force O(n²) check across six test strings including the tricky
+   "abba" case that breaks a naive implementation missing the `>= left` staleness guard, with a
+   Try It tracing through "abba" step by step to show precisely where the guard matters; (2)
+   **gap-closing** — the QnA describes the Z-algorithm precisely ("simpler to implement than KMP
+   with similar performance") with zero code anywhere; built the Z-array construction plus the
+   pattern+separator+text search trick, verified against a brute-force O(nm) reference across
+   three cases, with a Try It on why the separator character must be guaranteed absent from both
+   strings; (3) **gap-closing** — the Quick Reference and QnA both describe the Rabin-Karp rolling
+   hash in prose with zero code anywhere; built it using exact BigInt arithmetic (to sidestep any
+   floating-point precision concern), verified against a brute-force O(nm) reference across four
+   cases — the hash-match-is-only-a-candidate verification step the page's own quiz explanation
+   already correctly names was built in from the start, and a Try It on JavaScript's BigInt `%`
+   operator genuinely returning a negative remainder for a negative left operand (confirmed via
+   direct execution: `-5n % 3n` evaluates to `-2n`, not the mathematically-expected `1n`), which is
+   exactly why the rolling-hash update needs its own correction step. **A false alarm
+   self-investigated and ruled out, not a real bug**: a literal `’` string initially looked
+   like it might have been written as broken escape-sequence TEXT rather than the resolved
+   character inside two `.html` files (a static `subtopicLabel` attribute and a bound `[next]`
+   label) — verified via direct raw-byte inspection (`\xe2\x80\x99`, the correct UTF-8 encoding
+   for U+2019) that the actual file content was always the genuine curly-quote character, matching
+   the proven-correct pattern from the pilot batch; no fix was needed. All three
+   `exercise.solution`/`theory.points`/`misconceptions` fields swept clean via the standing
+   bracket-balance/backtick-parity/apostrophe scripts (the two flagged apostrophe matches
+   confirmed safe, inside a backtick-delimited `code:` field's own comments). Build passed clean
+   (foreground execution under Node 22.23.2, explicit `EXITCODE:$?` capture, zero real `ERROR`
+   lines). **No interactive browser/preview tool was available in this session** — verified via
+   the same compiled-bundle-inspection fallback as the prior two batches: isolated the main
+   `DsaStrings` component's own lazy chunk (by searching for `kmpSearch`, a string unique to it)
+   and confirmed the fixed "Sliding Window for Substring Problems" heading was present there with
+   the old duplicate heading absent; confirmed all three subtopic titles compiled into their own
+   separate lazy chunks; confirmed the `SUBTOPICS`/`SIDEBAR_MAP`/breadcrumb/search-index entries
+   for `strings` (bare) and all three composite subtopic keys were present with matching content.
+   **DSA hub Phase 10: 3 of 21 topics complete.**
+10. **The `hash-tables` batch found and fixed a genuine inaccuracy, verified via WebSearch, inside
+   the page's own fifth theory section ("Collision Resolution Strategies and Their Tradeoffs" —
+   a section that mostly ADDS real detail beyond the earlier "Collision Resolution" section, such
+   as deletion tombstones and cache locality, rather than being a wholesale duplicate like the
+   Strings batch's own finding, but still had one genuinely duplicate load-factor bullet and one
+   factual error): the claim that "cryptographically-inspired hash functions with strong avalanche
+   properties are preferred even for non-cryptographic hash tables" has the real story backwards —
+   ordinary hash tables (Java HashMap, JS engines, Python dict) use FAST, non-cryptographic
+   functions (MurmurHash, xxHash, polynomial rolling hashes) specifically because cryptographic
+   hashes are deliberately slow by design; only under adversarial, attacker-controlled-key
+   conditions (HashDoS) does a KEYED function like SipHash matter, and its security comes from a
+   secret key, not from "cryptographic inspiration" — Wikipedia itself classifies SipHash as
+   non-cryptographic. Fixed the bullet with the real HashDoS/SipHash story and removed the
+   duplicate load-factor bullet (already stated two sections up). No `SUBTOPICS` collision for
+   `hash-tables` (checked both forms and grepped `app.routes.ts` directly, confirmed
+   collision-free, left bare). Three subtopics, each independently verified via direct Node.js
+   execution, with one genuinely instructive detour along the way: (1) **fix-adjacent** — crafted
+   46 distinct two-character strings that all collide into bucket 0 of the main page's own
+   polynomial hash function (capacity 16), confirmed against 1,000 random strings spreading evenly
+   across all 16 buckets; then tested the "obvious" fix (prepend a secret salt) across 200 random
+   salts and found it defeated the collision in ZERO trials — a first attempt at a "keyed" defense
+   also failed for the same underlying reason (a simple additive salt-per-step preserves the
+   SAME shared structure the attack exploited) before a properly non-linear, every-step-mixed
+   construction was verified to defeat the attack in 172 of 200 trials (86%), which is the actual
+   mechanical reason SipHash is built the way it is; (2) **gap-closing** — the QnA names consistent
+   hashing's "only adjacent servers remap" claim with zero code or numbers; built a real ring with
+   virtual nodes (after an initial verification run returned a nonsensical "0% remapped, all keys
+   on one server" result — traced to a weak, poorly-mixing hash function in the TEST script itself,
+   not a main-page bug, fixed by switching to a proper FNV-1a hash) and measured 1,000 keys:
+   simple modulo hashing remapped 80.4% of keys when going from 4 to 5 servers, consistent hashing
+   remapped only 20.9% — with every single remapped key confirmed moving specifically to the new
+   server, matching the QnA's claim precisely; (3) **gap-closing** — the QnA describes a two-pass
+   and a "single-pass using an ordered map" approach to finding the first non-repeating character
+   with zero code for either; built both, verified byte-identical output across six test strings,
+   and clarified exactly what "single-pass" means here (single pass over the STRING; the second
+   loop iterates the map's own bounded set of distinct keys, not the string again). All three
+   `exercise.solution`/`theory.points`/`misconceptions` fields swept clean via the standing
+   bracket-balance/backtick-parity/apostrophe scripts (the three flagged apostrophe matches
+   confirmed safe, inside backtick-delimited `code:` fields). Build passed clean (foreground
+   execution under Node 22.23.2, explicit `EXITCODE:$?` capture, zero real `ERROR` lines). **No
+   interactive browser/preview tool was available in this session** — verified via the same
+   compiled-bundle-inspection fallback as the prior three batches: isolated the main `DsaHashTables`
+   component's own lazy chunk (by searching for its unique "Simple hash map with chaining" comment)
+   and confirmed the fixed HashDoS/SipHash text was present with the old crypto-hash claim and the
+   duplicate section heading both absent; confirmed all three subtopics' own unique function names
+   (`findColliding`, `ConsistentHashRing`, `firstNonRepeatingTwoPass`) each compiled into their own
+   separate lazy chunks; confirmed the `SUBTOPICS`/`SIDEBAR_MAP`/breadcrumb/search-index entries for
+   `hash-tables` (bare) and all three composite subtopic keys were present with matching content.
+   **DSA hub Phase 10: 4 of 21 topics complete.**
+11. **The `stacks-queues` batch found and fixed a genuine, Node-verified counting error plus a
+   partial theory-section duplicate in the page's own fifth theory section ("Implementing a Queue
+   Efficiently Using Two Stacks")**: the claim that "each element is moved between stacks at most
+   twice total across its lifetime in the queue" was verified wrong by instrumenting a real
+   two-stack queue with a per-element move counter across 1,000 rounds of 10 enqueues + 10
+   dequeues (20,000 operations) — the measured maximum was exactly `1`, never `2`, since an
+   element is pushed onto "in" once, optionally transferred from "in" to "out" exactly once (if
+   "out" is ever empty when a dequeue needs it), and finally popped off "out" for good — that is
+   one transfer EVENT, not two. The section's fourth bullet also restated the Monotonic Stack
+   pattern already fully covered by the page's own dedicated third theory section ("Monotonic
+   Stack") — the same partial-duplicate pattern already found once on this hub's own Hash Tables
+   batch. Fixed the "twice" → "once" count and replaced the duplicate bullet with a genuinely new
+   cross-reference to the Big-O topic's own dynamic-array amortized-doubling proof, which shares
+   the identical "most operations cheap, one occasional expensive, but bounded one-time-per-element
+   cost" structure. No `SUBTOPICS` collision for `stacks-queues` (checked both quoted and unquoted
+   forms in `subtopics.ts`, and grepped `app.routes.ts` directly, confirmed collision-free, left
+   bare). Every codeTab and the Challenge's own `largestRectangleArea` solution were independently
+   verified via direct Node.js execution against their own stated test cases before trusting them
+   clean (`isValid`, `MinStack`, `dailyTemperatures`, `maxSlidingWindow`, and
+   `largestRectangleArea([2,1,5,6,2,3]) → 10` / `largestRectangleArea([2,4]) → 4`, all matched).
+   Three subtopics, each independently Node-verified: (1) **fix-adjacent** — reproduces the exact
+   move-count finding via the same instrumented `TwoStackQueue` class, confirming the measured
+   maximum of 1 move per element and the constant 0.5 amortized-transfer-cost-per-operation ratio
+   across the full 20,000-operation run; (2) **gap-closing** — the page's own QnA describes postfix
+   (RPN) evaluation in one dense paragraph of prose with zero code anywhere on the page; built a
+   real `evalRPN` function, verified against three worked cases including the LeetCode-style
+   `["10","6","9","3","+","-11","*","/","*","17","+","5","+"] → 22`, with a Try It on why swapping
+   the pop order only breaks the non-commutative operators (`-`, `/`) and leaves `+`/`*` silently
+   unaffected; (3) **gap-closing** — the page's own codeTab implements `MinStack` with one stack of
+   `(value, currentMin)` pairs while its own separate QnA describes a different, equally valid
+   two-aux-stack design; cross-checked both directly against 5,000 random push/pop operations with
+   zero `getMin()` mismatches, then measured the real memory tradeoff: the pairs design always
+   costs exactly 2x (898 tuples for 898 elements after the random run), while the aux-stack
+   design's aux size is input-dependent — 7 entries after the same random run, but growing to the
+   full 1,000 (matching the pairs design's cost) for a strictly decreasing push sequence, and
+   shrinking to just 1 for a strictly increasing one. All three `exercise.solution`/
+   `theory.points`/`misconceptions` fields swept clean via the standing bracket-balance/backtick-
+   parity/apostrophe scripts; the pre-existing brace-count imbalance in the main page's own file
+   (72 open / 70 close) was checked against `git diff` and confirmed pre-existing — caused by the
+   file's own `pairs: Record<string, string> = { ... '}': '{' }` object literal containing lone
+   brace CHARACTERS as string values, the same established false-positive category this file has
+   documented before for raw brace-count sweeps, not introduced by this batch's edit (which added
+   zero braces). Build passed clean (foreground execution under Node 22.23.2, explicit
+   `EXITCODE:$?` capture, zero real `ERROR` lines). **No interactive browser/preview tool was
+   available in this session** — verified via the same compiled-bundle-inspection fallback as the
+   prior four batches: confirmed the exact OLD "moved between stacks at most twice total across
+   its lifetime in the queue, keeping the amortized cost constant" sentence was absent from every
+   compiled chunk, confirmed the NEW "at most ONCE total across its entire lifetime in the queue"
+   sentence and the dynamic-array-doubling cross-reference were present in the main page's own
+   chunk; confirmed all three subtopic classes
+   (`TwoStackQueueMovesEachElementOnceSubtopic`/`RpnExpressionEvaluationWithAStackSubtopic`/
+   `MinStackPairsVsTwoAuxStacksSubtopic`) each compiled into their own separate lazy chunk;
+   confirmed the `SUBTOPICS`/`SIDEBAR_MAP`/breadcrumb/search-index entries for `stacks-queues`
+   (bare) and all three composite subtopic keys were present with matching content (a grep
+   substring match for the OLD "moved between stacks at most twice" phrase inside one subtopic's
+   own chunk was investigated and confirmed to be the subtopic's own text QUOTING the original,
+   now-corrected main-page claim verbatim as part of explaining the fix — not a leftover bug).
+   **DSA hub Phase 10: 5 of 21 topics complete.**
+12. **The `linked-lists` batch found and fixed a genuine, Node-verified destructive side effect in
+   the page's own Palindrome Challenge solution, plus a wholesale duplicate theory section
+   (matching the same pattern already found once on this hub's own Strings batch)**: the page's
+   fifth theory section ("Fast and Slow Pointers: The Floyd Cycle Detection Pattern") restated all
+   four concepts already fully covered by the page's own second theory section ("Slow and Fast
+   Pointer (Floyd's Algorithm)") — cycle detection via meeting, finding the cycle start by resetting
+   slow to head, and finding the middle in one pass. Rather than simply delete it, the section was
+   retitled and rewritten around a genuine, separately-verified finding: building `[1,2,3,2,1]` and
+   calling the page's own `isPalindrome` solution, then traversing from the SAME original `head`
+   reference afterward, returns `[1,2,3,2]` — the list is permanently one node shorter. Traced the
+   exact mechanism (the middle node's own next pointer is never touched, but the node it pointed to
+   has its next pointer overwritten to null as the first step of the in-place second-half reversal,
+   severing the path to the original tail, which only remains reachable via the separate,
+   never-reconnected `prev` pointer the reversal returns) and verified the fix (reverse the second
+   half back and reconnect it) restores the EXACT original array across four test cases (an odd
+   palindrome, an even non-palindrome, an even palindrome, and a longer non-palindrome) with zero
+   extra cost beyond one more O(n) pass. Added a sixth mistake entry documenting this, alongside the
+   rewritten theory section. No `SUBTOPICS` collision for `linked-lists` (checked both quoted and
+   unquoted forms in `subtopics.ts`, and grepped `app.routes.ts` directly, confirmed collision-free,
+   left bare). Every codeTab and the Challenge's own solution were independently verified via direct
+   Node.js execution first (`reverseList`, `middleNode` — including confirming it correctly returns
+   the LEFT-middle for even-length lists, matching its own comment — `mergeTwoLists`, `hasCycle`,
+   `detectCycle`, `removeNthFromEnd`, and `isPalindrome` against four palindrome/non-palindrome
+   cases), all matched before any fix was pursued. Three subtopics, each independently Node-verified:
+   (1) **fix-adjacent** — reproduces the exact mutation and the restoring fix side by side, with a
+   Try It on why adding a second restore pass does not change the overall O(n) time complexity (four
+   roughly-n/2-sized passes is still O(n) total, just a larger constant factor); (2) **gap-closing**
+   — the page's own theory and quiz state that recursive reversal costs O(n) stack space "because
+   each recursive call adds a stack frame," but no codeTab ever demonstrates it; built a real
+   recursive `reverseRecursive` instrumented with a depth counter, measuring an exact 1,000-deep
+   call stack for a 1,000-node list and exactly 2,000 for a 2,000-node list — confirming the precise
+   1:1 relationship rather than just naming it, with a Try It on why a single-branch (non-tree)
+   recursion still produces O(n) space (a frame stays alive until its OWN call returns, not until it
+   makes its next call); (3) **gap-closing** — the page's own QnA describes the copy-forward
+   O(1)-deletion trick (for deleting a node given only a pointer to it, with no predecessor) in
+   prose with zero code; built it, verified it correctly produces `[4,1,9]` from `[4,5,1,9]` when
+   given a reference to the "5" node, and deliberately triggered the QnA's own stated caveat by
+   attempting it on the list's true last node — confirmed it throws a `TypeError` immediately
+   (`Cannot read properties of null (reading 'val')`), since there is no next node to copy a value
+   from. All three `exercise.solution`/`theory.points`/`misconceptions` fields swept clean via the
+   standing bracket-balance/backtick-parity/apostrophe scripts (all three files balanced, all
+   backtick counts even, zero unescaped possessive apostrophes found); none of the three subtopic
+   titles contain an apostrophe, so no `[prev]`/`[next]`-label delimiter-collision risk applied this
+   batch. Build passed clean (foreground execution under Node 22.23.2, explicit `EXITCODE:$?`
+   capture, zero real `ERROR` lines). **No interactive browser/preview tool was available in this
+   session** — verified via the same compiled-bundle-inspection fallback as the prior five batches:
+   confirmed the OLD duplicate section heading was absent from every compiled chunk, confirmed the
+   NEW section heading, the restore-fix sentence, and the new sixth mistake entry were all present
+   in the main page's own chunk; confirmed all three subtopic classes
+   (`PalindromeCheckMutatesTheListWithoutRestoringSubtopic`/
+   `RecursiveReversalCallStackDepthMeasuredSubtopic`/
+   `DeletingAMiddleNodeWithoutThePredecessorSubtopic`) each compiled into their own separate lazy
+   chunk; confirmed the `SUBTOPICS`/`SIDEBAR_MAP`/breadcrumb/search-index entries for `linked-lists`
+   (bare) and all three composite subtopic keys were present with matching content.
+   **DSA hub Phase 10: 6 of 21 topics complete.**
+13. **The `doubly-linked-lists` batch found and fixed a genuine, research-verified inaccuracy
+   (not just a self-contained logic bug) plus two partial theory-section duplicates**: the page's
+   own QnA on real-world DLL usage listed "JavaScript's Map internally (for insertion-order
+   iteration)" alongside LRU caches and browser history. Verified via WebSearch against V8's own
+   source file (`src/objects/ordered-hash-table.h`, confirmed via the Chromium source repository
+   and corroborating secondary sources) that this is wrong: V8 implements Map/Set as an
+   `OrderedHashTable` — an array-backed hash table where entries are appended to a contiguous
+   backing array in insertion order, with a forward-only chain of next-entry INDICES used purely to
+   resolve hash-bucket collisions. There is no prev pointer, and no doubly linked list, anywhere in
+   the real design. Fixed the QnA to state the verified architecture, with an honest caveat built
+   into the matching subtopic: a JS-observable re-insertion test is CONSISTENT with this array-
+   backed design but is not, by itself, proof of it (a hypothetical DLL-based design with
+   move-to-tail-on-reinsert semantics would produce an identical observable result) — the real
+   evidence is in V8's own source, not anything a JS program alone can directly inspect. Also found
+   and fixed the same partial theory-section-duplicate pattern already seen on this hub's own Hash
+   Tables batch, across TWO sections this time: "When Doubly Linked Lists Outperform Singly Linked
+   Lists" restated two bullets ("O(1) removal given a reference" and "memory overhead doubling")
+   already stated in the page's own first theory section, and "Sentinel Nodes Simplify Doubly
+   Linked List Edge Cases" restated two bullets already stated in the page's own third theory
+   section. Retitled and rewrote both: the fourth section now covers why real standard-library
+   deques (Python's `collections.deque`, confirmed via well-documented CPython internals) use a
+   doubly linked list of fixed-size BLOCKS rather than a naive node-per-element DLL, for cache
+   locality; the fifth section now covers a genuine, Node-verified sentinel-boundary risk — that
+   `head.prev` and `tail.next` are themselves still null by construction, a real null-dereference
+   risk if a boundary guard (like the page's own `removeLast()` empty-list check) is ever forgotten.
+   No `SUBTOPICS` collision for `doubly-linked-lists` (checked both quoted and unquoted forms in
+   `subtopics.ts`, and grepped `app.routes.ts` directly, confirmed collision-free, left bare). Every
+   codeTab and the Challenge's own LRU Cache solution were independently verified first via direct
+   Node.js execution (the page's QnA's own DLL-reversal algorithm was also tested and confirmed
+   correct, including that "what was tail is now head" holds). Three subtopics, each independently
+   verified: (1) **fix-adjacent** — the V8 OrderedHashTable finding, with the re-insertion-appends-
+   at-the-end observable-behavior demo and its own explicit "consistent with, not proof of" caveat,
+   plus a Try It on what kind of evidence would actually be needed to go beyond "consistent with";
+   (2) **gap-closing** — reproduced the exact sentinel-boundary crash by deliberately deleting the
+   main page's own empty-list guard from `removeLast()` and calling it on an empty list: verified it
+   throws `TypeError: Cannot set properties of null` immediately (since `this.tail.prev === this.head`
+   on an empty list, and `head.prev` was never set), with a Try It reasoning through why a null-check
+   deep inside `remove()` instead of restoring the guard would be a WORSE fix (silently returning the
+   sentinel itself as a fake "evicted" node, corrupting state, rather than failing loudly); (3)
+   **gap-closing** — built a real `BlockedDeque<T>` class (block size 4, for demo clarity versus
+   CPython's real 62) and cross-checked it against a plain array reference across 2,000 random mixed
+   push-front/push-back/pop-front/pop-back operations with zero mismatches, with a Try It computing
+   the real allocation-count difference for 1 million elements (~16,130 block allocations vs.
+   1,000,000 individual node allocations, a ~62x reduction). **A real delimiter-collision mistake
+   self-caught and fixed before the build, not the standing sweep**: an early draft of one subtopic's
+   own `[prev]`/`[next]` bound attributes used backslash-escaped apostrophes (`\'`) for "JavaScript's"
+   and "Python's" — the `.ts`-field-only convention — instead of the typographic curly quote (`'`,
+   U+2019) `.html` bound attributes actually require; caught by direct review before the build ever
+   ran, fixed to the curly quote consistently across all four touchpoints that reference either
+   title (the file's own h1/eyebrow, both sibling `[prev]`/`[next]` labels, and the `SUBTOPICS`/
+   `breadcrumb`/`search` composite entries). All three `exercise.solution`/`theory.points`/
+   `misconceptions` fields swept clean via the standing bracket-balance/backtick-parity/apostrophe
+   scripts (all three files balanced, all backtick counts even; the two flagged apostrophe matches —
+   "CPython's" and "page's" — were confirmed safe, both sitting inside backtick-delimited `code:`
+   fields). Build passed clean (foreground execution under Node 22.23.2, explicit `EXITCODE:$?`
+   capture, zero real `ERROR` lines). **No interactive browser/preview tool was available in this
+   session** — verified via the same compiled-bundle-inspection fallback as the prior six batches:
+   confirmed the OLD "JavaScript's Map internally" QnA text and both pairs of OLD duplicate theory
+   bullets were absent from every compiled chunk, confirmed the NEW V8-verified QnA text, the
+   blocked-deque theory section, and the sentinel-boundary-risk theory section were all present in
+   the main page's own chunk; confirmed all three subtopic classes
+   (`JavascriptMapIsNotADoublyLinkedListSubtopic`/`WhatHappensWithoutTheEmptyListGuardSubtopic`/
+   `BuildingABlockedDequeLikePythonsSubtopic`) each compiled into their own separate lazy chunk, with
+   the curly-quote titles correctly encoded as `’` escapes in the compiled `SUBTOPICS` map;
+   confirmed the `SUBTOPICS`/`SIDEBAR_MAP`/breadcrumb/search-index entries for `doubly-linked-lists`
+   (bare) and all three composite subtopic keys were present with matching content.
+   **DSA hub Phase 10: 7 of 21 topics complete.**
+14. **The `binary-trees` batch found and fixed a genuine partial theory-section duplicate — the
+   same pattern already seen on this hub's own Hash Tables and Doubly Linked Lists batches, just
+   with a single duplicate bullet this time rather than a whole section**: the page's own fifth
+   theory section ("Choosing Between Recursive and Iterative Tree Traversals") had one bullet
+   ("Level-order traversal fundamentally requires a queue rather than a stack... must process all
+   nodes at one depth before moving to the next") that restated the page's own third theory
+   section's opening bullet ("Uses a queue. Process all nodes at depth d before depth d+1") nearly
+   verbatim — the other three bullets in the section were genuinely new. Replaced the duplicate
+   with a Node-verified, genuinely counterintuitive fact: measured DFS recursion depth and BFS
+   peak queue size directly on two different tree shapes — a 1,000-node completely skewed
+   (linked-list-shaped) tree gave DFS depth 1,001 vs. BFS queue size 1 (BFS over 1,000x cheaper),
+   while a 1,023-node balanced (perfect) tree gave DFS depth 11 vs. BFS queue size 512 (DFS over
+   46x cheaper) — proving which traversal wins on memory depends entirely on tree shape, not a
+   fixed rule either direction. No `SUBTOPICS` collision for `binary-trees` (checked both quoted
+   and unquoted forms in `subtopics.ts`, and grepped `app.routes.ts` directly, confirmed
+   collision-free, left bare). Every codeTab and the Challenge's own `rightSideView` solution were
+   independently verified first via direct Node.js execution (`inorder`/`inorderIterative` matched
+   each other exactly; `height`, `diameterOfBinaryTree`, and `maxPathSum` all matched their own
+   expected outputs, including the page's own quiz Q4 height-of-complete-tree formula
+   `floor(log2(n))`, cross-checked against a direct index-based depth computation for every n from
+   1 to 1000 with zero mismatches). Three subtopics, each independently verified: (1)
+   **fix-adjacent** — ties to the page's own fourth theory bullet naming Morris traversal; built a
+   correct implementation and verified via a full structural serialization (every left/right
+   pointer, not just values) that the tree is restored byte-for-byte after the call, THEN
+   deliberately deleted the one "remove the thread" line and verified the broken version still
+   returns the CORRECT traversal values on its first call while leaving a real, permanent cycle in
+   the tree (a leaf node's own `.right` pointer left pointing back to its own ancestor) — confirmed
+   by running an ordinary, unrelated recursive inorder traversal on the now-corrupted tree
+   afterward and getting garbage repeated-value output instead of the correct 7 distinct values;
+   (2) **gap-closing** — the measured BFS-vs-DFS memory finding behind the main-page fix, with a
+   Try It on a partially-skewed tree shape testing whether the reader generalizes "BFS tracks
+   width, DFS tracks depth" correctly; (3) **gap-closing** — the page's own "Mixing up preorder and
+   inorder" mistake block states inorder alone "is not enough to reconstruct a generic binary
+   tree" with no demonstration; built and verified two structurally different 3-node trees (a
+   balanced tree and a completely right-skewed chain) producing the IDENTICAL inorder sequence
+   `[1, 2, 3]`, then built and round-tripped the real fix (preorder + null markers) the page's own
+   QnA describes in prose, verified via a full structural comparison that the rebuilt tree matches
+   the original exactly. All three `exercise.solution`/`theory.points`/`misconceptions` fields
+   swept clean via the standing bracket-balance/backtick-parity/apostrophe scripts (all three files
+   balanced, all backtick counts even, zero unescaped possessive apostrophes found); the main
+   page's own pre-existing 68/70 brace-count "imbalance" was checked against `git show HEAD` and
+   confirmed byte-for-byte identical before and after this batch's edit — a pre-existing false
+   positive from a lone brace character inside a string literal, not introduced by this batch, per
+   the established documented precedent for this exact category of sweep false-positive. Build
+   passed clean (foreground execution under Node 22.23.2, explicit `EXITCODE:$?` capture, zero
+   real `ERROR` lines). **No interactive browser/preview tool was available in this session** —
+   verified via the same compiled-bundle-inspection fallback as the prior seven batches: confirmed
+   the OLD duplicate bullet was absent from every compiled chunk, confirmed the NEW BFS-vs-DFS
+   memory fact was present in the main page's own chunk; confirmed all three subtopic classes
+   (`MorrisTraversalRestoresTheTreeUnlessYouForgetSubtopic`/
+   `BfsCanUseLessMemoryThanDfsOnASkewedTreeSubtopic`/
+   `InorderAloneCannotReconstructABinaryTreeSubtopic`) each compiled into their own separate lazy
+   chunk, with the em-dash title correctly encoded as a `—` escape in the compiled `SUBTOPICS`
+   map; confirmed the `SUBTOPICS`/`SIDEBAR_MAP`/breadcrumb/search-index entries for `binary-trees`
+   (bare) and all three composite subtopic keys were present with matching content.
+   **DSA hub Phase 10: 8 of 21 topics complete.**
+15. **The `bst` batch found and fixed a genuine complexity-labeling bug in the main page's own
+   `sortedArrayToBST` codeTab, verified via direct Node.js measurement**: the function's own
+   trailing comment claimed "O(n) time" — but its body recurses with `nums.slice(0, mid)` and
+   `nums.slice(mid + 1)`, and `Array.prototype.slice()` copies every element of its sub-array on
+   each call. Verified by instrumenting a copy counter across increasing input sizes: the ratio of
+   total-elements-copied to n climbs steadily (1.90 at n=100, 14.69 at n=10,000) rather than
+   staying flat — the signature of O(n log n) work, not O(n). Fixed the comment and built the real
+   O(n) fix (passing `lo`/`hi` index bounds instead of slicing a new array at every call), verified
+   via the same instrumentation that it does exactly n units of copy-equivalent work at every
+   tested size. Separately, theory section 5 ("Self-Balancing BSTs") duplicated section 1's own
+   self-balancing content almost verbatim — retitled it and replaced the first two bullets with a
+   Node-verified demonstration instead (kept the still-accurate red-black-vs-AVL tradeoff and
+   practical-judgment-call bullets unchanged). Three subtopics: (1) **fix-adjacent** — reproduces
+   the measured copy-ratio growth directly, with a Try It on the O(n) index-based fix; (2)
+   **gap-closing** — builds `rotateLeft`/`rotateRight` from scratch and verifies the classic
+   ascending-insert degenerate case (inserting 1, 2, 3 in order) produces a 3-node chain at height 3
+   with balance factor -2, and that exactly ONE `rotateLeft` restores height 2/balance 0 while the
+   inorder traversal stays `[1, 2, 3]` throughout — the retitled theory section's own new claim,
+   verified rather than assumed; (3) **gap-closing** — instruments both a generic-tree LCA
+   (`lcaGeneric`, visits every node via unconstrained DFS) and the main page's own BST-LCA
+   (`lcaBST`, follows exactly one root-to-target path) with visit counters on a balanced 1023-node
+   tree, verified both return the identical correct answer (value 15, for p=10/q=20) while
+   `lcaGeneric` visits 2043 nodes against `lcaBST`'s 6 — a verified 340x gap, demonstrating
+   precisely why the BST's own ordering property (not just "it's a tree") is what makes LCA fast.
+   No `SUBTOPICS` collision for `bst` (checked both `subtopics.ts` forms and grepped
+   `app.routes.ts` directly, confirmed collision-free, left bare). All three
+   `exercise.solution`/`theory.points`/`misconceptions` fields swept clean via the standing
+   bracket-balance/backtick-parity/apostrophe scripts (all three files balanced at 63/63 braces,
+   all backtick counts even, zero unescaped possessive apostrophes found) — no pre-existing false
+   positive this time, unlike the prior two batches. Build passed clean (foreground execution
+   under Node 22.23.2, explicit `EXITCODE:$?` capture, zero real `ERROR` lines). **No interactive
+   browser/preview tool was available in this session** — verified via the same compiled-bundle-
+   inspection fallback as the prior eight batches: confirmed the OLD "O(n) time" comment text was
+   replaced with "O(n log n), NOT O(n) as it may look!" in the main page's own compiled chunk
+   (`chunk-CvBJc0Ah.js`), confirmed the retitled theory section's new text ("O(n log n), not O(n)
+   — see the dedicated subtopic") was present; confirmed all three subtopic classes
+   (`SortedArrayToBstIsActuallyOnLogNSubtopic`/`OneRotationRebalancesAnAscendingInsertSubtopic`/
+   `GenericTreeLcaVisitsTheWholeTreeSubtopic`) each compiled into their own separate lazy chunk;
+   confirmed the `SUBTOPICS`/`SIDEBAR_MAP`/breadcrumb/search-index entries for `bst` (bare) and all
+   three composite subtopic keys were present with matching content in `main-UPV3FSEJ.js`.
+   **DSA hub Phase 10: 9 of 21 topics complete.**
+16. **The `heaps` batch found and fixed a genuine dead-code bug in the main page's own
+   `mergeKLists` codeTab, verified via direct Node.js execution**: the function declared
+   `const heap = new MinHeap();` — a comment above it even reads "heap stores [value, listIdx,
+   elemIdx]" — but never calls `.push()`/`.pop()` on it anywhere; the function's real output
+   comes entirely from `lists.flat().sort((a, b) => a - b).filter(x => x !== null)`, a plain
+   O(n log n) sort. The declared heap does nothing. Fixed by building the real tuple-heap merge
+   (a min-heap of `{ value, listIndex, elemIndex }` entries, bounded at size k — one entry per
+   list), verified via 200+ randomized trials that it is output-equivalent to the sort version,
+   and via an instrumented push/pop counter that each of the 8 elements across 3 lists costs
+   exactly one O(log k) push and one O(log k) pop (8 pushes, 8 pops) — confirming the real
+   O(n log k) scaling the dead heap never delivered. Separately, theory section 5 ("Heaps for
+   Top-K and Streaming Problems") largely duplicated sections 3 ("Top-K Pattern"), 4 ("Two-Heap
+   Pattern"), and the Core Operations section's own heapify-O(n) fact — only its third bullet
+   (heap order ≠ sorted order) was genuinely new. Retitled it to "Heap Order vs. Sorted Order —
+   and Heap Sort," kept the one new bullet, and replaced the rest with a Node-verified
+   demonstration that heapify produces a valid-but-unsorted heap (confirmed via a direct
+   heap-validity check) while popping that same heap n times in sequence matches
+   `Array.prototype.sort()` byte-for-byte across 50 randomized trials — i.e. heap sort. Three
+   subtopics: (1) **fix-adjacent** — reproduces the exact dead-code bug and the real tuple-heap
+   fix, verified via direct execution matching the measured push/pop counts exactly, with a Try
+   It on why the two versions are output-equivalent but never cost-equivalent; (2) **gap-closing**
+   — builds the heapify-then-pop-n-times demonstration directly, verified against `Array.sort()`
+   across 50 trials, with a Try It distinguishing heap sort's cost class (shared with quicksort)
+   from its practical cache-locality disadvantage (the retitled theory section's own new claim);
+   (3) **gap-closing** — the Challenge's own hints ask for "a max-heap of size k" but its
+   solution sorts and slices instead; built the real max-heap-of-size-k version, verified over
+   200 randomized trials that it matches the sort-based version by DISTANCE MULTISET exactly
+   (not by raw point identity — the two approaches can legitimately return different individual
+   points when ties exist at the k-th boundary, confirmed by the same stress test's first
+   several naive point-identity comparisons failing while every distance-multiset comparison
+   passed). No `SUBTOPICS` collision for `heaps` (checked both `subtopics.ts` forms and grepped
+   `app.routes.ts` directly, confirmed collision-free, left bare). All three
+   `exercise.solution`/`theory.points`/`misconceptions` fields swept clean via the standing
+   bracket-balance/backtick-parity/apostrophe scripts (all three files balanced at 81/81 braces
+   on the main page after the fix, backtick counts even, zero unescaped possessive apostrophes
+   found in any of the three new subtopic files). Build passed clean (background execution under
+   Node 22.23.2, explicit `EXITCODE:$?` capture, zero real `ERROR` lines — only the standing
+   harmless `NG8113`/budget warnings, unrelated to this batch). **No interactive browser/preview
+   tool was available in this session** — verified via the same compiled-bundle-inspection
+   fallback as the prior nine batches: confirmed the OLD dead-code comment ("simplified — real
+   impl needs tuple heap") was absent from every compiled chunk, confirmed the NEW fixed
+   function's own distinguishing text ("The heap never holds more than k") was present in the
+   main page's own chunk; confirmed the OLD duplicate theory heading ("Heaps for Top-K and
+   Streaming Problems") was absent, confirmed the NEW retitled heading ("Heap Order vs. Sorted
+   Order") was present in the same chunk; confirmed all three subtopic classes
+   (`MergeklistsNeverActuallyUsedItsOwnHeapSubtopic`/`PoppingAHeapNTimesIsHeapSortSubtopic`/
+   `TheRealOnLogKKClosestPointsSolutionSubtopic`) each compiled into their own separate lazy
+   chunk; confirmed the `SUBTOPICS`/`SIDEBAR_MAP`/breadcrumb/search-index entries for `heaps`
+   (bare) and all three composite subtopic keys were present with matching content in the
+   compiled `main-*.js`.
+   **DSA hub Phase 10: 10 of 21 topics complete.**
+17. **The `graphs-bfs-dfs` batch found and fixed a genuine, self-contained anti-pattern in the
+   main page's own canonical BFS codeTab — the "correct"/canonical function used the exact
+   technique its own "Common Mistakes" section warns against**: the mistake block states plainly
+   "Array.shift() is O(n). For large graphs, BFS with shift() is O(V²). Use an index pointer or a
+   proper deque" — but the `bfs` function in the page's primary "BFS & DFS on Graph" codeTab
+   dequeued via `queue.shift()!`, exactly what the block below it warns against. Fixed it to the
+   index-pointer technique, with an explanatory comment pointing at the mistake block. Verified a
+   genuinely interesting, non-obvious nuance before publishing anything: the O(V²) risk is NOT a
+   flat property of vertex count alone — it depends on graph SHAPE. A pure isolated test (shift()
+   draining a plain array, no BFS logic at all) confirmed the quadratic blowup directly (731ms at
+   100K elements, 2,943ms at 200K, over 18 SECONDS at 400K, versus under 1ms for an index-pointer
+   drain at every size) — but a REAL BFS run on a 400,000-node CHAIN graph showed almost no
+   difference between shift() and pointer-based BFS at all, because a chain graph's BFS queue
+   never grows large (it stays at 1-2 entries throughout). Only once a WIDE graph was tested (a
+   160,401-node, 2-level wide tree, where the queue genuinely grows to hold tens of thousands of
+   entries at once) did the predicted blowup reappear — measured 33x slower for shift() versus
+   pointer-based BFS, on a graph under half the chain graph's own vertex count. Also partially
+   retitled theory section 5 ("When to Choose BFS Over DFS"), which duplicated 2 of its 4 bullets
+   against sections 2/3's own BFS/DFS descriptions — replaced bullet 1 with the verified width-
+   dependent shift() finding and bullet 3 with a verified three-state-DFS distinction (kept the
+   two genuinely new bullets, on DFS's memory advantage and the shared O(V+E) complexity class,
+   unchanged). Three subtopics: (1) **fix-adjacent** — reproduces the isolated shift()-drain
+   blowup and the chain-vs-wide-graph contrast directly, with a Try It on a star graph (a single
+   hub connected to 50,000 leaves), verified matching the measured ~12x slowdown exactly; (2)
+   **gap-closing** — the main page's own QnA describes three-state (white/gray/black) directed-
+   cycle detection in prose ("track three states... a cycle exists if DFS encounters an
+   in-progress node") with zero codeTab building it; built it, verified against a plain DAG (no
+   cycle, correctly false), a 3-node ring (real cycle, correctly true), and — the case that
+   actually tests the white/gray/black distinction rather than a plain visited-set check — a
+   diamond-shaped DAG where two paths converge on the same descendant (correctly false, since the
+   shared node is BLACK/finished on its second visit, never GRAY/in-progress); (3) **gap-closing**
+   — the QnA's own bipartiteness-via-2-coloring description ("if you ever try to assign a node the
+   same color as its neighbor, the graph is NOT bipartite... bipartite iff no odd-length cycles")
+   also had zero codeTab; built it, verified against a 4-node even cycle (bipartite, true), a
+   3-node triangle and a 5-node pentagon (both odd cycles, correctly false), and a tree with zero
+   cycles (correctly true, confirming trees are always bipartite). **A real, self-caught mistake
+   caught and fixed before the build, not the standing sweep**: an early draft of subtopic 2's own
+   `.html` file used `\'` (the single-quoted-TS-field convention) for the apostrophe in
+   "shift()'s" inside a `[prev]` bound attribute's label string — the exact mistake this file has
+   documented many times before for other hubs (Node.js, Linux, Service Mesh) — caught
+   immediately via direct review before the build ever ran and fixed to the typographic curly
+   quote (`'`, U+2019), the established `.html`-bound-attribute convention. No `SUBTOPICS`
+   collision for `graphs-bfs-dfs` (checked both `subtopics.ts` forms and grepped `app.routes.ts`
+   directly, confirmed collision-free, left bare). All three `exercise.solution`/`theory.points`/
+   `misconceptions` fields swept clean via the standing bracket-balance/backtick-parity/apostrophe
+   scripts (all three new files balanced, backtick counts even, zero unescaped possessive
+   apostrophes found outside backtick-delimited `code:` fields, where they are safe); the main
+   page's own pre-existing 76/74 brace-count "imbalance" was checked against `git show HEAD` and
+   confirmed byte-for-byte identical before and after this batch's edit — a pre-existing false
+   positive, not introduced by this batch, per the established documented precedent for this exact
+   category of sweep false-positive. Build passed clean (background execution under Node 22.23.2,
+   explicit `EXITCODE:$?` capture, zero real `ERROR` lines). **No interactive browser/preview tool
+   was available in this session** — verified via the same compiled-bundle-inspection fallback as
+   the prior ten batches: confirmed the OLD `queue.shift()!`-based `bfs` function was replaced with
+   the index-pointer version (the OTHER, deliberately-unfixed codeTabs on the same page — grid BFS,
+   the Rotting Oranges Challenge — still legitimately use `queue.shift()!`, confirmed those matches
+   belong to different, untouched chunks and codeTabs, not a failed edit); confirmed the NEW
+   retitled theory bullets' own distinguishing text ("is not a flat property of graph SIZE") was
+   present and the OLD duplicate bullets' text was absent from the main page's own compiled chunk;
+   confirmed all three subtopic classes
+   (`ShiftsOnVSquaredRiskDependsOnGraphWidthSubtopic`/`DetectingADirectedCycleWithThreeStateDfsSubtopic`/
+   `CheckingBipartitenessWithTwoColoringBfsSubtopic`) each compiled into their own separate lazy
+   chunk; confirmed the `SUBTOPICS`/`SIDEBAR_MAP`/breadcrumb/search-index entries for
+   `graphs-bfs-dfs` (bare) and all three composite subtopic keys were present with matching
+   content in the compiled `main-*.js`.
+   **DSA hub Phase 10: 11 of 21 topics complete.**
+18. **The `graph-algorithms` batch found and fixed a genuine, self-contained complexity-labeling
+   bug in the main page's own Dijkstra codeTab — the same category of bug as the Heaps topic's
+   own `mergeKLists` fix, just on a different page**: the Quick Reference and theory both claim
+   Dijkstra runs in O((V+E) log V) "with min-heap" — but the original codeTab's "min-heap" was
+   `heap.sort((a, b) => a[0] - b[0])` followed by `heap.shift()!` on EVERY iteration of the main
+   loop, with its own comment admitting "In real code: use proper min-heap." A full array sort
+   plus a shift on every pop is nowhere near O(log n). Verified over 30 randomized trials that the
+   sort-based version and a real binary-heap version always produce byte-identical shortest-
+   distance results — the bug was purely about cost, never correctness. Measured the real cost on
+   dense random graphs (average out-degree 8, keeping the heap large and growing — the exact
+   condition that exposes a wrong complexity class): the sort-based version ran 9x slower at
+   2,000 nodes, 37x slower at 8,000 nodes, and 114x slower at 20,000 nodes than the real heap — a
+   widening gap, not a fixed constant-factor overhead, consistent with the sort-based version's
+   real cost (~O(V² log V), since each pop costs O(heap size × log(heap size)) and heap size
+   itself scales with edges processed) diverging from the real heap's genuine O((V+E) log V).
+   Fixed the codeTab to a real binary min-heap, and retitled theory section 5's own first bullet
+   (which duplicated section 1's "Dijkstra needs non-negative weights" fact) with this verified
+   finding, keeping the other three, genuinely new bullets (Bellman-Ford, Floyd-Warshall, A*)
+   unchanged. Three subtopics: (1) **fix-adjacent** — reproduces the sort-vs-heap gap directly via
+   the same dense-random-graph benchmark, with a Try It on how the gap would shrink on a SPARSE
+   graph instead (fewer edges mean the heap never grows as large), tying it to the sibling Graphs
+   topic's own "it's about data-structure SIZE, not raw vertex count" finding; (2) **gap-closing**
+   — a quiz question names "Prim or Kruskal" for MST with zero codeTab building either; built
+   Kruskal's MST reusing the main page's own `UnionFind` class completely unmodified, verified
+   against the classic 5-node, 7-edge textbook MST example (4 edges, total weight 16 — the known-
+   correct minimum), with a Try It on why processing edges in descending instead of ascending
+   weight order still produces a valid (cycle-free) spanning tree via the identical `union()`
+   check, just not the minimum-weight one; (3) **gap-closing** — the theory names A* ("explores
+   far fewer nodes in practice... while still guaranteeing optimality when the heuristic is
+   admissible") with zero codeTab; built it reusing the exact same binary-heap push/pop as the
+   fixed Dijkstra, with priority `distance + heuristic` instead of just `distance`, verified on a
+   30x30 grid that Dijkstra and A* find the identical optimal distance (58) while A* visits only
+   116 nodes against Dijkstra's 900 — an 87.1% reduction — with a Try It on what genuinely breaks
+   (a wrong, non-optimal answer, not just slower correct results) if the heuristic were allowed to
+   overestimate. No `SUBTOPICS` collision for `graph-algorithms` (checked both `subtopics.ts`
+   forms and grepped `app.routes.ts` directly, confirmed collision-free, left bare). **A near-miss
+   self-caught during authoring, not the standing sweep**: an early draft of subtopic 1's own
+   `.html` `[next]` label used `’`-style JS Unicode escape sequences for the typographic
+   curly quote — confirmed these are NOT valid in HTML (unlike JSON/JS string literals, which DO
+   interpret `\uXXXX`) and would have rendered as the literal text "’" rather than an
+   apostrophe; verified the Write tool had already correctly interpreted the escape as the real
+   Unicode character at write time (since the tool call itself transports the file content as a
+   JSON string, where `\uXXXX` IS valid), confirming no actual bug reached the file — but the
+   near-miss is worth flagging: never rely on `\uXXXX` escapes reaching an `.html` file's own
+   rendered DOM correctly; use the literal character directly. All three
+   `exercise.solution`/`theory.points`/`misconceptions` fields swept clean via the standing
+   bracket-balance/backtick-parity/apostrophe scripts (all three new files balanced, backtick
+   counts even, every flagged apostrophe match confirmed safe — inside backtick-delimited `code:`
+   fields); the main page's own pre-existing brace balance stayed net-even after the edit (same
+   count before and after, confirming no new imbalance introduced); the shared
+   `page-sidebar.ts`'s own large pre-existing brace-count "imbalance" was checked and confirmed
+   unchanged in its OFFSET (same +3 difference before and after this batch's insertion), the
+   established false-positive category for this massive shared file. Build passed clean
+   (background execution under Node 22.23.2, explicit `EXITCODE:$?` capture, zero real `ERROR`
+   lines). **No interactive browser/preview tool was available in this session** — verified via
+   the same compiled-bundle-inspection fallback as the prior eleven batches: confirmed the OLD
+   fake-heap comment text ("In real code: use proper min-heap") was absent from the main page's
+   own compiled chunk, confirmed the NEW real-heap comment ("O((V+E) log V) with a REAL binary
+   min-heap") was present; confirmed all three subtopic classes
+   (`DijkstrasFakeHeapWasSortPlusShiftSubtopic`/`KruskalsMstWithThePagesOwnUnionFindSubtopic`/
+   `AStarVisitsFarFewerNodesThanDijkstraSubtopic`) each compiled into their own separate lazy
+   chunk; confirmed the `SUBTOPICS`/`SIDEBAR_MAP`/breadcrumb/search-index entries for
+   `graph-algorithms` (bare) and all three composite subtopic keys were present with matching
+   content in the compiled `main-*.js`.
+   **DSA hub Phase 10: 12 of 21 topics complete.**
+19. **The `basic-sorts` batch found and fixed a genuine, self-contained quantitative claim
+   wrong in TWO places on the page, found by comparing the page's own theory/quiz text against
+   the page's own codeTab rather than any external research**: the theory and a quiz explanation
+   both stated selection sort "always does exactly n-1 swaps" — but the page's own `selectionSort`
+   codeTab includes `if (minIdx !== i) [a[i], a[minIdx]] = [a[minIdx], a[i]];`, a guard specifically
+   written to SKIP the swap when the minimum is already in its correct position. Instrumented
+   that exact function with a swap counter: ZERO swaps on an already-sorted 10-element array (every
+   `minIdx` already equals `i`), 5 on a reverse-sorted array of the same size, 7 on one random
+   trial — never reliably hitting the "exactly n-1" (9) the claim promised, and a 1,000-trial
+   random-input sweep showed counts clustering anywhere from 3 to 9. Verified a clean, well-defined
+   contrast at the same time: the COMPARISON count genuinely IS an exact invariant — precisely
+   n(n-1)/2 (45 for n=10) on every single input tested, sorted or not — confirming the real
+   distinction is "comparisons are fixed, swaps are bounded but variable," not "both are exactly
+   n-1." Fixed both the theory bullet and the quiz explanation to state "at most n-1," and
+   retitled theory section 5's first bullet (which had duplicated the Insertion Sort section's own
+   "hybrid sorts" point almost verbatim) with this verified swap-vs-comparison distinction instead.
+   Three subtopics: (1) **fix-adjacent** — reproduces the exact instrumented counts (sorted,
+   reverse-sorted, and one random trial, all matching the main-page fix's own cited numbers
+   precisely) via direct execution, with a Try It on what removing the `if` guard entirely would do
+   (restore "exactly n-1" unconditionally, at the cost of doing pointless no-op swap work even when
+   nothing needs to move); (2) **gap-closing** — a quiz question's own explanation asserts insertion
+   sort runs "O(nk) total" on an "almost sorted" array (each element at most k positions displaced)
+   with zero codeTab measuring it; instrumented the page's own `insertionSort` with a shift counter
+   across bounded-displacement arrays (k=2) at n=20/50/100/500, measuring 8/24/48/258 shifts —
+   growing roughly linearly with n — directly contrasted against fully random (unbounded
+   displacement) arrays of the identical sizes measuring 111/619/2,572/62,669 shifts, tracking the
+   expected ~n²/4 average closely; (3) **gap-closing** — a QnA names the multi-key stable-sort
+   technique ("sort by least important key first, then most important") with zero code demonstrating
+   WHY the order matters; built both the correct order and the reversed order on an identical
+   5-person dataset (name/department/age), verified directly that reversing the order strands one
+   Engineering employee (age 35) after the entire Sales department group in the final output,
+   destroying the grouping the correct order would have preserved — tied to Array.sort()'s
+   ES2019-guaranteed stability as the specific mechanism that makes the correct order work at all.
+   No `SUBTOPICS` collision for `basic-sorts` (checked both `subtopics.ts` forms and grepped
+   `app.routes.ts` directly, confirmed collision-free, left bare). A near-miss self-caught during
+   authoring, not the standing sweep: an initial draft of a QuickRef addition for the swap-count fix
+   was reconsidered and REMOVED before the build — the claim's actual two wrong locations were the
+   theory bullet and the quiz explanation, not the QuickRef (which never made the "exactly n-1"
+   claim at all), so a new QuickRef entry would have been additive noise rather than a fix; caught
+   by re-checking exactly which locations stated the wrong claim before editing, not after. All
+   three `exercise.solution`/`theory.points`/`misconceptions` fields swept clean via the standing
+   bracket-balance/backtick-parity/apostrophe scripts (all three new files balanced, backtick counts
+   even, zero unescaped possessive apostrophes found outside backtick-delimited `code:` fields,
+   where they are safe); the main page's own pre-existing 69/67 brace-count "imbalance" was checked
+   against `git show HEAD` and confirmed byte-for-byte identical before and after this batch's edit
+   — a pre-existing false positive, not introduced by this batch, per the established documented
+   precedent for this exact category of sweep false-positive. Build passed clean (background
+   execution under Node 22.23.2, explicit `EXITCODE:$?` capture, zero real `ERROR` lines). **No
+   interactive browser/preview tool was available in this session** — verified via the same
+   compiled-bundle-inspection fallback as the prior twelve batches: confirmed BOTH old "exactly n-1
+   swaps total"/"Selection sort always does exactly n-1 swaps" text strings were absent from the
+   main page's own compiled chunk, confirmed both new "AT MOST n-1 swaps total"/"does at most n-1
+   swaps" replacement text was present; confirmed all three subtopic classes
+   (`SelectionSortsSwapCountIsAtMostN1NotExactlySubtopic`/`MeasuringInsertionSortsRealAdaptiveCostSubtopic`/
+   `SortingByMultipleKeysTheOrderMattersSubtopic`) each compiled into their own separate lazy chunk;
+   confirmed the `SUBTOPICS`/`SIDEBAR_MAP`/breadcrumb/search-index entries for `basic-sorts` (bare)
+   and all three composite subtopic keys were present with matching content in the compiled
+   `main-*.js`.
+   **DSA hub Phase 10: 13 of 21 topics complete.**
+20. **The `advanced-sorts` batch found and fixed a self-contained contradiction**: the revision
+   `mustKnow` and the "Using merge sort when O(1) space is required" mistake both called quicksort
+   O(1) space, while the page's own theory correctly says O(log n) average / O(n) worst-case stack.
+   Instrumented the page's own Lomuto quicksort for maximum simultaneously-active calls: depth = n
+   on a sorted array (99/999 at n=100/1000) and a real `RangeError: Maximum call stack size
+   exceeded` at n=10,000; recursing into the smaller partition and looping on the larger kept depth
+   at 2 through n=100,000. Fixed both wrong spots; replaced two duplicate bullets in theory section 5
+   with the stack-depth finding and a radix-sort bullet. 3 subtopics: the stack-depth fix
+   (fix-adjacent), radix sort built on per-digit counting sort (verified against a reference sort,
+   pass count = digits of max), and natural-run detection behind Timsort (100 runs on 100
+   concatenated runs vs ~n/2 on random data). Physical folders kept short
+   (`quicksort-stack-overflow`, `radix-sort-digit-passes`, `timsort-natural-runs`) with descriptive
+   route paths. **Self-caught before any sibling referenced it**: the first draft title contained a
+   straight apostrophe and quotes ("Quicksort's 'O(1) Space' Claim...") — renamed to "Quicksort Is
+   Not Actually O(1) Space" since titles are reused in `[prev]`/`[next]` labels. Bare
+   `advanced-sorts` key collision-free. Build clean; bundle-verified.
+   **DSA hub Phase 10: 14 of 21 topics complete.**
+21. **The `binary-search` batch found and fixed a JS-specific overflow contradiction plus two
+   overstated complexity claims, all verified by direct Node execution**: the Quick Reference gave
+   the midpoint as `(lo+hi)>>1` while mistake #1 said overflow is "unlikely" in JS — bitwise
+   operators convert to 32-bit integers, so `(2**31+2**31)>>1` is 0 and an integer square root of
+   2^31-1 (search on the answer) returned 0 instead of 46340; `lo + ((hi-lo)>>1)` fails the same
+   way once the range reaches 2^31. Both spots now point to `lo + Math.floor((hi-lo)/2)`. The
+   linked-list bullet ("degrades to O(n log n)") describes only the restart-from-head walk
+   (measured exactly n log2 n); walking forward from the lo node measured n - 1, the same as a
+   scan. The rotated-duplicates bullet now states the O(n) worst case (all-equal input: n/2
+   iterations), and the page's own `searchRotated` was shown to return -1 for 2 in
+   [1,1,1,2,1,1,1,1,1]. Also removed leftover dead code ("Hmm — wait" comment and an unused
+   `canFinish`) from the Koko codeTab. Bare `binary-search` key collision-free. Build clean;
+   bundle-verified. **DSA hub Phase 10: 15 of 21 topics complete.**
+22. **The `recursion-backtracking` batch corrected a tail-call claim and replaced a duplicate
+   theory section with measurements**: "JavaScript does not" optimize tail calls is wrong at the
+   spec level — ES2015 requires proper tail calls in strict mode; only Safari's JavaScriptCore
+   implements them and V8 removed its support (verified via WebKit's blog and V8 commit history;
+   in Node 22 a strict tail-recursive sum threw RangeError at n = 10,000, while a loop and a
+   trampoline both handled 1,000,000). Theory section 5 restated section 4 and mistake #2; it now
+   holds measured call counts (sort+break vs negative-remaining check: 28 -> 10 calls on
+   [2,3,6,7]/7, 5,448 -> 4,803 with 608 answers) and the duplicate-skip saving (1,048,576 -> 121
+   subsets). 3 subtopics, all Node-verified, including i > 0 vs i > start dropping valid subsets.
+   Bare `recursion-backtracking` key collision-free. Build clean; bundle-verified.
+   **DSA hub Phase 10: 16 of 21 topics complete.**
+23. **The `dynamic-programming` batch found and fixed FIVE main-page issues, all Node-verified**: the
+   count-of-ways QnA claimed the "same structure" as min coins, but the page's amount-outer loop
+   counts ordered sequences (9 for [1,2,5]/5, against 4 combinations; coins-outer gives 4); the
+   space-optimization QnA's "iterate right-to-left" for one-row LCS was wrong on 579 of 2,000 random
+   pairs checked against the 2D table (a saved diagonal variable was never wrong); quiz Q6 marked
+   "top-down for sparse" as the generally-faster answer against the theory's "bottom-up usually
+   faster"; the coin-guard mistake called dp[negative] "undefined behavior" when in JS it is NaN
+   poisoning that returns NaN; and quiz Q4 duplicated Q1 (replaced with a loop-order question).
+   3 subtopics. Bare `dynamic-programming` key collision-free. Build clean; bundle-verified.
+   **DSA hub Phase 10: 17 of 21 topics complete.**
+24. **The `dp-patterns` batch found and fixed THREE main-page issues, all Node-verified**: the circular
+   Kadane formula max(Kadane, total - minSubarray) returns 0 for an all-negative array because the
+   wrap-around term becomes an empty subarray (2,311 of 20,000 random arrays wrong vs brute force,
+   every one all-negative; guard: return plain Kadane when it is negative); the substring-vs-
+   subsequence QnA claimed "character" has no palindromic substring longer than 1, but the page's own
+   longestPalindrome returns "ara"; Word Break was labelled O(n²) but s.slice copies up to n chars
+   per check (characters copied grew 8x per doubling, ~86M at n = 800; bounding j by the longest
+   word copied 2,403). 3 subtopics. Bare `dp-patterns` key collision-free. Build clean;
+   bundle-verified. **DSA hub Phase 10: 18 of 21 topics complete.**
+25. **The `trie` batch found and fixed FOUR main-page issues, all Node-verified**: theory said sorted
+   arrays, like hash sets, cannot answer prefix queries — a lower-bound binary search finds the
+   contiguous block (10 comparisons on 1,000 words, identical results to the trie); the HashMap QnA
+   called lookups O(1) though hashing a string is O(L); the compressed-trie QnA said space drops to
+   O(n) when only the node count does (12,577 -> 1,411, below the 2n bound; labels keep the
+   characters); the Word Search II code never pruned, and measuring showed the QnA's isEnd = false
+   step alone saves nothing (7,985 calls either way) while deleting emptied branches cut it to 36 —
+   the code now does both. Topic label is "Trie" (matching the breadcrumb), not "Tries". 3
+   subtopics. Bare `trie` key collision-free. Build clean; bundle-verified.
+   **DSA hub Phase 10: 19 of 21 topics complete.**
+26. **The `bit-manipulation` batch found and fixed THREE main-page issues, all Node-verified**: the
+   Quick Reference called >> "divide by 2^k" and << "multiply by 2^k" — >> floors (-5 >> 1 is -3,
+   Math.trunc gives -2) and both convert to int32 (2**30 << 1 is negative, 3e9 >> 1 is -647483648);
+   a quiz explanation claimed shifts are faster than multiplication (removed); the 32-bit mistake
+   only showed 1 << 32, though the page's own isPowerOfTwo returns true for 3 * 2**32 and
+   hammingWeight returns 32 for 2**53 - 1 (BigInt versions fixed both). Third subtopic: allSubsets'
+   loop bound 1 << 31 is negative, so it returns [] for 31 elements. Note: theory "heading" fields
+   bind via plain interpolation — write "<<" raw there, entities only in points/misconceptions.
+   3 subtopics. Bare `bit-manipulation` key collision-free. Build clean; bundle-verified.
+   **DSA hub Phase 10: 20 of 21 topics complete.**
+27. **The `greedy` batch — the 21st and FINAL DSA topic — found and fixed FOUR main-page issues**: the
+   coin-change mistake defined canonical systems by divisibility, contradicted by its own US-coins
+   example (US and euro coins are canonical without it; [1, 10, 25] fails at 30 — verified greedy vs
+   DP for every amount to 500, plus the Kozen-Zaks 1994 bound via WebSearch); the merge codeTab
+   sorted the caller's array and wrote merged ends into the caller's own intervals, and returned
+   [undefined] for [] (now copies each interval first); the deadlines QnA said "greedy by deadline"
+   — unit-time job sequencing is greedy by profit with latest-free-slot placement (0 vs 1,502 wrong
+   out of 3,000 random sets against brute force); the gas-station start was described as "where the
+   tank last hit 0" (it is one past the lowest running total). 3 subtopics. Bare `greedy` key
+   collision-free. Build clean; bundle-verified; DsaNavComponent now has 21 toggles, one per topic.
+   **This completes the DSA hub's entire Phase 10 rollout — all 21 topics now have deep-dive
+   subtopic pages, 63 subtopic pages total across the hub, finished 2026-10-08.**
+
+### Testing hub subtopic wiring — first pilot; the 20th `*NavComponent` in a row missing the
+subtopics-accordion structural fix
+
+Confirmed via direct file inspection before the pilot (`/testing-hub/testing-fundamentals`, 2026-10-08):
+
+1. **`TestingNavComponent` had ZERO subtopics-accordion support** — fixed by copying `DsaNavComponent`'s class body (signal + Router/NavigationEnd + filter + SUBTOPICS, three helper methods, exact-match `autoExpandForCurrentUrl()`). The nav template is hand-written one-line-per-topic, so each topic's own `<a>` gets its toggle inline before `</a>` plus the accordion block after it.
+2. **Conventions**: route `/testing-hub`; search keys `test-<topic>/<slug>` (`search.ts` maps `test-` → `/testing-hub/`); `SIDEBAR_MAP` keys `testing-hub/<topic>/<slug>` reusing `TESTING_DEFAULT`; breadcrumb map `TESTING_LABELS` with bare composite keys. `.test-page` is NOT global — every subtopic `.scss` carries the wrapper plus the solid-fill icon rule (`background: #6366f1; color: #fff`, dark `#a5b4fc`/`#1e1b4b`). No live playground; `tech="javascript"`; icon `✓`.
+3. **Tooling**: from this hub on, subtopic files are generated from a spec by `tools/phase10/gen.js` (hub config like `tools/phase10/testing-hub.js`; write a spec file `module.exports = { hub, subs: [...] }` next to it in the scratchpad, `require` the hub config by absolute path, run `node tools/phase10/gen.js spec.js` then `node tools/phase10/apply.js spec.js` from the repo root; `doc.js` ticks TODO.md and appends the CLAUDE.md entry, strings serialized with `JSON.stringify`, which removes the apostrophe/backtick/`${` escaping traps) and wired by `apply.js` (routes children conversion, SUBTOPICS, labels, sidebar, search, nav toggle).
+4. **The `testing-fundamentals` pilot batch fixed three main-page bugs**, verified against packages installed in the scratchpad: (a) the "Asserting implementation details" mistake's right answer used `toHaveText` on a React Testing Library element — jest-dom only exports `toHaveTextContent`; (b) the E2E example called `page.goto('https://myapp.com/login')` then `toHaveURL('/dashboard')` — Playwright 1.64's own `urlMatches()` returns false for a relative string with no baseURL and true with one, so the page now uses `goto('/login')` and notes the config baseURL; (c) the integration example's comment claimed Testcontainers but the code only called `new PrismaClient()`, with no per-test reset — now `new PostgreSqlContainer('postgres:16').start()` (`@testcontainers/postgresql` 12.2, image is a required argument), `getConnectionUri()`, `prisma migrate deploy`, `deleteMany` in beforeEach, disconnect/stop in afterAll. 3 subtopics (tohavetext-is-a-playwright-matcher, relative-tohaveurl-needs-a-baseurl, integration-test-never-started-a-container). Bare `testing-fundamentals` key collision-free. Build clean; bundle-verified. **Testing hub Phase 10: 1 of 19 topics complete.**
+5. **The `tdd` batch fixed two main-page issues**: the Outside-in acceptance test registered only `alice@example.com` yet expected the email to contain `Alice` (`expect.stringContaining` is case-sensitive — verified with Jest's `expect` package; the name is now part of the input), and the "Writing too-large tests" mistake prescribed one assertion per test, contradicting Testing Fundamentals (now one behaviour per test). 3 subtopics, incl. a Node-verified demo that dropping the StringCalculator empty-string guard makes `add('')` NaN. Bare `tdd` key collision-free.
+6. **The `test-doubles` batch fixed the spy/mock terminology**: the Stub & Mock tab called a `jest.fn()` verified after the act a mock with a pre-programmed expectation (that is a Meszaros spy), and the "Confusing a spy with a mock" mistake's fix reversed it. 3 subtopics, behaviours measured with `jest-mock` 30.5 (`spyOn` calls through until `mockImplementation`; `clearAllMocks` keeps `mockReturnValue`, `resetAllMocks` removes it, `restoreAllMocks` puts the original back). Bare `test-doubles` key collision-free.
+7. **The `property-based-testing` batch fixed two main-page bugs, both run against fast-check 4.10**: the Shrinking Example's `buggyAdd` (`a > 100 && b > 100`) is symmetric so the commutativity property can never fail (100,000 runs) — replaced with an asymmetric bug whose real seed-42 output is now shown; and the Challenge's `fc.integer(-1000, 1000)` is silently ignored at runtime in v4 (sampled 1743045805) and a TS error — now `fc.integer({ min, max })`. Third subtopic builds the model-based test the quiz describes with `fc.commands`/`fc.modelRun`. Bare key collision-free. Build clean; bundle-verified. **Testing hub Phase 10: 4 of 19 topics complete.**
+8. **The `jest-fundamentals` batch fixed three main-page issues, verified with Jest 30.5 packages**: `expect.assertions(n)` is an exact count (too many also fails), `toThrowError` and the other short aliases (`toBeCalled`, `toBeCalledWith`, `lastCalledWith`, `toReturn`...) are undefined in Jest 30 — also fixed in `cheatsheet.ts` — and the config theory's `coverage.provider` is the Vitest spelling (Jest's defaults have `coverageProvider: 'babel'`). Bare key collision-free.
+9. **The `mocking-spies` batch fixed the mockResolvedValue/mockReturnValue equivalence claim** — measured with jest-mock 30.5: `mockReturnValue(Promise.reject(err))` triggers an unhandled rejection at setup time while `mockRejectedValue` stays lazy — plus a spyOn comment that said `Math.random` was restored when only `mathUtils.random` was spied. Third subtopic shows `mock.invocationCallOrder` as a simpler fix for the page's call-order mistake. Bare key collision-free.
+10. **The `vitest` batch fixed three main-page issues, checked against the installed Vitest 5.0.3**: the workspace quiz (`workspace` renamed to `projects` in 3.2, `vitest.workspace.ts`/`defineWorkspace` gone — no reference in v5's dist), the in-source-tests mistake (without `define` the tests do not run in production, they just are not stripped; the define value must be the string `'undefined'`), and the `vite.config.ts` example lacking `/// <reference types="vitest/config" />` (the `test` key is a module augmentation in `dist/config.d.ts`). Bare key collision-free. Build clean; bundle-verified. **Testing hub Phase 10: 7 of 19 topics complete.**
+11. **The `xunit` batch fixed four main-page issues**: the Challenge hint named `InsufficientFundsException` though the code throws `InvalidOperationException` (`Assert.Throws` is exact-type, `ThrowsAny` allows subtypes); the async mistake claimed `Assert.Throws(async ...)` silently passes — xUnit marks the `Func<Task>` overloads `[Obsolete(..., true)]`, a compile error (verified via WebSearch against the xUnit source and analyzer xUnit2014); the swapped-argument example message was nonsensical; and the IAsyncLifetime QnA ignored that on a test class it runs per test. No .NET runtime here, so claims were checked against source/docs. Bare key collision-free.
+12. **The `snapshot-testing` batch fixed three main-page issues**: the gitignore mistake said CI would pass by writing snapshots and a QnA said `--ci` fails on outdated snapshots — jest-config 30 sets `updateSnapshot: 'none'` when `ci` (auto-detected) is true, so missing snapshots fail and outdated ones fail regardless; and the Challenge's `/\s+/g` inside a template literal displayed as `/s+/g`. **New site-wide gotcha**: `\s`, `\d`, `\w` inside a backtick code field lose their backslash (unknown escapes are dropped); write `\\s` in the source. Bare key collision-free.
+13. **The `integration-testing` batch fixed three main-page bugs**: `jest --testPathPattern` exits 1 on Jest 30 (measured with jest-cli 30; renamed `--testPathPatterns`); the Testcontainers tab omitted the now-required image, never stopped the container, and "migrated" with an SQL comment; the WebApplicationFactory tab used a SQLite in-memory connection string, which gives every EF Core connection a new empty database, with no `EnsureCreated`. Bare key collision-free. Build clean; bundle-verified. **Testing hub Phase 10: 10 of 19 topics complete.**
+14. **The `testing-databases` batch verified every claim on a real local PostgreSQL 16** (initdb'd under /var/tmp, since the postgres user cannot traverse the scratchpad path): a pool write made by code under test survives the test client's ROLLBACK; explicit-id seeding leaves a SERIAL sequence at 1 so the next insert hits a duplicate key until `setval(pg_get_serial_sequence(...))`; TRUNCATE (without RESTART IDENTITY) and ROLLBACK do not reset sequences. Main page: rollback tab's unused Prisma import and missing same-connection caveat, seeding tab's missing setval, and a QnA's image-less `PostgreSqlContainer()`. Bare key collision-free.
+15. **The `msw` batch fixed two main-page issues, measured with msw 2.15 in Node**: the Component Test tab never imported `server`/`http`/`HttpResponse`, and the onUnhandledRequest mistake had it backwards (`'warn'` lets a forgotten handler reach the real network; `'error'` rejects just that fetch) — setup now uses `'error'`. **Real SUBTOPICS collision**: bare `msw` is Angular's own topic key, so this one is `test-msw`. `tools/phase10/apply.js` now checks the key BEFORE editing any file (this batch's first run had already converted the route before failing) and skips the routes step if the subtopic imports are already present.
+16. **The `react-testing-library` batch fixed three main-page issues, checked with @testing-library/dom 10.4 in jsdom**: the loading test's `getByRole('status', { name: /loading/i })` cannot match (status/alert are name-from-author roles) and didn't await the fetch; the className mistake's "wrong" example used a nonexistent `getByClassName`; the Asserting Absence tab used `userEvent` without importing it. Third subtopic: findBy's 1000 ms default timeout (measured). Bare key collision-free. Build clean; bundle-verified. **Testing hub Phase 10: 13 of 19 topics complete.**
+17. **The `angular-testing` batch replaced deprecated/removed APIs on the main page, checked against the repo Angular 22 typings**: `HttpClientTestingModule` is deprecated in favour of `provideHttpClient()` + `provideHttpClientTesting()` (the Service Test tab and quick reference now use the providers); `TestBed.flushEffects()` was replaced by `TestBed.tick()`; router tests now use `provideRouter` + `RouterTestingHarness` instead of `RouterTestingModule`. 3 subtopics. Bare `angular-testing` key collision-free. Build clean; bundle-verified.
+18. **The `visual-regression` batch fixed four main-page issues, checked against the Playwright 1.64 typings**: `threshold: 0.1` was described as a 10% pixel tolerance — threshold is per-pixel YIQ colour sensitivity (default 0.2), the area limits are `maxDiffPixels`/`maxDiffPixelRatio` (example and Challenge now use `maxDiffPixelRatio: 0.01`); quiz Q1 and the commit-baselines mistake now say a missing baseline is written but the test fails; `toHaveScreenshot` disables animations by default (the injected-CSS trick is for `page.screenshot()`); `networkidle` (DISCOURAGED in the typings) replaced with a wait on visible content. 3 subtopics. Bare `visual-regression` key collision-free. Build clean; bundle-verified.
+19. **The `playwright` batch fixed two main-page claims, verified against the 1.64 typings and real Chromium runs (`/opt/pw-browsers/chromium-1194`)**: "30 seconds for actions" — 30 s is the per-test timeout, `expect` is 5 s, and `actionTimeout`/`navigationTimeout` default to 0 (no limit; a click with `timeout: 1500` on a disabled button failed at 1501 ms); the networkidle QnA described Puppeteer `networkidle2` ("no more than 2 connections") — Playwright waits for zero connections and marks it DISCOURAGED; a page polling every 300 ms made `goto(..., { waitUntil: networkidle, timeout: 3000 })` fail at 3002 ms while a heading wait took 44 ms. Third subtopic: strict mode violation (two Save buttons, verified error text; `first()` and `count()` behaviour). Bare `playwright` key collision-free. Build clean; bundle-verified.
+20. **The `cypress` batch fixed four main-page issues, checked against the real `cypress@16.1.1` npm package (binary skipped) and release notes**: the component tab imported `mount` from `cypress/react18`, which the package no longer exports (resolving it gives `ERR_PACKAGE_PATH_NOT_EXPORTED`; `cypress/react` peers on React 18 and 19); the cy.session QnA said "Cypress 9+" (GA in 12.0, experimental before) and that `cacheAcrossSpecs: true` "invalidates" — the typings say it persists the session across all specs, default false; the architecture bullet said spec and app share one JavaScript context — they run in separate iframes of one tab, reached via `cy.window()`; the file-upload QnA named a nonexistent `cy-file-upload` plugin (the old one was `cypress-file-upload`; `selectFile` is built in). docs.cypress.io is blocked by the egress proxy, so the installed package was the source of truth. 3 subtopics. Bare `cypress` key collision-free. Build clean; bundle-verified.
+21. **The `api-testing` batch fixed four main-page issues, verified by running supertest 7.3.1, express 5, jsonwebtoken and zod 4.6.5**: "in-process, no real port" — supertest wraps the app in `http.createServer` and calls `listen(0, 127.0.0.1)`, a real ephemeral loopback port (a route echoing `req.socket.localPort` returned 36113); the Auth tab signed tokens with a local `test-secret` never wired to the app — a token signed with a different secret got 401 (the tab now sets `process.env.JWT_SECRET` and explains setupFiles); the schema tab used `z.string().email()`/`.datetime()`, both `@deprecated` in Zod 4, and the datetime check rejected `+02:00` (now `z.email()` and `z.iso.datetime({ offset: true })`); quiz text said 201 "should include" Location (RFC 9110 lets the server omit it). 3 subtopics. Bare `api-testing` key collision-free. Build clean; bundle-verified.
+22. **The `contract-testing` batch (the 19th and final Testing topic) fixed four main-page issues, verified with a real `@pact-foundation/pact` 17.1.4 consumer + provider run and the `@pact-foundation/pact-cli` binary**: the strict-matchers mistake and quiz said a provider adding a field breaks a pact — the provider returned two extra fields and the matcher pact passed, while a literal-value pact failed only on `id`/`name`/`createdAt` mismatches; the QnA named a nonexistent `pactFile` verifier option (it is `pactUrls`); the CI tab published without `--consumer-app-version`, which the CLI rejects as a required argument, and its provider can-i-deploy lacked `--broker-base-url` (tab also relabelled bash). The verifier first returned 403 because the egress proxy intercepted loopback calls — unset `HTTP(S)_PROXY` and set `NO_PROXY=127.0.0.1` for local Pact runs. 3 subtopics. Bare `contract-testing` key collision-free. Build clean; bundle-verified. **This completes the Testing hub Phase 10 rollout — 19 of 19 topics, 57 subtopic pages, finished 2026-10-08.**
+
+### AI/ML hub subtopic wiring — first pilot; the 21st `*NavComponent` in a row missing the
+subtopics-accordion structural fix
+
+Confirmed via direct file inspection before the pilot (`/ai/ml-fundamentals`, 2026-10-08):
+
+1. **`AiNavComponent` (`shared/ai-nav/ai-nav.ts`) had ZERO subtopics-accordion support.** Fixed by copying
+   `TestingNavComponent`'s imports and class body (signal + `Router`/`NavigationEnd` + `filter` + `SUBTOPICS`,
+   exact-match `autoExpandForCurrentUrl()`). The nav is hand-written, one single-line `<a>` per topic, so
+   `tools/phase10/apply.js` adds each topic's toggle block.
+2. **All 19 bare AI topic slugs are collision-free** in `subtopics.ts` (checked quoted and unquoted forms and
+   `app.routes.ts`) — keys stay bare. Generic keys such as `rag` or `clustering` may collide with a future hub;
+   recheck then.
+3. **Conventions**: search keys `ai-<topic>/<slug>` (`search.ts` maps `ai-` → `/ai/`); sidebar keys
+   `ai/<topic>/<slug>` using `AI_DEFAULT`; breadcrumb `AI_LABELS` with bare composite keys. `.ai-page` is NOT
+   global; light-tint icon (`$accent: #7c3aed`, `$tint: #f5f3ff`, dark `#1e1b4b`/`#a78bfa`), icon 🤖,
+   `tech="javascript"`. No live playground. Hub config: `tools/phase10/ai-hub.js`.
+4. **Verification tooling**: Python 3 IS available in this container (CLAUDE.md's "python not installed" applies to
+   the user's Windows machine). A scratch venv with scikit-learn 1.9.1 was used to check library defaults and run
+   real experiments; numeric claims in TypeScript code tabs were run in Node.
+5. **Gotcha caught by the build**: a main-page fix inserted a nested template literal (`\`...${x}\``) inside a
+   code tab that is itself a backtick string — the inner backtick closed the outer string. Use string
+   concatenation inside code tabs.
+6. **The `ml-fundamentals` pilot fixed two code bugs, measured in Node**: `trainTestSplit` shuffled with `.sort(() => Math.random() - 0.5)`, which is biased (600,000 shuffles of 4 items: one order 1.5%, another 18.7%, fair is 4.2%; element 0 kept position 0 in 19.4% of 10-item shuffles) — now Fisher-Yates; `confusionMatrix` returned `precision: NaN, f1: NaN` for the exact always-majority model the page warns about — now guards 0/0. The learning-rate mistake now quotes the measured divergence edge for the page own example (2/λmax = 0.0845; lr 0.084 converges, 0.085 explodes). The gradient-descent "converges near m≈2" claim was checked and is correct. 3 subtopics. Build clean; bundle-verified.
+7. **The `math-for-ml` batch fixed three issues, all run in Node**: the shape mistake said a 3x2·3x2 multiply "will error" — the page own `matmul` silently returns `[[25,28],[57,64],[89,100]]` using only B first two rows (only the reverse mismatch throws); the Linear Algebra tab now asserts shapes. The calculus tab said the MSE gradient at w=1 is "near 0 (minimum)" — it is -22 (minimum at w=2). The L1 QnA attributed sparsity to a "zero-gradient region"; a proximal-gradient run (10 features, 2 real) gave L1 8 exact zeros and L2 none — the mechanism is constant pull λ plus the corner at 0 (soft-thresholding). 3 subtopics. Build clean; bundle-verified.
+8. **The `linear-logistic-regression` batch fixed four issues**: OLS cost "O(n·d²)" now O(n·d² + d³); added that unregularised logistic regression never converges on separable data (Node: weight 3.9, 7.7, 12.1, 16.7 after 1e2..1e5 epochs; L2 0.01 settles at 3.5); the coefficient mistake said exp(0.5) gives "1.6 / 60%" while the QnA said 1.65 — now 1.65/65% with baseline-dependent probabilities (0.1→0.155, 0.5→0.622, 0.9→0.937); the L1 quiz "gradient has a kink" wording fixed. MSE vs cross-entropy gradient at the logit measured (z=10, label 0: CE 0.99995, MSE 9.08e-5). 3 subtopics. Build clean; bundle-verified.
+9. **The `decision-trees` batch fixed four claims, checked with scikit-learn 1.9.1 in a scratch venv**: "cost-complexity pruning (sklearn default)" — `ccp_alpha` defaults to 0.0 (default tree: 421 leaves, test 0.634; CV-tuned alpha 0.0127: 3 leaves, test 0.742); "d/3 for regression" — that is R randomForest, sklearn `RandomForestRegressor().max_features` is 1.0 (classifier `sqrt`); impurity importance called "reliable" — a random unique ID column got 0.353 importance vs 0.647 for the real signal, while permutation importance on test gave -0.004 vs 0.188 (QnA updated too). OOB ~37% confirmed (0.368). 3 subtopics. Build clean; bundle-verified.
+10. **The `gradient-boosting` batch fixed four issues, checked with xgboost 3.2.0 and lightgbm 4.7.0**: the LightGBM tab passed `callbacks=[early_stopping]` to the constructor — accepted silently and ignored (1,000 trees, `best_iteration_` 0; in `fit()` it stopped at 59); `subsample` in LightGBM does nothing unless `subsample_freq > 0` (0.5 and 1.0 gave identical predictions); the "not scaling the target" mistake was wrong for tree boosters (raw vs standardised y: same RMSE 39,422; base_score auto-set to the mean) — rewritten to recommend log transforms/objectives for skew; TreeSHAP complexity corrected to O(TLD²). 3 subtopics. Build clean; bundle-verified.
+11. **The `clustering` batch fixed three issues**: the K-Means tab assign step compared each distance with a nested `reduce` that always returned Infinity, so every point went to the last centroid (run on 3 blobs: sizes [0,0,90], inertia 4093.9; fixed: [30,30,30], 13.9); the PCA tab only centred (comment said "standardise") and returned the first k data rows as a placeholder — now a real power-iteration + deflation PCA that matched scikit-learn explained variance (0.8208, 0.0968) and PC1 exactly; "k-means++ avoids bad initialisations" — one k-means++ run was still bad 66/200 times on 10 blobs (random init 195/200), n_init=10 gave 0/100, and sklearn n_init="auto" means ONE run for k-means++ (read in _kmeans.py). Code was executed via a TS-transpile helper (repo typescript `transpileModule`). 3 subtopics. Build clean; bundle-verified.
+12. **The `neural-networks` batch fixed the PyTorch example order and added measured evidence (NumPy)**: the MLP put Dropout before BatchNorm1d — BN then stores a dropout-inflated running variance (1.572 vs 0.751 at eval), so eval outputs had std 0.691 instead of 1.0; the tab now uses Linear, BatchNorm, ReLU, Dropout and the theory warns. 20 sigmoid layers (Xavier) gave a first-layer weight gradient about 4.9e-14 of the last; ReLU+He kept 0.14. Xavier+ReLU activation std fell 0.585 to 0.00075 over 20 layers while He stayed about 0.75. 3 subtopics. Build clean; bundle-verified.
+13. **The `computer-vision` batch fixed four issues**: `resnet50(pretrained=True)` — torchvision 0.29.1 source (wheel downloaded, no torch install) shows it is deprecated since 0.13 and maps to IMAGENET1K_V1 (76.130% top-1), while `ResNet50_Weights.DEFAULT` is IMAGENET1K_V2 (80.858%); all loads now use the weights API. The conv bullet now names cross-correlation (the page conv2d returned the kernel rotated 180° for an impulse). "Pooling adds translation invariance" — the page maxPool turned [0,1,0,0] into [0,1,1,0] for a one-pixel shift; bullet corrected. The differential-LR mistake used nonexistent `model.backbone`/`model.head` on a ResNet — now named parameter groups excluding `fc.`. 3 subtopics. Build clean; bundle-verified.
+14. **The `transformers` batch fixed three issues, running the page attention function**: theory said attention is permutation-invariant (and the mistake said reordered sentences give identical representations) while the quiz said equivariant — permuting inputs permuted the outputs row for row, so the theory and mistake now say equivariant; "Modern LLMs (GPT-4, Claude, Llama) are decoder-only" softened (GPT-4/Claude architectures unpublished); added a code comment that a fully masked row (padding) makes softmax NaN (reproduced). The std≈8 claim for d_k=64 was confirmed (8.03); unscaled top softmax weight averaged 0.859 vs 0.317 scaled. 3 subtopics. Build clean; bundle-verified.
+15. **The `llm-fundamentals` batch found and fixed FIVE main-page issues, verified by direct execution and vendor docs**: the softmax/sampler divided logits by temperature, so temperature 0 produced Infinity/NaN probabilities and the sampler returned garbage (now temperature ≤ 0 is greedy argmax, one-hot); the tokenizer code tab used an older tiktoken-style API (`get_encoding` + `free()`) against js-tiktoken, which exposes `encodingForModel`/`getEncoding`, returns plain arrays and has no `free()` (verified against the installed js-tiktoken package); the scale bullet now uses published Llama 3.1 sizes (8B/70B/405B) and says GPT-4/Claude parameter counts are unpublished; the vocabulary bullet now separates Llama 1/2 (32K SentencePiece) from Llama 3 (128,256, tiktoken-based); the context-window quick reference now says GPT-4 Turbo/GPT-4o 128K, original GPT-4 8K or 32K. 3 subtopics (temperature-zero-broke-the-sampler, js-tiktoken-uses-encodingformodel, measuring-tokens-per-word — measured 1.11/2.0/2.27 tokens per word on English prose, code and non-English text with js-tiktoken). Bare `llm-fundamentals` key collision-free. Build clean; bundle-verified.
+16. **The `fine-tuning` batch found and fixed FOUR main-page issues, verified with real peft 0.21.2 and TRL 1.14.2 in a scratchpad venv**: the LoRA tab printed `trainable params: 10,485,760 ... 0.13%` for Llama 3 8B with r=16 on q_proj/v_proj — building the model on the meta device and calling `get_peft_model` printed 6,815,744 (0.0848%), because grouped-query attention makes v_proj 4096x1024; the theory/mistake/revision "~10M for 7B, 700x" claims now say ~8.4M for Llama 2 7B, about 800x; `inspect.signature` showed SFTTrainer has no `dataset_text_field` (it is on SFTConfig, which replaces TrainingArguments) and DPOTrainer has no `tokenizer` (it is `processing_class`), and the DPO tab never loaded a tokenizer; and `dataset_text_field="output"` on Alpaca rows trained on answers with no instruction — the tab now uses prompt-completion rows (SFTConfig.completion_only_loss defaults to None, i.e. completion-only for that format). 3 subtopics (lora-parameter-count-with-gqa, trl-trainer-arguments-moved, training-only-on-the-output-field). Bare `fine-tuning` key collision-free. Build clean; bundle-verified.
+17. **The `rag` batch found and fixed FOUR main-page issues, verified against the published LangChain packages**: the page recommends 256-512 token chunks, then set `chunkSize: 512` on RecursiveCharacterTextSplitter, which counts characters by default — with @langchain/textsplitters 1.0.2 the largest chunk was 512 characters, 102 gpt-4 tokens, while a js-tiktoken `lengthFunction` gave 512-token (~2,600-character) chunks; the Python mistake block now uses `from_tiktoken_encoder`; the pipeline imported `langchain/vectorstores/memory`, `langchain/text_splitter` and `langchain/chains/*`, none of which are in the langchain 1.5.16 exports map — they are now `@langchain/classic/...` and `@langchain/textsplitters`; a quiz explanation said 500-1000 tokens against the page own 256-512; and `rrfScore` now notes its ranks are 0-based. 3 subtopics (chunk-size-counts-characters, langchain-1x-import-paths, reciprocal-rank-fusion-worked-example — A, C, B, D from two lists, all scores Node-verified). Bare `rag` key collision-free. Build clean; bundle-verified.
+18. **The `prompt-engineering` batch found and fixed THREE main-page issues, all Node-verified**: the JSON mistake block said models add fences and explanatory text but its regex only removed lowercase fences — on `Sure! ```json {...}` ``` and on an uppercase ```JSON fence, JSON.parse still failed; it now takes the fenced body case-insensitively and slices from the first { to the last } (all five test replies parsed); the CoT challenge solution sent the literal placeholder `[Work through the reasoning here]` and ended with `Final answer (number only):`, cueing an immediate answer — it now asks for reasoning first and a fixed last line, with an `extractFinalAnswer` parser (55, 1200, null on three replies); and the theory said `response_format: json_object` enforces output, but JSON mode only guarantees valid JSON — Structured Outputs via `zodResponseFormat` (openai 7.30.1) produced a strict json_schema with all fields required and `additionalProperties: false`, and the SDK throws on `.optional()` without `.nullable()`. 3 subtopics. Bare `prompt-engineering` key collision-free. Build clean; bundle-verified.
+19. **The `ai-agents` batch found and fixed THREE main-page issues, all Node-verified**: the calculate tool passed model-supplied text to `eval` — `globalThis.pwned = 1, 2+2` returned 4 and set a global, a prompt-injection path from web search results to code execution; it now allows only digits, operators and parentheses before evaluating; the Anthropic loop handled only `end_turn` and `tool_use`, but @anthropic-ai/sdk 0.132.1 defines seven stop reasons — on `max_tokens`, `refusal` etc. it resent identical messages until max steps; it now treats every non-tool_use reason as terminal and throws for anything but end_turn; and the ReAct parser used `split(\x27(\x27)`, which cut `calculate({"expression":"(2+3)*4"})` and made JSON.parse fail — it now uses the first ( and last ). 3 subtopics. Bare `ai-agents` key collision-free. Build clean; bundle-verified.
+20. **The `vector-databases` batch found and fixed FOUR main-page issues, verified with faiss-cpu and @pinecone-database/pinecone 9.0.0**: the FAISS tab printed `1 - distances` as cosine, but IndexHNSWFlat returns squared L2 — top hit 0.4326 gave 0.567 where the real dot product was 0.784, matching `1 - d/2`; HNSW memory was given as O(N·M·d) floats (theory and quiz) — written index sizes were 6,288/6,416/6,672 bytes per 1536-dim vector at M=16/32/64, i.e. vectors plus about 2·M IDs; the PQ QnA said 10-20x savings while IVFPQ m=96, 8 bits stored 96-byte codes, 64x smaller; and Pinecone v9 `upsert` takes `{ records }` — a bare array threw "Must pass in at least 1 record", and `pc.index(\x27name\x27)`/`createIndex` are deprecated. 3 subtopics. Bare `vector-databases` key collision-free. Build clean; bundle-verified.
+21. **The `mlops` batch found and fixed FOUR main-page issues**: the vLLM launch command had `--tensor-parallel-size 2  \\  # use 2 GPUs` — run through bash, the escaped space ended the command, it ran without `--port 8000` and then failed with `--port: command not found`; "20-100x higher throughput" (theory, a mistake block, a quiz explanation, revision) is now the vLLM launch blog figure, 14-24x over HF Transformers (LLaMA-7B/13B, ShareGPT lengths); the training-serving skew fix used `pd.cut(bins=[0,18,35,65,100]).cat.codes`, which returned -1 for ages 0 and 101 (now -inf/inf outer edges; `include_lowest` alone still left 101 at -1); and the registry was described with Staging/Production/Archived stages, which MLflow 3.17 marks `@deprecated(since="2.9.0")` in favour of aliases. The PSI retraining threshold was also aligned to the challenge (0.25). 3 subtopics. Bare `mlops` key collision-free. Build clean; bundle-verified.
+22. **The `hugging-face` batch found and fixed FOUR main-page issues, verified with transformers 5.19.0 and @huggingface/inference 4.13.31**: `apply_chat_template(..., return_tensors="pt")` returned a BatchEncoding (no `.shape`), and passing it to `generate` on a tiny random Llama raised AttributeError — the tab now uses `return_dict=True`, `add_generation_prompt=True`, `generate(**inputs)` and `inputs["input_ids"].shape[1]`; `HfInference` is a deprecated alias of `InferenceClient`, and the package only targets `router.huggingface.co`, not `api-inference.huggingface.co`; the precision mistake said 32GB of fp32 weights "won\x27t fit on a single A100 40GB" — they fit with ~7.9GB left (about 30K fp32 KV tokens for Llama 3 8B); and the pad-token mistake now quotes the real `ValueError: Asking to pad but the tokenizer does not have a padding token`. 3 subtopics. Bare `hugging-face` key collision-free. Build clean; bundle-verified.
+23. **The `evaluating-llms` batch found and fixed THREE main-page issues**: running the page own `rougeN` showed its printed example was wrong — {0.556, 0.714, 0.625}, not {0.625, 0.714, 0.667} — and the BLEU/ROUGE mistake quoted F1 0.47 where the code gives 0.588 (the tokeniser turns "France\x27s" into "frances"; stripping the possessive gives 0.706); and the "LLM judges prefer the first answer ~65% of the time" claim (theory, mistake, quiz) misread the MT-Bench paper (Zheng et al., 2023), where 65.0% was GPT-4 swap consistency and first-position bias was 30.0% (GPT-3.5 46.2%, Claude-v1 23.8% consistency). A second subtopic shows ROUGE-1 scoring the false "France is the capital of Paris" 1.000 against "Paris is the capital of France" (ROUGE-2 0.600; the negated sentence still 0.923/0.727). Bare `evaluating-llms` key collision-free. Build clean; bundle-verified.
+24. **The `ai-engineering` batch (the 19th and FINAL AI topic) found and fixed a real cancellation bug, tested with a local Node 22 server and a fake streaming upstream through openai 7.30.1**: the streaming tab cancelled the LLM call from `req.on(\x27close\x27)` attached after `await readBody(req)` — `req` emitted close at 0 ms once its body was read, so a client that disconnected at 250 ms never cancelled anything and the upstream streamed all 5 chunks; `res.on(\x27close\x27)` with a `!res.writableFinished` check aborted after 2 chunks. The test also showed the aborted `for await` loop ending quietly (no AbortError), so the tab now checks `signal.aborted` before writing `[DONE]`; and the "totalTokens += 1 per chunk" approximation is replaced by `stream_options: { include_usage: true }`, whose final chunk (empty `choices`) carried exact usage. (An initial suspicion that `req` close fires early during streaming on Node 22 was tested and is only true for the read phase — the actual bug is the listener being attached too late.) 3 subtopics. Bare `ai-engineering` key collision-free. Build clean; bundle-verified.
 
 ## Current state (update when it changes!)
 
@@ -10379,6 +11429,38 @@ Confirmed via direct file inspection before the pilot (`/messaging/messaging-fun
   Phase 10: 1 of 21 topics have subtopics (`/go/fundamentals`, pilot batch, 2026-07-17) — see
   "Go hub subtopic wiring" section above for the `SUBTOPICS` circular-import fix
   (`src/app/data/subtopics.ts`) every future `*NavComponent`-based hub's own pilot needs too.
+- **Rust hub**: 1 trackable topic page live (21 total planned) + 2 reference pages planned
+  (23 cards total). **In progress — Phase 11A, scaffolded 2026-09-23.** Rust-orange theme
+  `$accent: #ce422b`, tint `#fdf2ee`, dark `#f4795e`, dark icon bg `#2b120c`. Search prefix
+  `rust-`. Route: `/rust`. CSS classes: `.rust-page`, `.rust-icon`, `.rust-section`. Icon
+  content: `Rs` (light-tint icon generation, matching Go/Python — NOT solid-fill).
+  `tech="rust"` in `app-page-meta` — Rust got its own dedicated playground branch (unlike Go/
+  Python/Node, which share `tech="javascript"`), linking to the real official Rust Playground
+  (`https://play.rust-lang.org/`), matching the precedent set by hubs with a genuine official
+  playground (C# → .NET Fiddle). `Challenge.language`/`CodeTab.language` both extended with
+  `'rust'` (register `hljs`'s own `rust` language module in `code-block.ts`).
+  Nav groups: Foundations (9), Memory & Concurrency (4), Building Things (5), Craft & Ops (3),
+  Reference (2). `available: true` so far only for `rust-fundamentals`; every other card in
+  `backend/rust/home/home.ts` is `available: false` (SOON) until written. Progress:
+  `rustTotal=1` in progress.service.ts — **bump this as more topic pages ship**, it does not
+  auto-track the full planned count the way a finished hub's total does. Rust pages use
+  `app-common-mistakes` AND `app-revision-card`, standard topic-page anatomy (no subtopics yet
+  — Phase 10 subtopic rollout comes only after this hub's topic-page tier is complete, per the
+  standing "no Phase 10 subtopics on a hub still building its topic-page tier" rule).
+  `RustNavComponent` at `shared/rust-nav/rust-nav.ts` — built as a proper `*NavComponent` from
+  day one, copying `GoNavComponent`'s structure directly (no accordion-support retrofit needed,
+  unlike almost every earlier `*NavComponent` hub's own pilot). `SUBTOPICS` key proactively
+  hub-prefixed to `rust-fundamentals` (not bare `fundamentals`) specifically to avoid the
+  well-documented collision with the JavaScript hub's own bare `fundamentals` topic — confirmed
+  collision-free before use, per the standing collision-detection discipline. DevHub home card
+  (`hub-home.ts`) flipped to `available: true` with `topics: 23` (the FULL planned count, not
+  just the 1 shipped so far) immediately upon the hub itself becoming reachable — matching the
+  precedent set by the Web Performance hub's own in-progress rollout, where the top-level card
+  goes live as soon as the hub has a working home page listing every planned topic (with its own
+  per-topic SOON badges), not only once every page is written. Remaining 20 topic pages + 2
+  reference pages (`rust-cheatsheet`, `rust-interview-prep`) still need to be written — see
+  TODO.md's Phase 11A section for the proposed topic list (a starting shape, not a locked spec;
+  each page still needs its own accuracy/research pass, same discipline as every other hub).
 - **Python hub**: 21 trackable topic pages + 2 reference pages (23 cards total). Feature-complete.
   Blue theme `$accent: #3776ab`, tint `#eff8ff`. Search prefix `py-`. Route: `/python`.
   CSS classes: `.py-page`, `.py-icon`, `.py-section` (corrected 2026-07-16 — previously misdocumented as
@@ -10681,15 +11763,27 @@ Confirmed via direct file inspection before the pilot (`/messaging/messaging-fun
   All 22 cards `available: true` in `data/messaging/home/home.ts`. Progress: `kafkaTotal=20` in progress.service.ts.
   Messaging pages use `app-common-mistakes` AND `app-revision-card`. Reference pages (monitoring, messaging-security) have no PageComplete.
   Challenge.language: `'typescript'`. MessagingNavComponent at `shared/messaging-nav/messaging-nav.ts`.
-  Phase 10: **14 of 20 topics have subtopics** (`/messaging/messaging-fundamentals`, pilot batch,
-  2026-09-20; `/messaging/message-queues-vs-streams`, 2026-09-20; `/messaging/rabbitmq-core`,
+  Phase 10: **COMPLETE — 20 of 20 topics have subtopics** (`/messaging/messaging-fundamentals`,
+  pilot batch, 2026-09-20; `/messaging/message-queues-vs-streams`, 2026-09-20; `/messaging/rabbitmq-core`,
   2026-09-20; `/messaging/rabbitmq-exchanges`, 2026-09-20; `/messaging/rabbitmq-patterns`,
   2026-09-20; `/messaging/kafka-architecture`, 2026-09-20; `/messaging/kafka-producers-consumers`,
   2026-09-20; `/messaging/kafka-streams`, 2026-09-20; `/messaging/kafka-connect`, 2026-09-20;
-  `/messaging/schema-registry`, 2026-09-20; `/messaging/messaging-patterns`, 2026-09-20; `/messaging/saga-pattern`, 2026-09-20; `/messaging/outbox-pattern`, 2026-09-20; `/messaging/azure-service-bus`, 2026-09-20) — see "Messaging/Kafka hub subtopic wiring" section above for the
+  `/messaging/schema-registry`, 2026-09-20; `/messaging/messaging-patterns`, 2026-09-20;
+  `/messaging/saga-pattern`, 2026-09-20; `/messaging/outbox-pattern`, 2026-09-20;
+  `/messaging/azure-service-bus`, 2026-09-20; `/messaging/aws-sqs`, 2026-09-22; `/messaging/aws-sns-eventbridge`,
+  2026-09-22; `/messaging/idempotency`, 2026-09-22; `/messaging/message-ordering`, 2026-09-22;
+  `/messaging/backpressure`, 2026-09-22, finished 2026-09-22, 60 subtopic pages total across the hub) —
+  see "Messaging/Kafka hub subtopic wiring" section above for the
   `MessagingNavComponent` accordion structural fix (18th `*NavComponent` hub in a row) and the
-  three genuine main-page inaccuracies found and fixed (DLX-less nack "sends to DLQ", RabbitMQ
-  wrongly listed as pull-based, unscoped SQS FIFO exactly-once claim).
+  genuine main-page inaccuracies found and fixed throughout the rollout (a DLX-less nack "sends to
+  DLQ", RabbitMQ wrongly listed as pull-based, an unscoped SQS FIFO exactly-once claim, stale SNS
+  FIFO throughput/DLQ figures, a kafkajs `maxInFlightRequests` comment claiming an enforcement
+  kafkajs's own source never performs, an SQS FIFO codeTab generating its own `MessageDeduplicationId`
+  fresh per send — defeating retry safety, matching a real filed bug in a Spring Cloud AWS library —
+  and, on the hub's final topic, a Kafka `pause()`/resume codeTab that discarded its own resume
+  closure plus a QnA describing Java-client-only `max.block.ms`/`buffer.memory` producer configs as
+  if kafkajs supported them, when its real, installed `ProducerConfig` has no such fields at all).
+  **This completes the Messaging/Kafka hub's entire Phase 10 rollout.**
 - **Testing hub**: 19 trackable topic pages + 3 reference pages (22 cards total). Feature-complete.
   Indigo theme `$accent: #6366f1`, `$tint: #eef2ff`, dark `#a5b4fc`, dark bg `#1e1b4b`. Search prefix `test-`. Route: `/testing-hub`.
   CSS classes: `.test-page`, `.test-icon`, `.test-section`. Icon content: `✓` at `font-size: 1.8rem`. `tech="javascript"`.
@@ -10697,13 +11791,33 @@ Confirmed via direct file inspection before the pilot (`/messaging/messaging-fun
   All 22 cards `available: true` in `fundamentals/testing/home/home.ts`. Progress: `testTotal=19` in progress.service.ts.
   Testing pages use `app-common-mistakes` AND `app-revision-card`. Reference pages (cheatsheet, performance-testing, mutation-testing) have no PageComplete.
   Challenge.language: `'typescript'`. TestingNavComponent at `shared/testing-nav/testing-nav.ts`.
+  Phase 10: **COMPLETE — 19 of 19 topics have subtopics** (`/testing-hub/testing-fundamentals`, pilot batch; `tdd`; `test-doubles`; `property-based-testing`; `jest-fundamentals`; `mocking-spies`; `vitest`; `xunit`; `snapshot-testing`; `integration-testing`; `testing-databases`; `msw` (key `test-msw`); `react-testing-library`; `angular-testing`; `visual-regression`; `playwright`; `cypress`; `api-testing`; `contract-testing`, finished 2026-10-08, 57 subtopic pages) — see "Testing hub subtopic wiring" above.
 - **DSA hub**: 21 trackable topic pages + 1 home (22 cards total). Feature-complete.
   Amber theme `$accent: #92400e`, `$tint: #fffbeb`, dark `#fcd34d`, dark bg `#1c1007`. Search prefix `dsa-`. Route: `/dsa`.
   CSS classes: `.dsa-page`, `.dsa-icon`, `.dsa-section`. Icon content: `DSA` text. `tech="javascript"`.
-  Nav groups: Foundations, Linear DS, Trees, Graphs, Algorithms, Advanced, Dynamic Programming.
-  All 22 cards `available: true` in `fundamentals/dsa/home/home.ts`. Progress: `dsaTotal=21` in progress.service.ts.
-  DSA pages use `app-common-mistakes` AND `app-revision-card`. Challenge.language: `'typescript'`.
-  DsaNavComponent at `shared/dsa-nav/dsa-nav.ts`.
+  Nav groups (corrected 2026-10-08 — previously misdocumented as "Foundations, Linear DS, Trees,
+  Graphs, Algorithms, Advanced, Dynamic Programming"; confirmed against the real `dsa-nav.ts`):
+  Foundations, Arrays & Strings, Linked Lists, Trees & Graphs, Sorting, Dynamic Programming,
+  Advanced. All 22 cards `available: true` in `fundamentals/dsa/home/home.ts`. Progress:
+  `dsaTotal=21` in progress.service.ts. DSA pages use `app-common-mistakes` AND
+  `app-revision-card`. Challenge.language: `'typescript'`. DsaNavComponent at
+  `shared/dsa-nav/dsa-nav.ts`. `.dsa-page` wrapper rule is NOT global — every subtopic `.scss`
+  needs the full `.dsa-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }`
+  rule (copied from the main topic page's own `.scss`, which defines it locally). No live
+  playground (DSA theory/analysis content has no in-browser runtime) — plain `<app-code-block>`.
+  Phase 10: **COMPLETE — 21 of 21 topics have subtopics** (`/dsa/big-o`, pilot batch; `/dsa/arrays`; `/dsa/strings`;
+  `/dsa/hash-tables`; `/dsa/stacks-queues`; `/dsa/linked-lists`; `/dsa/doubly-linked-lists`;
+  `/dsa/binary-trees`; `/dsa/bst`; `/dsa/heaps`; `/dsa/graphs-bfs-dfs`; `/dsa/graph-algorithms`;
+  `/dsa/basic-sorts`; `/dsa/advanced-sorts`; `/dsa/binary-search`; `/dsa/recursion-backtracking`; `/dsa/dynamic-programming`; `/dsa/dp-patterns`; `/dsa/trie`; `/dsa/bit-manipulation`; `/dsa/greedy`, 63 subtopic pages total,
+  all 2026-10-08) — see "DSA hub
+  subtopic wiring" section below for the `DsaNavComponent` accordion
+  structural fix (19th `*NavComponent`-based hub in a row missing it at pilot time), the
+  `dsa-arrays` SUBTOPICS-map collision resolution (bare `arrays` collides with the C# hub's own
+  topic; `stacks-queues`, `linked-lists`, `doubly-linked-lists`, and `binary-trees` all confirmed
+  collision-free,
+  left bare), and the
+  genuine main-page fixes
+  found and verified by direct Node execution.
 - **AI/ML hub**: 19 trackable topic pages + 3 reference pages (22 cards total). Feature-complete.
   Violet theme `$accent: #7c3aed`, `$tint: #f5f3ff`, dark `#a78bfa`, dark bg `#1e1b4b`. Search prefix `ai-`. Route: `/ai`.
   CSS classes: `.ai-page`, `.ai-icon`, `.ai-section`. Icon content: `🤖` at `font-size: 1.8rem`. `tech="javascript"`.
@@ -10711,6 +11825,7 @@ Confirmed via direct file inspection before the pilot (`/messaging/messaging-fun
   All 22 cards `available: true` in `fundamentals/ai/home/home.ts`. Progress: `aiTotal=19` in progress.service.ts.
   AI pages use `app-common-mistakes` AND `app-revision-card`. Reference pages (interview-prep, responsible-ai, ai-dotnet) have no PageComplete.
   Challenge.language: `'typescript'`. AiNavComponent at `shared/ai-nav/ai-nav.ts`.
+  Phase 10: **COMPLETE — 19 of 19 topics have subtopics** (`/ai/ml-fundamentals`, pilot batch; `math-for-ml`; `linear-logistic-regression`; `decision-trees`; `gradient-boosting`; `clustering`; `neural-networks`; `computer-vision`; `transformers`; `llm-fundamentals`; `fine-tuning`; `rag`; `prompt-engineering`; `ai-agents`; `vector-databases`; `mlops`; `hugging-face`; `evaluating-llms`; `ai-engineering`, finished 2026-10-08, 57 subtopic pages total) — see "AI/ML hub subtopic wiring" above.
 - **Containers/K8s hub**: 22 trackable topic pages + 1 reference (23 cards total). Feature-complete.
   Blue theme `$accent: #326ce5`, `$tint: #eff6ff`, dark `#93c5fd`. Search prefix `k8s-`. Route: `/containers`.
   CSS classes: `.k8s-page`, `.k8s-icon`, `.k8s-section`. Icon content: `⎈` at `font-size: 1.8rem`. `tech="javascript"`.

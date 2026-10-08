@@ -1,0 +1,26 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Transformers & Attention" topicRoute="/ai/transformers"
+    subtopicLabel="A Fully Masked Row Makes Softmax NaN" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">A Fully Masked Row Makes Softmax NaN</h1>
+  <p class="page-subtitle">The page's attention sets masked scores to -Infinity. A causal mask always leaves one position open, but a padding mask can mask a whole row — and then the softmax returns NaN for every weight.</p>
+  <app-page-meta [readingTime]="4" difficulty="advanced" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This adds a masking caveat. LLM Fundamentals builds on these decoder blocks.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Transformers & Attention" topicRoute="/ai/transformers"
+    [prev]="{ label: 'Measuring Why Scores Are Divided by sqrt(d_k)', route: '/ai/transformers/measuring-why-scores-are-divided-by-sqrt-dk' }" />
+</div>

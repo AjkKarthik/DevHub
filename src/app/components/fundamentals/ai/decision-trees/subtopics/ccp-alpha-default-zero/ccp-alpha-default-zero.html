@@ -1,0 +1,26 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Decision Trees & Random Forests" topicRoute="/ai/decision-trees"
+    subtopicLabel="scikit-learn Does Not Prune by Default" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">scikit-learn Does Not Prune by Default</h1>
+  <p class="page-subtitle">The page called cost-complexity pruning the scikit-learn default. In scikit-learn 1.9.1, ccp_alpha defaults to 0.0, so a default DecisionTreeClassifier grows until every leaf is pure.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the pruning bullet. Next, the random feature subset each split considers.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Decision Trees & Random Forests" topicRoute="/ai/decision-trees"
+    [next]="{ label: 'RandomForestRegressor Uses All Features by Default', route: '/ai/decision-trees/random-forest-regressor-uses-all-features-by-default' }" />
+</div>

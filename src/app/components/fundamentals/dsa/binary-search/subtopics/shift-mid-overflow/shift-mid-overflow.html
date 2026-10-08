@@ -1,0 +1,26 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Binary Search" topicRoute="/dsa/binary-search"
+    subtopicLabel="The Bit-Shift Midpoint Overflows at 2^31 in JavaScript" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">The Bit-Shift Midpoint Overflows at 2^31 in JavaScript</h1>
+  <p class="page-subtitle">JavaScript numbers are exact up to 2^53, but bitwise operators work on 32-bit integers. The common shift-by-one midpoint breaks once the search range passes 2^31.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This is the reason the main page's templates use Math.floor for the midpoint. The next subtopic looks at a different limit of binary search: what happens without O(1) random access.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Binary Search" topicRoute="/dsa/binary-search"
+    [next]="{ label: 'Binary Search on a Linked List Never Beats a Linear Scan', route: '/dsa/binary-search/linked-list-binary-search-never-beats-a-scan' }" />
+</div>

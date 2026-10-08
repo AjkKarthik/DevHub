@@ -1,0 +1,26 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Bit Manipulation" topicRoute="/dsa/bit-manipulation"
+    subtopicLabel="Right Shift Floors Negatives, So It Is Not Plain Division" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">Right Shift Floors Negatives, So It Is Not Plain Division</h1>
+  <p class="page-subtitle">In JavaScript, -5 &gt;&gt; 1 is -3, and 3e9 &gt;&gt; 1 is negative. Shifts round down and work on 32-bit integers, which the "multiply and divide by 2^k" shorthand leaves out.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the shift entries in the main page's Quick Reference and quiz. The next subtopic shows the same 32-bit conversion breaking the page's power-of-two and bit-count functions.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Bit Manipulation" topicRoute="/dsa/bit-manipulation"
+    [next]="{ label: 'isPowerOfTwo and Bit Counting Go Wrong Above 2^32', route: '/dsa/bit-manipulation/bit-tricks-wrong-above-2-to-32' }" />
+</div>

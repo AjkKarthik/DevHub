@@ -1,0 +1,26 @@
+<div class="test-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Visual Regression Testing" topicRoute="/testing-hub/visual-regression"
+    subtopicLabel="threshold Is Colour Sensitivity, Not a Percentage" />
+  <div class="page-header-icon test-icon">✓</div>
+  <h1 class="page-title">threshold Is Colour Sensitivity, Not a Percentage</h1>
+  <p class="page-subtitle">The page described threshold: 0.1 as a 10% pixel difference tolerance. In Playwright, threshold controls how different a single pixel's colour may be; the share of differing pixels is maxDiffPixelRatio.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Testing" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="test-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="test-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the threshold comment and mistake on the Visual Regression page. The next subtopic covers what happens when a baseline is missing.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Visual Regression Testing" topicRoute="/testing-hub/visual-regression"
+    [next]="{ label: 'A Missing Baseline Fails the First Run', route: '/testing-hub/visual-regression/a-missing-baseline-fails-the-first-run' }" />
+</div>

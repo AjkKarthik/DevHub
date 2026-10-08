@@ -1,0 +1,27 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Message Ordering" topicRoute="/messaging/message-ordering"
+    subtopicLabel="How the Idempotent Producer Actually Prevents Retry-Induced Reordering" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">How the Idempotent Producer Actually Prevents Retry-Induced Reordering</h1>
+  <p class="page-subtitle">It is not messages swapping places -- an earlier message duplicates back into the log after a later one, and the broker's sequence tracking is what stops that duplicate from landing.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Kafka" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This builds the mechanism behind the main page's own max.in.flight.requests QnA, and ties back to the Idempotency &amp; Dedup topic's own maxInFlightRequests subtopic. The final subtopic moves back to SQS, building the per-group blocking mechanism from the main page's own quiz.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Message Ordering" topicRoute="/messaging/message-ordering"
+    [prev]="{ label: 'A Random MessageDeduplicationId Silently Defeats SQS FIFO’s Retry Safety', route: '/messaging/message-ordering/random-dedup-id-defeats-sqs-fifo-retry-safety' }"
+    [next]="{ label: 'FIFO Group Blocking Is Per-Group, Not Queue-Wide', route: '/messaging/message-ordering/fifo-group-blocking-is-per-group-not-queue-wide' }" />
+</div>

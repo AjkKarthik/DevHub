@@ -125,8 +125,10 @@ test('dividing positive numbers is always positive', () => {
 
 // Broken implementation for demo
 function buggyAdd(a: number, b: number): number {
-  // Bug: returns wrong result when both inputs > 100
-  if (a > 100 && b > 100) return a + b + 1;
+  // Bug: off by one when a > 100 and b is negative.
+  // (The condition must treat a and b differently — a bug that is
+  // symmetric in a and b can never break commutativity.)
+  if (a > 100 && b < 0) return a + b + 1;
   return a + b;
 }
 
@@ -138,11 +140,11 @@ test('addition is commutative (WILL FAIL)', () => {
   );
 });
 
-// fast-check output:
-// Property failed after 1 tests
-// { seed: 42, path: "0", endOnFailure: true }
-// Counterexample: [101, 101]   ← shrunk to smallest failing input
-// Explanation: Property failed by returning Promise<false>` },
+// fast-check 4.10 output with { seed: 42 }:
+// Property failed after 7 tests
+// { seed: 42, path: "6:1:0:...:3", endOnFailure: true }
+// Counterexample: [101,-1]   ← shrunk to the smallest failing input
+// Shrunk 27 time(s)` },
     { label: 'FsCheck (.NET)', language: 'csharp', code:
 `using FsCheck;
 using FsCheck.Xunit;
@@ -202,12 +204,12 @@ function clamp(n: number, min: number, max: number): number {
   return Math.min(Math.max(n, min), max);
 }
 
-const MinMax = fc.tuple(fc.integer(-1000, 1000), fc.integer(-1000, 1000))
+const MinMax = fc.tuple(fc.integer({ min: -1000, max: 1000 }), fc.integer({ min: -1000, max: 1000 }))
   .map(([a, b]) => [Math.min(a, b), Math.max(a, b)] as [number, number]);
 
 test('clamp result is always within [min, max]', () => {
   fc.assert(
-    fc.property(fc.integer(-1000, 1000), MinMax, (n, [min, max]) => {
+    fc.property(fc.integer({ min: -1000, max: 1000 }), MinMax, (n, [min, max]) => {
       const result = clamp(n, min, max);
       expect(result).toBeGreaterThanOrEqual(min);
       expect(result).toBeLessThanOrEqual(max);
@@ -217,7 +219,7 @@ test('clamp result is always within [min, max]', () => {
 
 test('clamp is idempotent', () => {
   fc.assert(
-    fc.property(fc.integer(-1000, 1000), MinMax, (n, [min, max]) => {
+    fc.property(fc.integer({ min: -1000, max: 1000 }), MinMax, (n, [min, max]) => {
       const once  = clamp(n, min, max);
       const twice = clamp(once, min, max);
       expect(twice).toBe(once);

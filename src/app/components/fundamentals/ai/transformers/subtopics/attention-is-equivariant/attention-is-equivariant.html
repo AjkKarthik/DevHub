@@ -1,0 +1,26 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Transformers & Attention" topicRoute="/ai/transformers"
+    subtopicLabel="Self-Attention Is Permutation-Equivariant" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">Self-Attention Is Permutation-Equivariant</h1>
+  <p class="page-subtitle">The theory said reordering tokens gives the same output; the page's own quiz said equivariant. Running the page's attention function settles it: permuting the inputs permutes the outputs.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This fixes the positional-encoding bullet. Next, measuring why scores are divided by the square root of d_k.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Transformers & Attention" topicRoute="/ai/transformers"
+    [next]="{ label: 'Measuring Why Scores Are Divided by sqrt(d_k)', route: '/ai/transformers/measuring-why-scores-are-divided-by-sqrt-dk' }" />
+</div>

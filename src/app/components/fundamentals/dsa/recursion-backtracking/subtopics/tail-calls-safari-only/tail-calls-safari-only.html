@@ -1,0 +1,26 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Recursion &amp; Backtracking" topicRoute="/dsa/recursion-backtracking"
+    subtopicLabel="JavaScript Has Proper Tail Calls, but Only Safari Runs Them" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">JavaScript Has Proper Tail Calls, but Only Safari Runs Them</h1>
+  <p class="page-subtitle">ES2015 requires constant-stack tail calls in strict mode, yet V8 removed its implementation. In Node, a correct tail-recursive function still overflowed at 10,000 calls.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the tail-recursion bullet in the main page's Recursion Fundamentals. The next two subtopics measure where pruning saves work in the page's own backtracking code.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Recursion &amp; Backtracking" topicRoute="/dsa/recursion-backtracking"
+    [next]="{ label: 'Sort and Break Prunes Earlier Than a Negative Check', route: '/dsa/recursion-backtracking/sort-and-break-prunes-earlier' }" />
+</div>

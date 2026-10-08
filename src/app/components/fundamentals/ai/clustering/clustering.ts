@@ -37,7 +37,7 @@ export class AiClustering {
       points: [
         'Algorithm: (1) Randomly initialise k centroids. (2) Assign each point to the nearest centroid. (3) Recompute each centroid as the mean of its points. (4) Repeat until assignments stop changing.',
         'K-means minimises within-cluster sum of squares (WCSS = inertia). Guaranteed to converge but may find local optima.',
-        'K-means++: initialise centroids far apart (probabilistic) — avoids bad initialisations, faster convergence.',
+        'K-means++: initialise centroids far apart (probabilistic) — far fewer bad starts than random initialisation, but a single run can still end in a poor local optimum. Run several initialisations and keep the lowest inertia (scikit-learn n_init; its default \'auto\' means only ONE run for k-means++).',
         'Choosing k: elbow method (plot inertia vs k, pick the knee), silhouette score, or domain knowledge.',
         'Limitations: assumes spherical clusters, sensitive to outliers, requires k in advance.',
       ],
@@ -106,12 +106,14 @@ function kmeans(X: number[][], k: number, maxIter = 100): {
   let labels: number[] = new Array(X.length).fill(0);
   for (let iter = 0; iter < maxIter; iter++) {
     // Assign
-    const newLabels = X.map(x =>
-      centroids.reduce((bestK, c, ki) => {
+    const newLabels = X.map(x => {
+      let bestK = 0, bestD = Infinity;
+      centroids.forEach((c, ki) => {
         const d = x.reduce((s, v, i) => s + (v - c[i]) ** 2, 0);
-        return d < centroids.reduce((bd, bc, bki) => bki === bestK ? bd : bd, Infinity) ? ki : bestK;
-      }, 0)
-    );
+        if (d < bestD) { bestD = d; bestK = ki; }
+      });
+      return bestK;
+    });
     // Check convergence
     if (newLabels.every((l, i) => l === labels[i])) break;
     labels = newLabels;
@@ -130,35 +132,38 @@ function kmeans(X: number[][], k: number, maxIter = 100): {
     {
       label: 'PCA',
       language: 'typescript',
-      code: `// PCA: project data onto top-k principal components
-function pca(X: number[][], k: number): { projected: number[][]; explainedVariance: number[] } {
+      code: `// PCA: project data onto top-k principal components (power iteration + deflation)
+// Matches sklearn.decomposition.PCA's explained_variance_ratio_ (signs may flip)
+function pca(X: number[][], k: number, iters = 500) {
   const n = X.length, d = X[0].length;
-  // 1. Standardise
+  // 1. Centre (standardise first with StandardScaler if features use different units)
   const means = X[0].map((_, j) => X.reduce((s, x) => s + x[j], 0) / n);
   const centred = X.map(x => x.map((v, j) => v - means[j]));
-
   // 2. Covariance matrix (d×d)
-  const cov: number[][] = Array.from({length: d}, (_, i) =>
+  let cov: number[][] = Array.from({length: d}, (_, i) =>
     Array.from({length: d}, (__, j) =>
       centred.reduce((s, x) => s + x[i] * x[j], 0) / (n - 1)
     )
   );
-
-  // 3. Power iteration for top eigenvectors (simplified)
-  // In practice: use numpy.linalg.eigh or sklearn.decomposition.PCA
-  // sklearn usage:
-  // from sklearn.decomposition import PCA
-  // pca = PCA(n_components=k)
-  // X_reduced = pca.fit_transform(X)
-  // print(pca.explained_variance_ratio_)  // e.g. [0.45, 0.22, 0.15]
-
-  // Elbow rule: cumulative explained variance
-  // cumsum = np.cumsum(pca.explained_variance_ratio_)
-  // n_components = np.argmax(cumsum >= 0.95) + 1
-
-  return { projected: centred.slice(0, k), explainedVariance: [] }; // placeholder
+  const totalVariance = cov.reduce((s, row, i) => s + row[i], 0);
+  // 3. Power iteration finds the top eigenvector; deflate and repeat
+  const components: number[][] = [], variances: number[] = [];
+  for (let c = 0; c < k; c++) {
+    let v = Array.from({length: d}, (_, i) => 1 / Math.sqrt(d + i));
+    let lambda = 0;
+    for (let t = 0; t < iters; t++) {
+      const w = cov.map(row => row.reduce((s, a, j) => s + a * v[j], 0));
+      lambda = Math.sqrt(w.reduce((s, a) => s + a * a, 0));
+      v = w.map(a => a / lambda);
+    }
+    components.push(v); variances.push(lambda);
+    cov = cov.map((row, i) => row.map((a, j) => a - lambda * v[i] * v[j]));
+  }
+  // 4. Project
+  const projected = centred.map(x => components.map(v => x.reduce((s, a, j) => s + a * v[j], 0)));
+  return { projected, components, explainedVarianceRatio: variances.map(l => l / totalVariance) };
 }
-
+// sklearn: PCA(n_components=k).fit_transform(X); pca.explained_variance_ratio_
 // Silhouette score for cluster quality
 function silhouetteScore(X: number[][], labels: number[]): number {
   const dist = (a: number[], b: number[]) => Math.sqrt(a.reduce((s,v,i) => s+(v-b[i])**2, 0));

@@ -1,0 +1,26 @@
+<div class="test-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="MSW — Mock Service Worker" topicRoute="/testing-hub/msw"
+    subtopicLabel="Relative Handler URLs Need a DOM Environment" />
+  <div class="page-header-icon test-icon">✓</div>
+  <h1 class="page-title">Relative Handler URLs Need a DOM Environment</h1>
+  <p class="page-subtitle">Every handler on the page uses a relative path like /api/users. That works under jsdom, which provides a page URL, but in a plain Node test environment fetch("/api/users") fails before MSW sees it.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Testing" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="test-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="test-section">
+    <h2>Where this fits</h2>
+    <p>This explains a limit of the handler setup shown on the MSW page. API Testing, in the E2E and API group, covers testing real HTTP endpoints.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="MSW — Mock Service Worker" topicRoute="/testing-hub/msw"
+    [prev]="{ label: 'warn Lets Unhandled Requests Hit the Network', route: '/testing-hub/msw/warn-lets-unhandled-requests-hit-the-network' }" />
+</div>

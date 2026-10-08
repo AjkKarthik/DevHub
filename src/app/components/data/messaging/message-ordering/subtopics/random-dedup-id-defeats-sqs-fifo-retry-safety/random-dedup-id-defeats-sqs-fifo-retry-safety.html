@@ -1,0 +1,26 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Message Ordering" topicRoute="/messaging/message-ordering"
+    subtopicLabel="A Random MessageDeduplicationId Silently Defeats SQS FIFO's Retry Safety" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">A Random MessageDeduplicationId Silently Defeats SQS FIFO's Retry Safety</h1>
+  <p class="page-subtitle">Generating the deduplication ID fresh with randomUUID() on every send means a retried send is never recognized as a retry -- a real bug that has shipped in production libraries.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="AWS SQS" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the main page's own SQS FIFO codeTab. The next subtopic moves from SQS to Kafka, building the broker-side mechanism that lets an idempotent producer actually prevent retry-induced ordering problems.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Message Ordering" topicRoute="/messaging/message-ordering"
+    [next]="{ label: 'How the Idempotent Producer Actually Prevents Retry-Induced Reordering', route: '/messaging/message-ordering/how-idempotent-producer-prevents-retry-reordering' }" />
+</div>

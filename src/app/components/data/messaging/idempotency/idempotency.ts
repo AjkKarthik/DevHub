@@ -177,7 +177,7 @@ const kafka = new Kafka({ brokers: ['localhost:9092'] });
 // --- Idempotent producer (exactly-once per partition) ---
 const idempotentProducer = kafka.producer({
   idempotent: true,               // assigns producerId + sequence numbers
-  maxInFlightRequests: 5,         // required with idempotent
+  maxInFlightRequests: 5,         // Kafka's dedup window is 5 batches — kafkajs will NOT enforce this for you
 });
 await idempotentProducer.connect();
 

@@ -1,0 +1,26 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Mathematics for ML" topicRoute="/ai/math-for-ml"
+    subtopicLabel="Why L1 Gives Exact Zeros" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">Why L1 Gives Exact Zeros</h1>
+  <p class="page-subtitle">The QnA said L1 creates a zero-gradient region at zero. That is not the mechanism: L1 pushes every weight towards zero with a constant force, so weak weights get clipped to exactly 0.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the regularisation QnA. Linear and Logistic Regression applies these penalties to real models.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Mathematics for ML" topicRoute="/ai/math-for-ml"
+    [prev]="{ label: 'The Gradient at w = 1 Is -22, Not 0', route: '/ai/math-for-ml/the-gradient-at-w-1-is-minus-22' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Evaluating LLMs" topicRoute="/ai/evaluating-llms"
+    subtopicLabel="Recomputing the ROUGE Examples" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">Recomputing the ROUGE Examples</h1>
+  <p class="page-subtitle">The ROUGE tab printed precision 0.625 and F1 0.667, and the BLEU/ROUGE mistake quoted F1 0.47. Running the page's own rougeN gives 0.556 and 0.625 for the first, and 0.588 for the second.</p>
+  <app-page-meta [readingTime]="4" difficulty="beginner" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the numbers. Next, what ROUGE-1 cannot see at all.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Evaluating LLMs" topicRoute="/ai/evaluating-llms"
+    [next]="{ label: 'ROUGE-1 Gives a Wrong Fact a Perfect Score', route: '/ai/evaluating-llms/rouge-1-ignores-word-order' }" />
+</div>

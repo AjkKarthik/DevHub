@@ -1,0 +1,26 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="MLOps" topicRoute="/ai/mlops"
+    subtopicLabel="MLflow Registry Stages Are Deprecated" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">MLflow Registry Stages Are Deprecated</h1>
+  <p class="page-subtitle">The page described the model registry with Staging, Production and Archived stages. MLflow deprecated stages in 2.9; the current way to mark a production model is an alias such as champion.</p>
+  <app-page-meta [readingTime]="4" difficulty="beginner" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This completes the lifecycle examples. Hugging Face covers the hub and libraries most of these models come from.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="MLOps" topicRoute="/ai/mlops"
+    [prev]="{ label: 'pd.cut Codes Out-of-Range Ages as -1', route: '/ai/mlops/pd-cut-codes-out-of-range-as-minus-one' }" />
+</div>

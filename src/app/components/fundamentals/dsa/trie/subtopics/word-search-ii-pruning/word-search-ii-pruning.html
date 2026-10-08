@@ -1,0 +1,26 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Trie" topicRoute="/dsa/trie"
+    subtopicLabel="Word Search II Speeds Up Only When Found Branches Are Deleted" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">Word Search II Speeds Up Only When Found Branches Are Deleted</h1>
+  <p class="page-subtitle">Marking a found word with isEnd = false left the DFS call count unchanged. Deleting empty branches cut it from 7,985 to 36 on one board and by 41% on a random one.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This measures the pruning described in the main page's Word Search II QnA and explains the change made to the page's code.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Trie" topicRoute="/dsa/trie"
+    [prev]="{ label: 'A Compressed Trie Saves Nodes, Not Characters', route: '/dsa/trie/compressed-trie-saves-nodes-not-characters' }" />
+</div>

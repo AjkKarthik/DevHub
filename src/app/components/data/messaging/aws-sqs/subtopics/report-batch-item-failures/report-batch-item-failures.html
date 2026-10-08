@@ -1,0 +1,26 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="AWS SQS" topicRoute="/messaging/aws-sqs"
+    subtopicLabel="Rescuing Successful Messages From a Failed Batch With ReportBatchItemFailures" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">Rescuing Successful Messages From a Failed Batch With ReportBatchItemFailures</h1>
+  <p class="page-subtitle">The main page's own "batch is returned to the queue" default means one failure redelivers messages that already succeeded — ReportBatchItemFailures narrows that down to only the ones that actually failed.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="AWS Lambda" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This closes a gap the main page never covers — the "batch is returned to the queue" default is stated once, with no mention of the partial-failure mechanism that narrows it. Pairs directly with the previous subtopic's correction of where dead-lettering is actually configured.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="AWS SQS" topicRoute="/messaging/aws-sqs"
+    [prev]="{ label: 'SQS Dead-Lettering Is Queue-Side, Not a Lambda Destination', route: '/messaging/aws-sqs/dlq-is-queue-not-lambda-destination' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="kafka-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Event Grid &amp; Event Hubs" topicRoute="/messaging/azure-event-grid"
+    subtopicLabel="Event Hub Retention Is Tier-Capped, Not a Flat 1–90 Day Range" />
+  <div class="page-header-icon kafka-icon">⇄</div>
+  <h1 class="page-title">Event Hub Retention Is Tier-Capped, Not a Flat 1–90 Day Range</h1>
+  <p class="page-subtitle">Basic is fixed at 1 day, Standard tops out at 7, and only Premium/Dedicated reach 90 — and even then, the default is just 1 hour unless you configure it.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Azure Event Hubs" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="kafka-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="kafka-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the retention claim in the main page's theory and QnA. The Kafka protocol tier gate is a related, separately-tier-scoped limit covered next.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Event Grid &amp; Event Hubs" topicRoute="/messaging/azure-event-grid"
+    [next]="{ label: 'Event Hubs’ Kafka Endpoint Doesn’t Exist on Basic Tier', route: '/messaging/azure-event-grid/kafka-needs-standard-tier' }" />
+</div>

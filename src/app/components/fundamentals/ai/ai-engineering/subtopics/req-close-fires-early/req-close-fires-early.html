@@ -1,0 +1,26 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="AI Engineering" topicRoute="/ai/ai-engineering"
+    subtopicLabel="req close Fires Before the Stream Starts" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">req close Fires Before the Stream Starts</h1>
+  <p class="page-subtitle">The streaming tab cancelled the upstream LLM call from req.on(close). In Node 22 the request emitted close as soon as its body was read — before that listener existed — so a client that disconnected never cancelled anything.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This makes cancellation work. Next, what happens to the stream loop after an abort.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="AI Engineering" topicRoute="/ai/ai-engineering"
+    [next]="{ label: 'An Aborted Stream Can End Without Throwing', route: '/ai/ai-engineering/aborted-stream-loop-ends-quietly' }" />
+</div>

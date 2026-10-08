@@ -77,6 +77,12 @@ export class ProgressService {
   readonly goCount  = computed(() => [...this._done()].filter(r => r.startsWith('go-')).length);
   readonly goPct    = computed(() => Math.round((this.goCount() / this.goTotal) * 100));
 
+  // ── Rust (keys prefixed 'rust-') ─────────────────────────────────────────
+  // NOTE: hub is brand new — bump this total as more topic pages ship.
+  readonly rustTotal  = 12;
+  readonly rustCount  = computed(() => [...this._done()].filter(r => r.startsWith('rust-')).length);
+  readonly rustPct    = computed(() => Math.round((this.rustCount() / this.rustTotal) * 100));
+
   // ── DevOps (keys prefixed 'devops-') ─────────────────────────────────────
   readonly devopsTotal  = 21;
   readonly devopsCount  = computed(() => [...this._done()].filter(r => r.startsWith('devops-')).length);

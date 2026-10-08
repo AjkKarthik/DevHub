@@ -55,7 +55,7 @@ export class DsaGreedy {
         'Jump Game I (can reach end): track maxReach = max(maxReach, i + jumps[i]). If i > maxReach at any point, return false.',
         'Jump Game II (min jumps): track currentEnd (current jump range) and farthest. When i reaches currentEnd, take a jump.',
         'Both are O(n) O(1) — greedy beats DP here because we only need to track the furthest reach.',
-        'Gas Station: if total gas >= total cost, a solution always exists. The starting position is where cumulative tank last hit 0.',
+        'Gas Station: if total gas >= total cost, a solution always exists. The starting position is one past the station where the running total of (gas - cost) is lowest — the code finds it by restarting whenever the current tank goes negative.',
       ],
     },
     {
@@ -94,13 +94,15 @@ function eraseOverlapIntervals(intervals: number[][]): number {
 }
 
 // Merge intervals — sort by start, merge overlapping
+// Copies first: sorting and extending in place would rewrite the caller's arrays
 function merge(intervals: number[][]): number[][] {
-  intervals.sort((a, b) => a[0] - b[0]);
-  const result: number[][] = [intervals[0]];
-  for (let i = 1; i < intervals.length; i++) {
+  if (intervals.length === 0) return [];
+  const sorted = intervals.map(([s, e]) => [s, e]).sort((a, b) => a[0] - b[0]);
+  const result: number[][] = [sorted[0]];
+  for (let i = 1; i < sorted.length; i++) {
     const last = result[result.length - 1];
-    if (intervals[i][0] <= last[1]) last[1] = Math.max(last[1], intervals[i][1]);
-    else result.push(intervals[i]);
+    if (sorted[i][0] <= last[1]) last[1] = Math.max(last[1], sorted[i][1]);
+    else result.push(sorted[i]);
   }
   return result;
 }
@@ -174,7 +176,7 @@ function partitionLabels(s: string): number[] {
 // Greedy picks 4+1+1 = 3 coins — but 3+3 = 2 coins is optimal`,
       right: `// Use DP for coin change — greedy only works for canonical coin systems
 // (e.g. US coins: 25, 10, 5, 1 — greedy always optimal there)`,
-      explanation: 'Greedy coin change only works when each larger coin divides evenly into the next (canonical system). For arbitrary denominations, DP is required.',
+      explanation: 'Greedy coin change only works for canonical coin systems — ones where greedy happens to be optimal for every amount. Divisibility is not the test: US coins (25 is not a multiple of 10) are canonical, while [1, 10, 25] is not (greedy pays 30 with six coins instead of three 10s). For arbitrary denominations, DP is required.',
     },
     {
       title: 'Interval scheduling: sorting by start time instead of end time',
@@ -261,7 +263,7 @@ maxReach = Math.max(maxReach, i + nums[i]);`,
     },
   { q: 'How do you prove that a greedy algorithm is correct?', a: 'Two standard proofs: (1) Greedy stays ahead: show that after each step, the greedy solution is at least as good as any other solution at that point. (2) Exchange argument: take any optimal solution; show you can swap non-greedy choices for greedy choices without worsening the result. If every swap maintains optimality, greedy is optimal. Failure of exchange argument usually means you need DP.' },
   { q: 'What is the fractional knapsack problem and why does greedy work for it but not 0/1 knapsack?', a: 'Fractional knapsack allows taking fractions of items. Greedy: sort by value/weight ratio, take items in order, take fraction of last item if needed. Works because taking the highest-ratio item is always optimal when fractions are allowed. In 0/1 knapsack, you cannot take fractions, so a high-ratio item that wastes capacity may be suboptimal vs two lower-ratio items that fill the knapsack exactly.' },
-  { q: 'How does the interval scheduling maximization problem differ from interval scheduling with deadlines?', a: 'Interval scheduling maximization: select max number of non-overlapping intervals. Greedy: sort by END TIME, pick earliest-ending compatible interval. Optimal. Interval scheduling with deadlines (weighted): each job has a profit and deadline; maximize profit. Greedy by deadline and use a greedy-with-backtracking approach or DP. Weighted interval scheduling requires DP (binary search on sorted intervals).' },
+  { q: 'How does the interval scheduling maximization problem differ from interval scheduling with deadlines?', a: 'Interval scheduling maximization: select max number of non-overlapping intervals. Greedy: sort by END TIME, pick earliest-ending compatible interval. Optimal. Job sequencing with deadlines: each unit-time job has a profit and a deadline; maximize profit. This one is greedy, but by PROFIT, not by deadline: take jobs from highest profit down and place each in the latest free slot before its deadline. Weighted interval scheduling (jobs with arbitrary start and end times) is different and requires DP (binary search on sorted intervals).' },
   ];
 
   revision: RevisionSummary = {

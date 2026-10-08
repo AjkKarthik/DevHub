@@ -1,0 +1,27 @@
+<div class="test-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Testing Fundamentals" topicRoute="/testing-hub/testing-fundamentals"
+    subtopicLabel="A Relative toHaveURL Needs a baseURL" />
+  <div class="page-header-icon test-icon">✓</div>
+  <h1 class="page-title">A Relative toHaveURL Needs a baseURL</h1>
+  <p class="page-subtitle">The E2E example navigated to an absolute URL, then asserted the relative path /dashboard. Playwright only resolves a relative expected URL against baseURL, so without one that assertion never matches.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Testing" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="test-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="test-section">
+    <h2>Where this fits</h2>
+    <p>This fixes the E2E example on the Testing Fundamentals page. The Playwright topic covers configuration, locators and web-first assertions in depth.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Testing Fundamentals" topicRoute="/testing-hub/testing-fundamentals"
+    [prev]="{ label: 'toHaveText Belongs to Playwright, Not jest-dom', route: '/testing-hub/testing-fundamentals/tohavetext-is-a-playwright-matcher' }"
+    [next]="{ label: 'The Integration Test Never Started a Container', route: '/testing-hub/testing-fundamentals/integration-test-never-started-a-container' }" />
+</div>

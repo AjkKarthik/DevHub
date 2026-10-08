@@ -93,6 +93,7 @@ await consumer.connect();
 await consumer.subscribe({ topic: 'high-volume-events' });
 
 let paused = false;
+let resumePartition: (() => void) | null = null; // the closure pause() returns
 const MAX_QUEUE_SIZE = 100;
 const pendingWork: unknown[] = [];
 
@@ -107,7 +108,9 @@ await consumer.run({
       // Pause if queue is getting too large
       if (pendingWork.length >= MAX_QUEUE_SIZE && !paused) {
         console.log('Queue full — pausing partition');
-        pause();  // returns resume function; call to unpause
+        // pause() returns the ONLY way to resume this partition -- kafkajs
+        // never resumes it automatically, so the closure must be kept.
+        resumePartition = pause();
         paused = true;
       }
 
@@ -124,8 +127,9 @@ setInterval(async () => {
   }
   if (paused && pendingWork.length < 50) {
     paused = false;
+    resumePartition?.();  // must call the closure -- there is no other way to resume
+    resumePartition = null;
     console.log('Queue draining — resuming');
-    // Kafka will automatically resume when the consumer polls again after pause()
   }
 }, 100);
 
@@ -272,7 +276,7 @@ async function startAdaptiveConsumer() {
   const consumer = kafka.consumer({ groupId: 'adaptive' });
   // TODO: lag-based pause/resume
 }`,
-    solution: `import { Kafka, TopicPartitions } from 'kafkajs';
+    solution: `import { Kafka } from 'kafkajs';
 
 let queue: unknown[] = [];
 let paused  = false;
@@ -330,7 +334,7 @@ async function startAdaptiveConsumer() {
     { q: 'How does backpressure differ between RabbitMQ (push) and Kafka (pull)?', a: 'RabbitMQ pushes messages to consumers — prefetch is the brake that limits how much the broker pushes. Kafka consumers pull — they naturally control inflow rate by polling only when ready. Kafka\'s pause()/resume() and max.poll.records provide additional fine-grained control.' },
     { q: 'What should trigger automatic consumer scaling?', a: 'Consumer lag is the primary signal. Set a CloudWatch/Prometheus alert at a lag threshold (e.g., 10,000 records or 5 minutes). Auto-scaling groups (ECS, Kubernetes HPA) can use lag metrics from Kafka Exporter or Confluent Control Center to scale out consumers.' },
     { q: 'Can a rate-limited producer help with backpressure?', a: 'Yes, but it\'s a last resort. Scaling consumers is usually better. Rate-limiting producers means business events are delayed at the source. It\'s appropriate when the downstream system has a strict SLA capacity (e.g., an external API with rate limits) and you cannot scale consumers further.' },
-    { q: 'How does Kafka implement backpressure on the producer side?', a: 'Kafka producer backpressure: <code>max.block.ms</code> blocks the producer when the send buffer is full (waiting for broker acks or local buffer space). <code>buffer.memory</code> sets total buffering capacity. Externally, Kafka broker quotas (<code>producer_byte_rate</code>) throttle producers per client. Reactive Kafka (Reactor Kafka) provides true demand-based backpressure via Project Reactor.' },
+    { q: 'How does Kafka implement backpressure on the producer side?', a: '<code>max.block.ms</code> and <code>buffer.memory</code> are Java-client-specific configs -- the Java producer maintains a bounded in-memory record accumulator and blocks <code>send()</code> for up to <code>max.block.ms</code> once it fills. <strong>kafkajs has no equivalent</strong> -- its ProducerConfig exposes no buffer-memory or blocking-timeout option at all; <code>send()</code> is bounded only by <code>maxInFlightRequests</code>, so a kafkajs producer needs its own client-side rate limiting (like the Token Bucket shown on this page) to get the same effect. Kafka broker quotas (<code>producer_byte_rate</code>) throttle producers per client regardless of which client library is used. Reactive Kafka (Reactor Kafka, JVM-only) provides true demand-based backpressure via Project Reactor.' },
     { q: 'How do you implement backpressure in a Node.js stream pipeline?', a: 'Node.js streams backpressure via <code>write()</code> return value: if it returns <code>false</code>, the buffer is full — stop writing and wait for the <code>drain</code> event. In <code>stream.pipeline(readable, transform, writable)</code>, backpressure is automatic — the pipeline pauses upstream when downstream is full.' },
     { q: 'What is the difference between backpressure and rate limiting?', a: '<strong>Backpressure</strong>: demand-driven — consumer signals actual capacity; adjusts dynamically. <strong>Rate limiting</strong>: time-based — producer capped at a fixed rate regardless of consumer state. Backpressure is more efficient (matches actual throughput); rate limiting is simpler. Best practice: combine both — rate limiting as a safety ceiling, backpressure for efficient flow within the cap.' },
   ];

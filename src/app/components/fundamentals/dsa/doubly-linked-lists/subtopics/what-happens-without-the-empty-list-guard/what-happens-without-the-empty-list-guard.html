@@ -1,0 +1,27 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Doubly Linked Lists" topicRoute="/dsa/doubly-linked-lists"
+    subtopicLabel="What Happens Without the Empty-List Guard" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">What Happens Without the Empty-List Guard</h1>
+  <p class="page-subtitle">The main page's removeLast() correctly guards against an empty list, but never shows what happens if that line is forgotten. Removed it on purpose and reproduced the exact crash.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This proves the main page's own newly-corrected theory bullet on the sentinel-boundary null-dereference risk, demonstrating the exact crash via the main page's own class structure.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Doubly Linked Lists" topicRoute="/dsa/doubly-linked-lists"
+    [prev]="{ label: 'JavaScript’s Map Is Not a Doubly Linked List', route: '/dsa/doubly-linked-lists/javascript-map-is-not-a-doubly-linked-list' }"
+    [next]="{ label: 'Building a Blocked Deque Like Python’s collections.deque', route: '/dsa/doubly-linked-lists/building-a-blocked-deque-like-pythons' }" />
+</div>

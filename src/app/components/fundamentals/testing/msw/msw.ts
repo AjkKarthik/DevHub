@@ -94,13 +94,15 @@ import { handlers } from '../mocks/handlers';
 export const server = setupServer(...handlers);
 
 // Start server before all tests
-beforeAll(()  => server.listen({ onUnhandledRequest: 'warn' }));
+beforeAll(()  => server.listen({ onUnhandledRequest: 'error' }));  // unhandled requests fail the test
 // Reset per-test overrides after each test
 afterEach(()  => server.resetHandlers());
 // Stop server after all tests
 afterAll(()   => server.close());` },
     { label: 'Component Test with MSW', language: 'typescript', code:
 `import { render, screen } from '@testing-library/react';
+import { http, HttpResponse } from 'msw';
+import { server } from '../test/setup';
 import { UserList } from './UserList';
 
 // Default handlers from setup.ts return Alice and Bob
@@ -146,7 +148,7 @@ enableMocking().then(() => {
 
   mistakes: CommonMistake[] = [
     { title: 'Not calling server.resetHandlers() in afterEach', wrong: '// afterEach omitted — per-test overrides bleed into next test', right: 'afterEach(() => server.resetHandlers())', explanation: 'server.use() overrides persist until reset. Without resetHandlers(), an error override from one test affects all subsequent tests.' },
-    { title: 'Using onUnhandledRequest: "error" in tests carelessly', wrong: 'server.listen({ onUnhandledRequest: "error" }) and test makes unknown request → suite crashes', right: 'use "warn" during development, "error" only when all handlers are known', explanation: '"error" is strict — any unhandled request throws. Useful for final CI runs but painful during development when you add new API calls.' },
+    { title: 'Letting unhandled requests through with onUnhandledRequest: "warn"', wrong: 'server.listen({ onUnhandledRequest: "warn" }) and forgetting a handler — the request goes to the real network', right: 'prefer "error" in tests; add a handler (or http.all passthrough) for every request the test is allowed to make', explanation: 'Measured with msw 2.15: under "warn" an unhandled request prints a warning and is sent for real (ENOTFOUND or ECONNREFUSED, or a real response if the host exists). Under "error" it prints an error and that one fetch rejects, so the test that made it fails — the suite does not crash.' },
     { title: 'Defining handlers inside test files', wrong: 'const handler = http.get("/api", ...) // defined per-test file', right: 'define shared handlers in src/mocks/handlers.ts; use server.use() for per-test overrides', explanation: 'Duplicated handlers across test files drift out of sync with each other and with the browser dev mock.' },
     { title: 'Mocking the fetch module instead of using MSW', wrong: 'global.fetch = jest.fn().mockResolvedValue({ json: () => [] })', right: 'use MSW handlers — they work with any HTTP client and are more realistic', explanation: 'Mocking fetch directly breaks if the component switches from fetch to axios. MSW intercepts at the network level regardless of the HTTP client used.' },
     { title: 'Forgetting to register the service worker for browser dev', wrong: 'worker.start() called but mockServiceWorker.js not in public/', right: 'run npx msw init public/ to generate the service worker file', explanation: 'MSW\'s browser mode requires a service worker file in the public directory. Without it, the browser cannot intercept requests and all mocks are silently ignored.' },

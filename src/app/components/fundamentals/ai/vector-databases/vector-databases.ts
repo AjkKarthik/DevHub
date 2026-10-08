@@ -45,7 +45,7 @@ export class AiVectorDatabases {
     {
       heading: 'Index Types',
       points: [
-        'HNSW (Hierarchical Navigable Small World): graph-based. Every node links to M nearest neighbours at multiple layers. Queries navigate layers from coarse to fine. Best recall, highest memory (O(N·M·d) floats).',
+        'HNSW (Hierarchical Navigable Small World): graph-based. Every node links to M nearest neighbours at multiple layers. Queries navigate layers from coarse to fine. Best recall, highest memory: the full vectors (N·d floats) plus about 2·M neighbour IDs per vector.',
         'IVF (Inverted File): k-means clusters the vector space into nlist cells. Each query: find closest nprobe cells, then search only vectors in those cells. Lower memory, slightly lower recall. Good for billions of vectors.',
         'Flat (exact): brute-force exact search. Perfect recall, O(N·d) — only viable for <100K vectors or with GPU acceleration.',
         'IVF+PQ: combine IVF partitioning with product quantisation compression. The only viable approach for 100M+ vectors on CPU — trades recall for memory.',
@@ -111,7 +111,9 @@ export class AiVectorDatabases {
 // faiss.normalize_L2(query)
 // distances, indices = index.search(query, k=5)
 // print("Top-5 indices:", indices[0])
-// print("Cosine similarities:", 1 - distances[0])
+// # IndexHNSWFlat uses squared L2 distance. For unit vectors |a-b|^2 = 2 - 2cos,
+// # so cosine = 1 - d/2 (not 1 - d). Or build the index with faiss.METRIC_INNER_PRODUCT.
+// print("Cosine similarities:", 1 - distances[0] / 2)
 
 // # Persist index
 // faiss.write_index(index, "my_index.faiss")
@@ -145,10 +147,11 @@ async function setupAndQuery() {
     spec: { serverless: { cloud: 'aws', region: 'us-east-1' } },
   });
 
-  const index = pc.index('documents');
+  // (createIndex still works but is deprecated in v9 in favour of pc.indexes.create)
+  const index = pc.index({ name: 'documents' });
 
-  // Upsert vectors with metadata
-  await index.upsert([
+  // Upsert vectors with metadata — v9 takes { records }, not a bare array
+  await index.upsert({ records: [
     {
       id: 'doc-001',
       values: Array.from({ length: 1536 }, () => Math.random()),
@@ -159,7 +162,7 @@ async function setupAndQuery() {
       values: Array.from({ length: 1536 }, () => Math.random()),
       metadata: { text: 'Shipping costs: free over $50', category: 'shipping', date: '2025-01-01' },
     },
-  ]);
+  ] });
 
   // Query with metadata filter
   const queryVector = Array.from({ length: 1536 }, () => Math.random());
@@ -176,7 +179,7 @@ async function setupAndQuery() {
 
   // Namespace for multi-tenancy
   const userIndex = index.namespace('user-123');
-  await userIndex.upsert([{ id: 'note-1', values: queryVector, metadata: { text: 'My note' } }]);
+  await userIndex.upsert({ records: [{ id: 'note-1', values: queryVector, metadata: { text: 'My note' } }] });
 }`,
     },
   ];
@@ -311,7 +314,7 @@ console.log(cosineSimilarity(a, b).toFixed(6)); // same value`,
         'When your vectors have fewer than 100 dimensions',
       ],
       answer: 1,
-      explanation: 'HNSW stores full vectors plus graph edges — memory scales as O(N·M·d). At a billion vectors with 1536 dims, that\'s terabytes. IVF+PQ compresses vectors 4–64× using product quantisation, making billion-scale feasible on CPUs.',
+      explanation: 'HNSW stores the full float32 vectors plus about 2·M neighbour IDs each — about 6.4 KB per 1536-dim vector at M=32. At a billion vectors that is over 6 TB. IVF+PQ compresses vectors 4–64× using product quantisation, making billion-scale feasible on CPUs.',
     },
   { q: 'What is approximate nearest neighbor (ANN) search and why is it used?', options: ['Exact nearest neighbor search with optimizations', 'A family of algorithms that find approximate results faster than exact search, trading small accuracy loss for large speed gains', 'A type of vector database', 'A method for dimensionality reduction'], answer: 1, explanation: 'Exact nearest neighbor in high dimensions requires O(n*d) time — too slow for millions of vectors. ANN algorithms (HNSW, IVF, LSH) find approximate results in O(log n) or O(sqrt(n)) with tunable accuracy/speed tradeoff. Recall@10 > 0.95 is typical for well-tuned ANN.' },
   { q: 'What is HNSW and why is it popular for vector search?', options: ['A hash-based search method', 'Hierarchical Navigable Small World: a graph-based ANN index that provides very high recall with fast query times', 'A database replication protocol', 'A dimensionality reduction algorithm'], answer: 1, explanation: 'HNSW: builds a layered graph where each layer is a coarser version of the vector space. Search: start at top layer (few connections, wide jumps), navigate to nearest neighbor, descend to lower layers (finer search). O(log n) query time, high recall, supports incremental insertion. Default in Pinecone, Weaviate, Qdrant.' },
@@ -325,7 +328,7 @@ console.log(cosineSimilarity(a, b).toFixed(6)); // same value`,
     },
     {
       q: 'What is product quantisation and when does the recall loss matter?',
-      a: 'PQ divides each d-dimensional vector into m sub-vectors of size d/m, then trains a codebook of 2^bits centroids for each sub-vector. At query time, sub-vectors are replaced by centroid IDs — reducing storage from d×4 bytes to m×(bits/8) bytes. Recall loss is typically 2–5% at m=96, bits=8 for 1536-dim vectors. This matters for high-precision recall-sensitive tasks (e.g. face recognition). For RAG, 2–5% recall loss is usually acceptable given the 10–20× memory savings at billion scale.',
+      a: 'PQ divides each d-dimensional vector into m sub-vectors of size d/m, then trains a codebook of 2^bits centroids for each sub-vector. At query time, sub-vectors are replaced by centroid IDs — reducing storage from d×4 bytes to m×(bits/8) bytes. Recall loss is typically 2–5% at m=96, bits=8 for 1536-dim vectors. This matters for high-precision recall-sensitive tasks (e.g. face recognition). For RAG, 2–5% recall loss is usually acceptable given the memory savings: with m=96 and 8 bits, each 1536-dim vector is stored in 96 bytes instead of 6,144 (64× smaller), plus a stored ID per vector.',
     },
   { q: 'What is a key operational tradeoff of pgvector versus a dedicated vector database like Pinecone at large scale?', a: 'pgvector runs vector search as an extension inside your existing PostgreSQL instance, so scaling the vector workload means scaling your entire relational database (compute, storage, connection limits) even if the rest of your app\'s Postgres usage is light — there is no independent scaling knob for "just the vector search part." A dedicated vector database like Pinecone is a separate, purpose-built service that scales its indexing and query throughput independently of any relational data you have elsewhere, at the cost of introducing a second system to operate, secure, and keep in sync with your source-of-truth data.' },
   { q: 'How do you filter vector search results by metadata?', a: 'Pre-filtering (filter before ANN search): apply metadata filter to reduce candidate set, then search within filtered subset. Fast for high-selectivity filters; degrades quality for low-selectivity filters. Post-filtering (search then filter): run ANN search on all vectors, filter results after. Simple but may return fewer than k results. Hybrid: use filtered index partitions. Pinecone, Weaviate, Qdrant all support metadata filtering with different performance characteristics. Always store metadata alongside embeddings.' },
