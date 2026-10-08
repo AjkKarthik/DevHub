@@ -4246,4 +4246,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Z-Algorithm for Pattern Matching', route: '/dsa/strings/z-algorithm-pattern-matching' },
     { label: 'Rabin-Karp’s Rolling Hash, Verified', route: '/dsa/strings/rabin-karp-rolling-hash' },
   ],
+  'hash-tables': [
+    { label: 'A Naive Salt Does Not Defeat a HashDoS Attack', route: '/dsa/hash-tables/naive-salt-does-not-defeat-hashdos' },
+    { label: 'Consistent Hashing: Verified Remap Counts', route: '/dsa/hash-tables/consistent-hashing-verified-remap-counts' },
+    { label: 'Finding the First Non-Repeating Character, Two Ways', route: '/dsa/hash-tables/first-non-repeating-character-two-ways' },
+  ],
 };

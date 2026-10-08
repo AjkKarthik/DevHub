@@ -10626,6 +10626,55 @@ check before any other new hub's first subtopic set:
    separate lazy chunks; confirmed the `SUBTOPICS`/`SIDEBAR_MAP`/breadcrumb/search-index entries
    for `strings` (bare) and all three composite subtopic keys were present with matching content.
    **DSA hub Phase 10: 3 of 21 topics complete.**
+10. **The `hash-tables` batch found and fixed a genuine inaccuracy, verified via WebSearch, inside
+   the page's own fifth theory section ("Collision Resolution Strategies and Their Tradeoffs" —
+   a section that mostly ADDS real detail beyond the earlier "Collision Resolution" section, such
+   as deletion tombstones and cache locality, rather than being a wholesale duplicate like the
+   Strings batch's own finding, but still had one genuinely duplicate load-factor bullet and one
+   factual error): the claim that "cryptographically-inspired hash functions with strong avalanche
+   properties are preferred even for non-cryptographic hash tables" has the real story backwards —
+   ordinary hash tables (Java HashMap, JS engines, Python dict) use FAST, non-cryptographic
+   functions (MurmurHash, xxHash, polynomial rolling hashes) specifically because cryptographic
+   hashes are deliberately slow by design; only under adversarial, attacker-controlled-key
+   conditions (HashDoS) does a KEYED function like SipHash matter, and its security comes from a
+   secret key, not from "cryptographic inspiration" — Wikipedia itself classifies SipHash as
+   non-cryptographic. Fixed the bullet with the real HashDoS/SipHash story and removed the
+   duplicate load-factor bullet (already stated two sections up). No `SUBTOPICS` collision for
+   `hash-tables` (checked both forms and grepped `app.routes.ts` directly, confirmed
+   collision-free, left bare). Three subtopics, each independently verified via direct Node.js
+   execution, with one genuinely instructive detour along the way: (1) **fix-adjacent** — crafted
+   46 distinct two-character strings that all collide into bucket 0 of the main page's own
+   polynomial hash function (capacity 16), confirmed against 1,000 random strings spreading evenly
+   across all 16 buckets; then tested the "obvious" fix (prepend a secret salt) across 200 random
+   salts and found it defeated the collision in ZERO trials — a first attempt at a "keyed" defense
+   also failed for the same underlying reason (a simple additive salt-per-step preserves the
+   SAME shared structure the attack exploited) before a properly non-linear, every-step-mixed
+   construction was verified to defeat the attack in 172 of 200 trials (86%), which is the actual
+   mechanical reason SipHash is built the way it is; (2) **gap-closing** — the QnA names consistent
+   hashing's "only adjacent servers remap" claim with zero code or numbers; built a real ring with
+   virtual nodes (after an initial verification run returned a nonsensical "0% remapped, all keys
+   on one server" result — traced to a weak, poorly-mixing hash function in the TEST script itself,
+   not a main-page bug, fixed by switching to a proper FNV-1a hash) and measured 1,000 keys:
+   simple modulo hashing remapped 80.4% of keys when going from 4 to 5 servers, consistent hashing
+   remapped only 20.9% — with every single remapped key confirmed moving specifically to the new
+   server, matching the QnA's claim precisely; (3) **gap-closing** — the QnA describes a two-pass
+   and a "single-pass using an ordered map" approach to finding the first non-repeating character
+   with zero code for either; built both, verified byte-identical output across six test strings,
+   and clarified exactly what "single-pass" means here (single pass over the STRING; the second
+   loop iterates the map's own bounded set of distinct keys, not the string again). All three
+   `exercise.solution`/`theory.points`/`misconceptions` fields swept clean via the standing
+   bracket-balance/backtick-parity/apostrophe scripts (the three flagged apostrophe matches
+   confirmed safe, inside backtick-delimited `code:` fields). Build passed clean (foreground
+   execution under Node 22.23.2, explicit `EXITCODE:$?` capture, zero real `ERROR` lines). **No
+   interactive browser/preview tool was available in this session** — verified via the same
+   compiled-bundle-inspection fallback as the prior three batches: isolated the main `DsaHashTables`
+   component's own lazy chunk (by searching for its unique "Simple hash map with chaining" comment)
+   and confirmed the fixed HashDoS/SipHash text was present with the old crypto-hash claim and the
+   duplicate section heading both absent; confirmed all three subtopics' own unique function names
+   (`findColliding`, `ConsistentHashRing`, `firstNonRepeatingTwoPass`) each compiled into their own
+   separate lazy chunks; confirmed the `SUBTOPICS`/`SIDEBAR_MAP`/breadcrumb/search-index entries for
+   `hash-tables` (bare) and all three composite subtopic keys were present with matching content.
+   **DSA hub Phase 10: 4 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -11043,8 +11092,9 @@ check before any other new hub's first subtopic set:
   needs the full `.dsa-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }`
   rule (copied from the main topic page's own `.scss`, which defines it locally). No live
   playground (DSA theory/analysis content has no in-browser runtime) — plain `<app-code-block>`.
-  Phase 10: 3 of 21 topics have subtopics (`/dsa/big-o`, pilot batch; `/dsa/arrays`; `/dsa/strings`,
-  all 2026-10-08) — see "DSA hub subtopic wiring" section below for the `DsaNavComponent` accordion
+  Phase 10: 4 of 21 topics have subtopics (`/dsa/big-o`, pilot batch; `/dsa/arrays`; `/dsa/strings`;
+  `/dsa/hash-tables`, all 2026-10-08) — see "DSA hub subtopic wiring" section below for the
+  `DsaNavComponent` accordion
   structural fix (19th `*NavComponent`-based hub in a row missing it at pilot time), the
   `dsa-arrays` SUBTOPICS-map collision resolution (bare `arrays` collides with the C# hub's own
   topic), and the genuine main-page fixes found and verified by direct Node execution.

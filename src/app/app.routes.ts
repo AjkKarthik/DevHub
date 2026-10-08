@@ -4940,7 +4940,12 @@ export const routes: Routes = [
       { path: 'z-algorithm-pattern-matching', loadComponent: () => import('./components/fundamentals/dsa/strings/subtopics/z-algorithm-pattern-matching/z-algorithm-pattern-matching').then(m => m.ZAlgorithmPatternMatchingSubtopic) },
       { path: 'rabin-karp-rolling-hash', loadComponent: () => import('./components/fundamentals/dsa/strings/subtopics/rabin-karp-rolling-hash/rabin-karp-rolling-hash').then(m => m.RabinKarpRollingHashSubtopic) },
     ] },
-    { path: 'hash-tables',            loadComponent: () => import('./components/fundamentals/dsa/hash-tables/hash-tables').then(m => m.DsaHashTables) },
+    { path: 'hash-tables', children: [
+      { path: '', loadComponent: () => import('./components/fundamentals/dsa/hash-tables/hash-tables').then(m => m.DsaHashTables) },
+      { path: 'naive-salt-does-not-defeat-hashdos', loadComponent: () => import('./components/fundamentals/dsa/hash-tables/subtopics/naive-salt-does-not-defeat-hashdos/naive-salt-does-not-defeat-hashdos').then(m => m.NaiveSaltDoesNotDefeatHashdosSubtopic) },
+      { path: 'consistent-hashing-verified-remap-counts', loadComponent: () => import('./components/fundamentals/dsa/hash-tables/subtopics/consistent-hashing-verified-remap-counts/consistent-hashing-verified-remap-counts').then(m => m.ConsistentHashingVerifiedRemapCountsSubtopic) },
+      { path: 'first-non-repeating-character-two-ways', loadComponent: () => import('./components/fundamentals/dsa/hash-tables/subtopics/first-non-repeating-character-two-ways/first-non-repeating-character-two-ways').then(m => m.FirstNonRepeatingCharacterTwoWaysSubtopic) },
+    ] },
     { path: 'stacks-queues',          loadComponent: () => import('./components/fundamentals/dsa/stacks-queues/stacks-queues').then(m => m.DsaStacksQueues) },
     { path: 'linked-lists',           loadComponent: () => import('./components/fundamentals/dsa/linked-lists/linked-lists').then(m => m.DsaLinkedLists) },
     { path: 'doubly-linked-lists',    loadComponent: () => import('./components/fundamentals/dsa/doubly-linked-lists/doubly-linked-lists').then(m => m.DsaDoublyLinkedLists) },

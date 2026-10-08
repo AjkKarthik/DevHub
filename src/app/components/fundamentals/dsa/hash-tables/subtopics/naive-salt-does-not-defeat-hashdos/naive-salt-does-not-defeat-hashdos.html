@@ -1,0 +1,26 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Hash Tables" topicRoute="/dsa/hash-tables"
+    subtopicLabel="A Naive Salt Does Not Defeat HashDoS" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">A Naive Salt Does Not Defeat a HashDoS Attack</h1>
+  <p class="page-subtitle">The main page's own custom hash function can be exploited to collide 46 crafted keys into one bucket -- verified here, along with why the obvious fix (prepend a salt) completely fails to defend it.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This directly extends the main page's own fixed theory section on hash quality and HashDoS, demonstrating with a real crafted attack that the "obvious" salt-prepending defense genuinely fails, and why SipHash's actual keyed-throughout design is what makes a real defense work.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Hash Tables" topicRoute="/dsa/hash-tables"
+    [next]="{ label: 'Consistent Hashing: Verified Remap Counts', route: '/dsa/hash-tables/consistent-hashing-verified-remap-counts' }" />
+</div>

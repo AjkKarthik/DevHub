@@ -9999,7 +9999,14 @@ off here with a date.
   proper "Sliding Window for Substring Problems" section, closing a real gap (the revision list
   names "longest substring without repeating characters" but no codeTab ever showed it). Bare
   `strings` SUBTOPICS key collision-free. DSA hub Phase 10: 3 of 21.
-- [ ] `/dsa/hash-tables` — Hash Tables
+- [x] 2026-10-08 `/dsa/hash-tables` — Hash Tables. 3 subtopics (naive-salt-does-not-defeat-hashdos,
+  consistent-hashing-verified-remap-counts, first-non-repeating-character-two-ways). Main-page fix
+  verified via WebSearch: "cryptographically-inspired hash functions... preferred even for
+  non-cryptographic hash tables" has the real story backwards -- ordinary hash tables use FAST
+  non-cryptographic functions precisely because crypto hashes are slow by design; only HashDoS
+  needs a keyed function (SipHash), whose security comes from a secret key, not "crypto
+  inspiration". Also removed a genuinely duplicate load-factor bullet. Bare `hash-tables`
+  SUBTOPICS key collision-free. DSA hub Phase 10: 4 of 21.
 - [ ] `/dsa/stacks-queues` — Stacks & Queues
 - [ ] `/dsa/linked-lists` — Singly Linked Lists
 - [ ] `/dsa/doubly-linked-lists` — Doubly Linked Lists

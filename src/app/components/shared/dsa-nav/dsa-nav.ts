@@ -74,7 +74,24 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/dsa/hash-tables" routerLinkActive="active"><span class="nl-text">Hash Tables</span>@if(p.isDone('dsa-hash-tables')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/dsa/hash-tables" routerLinkActive="active">
+        <span class="nl-text">Hash Tables</span>
+        @if(p.isDone('dsa-hash-tables')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('hash-tables'); as hashSubs) {
+          <button type="button" class="nav-subtopics-toggle" (click)="toggleSubtopics('hash-tables', $event)">
+            {{ isSubtopicsExpanded('hash-tables') ? '▾' : '▸' }}
+          </button>
+        }
+      </a>
+      @if (subtopicsOf('hash-tables'); as hashSubs) {
+        @if (isSubtopicsExpanded('hash-tables')) {
+          <div class="nav-subtopics">
+            @for (sub of hashSubs; track sub.route) {
+              <a [routerLink]="sub.route" routerLinkActive="active" class="nav-subtopic-link">{{ sub.label }}</a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/dsa/stacks-queues" routerLinkActive="active"><span class="nl-text">Stacks &amp; Queues</span>@if(p.isDone('dsa-stacks-queues')){<span class="nl-done">✓</span>}</a>
     </div>
 

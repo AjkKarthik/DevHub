@@ -34495,6 +34495,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Open addressing requires careful tombstone handling on deletion to avoid breaking probe sequences.',
     ],
   },
+  'dsa/hash-tables/naive-salt-does-not-defeat-hashdos': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Consistent Hashing: Verified Remap Counts', route: '/dsa/hash-tables/consistent-hashing-verified-remap-counts' },
+      { label: 'Hash Tables (topic overview)', route: '/dsa/hash-tables' },
+    ],
+    tip: 'Prepending a secret salt to a vulnerable polynomial hash does not defeat a crafted-collision attack — verified across 200 random salts, the same keys stayed collided every single time. The fix needs the key mixed in non-linearly, at every step, which is how SipHash is actually built.',
+    gotchas: [
+      'A salt that shifts every attacker-crafted key’s bucket by the same amount does nothing — the attack only needs the keys to share a bucket with EACH OTHER, not to land in any particular numbered bucket.',
+    ],
+  },
+  'dsa/hash-tables/consistent-hashing-verified-remap-counts': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'A Naive Salt Does Not Defeat a HashDoS Attack', route: '/dsa/hash-tables/naive-salt-does-not-defeat-hashdos' },
+      { label: 'Finding the First Non-Repeating Character, Two Ways', route: '/dsa/hash-tables/first-non-repeating-character-two-ways' },
+    ],
+    tip: 'Measured directly: going from 4 to 5 servers remapped 80.4% of keys under simple modulo hashing, but only 20.9% under a consistent-hashing ring — and every single remapped key moved specifically to the new server, never between two existing ones.',
+    gotchas: [
+      'Virtual nodes (100+ per server) are what makes the SHARE of keys each server owns reasonably fair — with only 1 position per server, a new server could claim a tiny or enormous slice depending purely on chance.',
+    ],
+  },
+  'dsa/hash-tables/first-non-repeating-character-two-ways': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Consistent Hashing: Verified Remap Counts', route: '/dsa/hash-tables/consistent-hashing-verified-remap-counts' },
+      { label: 'Hash Tables (topic overview)', route: '/dsa/hash-tables' },
+    ],
+    tip: 'Both the two-pass and single-pass approaches build the identical frequency map in their first loop — the only difference is whether the SECOND loop re-scans the original string, or iterates the map’s own (much smaller) set of distinct keys.',
+    gotchas: [
+      'The single-pass version genuinely needs Map’s insertion-order guarantee — the two-pass version does not, since it only uses the frequency structure as a lookup table while re-scanning the original string.',
+    ],
+  },
   'dsa/trie': {
     apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
     related: [
