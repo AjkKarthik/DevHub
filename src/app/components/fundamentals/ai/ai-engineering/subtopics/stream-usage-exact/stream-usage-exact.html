@@ -1,0 +1,26 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="AI Engineering" topicRoute="/ai/ai-engineering"
+    subtopicLabel="Getting Exact Token Usage from a Stream" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">Getting Exact Token Usage from a Stream</h1>
+  <p class="page-subtitle">The streaming tab counted one token per received chunk and called it approximate. With stream_options.include_usage the API adds a final chunk with the exact prompt and completion token counts.</p>
+  <app-page-meta [readingTime]="4" difficulty="beginner" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This completes the production streaming example and the AI/ML hub's subtopics.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="AI Engineering" topicRoute="/ai/ai-engineering"
+    [prev]="{ label: 'An Aborted Stream Can End Without Throwing', route: '/ai/ai-engineering/aborted-stream-loop-ends-quietly' }" />
+</div>

@@ -1136,12 +1136,9 @@ When a hub's audit is complete, note it in Done History.
 
 ## Phase 10 — Deep-Dive Subtopic Pages ("Learn Mode")
 
-**Status: IN PROGRESS (rollout approved 2026-07-02 — user said "continue todo and implement
-for all topics", skipping a separate manual review pause). 2 of ~34 Angular topics done
-(counter, todo) — 836 topics total across all hubs, most with 3-6 subtopics each, so this is
-a multi-session effort worked one topic at a time per the Rollout plan below. Read this whole
-section before touching any code — it defines a new content tier and a new routing/nav/progress
-layer, not just more pages.**
+**Status: COMPLETE (2026-10-08). Every topic in every hub listed in the checklist below now has
+its deep-dive subtopic pages; the AI/ML hub (19/19, 57 subtopic pages) was the last to finish. No
+unchecked items remain. The history below is kept as the record of how the rollout was done.**
 
 ### Why this phase exists
 
@@ -10236,8 +10233,8 @@ off here with a date.
 - [x] 2026-10-08 `/ai/vector-databases` — Vector Databases (3 subtopics; fixed FAISS cosine conversion, HNSW/PQ memory, Pinecone v9 upsert)
 - [x] 2026-10-08 `/ai/mlops` — MLOps (3 subtopics; fixed vLLM command, throughput claims, pd.cut bins, MLflow stages)
 - [x] 2026-10-08 `/ai/hugging-face` — Hugging Face (3 subtopics; fixed apply_chat_template flow, InferenceClient, fp32 memory claim)
-- [ ] `/ai/evaluating-llms` — Evaluating LLM Outputs
-- [ ] `/ai/ai-engineering` — AI Engineering Patterns
+- [x] 2026-10-08 `/ai/evaluating-llms` — Evaluating LLMs (3 subtopics; fixed ROUGE example outputs, judge position-bias figure)
+- [x] 2026-10-08 `/ai/ai-engineering` — AI Engineering (3 subtopics; fixed stream cancellation, abort handling, exact usage)
 
 ---
 

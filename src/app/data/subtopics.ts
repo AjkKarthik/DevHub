@@ -4516,4 +4516,14 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: "HfInference Is Now InferenceClient", route: '/ai/hugging-face/hfinference-is-now-inferenceclient' },
     { label: "32GB of fp32 Weights Does Fit a 40GB A100", route: '/ai/hugging-face/fp32-llama-memory-math' },
   ],
+  'evaluating-llms': [
+    { label: "Recomputing the ROUGE Examples", route: '/ai/evaluating-llms/rouge-example-recomputed' },
+    { label: "ROUGE-1 Gives a Wrong Fact a Perfect Score", route: '/ai/evaluating-llms/rouge-1-ignores-word-order' },
+    { label: "The 65% Figure Is Swap Consistency", route: '/ai/evaluating-llms/judge-position-bias-figure' },
+  ],
+  'ai-engineering': [
+    { label: "req close Fires Before the Stream Starts", route: '/ai/ai-engineering/req-close-fires-before-the-stream' },
+    { label: "An Aborted Stream Can End Without Throwing", route: '/ai/ai-engineering/aborted-stream-loop-ends-quietly' },
+    { label: "Getting Exact Token Usage from a Stream", route: '/ai/ai-engineering/exact-token-usage-from-a-stream' },
+  ],
 };

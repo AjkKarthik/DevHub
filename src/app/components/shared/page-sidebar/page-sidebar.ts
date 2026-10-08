@@ -32997,6 +32997,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Evaluation must be re-run whenever the model, prompt, or retrieval pipeline changes, not treated as a one-time check.',
     ],
   },
+  "ai/evaluating-llms/rouge-example-recomputed": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "ROUGE-1 Gives a Wrong Fact a Perfect Score", route: '/ai/evaluating-llms/rouge-1-ignores-word-order' },
+      { label: "Evaluating LLMs (overview)", route: '/ai/evaluating-llms' },
+    ],
+    tip: "Run a metric example before quoting its output; small tokeniser choices change the numbers.",
+    gotchas: ["The tokeniser strips punctuation, so France's becomes frances and no longer matches france.","Recall and precision use different denominators: reference length and hypothesis length."],
+  },
+  "ai/evaluating-llms/rouge-1-ignores-word-order": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "Recomputing the ROUGE Examples", route: '/ai/evaluating-llms/rouge-example-recomputed' },
+      { label: "The 65% Figure Is Swap Consistency", route: '/ai/evaluating-llms/judge-position-bias-figure' },
+      { label: "Evaluating LLMs (overview)", route: '/ai/evaluating-llms' },
+    ],
+    tip: "Report ROUGE-2 or ROUGE-L alongside ROUGE-1, and never use n-gram overlap alone to judge correctness.",
+    gotchas: ["Adding not changes the meaning completely but costs only a little overlap.","ROUGE-L (longest common subsequence) is order-aware but still blind to meaning."],
+  },
+  "ai/evaluating-llms/judge-position-bias-figure": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "ROUGE-1 Gives a Wrong Fact a Perfect Score", route: '/ai/evaluating-llms/rouge-1-ignores-word-order' },
+      { label: "Evaluating LLMs (overview)", route: '/ai/evaluating-llms' },
+    ],
+    tip: "Measure your own judge's swap consistency on a sample before trusting its pairwise verdicts.",
+    gotchas: ["Bias figures depend on judge model, prompt and task; later studies report much lower bias for newer judges.","Ties from inconsistent verdicts reduce how many comparisons count, so you need more samples."],
+  },
   'ai/mlops': {
     apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
     related: [
@@ -33139,6 +33167,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Evaluation is a first-class engineering concern, not an afterthought, since LLM outputs are non-deterministic and quality is often subjective.',
       'Design for model-swappability — hardcoding assumptions about a specific model\'s quirks creates technical debt as newer models become available.',
     ],
+  },
+  "ai/ai-engineering/req-close-fires-before-the-stream": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "An Aborted Stream Can End Without Throwing", route: '/ai/ai-engineering/aborted-stream-loop-ends-quietly' },
+      { label: "AI Engineering (overview)", route: '/ai/ai-engineering' },
+    ],
+    tip: "Detect disconnects on the response: res.on(close) with a check that res.writableFinished is false.",
+    gotchas: ["res also emits close after a normal finish; the writableFinished check separates that from a disconnect.","Without cancellation, every abandoned request is still billed for its full output."],
+  },
+  "ai/ai-engineering/aborted-stream-loop-ends-quietly": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "req close Fires Before the Stream Starts", route: '/ai/ai-engineering/req-close-fires-before-the-stream' },
+      { label: "Getting Exact Token Usage from a Stream", route: '/ai/ai-engineering/exact-token-usage-from-a-stream' },
+      { label: "AI Engineering (overview)", route: '/ai/ai-engineering' },
+    ],
+    tip: "After the stream loop, check signal.aborted before doing any finishing work such as writing [DONE] or recording usage.",
+    gotchas: ["An abort before the response headers arrive can still reject the request call itself, so keep the try/catch.","Writing to a response whose client has gone is wasted work, not an error you will see."],
+  },
+  "ai/ai-engineering/exact-token-usage-from-a-stream": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "An Aborted Stream Can End Without Throwing", route: '/ai/ai-engineering/aborted-stream-loop-ends-quietly' },
+      { label: "AI Engineering (overview)", route: '/ai/ai-engineering' },
+    ],
+    tip: "Turn on include_usage for every streamed call you bill or monitor; it costs nothing extra.",
+    gotchas: ["The usage chunk has an empty choices array, so code that reads choices[0] must use optional chaining.","If the stream is aborted the usage chunk never arrives."],
   },
   'ai/ai-agents': {
     apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,

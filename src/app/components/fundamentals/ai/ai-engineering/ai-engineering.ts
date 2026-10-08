@@ -105,7 +105,11 @@ async function streamChat(req: IncomingMessage, res: ServerResponse) {
   });
 
   const abortController = new AbortController();
-  req.on('close', () => abortController.abort());  // cancel if client disconnects
+  // Cancel if the client disconnects. Listen on res, not req: req emits 'close'
+  // as soon as its body has been read, before this line even runs.
+  res.on('close', () => {
+    if (!res.writableFinished) abortController.abort();
+  });
 
   try {
     const stream = await client.chat.completions.create(
@@ -113,20 +117,19 @@ async function streamChat(req: IncomingMessage, res: ServerResponse) {
         model: 'gpt-4o-mini',
         messages,
         stream: true,
+        stream_options: { include_usage: true },  // final chunk carries exact usage
         max_tokens: 1024,
       },
       { signal: abortController.signal }
     );
 
-    let totalTokens = 0;
+    let usage: OpenAI.CompletionUsage | undefined;
     for await (const chunk of stream) {
-      const delta = chunk.choices[0]?.delta?.content ?? '';
-      if (delta) {
-        res.write(\`data: \${JSON.stringify({ delta })}\\n\\n\`);
-        totalTokens += 1;  // approximate; use tiktoken for exact count
-      }
+      const delta = chunk.choices[0]?.delta?.content ?? '';   // usage chunk has no choices
+      if (delta) res.write(\`data: \${JSON.stringify({ delta })}\\n\\n\`);
+      if (chunk.usage) usage = chunk.usage;                   // exact prompt/completion tokens
     }
-
+    if (abortController.signal.aborted) return;  // the loop can end quietly after an abort
     res.write('data: [DONE]\\n\\n');
     res.end();
   } catch (err: unknown) {
