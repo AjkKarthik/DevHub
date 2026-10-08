@@ -933,6 +933,170 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A spawned thread may outlive its caller, so it needs a move closure; use thread::scope when threads only need to borrow local data.',
     ],
   },
+  'rust/unsafe-ffi': {
+    apis: ["unsafe { }","*const T / *mut T","unsafe extern \"C\"","#[unsafe(no_mangle)]","CString / CStr","std::slice::from_raw_parts"],
+    docs: RUST_DEFAULT.docs, resources: RUST_DEFAULT.resources,
+    related: [
+      { label: 'Rust Home', route: '/rust' },
+      { label: 'Async/Await', route: '/rust/async-await' },
+      { label: 'Web Frameworks', route: '/rust/web-frameworks' },
+    ],
+    tip: 'Every unsafe block should carry a // SAFETY: comment explaining which invariant makes it sound, and should be wrapped in the smallest safe function that can uphold that invariant. Reviewers check the comment; clippy can enforce it with undocumented_unsafe_blocks.',
+    gotchas: [
+      'unsafe does not turn off the borrow checker or type checking — it only allows five extra operations; the rest of the language rules still apply.',
+      'Undefined behaviour in an unsafe block can corrupt safe code far away; a bug may only appear in release builds or on another platform.',
+      'In the 2024 edition extern blocks must be written unsafe extern and no_mangle/export_name must be wrapped as #[unsafe(...)].',
+    ],
+  },
+  'rust/web-frameworks': {
+    apis: ["Router::route / nest / merge","Path / Query / Json / State","IntoResponse","FromRequestParts","axum::serve","tower-http layers"],
+    docs: RUST_DEFAULT.docs, resources: RUST_DEFAULT.resources,
+    related: [
+      { label: 'Rust Home', route: '/rust' },
+      { label: 'Unsafe Rust & FFI', route: '/rust/unsafe-ffi' },
+      { label: 'Building REST APIs', route: '/rust/rest-apis' },
+    ],
+    tip: 'Read handler compile errors from the extractor list: every argument except the last must implement FromRequestParts, and the last may consume the body. Enabling the macros feature and adding #[debug_handler] turns the generic "Handler is not implemented" error into a precise message.',
+    gotchas: [
+      'Axum 0.8 changed path captures from /:id to /{id} and wildcards from /*rest to /{*rest}. The old syntax compiles but the router panics when the route is added.',
+      'Body-consuming extractors (Json, Form, String, Bytes) must be the last handler argument, otherwise the handler does not implement Handler.',
+      'A std::sync::MutexGuard held across .await makes the handler future !Send, and axum refuses it. Drop the guard before awaiting or use tokio::sync::Mutex.',
+    ],
+  },
+  'rust/rest-apis': {
+    apis: ["impl IntoResponse for AppError","Result<Json<T>, AppError>","thiserror","Arc<RwLock<HashMap>>","Query<Pagination>","tower::ServiceExt::oneshot"],
+    docs: RUST_DEFAULT.docs, resources: RUST_DEFAULT.resources,
+    related: [
+      { label: 'Rust Home', route: '/rust' },
+      { label: 'Web Frameworks', route: '/rust/web-frameworks' },
+      { label: 'Serialization', route: '/rust/serialization' },
+    ],
+    tip: 'Give the whole service one error enum with an IntoResponse impl. Handlers then return Result<_, AppError> and use ? everywhere, and the mapping from failure to status code lives in exactly one place.',
+    gotchas: [
+      'Returning anyhow::Error directly from a handler does not compile: it does not implement IntoResponse. Wrap it in your own error type.',
+      'Never put internal error details (SQL text, file paths) in a 500 body. Log the source, return a generic message.',
+      'PUT replaces the whole resource and must be idempotent; PATCH updates part of it. Model PATCH bodies with Option fields so absent fields stay unchanged.',
+    ],
+  },
+  'rust/serialization': {
+    apis: ["#[derive(Serialize, Deserialize)]","serde_json::to_string / from_str","#[serde(rename_all, default, skip)]","#[serde(tag = \"...\")]","serde_json::Value","deserialize_with / serialize_with"],
+    docs: RUST_DEFAULT.docs, resources: RUST_DEFAULT.resources,
+    related: [
+      { label: 'Rust Home', route: '/rust' },
+      { label: 'Building REST APIs', route: '/rust/rest-apis' },
+      { label: 'CLI Tools', route: '/rust/cli-tools' },
+    ],
+    tip: 'Make Option fields tolerant with #[serde(default)] and fail loudly on typos with #[serde(deny_unknown_fields)] — pick deliberately per type. Public APIs usually want to ignore unknown fields so new server fields do not break old clients.',
+    gotchas: [
+      'Unknown JSON fields are silently ignored by default. Add #[serde(deny_unknown_fields)] when a typo in a config file should be an error.',
+      'A missing field is an error unless the field is an Option or has #[serde(default)] — even if the type implements Default.',
+      'Externally tagged enums are the default: a unit variant serializes as a plain string ("Active") but a data variant as an object ({"Banned":{...}}). Choose tag/content explicitly for APIs.',
+    ],
+  },
+  'rust/cli-tools': {
+    apis: ["#[derive(Parser)]","#[derive(Subcommand)]","#[arg(short, long, default_value_t)]","std::io::stdin().lines()","std::process::ExitCode","anyhow::Context"],
+    docs: RUST_DEFAULT.docs, resources: RUST_DEFAULT.resources,
+    related: [
+      { label: 'Rust Home', route: '/rust' },
+      { label: 'Serialization', route: '/rust/serialization' },
+      { label: 'WASM with Rust', route: '/rust/wasm' },
+    ],
+    tip: 'Keep main thin: parse arguments, call a run(args) -> anyhow::Result<()> function, and map the result to an exit code. Everything except argument parsing is then an ordinary, testable function.',
+    gotchas: [
+      'println! panics if stdout is closed (for example mytool | head -1 once head exits). Long-running output loops should use writeln!(stdout.lock(), ...) and handle the BrokenPipe error.',
+      'Use eprintln! for diagnostics and errors so they do not pollute stdout, which other programs may be piping.',
+      'clap reports parse errors and --help itself and exits with code 2 for usage errors; Parser::parse() never returns on failure. Use try_parse when you need to handle it yourself.',
+    ],
+  },
+  'rust/wasm': {
+    apis: ["wasm32-unknown-unknown","crate-type = [\"cdylib\"]","#[wasm_bindgen]","wasm-pack build --target web","js-sys / web-sys","JsValue"],
+    docs: RUST_DEFAULT.docs, resources: RUST_DEFAULT.resources,
+    related: [
+      { label: 'Rust Home', route: '/rust' },
+      { label: 'CLI Tools', route: '/rust/cli-tools' },
+      { label: 'Testing in Rust', route: '/rust/testing' },
+    ],
+    tip: 'Design the Rust side as a coarse-grained API: hand it a whole buffer or a whole task and get one result back. Thousands of tiny calls across the JS/Wasm boundary, each copying a string, can easily cost more than the work itself.',
+    gotchas: [
+      'WebAssembly cannot touch the DOM directly. Every browser API goes through generated JavaScript glue (web-sys), so DOM-heavy code is rarely faster in Wasm.',
+      'Strings are copied and re-encoded (UTF-8 in Rust, UTF-16 in JS) on every crossing. Pass numbers or typed arrays where you can.',
+      'Panics in Wasm surface as a cryptic "unreachable" error unless you install console_error_panic_hook in development.',
+    ],
+  },
+  'rust/testing': {
+    apis: ["#[test] / #[cfg(test)]","assert! / assert_eq! / assert_ne!","#[should_panic(expected = \"...\")]","tests/ directory","/// ``` doc tests","proptest!"],
+    docs: RUST_DEFAULT.docs, resources: RUST_DEFAULT.resources,
+    related: [
+      { label: 'Rust Home', route: '/rust' },
+      { label: 'WASM with Rust', route: '/rust/wasm' },
+      { label: 'Macros', route: '/rust/macros' },
+    ],
+    tip: 'Write a failing test before fixing a bug, and make assertions say what they mean: assert_eq!(left, right, "context {x}") prints both values and your message, which is usually all you need to diagnose a failure in CI.',
+    gotchas: [
+      'Tests run in parallel threads by default. Tests that share a file, port or environment variable can interfere — give each its own temp path or run with -- --test-threads=1.',
+      'println! output from passing tests is captured and hidden. Use cargo test -- --nocapture (or --show-output) to see it.',
+      'Integration tests in tests/ can only use the public API of a library crate. A binary-only crate has nothing to import — move logic into src/lib.rs.',
+    ],
+  },
+  'rust/macros': {
+    apis: ["macro_rules!","$x:expr / $t:ty / $i:ident","$( ... ),*","#[macro_export]","proc_macro_derive","syn / quote"],
+    docs: RUST_DEFAULT.docs, resources: RUST_DEFAULT.resources,
+    related: [
+      { label: 'Rust Home', route: '/rust' },
+      { label: 'Testing in Rust', route: '/rust/testing' },
+      { label: 'Performance & Profiling', route: '/rust/performance-profiling' },
+    ],
+    tip: 'Reach for a function or a generic first and a macro last. Macros are the right tool when you need something functions cannot do — a variable number of arguments, generating items such as structs or impls, or compile-time checks on syntax.',
+    gotchas: [
+      'Macro arguments are substituted as syntax, not values: $x used twice in the expansion evaluates the expression twice. Bind it once with let.',
+      'macro_rules! macros must be defined before use in source order within a module, unless exported with #[macro_export] (which places them at the crate root).',
+      'Procedural macros must live in their own crate with proc-macro = true, and they slow down compile times — especially with syn\'s full feature set.',
+    ],
+  },
+  'rust/performance-profiling': {
+    apis: ["cargo build --release","[profile.release]","criterion / std::hint::black_box","cargo flamegraph","Vec::with_capacity","Cow<str>"],
+    docs: RUST_DEFAULT.docs, resources: RUST_DEFAULT.resources,
+    related: [
+      { label: 'Rust Home', route: '/rust' },
+      { label: 'Macros', route: '/rust/macros' },
+      { label: 'Rust Cheat Sheet', route: '/rust/cheatsheet' },
+    ],
+    tip: 'Never judge speed from a debug build. cargo run without --release can be 10–100x slower for iterator-heavy code, and it also checks integer overflow. Profile the release build, with debug symbols enabled so the profiler can name functions.',
+    gotchas: [
+      'The optimiser deletes work whose result is never used, so naive timing loops can measure nothing. Wrap inputs and outputs in std::hint::black_box or use criterion.',
+      'Debug builds panic on integer overflow while release builds wrap by default — a behaviour difference, not just a speed difference.',
+      'clone() inside a loop is a common hidden cost: cloning a String or Vec allocates and copies every time.',
+    ],
+  },
+  'rust/cheatsheet': {
+    apis: ["Ownership rules","Option / Result methods","Iterator adapters","Common derives","Smart pointers","Cargo commands"],
+    docs: RUST_DEFAULT.docs, resources: RUST_DEFAULT.resources,
+    related: [
+      { label: 'Rust Home', route: '/rust' },
+      { label: 'Performance & Profiling', route: '/rust/performance-profiling' },
+      { label: 'Rust Interview Prep', route: '/rust/interview-prep' },
+    ],
+    tip: 'Bookmark std\'s Option and Result pages: most "how do I unwrap this nicely" questions are answered by one combinator (map, and_then, ok_or, unwrap_or_else, ?).',
+    gotchas: [
+      'String vs &str: own with String, accept &str in parameters.',
+      'unwrap() and expect() panic — use ? in functions that return Result or Option.',
+      'Rc and RefCell are single-threaded; their thread-safe counterparts are Arc and Mutex/RwLock.',
+    ],
+  },
+  'rust/interview-prep': {
+    apis: ["Ownership & borrowing","Lifetimes","Traits & generics","Error handling","Smart pointers","Send / Sync / async"],
+    docs: RUST_DEFAULT.docs, resources: RUST_DEFAULT.resources,
+    related: [
+      { label: 'Rust Home', route: '/rust' },
+      { label: 'Rust Cheat Sheet', route: '/rust/cheatsheet' },
+    ],
+    tip: 'In interviews, connect each answer to the compiler guarantee behind it: "this is a compile error because..." is far stronger than describing syntax. Mention the trade-off (runtime cost, flexibility, ergonomics) whenever you choose between two tools.',
+    gotchas: [
+      'Do not claim Rust prevents all concurrency bugs — it prevents data races in safe code, not deadlocks or logic races.',
+      'Do not say lifetimes make values live longer; annotations only describe relationships the compiler checks.',
+      'unsafe does not disable the borrow checker; it unlocks a few extra operations whose invariants you must uphold.',
+    ],
+  },
   'rust/async-await': {
     apis: ['async fn', 'Future', 'tokio::spawn', 'join! / select!', 'spawn_blocking', 'tokio::sync'],
     docs: RUST_DEFAULT.docs, resources: RUST_DEFAULT.resources,
