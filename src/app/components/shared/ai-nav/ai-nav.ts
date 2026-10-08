@@ -59,15 +59,60 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/ai/gradient-boosting" routerLinkActive="active"><span class="nl-text">Gradient Boosting (XGBoost)</span>@if(p.isDone('ai-gradient-boosting')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/ai/clustering" routerLinkActive="active"><span class="nl-text">Clustering &amp; Dimensionality</span>@if(p.isDone('ai-clustering')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/ai/gradient-boosting" routerLinkActive="active"><span class="nl-text">Gradient Boosting (XGBoost)</span>@if(p.isDone('ai-gradient-boosting')){<span class="nl-done">✓</span>}@if (subtopicsOf('gradient-boosting'); as gradientBoostingSubs) {<button type="button" class="nav-subtopics-toggle" (click)="toggleSubtopics('gradient-boosting', $event)">{{ isSubtopicsExpanded('gradient-boosting') ? '▾' : '▸' }}</button>}</a>
+      @if (subtopicsOf('gradient-boosting'); as gradientBoostingSubs) {
+        @if (isSubtopicsExpanded('gradient-boosting')) {
+          <div class="nav-subtopics">
+            @for (sub of gradientBoostingSubs; track sub.route) {
+              <a [routerLink]="sub.route" routerLinkActive="active" class="nav-subtopic-link">{{ sub.label }}</a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/ai/clustering" routerLinkActive="active"><span class="nl-text">Clustering &amp; Dimensionality</span>@if(p.isDone('ai-clustering')){<span class="nl-done">✓</span>}@if (subtopicsOf('clustering'); as clusteringSubs) {<button type="button" class="nav-subtopics-toggle" (click)="toggleSubtopics('clustering', $event)">{{ isSubtopicsExpanded('clustering') ? '▾' : '▸' }}</button>}</a>
+      @if (subtopicsOf('clustering'); as clusteringSubs) {
+        @if (isSubtopicsExpanded('clustering')) {
+          <div class="nav-subtopics">
+            @for (sub of clusteringSubs; track sub.route) {
+              <a [routerLink]="sub.route" routerLinkActive="active" class="nav-subtopic-link">{{ sub.label }}</a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Deep Learning</p>
-      <a routerLink="/ai/neural-networks" routerLinkActive="active"><span class="nl-text">Neural Networks</span>@if(p.isDone('ai-neural-networks')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/ai/computer-vision" routerLinkActive="active"><span class="nl-text">CNNs &amp; Computer Vision</span>@if(p.isDone('ai-computer-vision')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/ai/transformers" routerLinkActive="active"><span class="nl-text">Transformers &amp; Attention</span>@if(p.isDone('ai-transformers')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/ai/neural-networks" routerLinkActive="active"><span class="nl-text">Neural Networks</span>@if(p.isDone('ai-neural-networks')){<span class="nl-done">✓</span>}@if (subtopicsOf('neural-networks'); as neuralNetworksSubs) {<button type="button" class="nav-subtopics-toggle" (click)="toggleSubtopics('neural-networks', $event)">{{ isSubtopicsExpanded('neural-networks') ? '▾' : '▸' }}</button>}</a>
+      @if (subtopicsOf('neural-networks'); as neuralNetworksSubs) {
+        @if (isSubtopicsExpanded('neural-networks')) {
+          <div class="nav-subtopics">
+            @for (sub of neuralNetworksSubs; track sub.route) {
+              <a [routerLink]="sub.route" routerLinkActive="active" class="nav-subtopic-link">{{ sub.label }}</a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/ai/computer-vision" routerLinkActive="active"><span class="nl-text">CNNs &amp; Computer Vision</span>@if(p.isDone('ai-computer-vision')){<span class="nl-done">✓</span>}@if (subtopicsOf('computer-vision'); as computerVisionSubs) {<button type="button" class="nav-subtopics-toggle" (click)="toggleSubtopics('computer-vision', $event)">{{ isSubtopicsExpanded('computer-vision') ? '▾' : '▸' }}</button>}</a>
+      @if (subtopicsOf('computer-vision'); as computerVisionSubs) {
+        @if (isSubtopicsExpanded('computer-vision')) {
+          <div class="nav-subtopics">
+            @for (sub of computerVisionSubs; track sub.route) {
+              <a [routerLink]="sub.route" routerLinkActive="active" class="nav-subtopic-link">{{ sub.label }}</a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/ai/transformers" routerLinkActive="active"><span class="nl-text">Transformers &amp; Attention</span>@if(p.isDone('ai-transformers')){<span class="nl-done">✓</span>}@if (subtopicsOf('transformers'); as transformersSubs) {<button type="button" class="nav-subtopics-toggle" (click)="toggleSubtopics('transformers', $event)">{{ isSubtopicsExpanded('transformers') ? '▾' : '▸' }}</button>}</a>
+      @if (subtopicsOf('transformers'); as transformersSubs) {
+        @if (isSubtopicsExpanded('transformers')) {
+          <div class="nav-subtopics">
+            @for (sub of transformersSubs; track sub.route) {
+              <a [routerLink]="sub.route" routerLinkActive="active" class="nav-subtopic-link">{{ sub.label }}</a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

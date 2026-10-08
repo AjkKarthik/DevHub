@@ -32639,6 +32639,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Sequential training cannot be parallelized across trees the way random forest trees can, meaning generally longer training time.',
     ],
   },
+  "ai/gradient-boosting/lightgbm-callbacks-belong-in-fit": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "LightGBM subsample Needs subsample_freq", route: '/ai/gradient-boosting/lightgbm-subsample-needs-subsample-freq' },
+      { label: "Gradient Boosting (XGBoost) (overview)", route: '/ai/gradient-boosting' },
+    ],
+    tip: "Check model.best_iteration_ after fitting; 0 (or the full n_estimators) means early stopping never ran.",
+    gotchas: ["Unknown constructor arguments end up in **kwargs and are passed to the booster as parameters, so a typo does not raise.","LightGBM 4.7 also deprecates eval_set in favour of eval_X and eval_y, though eval_set still works."],
+  },
+  "ai/gradient-boosting/lightgbm-subsample-needs-subsample-freq": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "LightGBM Callbacks Belong in fit()", route: '/ai/gradient-boosting/lightgbm-callbacks-belong-in-fit' },
+      { label: "Scaling the Target Does Not Help Tree Boosters", route: '/ai/gradient-boosting/scaling-the-target-does-not-help-tree-boosters' },
+      { label: "Gradient Boosting (XGBoost) (overview)", route: '/ai/gradient-boosting' },
+    ],
+    tip: "In LightGBM set subsample_freq=1 together with subsample to sample rows for every tree; in XGBoost subsample alone is enough.",
+    gotchas: ["The same name means different things in XGBoost and LightGBM, so copying a parameter grid between them is risky.","Row sampling with a fixed random_state is reproducible; changing the seed changes the model."],
+  },
+  "ai/gradient-boosting/scaling-the-target-does-not-help-tree-boosters": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "LightGBM subsample Needs subsample_freq", route: '/ai/gradient-boosting/lightgbm-subsample-needs-subsample-freq' },
+      { label: "Gradient Boosting (XGBoost) (overview)", route: '/ai/gradient-boosting' },
+    ],
+    tip: "Leave y as is for squared-error boosting; reach for log1p(y) or a different objective only when relative error is what matters.",
+    gotchas: ["Regularisation (lambda, min_child_weight) is measured in gradient units, so heavy rescaling of y can shift how strong it is; usually negligible.","After a log transform, remember to invert predictions with expm1 and that the model then predicts a geometric rather than arithmetic mean."],
+  },
   'ai/clustering': {
     apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
     related: [
@@ -32649,6 +32677,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'DBSCAN and hierarchical clustering don\'t require specifying K, but introduce their own hyperparameters (epsilon, linkage) requiring similar tuning judgment.',
       'The real test of a clustering result is whether the discovered groups are meaningful for the actual business question, not just the metric score.',
     ],
+  },
+  "ai/clustering/the-kmeans-assign-step-put-every-point-in-one-cluster": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "PCA by Power Iteration Matches scikit-learn", route: '/ai/clustering/pca-by-power-iteration-matches-scikit-learn' },
+      { label: "Clustering & Dimensionality Reduction (overview)", route: '/ai/clustering' },
+    ],
+    tip: "Write argmin as a plain loop that tracks both the best index and the best distance; it is easier to check than a nested reduce.",
+    gotchas: ["The page's own Challenge solution for the assign step was correct; only the full kmeans function had the bug.","A clustering that converges in one iteration with every label equal is a red flag, not a fast success."],
+  },
+  "ai/clustering/pca-by-power-iteration-matches-scikit-learn": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "The K-Means Assign Step Put Every Point in One Cluster", route: '/ai/clustering/the-kmeans-assign-step-put-every-point-in-one-cluster' },
+      { label: "One k-means++ Run Is Not Enough", route: '/ai/clustering/one-kmeans-plus-plus-run-is-not-enough' },
+      { label: "Clustering & Dimensionality Reduction (overview)", route: '/ai/clustering' },
+    ],
+    tip: "Power iteration is fine for a few components of a small matrix; for real work use an SVD-based library (scikit-learn PCA or numpy.linalg.svd).",
+    gotchas: ["Eigenvectors are only defined up to sign, so a component may come out flipped compared with another library; projections flip with it.","Power iteration converges slowly when two eigenvalues are close; check the result or use more iterations."],
+  },
+  "ai/clustering/one-kmeans-plus-plus-run-is-not-enough": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "PCA by Power Iteration Matches scikit-learn", route: '/ai/clustering/pca-by-power-iteration-matches-scikit-learn' },
+      { label: "Clustering & Dimensionality Reduction (overview)", route: '/ai/clustering' },
+    ],
+    tip: "Set n_init=10 (or more) explicitly when you care about the clustering, and compare the inertia of the runs.",
+    gotchas: ["n_init=\"auto\" means 10 runs for init=\"random\" but only 1 for \"k-means++\".","More runs cost proportionally more time; on large data use MiniBatchKMeans with several inits instead."],
   },
   'ai/neural-networks': {
     apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
@@ -32662,6 +32718,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Residual (skip) connections enable training much deeper networks than were previously practical.',
     ],
   },
+  "ai/neural-networks/dropout-before-batchnorm-shifts-the-variance": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "Measuring Vanishing Gradients Through 20 Layers", route: '/ai/neural-networks/measuring-vanishing-gradients-through-20-layers' },
+      { label: "Neural Networks (overview)", route: '/ai/neural-networks' },
+    ],
+    tip: "Use Linear, BatchNorm, activation, Dropout — or drop Dropout entirely in heavily batch-normalised conv nets.",
+    gotchas: ["The effect only shows at eval time, so training curves look normal.","Inverted dropout keeps the mean the same but not the variance; that variance gap is what BatchNorm records."],
+  },
+  "ai/neural-networks/measuring-vanishing-gradients-through-20-layers": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "Dropout Before BatchNorm Shifts the Variance", route: '/ai/neural-networks/dropout-before-batchnorm-shifts-the-variance' },
+      { label: "Xavier Init Shrinks ReLU Activations", route: '/ai/neural-networks/xavier-init-shrinks-relu-activations' },
+      { label: "Neural Networks (overview)", route: '/ai/neural-networks' },
+    ],
+    tip: "Log per-layer gradient norms early in training; a gap of many orders of magnitude between the first and last layers means early layers are not learning.",
+    gotchas: ["Exploding gradients come from the same product of factors, just with factors above 1.","Gradient clipping fixes explosions, not vanishing."],
+  },
+  "ai/neural-networks/xavier-init-shrinks-relu-activations": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "Measuring Vanishing Gradients Through 20 Layers", route: '/ai/neural-networks/measuring-vanishing-gradients-through-20-layers' },
+      { label: "Neural Networks (overview)", route: '/ai/neural-networks' },
+    ],
+    tip: "Use He (Kaiming) initialisation with ReLU-family activations; PyTorch nn.Linear defaults to a different, smaller scheme, so set it explicitly for deep ReLU stacks.",
+    gotchas: ["Batch normalisation hides a bad initialisation, but only if every layer has it.","GELU and SiLU behave close to ReLU here; He is the usual choice for them too."],
+  },
   'ai/transformers': {
     apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
     related: [
@@ -32673,6 +32757,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The tradeoff for parallelism and long-range modeling is quadratic computational cost in sequence length — a driver of ongoing research into efficient long-context transformers.',
       'RNNs struggle to retain far-earlier information in long sequences; self-attention directly connects every position to every other regardless of distance.',
     ],
+  },
+  "ai/transformers/self-attention-is-permutation-equivariant": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "Measuring Why Scores Are Divided by sqrt(d_k)", route: '/ai/transformers/measuring-why-scores-are-divided-by-sqrt-dk' },
+      { label: "Transformers & Attention (overview)", route: '/ai/transformers' },
+    ],
+    tip: "Remember the distinction: equivariant means outputs move with inputs; invariant means outputs do not change. A pooled (summed or averaged) attention output is invariant.",
+    gotchas: ["Causal masking breaks the symmetry partly: each token only sees earlier positions, so decoders get some order information even without positional encoding.","Mean-pooling a sentence after attention throws the order away completely if there is no positional signal."],
+  },
+  "ai/transformers/measuring-why-scores-are-divided-by-sqrt-dk": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "Self-Attention Is Permutation-Equivariant", route: '/ai/transformers/self-attention-is-permutation-equivariant' },
+      { label: "A Fully Masked Row Makes Softmax NaN", route: '/ai/transformers/a-fully-masked-row-makes-softmax-nan' },
+      { label: "Transformers & Attention (overview)", route: '/ai/transformers' },
+    ],
+    tip: "Think of 1 / sqrt(d_k) as a temperature that keeps scores near unit variance, whatever the head size.",
+    gotchas: ["The std ≈ sqrt(d_k) argument assumes components with unit variance; after LayerNorm and projections this is roughly true at initialisation, not exactly during training.","A peaked softmax has tiny gradients for the non-max keys, which slows learning."],
+  },
+  "ai/transformers/a-fully-masked-row-makes-softmax-nan": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "Measuring Why Scores Are Divided by sqrt(d_k)", route: '/ai/transformers/measuring-why-scores-are-divided-by-sqrt-dk' },
+      { label: "Transformers & Attention (overview)", route: '/ai/transformers' },
+    ],
+    tip: "Use a large negative number (such as -1e9) instead of -Infinity, or skip and zero the output for rows that are fully masked.",
+    gotchas: ["One NaN in a batch spreads through the loss and makes every gradient NaN.","Padding queries usually do not contribute to the loss, which is why the NaN can appear only in some batches."],
   },
   'ai/llm-fundamentals': {
     apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
@@ -32779,6 +32891,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Data augmentation (crops, flips, color jitter) reduces overfitting risk when labeled image data is scarce, the common case in most real applications.',
       'Choosing an appropriate pre-trained backbone balances accuracy against inference latency and model size — the largest model isn\'t always right for constrained deployment.',
     ],
+  },
+  "ai/computer-vision/pretrained-true-loads-the-old-weights": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "CNN Convolution Is Cross-Correlation", route: '/ai/computer-vision/cnn-convolution-is-cross-correlation' },
+      { label: "CNNs & Computer Vision (overview)", route: '/ai/computer-vision' },
+    ],
+    tip: "Use weights=ResNet50_Weights.DEFAULT and preprocess with weights.transforms(), so the resize and crop match how those weights were trained.",
+    gotchas: ["V1 and V2 weights were trained with different recipes; reuse each one's own transforms().","pretrained=False now maps to weights=None, which is still the default."],
+  },
+  "ai/computer-vision/cnn-convolution-is-cross-correlation": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "pretrained=True Loads the Old Weights", route: '/ai/computer-vision/pretrained-true-loads-the-old-weights' },
+      { label: "A One-Pixel Shift Changes Pooled Output", route: '/ai/computer-vision/a-one-pixel-shift-changes-pooled-output' },
+      { label: "CNNs & Computer Vision (overview)", route: '/ai/computer-vision' },
+    ],
+    tip: "When porting a hand-designed filter from signal processing (such as a Sobel kernel), flip it or check the sign of the response.",
+    gotchas: ["For learned kernels the flip does not matter: the network simply learns the flipped weights.","Symmetric kernels (blur, Laplacian) give the same result either way, which hides the difference."],
+  },
+  "ai/computer-vision/a-one-pixel-shift-changes-pooled-output": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "CNN Convolution Is Cross-Correlation", route: '/ai/computer-vision/cnn-convolution-is-cross-correlation' },
+      { label: "CNNs & Computer Vision (overview)", route: '/ai/computer-vision' },
+    ],
+    tip: "Do not rely on pooling for shift robustness; use augmentation with random crops and translations, or anti-aliased (blur-then-subsample) pooling.",
+    gotchas: ["Stride-1 convolution is shift-equivariant; stride 2 (in conv or pool) is where the property breaks.","Global average pooling at the end is invariant to shifts of the final feature map, but the strided layers before it are not."],
   },
   'ai/hugging-face': {
     apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,

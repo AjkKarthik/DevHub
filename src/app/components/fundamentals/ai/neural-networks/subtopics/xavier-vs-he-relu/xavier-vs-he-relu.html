@@ -1,0 +1,26 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Neural Networks" topicRoute="/ai/neural-networks"
+    subtopicLabel="Xavier Init Shrinks ReLU Activations" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">Xavier Init Shrinks ReLU Activations</h1>
+  <p class="page-subtitle">The page pairs Xavier with sigmoid/tanh and He with ReLU. Measured through 20 ReLU layers: Xavier shrank the activation spread from 0.585 to 0.00075, while He kept it near 0.75.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This backs up the initialisation bullet. CNNs and Computer Vision apply these layers to images.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Neural Networks" topicRoute="/ai/neural-networks"
+    [prev]="{ label: 'Measuring Vanishing Gradients Through 20 Layers', route: '/ai/neural-networks/measuring-vanishing-gradients-through-20-layers' }" />
+</div>

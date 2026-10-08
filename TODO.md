@@ -10223,11 +10223,11 @@ off here with a date.
 - [x] 2026-10-08 `/ai/math-for-ml` — Mathematics for ML (3 subtopics: silent matmul shape bug, gradient at w=1, L1 soft-threshold)
 - [x] 2026-10-08 `/ai/linear-logistic-regression` — Linear & Logistic Regression (3 subtopics: separable data diverges, MSE vs CE gradient, odds ratios)
 - [x] 2026-10-08 `/ai/decision-trees` — Decision Trees & Random Forests (3 subtopics: ccp_alpha default 0, max_features defaults, impurity importance bias)
-- [ ] `/ai/gradient-boosting` — Gradient Boosting (XGBoost)
-- [ ] `/ai/clustering` — Clustering & Dimensionality Reduction
-- [ ] `/ai/neural-networks` — Neural Networks
-- [ ] `/ai/computer-vision` — CNNs & Computer Vision
-- [ ] `/ai/transformers` — Transformers & Attention
+- [x] 2026-10-08 `/ai/gradient-boosting` — Gradient Boosting (3 subtopics: LightGBM callbacks in fit, subsample_freq, target scaling)
+- [x] 2026-10-08 `/ai/clustering` — Clustering & Dimensionality Reduction (3 subtopics: k-means assign bug, PCA power iteration, n_init)
+- [x] 2026-10-08 `/ai/neural-networks` — Neural Networks (3 subtopics: Dropout before BatchNorm, measured vanishing gradients, Xavier vs He)
+- [x] 2026-10-08 `/ai/computer-vision` — CNNs & Computer Vision (3 subtopics: weights API, cross-correlation, pooling shift)
+- [x] 2026-10-08 `/ai/transformers` — Transformers & Attention (3 subtopics: equivariance, sqrt(d_k) measured, fully masked row NaN)
 - [ ] `/ai/llm-fundamentals` — LLM Fundamentals
 - [ ] `/ai/fine-tuning` — Fine-tuning & RLHF
 - [ ] `/ai/rag` — RAG

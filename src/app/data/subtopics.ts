@@ -4451,4 +4451,29 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: "RandomForestRegressor Uses All Features by Default", route: '/ai/decision-trees/random-forest-regressor-uses-all-features-by-default' },
     { label: "Impurity Importance Favours High-Cardinality Features", route: '/ai/decision-trees/impurity-importance-favours-high-cardinality-features' },
   ],
+  'gradient-boosting': [
+    { label: "LightGBM Callbacks Belong in fit()", route: '/ai/gradient-boosting/lightgbm-callbacks-belong-in-fit' },
+    { label: "LightGBM subsample Needs subsample_freq", route: '/ai/gradient-boosting/lightgbm-subsample-needs-subsample-freq' },
+    { label: "Scaling the Target Does Not Help Tree Boosters", route: '/ai/gradient-boosting/scaling-the-target-does-not-help-tree-boosters' },
+  ],
+  'clustering': [
+    { label: "The K-Means Assign Step Put Every Point in One Cluster", route: '/ai/clustering/the-kmeans-assign-step-put-every-point-in-one-cluster' },
+    { label: "PCA by Power Iteration Matches scikit-learn", route: '/ai/clustering/pca-by-power-iteration-matches-scikit-learn' },
+    { label: "One k-means++ Run Is Not Enough", route: '/ai/clustering/one-kmeans-plus-plus-run-is-not-enough' },
+  ],
+  'neural-networks': [
+    { label: "Dropout Before BatchNorm Shifts the Variance", route: '/ai/neural-networks/dropout-before-batchnorm-shifts-the-variance' },
+    { label: "Measuring Vanishing Gradients Through 20 Layers", route: '/ai/neural-networks/measuring-vanishing-gradients-through-20-layers' },
+    { label: "Xavier Init Shrinks ReLU Activations", route: '/ai/neural-networks/xavier-init-shrinks-relu-activations' },
+  ],
+  'computer-vision': [
+    { label: "pretrained=True Loads the Old Weights", route: '/ai/computer-vision/pretrained-true-loads-the-old-weights' },
+    { label: "CNN Convolution Is Cross-Correlation", route: '/ai/computer-vision/cnn-convolution-is-cross-correlation' },
+    { label: "A One-Pixel Shift Changes Pooled Output", route: '/ai/computer-vision/a-one-pixel-shift-changes-pooled-output' },
+  ],
+  'transformers': [
+    { label: "Self-Attention Is Permutation-Equivariant", route: '/ai/transformers/self-attention-is-permutation-equivariant' },
+    { label: "Measuring Why Scores Are Divided by sqrt(d_k)", route: '/ai/transformers/measuring-why-scores-are-divided-by-sqrt-dk' },
+    { label: "A Fully Masked Row Makes Softmax NaN", route: '/ai/transformers/a-fully-masked-row-makes-softmax-nan' },
+  ],
 };

@@ -35,11 +35,11 @@ export class AiComputerVision {
     {
       heading: 'Convolutional Layers',
       points: [
-        'A conv layer slides a kernel (e.g. 3×3×C) over the input spatial dimensions, computing a dot product at each position.',
+        'A conv layer slides a kernel (e.g. 3×3×C) over the input spatial dimensions, computing a dot product at each position. Strictly this is cross-correlation: deep-learning frameworks do not flip the kernel, unlike convolution in signal processing.',
         'Each kernel detects one pattern (edge, colour, texture). Multiple kernels → multiple feature maps (channels).',
         'Parameters: kernel size, stride (step size), padding (add zeros at border to preserve spatial dims).',
         'Key property: weight sharing — the same kernel is applied at every position. Dramatically fewer parameters than a fully-connected layer for images.',
-        'Translation equivariance: if the input shifts, the feature map shifts by the same amount. Pooling adds translation invariance.',
+        'Translation equivariance: if the input shifts, the feature map shifts by the same amount (exactly so only for stride 1). Pooling adds a little local invariance, but strided pooling is not shift-invariant: moving the input by one pixel can change the pooled output.',
       ],
     },
     {
@@ -68,7 +68,7 @@ export class AiComputerVision {
         'Fine-tuning strategy: freeze backbone, train classification head first. Then unfreeze last N layers and fine-tune with a small learning rate.',
         'Few-shot: even with 100 labelled examples, a pre-trained backbone outperforms a CNN trained from scratch on thousands.',
         'Data augmentation is critical with small datasets: random horizontal flip, random crop, colour jitter, mixup, cutmix.',
-        'torchvision.models: resnet50(pretrained=True), efficientnet_b0(pretrained=True), vit_b_16(pretrained=True). One line to load a state-of-the-art model.',
+        'torchvision.models: resnet50(weights=ResNet50_Weights.DEFAULT), efficientnet_b0(weights="DEFAULT"), vit_b_16(weights="DEFAULT"). The old pretrained=True is deprecated since torchvision 0.13 and loads the legacy V1 weights.',
       ],
     },
     {
@@ -139,7 +139,9 @@ function maxPool(input: number[][], size = 2, stride = 2): number[][] {
 // import torchvision.transforms as T
 //
 // # Load pre-trained ResNet-50
-// model = models.resnet50(pretrained=True)
+// from torchvision.models import ResNet50_Weights
+// weights = ResNet50_Weights.DEFAULT          # IMAGENET1K_V2, 80.9% top-1
+// model = models.resnet50(weights=weights)   # pretrained=True is deprecated
 //
 // # Replace classification head for our task (e.g. 5 classes)
 // in_features = model.fc.in_features
@@ -173,7 +175,7 @@ function maxPool(input: number[][], size = 2, stride = 2): number[][] {
 model = build_custom_cnn()
 model.fit(X_train, y_train, epochs=50)  # poor accuracy, overfitting`,
       right: `# Use transfer learning — pre-trained features generalise
-model = models.resnet50(pretrained=True)
+model = models.resnet50(weights=ResNet50_Weights.DEFAULT)
 model.fc = nn.Linear(2048, 10)
 # Fine-tune just the head; use data augmentation`,
       explanation: 'CNNs need hundreds of thousands of images to learn good features from scratch. With small datasets, always start from a pre-trained backbone and fine-tune.',
@@ -204,9 +206,11 @@ transform = T.ToTensor()  # missing Normalize`,
       wrong: `# After unfreezing backbone, using the same LR as training head
 optimizer = Adam(model.parameters(), lr=1e-3)  # destroys pre-trained features`,
       right: `# Use 10×–100× smaller LR for the backbone vs the head
+head = list(model.fc.parameters())
+backbone = [p for n, p in model.named_parameters() if not n.startswith('fc.')]
 optimizer = Adam([
-  {'params': model.backbone.parameters(), 'lr': 1e-5},
-  {'params': model.head.parameters(), 'lr': 1e-3},
+  {'params': backbone, 'lr': 1e-5},
+  {'params': head, 'lr': 1e-3},
 ])`,
       explanation: 'Pre-trained backbone weights encode valuable features. A large learning rate overwrites them rapidly. Use differential learning rates: small for backbone, larger for the classification head.',
     },
