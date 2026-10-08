@@ -114,6 +114,69 @@ const DIFF: Record<string, string> = Object.fromEntries(
         @if (p.isDone('rust-async-await')) {<span class="nl-done">✓</span>}
         @if (d('rust-async-await'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
       </a>
+      <a routerLink="/rust/unsafe-ffi" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Unsafe Rust &amp; FFI</span>
+        @if (p.isDone('rust-unsafe-ffi')) {<span class="nl-done">✓</span>}
+        @if (d('rust-unsafe-ffi'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Building Things</p>
+      <a routerLink="/rust/web-frameworks" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Web Frameworks</span>
+        @if (p.isDone('rust-web-frameworks')) {<span class="nl-done">✓</span>}
+        @if (d('rust-web-frameworks'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+      </a>
+      <a routerLink="/rust/rest-apis" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Building REST APIs</span>
+        @if (p.isDone('rust-rest-apis')) {<span class="nl-done">✓</span>}
+        @if (d('rust-rest-apis'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+      </a>
+      <a routerLink="/rust/serialization" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Serialization</span>
+        @if (p.isDone('rust-serialization')) {<span class="nl-done">✓</span>}
+        @if (d('rust-serialization'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+      </a>
+      <a routerLink="/rust/cli-tools" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">CLI Tools</span>
+        @if (p.isDone('rust-cli-tools')) {<span class="nl-done">✓</span>}
+        @if (d('rust-cli-tools'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+      </a>
+      <a routerLink="/rust/wasm" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">WASM with Rust</span>
+        @if (p.isDone('rust-wasm')) {<span class="nl-done">✓</span>}
+        @if (d('rust-wasm'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Craft &amp; Ops</p>
+      <a routerLink="/rust/testing" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Testing in Rust</span>
+        @if (p.isDone('rust-testing')) {<span class="nl-done">✓</span>}
+        @if (d('rust-testing'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+      </a>
+      <a routerLink="/rust/macros" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Macros</span>
+        @if (p.isDone('rust-macros')) {<span class="nl-done">✓</span>}
+        @if (d('rust-macros'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+      </a>
+      <a routerLink="/rust/performance-profiling" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Performance &amp; Profiling</span>
+        @if (p.isDone('rust-performance-profiling')) {<span class="nl-done">✓</span>}
+        @if (d('rust-performance-profiling'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Reference</p>
+      <a routerLink="/rust/cheatsheet" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Rust Cheat Sheet</span>
+      </a>
+      <a routerLink="/rust/interview-prep" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Rust Interview Prep</span>
+      </a>
     </div>
   `,
   styles: []

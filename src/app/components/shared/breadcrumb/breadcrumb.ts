@@ -1577,6 +1577,17 @@ const RUST_LABELS: Record<string, string> = {
   'smart-pointers': 'Smart Pointers',
   'concurrency-threads': 'Concurrency & Threads',
   'async-await': 'Async/Await',
+  'unsafe-ffi': 'Unsafe Rust & FFI',
+  'web-frameworks': 'Web Frameworks',
+  'rest-apis': 'Building REST APIs',
+  'serialization': 'Serialization',
+  'cli-tools': 'CLI Tools',
+  'wasm': 'WASM with Rust',
+  'testing': 'Testing in Rust',
+  'macros': 'Macros',
+  'performance-profiling': 'Performance & Profiling',
+  'cheatsheet': 'Rust Cheat Sheet',
+  'interview-prep': 'Rust Interview Prep',
 };
 
 const GO_LABELS: Record<string, string> = {

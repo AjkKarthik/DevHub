@@ -2606,6 +2606,17 @@ export const routes: Routes = [
     { path: 'smart-pointers', loadComponent: () => import('./components/backend/rust/smart-pointers/smart-pointers').then(m => m.RustSmartPointers) },
     { path: 'concurrency-threads', loadComponent: () => import('./components/backend/rust/concurrency-threads/concurrency-threads').then(m => m.RustConcurrencyThreads) },
     { path: 'async-await', loadComponent: () => import('./components/backend/rust/async-await/async-await').then(m => m.RustAsyncAwait) },
+    { path: 'unsafe-ffi', loadComponent: () => import('./components/backend/rust/unsafe-ffi/unsafe-ffi').then(m => m.RustUnsafeFfi) },
+    { path: 'web-frameworks', loadComponent: () => import('./components/backend/rust/web-frameworks/web-frameworks').then(m => m.RustWebFrameworks) },
+    { path: 'rest-apis', loadComponent: () => import('./components/backend/rust/rest-apis/rest-apis').then(m => m.RustRestApis) },
+    { path: 'serialization', loadComponent: () => import('./components/backend/rust/serialization/serialization').then(m => m.RustSerialization) },
+    { path: 'cli-tools', loadComponent: () => import('./components/backend/rust/cli-tools/cli-tools').then(m => m.RustCliTools) },
+    { path: 'wasm', loadComponent: () => import('./components/backend/rust/wasm/wasm').then(m => m.RustWasm) },
+    { path: 'testing', loadComponent: () => import('./components/backend/rust/testing/testing').then(m => m.RustTesting) },
+    { path: 'macros', loadComponent: () => import('./components/backend/rust/macros/macros').then(m => m.RustMacros) },
+    { path: 'performance-profiling', loadComponent: () => import('./components/backend/rust/performance-profiling/performance-profiling').then(m => m.RustPerformanceProfiling) },
+    { path: 'cheatsheet', loadComponent: () => import('./components/backend/rust/cheatsheet/cheatsheet').then(m => m.RustCheatsheet) },
+    { path: 'interview-prep', loadComponent: () => import('./components/backend/rust/interview-prep/interview-prep').then(m => m.RustInterviewPrep) },
   ] },
   // ── Data Hubs ─────────────────────────────────────────────────────────────
   { path: 'mongodb', children: [

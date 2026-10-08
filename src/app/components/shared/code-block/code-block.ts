@@ -9,6 +9,10 @@ import csharp from 'highlight.js/lib/languages/csharp';
 import sql from 'highlight.js/lib/languages/sql';
 import css from 'highlight.js/lib/languages/css';
 import rust from 'highlight.js/lib/languages/rust';
+import java from 'highlight.js/lib/languages/java';
+import python from 'highlight.js/lib/languages/python';
+import yaml from 'highlight.js/lib/languages/yaml';
+import gherkin from 'highlight.js/lib/languages/gherkin';
 
 hljs.registerLanguage('typescript', typescript);
 hljs.registerLanguage('html', xml);
@@ -18,11 +22,15 @@ hljs.registerLanguage('csharp', csharp);
 hljs.registerLanguage('sql', sql);
 hljs.registerLanguage('css', css);
 hljs.registerLanguage('rust', rust);
+hljs.registerLanguage('java', java);
+hljs.registerLanguage('python', python);
+hljs.registerLanguage('yaml', yaml);
+hljs.registerLanguage('gherkin', gherkin);
 
 export interface CodeTab {
   label: string;
   code: string;
-  language?: 'typescript' | 'html' | 'scss' | 'bash' | 'csharp' | 'sql' | 'css' | 'rust';
+  language?: 'typescript' | 'html' | 'scss' | 'bash' | 'csharp' | 'sql' | 'css' | 'rust' | 'java' | 'python' | 'yaml' | 'gherkin';
 }
 
 @Component({
