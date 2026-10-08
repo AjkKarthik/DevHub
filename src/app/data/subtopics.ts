@@ -4256,4 +4256,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Evaluating RPN Expressions With a Stack', route: '/dsa/stacks-queues/rpn-expression-evaluation-with-a-stack' },
     { label: 'Min-Stack: Pairs vs. Two Aux Stacks', route: '/dsa/stacks-queues/min-stack-pairs-vs-two-aux-stacks' },
   ],
+  'linked-lists': [
+    { label: 'Palindrome Check Mutates the List Without Restoring', route: '/dsa/linked-lists/palindrome-check-mutates-the-list-without-restoring' },
+    { label: 'Recursive Reversal: Call Stack Depth, Measured', route: '/dsa/linked-lists/recursive-reversal-call-stack-depth-measured' },
+    { label: 'Deleting a Middle Node Without the Predecessor', route: '/dsa/linked-lists/deleting-a-middle-node-without-the-predecessor' },
+  ],
 };

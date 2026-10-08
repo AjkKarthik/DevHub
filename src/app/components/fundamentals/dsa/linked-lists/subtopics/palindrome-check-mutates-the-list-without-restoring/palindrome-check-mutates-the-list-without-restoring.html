@@ -1,0 +1,26 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Linked Lists" topicRoute="/dsa/linked-lists"
+    subtopicLabel="Palindrome Check Mutates the List Without Restoring" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">Palindrome Check Mutates the List Without Restoring It</h1>
+  <p class="page-subtitle">Tested directly: the main page's own O(1)-space palindrome solution permanently shortens the caller's list. Verified the exact mechanism and built the fix that restores the original structure.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This is the fix directly behind the main page's own corrected theory section and its new sixth mistake entry on hidden side effects from in-place subroutines, applied to the page's own Palindrome Challenge solution.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Linked Lists" topicRoute="/dsa/linked-lists"
+    [next]="{ label: 'Recursive Reversal: Call Stack Depth, Measured', route: '/dsa/linked-lists/recursive-reversal-call-stack-depth-measured' }" />
+</div>

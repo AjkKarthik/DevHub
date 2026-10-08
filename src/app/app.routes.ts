@@ -4952,7 +4952,12 @@ export const routes: Routes = [
       { path: 'rpn-expression-evaluation-with-a-stack', loadComponent: () => import('./components/fundamentals/dsa/stacks-queues/subtopics/rpn-expression-evaluation-with-a-stack/rpn-expression-evaluation-with-a-stack').then(m => m.RpnExpressionEvaluationWithAStackSubtopic) },
       { path: 'min-stack-pairs-vs-two-aux-stacks', loadComponent: () => import('./components/fundamentals/dsa/stacks-queues/subtopics/min-stack-pairs-vs-two-aux-stacks/min-stack-pairs-vs-two-aux-stacks').then(m => m.MinStackPairsVsTwoAuxStacksSubtopic) },
     ]},
-    { path: 'linked-lists',           loadComponent: () => import('./components/fundamentals/dsa/linked-lists/linked-lists').then(m => m.DsaLinkedLists) },
+    { path: 'linked-lists', children: [
+      { path: '', loadComponent: () => import('./components/fundamentals/dsa/linked-lists/linked-lists').then(m => m.DsaLinkedLists) },
+      { path: 'palindrome-check-mutates-the-list-without-restoring', loadComponent: () => import('./components/fundamentals/dsa/linked-lists/subtopics/palindrome-check-mutates-the-list-without-restoring/palindrome-check-mutates-the-list-without-restoring').then(m => m.PalindromeCheckMutatesTheListWithoutRestoringSubtopic) },
+      { path: 'recursive-reversal-call-stack-depth-measured', loadComponent: () => import('./components/fundamentals/dsa/linked-lists/subtopics/recursive-reversal-call-stack-depth-measured/recursive-reversal-call-stack-depth-measured').then(m => m.RecursiveReversalCallStackDepthMeasuredSubtopic) },
+      { path: 'deleting-a-middle-node-without-the-predecessor', loadComponent: () => import('./components/fundamentals/dsa/linked-lists/subtopics/deleting-a-middle-node-without-the-predecessor/deleting-a-middle-node-without-the-predecessor').then(m => m.DeletingAMiddleNodeWithoutThePredecessorSubtopic) },
+    ]},
     { path: 'doubly-linked-lists',    loadComponent: () => import('./components/fundamentals/dsa/doubly-linked-lists/doubly-linked-lists').then(m => m.DsaDoublyLinkedLists) },
     { path: 'binary-trees',           loadComponent: () => import('./components/fundamentals/dsa/binary-trees/binary-trees').then(m => m.DsaBinaryTrees) },
     { path: 'bst',                    loadComponent: () => import('./components/fundamentals/dsa/bst/bst').then(m => m.DsaBst) },

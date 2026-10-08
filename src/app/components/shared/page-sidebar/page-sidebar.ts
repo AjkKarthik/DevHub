@@ -34461,6 +34461,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The same technique finds the middle of a list in one pass, showing how one pattern solves multiple seemingly-different problems.',
     ],
   },
+  'dsa/linked-lists/palindrome-check-mutates-the-list-without-restoring': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Recursive Reversal: Call Stack Depth, Measured', route: '/dsa/linked-lists/recursive-reversal-call-stack-depth-measured' },
+      { label: 'Linked Lists (topic overview)', route: '/dsa/linked-lists' },
+    ],
+    tip: 'Verified directly: the main page\'s own O(1)-space palindrome solution permanently shortens the caller\'s list — traversing from the original head after the call returns one node fewer than were passed in. The fix costs one extra O(n) pass to reverse the second half back and reconnect it.',
+    gotchas: [
+      'A function that only ever reads its "head" parameter can still mutate the caller\'s list — nodes are mutable objects reached by pointer, and rewriting .next pointers reachable from head is enough.',
+    ],
+  },
+  'dsa/linked-lists/recursive-reversal-call-stack-depth-measured': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Palindrome Check Mutates the List Without Restoring', route: '/dsa/linked-lists/palindrome-check-mutates-the-list-without-restoring' },
+      { label: 'Deleting a Middle Node Without the Predecessor', route: '/dsa/linked-lists/deleting-a-middle-node-without-the-predecessor' },
+    ],
+    tip: 'Instrumenting a real recursive reversal with a depth counter measured exactly 1,000 stack frames alive at once for a 1,000-node list, and exactly 2,000 for a 2,000-node list — a precise 1:1 relationship confirming the O(n) stack-space claim rather than just naming it.',
+    gotchas: [
+      'A stack frame stays alive until its OWN call returns, not until it makes its next call — reverseRecursive still has work left to do after its inner call returns, so the whole chain of frames must stay on the stack simultaneously.',
+    ],
+  },
+  'dsa/linked-lists/deleting-a-middle-node-without-the-predecessor': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Recursive Reversal: Call Stack Depth, Measured', route: '/dsa/linked-lists/recursive-reversal-call-stack-depth-measured' },
+      { label: 'Linked Lists (topic overview)', route: '/dsa/linked-lists' },
+    ],
+    tip: 'The copy-forward deletion trick does not actually delete the node the caller was given a reference to — it overwrites that node\'s value and unlinks the NEXT node instead. Verified it throws when attempted on the list\'s true last node, since there is no node after it to copy a value from.',
+    gotchas: [
+      'This only works when nothing else holds a separate reference to the specific node objects involved — the "deleted" value survives in a relabeled node, not a removed one.',
+    ],
+  },
   'dsa/doubly-linked-lists': {
     apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
     related: [

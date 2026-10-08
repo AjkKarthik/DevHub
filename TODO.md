@@ -10015,7 +10015,14 @@ off here with a date.
   replaced a duplicate theory bullet (restating the already-covered Monotonic Stack section) with a
   cross-reference to the Big-O topic's own amortized-doubling proof. Bare `stacks-queues` SUBTOPICS
   key collision-free. DSA hub Phase 10: 5 of 21.
-- [ ] `/dsa/linked-lists` — Singly Linked Lists
+- [x] 2026-10-08 `/dsa/linked-lists` — Singly Linked Lists. 3 subtopics
+  (palindrome-check-mutates-the-list-without-restoring, recursive-reversal-call-stack-depth-measured,
+  deleting-a-middle-node-without-the-predecessor). Main-page fix verified via direct Node execution:
+  the Palindrome Challenge solution permanently shortens the caller's list (traversing from head
+  after the call returns one node fewer) -- traced the exact mechanism and built the restore fix.
+  Also replaced a wholesale duplicate theory section (restating the already-covered Floyd's
+  algorithm section) with the new palindrome-mutation finding. Bare `linked-lists` SUBTOPICS key
+  collision-free. DSA hub Phase 10: 6 of 21.
 - [ ] `/dsa/doubly-linked-lists` — Doubly Linked Lists
 - [ ] `/dsa/binary-trees` — Binary Trees
 - [ ] `/dsa/bst` — Binary Search Trees

@@ -68,12 +68,12 @@ export class DsaLinkedLists {
       ],
     },
     {
-      heading: 'Fast and Slow Pointers: The Floyd Cycle Detection Pattern',
+      heading: 'In-Place Algorithms Can Have Hidden Side Effects',
       points: [
-        'The fast-and-slow (tortoise and hare) pointer technique advances one pointer twice as fast as another, allowing cycle detection in O(n) time and O(1) space, without needing a hash set to track visited nodes.',
-        'If a cycle exists, the fast and slow pointers are mathematically guaranteed to meet inside the cycle — the proof relies on the fact that once both pointers enter the cycle, the fast pointer gains one step on the slow pointer per iteration, eventually catching up.',
-        'After detecting a cycle, resetting one pointer to the head and advancing both pointers at the same (slow) speed finds the exact starting node of the cycle — a clever extension of the basic technique frequently asked as a interview follow-up.',
-        'The same fast-and-slow technique finds the middle of a linked list in a single pass (when the fast pointer reaches the end, the slow pointer is at the middle), demonstrating how one core pattern solves multiple seemingly different linked-list problems.',
+        'The page\'s own Palindrome Challenge solution below finds O(1) extra space by reversing the SECOND HALF of the list in-place, comparing it against the first half, and returning — without ever reversing it back. Verified directly: calling the solution on <code>[1,2,3,2,1]</code> and then traversing from the ORIGINAL head afterward returns <code>[1,2,3,2]</code> — one node shorter, and permanently restructured.',
+        'The mechanism: the middle node\'s own next pointer (call it <code>slow.next</code>) is never touched directly, but the node it originally pointed to has its OWN next pointer overwritten to null as the very first step of the reversal — severing the link to the rest of the original tail, which only remains reachable through the separate, never-reconnected <code>prev</code> pointer the reversal returns.',
+        'Fixing this costs exactly one more O(n) pass: after comparing, reverse the (already-reversed) second half AGAIN and reconnect it to the middle node — this restores the original structure byte-for-byte while keeping the overall time at O(n) and the extra space at O(1).',
+        'This is a general lesson, not specific to palindrome checking: ANY in-place linked-list subroutine (reversal, splitting) used inside a larger function that is expected to leave its input unchanged needs this same "mutate now, restore later" discipline — worth stating explicitly in an interview, since it is easy to produce a working answer that silently corrupts the caller\'s data structure.',
       ],
     },
   ];
@@ -205,6 +205,16 @@ let curr = dummy;
       wrong: `// Linked list: access element at index 5 → O(1)`,
       right: `// Linked list: must traverse from head → O(n) to reach index i`,
       explanation: 'Unlike arrays, linked lists have no index mapping to memory address. Traversal is always O(n).',
+    },
+    {
+      title: 'Not restoring list state after an in-place subroutine',
+      wrong: `// isPalindrome reverses the second half and never reverses it back
+// Verified: calling it on [1,2,3,2,1] then traversing from head
+// afterward returns [1,2,3,2] — the list is now permanently shorter`,
+      right: `// After comparing, reverse the second half AGAIN and reconnect it
+slow.next = reverse(reversedSecondHalf);
+// One extra O(n) pass restores the original list exactly`,
+      explanation: 'An in-place reversal used as a subroutine inside a function that should leave its input unchanged needs an explicit restore step — otherwise the caller\'s list is silently corrupted, even though the function only ever read its "head" parameter.',
     },
   ];
 

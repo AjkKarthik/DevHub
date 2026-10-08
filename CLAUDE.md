@@ -10733,6 +10733,61 @@ check before any other new hub's first subtopic set:
    own chunk was investigated and confirmed to be the subtopic's own text QUOTING the original,
    now-corrected main-page claim verbatim as part of explaining the fix — not a leftover bug).
    **DSA hub Phase 10: 5 of 21 topics complete.**
+12. **The `linked-lists` batch found and fixed a genuine, Node-verified destructive side effect in
+   the page's own Palindrome Challenge solution, plus a wholesale duplicate theory section
+   (matching the same pattern already found once on this hub's own Strings batch)**: the page's
+   fifth theory section ("Fast and Slow Pointers: The Floyd Cycle Detection Pattern") restated all
+   four concepts already fully covered by the page's own second theory section ("Slow and Fast
+   Pointer (Floyd's Algorithm)") — cycle detection via meeting, finding the cycle start by resetting
+   slow to head, and finding the middle in one pass. Rather than simply delete it, the section was
+   retitled and rewritten around a genuine, separately-verified finding: building `[1,2,3,2,1]` and
+   calling the page's own `isPalindrome` solution, then traversing from the SAME original `head`
+   reference afterward, returns `[1,2,3,2]` — the list is permanently one node shorter. Traced the
+   exact mechanism (the middle node's own next pointer is never touched, but the node it pointed to
+   has its next pointer overwritten to null as the first step of the in-place second-half reversal,
+   severing the path to the original tail, which only remains reachable via the separate,
+   never-reconnected `prev` pointer the reversal returns) and verified the fix (reverse the second
+   half back and reconnect it) restores the EXACT original array across four test cases (an odd
+   palindrome, an even non-palindrome, an even palindrome, and a longer non-palindrome) with zero
+   extra cost beyond one more O(n) pass. Added a sixth mistake entry documenting this, alongside the
+   rewritten theory section. No `SUBTOPICS` collision for `linked-lists` (checked both quoted and
+   unquoted forms in `subtopics.ts`, and grepped `app.routes.ts` directly, confirmed collision-free,
+   left bare). Every codeTab and the Challenge's own solution were independently verified via direct
+   Node.js execution first (`reverseList`, `middleNode` — including confirming it correctly returns
+   the LEFT-middle for even-length lists, matching its own comment — `mergeTwoLists`, `hasCycle`,
+   `detectCycle`, `removeNthFromEnd`, and `isPalindrome` against four palindrome/non-palindrome
+   cases), all matched before any fix was pursued. Three subtopics, each independently Node-verified:
+   (1) **fix-adjacent** — reproduces the exact mutation and the restoring fix side by side, with a
+   Try It on why adding a second restore pass does not change the overall O(n) time complexity (four
+   roughly-n/2-sized passes is still O(n) total, just a larger constant factor); (2) **gap-closing**
+   — the page's own theory and quiz state that recursive reversal costs O(n) stack space "because
+   each recursive call adds a stack frame," but no codeTab ever demonstrates it; built a real
+   recursive `reverseRecursive` instrumented with a depth counter, measuring an exact 1,000-deep
+   call stack for a 1,000-node list and exactly 2,000 for a 2,000-node list — confirming the precise
+   1:1 relationship rather than just naming it, with a Try It on why a single-branch (non-tree)
+   recursion still produces O(n) space (a frame stays alive until its OWN call returns, not until it
+   makes its next call); (3) **gap-closing** — the page's own QnA describes the copy-forward
+   O(1)-deletion trick (for deleting a node given only a pointer to it, with no predecessor) in
+   prose with zero code; built it, verified it correctly produces `[4,1,9]` from `[4,5,1,9]` when
+   given a reference to the "5" node, and deliberately triggered the QnA's own stated caveat by
+   attempting it on the list's true last node — confirmed it throws a `TypeError` immediately
+   (`Cannot read properties of null (reading 'val')`), since there is no next node to copy a value
+   from. All three `exercise.solution`/`theory.points`/`misconceptions` fields swept clean via the
+   standing bracket-balance/backtick-parity/apostrophe scripts (all three files balanced, all
+   backtick counts even, zero unescaped possessive apostrophes found); none of the three subtopic
+   titles contain an apostrophe, so no `[prev]`/`[next]`-label delimiter-collision risk applied this
+   batch. Build passed clean (foreground execution under Node 22.23.2, explicit `EXITCODE:$?`
+   capture, zero real `ERROR` lines). **No interactive browser/preview tool was available in this
+   session** — verified via the same compiled-bundle-inspection fallback as the prior five batches:
+   confirmed the OLD duplicate section heading was absent from every compiled chunk, confirmed the
+   NEW section heading, the restore-fix sentence, and the new sixth mistake entry were all present
+   in the main page's own chunk; confirmed all three subtopic classes
+   (`PalindromeCheckMutatesTheListWithoutRestoringSubtopic`/
+   `RecursiveReversalCallStackDepthMeasuredSubtopic`/
+   `DeletingAMiddleNodeWithoutThePredecessorSubtopic`) each compiled into their own separate lazy
+   chunk; confirmed the `SUBTOPICS`/`SIDEBAR_MAP`/breadcrumb/search-index entries for `linked-lists`
+   (bare) and all three composite subtopic keys were present with matching content.
+   **DSA hub Phase 10: 6 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -11150,12 +11205,13 @@ check before any other new hub's first subtopic set:
   needs the full `.dsa-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }`
   rule (copied from the main topic page's own `.scss`, which defines it locally). No live
   playground (DSA theory/analysis content has no in-browser runtime) — plain `<app-code-block>`.
-  Phase 10: 5 of 21 topics have subtopics (`/dsa/big-o`, pilot batch; `/dsa/arrays`; `/dsa/strings`;
-  `/dsa/hash-tables`; `/dsa/stacks-queues`, all 2026-10-08) — see "DSA hub subtopic wiring" section
-  below for the `DsaNavComponent` accordion
+  Phase 10: 6 of 21 topics have subtopics (`/dsa/big-o`, pilot batch; `/dsa/arrays`; `/dsa/strings`;
+  `/dsa/hash-tables`; `/dsa/stacks-queues`; `/dsa/linked-lists`, all 2026-10-08) — see "DSA hub
+  subtopic wiring" section below for the `DsaNavComponent` accordion
   structural fix (19th `*NavComponent`-based hub in a row missing it at pilot time), the
   `dsa-arrays` SUBTOPICS-map collision resolution (bare `arrays` collides with the C# hub's own
-  topic; `stacks-queues` confirmed collision-free, left bare), and the genuine main-page fixes
+  topic; `stacks-queues` and `linked-lists` both confirmed collision-free, left bare), and the
+  genuine main-page fixes
   found and verified by direct Node execution.
 - **AI/ML hub**: 19 trackable topic pages + 3 reference pages (22 cards total). Feature-complete.
   Violet theme `$accent: #7c3aed`, `$tint: #f5f3ff`, dark `#a78bfa`, dark bg `#1e1b4b`. Search prefix `ai-`. Route: `/ai`.

@@ -1,0 +1,27 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Linked Lists" topicRoute="/dsa/linked-lists"
+    subtopicLabel="Recursive Reversal: Call Stack Depth, Measured" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">Recursive Reversal: Call Stack Depth, Measured</h1>
+  <p class="page-subtitle">The main page's own theory and quiz state that recursive reversal costs O(n) stack space, with no code ever demonstrating it. Instrumented a real recursive reversal and measured the exact depth.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This builds and measures the exact recursive-reversal stack-depth claim the main page's own theory and quiz question 4 state but never demonstrate in code.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Linked Lists" topicRoute="/dsa/linked-lists"
+    [prev]="{ label: 'Palindrome Check Mutates the List Without Restoring', route: '/dsa/linked-lists/palindrome-check-mutates-the-list-without-restoring' }"
+    [next]="{ label: 'Deleting a Middle Node Without the Predecessor', route: '/dsa/linked-lists/deleting-a-middle-node-without-the-predecessor' }" />
+</div>
