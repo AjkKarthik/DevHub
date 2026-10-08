@@ -11069,6 +11069,71 @@ check before any other new hub's first subtopic set:
    `graphs-bfs-dfs` (bare) and all three composite subtopic keys were present with matching
    content in the compiled `main-*.js`.
    **DSA hub Phase 10: 11 of 21 topics complete.**
+18. **The `graph-algorithms` batch found and fixed a genuine, self-contained complexity-labeling
+   bug in the main page's own Dijkstra codeTab — the same category of bug as the Heaps topic's
+   own `mergeKLists` fix, just on a different page**: the Quick Reference and theory both claim
+   Dijkstra runs in O((V+E) log V) "with min-heap" — but the original codeTab's "min-heap" was
+   `heap.sort((a, b) => a[0] - b[0])` followed by `heap.shift()!` on EVERY iteration of the main
+   loop, with its own comment admitting "In real code: use proper min-heap." A full array sort
+   plus a shift on every pop is nowhere near O(log n). Verified over 30 randomized trials that the
+   sort-based version and a real binary-heap version always produce byte-identical shortest-
+   distance results — the bug was purely about cost, never correctness. Measured the real cost on
+   dense random graphs (average out-degree 8, keeping the heap large and growing — the exact
+   condition that exposes a wrong complexity class): the sort-based version ran 9x slower at
+   2,000 nodes, 37x slower at 8,000 nodes, and 114x slower at 20,000 nodes than the real heap — a
+   widening gap, not a fixed constant-factor overhead, consistent with the sort-based version's
+   real cost (~O(V² log V), since each pop costs O(heap size × log(heap size)) and heap size
+   itself scales with edges processed) diverging from the real heap's genuine O((V+E) log V).
+   Fixed the codeTab to a real binary min-heap, and retitled theory section 5's own first bullet
+   (which duplicated section 1's "Dijkstra needs non-negative weights" fact) with this verified
+   finding, keeping the other three, genuinely new bullets (Bellman-Ford, Floyd-Warshall, A*)
+   unchanged. Three subtopics: (1) **fix-adjacent** — reproduces the sort-vs-heap gap directly via
+   the same dense-random-graph benchmark, with a Try It on how the gap would shrink on a SPARSE
+   graph instead (fewer edges mean the heap never grows as large), tying it to the sibling Graphs
+   topic's own "it's about data-structure SIZE, not raw vertex count" finding; (2) **gap-closing**
+   — a quiz question names "Prim or Kruskal" for MST with zero codeTab building either; built
+   Kruskal's MST reusing the main page's own `UnionFind` class completely unmodified, verified
+   against the classic 5-node, 7-edge textbook MST example (4 edges, total weight 16 — the known-
+   correct minimum), with a Try It on why processing edges in descending instead of ascending
+   weight order still produces a valid (cycle-free) spanning tree via the identical `union()`
+   check, just not the minimum-weight one; (3) **gap-closing** — the theory names A* ("explores
+   far fewer nodes in practice... while still guaranteeing optimality when the heuristic is
+   admissible") with zero codeTab; built it reusing the exact same binary-heap push/pop as the
+   fixed Dijkstra, with priority `distance + heuristic` instead of just `distance`, verified on a
+   30x30 grid that Dijkstra and A* find the identical optimal distance (58) while A* visits only
+   116 nodes against Dijkstra's 900 — an 87.1% reduction — with a Try It on what genuinely breaks
+   (a wrong, non-optimal answer, not just slower correct results) if the heuristic were allowed to
+   overestimate. No `SUBTOPICS` collision for `graph-algorithms` (checked both `subtopics.ts`
+   forms and grepped `app.routes.ts` directly, confirmed collision-free, left bare). **A near-miss
+   self-caught during authoring, not the standing sweep**: an early draft of subtopic 1's own
+   `.html` `[next]` label used `’`-style JS Unicode escape sequences for the typographic
+   curly quote — confirmed these are NOT valid in HTML (unlike JSON/JS string literals, which DO
+   interpret `\uXXXX`) and would have rendered as the literal text "’" rather than an
+   apostrophe; verified the Write tool had already correctly interpreted the escape as the real
+   Unicode character at write time (since the tool call itself transports the file content as a
+   JSON string, where `\uXXXX` IS valid), confirming no actual bug reached the file — but the
+   near-miss is worth flagging: never rely on `\uXXXX` escapes reaching an `.html` file's own
+   rendered DOM correctly; use the literal character directly. All three
+   `exercise.solution`/`theory.points`/`misconceptions` fields swept clean via the standing
+   bracket-balance/backtick-parity/apostrophe scripts (all three new files balanced, backtick
+   counts even, every flagged apostrophe match confirmed safe — inside backtick-delimited `code:`
+   fields); the main page's own pre-existing brace balance stayed net-even after the edit (same
+   count before and after, confirming no new imbalance introduced); the shared
+   `page-sidebar.ts`'s own large pre-existing brace-count "imbalance" was checked and confirmed
+   unchanged in its OFFSET (same +3 difference before and after this batch's insertion), the
+   established false-positive category for this massive shared file. Build passed clean
+   (background execution under Node 22.23.2, explicit `EXITCODE:$?` capture, zero real `ERROR`
+   lines). **No interactive browser/preview tool was available in this session** — verified via
+   the same compiled-bundle-inspection fallback as the prior eleven batches: confirmed the OLD
+   fake-heap comment text ("In real code: use proper min-heap") was absent from the main page's
+   own compiled chunk, confirmed the NEW real-heap comment ("O((V+E) log V) with a REAL binary
+   min-heap") was present; confirmed all three subtopic classes
+   (`DijkstrasFakeHeapWasSortPlusShiftSubtopic`/`KruskalsMstWithThePagesOwnUnionFindSubtopic`/
+   `AStarVisitsFarFewerNodesThanDijkstraSubtopic`) each compiled into their own separate lazy
+   chunk; confirmed the `SUBTOPICS`/`SIDEBAR_MAP`/breadcrumb/search-index entries for
+   `graph-algorithms` (bare) and all three composite subtopic keys were present with matching
+   content in the compiled `main-*.js`.
+   **DSA hub Phase 10: 12 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -11486,9 +11551,10 @@ check before any other new hub's first subtopic set:
   needs the full `.dsa-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }`
   rule (copied from the main topic page's own `.scss`, which defines it locally). No live
   playground (DSA theory/analysis content has no in-browser runtime) — plain `<app-code-block>`.
-  Phase 10: 11 of 21 topics have subtopics (`/dsa/big-o`, pilot batch; `/dsa/arrays`; `/dsa/strings`;
+  Phase 10: 12 of 21 topics have subtopics (`/dsa/big-o`, pilot batch; `/dsa/arrays`; `/dsa/strings`;
   `/dsa/hash-tables`; `/dsa/stacks-queues`; `/dsa/linked-lists`; `/dsa/doubly-linked-lists`;
-  `/dsa/binary-trees`; `/dsa/bst`; `/dsa/heaps`; `/dsa/graphs-bfs-dfs`, all 2026-10-08) — see "DSA hub
+  `/dsa/binary-trees`; `/dsa/bst`; `/dsa/heaps`; `/dsa/graphs-bfs-dfs`; `/dsa/graph-algorithms`,
+  all 2026-10-08) — see "DSA hub
   subtopic wiring" section below for the `DsaNavComponent` accordion
   structural fix (19th `*NavComponent`-based hub in a row missing it at pilot time), the
   `dsa-arrays` SUBTOPICS-map collision resolution (bare `arrays` collides with the C# hub's own

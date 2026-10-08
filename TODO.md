@@ -10078,6 +10078,19 @@ off here with a date.
   even-cycle/odd-cycle/tree test cases. Bare `graphs-bfs-dfs` SUBTOPICS key collision-free. Self-caught
   and fixed a `\'`-in-bound-attribute mistake before the build (needed the typographic curly quote).
   DSA hub Phase 10: 11 of 21.
+- [x] 2026-10-08 `/dsa/graph-algorithms` — Graph Algorithms. 3 subtopics
+  (dijkstras-fake-heap-was-sort-plus-shift, kruskals-mst-with-the-pages-own-union-find,
+  a-star-visits-far-fewer-nodes-than-dijkstra). Main-page fix: Dijkstra's own codeTab simulated
+  a "min-heap" via `heap.sort()` + `heap.shift()!` on every iteration (comment admitted "In real
+  code: use proper min-heap") while the page's own Quick Reference claims O((V+E) log V). Fixed
+  to a real binary min-heap. Verified a widening performance gap on dense random graphs (9x at
+  2K nodes, 37x at 8K, 114x at 20K) confirming an asymptotically wrong complexity (~O(V^2 log V)),
+  not just a constant-factor cost -- both versions always produced identical correct distances.
+  Also retitled a duplicate theory bullet with this finding. Subtopics build Kruskal's MST
+  (named in a quiz, zero code, reuses the page's own UnionFind class, verified weight 16 on the
+  classic 5-node textbook graph) and A* (named in theory, zero code, measured 87.1% fewer nodes
+  visited than Dijkstra for the identical optimal distance on a 30x30 grid). Bare
+  `graph-algorithms` SUBTOPICS key collision-free. DSA hub Phase 10: 12 of 21.
 - [ ] `/dsa/heaps` — Heaps & Priority Queues
 - [ ] `/dsa/graphs-bfs-dfs` — Graphs: BFS & DFS
 - [ ] `/dsa/graph-algorithms` — Graph Algorithms

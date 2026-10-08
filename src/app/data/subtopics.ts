@@ -4286,4 +4286,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Detecting a Directed Cycle with Three-State DFS', route: '/dsa/graphs-bfs-dfs/detecting-a-directed-cycle-with-three-state-dfs' },
     { label: 'Checking Bipartiteness with Two-Coloring BFS', route: '/dsa/graphs-bfs-dfs/checking-bipartiteness-with-two-coloring-bfs' },
   ],
+  'graph-algorithms': [
+    { label: 'Dijkstra’s Fake Heap Was Sort Plus Shift', route: '/dsa/graph-algorithms/dijkstras-fake-heap-was-sort-plus-shift' },
+    { label: 'Kruskal’s MST with the Page’s Own Union-Find', route: '/dsa/graph-algorithms/kruskals-mst-with-the-pages-own-union-find' },
+    { label: 'A* Visits Far Fewer Nodes Than Dijkstra', route: '/dsa/graph-algorithms/a-star-visits-far-fewer-nodes-than-dijkstra' },
+  ],
 };

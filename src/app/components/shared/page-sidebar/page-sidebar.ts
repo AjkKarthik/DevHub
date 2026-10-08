@@ -34842,6 +34842,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Floyd-Warshall computes all-pairs shortest paths in O(V³), more efficient than running Dijkstra from every vertex when all-pairs distances are actually needed.',
     ],
   },
+  'dsa/graph-algorithms/dijkstras-fake-heap-was-sort-plus-shift': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Kruskal’s MST with the Page’s Own Union-Find', route: '/dsa/graph-algorithms/kruskals-mst-with-the-pages-own-union-find' },
+      { label: 'Graph Algorithms (topic overview)', route: '/dsa/graph-algorithms' },
+    ],
+    tip: 'The original Dijkstra codeTab simulated a min-heap via Array.sort() + shift() every iteration — measured a widening 9x/37x/114x slowdown at 2,000/8,000/20,000 nodes versus a real binary heap, confirming an asymptotically wrong complexity, not just a constant-factor cost.',
+    gotchas: [
+      'Both versions always find the identical correct shortest distances — the bug was purely about cost, never correctness.',
+    ],
+  },
+  'dsa/graph-algorithms/kruskals-mst-with-the-pages-own-union-find': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Dijkstra’s Fake Heap Was Sort Plus Shift', route: '/dsa/graph-algorithms/dijkstras-fake-heap-was-sort-plus-shift' },
+      { label: 'A* Visits Far Fewer Nodes Than Dijkstra', route: '/dsa/graph-algorithms/a-star-visits-far-fewer-nodes-than-dijkstra' },
+    ],
+    tip: 'A quiz question names Kruskal\'s MST with zero code on the page. Built it reusing the page\'s own UnionFind class unmodified — verified against the classic 5-node textbook example (minimum weight 16, 4 edges).',
+    gotchas: [
+      'Sorting edges by weight isn\'t an optimization — it IS the correctness guarantee. Processing in a different order still gives a valid spanning tree, just not the minimum-weight one.',
+    ],
+  },
+  'dsa/graph-algorithms/a-star-visits-far-fewer-nodes-than-dijkstra': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Kruskal’s MST with the Page’s Own Union-Find', route: '/dsa/graph-algorithms/kruskals-mst-with-the-pages-own-union-find' },
+      { label: 'Graph Algorithms (topic overview)', route: '/dsa/graph-algorithms' },
+    ],
+    tip: 'Measured directly on a 30x30 grid: Dijkstra and A* found the identical optimal distance (58), but A* visited only 116 nodes versus Dijkstra\'s 900 — an 87.1% reduction, confirming the theory\'s "far fewer nodes, still optimal" claim concretely.',
+    gotchas: [
+      'A* is Dijkstra with exactly one change — a heuristic added to the heap priority. Setting the heuristic to always return 0 makes it behave identically to plain Dijkstra.',
+    ],
+  },
   'dsa/bit-manipulation': {
     apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
     related: [

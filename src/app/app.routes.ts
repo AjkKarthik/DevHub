@@ -4988,7 +4988,12 @@ export const routes: Routes = [
       { path: 'detecting-a-directed-cycle-with-three-state-dfs', loadComponent: () => import('./components/fundamentals/dsa/graphs-bfs-dfs/subtopics/detecting-a-directed-cycle-with-three-state-dfs/detecting-a-directed-cycle-with-three-state-dfs').then(m => m.DetectingADirectedCycleWithThreeStateDfsSubtopic) },
       { path: 'checking-bipartiteness-with-two-coloring-bfs', loadComponent: () => import('./components/fundamentals/dsa/graphs-bfs-dfs/subtopics/checking-bipartiteness-with-two-coloring-bfs/checking-bipartiteness-with-two-coloring-bfs').then(m => m.CheckingBipartitenessWithTwoColoringBfsSubtopic) },
     ]},
-    { path: 'graph-algorithms',       loadComponent: () => import('./components/fundamentals/dsa/graph-algorithms/graph-algorithms').then(m => m.DsaGraphAlgorithms) },
+    { path: 'graph-algorithms', children: [
+      { path: '', loadComponent: () => import('./components/fundamentals/dsa/graph-algorithms/graph-algorithms').then(m => m.DsaGraphAlgorithms) },
+      { path: 'dijkstras-fake-heap-was-sort-plus-shift', loadComponent: () => import('./components/fundamentals/dsa/graph-algorithms/subtopics/dijkstras-fake-heap-was-sort-plus-shift/dijkstras-fake-heap-was-sort-plus-shift').then(m => m.DijkstrasFakeHeapWasSortPlusShiftSubtopic) },
+      { path: 'kruskals-mst-with-the-pages-own-union-find', loadComponent: () => import('./components/fundamentals/dsa/graph-algorithms/subtopics/kruskals-mst-with-the-pages-own-union-find/kruskals-mst-with-the-pages-own-union-find').then(m => m.KruskalsMstWithThePagesOwnUnionFindSubtopic) },
+      { path: 'a-star-visits-far-fewer-nodes-than-dijkstra', loadComponent: () => import('./components/fundamentals/dsa/graph-algorithms/subtopics/a-star-visits-far-fewer-nodes-than-dijkstra/a-star-visits-far-fewer-nodes-than-dijkstra').then(m => m.AStarVisitsFarFewerNodesThanDijkstraSubtopic) },
+    ]},
     { path: 'basic-sorts',            loadComponent: () => import('./components/fundamentals/dsa/basic-sorts/basic-sorts').then(m => m.DsaBasicSorts) },
     { path: 'advanced-sorts',         loadComponent: () => import('./components/fundamentals/dsa/advanced-sorts/advanced-sorts').then(m => m.DsaAdvancedSorts) },
     { path: 'binary-search',          loadComponent: () => import('./components/fundamentals/dsa/binary-search/binary-search').then(m => m.DsaBinarySearch) },

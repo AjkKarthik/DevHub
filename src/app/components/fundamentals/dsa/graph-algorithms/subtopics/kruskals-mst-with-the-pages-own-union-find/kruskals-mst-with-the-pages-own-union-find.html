@@ -1,0 +1,27 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Graph Algorithms" topicRoute="/dsa/graph-algorithms"
+    subtopicLabel="Kruskal’s MST with the Page’s Own Union-Find" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">Kruskal’s MST with the Page’s Own Union-Find</h1>
+  <p class="page-subtitle">A quiz question names Kruskal's MST, with zero code anywhere on the page. Built it by reusing the main page's own UnionFind class, verified against the classic 5-node textbook example (weight 16, 4 edges).</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This builds Kruskal's MST, named in the main page's own quiz but never shown in code, directly reusing the page's own Union-Find class unmodified.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Graph Algorithms" topicRoute="/dsa/graph-algorithms"
+    [prev]="{ label: 'Dijkstra’s Fake Heap Was Sort Plus Shift', route: '/dsa/graph-algorithms/dijkstras-fake-heap-was-sort-plus-shift' }"
+    [next]="{ label: 'A* Visits Far Fewer Nodes Than Dijkstra', route: '/dsa/graph-algorithms/a-star-visits-far-fewer-nodes-than-dijkstra' }" />
+</div>

@@ -226,7 +226,24 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/dsa/graph-algorithms" routerLinkActive="active"><span class="nl-text">Graph Algorithms</span>@if(p.isDone('dsa-graph-algorithms')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/dsa/graph-algorithms" routerLinkActive="active">
+        <span class="nl-text">Graph Algorithms</span>
+        @if(p.isDone('dsa-graph-algorithms')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('graph-algorithms'); as galgoSubs) {
+          <button type="button" class="nav-subtopics-toggle" (click)="toggleSubtopics('graph-algorithms', $event)">
+            {{ isSubtopicsExpanded('graph-algorithms') ? '▾' : '▸' }}
+          </button>
+        }
+      </a>
+      @if (subtopicsOf('graph-algorithms'); as galgoSubs) {
+        @if (isSubtopicsExpanded('graph-algorithms')) {
+          <div class="nav-subtopics">
+            @for (sub of galgoSubs; track sub.route) {
+              <a [routerLink]="sub.route" routerLinkActive="active" class="nav-subtopic-link">{{ sub.label }}</a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
