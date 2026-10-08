@@ -35055,6 +35055,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Find Minimum with duplicates needs hi-- when nums[mid] === nums[hi], which is also O(n) in the worst case.',
     ],
   },
+  'dsa/recursion-backtracking/tail-calls-spec-mandated-but-only-safari': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Sort and Break Prunes Earlier Than a Negative Check', route: '/dsa/recursion-backtracking/sort-and-break-prunes-earlier' },
+      { label: 'Recursion & Backtracking (topic overview)', route: '/dsa/recursion-backtracking' },
+    ],
+    tip: 'ES2015 requires proper tail calls in strict mode, but only Safari implements them. In Node 22 a correct tail-recursive sum threw RangeError at 10,000 calls.',
+    gotchas: [
+      'return n * f(n - 1) is not a tail call: the multiplication still runs after the call returns.',
+    ],
+  },
+  'dsa/recursion-backtracking/sort-and-break-prunes-earlier': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'JavaScript Has Proper Tail Calls, but Only Safari Runs Them', route: '/dsa/recursion-backtracking/tail-calls-spec-mandated-but-only-safari' },
+      { label: 'Why the Duplicate Skip Compares i With start, Not 0', route: '/dsa/recursion-backtracking/skip-duplicates-at-the-same-tree-level' },
+      { label: 'Recursion & Backtracking (topic overview)', route: '/dsa/recursion-backtracking' },
+    ],
+    tip: 'Sorting candidates and breaking once one exceeds the remaining sum cut calls from 28 to 10 on [2,3,6,7] with target 7, but only about 12% when there were 608 valid answers.',
+    gotchas: [
+      'break is only safe after sorting; on unsorted input a smaller candidate may still come later.',
+    ],
+  },
+  'dsa/recursion-backtracking/skip-duplicates-at-the-same-tree-level': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Sort and Break Prunes Earlier Than a Negative Check', route: '/dsa/recursion-backtracking/sort-and-break-prunes-earlier' },
+      { label: 'Recursion & Backtracking (topic overview)', route: '/dsa/recursion-backtracking' },
+    ],
+    tip: 'With i > start, [1,2,2] gives all 6 distinct subsets; with i > 0 it returns only 4 and loses [1,2,2] and [2,2].',
+    gotchas: [
+      'The skip compares neighbours, so the input must be sorted first.',
+    ],
+  },
 
   // ── MongoDB: per-page entries ────────────────────────────────────────────────
   'mongodb/fundamentals': {

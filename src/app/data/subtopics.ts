@@ -4306,4 +4306,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Binary Search on a Linked List Never Beats a Linear Scan', route: '/dsa/binary-search/linked-list-binary-search-never-beats-a-scan' },
     { label: 'Duplicates Make Rotated Search O(n) in the Worst Case', route: '/dsa/binary-search/rotated-search-with-duplicates-is-o-n' },
   ],
+  'recursion-backtracking': [
+    { label: 'JavaScript Has Proper Tail Calls, but Only Safari Runs Them', route: '/dsa/recursion-backtracking/tail-calls-spec-mandated-but-only-safari' },
+    { label: 'Sort and Break Prunes Earlier Than a Negative Check', route: '/dsa/recursion-backtracking/sort-and-break-prunes-earlier' },
+    { label: 'Why the Duplicate Skip Compares i With start, Not 0', route: '/dsa/recursion-backtracking/skip-duplicates-at-the-same-tree-level' },
+  ],
 };

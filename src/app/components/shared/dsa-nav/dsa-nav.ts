@@ -33,7 +33,24 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/dsa/recursion-backtracking" routerLinkActive="active"><span class="nl-text">Recursion &amp; Backtracking</span>@if(p.isDone('dsa-recursion-backtracking')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/dsa/recursion-backtracking" routerLinkActive="active">
+        <span class="nl-text">Recursion &amp; Backtracking</span>
+        @if(p.isDone('dsa-recursion-backtracking')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('recursion-backtracking'); as recSubs) {
+          <button type="button" class="nav-subtopics-toggle" (click)="toggleSubtopics('recursion-backtracking', $event)">
+            {{ isSubtopicsExpanded('recursion-backtracking') ? '▾' : '▸' }}
+          </button>
+        }
+      </a>
+      @if (subtopicsOf('recursion-backtracking'); as recSubs) {
+        @if (isSubtopicsExpanded('recursion-backtracking')) {
+          <div class="nav-subtopics">
+            @for (sub of recSubs; track sub.route) {
+              <a [routerLink]="sub.route" routerLinkActive="active" class="nav-subtopic-link">{{ sub.label }}</a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

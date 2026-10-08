@@ -1,0 +1,27 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Recursion &amp; Backtracking" topicRoute="/dsa/recursion-backtracking"
+    subtopicLabel="Sort and Break Prunes Earlier Than a Negative Check" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">Sort and Break Prunes Earlier Than a Negative Check</h1>
+  <p class="page-subtitle">The main page prunes combination sum by returning when the remaining sum goes negative. Counting calls shows how much sorting and breaking out of the loop saves, and where the saving stops.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This puts numbers on the main page's pruning advice. The next subtopic covers the larger saving: not generating the same subset twice when the input has duplicates.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Recursion &amp; Backtracking" topicRoute="/dsa/recursion-backtracking"
+    [prev]="{ label: 'JavaScript Has Proper Tail Calls, but Only Safari Runs Them', route: '/dsa/recursion-backtracking/tail-calls-spec-mandated-but-only-safari' }"
+    [next]="{ label: 'Why the Duplicate Skip Compares i With start, Not 0', route: '/dsa/recursion-backtracking/skip-duplicates-at-the-same-tree-level' }" />
+</div>

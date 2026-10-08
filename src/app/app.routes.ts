@@ -5012,7 +5012,12 @@ export const routes: Routes = [
       { path: 'linked-list-binary-search-never-beats-a-scan', loadComponent: () => import('./components/fundamentals/dsa/binary-search/subtopics/linked-list-binary-search/linked-list-binary-search').then(m => m.LinkedListBinarySearchSubtopic) },
       { path: 'rotated-search-with-duplicates-is-o-n', loadComponent: () => import('./components/fundamentals/dsa/binary-search/subtopics/rotated-duplicates-worst-case/rotated-duplicates-worst-case').then(m => m.RotatedDuplicatesWorstCaseSubtopic) },
     ] },
-    { path: 'recursion-backtracking', loadComponent: () => import('./components/fundamentals/dsa/recursion-backtracking/recursion-backtracking').then(m => m.DsaRecursionBacktracking) },
+    { path: 'recursion-backtracking', children: [
+      { path: '', loadComponent: () => import('./components/fundamentals/dsa/recursion-backtracking/recursion-backtracking').then(m => m.DsaRecursionBacktracking) },
+      { path: 'tail-calls-spec-mandated-but-only-safari', loadComponent: () => import('./components/fundamentals/dsa/recursion-backtracking/subtopics/tail-calls-safari-only/tail-calls-safari-only').then(m => m.TailCallsSafariOnlySubtopic) },
+      { path: 'sort-and-break-prunes-earlier', loadComponent: () => import('./components/fundamentals/dsa/recursion-backtracking/subtopics/combination-sum-sort-break/combination-sum-sort-break').then(m => m.CombinationSumSortBreakSubtopic) },
+      { path: 'skip-duplicates-at-the-same-tree-level', loadComponent: () => import('./components/fundamentals/dsa/recursion-backtracking/subtopics/subsets-skip-duplicates/subsets-skip-duplicates').then(m => m.SubsetsSkipDuplicatesSubtopic) },
+    ] },
     { path: 'dynamic-programming',    loadComponent: () => import('./components/fundamentals/dsa/dynamic-programming/dynamic-programming').then(m => m.DsaDynamicProgramming) },
     { path: 'dp-patterns',            loadComponent: () => import('./components/fundamentals/dsa/dp-patterns/dp-patterns').then(m => m.DsaDpPatterns) },
     { path: 'trie',                   loadComponent: () => import('./components/fundamentals/dsa/trie/trie').then(m => m.DsaTrie) },

@@ -10129,7 +10129,17 @@ off here with a date.
   ("Hmm — wait" and an unused canFinish) from the Koko codeTab. Third subtopic shows the page's own
   searchRotated returns -1 for 2 in [1,1,1,2,1,1,1,1,1] and the tie-break fix's n/2 iterations on
   an all-equal array. Bare `binary-search` SUBTOPICS key collision-free. DSA hub Phase 10: 15 of 21.
-- [ ] `/dsa/recursion-backtracking` — Recursion & Backtracking
+- [x] 2026-10-08 `/dsa/recursion-backtracking` — Recursion & Backtracking. 3 subtopics (routes
+  tail-calls-spec-mandated-but-only-safari, sort-and-break-prunes-earlier,
+  skip-duplicates-at-the-same-tree-level; short folders tail-calls-safari-only,
+  combination-sum-sort-break, subsets-skip-duplicates). Main-page fixes: the tail-recursion bullet
+  said JavaScript does not optimize tail calls — ES2015 requires proper tail calls in strict mode,
+  only Safari/JavaScriptCore ships them, V8 removed its implementation (in Node 22 a correct
+  tail-recursive sum overflowed at 10,000 calls); the duplicate "Pruning: brute force vs
+  backtracking" theory section was retitled and rewritten with measured findings (sort+break: 28 ->
+  10 calls on [2,3,6,7]/7 but only ~12% with 608 answers; duplicate skip: 1,048,576 -> 121 subsets
+  for ten 1s and ten 2s). Third subtopic shows i > 0 instead of i > start drops [1,2,2] and [2,2].
+  Bare `recursion-backtracking` SUBTOPICS key collision-free. DSA hub Phase 10: 16 of 21.
 - [ ] `/dsa/dynamic-programming` — Dynamic Programming
 - [ ] `/dsa/dp-patterns` — DP Patterns
 - [ ] `/dsa/trie` — Tries

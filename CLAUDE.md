@@ -11223,6 +11223,17 @@ check before any other new hub's first subtopic set:
    [1,1,1,2,1,1,1,1,1]. Also removed leftover dead code ("Hmm — wait" comment and an unused
    `canFinish`) from the Koko codeTab. Bare `binary-search` key collision-free. Build clean;
    bundle-verified. **DSA hub Phase 10: 15 of 21 topics complete.**
+22. **The `recursion-backtracking` batch corrected a tail-call claim and replaced a duplicate
+   theory section with measurements**: "JavaScript does not" optimize tail calls is wrong at the
+   spec level — ES2015 requires proper tail calls in strict mode; only Safari's JavaScriptCore
+   implements them and V8 removed its support (verified via WebKit's blog and V8 commit history;
+   in Node 22 a strict tail-recursive sum threw RangeError at n = 10,000, while a loop and a
+   trampoline both handled 1,000,000). Theory section 5 restated section 4 and mistake #2; it now
+   holds measured call counts (sort+break vs negative-remaining check: 28 -> 10 calls on
+   [2,3,6,7]/7, 5,448 -> 4,803 with 608 answers) and the duplicate-skip saving (1,048,576 -> 121
+   subsets). 3 subtopics, all Node-verified, including i > 0 vs i > start dropping valid subsets.
+   Bare `recursion-backtracking` key collision-free. Build clean; bundle-verified.
+   **DSA hub Phase 10: 16 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -11640,10 +11651,10 @@ check before any other new hub's first subtopic set:
   needs the full `.dsa-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }`
   rule (copied from the main topic page's own `.scss`, which defines it locally). No live
   playground (DSA theory/analysis content has no in-browser runtime) — plain `<app-code-block>`.
-  Phase 10: 15 of 21 topics have subtopics (`/dsa/big-o`, pilot batch; `/dsa/arrays`; `/dsa/strings`;
+  Phase 10: 16 of 21 topics have subtopics (`/dsa/big-o`, pilot batch; `/dsa/arrays`; `/dsa/strings`;
   `/dsa/hash-tables`; `/dsa/stacks-queues`; `/dsa/linked-lists`; `/dsa/doubly-linked-lists`;
   `/dsa/binary-trees`; `/dsa/bst`; `/dsa/heaps`; `/dsa/graphs-bfs-dfs`; `/dsa/graph-algorithms`;
-  `/dsa/basic-sorts`; `/dsa/advanced-sorts`; `/dsa/binary-search`,
+  `/dsa/basic-sorts`; `/dsa/advanced-sorts`; `/dsa/binary-search`; `/dsa/recursion-backtracking`,
   all 2026-10-08) — see "DSA hub
   subtopic wiring" section below for the `DsaNavComponent` accordion
   structural fix (19th `*NavComponent`-based hub in a row missing it at pilot time), the
