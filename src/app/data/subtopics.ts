@@ -4506,4 +4506,14 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: "HNSW Memory Is Not N·M·d", route: '/ai/vector-databases/hnsw-memory-is-not-n-m-d' },
     { label: "Pinecone v9 upsert Takes { records }", route: '/ai/vector-databases/pinecone-v9-upsert-takes-records' },
   ],
+  'mlops': [
+    { label: "The vLLM Command Broke at a Comment", route: '/ai/mlops/vllm-command-and-throughput-claims' },
+    { label: "pd.cut Codes Out-of-Range Ages as -1", route: '/ai/mlops/pd-cut-codes-out-of-range-as-minus-one' },
+    { label: "MLflow Registry Stages Are Deprecated", route: '/ai/mlops/mlflow-registry-uses-aliases' },
+  ],
+  'hugging-face': [
+    { label: "apply_chat_template Returns a Dict in Transformers 5", route: '/ai/hugging-face/apply-chat-template-returns-a-dict' },
+    { label: "HfInference Is Now InferenceClient", route: '/ai/hugging-face/hfinference-is-now-inferenceclient' },
+    { label: "32GB of fp32 Weights Does Fit a 40GB A100", route: '/ai/hugging-face/fp32-llama-memory-math' },
+  ],
 };

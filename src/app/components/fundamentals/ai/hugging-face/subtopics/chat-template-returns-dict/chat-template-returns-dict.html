@@ -1,0 +1,26 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Hugging Face" topicRoute="/ai/hugging-face"
+    subtopicLabel="apply_chat_template Returns a Dict in Transformers 5" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">apply_chat_template Returns a Dict in Transformers 5</h1>
+  <p class="page-subtitle">The manual generation example passed the result of apply_chat_template(..., return_tensors="pt") straight to model.generate and read inputs.shape. In transformers 5 that call returns a BatchEncoding, which has no shape, and generate failed with an AttributeError.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This fixes the Python tab. Next, the renamed TypeScript client and its endpoint.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Hugging Face" topicRoute="/ai/hugging-face"
+    [next]="{ label: 'HfInference Is Now InferenceClient', route: '/ai/hugging-face/hfinference-is-now-inferenceclient' }" />
+</div>

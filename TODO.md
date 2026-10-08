@@ -10234,8 +10234,8 @@ off here with a date.
 - [x] 2026-10-08 `/ai/prompt-engineering` — Prompt Engineering (3 subtopics; fixed fence-stripping regex, CoT challenge prompt, JSON mode claim)
 - [x] 2026-10-08 `/ai/ai-agents` — AI Agents (3 subtopics; fixed eval in calculator tool, unhandled stop reasons, ReAct parser)
 - [x] 2026-10-08 `/ai/vector-databases` — Vector Databases (3 subtopics; fixed FAISS cosine conversion, HNSW/PQ memory, Pinecone v9 upsert)
-- [ ] `/ai/mlops` — MLOps & Model Deployment
-- [ ] `/ai/hugging-face` — Hugging Face & Model Hub
+- [x] 2026-10-08 `/ai/mlops` — MLOps (3 subtopics; fixed vLLM command, throughput claims, pd.cut bins, MLflow stages)
+- [x] 2026-10-08 `/ai/hugging-face` — Hugging Face (3 subtopics; fixed apply_chat_template flow, InferenceClient, fp32 memory claim)
 - [ ] `/ai/evaluating-llms` — Evaluating LLM Outputs
 - [ ] `/ai/ai-engineering` — AI Engineering Patterns
 

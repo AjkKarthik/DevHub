@@ -1,0 +1,26 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="MLOps" topicRoute="/ai/mlops"
+    subtopicLabel="The vLLM Command Broke at a Comment" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">The vLLM Command Broke at a Comment</h1>
+  <p class="page-subtitle">The vLLM tab put a comment after a line-continuation backslash, so the shell ran the server without --port 8000 and then tried to run --port as a command. The page also claimed 20 to 100 times the throughput of Hugging Face; vLLM's own benchmark reports 14 to 24 times.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This fixes the serving tab. Next, an out-of-range value in the training-serving skew example.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="MLOps" topicRoute="/ai/mlops"
+    [next]="{ label: 'pd.cut Codes Out-of-Range Ages as -1', route: '/ai/mlops/pd-cut-codes-out-of-range-as-minus-one' }" />
+</div>

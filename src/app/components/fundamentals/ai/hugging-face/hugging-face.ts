@@ -55,8 +55,8 @@ export class AiHuggingFace {
     {
       heading: 'HuggingFace Inference API',
       points: [
-        'Serverless: send a POST to api-inference.huggingface.co/models/{model_id}. No GPU setup, no Python — just HTTP.',
-        'TypeScript: npm install @huggingface/inference. client.textGeneration(), client.featureExtraction() (embeddings), client.textClassification().',
+        'Serverless: the current SDK sends requests through Inference Providers at router.huggingface.co (including an OpenAI-compatible /v1/chat/completions route). No GPU setup, no Python — just HTTP.',
+        'TypeScript: npm install @huggingface/inference, then new InferenceClient(token) (HfInference is a deprecated alias). client.textGeneration(), client.featureExtraction() (embeddings), client.textClassification().',
         'Free tier: rate-limited, cold starts for large models. Pro tier ($9/month) for dedicated endpoints and higher rate limits.',
         'Dedicated Endpoints: deploy any model to a persistent GPU endpoint at inference.endpoints.huggingface.co — pay per hour.',
         'Spaces + Gradio: one Python file deploys a model demo with UI to a free CPU/GPU Space. Best for sharing with non-technical stakeholders.',
@@ -90,9 +90,10 @@ export class AiHuggingFace {
       code: `// HuggingFace Inference API — TypeScript
 // npm install @huggingface/inference
 
-import { HfInference } from '@huggingface/inference';
+import { InferenceClient } from '@huggingface/inference';  // HfInference is deprecated
 
-const hf = new HfInference(process.env['HF_TOKEN']);
+// Requests go through Inference Providers at router.huggingface.co
+const hf = new InferenceClient(process.env['HF_TOKEN']);
 
 // Text generation
 async function generate(prompt: string): Promise<string> {
@@ -163,10 +164,12 @@ async function zeroShot(text: string, labels: string[]) {
 //   model_id, device_map="auto", torch_dtype=torch.bfloat16)
 
 // messages = [{"role": "user", "content": "What is RLHF?"}]
-// inputs = tokenizer.apply_chat_template(messages, return_tensors="pt").to("cuda")
+// inputs = tokenizer.apply_chat_template(messages, add_generation_prompt=True,
+//   return_dict=True, return_tensors="pt").to(model.device)   # a dict in transformers 5
 // with torch.no_grad():
-//     outputs = model.generate(inputs, max_new_tokens=512)
-// print(tokenizer.decode(outputs[0][inputs.shape[1]:], skip_special_tokens=True))
+//     outputs = model.generate(**inputs, max_new_tokens=512)
+// prompt_len = inputs["input_ids"].shape[1]
+// print(tokenizer.decode(outputs[0][prompt_len:], skip_special_tokens=True))
 
 // # 3. Push your fine-tuned model to Hub
 // model.push_to_hub("your-username/my-custom-model")
@@ -190,20 +193,21 @@ model = AutoModelForCausalLM.from_pretrained("meta-llama/Meta-Llama-3-8B")`,
       title: 'Loading large models in full float32 precision',
       wrong: `# Default: float32 — 4 bytes per param
 model = AutoModelForCausalLM.from_pretrained("meta-llama/Meta-Llama-3-8B")
-# 8B × 4 bytes = 32GB VRAM — won't fit on a single A100 40GB`,
+# 8B × 4 bytes = 32GB of weights — no 24GB consumer GPU can hold it, and on a
+# 40GB A100 only ~8GB is left for the KV cache and activations`,
       right: `# bfloat16: 2 bytes per param (same numeric range as float32)
 model = AutoModelForCausalLM.from_pretrained(
     "meta-llama/Meta-Llama-3-8B",
     torch_dtype=torch.bfloat16,     # halves memory to ~16GB
     device_map="auto"               # auto-shards across available GPUs
 )`,
-      explanation: 'float32 needs 4 bytes/parameter. An 8B model requires 32GB VRAM. bfloat16 halves this to 16GB with negligible quality loss. For CPU or consumer GPU: use 4-bit GGUF via llama-cpp-python (~4.5GB for 8B Q4_K_M).',
+      explanation: 'float32 needs 4 bytes/parameter. An 8B model needs 32GB just for its weights. bfloat16 halves this to 16GB with negligible quality loss. For CPU or consumer GPU: use 4-bit GGUF via llama-cpp-python (~4.5GB for 8B Q4_K_M).',
     },
     {
       title: 'Not setting pad_token for generative models',
       wrong: `tokenizer = AutoTokenizer.from_pretrained("meta-llama/Meta-Llama-3-8B")
 inputs = tokenizer(texts, return_tensors="pt", padding=True)
-# RuntimeError: No padding token set — batch inference fails`,
+# ValueError: Asking to pad but the tokenizer does not have a padding token`,
       right: `tokenizer = AutoTokenizer.from_pretrained("meta-llama/Meta-Llama-3-8B")
 tokenizer.pad_token = tokenizer.eos_token  # use EOS as padding token
 tokenizer.padding_side = "left"             # left-pad for generation

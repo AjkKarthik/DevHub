@@ -33009,6 +33009,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Automated retraining triggered by detected drift addresses the reality that models require ongoing maintenance, unlike "finished" traditional software.',
     ],
   },
+  "ai/mlops/vllm-command-and-throughput-claims": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "pd.cut Codes Out-of-Range Ages as -1", route: '/ai/mlops/pd-cut-codes-out-of-range-as-minus-one' },
+      { label: "MLOps (overview)", route: '/ai/mlops' },
+    ],
+    tip: "Never put anything after a trailing backslash; move comments onto their own line above the command.",
+    gotchas: ["A backslash followed by a space escapes the space; it is not a line continuation.","Benchmark multipliers depend on model, GPU and request lengths; quote the conditions with the number."],
+  },
+  "ai/mlops/pd-cut-codes-out-of-range-as-minus-one": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "The vLLM Command Broke at a Comment", route: '/ai/mlops/vllm-command-and-throughput-claims' },
+      { label: "MLflow Registry Stages Are Deprecated", route: '/ai/mlops/mlflow-registry-uses-aliases' },
+      { label: "MLOps (overview)", route: '/ai/mlops' },
+    ],
+    tip: "Make the outer bins open-ended with -inf and inf, and assert there are no -1 codes before calling the model.",
+    gotchas: ["pd.cut bins are right-closed by default, so the lowest edge itself is excluded unless include_lowest=True.","A shared feature function keeps train and serve consistent, including consistently wrong."],
+  },
+  "ai/mlops/mlflow-registry-uses-aliases": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "pd.cut Codes Out-of-Range Ages as -1", route: '/ai/mlops/pd-cut-codes-out-of-range-as-minus-one' },
+      { label: "MLOps (overview)", route: '/ai/mlops' },
+    ],
+    tip: "Point serving code at models:/Name@champion and move the alias to promote or roll back a version.",
+    gotchas: ["Stage APIs still exist and emit deprecation warnings.","An alias points at exactly one version; promoting a new version moves it off the old one."],
+  },
   'ai/responsible-ai': {
     apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
     related: [
@@ -33071,6 +33099,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Model cards document training data and known limitations — critical for responsibly choosing a model, not optional metadata.',
       'The Hub\'s standardized conventions turned "find and load a pre-trained model" from research-paper-code-hunting into a few lines of standard code.',
     ],
+  },
+  "ai/hugging-face/apply-chat-template-returns-a-dict": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "HfInference Is Now InferenceClient", route: '/ai/hugging-face/hfinference-is-now-inferenceclient' },
+      { label: "Hugging Face (overview)", route: '/ai/hugging-face' },
+    ],
+    tip: "Ask for return_dict=True explicitly, pass the result with **inputs, and read the prompt length from inputs[\"input_ids\"]. That works on both transformers 4 and 5.",
+    gotchas: ["Without add_generation_prompt=True the template does not add the assistant header, so the model may continue the user turn.",".to(model.device) works on a BatchEncoding and moves every tensor in it."],
+  },
+  "ai/hugging-face/hfinference-is-now-inferenceclient": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "apply_chat_template Returns a Dict in Transformers 5", route: '/ai/hugging-face/apply-chat-template-returns-a-dict' },
+      { label: "32GB of fp32 Weights Does Fit a 40GB A100", route: '/ai/hugging-face/fp32-llama-memory-math' },
+      { label: "Hugging Face (overview)", route: '/ai/hugging-face' },
+    ],
+    tip: "Use new InferenceClient(token); the task methods (textGeneration, featureExtraction, chatCompletion) keep the same names.",
+    gotchas: ["Which provider serves a model depends on what providers support it; not every Hub model is available serverlessly.","Deprecated aliases are marked \"for backward compatibility only, will remove soon\"."],
+  },
+  "ai/hugging-face/fp32-llama-memory-math": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "HfInference Is Now InferenceClient", route: '/ai/hugging-face/hfinference-is-now-inferenceclient' },
+      { label: "Hugging Face (overview)", route: '/ai/hugging-face' },
+    ],
+    tip: "Budget weights plus KV cache: KV bytes per token = 2 x layers x kv_heads x head_dim x bytes per value.",
+    gotchas: ["GPU memory is also used by the CUDA context and activations, so the usable remainder is smaller than the arithmetic suggests.","Grouped-query attention (8 KV heads in Llama 3 8B) makes the KV cache 4 times smaller than with 32 heads."],
   },
   'ai/ai-engineering': {
     apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,

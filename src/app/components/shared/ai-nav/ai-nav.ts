@@ -187,8 +187,26 @@ import { SUBTOPICS } from '../../../data/subtopics';
 
     <div class="nav-group">
       <p class="nav-group-label">MLOps</p>
-      <a routerLink="/ai/mlops" routerLinkActive="active"><span class="nl-text">MLOps &amp; Deployment</span>@if(p.isDone('ai-mlops')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/ai/hugging-face" routerLinkActive="active"><span class="nl-text">Hugging Face</span>@if(p.isDone('ai-hugging-face')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/ai/mlops" routerLinkActive="active"><span class="nl-text">MLOps &amp; Deployment</span>@if(p.isDone('ai-mlops')){<span class="nl-done">✓</span>}@if (subtopicsOf('mlops'); as mlopsSubs) {<button type="button" class="nav-subtopics-toggle" (click)="toggleSubtopics('mlops', $event)">{{ isSubtopicsExpanded('mlops') ? '▾' : '▸' }}</button>}</a>
+      @if (subtopicsOf('mlops'); as mlopsSubs) {
+        @if (isSubtopicsExpanded('mlops')) {
+          <div class="nav-subtopics">
+            @for (sub of mlopsSubs; track sub.route) {
+              <a [routerLink]="sub.route" routerLinkActive="active" class="nav-subtopic-link">{{ sub.label }}</a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/ai/hugging-face" routerLinkActive="active"><span class="nl-text">Hugging Face</span>@if(p.isDone('ai-hugging-face')){<span class="nl-done">✓</span>}@if (subtopicsOf('hugging-face'); as huggingFaceSubs) {<button type="button" class="nav-subtopics-toggle" (click)="toggleSubtopics('hugging-face', $event)">{{ isSubtopicsExpanded('hugging-face') ? '▾' : '▸' }}</button>}</a>
+      @if (subtopicsOf('hugging-face'); as huggingFaceSubs) {
+        @if (isSubtopicsExpanded('hugging-face')) {
+          <div class="nav-subtopics">
+            @for (sub of huggingFaceSubs; track sub.route) {
+              <a [routerLink]="sub.route" routerLinkActive="active" class="nav-subtopic-link">{{ sub.label }}</a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
