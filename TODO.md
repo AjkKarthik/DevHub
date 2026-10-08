@@ -10023,7 +10023,15 @@ off here with a date.
   Also replaced a wholesale duplicate theory section (restating the already-covered Floyd's
   algorithm section) with the new palindrome-mutation finding. Bare `linked-lists` SUBTOPICS key
   collision-free. DSA hub Phase 10: 6 of 21.
-- [ ] `/dsa/doubly-linked-lists` — Doubly Linked Lists
+- [x] 2026-10-08 `/dsa/doubly-linked-lists` — Doubly Linked Lists. 3 subtopics
+  (javascript-map-is-not-a-doubly-linked-list, what-happens-without-the-empty-list-guard,
+  building-a-blocked-deque-like-pythons). Main-page fix verified via WebSearch against V8's own
+  source (ordered-hash-table.h): "JavaScript's Map internally" was wrongly listed as a real-world
+  DLL example -- V8 actually implements Map/Set as an array-backed OrderedHashTable with no prev
+  pointer anywhere. Also replaced two partial-duplicate theory sections (restating earlier
+  bullets) with new, verified content: real deques use blocked (not node-per-element) DLLs for
+  cache locality, and the sentinel-boundary null-dereference risk if a guard clause is forgotten.
+  Bare `doubly-linked-lists` SUBTOPICS key collision-free. DSA hub Phase 10: 7 of 21.
 - [ ] `/dsa/binary-trees` — Binary Trees
 - [ ] `/dsa/bst` — Binary Search Trees
 - [ ] `/dsa/heaps` — Heaps & Priority Queues

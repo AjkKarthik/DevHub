@@ -34499,10 +34499,43 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     related: [
       { label: 'Linked Lists', route: '/dsa/linked-lists' },
     ],
-    tip: 'The extra "previous" pointer enables O(1) removal given only a node reference, and O(1) insertion/removal from BOTH ends — this is why deque implementations and LRU caches are built on doubly linked lists.',
+    tip: 'The extra "previous" pointer enables O(1) removal given only a node reference, and O(1) insertion/removal from BOTH ends — this is the LRU cache\'s core building block. Real-world deques (Python\'s collections.deque) actually use a doubly linked list of fixed-size BLOCKS, not a naive node-per-element DLL, for cache locality.',
     gotchas: [
-      'Sentinel head/tail nodes eliminate special-case null checks for boundary insertion/removal, unifying every case into the same code path.',
+      'Sentinel head/tail nodes eliminate special-case null checks ONLY for the region strictly between head and tail — head.prev and tail.next are themselves still null, a real risk if a guard clause (like removeLast()\'s empty-list check) is ever forgotten.',
       'The extra pointer per node roughly doubles pointer storage overhead versus a singly linked list — a real cost in memory-constrained environments.',
+    ],
+  },
+  'dsa/doubly-linked-lists/javascript-map-is-not-a-doubly-linked-list': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'What Happens Without the Empty-List Guard', route: '/dsa/doubly-linked-lists/what-happens-without-the-empty-list-guard' },
+      { label: 'Doubly Linked Lists (topic overview)', route: '/dsa/doubly-linked-lists' },
+    ],
+    tip: 'Verified against V8\'s own source: JavaScript\'s Map/Set are implemented as an array-backed OrderedHashTable, with insertion order coming from appending to a contiguous array — there is no prev pointer, and no doubly linked list, anywhere in the real design.',
+    gotchas: [
+      'Observable JS behavior (like re-insertion appending at the end) is only ever CONSISTENT with an internal design, never proof of it — confirming the real architecture requires reading the engine\'s own source.',
+    ],
+  },
+  'dsa/doubly-linked-lists/what-happens-without-the-empty-list-guard': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'JavaScript’s Map Is Not a Doubly Linked List', route: '/dsa/doubly-linked-lists/javascript-map-is-not-a-doubly-linked-list' },
+      { label: 'Building a Blocked Deque Like Python’s collections.deque', route: '/dsa/doubly-linked-lists/building-a-blocked-deque-like-pythons' },
+    ],
+    tip: 'Removing the main page\'s own "if (this.tail.prev === this.head) return null" guard and calling removeLast() on an empty list throws a real TypeError immediately — head.prev was never set, since the sentinel head has nothing before it.',
+    gotchas: [
+      'A crash here is actually the SAFER failure mode compared to silently returning the sentinel node itself as a fake "evicted" entry, which would corrupt the list for every future operation.',
+    ],
+  },
+  'dsa/doubly-linked-lists/building-a-blocked-deque-like-pythons': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'What Happens Without the Empty-List Guard', route: '/dsa/doubly-linked-lists/what-happens-without-the-empty-list-guard' },
+      { label: 'Doubly Linked Lists (topic overview)', route: '/dsa/doubly-linked-lists' },
+    ],
+    tip: 'A blocked deque links BLOCKS (small contiguous arrays) together, not individual elements — pushing/popping only touches the edge block directly, only allocating a new block once the current one is completely full or empty.',
+    gotchas: [
+      'For 1 million elements, CPython\'s real block size (62) needs roughly 16,130 block allocations versus 1,000,000 individual node allocations for a naive node-per-element DLL — a real, measurable difference in allocation frequency and memory locality.',
     ],
   },
   'dsa/stacks-queues': {

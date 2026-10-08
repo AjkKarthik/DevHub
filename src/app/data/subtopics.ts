@@ -4261,4 +4261,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Recursive Reversal: Call Stack Depth, Measured', route: '/dsa/linked-lists/recursive-reversal-call-stack-depth-measured' },
     { label: 'Deleting a Middle Node Without the Predecessor', route: '/dsa/linked-lists/deleting-a-middle-node-without-the-predecessor' },
   ],
+  'doubly-linked-lists': [
+    { label: 'JavaScript’s Map Is Not a Doubly Linked List', route: '/dsa/doubly-linked-lists/javascript-map-is-not-a-doubly-linked-list' },
+    { label: 'What Happens Without the Empty-List Guard', route: '/dsa/doubly-linked-lists/what-happens-without-the-empty-list-guard' },
+    { label: 'Building a Blocked Deque Like Python’s collections.deque', route: '/dsa/doubly-linked-lists/building-a-blocked-deque-like-pythons' },
+  ],
 };

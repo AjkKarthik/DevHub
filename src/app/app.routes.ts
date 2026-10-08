@@ -4958,7 +4958,12 @@ export const routes: Routes = [
       { path: 'recursive-reversal-call-stack-depth-measured', loadComponent: () => import('./components/fundamentals/dsa/linked-lists/subtopics/recursive-reversal-call-stack-depth-measured/recursive-reversal-call-stack-depth-measured').then(m => m.RecursiveReversalCallStackDepthMeasuredSubtopic) },
       { path: 'deleting-a-middle-node-without-the-predecessor', loadComponent: () => import('./components/fundamentals/dsa/linked-lists/subtopics/deleting-a-middle-node-without-the-predecessor/deleting-a-middle-node-without-the-predecessor').then(m => m.DeletingAMiddleNodeWithoutThePredecessorSubtopic) },
     ]},
-    { path: 'doubly-linked-lists',    loadComponent: () => import('./components/fundamentals/dsa/doubly-linked-lists/doubly-linked-lists').then(m => m.DsaDoublyLinkedLists) },
+    { path: 'doubly-linked-lists', children: [
+      { path: '', loadComponent: () => import('./components/fundamentals/dsa/doubly-linked-lists/doubly-linked-lists').then(m => m.DsaDoublyLinkedLists) },
+      { path: 'javascript-map-is-not-a-doubly-linked-list', loadComponent: () => import('./components/fundamentals/dsa/doubly-linked-lists/subtopics/javascript-map-is-not-a-doubly-linked-list/javascript-map-is-not-a-doubly-linked-list').then(m => m.JavascriptMapIsNotADoublyLinkedListSubtopic) },
+      { path: 'what-happens-without-the-empty-list-guard', loadComponent: () => import('./components/fundamentals/dsa/doubly-linked-lists/subtopics/what-happens-without-the-empty-list-guard/what-happens-without-the-empty-list-guard').then(m => m.WhatHappensWithoutTheEmptyListGuardSubtopic) },
+      { path: 'building-a-blocked-deque-like-pythons', loadComponent: () => import('./components/fundamentals/dsa/doubly-linked-lists/subtopics/building-a-blocked-deque-like-pythons/building-a-blocked-deque-like-pythons').then(m => m.BuildingABlockedDequeLikePythonsSubtopic) },
+    ]},
     { path: 'binary-trees',           loadComponent: () => import('./components/fundamentals/dsa/binary-trees/binary-trees').then(m => m.DsaBinaryTrees) },
     { path: 'bst',                    loadComponent: () => import('./components/fundamentals/dsa/bst/bst').then(m => m.DsaBst) },
     { path: 'heaps',                  loadComponent: () => import('./components/fundamentals/dsa/heaps/heaps').then(m => m.DsaHeaps) },

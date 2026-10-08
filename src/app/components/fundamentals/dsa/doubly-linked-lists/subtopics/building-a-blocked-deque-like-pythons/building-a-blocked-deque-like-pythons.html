@@ -1,0 +1,26 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Doubly Linked Lists" topicRoute="/dsa/doubly-linked-lists"
+    subtopicLabel="Building a Blocked Deque Like Python’s collections.deque" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">Building a Blocked Deque Like Python’s collections.deque</h1>
+  <p class="page-subtitle">The main page's own theory names Python's block-based deque design in one sentence with no code. Built it, demonstrated the block boundaries, and cross-checked correctness against a plain array reference.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This builds the exact block-based deque design the main page's own corrected theory section names as how real standard libraries implement a deque, in place of a naive node-per-element doubly linked list.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Doubly Linked Lists" topicRoute="/dsa/doubly-linked-lists"
+    [prev]="{ label: 'What Happens Without the Empty-List Guard', route: '/dsa/doubly-linked-lists/what-happens-without-the-empty-list-guard' }" />
+</div>

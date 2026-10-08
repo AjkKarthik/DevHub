@@ -132,7 +132,24 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/dsa/doubly-linked-lists" routerLinkActive="active"><span class="nl-text">Doubly Linked Lists</span>@if(p.isDone('dsa-doubly-linked-lists')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/dsa/doubly-linked-lists" routerLinkActive="active">
+        <span class="nl-text">Doubly Linked Lists</span>
+        @if(p.isDone('dsa-doubly-linked-lists')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('doubly-linked-lists'); as dllSubs) {
+          <button type="button" class="nav-subtopics-toggle" (click)="toggleSubtopics('doubly-linked-lists', $event)">
+            {{ isSubtopicsExpanded('doubly-linked-lists') ? '▾' : '▸' }}
+          </button>
+        }
+      </a>
+      @if (subtopicsOf('doubly-linked-lists'); as dllSubs) {
+        @if (isSubtopicsExpanded('doubly-linked-lists')) {
+          <div class="nav-subtopics">
+            @for (sub of dllSubs; track sub.route) {
+              <a [routerLink]="sub.route" routerLinkActive="active" class="nav-subtopic-link">{{ sub.label }}</a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

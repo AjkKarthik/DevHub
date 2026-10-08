@@ -10788,6 +10788,73 @@ check before any other new hub's first subtopic set:
    chunk; confirmed the `SUBTOPICS`/`SIDEBAR_MAP`/breadcrumb/search-index entries for `linked-lists`
    (bare) and all three composite subtopic keys were present with matching content.
    **DSA hub Phase 10: 6 of 21 topics complete.**
+13. **The `doubly-linked-lists` batch found and fixed a genuine, research-verified inaccuracy
+   (not just a self-contained logic bug) plus two partial theory-section duplicates**: the page's
+   own QnA on real-world DLL usage listed "JavaScript's Map internally (for insertion-order
+   iteration)" alongside LRU caches and browser history. Verified via WebSearch against V8's own
+   source file (`src/objects/ordered-hash-table.h`, confirmed via the Chromium source repository
+   and corroborating secondary sources) that this is wrong: V8 implements Map/Set as an
+   `OrderedHashTable` — an array-backed hash table where entries are appended to a contiguous
+   backing array in insertion order, with a forward-only chain of next-entry INDICES used purely to
+   resolve hash-bucket collisions. There is no prev pointer, and no doubly linked list, anywhere in
+   the real design. Fixed the QnA to state the verified architecture, with an honest caveat built
+   into the matching subtopic: a JS-observable re-insertion test is CONSISTENT with this array-
+   backed design but is not, by itself, proof of it (a hypothetical DLL-based design with
+   move-to-tail-on-reinsert semantics would produce an identical observable result) — the real
+   evidence is in V8's own source, not anything a JS program alone can directly inspect. Also found
+   and fixed the same partial theory-section-duplicate pattern already seen on this hub's own Hash
+   Tables batch, across TWO sections this time: "When Doubly Linked Lists Outperform Singly Linked
+   Lists" restated two bullets ("O(1) removal given a reference" and "memory overhead doubling")
+   already stated in the page's own first theory section, and "Sentinel Nodes Simplify Doubly
+   Linked List Edge Cases" restated two bullets already stated in the page's own third theory
+   section. Retitled and rewrote both: the fourth section now covers why real standard-library
+   deques (Python's `collections.deque`, confirmed via well-documented CPython internals) use a
+   doubly linked list of fixed-size BLOCKS rather than a naive node-per-element DLL, for cache
+   locality; the fifth section now covers a genuine, Node-verified sentinel-boundary risk — that
+   `head.prev` and `tail.next` are themselves still null by construction, a real null-dereference
+   risk if a boundary guard (like the page's own `removeLast()` empty-list check) is ever forgotten.
+   No `SUBTOPICS` collision for `doubly-linked-lists` (checked both quoted and unquoted forms in
+   `subtopics.ts`, and grepped `app.routes.ts` directly, confirmed collision-free, left bare). Every
+   codeTab and the Challenge's own LRU Cache solution were independently verified first via direct
+   Node.js execution (the page's QnA's own DLL-reversal algorithm was also tested and confirmed
+   correct, including that "what was tail is now head" holds). Three subtopics, each independently
+   verified: (1) **fix-adjacent** — the V8 OrderedHashTable finding, with the re-insertion-appends-
+   at-the-end observable-behavior demo and its own explicit "consistent with, not proof of" caveat,
+   plus a Try It on what kind of evidence would actually be needed to go beyond "consistent with";
+   (2) **gap-closing** — reproduced the exact sentinel-boundary crash by deliberately deleting the
+   main page's own empty-list guard from `removeLast()` and calling it on an empty list: verified it
+   throws `TypeError: Cannot set properties of null` immediately (since `this.tail.prev === this.head`
+   on an empty list, and `head.prev` was never set), with a Try It reasoning through why a null-check
+   deep inside `remove()` instead of restoring the guard would be a WORSE fix (silently returning the
+   sentinel itself as a fake "evicted" node, corrupting state, rather than failing loudly); (3)
+   **gap-closing** — built a real `BlockedDeque<T>` class (block size 4, for demo clarity versus
+   CPython's real 62) and cross-checked it against a plain array reference across 2,000 random mixed
+   push-front/push-back/pop-front/pop-back operations with zero mismatches, with a Try It computing
+   the real allocation-count difference for 1 million elements (~16,130 block allocations vs.
+   1,000,000 individual node allocations, a ~62x reduction). **A real delimiter-collision mistake
+   self-caught and fixed before the build, not the standing sweep**: an early draft of one subtopic's
+   own `[prev]`/`[next]` bound attributes used backslash-escaped apostrophes (`\'`) for "JavaScript's"
+   and "Python's" — the `.ts`-field-only convention — instead of the typographic curly quote (`'`,
+   U+2019) `.html` bound attributes actually require; caught by direct review before the build ever
+   ran, fixed to the curly quote consistently across all four touchpoints that reference either
+   title (the file's own h1/eyebrow, both sibling `[prev]`/`[next]` labels, and the `SUBTOPICS`/
+   `breadcrumb`/`search` composite entries). All three `exercise.solution`/`theory.points`/
+   `misconceptions` fields swept clean via the standing bracket-balance/backtick-parity/apostrophe
+   scripts (all three files balanced, all backtick counts even; the two flagged apostrophe matches —
+   "CPython's" and "page's" — were confirmed safe, both sitting inside backtick-delimited `code:`
+   fields). Build passed clean (foreground execution under Node 22.23.2, explicit `EXITCODE:$?`
+   capture, zero real `ERROR` lines). **No interactive browser/preview tool was available in this
+   session** — verified via the same compiled-bundle-inspection fallback as the prior six batches:
+   confirmed the OLD "JavaScript's Map internally" QnA text and both pairs of OLD duplicate theory
+   bullets were absent from every compiled chunk, confirmed the NEW V8-verified QnA text, the
+   blocked-deque theory section, and the sentinel-boundary-risk theory section were all present in
+   the main page's own chunk; confirmed all three subtopic classes
+   (`JavascriptMapIsNotADoublyLinkedListSubtopic`/`WhatHappensWithoutTheEmptyListGuardSubtopic`/
+   `BuildingABlockedDequeLikePythonsSubtopic`) each compiled into their own separate lazy chunk, with
+   the curly-quote titles correctly encoded as `’` escapes in the compiled `SUBTOPICS` map;
+   confirmed the `SUBTOPICS`/`SIDEBAR_MAP`/breadcrumb/search-index entries for `doubly-linked-lists`
+   (bare) and all three composite subtopic keys were present with matching content.
+   **DSA hub Phase 10: 7 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -11205,12 +11272,14 @@ check before any other new hub's first subtopic set:
   needs the full `.dsa-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }`
   rule (copied from the main topic page's own `.scss`, which defines it locally). No live
   playground (DSA theory/analysis content has no in-browser runtime) — plain `<app-code-block>`.
-  Phase 10: 6 of 21 topics have subtopics (`/dsa/big-o`, pilot batch; `/dsa/arrays`; `/dsa/strings`;
-  `/dsa/hash-tables`; `/dsa/stacks-queues`; `/dsa/linked-lists`, all 2026-10-08) — see "DSA hub
+  Phase 10: 7 of 21 topics have subtopics (`/dsa/big-o`, pilot batch; `/dsa/arrays`; `/dsa/strings`;
+  `/dsa/hash-tables`; `/dsa/stacks-queues`; `/dsa/linked-lists`; `/dsa/doubly-linked-lists`, all
+  2026-10-08) — see "DSA hub
   subtopic wiring" section below for the `DsaNavComponent` accordion
   structural fix (19th `*NavComponent`-based hub in a row missing it at pilot time), the
   `dsa-arrays` SUBTOPICS-map collision resolution (bare `arrays` collides with the C# hub's own
-  topic; `stacks-queues` and `linked-lists` both confirmed collision-free, left bare), and the
+  topic; `stacks-queues`, `linked-lists`, and `doubly-linked-lists` all confirmed collision-free,
+  left bare), and the
   genuine main-page fixes
   found and verified by direct Node execution.
 - **AI/ML hub**: 19 trackable topic pages + 3 reference pages (22 cards total). Feature-complete.
