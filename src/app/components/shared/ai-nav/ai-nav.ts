@@ -162,8 +162,26 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/ai/ai-agents" routerLinkActive="active"><span class="nl-text">AI Agents &amp; Tool Use</span>@if(p.isDone('ai-ai-agents')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/ai/vector-databases" routerLinkActive="active"><span class="nl-text">Vector Databases</span>@if(p.isDone('ai-vector-databases')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/ai/ai-agents" routerLinkActive="active"><span class="nl-text">AI Agents &amp; Tool Use</span>@if(p.isDone('ai-ai-agents')){<span class="nl-done">✓</span>}@if (subtopicsOf('ai-agents'); as aiAgentsSubs) {<button type="button" class="nav-subtopics-toggle" (click)="toggleSubtopics('ai-agents', $event)">{{ isSubtopicsExpanded('ai-agents') ? '▾' : '▸' }}</button>}</a>
+      @if (subtopicsOf('ai-agents'); as aiAgentsSubs) {
+        @if (isSubtopicsExpanded('ai-agents')) {
+          <div class="nav-subtopics">
+            @for (sub of aiAgentsSubs; track sub.route) {
+              <a [routerLink]="sub.route" routerLinkActive="active" class="nav-subtopic-link">{{ sub.label }}</a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/ai/vector-databases" routerLinkActive="active"><span class="nl-text">Vector Databases</span>@if(p.isDone('ai-vector-databases')){<span class="nl-done">✓</span>}@if (subtopicsOf('vector-databases'); as vectorDatabasesSubs) {<button type="button" class="nav-subtopics-toggle" (click)="toggleSubtopics('vector-databases', $event)">{{ isSubtopicsExpanded('vector-databases') ? '▾' : '▸' }}</button>}</a>
+      @if (subtopicsOf('vector-databases'); as vectorDatabasesSubs) {
+        @if (isSubtopicsExpanded('vector-databases')) {
+          <div class="nav-subtopics">
+            @for (sub of vectorDatabasesSubs; track sub.route) {
+              <a [routerLink]="sub.route" routerLinkActive="active" class="nav-subtopic-link">{{ sub.label }}</a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/ai/ai-engineering" routerLinkActive="active"><span class="nl-text">AI Engineering Patterns</span>@if(p.isDone('ai-ai-engineering')){<span class="nl-done">✓</span>}</a>
     </div>
 

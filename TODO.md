@@ -10232,8 +10232,8 @@ off here with a date.
 - [x] 2026-10-08 `/ai/fine-tuning` — Fine-tuning & RLHF (3 subtopics; fixed LoRA param count, TRL trainer arguments, SFT on output-only text)
 - [x] 2026-10-08 `/ai/rag` — RAG (3 subtopics; fixed character-based chunkSize, LangChain 1.x imports, quiz chunk size)
 - [x] 2026-10-08 `/ai/prompt-engineering` — Prompt Engineering (3 subtopics; fixed fence-stripping regex, CoT challenge prompt, JSON mode claim)
-- [ ] `/ai/ai-agents` — AI Agents & Tool Use
-- [ ] `/ai/vector-databases` — Vector Databases
+- [x] 2026-10-08 `/ai/ai-agents` — AI Agents (3 subtopics; fixed eval in calculator tool, unhandled stop reasons, ReAct parser)
+- [x] 2026-10-08 `/ai/vector-databases` — Vector Databases (3 subtopics; fixed FAISS cosine conversion, HNSW/PQ memory, Pinecone v9 upsert)
 - [ ] `/ai/mlops` — MLOps & Model Deployment
 - [ ] `/ai/hugging-face` — Hugging Face & Model Hub
 - [ ] `/ai/evaluating-llms` — Evaluating LLM Outputs

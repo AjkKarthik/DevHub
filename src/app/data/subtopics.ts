@@ -4496,4 +4496,14 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: "The CoT Prompt Ended at the Answer", route: '/ai/prompt-engineering/cot-prompt-ended-at-the-answer' },
     { label: "JSON Mode Is Not Schema Enforcement", route: '/ai/prompt-engineering/json-mode-vs-structured-outputs' },
   ],
+  'ai-agents': [
+    { label: "The Calculator Tool Must Not eval Model Input", route: '/ai/ai-agents/calculator-tool-must-not-eval' },
+    { label: "The Loop Resent the Same Request on Other Stop Reasons", route: '/ai/ai-agents/loop-resent-on-other-stop-reasons' },
+    { label: "The ReAct Parser Split on Every Parenthesis", route: '/ai/ai-agents/react-parser-split-on-every-parenthesis' },
+  ],
+  'vector-databases': [
+    { label: "FAISS L2 Distances Are Squared", route: '/ai/vector-databases/faiss-l2-distances-are-squared' },
+    { label: "HNSW Memory Is Not N·M·d", route: '/ai/vector-databases/hnsw-memory-is-not-n-m-d' },
+    { label: "Pinecone v9 upsert Takes { records }", route: '/ai/vector-databases/pinecone-v9-upsert-takes-records' },
+  ],
 };

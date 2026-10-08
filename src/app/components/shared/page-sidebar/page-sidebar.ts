@@ -32917,6 +32917,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'HNSW has become a popular default across many vector database implementations due to its favorable speed-accuracy balance.',
     ],
   },
+  "ai/vector-databases/faiss-l2-distances-are-squared": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "HNSW Memory Is Not N·M·d", route: '/ai/vector-databases/hnsw-memory-is-not-n-m-d' },
+      { label: "Vector Databases (overview)", route: '/ai/vector-databases' },
+    ],
+    tip: "For cosine similarity either convert with 1 - d/2 on normalised vectors, or build the index with METRIC_INNER_PRODUCT and read the scores directly.",
+    gotchas: ["Ranking is the same under squared L2 and cosine for unit vectors; only the printed scores were wrong.","Inner product only equals cosine when both the stored vectors and the query are normalised."],
+  },
+  "ai/vector-databases/hnsw-memory-is-not-n-m-d": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "FAISS L2 Distances Are Squared", route: '/ai/vector-databases/faiss-l2-distances-are-squared' },
+      { label: "Pinecone v9 upsert Takes { records }", route: '/ai/vector-databases/pinecone-v9-upsert-takes-records' },
+      { label: "Vector Databases (overview)", route: '/ai/vector-databases' },
+    ],
+    tip: "Estimate HNSW memory as N × (d × 4 bytes + about 2 × M × 4 bytes); the vectors dominate unless M is very large.",
+    gotchas: ["Layer 0 keeps 2·M neighbours and upper layers M, so the link overhead is roughly 2·M IDs per vector.","To shrink memory meaningfully you must compress the vectors (PQ, scalar quantisation), not lower M."],
+  },
+  "ai/vector-databases/pinecone-v9-upsert-takes-records": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "HNSW Memory Is Not N·M·d", route: '/ai/vector-databases/hnsw-memory-is-not-n-m-d' },
+      { label: "Vector Databases (overview)", route: '/ai/vector-databases' },
+    ],
+    tip: "Check the SDK version in package.json before copying Pinecone examples; the data-plane call shapes changed between majors.",
+    gotchas: ["pc.index('name') still works but is deprecated in favour of pc.index({ name }).","createIndex is deprecated in v9 in favour of pc.indexes.create."],
+  },
   'ai/fine-tuning': {
     apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
     related: [
@@ -33067,6 +33095,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Scoped, least-privilege tool access limits the blast radius of a bad agent decision, following the same principle as least-privilege in traditional security.',
       'Agent loops without a clear termination condition (max steps, max cost) can run indefinitely on a stuck plan, silently consuming cost.',
     ],
+  },
+  "ai/ai-agents/calculator-tool-must-not-eval": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "The Loop Resent the Same Request on Other Stop Reasons", route: '/ai/ai-agents/loop-resent-on-other-stop-reasons' },
+      { label: "AI Agents (overview)", route: '/ai/ai-agents' },
+    ],
+    tip: "Treat every tool argument as untrusted input: validate it against what the tool genuinely needs before doing anything with it.",
+    gotchas: ["Prompt injection can arrive through a tool result (a web page, a file) rather than the user.","An allowlist of characters is enough for plain arithmetic; anything richer needs a real expression parser."],
+  },
+  "ai/ai-agents/loop-resent-on-other-stop-reasons": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "The Calculator Tool Must Not eval Model Input", route: '/ai/ai-agents/calculator-tool-must-not-eval' },
+      { label: "The ReAct Parser Split on Every Parenthesis", route: '/ai/ai-agents/react-parser-split-on-every-parenthesis' },
+      { label: "AI Agents (overview)", route: '/ai/ai-agents' },
+    ],
+    tip: "Branch on tool_use explicitly and treat every other stop reason as the end of the loop, raising an error for anything except end_turn.",
+    gotchas: ["max_tokens means the reply was cut off; increase max_tokens or ask the model to continue rather than resending.","pause_turn is used with server-side tools; continuing it means sending the assistant content back, which a generic handler does not do."],
+  },
+  "ai/ai-agents/react-parser-split-on-every-parenthesis": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "The Loop Resent the Same Request on Other Stop Reasons", route: '/ai/ai-agents/loop-resent-on-other-stop-reasons' },
+      { label: "AI Agents (overview)", route: '/ai/ai-agents' },
+    ],
+    tip: "Split the action at the first ( and the last ), or better, use the provider's native tool calling so arguments arrive as structured JSON.",
+    gotchas: ["Text-based ReAct parsing is fragile; native function calling avoids parsing entirely.","Destructuring the result of split keeps only the first two pieces and silently drops the rest."],
   },
   'ai/ai-dotnet': {
     apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
