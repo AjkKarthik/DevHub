@@ -34371,6 +34371,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Pre-allocating to the expected final size avoids repeated resize overhead when the size is known in advance.',
     ],
   },
+  'dsa/arrays/prefix-sum-codetab-was-actually-on2': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: '2D Prefix Sums for Submatrix Range Queries', route: '/dsa/arrays/2d-prefix-sums-submatrix-queries' },
+      { label: 'Arrays (topic overview)', route: '/dsa/arrays' },
+    ],
+    tip: 'Correctness and complexity are independent — a function can return the exact right answer while doing far more work than necessary. A slice()+reduce() per index LOOKS like a one-liner but is O(n²), not O(n).',
+    gotchas: [
+      'Calling an O(k) built-in method inside a loop that itself runs n times, with k growing alongside the loop index, is a common way to accidentally write O(n²) code that reads like O(n).',
+    ],
+  },
+  'dsa/arrays/2d-prefix-sums-submatrix-queries': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'The Prefix Sum CodeTab Was Actually O(n²)', route: '/dsa/arrays/prefix-sum-codetab-was-actually-on2' },
+      { label: 'Counting Subarrays With Sum = K', route: '/dsa/arrays/subarray-sum-equals-k-prefix-hashmap' },
+    ],
+    tip: 'The inclusion-exclusion correction term (subtracting the double-counted top-left overlap) is required for correctness in a 2D prefix sum, not an optional optimization — leaving it out silently breaks every query touching more than the first row.',
+    gotchas: [
+      'A 2D prefix sum allocates a second full (rows+1)×(cols+1) grid — for a huge matrix queried only a few times, brute-force per query can use less total memory than precomputing.',
+    ],
+  },
+  'dsa/arrays/subarray-sum-equals-k-prefix-hashmap': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: '2D Prefix Sums for Submatrix Range Queries', route: '/dsa/arrays/2d-prefix-sums-submatrix-queries' },
+      { label: 'Arrays (topic overview)', route: '/dsa/arrays' },
+    ],
+    tip: 'Unlike sliding window, the prefix-sum + hash map technique works with negative numbers — it never relies on the running sum moving monotonically in one direction as the window expands or contracts.',
+    gotchas: [
+      'Seeding the prefix-count map with {0: 1} before scanning is what correctly counts subarrays starting at index 0 — skip it and those subarrays are silently undercounted.',
+    ],
+  },
   'dsa/strings': {
     apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
     related: [

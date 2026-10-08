@@ -10525,6 +10525,55 @@ check before any other new hub's first subtopic set:
    `big-o` and all three subtopic composite keys were present with matching content — the
    authoritative correctness check per this project's own established precedent when interactive
    browser verification isn't available. **DSA hub Phase 10: 1 of 21 topics complete.**
+8. **The `arrays` batch found and fixed another genuine, self-contained inaccuracy, caught by
+   cross-referencing the page's own "Prefix Sum Array" theory bullet ("Build in O(n)") against its
+   own "Prefix sum" code sample, and confirmed via exact Node.js operation-counting rather than
+   wall-clock timing (which proved too noisy to trust at this scale)**: the code sample built the
+   prefix array via `arr.map((_, i) => arr.slice(0, i + 1).reduce(...))` — a slice PLUS a reduce
+   per index, each touching i+1 elements. Counted exactly: total ops across all n indices is
+   n(n+1), and the measured ratio of ops to n² converged to EXACTLY 1.0000 at n=100, 1,000,
+   10,000, and 100,000 — genuinely O(n²), not the O(n) the surrounding theory claims. The correct
+   pattern was already sitting two sections away, in the page's own "Prefix sum index confusion"
+   mistake block's own "right" example — fixed the codeTab to match it (a single forward loop).
+   Real `SUBTOPICS` map collision: bare `arrays` is already claimed by the C# hub's own
+   `/csharp/arrays` topic (the JavaScript hub's own `/javascript/arrays` was already hub-prefixed
+   to `js-arrays` for the identical reason) — hub-prefixed to `dsa-arrays`, matching this hub's
+   own established `dsa-` progress/search key prefix, with all `DsaNavComponent` accordion
+   touchpoints and the search-index composite keys using the prefixed key consistently; `search.
+   ts`'s existing `dsa-` → `/dsa/` prefix-strip rule required no special-casing since `dsa-arrays`
+   already starts with that exact prefix. Three subtopics, each independently verified via direct
+   Node.js execution against a brute-force reference before publishing: (1) **fix-adjacent** —
+   reproduces the exact op-count bug/fix (also confirming both versions return byte-identical
+   output — correctness was never the problem, only the amount of work), with a Try It on why
+   dropping `reduce`'s initial-value argument ("to save a step") changes nothing about the
+   complexity; (2) **gap-closing** — the theory names "Extend to 2D for submatrix sum queries" in
+   one sentence with zero code anywhere; built the real 2D prefix sum (inclusion-exclusion build +
+   query), verified against a brute-force sum over four different rectangles on a 5x5 grid,
+   including the full-matrix case — every result matched exactly; a Try It traces precisely which
+   queries a missing correction term would silently break (only row 0 survives by coincidence,
+   every row below it would double-count); (3) **gap-closing** — the QnA names "counting subarrays
+   with target sum (hash map on prefix sums)" in one clause with zero code; built and verified the
+   real technique against a brute-force O(n²) double loop across four cases including negative
+   numbers, explicitly contrasted against the page's own EARLIER sliding-window QnA, which states
+   outright that its own monotonicity guarantee requires non-negative values — a genuinely
+   different applicability boundary between two superficially similar O(n) techniques on the same
+   page. All three `exercise.solution`/`theory.points`/`misconceptions` fields swept clean via the
+   standing bracket-balance/backtick-parity/apostrophe scripts (the two flagged apostrophe matches
+   confirmed safe, inside backtick-delimited `code:` fields). A pre-existing, unrelated 3-brace
+   imbalance was found in `page-sidebar.ts` during the sweep — confirmed via `git diff` that the
+   lines THIS batch added were perfectly balanced (10 open / 10 close) and the imbalance already
+   existed at `HEAD` before any edit, consistent with this file's own documented "a raw brace-count
+   sweep is a heuristic, not authoritative" caveat for a 34,000+ line file. Build passed clean
+   (foreground execution under Node 22.23.2, explicit `EXITCODE:$?` capture, zero real `ERROR`
+   lines). **No interactive browser/preview tool was available in this session again** — verified
+   via the same compiled-bundle-inspection fallback as the pilot batch: confirmed the old wrong
+   code string survives only inside this batch's OWN subtopic's descriptive prose (quoting what the
+   bug WAS, as context) and is genuinely absent from the main `DsaArrays` component's own lazy
+   chunk (isolated by searching for a string unique to that component, "Maximum Product
+   Subarray"); confirmed the fixed code, the `SUBTOPICS`/`SIDEBAR_MAP`/breadcrumb/search-index
+   entries for `dsa-arrays` and all three composite subtopic keys, and the `dsa-arrays` nav-toggle
+   wiring in `main.js` were all present with matching content. **DSA hub Phase 10: 2 of 21 topics
+   complete.**
 
 ## Current state (update when it changes!)
 
@@ -10942,10 +10991,11 @@ check before any other new hub's first subtopic set:
   needs the full `.dsa-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }`
   rule (copied from the main topic page's own `.scss`, which defines it locally). No live
   playground (DSA theory/analysis content has no in-browser runtime) — plain `<app-code-block>`.
-  Phase 10: 1 of 21 topics have subtopics (`/dsa/big-o`, pilot batch, 2026-10-08) — see "DSA hub
-  subtopic wiring" section below for the `DsaNavComponent` accordion structural fix (19th
-  `*NavComponent`-based hub in a row missing it at pilot time) and the genuine main-page fix
-  found and verified by direct Node execution.
+  Phase 10: 2 of 21 topics have subtopics (`/dsa/big-o`, pilot batch; `/dsa/arrays`, both
+  2026-10-08) — see "DSA hub subtopic wiring" section below for the `DsaNavComponent` accordion
+  structural fix (19th `*NavComponent`-based hub in a row missing it at pilot time), the
+  `dsa-arrays` SUBTOPICS-map collision resolution (bare `arrays` collides with the C# hub's own
+  topic), and the genuine main-page fixes found and verified by direct Node execution.
 - **AI/ML hub**: 19 trackable topic pages + 3 reference pages (22 cards total). Feature-complete.
   Violet theme `$accent: #7c3aed`, `$tint: #f5f3ff`, dark `#a78bfa`, dark bg `#1e1b4b`. Search prefix `ai-`. Route: `/ai`.
   CSS classes: `.ai-page`, `.ai-icon`, `.ai-section`. Icon content: `🤖` at `font-size: 1.8rem`. `tech="javascript"`.

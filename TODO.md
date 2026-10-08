@@ -9984,7 +9984,13 @@ off here with a date.
   O(n²); the real O(n log n) pattern is the Challenge's own harmonic shrink. Fixed
   `DsaNavComponent`'s missing subtopics-accordion structural gap (19th `*NavComponent` hub in a
   row). Bare `big-o` SUBTOPICS key collision-free. DSA hub Phase 10: 1 of 21.
-- [ ] `/dsa/arrays` — Arrays
+- [x] 2026-10-08 `/dsa/arrays` — Arrays. 3 subtopics (prefix-sum-codetab-was-actually-on2,
+  2d-prefix-sums-submatrix-queries, subarray-sum-equals-k-prefix-hashmap). Main-page fix verified
+  via exact op-counting: the "Prefix sum" code sample built the array with a slice+reduce per
+  index (confirmed O(n²), ratio to n² converges to exactly 1.0), contradicting the theory's own
+  "Build in O(n)" claim -- fixed to match the correct single-forward-loop pattern already used in
+  the page's own mistake block. Bare `arrays` SUBTOPICS key collides with the C# hub's own topic
+  -- hub-prefixed to `dsa-arrays`. DSA hub Phase 10: 2 of 21.
 - [ ] `/dsa/strings` — Strings
 - [ ] `/dsa/hash-tables` — Hash Tables
 - [ ] `/dsa/stacks-queues` — Stacks & Queues

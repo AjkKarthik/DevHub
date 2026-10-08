@@ -4928,7 +4928,12 @@ export const routes: Routes = [
       { path: 'master-theorem-epsilon-and-regularity', loadComponent: () => import('./components/fundamentals/dsa/big-o/subtopics/master-theorem-epsilon-and-regularity/master-theorem-epsilon-and-regularity').then(m => m.MasterTheoremEpsilonAndRegularitySubtopic) },
       { path: 'dynamic-array-amortized-proof', loadComponent: () => import('./components/fundamentals/dsa/big-o/subtopics/dynamic-array-amortized-proof/dynamic-array-amortized-proof').then(m => m.DynamicArrayAmortizedProofSubtopic) },
     ] },
-    { path: 'arrays',                 loadComponent: () => import('./components/fundamentals/dsa/arrays/arrays').then(m => m.DsaArrays) },
+    { path: 'arrays', children: [
+      { path: '', loadComponent: () => import('./components/fundamentals/dsa/arrays/arrays').then(m => m.DsaArrays) },
+      { path: 'prefix-sum-codetab-was-actually-on2', loadComponent: () => import('./components/fundamentals/dsa/arrays/subtopics/prefix-sum-codetab-was-actually-on2/prefix-sum-codetab-was-actually-on2').then(m => m.PrefixSumCodetabWasActuallyOn2Subtopic) },
+      { path: '2d-prefix-sums-submatrix-queries', loadComponent: () => import('./components/fundamentals/dsa/arrays/subtopics/2d-prefix-sums-submatrix-queries/2d-prefix-sums-submatrix-queries').then(m => m.TwoDPrefixSumsSubmatrixQueriesSubtopic) },
+      { path: 'subarray-sum-equals-k-prefix-hashmap', loadComponent: () => import('./components/fundamentals/dsa/arrays/subtopics/subarray-sum-equals-k-prefix-hashmap/subarray-sum-equals-k-prefix-hashmap').then(m => m.SubarraySumEqualsKPrefixHashmapSubtopic) },
+    ] },
     { path: 'strings',                loadComponent: () => import('./components/fundamentals/dsa/strings/strings').then(m => m.DsaStrings) },
     { path: 'hash-tables',            loadComponent: () => import('./components/fundamentals/dsa/hash-tables/hash-tables').then(m => m.DsaHashTables) },
     { path: 'stacks-queues',          loadComponent: () => import('./components/fundamentals/dsa/stacks-queues/stacks-queues').then(m => m.DsaStacksQueues) },

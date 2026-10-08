@@ -4232,4 +4232,13 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Master Theorem’s Precise Conditions: Epsilon and Regularity', route: '/dsa/big-o/master-theorem-epsilon-and-regularity' },
     { label: 'Proving Amortized O(1) With the Aggregate Method', route: '/dsa/big-o/dynamic-array-amortized-proof' },
   ],
+  // NOTE: keyed 'dsa-arrays', NOT bare 'arrays' — the C# hub's own
+  // /csharp/arrays topic already owns the bare 'arrays' key (and the
+  // JavaScript hub's /javascript/arrays uses 'js-arrays' for the same
+  // reason) — DsaNavComponent's accordion calls use 'dsa-arrays' too.
+  'dsa-arrays': [
+    { label: 'The Prefix Sum CodeTab Was Actually O(n²)', route: '/dsa/arrays/prefix-sum-codetab-was-actually-on2' },
+    { label: '2D Prefix Sums for Submatrix Range Queries', route: '/dsa/arrays/2d-prefix-sums-submatrix-queries' },
+    { label: 'Counting Subarrays With Sum = K via Prefix Sum + Hash Map', route: '/dsa/arrays/subarray-sum-equals-k-prefix-hashmap' },
+  ],
 };

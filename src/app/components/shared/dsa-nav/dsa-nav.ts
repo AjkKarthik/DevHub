@@ -38,7 +38,24 @@ import { SUBTOPICS } from '../../../data/subtopics';
 
     <div class="nav-group">
       <p class="nav-group-label">Arrays &amp; Strings</p>
-      <a routerLink="/dsa/arrays" routerLinkActive="active"><span class="nl-text">Arrays</span>@if(p.isDone('dsa-arrays')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/dsa/arrays" routerLinkActive="active">
+        <span class="nl-text">Arrays</span>
+        @if(p.isDone('dsa-arrays')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('dsa-arrays'); as arraysSubs) {
+          <button type="button" class="nav-subtopics-toggle" (click)="toggleSubtopics('dsa-arrays', $event)">
+            {{ isSubtopicsExpanded('dsa-arrays') ? '▾' : '▸' }}
+          </button>
+        }
+      </a>
+      @if (subtopicsOf('dsa-arrays'); as arraysSubs) {
+        @if (isSubtopicsExpanded('dsa-arrays')) {
+          <div class="nav-subtopics">
+            @for (sub of arraysSubs; track sub.route) {
+              <a [routerLink]="sub.route" routerLinkActive="active" class="nav-subtopic-link">{{ sub.label }}</a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/dsa/strings" routerLinkActive="active"><span class="nl-text">Strings</span>@if(p.isDone('dsa-strings')){<span class="nl-done">✓</span>}</a>
       <a routerLink="/dsa/hash-tables" routerLinkActive="active"><span class="nl-text">Hash Tables</span>@if(p.isDone('dsa-hash-tables')){<span class="nl-done">✓</span>}</a>
       <a routerLink="/dsa/stacks-queues" routerLinkActive="active"><span class="nl-text">Stacks &amp; Queues</span>@if(p.isDone('dsa-stacks-queues')){<span class="nl-done">✓</span>}</a>
