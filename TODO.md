@@ -10163,7 +10163,16 @@ off here with a date.
   returns "ara"; the Word Break comment said O(n²) — s.slice makes it O(n³) (characters copied grew
   8x per doubling of n, ~86M at n = 800), bounding j by the longest word copied 2,403. Bare
   `dp-patterns` SUBTOPICS key collision-free. DSA hub Phase 10: 18 of 21.
-- [ ] `/dsa/trie` — Tries
+- [x] 2026-10-08 `/dsa/trie` — Trie. 3 subtopics (routes sorted-array-answers-prefix-queries,
+  compressed-trie-saves-nodes-not-characters, word-search-ii-prune-found-branches; short folders
+  sorted-array-prefix-search, compressed-trie-node-count, word-search-ii-pruning). Main-page fixes:
+  theory grouped sorted arrays with hash sets as unable to do prefix queries — a lower-bound
+  search finds the contiguous block (10 comparisons on 1,000 words, same results as the trie); the
+  HashMap QnA said O(1) lookup — hashing a string is O(L); the compressed-trie QnA said space drops
+  to O(n) — node count does (12,577 -> 1,411 on 1,000 random words, under 2n), label characters do
+  not; the Word Search II code never pruned — measured isEnd = false alone changes nothing (7,985
+  calls both ways), deleting empty branches cut it to 36, so the code now does both. Bare `trie`
+  SUBTOPICS key collision-free. DSA hub Phase 10: 19 of 21.
 - [ ] `/dsa/bit-manipulation` — Bit Manipulation
 - [ ] `/dsa/greedy` — Greedy Algorithms
 

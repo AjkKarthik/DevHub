@@ -5030,7 +5030,12 @@ export const routes: Routes = [
       { path: 'longest-palindromic-substring-of-character', loadComponent: () => import('./components/fundamentals/dsa/dp-patterns/subtopics/palindrome-substring-vs-subsequence/palindrome-substring-vs-subsequence').then(m => m.PalindromeSubstringVsSubsequenceSubtopic) },
       { path: 'word-break-with-slice-is-cubic', loadComponent: () => import('./components/fundamentals/dsa/dp-patterns/subtopics/word-break-cubic-slice/word-break-cubic-slice').then(m => m.WordBreakCubicSliceSubtopic) },
     ] },
-    { path: 'trie',                   loadComponent: () => import('./components/fundamentals/dsa/trie/trie').then(m => m.DsaTrie) },
+    { path: 'trie', children: [
+      { path: '', loadComponent: () => import('./components/fundamentals/dsa/trie/trie').then(m => m.DsaTrie) },
+      { path: 'sorted-array-answers-prefix-queries', loadComponent: () => import('./components/fundamentals/dsa/trie/subtopics/sorted-array-prefix-search/sorted-array-prefix-search').then(m => m.SortedArrayPrefixSearchSubtopic) },
+      { path: 'compressed-trie-saves-nodes-not-characters', loadComponent: () => import('./components/fundamentals/dsa/trie/subtopics/compressed-trie-node-count/compressed-trie-node-count').then(m => m.CompressedTrieNodeCountSubtopic) },
+      { path: 'word-search-ii-prune-found-branches', loadComponent: () => import('./components/fundamentals/dsa/trie/subtopics/word-search-ii-pruning/word-search-ii-pruning').then(m => m.WordSearchIiPruningSubtopic) },
+    ] },
     { path: 'bit-manipulation',       loadComponent: () => import('./components/fundamentals/dsa/bit-manipulation/bit-manipulation').then(m => m.DsaBitManipulation) },
     { path: 'greedy',                 loadComponent: () => import('./components/fundamentals/dsa/greedy/greedy').then(m => m.DsaGreedy) },
   ] },

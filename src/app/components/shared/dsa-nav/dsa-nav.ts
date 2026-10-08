@@ -363,7 +363,24 @@ import { SUBTOPICS } from '../../../data/subtopics';
 
     <div class="nav-group">
       <p class="nav-group-label">Advanced</p>
-      <a routerLink="/dsa/trie" routerLinkActive="active"><span class="nl-text">Trie</span>@if(p.isDone('dsa-trie')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/dsa/trie" routerLinkActive="active">
+        <span class="nl-text">Trie</span>
+        @if(p.isDone('dsa-trie')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('trie'); as trieSubs) {
+          <button type="button" class="nav-subtopics-toggle" (click)="toggleSubtopics('trie', $event)">
+            {{ isSubtopicsExpanded('trie') ? '▾' : '▸' }}
+          </button>
+        }
+      </a>
+      @if (subtopicsOf('trie'); as trieSubs) {
+        @if (isSubtopicsExpanded('trie')) {
+          <div class="nav-subtopics">
+            @for (sub of trieSubs; track sub.route) {
+              <a [routerLink]="sub.route" routerLinkActive="active" class="nav-subtopic-link">{{ sub.label }}</a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/dsa/bit-manipulation" routerLinkActive="active"><span class="nl-text">Bit Manipulation</span>@if(p.isDone('dsa-bit-manipulation')){<span class="nl-done">✓</span>}</a>
       <a routerLink="/dsa/greedy" routerLinkActive="active"><span class="nl-text">Greedy Algorithms</span>@if(p.isDone('dsa-greedy')){<span class="nl-done">✓</span>}</a>
     </div>

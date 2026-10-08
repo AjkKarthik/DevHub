@@ -11253,6 +11253,16 @@ check before any other new hub's first subtopic set:
    per check (characters copied grew 8x per doubling, ~86M at n = 800; bounding j by the longest
    word copied 2,403). 3 subtopics. Bare `dp-patterns` key collision-free. Build clean;
    bundle-verified. **DSA hub Phase 10: 18 of 21 topics complete.**
+25. **The `trie` batch found and fixed FOUR main-page issues, all Node-verified**: theory said sorted
+   arrays, like hash sets, cannot answer prefix queries — a lower-bound binary search finds the
+   contiguous block (10 comparisons on 1,000 words, identical results to the trie); the HashMap QnA
+   called lookups O(1) though hashing a string is O(L); the compressed-trie QnA said space drops to
+   O(n) when only the node count does (12,577 -> 1,411, below the 2n bound; labels keep the
+   characters); the Word Search II code never pruned, and measuring showed the QnA's isEnd = false
+   step alone saves nothing (7,985 calls either way) while deleting emptied branches cut it to 36 —
+   the code now does both. Topic label is "Trie" (matching the breadcrumb), not "Tries". 3
+   subtopics. Bare `trie` key collision-free. Build clean; bundle-verified.
+   **DSA hub Phase 10: 19 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -11670,10 +11680,10 @@ check before any other new hub's first subtopic set:
   needs the full `.dsa-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }`
   rule (copied from the main topic page's own `.scss`, which defines it locally). No live
   playground (DSA theory/analysis content has no in-browser runtime) — plain `<app-code-block>`.
-  Phase 10: 18 of 21 topics have subtopics (`/dsa/big-o`, pilot batch; `/dsa/arrays`; `/dsa/strings`;
+  Phase 10: 19 of 21 topics have subtopics (`/dsa/big-o`, pilot batch; `/dsa/arrays`; `/dsa/strings`;
   `/dsa/hash-tables`; `/dsa/stacks-queues`; `/dsa/linked-lists`; `/dsa/doubly-linked-lists`;
   `/dsa/binary-trees`; `/dsa/bst`; `/dsa/heaps`; `/dsa/graphs-bfs-dfs`; `/dsa/graph-algorithms`;
-  `/dsa/basic-sorts`; `/dsa/advanced-sorts`; `/dsa/binary-search`; `/dsa/recursion-backtracking`; `/dsa/dynamic-programming`; `/dsa/dp-patterns`,
+  `/dsa/basic-sorts`; `/dsa/advanced-sorts`; `/dsa/binary-search`; `/dsa/recursion-backtracking`; `/dsa/dynamic-programming`; `/dsa/dp-patterns`; `/dsa/trie`,
   all 2026-10-08) — see "DSA hub
   subtopic wiring" section below for the `DsaNavComponent` accordion
   structural fix (19th `*NavComponent`-based hub in a row missing it at pilot time), the

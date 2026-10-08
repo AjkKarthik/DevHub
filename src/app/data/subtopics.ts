@@ -4321,4 +4321,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Longest Palindromic Substring of character Is ara', route: '/dsa/dp-patterns/longest-palindromic-substring-of-character' },
     { label: 'Word Break With slice Is O(n³), Not O(n²)', route: '/dsa/dp-patterns/word-break-with-slice-is-cubic' },
   ],
+  'trie': [
+    { label: 'A Sorted Array Answers Prefix Queries Too', route: '/dsa/trie/sorted-array-answers-prefix-queries' },
+    { label: 'A Compressed Trie Saves Nodes, Not Characters', route: '/dsa/trie/compressed-trie-saves-nodes-not-characters' },
+    { label: 'Word Search II Speeds Up Only When Found Branches Are Deleted', route: '/dsa/trie/word-search-ii-prune-found-branches' },
+  ],
 };

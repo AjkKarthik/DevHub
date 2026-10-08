@@ -35157,6 +35157,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'One very long dictionary word makes the bound useless; try only the word lengths that occur.',
     ],
   },
+  'dsa/trie/sorted-array-answers-prefix-queries': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'A Compressed Trie Saves Nodes, Not Characters', route: '/dsa/trie/compressed-trie-saves-nodes-not-characters' },
+      { label: 'Trie (topic overview)', route: '/dsa/trie' },
+    ],
+    tip: 'Words sharing a prefix are adjacent in sorted order. On 1,000 words, a lower-bound search took 10 comparisons and returned the same matches as the trie.',
+    gotchas: [
+      'Inserting into a sorted array is O(n); prefer a trie when the dictionary changes often.',
+    ],
+  },
+  'dsa/trie/compressed-trie-saves-nodes-not-characters': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'A Sorted Array Answers Prefix Queries Too', route: '/dsa/trie/sorted-array-answers-prefix-queries' },
+      { label: 'Word Search II Speeds Up Only When Found Branches Are Deleted', route: '/dsa/trie/word-search-ii-prune-found-branches' },
+      { label: 'Trie (topic overview)', route: '/dsa/trie' },
+    ],
+    tip: '1,000 random words: 12,577 plain-trie nodes, 1,411 radix-tree nodes. A radix tree always has fewer than 2n nodes.',
+    gotchas: [
+      'Edge labels still hold the characters unless stored as index ranges into the original words.',
+    ],
+  },
+  'dsa/trie/word-search-ii-prune-found-branches': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'A Compressed Trie Saves Nodes, Not Characters', route: '/dsa/trie/compressed-trie-saves-nodes-not-characters' },
+      { label: 'Trie (topic overview)', route: '/dsa/trie' },
+    ],
+    tip: 'Setting isEnd = false alone left 7,985 DFS calls unchanged; also deleting empty branches cut them to 36.',
+    gotchas: [
+      'Delete a child only after its subtree is explored and nothing ends there.',
+    ],
+  },
 
   // ── MongoDB: per-page entries ────────────────────────────────────────────────
   'mongodb/fundamentals': {

@@ -1,0 +1,27 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Trie" topicRoute="/dsa/trie"
+    subtopicLabel="A Compressed Trie Saves Nodes, Not Characters" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">A Compressed Trie Saves Nodes, Not Characters</h1>
+  <p class="page-subtitle">For 1,000 random words, a radix tree cut the node count from 12,577 to 1,411. The edge labels still held the same characters; only the per-node overhead went away.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This sharpens the compressed-trie QnA on the main page. The next subtopic measures a pruning step in the page's Word Search II code.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Trie" topicRoute="/dsa/trie"
+    [prev]="{ label: 'A Sorted Array Answers Prefix Queries Too', route: '/dsa/trie/sorted-array-answers-prefix-queries' }"
+    [next]="{ label: 'Word Search II Speeds Up Only When Found Branches Are Deleted', route: '/dsa/trie/word-search-ii-prune-found-branches' }" />
+</div>
