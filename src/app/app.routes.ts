@@ -5036,7 +5036,12 @@ export const routes: Routes = [
       { path: 'compressed-trie-saves-nodes-not-characters', loadComponent: () => import('./components/fundamentals/dsa/trie/subtopics/compressed-trie-node-count/compressed-trie-node-count').then(m => m.CompressedTrieNodeCountSubtopic) },
       { path: 'word-search-ii-prune-found-branches', loadComponent: () => import('./components/fundamentals/dsa/trie/subtopics/word-search-ii-pruning/word-search-ii-pruning').then(m => m.WordSearchIiPruningSubtopic) },
     ] },
-    { path: 'bit-manipulation',       loadComponent: () => import('./components/fundamentals/dsa/bit-manipulation/bit-manipulation').then(m => m.DsaBitManipulation) },
+    { path: 'bit-manipulation', children: [
+      { path: '', loadComponent: () => import('./components/fundamentals/dsa/bit-manipulation/bit-manipulation').then(m => m.DsaBitManipulation) },
+      { path: 'right-shift-is-floor-not-division', loadComponent: () => import('./components/fundamentals/dsa/bit-manipulation/subtopics/right-shift-floors-negatives/right-shift-floors-negatives').then(m => m.RightShiftFloorsNegativesSubtopic) },
+      { path: 'bit-tricks-wrong-above-2-to-32', loadComponent: () => import('./components/fundamentals/dsa/bit-manipulation/subtopics/bit-tricks-beyond-32-bits/bit-tricks-beyond-32-bits').then(m => m.BitTricksBeyond32BitsSubtopic) },
+      { path: 'bitmask-loop-breaks-at-31-elements', loadComponent: () => import('./components/fundamentals/dsa/bit-manipulation/subtopics/bitmask-subset-limit/bitmask-subset-limit').then(m => m.BitmaskSubsetLimitSubtopic) },
+    ] },
     { path: 'greedy',                 loadComponent: () => import('./components/fundamentals/dsa/greedy/greedy').then(m => m.DsaGreedy) },
   ] },
   { path: 'testing-hub',   children: [

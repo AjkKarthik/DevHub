@@ -35191,6 +35191,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Delete a child only after its subtree is explored and nothing ends there.',
     ],
   },
+  'dsa/bit-manipulation/right-shift-is-floor-not-division': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'isPowerOfTwo and Bit Counting Go Wrong Above 2^32', route: '/dsa/bit-manipulation/bit-tricks-wrong-above-2-to-32' },
+      { label: 'Bit Manipulation (topic overview)', route: '/dsa/bit-manipulation' },
+    ],
+    tip: '-5 >> 1 is -3 (floor), not -2, and 3e9 >> 1 is negative. Use >>> or Math.floor for large non-negative values.',
+    gotchas: [
+      'A loop that halves with >>= 1 until 0 never ends for a negative start: -1 >> 1 is -1.',
+    ],
+  },
+  'dsa/bit-manipulation/bit-tricks-wrong-above-2-to-32': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Right Shift Floors Negatives, So It Is Not Plain Division', route: '/dsa/bit-manipulation/right-shift-is-floor-not-division' },
+      { label: 'The Bitmask Subset Loop Runs Zero Times at 31 Elements', route: '/dsa/bit-manipulation/bitmask-loop-breaks-at-31-elements' },
+      { label: 'Bit Manipulation (topic overview)', route: '/dsa/bit-manipulation' },
+    ],
+    tip: 'isPowerOfTwo(3 * 2**32) returns true and hammingWeight(2**53 - 1) returns 32. BigInt versions return false and 53.',
+    gotchas: [
+      'Values between 2^31 and 2^32 are still fine: they become negative int32s but keep all their bits.',
+    ],
+  },
+  'dsa/bit-manipulation/bitmask-loop-breaks-at-31-elements': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'isPowerOfTwo and Bit Counting Go Wrong Above 2^32', route: '/dsa/bit-manipulation/bit-tricks-wrong-above-2-to-32' },
+      { label: 'Bit Manipulation (topic overview)', route: '/dsa/bit-manipulation' },
+    ],
+    tip: '1 << 31 is -2147483648, so mask < (1 << 31) is false at once and allSubsets returns [] for 31 elements.',
+    gotchas: [
+      'Use 2 ** n for the loop bound if n can reach 31.',
+    ],
+  },
 
   // ── MongoDB: per-page entries ────────────────────────────────────────────────
   'mongodb/fundamentals': {

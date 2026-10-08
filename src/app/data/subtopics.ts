@@ -4326,4 +4326,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'A Compressed Trie Saves Nodes, Not Characters', route: '/dsa/trie/compressed-trie-saves-nodes-not-characters' },
     { label: 'Word Search II Speeds Up Only When Found Branches Are Deleted', route: '/dsa/trie/word-search-ii-prune-found-branches' },
   ],
+  'bit-manipulation': [
+    { label: 'Right Shift Floors Negatives, So It Is Not Plain Division', route: '/dsa/bit-manipulation/right-shift-is-floor-not-division' },
+    { label: 'isPowerOfTwo and Bit Counting Go Wrong Above 2^32', route: '/dsa/bit-manipulation/bit-tricks-wrong-above-2-to-32' },
+    { label: 'The Bitmask Subset Loop Runs Zero Times at 31 Elements', route: '/dsa/bit-manipulation/bitmask-loop-breaks-at-31-elements' },
+  ],
 };

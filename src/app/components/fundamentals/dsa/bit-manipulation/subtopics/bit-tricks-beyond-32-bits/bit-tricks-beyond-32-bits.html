@@ -1,0 +1,27 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Bit Manipulation" topicRoute="/dsa/bit-manipulation"
+    subtopicLabel="isPowerOfTwo and Bit Counting Go Wrong Above 2^32" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">isPowerOfTwo and Bit Counting Go Wrong Above 2^32</h1>
+  <p class="page-subtitle">The page's own isPowerOfTwo returned true for 3 × 2^32, and hammingWeight counted 32 bits in 2^53 - 1. Bitwise operators keep only the low 32 bits, with no error.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This extends the main page's 32-bit mistake to the page's own functions. The next subtopic shows the same limit stopping bitmask subset enumeration.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Bit Manipulation" topicRoute="/dsa/bit-manipulation"
+    [prev]="{ label: 'Right Shift Floors Negatives, So It Is Not Plain Division', route: '/dsa/bit-manipulation/right-shift-is-floor-not-division' }"
+    [next]="{ label: 'The Bitmask Subset Loop Runs Zero Times at 31 Elements', route: '/dsa/bit-manipulation/bitmask-loop-breaks-at-31-elements' }" />
+</div>

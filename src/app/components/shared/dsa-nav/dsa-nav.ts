@@ -381,7 +381,24 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/dsa/bit-manipulation" routerLinkActive="active"><span class="nl-text">Bit Manipulation</span>@if(p.isDone('dsa-bit-manipulation')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/dsa/bit-manipulation" routerLinkActive="active">
+        <span class="nl-text">Bit Manipulation</span>
+        @if(p.isDone('dsa-bit-manipulation')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('bit-manipulation'); as bitSubs) {
+          <button type="button" class="nav-subtopics-toggle" (click)="toggleSubtopics('bit-manipulation', $event)">
+            {{ isSubtopicsExpanded('bit-manipulation') ? '▾' : '▸' }}
+          </button>
+        }
+      </a>
+      @if (subtopicsOf('bit-manipulation'); as bitSubs) {
+        @if (isSubtopicsExpanded('bit-manipulation')) {
+          <div class="nav-subtopics">
+            @for (sub of bitSubs; track sub.route) {
+              <a [routerLink]="sub.route" routerLinkActive="active" class="nav-subtopic-link">{{ sub.label }}</a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/dsa/greedy" routerLinkActive="active"><span class="nl-text">Greedy Algorithms</span>@if(p.isDone('dsa-greedy')){<span class="nl-done">✓</span>}</a>
     </div>
   `,

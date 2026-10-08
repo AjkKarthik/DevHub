@@ -10173,7 +10173,16 @@ off here with a date.
   not; the Word Search II code never pruned — measured isEnd = false alone changes nothing (7,985
   calls both ways), deleting empty branches cut it to 36, so the code now does both. Bare `trie`
   SUBTOPICS key collision-free. DSA hub Phase 10: 19 of 21.
-- [ ] `/dsa/bit-manipulation` — Bit Manipulation
+- [x] 2026-10-08 `/dsa/bit-manipulation` — Bit Manipulation. 3 subtopics (routes
+  right-shift-is-floor-not-division, bit-tricks-wrong-above-2-to-32,
+  bitmask-loop-breaks-at-31-elements; short folders right-shift-floors-negatives,
+  bit-tricks-beyond-32-bits, bitmask-subset-limit). Main-page fixes: Quick Reference called >> "divide
+  by 2^k" and << "multiply by 2^k" — >> floors negatives (-5 >> 1 is -3) and both convert to int32
+  (2**30 << 1 negative, 3e9 >> 1 negative); the quiz claimed shifts are faster than multiplication
+  (removed, replaced with the 32-bit caveat); the 32-bit mistake now notes the page's own
+  isPowerOfTwo(3 * 2**32) returns true and hammingWeight(2**53 - 1) returns 32. Third subtopic: the
+  page's allSubsets loop runs zero times for 31 elements because 1 << 31 is negative. Bare
+  `bit-manipulation` SUBTOPICS key collision-free. DSA hub Phase 10: 20 of 21.
 - [ ] `/dsa/greedy` — Greedy Algorithms
 
 #### Testing — 19 topic pages
