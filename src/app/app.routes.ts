@@ -5051,7 +5051,12 @@ export const routes: Routes = [
   ] },
   { path: 'testing-hub',   children: [
     { path: '',                      loadComponent: () => import('./components/fundamentals/testing/home/home').then(m => m.TestingHome) },
-    { path: 'testing-fundamentals',  loadComponent: () => import('./components/fundamentals/testing/testing-fundamentals/testing-fundamentals').then(m => m.TestingFundamentals) },
+    { path: 'testing-fundamentals', children: [
+      { path: '', loadComponent: () => import('./components/fundamentals/testing/testing-fundamentals/testing-fundamentals').then(m => m.TestingFundamentals) },
+      { path: 'tohavetext-is-a-playwright-matcher', loadComponent: () => import('./components/fundamentals/testing/testing-fundamentals/subtopics/tohavetext-is-playwright/tohavetext-is-playwright').then(m => m.ToHaveTextIsPlaywrightSubtopic) },
+      { path: 'relative-tohaveurl-needs-a-baseurl', loadComponent: () => import('./components/fundamentals/testing/testing-fundamentals/subtopics/relative-tohaveurl-needs-baseurl/relative-tohaveurl-needs-baseurl').then(m => m.RelativeToHaveUrlNeedsBaseUrlSubtopic) },
+      { path: 'integration-test-never-started-a-container', loadComponent: () => import('./components/fundamentals/testing/testing-fundamentals/subtopics/integration-test-testcontainers/integration-test-testcontainers').then(m => m.IntegrationTestTestcontainersSubtopic) },
+    ] },
     { path: 'jest-fundamentals',     loadComponent: () => import('./components/fundamentals/testing/jest-fundamentals/jest-fundamentals').then(m => m.JestFundamentals) },
     { path: 'mocking-spies',         loadComponent: () => import('./components/fundamentals/testing/mocking-spies/mocking-spies').then(m => m.MockingSpies) },
     { path: 'xunit',                 loadComponent: () => import('./components/fundamentals/testing/xunit/xunit').then(m => m.XunitDotnet) },

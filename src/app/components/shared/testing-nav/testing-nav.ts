@@ -1,6 +1,8 @@
-import { Component, inject } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Component, inject, signal } from '@angular/core';
+import { RouterLink, RouterLinkActive, Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs';
 import { ProgressService } from '../../../services/progress.service';
+import { SUBTOPICS } from '../../../data/subtopics';
 
 @Component({
   selector: 'app-testing-nav',
@@ -13,7 +15,16 @@ import { ProgressService } from '../../../services/progress.service';
 
     <div class="nav-group">
       <p class="nav-group-label">Foundations</p>
-      <a routerLink="/testing-hub/testing-fundamentals" routerLinkActive="active"><span class="nl-text">Testing Fundamentals</span>@if(p.isDone('test-testing-fundamentals')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/testing-hub/testing-fundamentals" routerLinkActive="active"><span class="nl-text">Testing Fundamentals</span>@if(p.isDone('test-testing-fundamentals')){<span class="nl-done">✓</span>}@if (subtopicsOf('testing-fundamentals'); as testingFundamentalsSubs) {<button type="button" class="nav-subtopics-toggle" (click)="toggleSubtopics('testing-fundamentals', $event)">{{ isSubtopicsExpanded('testing-fundamentals') ? '▾' : '▸' }}</button>}</a>
+      @if (subtopicsOf('testing-fundamentals'); as testingFundamentalsSubs) {
+        @if (isSubtopicsExpanded('testing-fundamentals')) {
+          <div class="nav-subtopics">
+            @for (sub of testingFundamentalsSubs; track sub.route) {
+              <a [routerLink]="sub.route" routerLinkActive="active" class="nav-subtopic-link">{{ sub.label }}</a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/testing-hub/tdd" routerLinkActive="active"><span class="nl-text">Test-Driven Development</span>@if(p.isDone('test-tdd')){<span class="nl-done">✓</span>}</a>
       <a routerLink="/testing-hub/test-doubles" routerLinkActive="active"><span class="nl-text">Test Doubles</span>@if(p.isDone('test-test-doubles')){<span class="nl-done">✓</span>}</a>
       <a routerLink="/testing-hub/property-based-testing" routerLinkActive="active"><span class="nl-text">Property-Based Testing</span>@if(p.isDone('test-property-based-testing')){<span class="nl-done">✓</span>}</a>
@@ -60,4 +71,39 @@ import { ProgressService } from '../../../services/progress.service';
 })
 export class TestingNavComponent {
   p = inject(ProgressService);
+  private router = inject(Router);
+  private expandedTopics = signal<Set<string>>(new Set());
+
+  constructor() {
+    this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe(() => this.autoExpandForCurrentUrl());
+    this.autoExpandForCurrentUrl();
+  }
+
+  private autoExpandForCurrentUrl(): void {
+    const url = this.router.url.split('?')[0];
+    for (const [slug, subs] of Object.entries(SUBTOPICS)) {
+      if (subs.some(s => s.route === url)) {
+        this.expandedTopics.update(set => new Set(set).add(slug));
+      }
+    }
+  }
+
+  subtopicsOf(slug: string) {
+    return SUBTOPICS[slug] ?? null;
+  }
+
+  isSubtopicsExpanded(slug: string): boolean {
+    return this.expandedTopics().has(slug);
+  }
+
+  toggleSubtopics(slug: string, event: Event): void {
+    event.stopPropagation();
+    event.preventDefault();
+    this.expandedTopics.update(set => {
+      const next = new Set(set);
+      if (next.has(slug)) next.delete(slug); else next.add(slug);
+      return next;
+    });
+  }
 }
+

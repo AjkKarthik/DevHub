@@ -11286,6 +11286,16 @@ check before any other new hub's first subtopic set:
    **This completes the DSA hub's entire Phase 10 rollout — all 21 topics now have deep-dive
    subtopic pages, 63 subtopic pages total across the hub, finished 2026-10-08.**
 
+### Testing hub subtopic wiring — first pilot; the 20th `*NavComponent` in a row missing the
+subtopics-accordion structural fix
+
+Confirmed via direct file inspection before the pilot (`/testing-hub/testing-fundamentals`, 2026-10-08):
+
+1. **`TestingNavComponent` had ZERO subtopics-accordion support** — fixed by copying `DsaNavComponent`'s class body (signal + Router/NavigationEnd + filter + SUBTOPICS, three helper methods, exact-match `autoExpandForCurrentUrl()`). The nav template is hand-written one-line-per-topic, so each topic's own `<a>` gets its toggle inline before `</a>` plus the accordion block after it.
+2. **Conventions**: route `/testing-hub`; search keys `test-<topic>/<slug>` (`search.ts` maps `test-` → `/testing-hub/`); `SIDEBAR_MAP` keys `testing-hub/<topic>/<slug>` reusing `TESTING_DEFAULT`; breadcrumb map `TESTING_LABELS` with bare composite keys. `.test-page` is NOT global — every subtopic `.scss` carries the wrapper plus the solid-fill icon rule (`background: #6366f1; color: #fff`, dark `#a5b4fc`/`#1e1b4b`). No live playground; `tech="javascript"`; icon `✓`.
+3. **Tooling**: from this hub on, subtopic files are generated from a spec by `tools/phase10/gen.js` (hub config like `tools/phase10/testing-hub.js`; write a spec file `module.exports = { hub, subs: [...] }` next to it in the scratchpad, `require` the hub config by absolute path, run `node tools/phase10/gen.js spec.js` then `node tools/phase10/apply.js spec.js` from the repo root; `doc.js` ticks TODO.md and appends the CLAUDE.md entry, strings serialized with `JSON.stringify`, which removes the apostrophe/backtick/`${` escaping traps) and wired by `apply.js` (routes children conversion, SUBTOPICS, labels, sidebar, search, nav toggle).
+4. **The `testing-fundamentals` pilot batch fixed three main-page bugs**, verified against packages installed in the scratchpad: (a) the "Asserting implementation details" mistake's right answer used `toHaveText` on a React Testing Library element — jest-dom only exports `toHaveTextContent`; (b) the E2E example called `page.goto('https://myapp.com/login')` then `toHaveURL('/dashboard')` — Playwright 1.64's own `urlMatches()` returns false for a relative string with no baseURL and true with one, so the page now uses `goto('/login')` and notes the config baseURL; (c) the integration example's comment claimed Testcontainers but the code only called `new PrismaClient()`, with no per-test reset — now `new PostgreSqlContainer('postgres:16').start()` (`@testcontainers/postgresql` 12.2, image is a required argument), `getConnectionUri()`, `prisma migrate deploy`, `deleteMany` in beforeEach, disconnect/stop in afterAll. 3 subtopics (tohavetext-is-a-playwright-matcher, relative-tohaveurl-needs-a-baseurl, integration-test-never-started-a-container). Bare `testing-fundamentals` key collision-free. Build clean; bundle-verified. **Testing hub Phase 10: 1 of 19 topics complete.**
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
@@ -11689,6 +11699,7 @@ check before any other new hub's first subtopic set:
   All 22 cards `available: true` in `fundamentals/testing/home/home.ts`. Progress: `testTotal=19` in progress.service.ts.
   Testing pages use `app-common-mistakes` AND `app-revision-card`. Reference pages (cheatsheet, performance-testing, mutation-testing) have no PageComplete.
   Challenge.language: `'typescript'`. TestingNavComponent at `shared/testing-nav/testing-nav.ts`.
+  Phase 10: 1 of 19 topics have subtopics (`/testing-hub/testing-fundamentals`, pilot batch, 2026-10-08) — see "Testing hub subtopic wiring" above.
 - **DSA hub**: 21 trackable topic pages + 1 home (22 cards total). Feature-complete.
   Amber theme `$accent: #92400e`, `$tint: #fffbeb`, dark `#fcd34d`, dark bg `#1c1007`. Search prefix `dsa-`. Route: `/dsa`.
   CSS classes: `.dsa-page`, `.dsa-icon`, `.dsa-section`. Icon content: `DSA` text. `tech="javascript"`.

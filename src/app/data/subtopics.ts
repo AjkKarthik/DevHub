@@ -4336,4 +4336,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Page’s merge Rewrote the Caller’s Intervals', route: '/dsa/greedy/merge-intervals-mutates-the-input' },
     { label: 'Job Sequencing Is Greedy by Profit, Not by Deadline', route: '/dsa/greedy/job-sequencing-greedy-by-profit' },
   ],
+  'testing-fundamentals': [
+    { label: "toHaveText Belongs to Playwright, Not jest-dom", route: '/testing-hub/testing-fundamentals/tohavetext-is-a-playwright-matcher' },
+    { label: "A Relative toHaveURL Needs a baseURL", route: '/testing-hub/testing-fundamentals/relative-tohaveurl-needs-a-baseurl' },
+    { label: "The Integration Test Never Started a Container", route: '/testing-hub/testing-fundamentals/integration-test-never-started-a-container' },
+  ],
 };

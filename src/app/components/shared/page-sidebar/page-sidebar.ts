@@ -32741,6 +32741,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Independent tests (no shared mutable state) can run in parallel and be safely reordered without hidden coupling.',
     ],
   },
+  "testing-hub/testing-fundamentals/tohavetext-is-a-playwright-matcher": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "A Relative toHaveURL Needs a baseURL", route: '/testing-hub/testing-fundamentals/relative-tohaveurl-needs-a-baseurl' },
+      { label: "Testing Fundamentals (overview)", route: '/testing-hub/testing-fundamentals' },
+    ],
+    tip: "jest-dom (React/Angular/Vue Testing Library) uses toHaveTextContent; Playwright uses toHaveText. The names look interchangeable but each only exists in its own library.",
+    gotchas: ["Calling toHaveText inside a Jest + Testing Library test throws \"expect(...).toHaveText is not a function\" — it is not a silent pass.","toHaveTextContent matches a substring by default; pass a RegExp or use toHaveTextContent with { normalizeWhitespace } options for exact checks."],
+  },
+  "testing-hub/testing-fundamentals/relative-tohaveurl-needs-a-baseurl": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "toHaveText Belongs to Playwright, Not jest-dom", route: '/testing-hub/testing-fundamentals/tohavetext-is-a-playwright-matcher' },
+      { label: "The Integration Test Never Started a Container", route: '/testing-hub/testing-fundamentals/integration-test-never-started-a-container' },
+      { label: "Testing Fundamentals (overview)", route: '/testing-hub/testing-fundamentals' },
+    ],
+    tip: "Set baseURL in playwright.config.ts and use relative paths everywhere (page.goto and toHaveURL), or use a RegExp such as /\\/dashboard$/ when no baseURL is configured.",
+    gotchas: ["toHaveURL with a string compares the whole URL, so query strings and trailing slashes matter.","A failing toHaveURL waits for the full assertion timeout before failing, so a wrong expected URL also makes the test slow."],
+  },
+  "testing-hub/testing-fundamentals/integration-test-never-started-a-container": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "A Relative toHaveURL Needs a baseURL", route: '/testing-hub/testing-fundamentals/relative-tohaveurl-needs-a-baseurl' },
+      { label: "Testing Fundamentals (overview)", route: '/testing-hub/testing-fundamentals' },
+    ],
+    tip: "Start the container in beforeAll, point DATABASE_URL at container.getConnectionUri(), run migrations, reset tables in beforeEach, and stop the container in afterAll.",
+    gotchas: ["Starting a container per test file is common; starting one per test is usually far too slow.","Raise the beforeAll timeout: pulling and starting the image can take longer than Jest's default 5 seconds."],
+  },
   'testing-hub/tdd': {
     apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
     related: [

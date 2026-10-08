@@ -10197,7 +10197,7 @@ off here with a date.
 
 #### Testing — 19 topic pages
 
-- [ ] `/testing-hub/testing-fundamentals` — Testing Fundamentals
+- [x] 2026-10-08 `/testing-hub/testing-fundamentals` — Testing Fundamentals — fixed three main-page bugs, each verified against installed packages: the mistake block's "right" RTL assertion used toHaveText (Playwright-only; jest-dom ships toHaveTextContent); the E2E example asserted toHaveURL('/dashboard') after goto() to an absolute URL with no baseURL (Playwright's own urlMatches() returns false for that, true with a baseURL); the integration example claimed Testcontainers but never started one and shared DB state between tests (now PostgreSqlContainer + migrate + beforeEach reset + teardown). 3 subtopics, one per fix. TestingNavComponent accordion fix (20th *NavComponent).
 - [ ] `/testing-hub/jest-fundamentals` — Jest Fundamentals
 - [ ] `/testing-hub/mocking-spies` — Mocking & Spies
 - [ ] `/testing-hub/xunit` — xUnit (.NET Testing)

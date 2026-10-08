@@ -3330,6 +3330,9 @@ const AI_LABELS: Record<string, string> = {
 
 const TESTING_LABELS: Record<string, string> = {
   'testing-fundamentals':    'Testing Fundamentals',
+  "testing-fundamentals/tohavetext-is-a-playwright-matcher": "toHaveText Belongs to Playwright, Not jest-dom",
+  "testing-fundamentals/relative-tohaveurl-needs-a-baseurl": "A Relative toHaveURL Needs a baseURL",
+  "testing-fundamentals/integration-test-never-started-a-container": "The Integration Test Never Started a Container",
   'jest-fundamentals':       'Jest Fundamentals',
   'mocking-spies':           'Mocking & Spies',
   'xunit':                   'xUnit (.NET Testing)',
