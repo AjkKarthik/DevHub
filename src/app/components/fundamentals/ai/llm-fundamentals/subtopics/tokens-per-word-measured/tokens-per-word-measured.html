@@ -1,0 +1,26 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="LLM Fundamentals" topicRoute="/ai/llm-fundamentals"
+    subtopicLabel="Measuring Tokens per Word" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">Measuring Tokens per Word</h1>
+  <p class="page-subtitle">The page uses about 1.3 tokens per English word. Counting with the real gpt-4 tokeniser: an English sentence was 1.1, a line of code 2.0 and a German sentence 2.3 tokens per word.</p>
+  <app-page-meta [readingTime]="4" difficulty="beginner" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This puts numbers on the token rule of thumb. Fine-tuning and RLHF change model behaviour after pre-training.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="LLM Fundamentals" topicRoute="/ai/llm-fundamentals"
+    [prev]="{ label: 'js-tiktoken Uses encodingForModel', route: '/ai/llm-fundamentals/js-tiktoken-uses-encodingformodel' }" />
+</div>

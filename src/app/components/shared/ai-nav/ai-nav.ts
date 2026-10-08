@@ -117,7 +117,16 @@ import { SUBTOPICS } from '../../../data/subtopics';
 
     <div class="nav-group">
       <p class="nav-group-label">LLMs</p>
-      <a routerLink="/ai/llm-fundamentals" routerLinkActive="active"><span class="nl-text">LLM Fundamentals</span>@if(p.isDone('ai-llm-fundamentals')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/ai/llm-fundamentals" routerLinkActive="active"><span class="nl-text">LLM Fundamentals</span>@if(p.isDone('ai-llm-fundamentals')){<span class="nl-done">✓</span>}@if (subtopicsOf('llm-fundamentals'); as llmFundamentalsSubs) {<button type="button" class="nav-subtopics-toggle" (click)="toggleSubtopics('llm-fundamentals', $event)">{{ isSubtopicsExpanded('llm-fundamentals') ? '▾' : '▸' }}</button>}</a>
+      @if (subtopicsOf('llm-fundamentals'); as llmFundamentalsSubs) {
+        @if (isSubtopicsExpanded('llm-fundamentals')) {
+          <div class="nav-subtopics">
+            @for (sub of llmFundamentalsSubs; track sub.route) {
+              <a [routerLink]="sub.route" routerLinkActive="active" class="nav-subtopic-link">{{ sub.label }}</a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/ai/fine-tuning" routerLinkActive="active"><span class="nl-text">Fine-tuning &amp; RLHF</span>@if(p.isDone('ai-fine-tuning')){<span class="nl-done">✓</span>}</a>
       <a routerLink="/ai/rag" routerLinkActive="active"><span class="nl-text">RAG</span>@if(p.isDone('ai-rag')){<span class="nl-done">✓</span>}</a>
       <a routerLink="/ai/evaluating-llms" routerLinkActive="active"><span class="nl-text">Evaluating LLM Outputs</span>@if(p.isDone('ai-evaluating-llms')){<span class="nl-done">✓</span>}</a>

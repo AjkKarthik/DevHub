@@ -4476,4 +4476,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: "Measuring Why Scores Are Divided by sqrt(d_k)", route: '/ai/transformers/measuring-why-scores-are-divided-by-sqrt-dk' },
     { label: "A Fully Masked Row Makes Softmax NaN", route: '/ai/transformers/a-fully-masked-row-makes-softmax-nan' },
   ],
+  'llm-fundamentals': [
+    { label: "Temperature Zero Broke the Sampler", route: '/ai/llm-fundamentals/temperature-zero-broke-the-sampler' },
+    { label: "js-tiktoken Uses encodingForModel", route: '/ai/llm-fundamentals/js-tiktoken-uses-encodingformodel' },
+    { label: "Measuring Tokens per Word", route: '/ai/llm-fundamentals/measuring-tokens-per-word' },
+  ],
 };

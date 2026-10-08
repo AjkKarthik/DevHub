@@ -10228,7 +10228,7 @@ off here with a date.
 - [x] 2026-10-08 `/ai/neural-networks` — Neural Networks (3 subtopics: Dropout before BatchNorm, measured vanishing gradients, Xavier vs He)
 - [x] 2026-10-08 `/ai/computer-vision` — CNNs & Computer Vision (3 subtopics: weights API, cross-correlation, pooling shift)
 - [x] 2026-10-08 `/ai/transformers` — Transformers & Attention (3 subtopics: equivariance, sqrt(d_k) measured, fully masked row NaN)
-- [ ] `/ai/llm-fundamentals` — LLM Fundamentals
+- [x] 2026-10-08 `/ai/llm-fundamentals` — LLM Fundamentals (3 subtopics; fixed temperature-0 NaN sampler, js-tiktoken API, model scale/vocab/context claims)
 - [ ] `/ai/fine-tuning` — Fine-tuning & RLHF
 - [ ] `/ai/rag` — RAG
 - [ ] `/ai/prompt-engineering` — Prompt Engineering

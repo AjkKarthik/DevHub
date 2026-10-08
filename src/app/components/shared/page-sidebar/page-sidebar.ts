@@ -32798,6 +32798,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Rare words or non-English text often tokenize into MORE tokens than common English, a real cost consideration for non-English applications.',
     ],
   },
+  "ai/llm-fundamentals/temperature-zero-broke-the-sampler": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "js-tiktoken Uses encodingForModel", route: '/ai/llm-fundamentals/js-tiktoken-uses-encodingformodel' },
+      { label: "LLM Fundamentals (overview)", route: '/ai/llm-fundamentals' },
+    ],
+    tip: "Special-case temperature 0 as argmax before any division, and validate that 0 < p <= 1 for top-p.",
+    gotchas: ["API providers handle temperature 0 for you; the bug only appears in hand-written samplers.","Even at temperature 0, hosted APIs are not guaranteed to be bit-for-bit deterministic."],
+  },
+  "ai/llm-fundamentals/js-tiktoken-uses-encodingformodel": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "Temperature Zero Broke the Sampler", route: '/ai/llm-fundamentals/temperature-zero-broke-the-sampler' },
+      { label: "Measuring Tokens per Word", route: '/ai/llm-fundamentals/measuring-tokens-per-word' },
+      { label: "LLM Fundamentals (overview)", route: '/ai/llm-fundamentals' },
+    ],
+    tip: "Use the encoding for the exact model you call: gpt-4 uses cl100k_base, gpt-4o uses o200k_base, and the same text gets different IDs.",
+    gotchas: ["Token IDs are not comparable across encodings.","Chat requests add a few tokens per message for roles and separators on top of the content."],
+  },
+  "ai/llm-fundamentals/measuring-tokens-per-word": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "js-tiktoken Uses encodingForModel", route: '/ai/llm-fundamentals/js-tiktoken-uses-encodingformodel' },
+      { label: "LLM Fundamentals (overview)", route: '/ai/llm-fundamentals' },
+    ],
+    tip: "Use 1.3 only for rough budgeting of English prose; count with the real tokeniser before checking a limit or a bill.",
+    gotchas: ["Long compound words (common in German) split into many tokens.","Whitespace-heavy formats such as indented code or JSON tables use more tokens than they look."],
+  },
   'ai/prompt-engineering': {
     apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
     related: [

@@ -5225,7 +5225,12 @@ export const routes: Routes = [
       { path: 'measuring-why-scores-are-divided-by-sqrt-dk', loadComponent: () => import('./components/fundamentals/ai/transformers/subtopics/sqrt-dk-scaling/sqrt-dk-scaling').then(m => m.SqrtDkScalingSubtopic) },
       { path: 'a-fully-masked-row-makes-softmax-nan', loadComponent: () => import('./components/fundamentals/ai/transformers/subtopics/fully-masked-row-nan/fully-masked-row-nan').then(m => m.FullyMaskedRowNanSubtopic) },
     ] },
-    { path: 'llm-fundamentals',          loadComponent: () => import('./components/fundamentals/ai/llm-fundamentals/llm-fundamentals').then(m => m.AiLlmFundamentals) },
+    { path: 'llm-fundamentals', children: [
+      { path: '', loadComponent: () => import('./components/fundamentals/ai/llm-fundamentals/llm-fundamentals').then(m => m.AiLlmFundamentals) },
+      { path: 'temperature-zero-broke-the-sampler', loadComponent: () => import('./components/fundamentals/ai/llm-fundamentals/subtopics/temperature-zero-nan/temperature-zero-nan').then(m => m.TemperatureZeroNanSubtopic) },
+      { path: 'js-tiktoken-uses-encodingformodel', loadComponent: () => import('./components/fundamentals/ai/llm-fundamentals/subtopics/js-tiktoken-api/js-tiktoken-api').then(m => m.JsTiktokenApiSubtopic) },
+      { path: 'measuring-tokens-per-word', loadComponent: () => import('./components/fundamentals/ai/llm-fundamentals/subtopics/tokens-per-word-measured/tokens-per-word-measured').then(m => m.TokensPerWordMeasuredSubtopic) },
+    ] },
     { path: 'fine-tuning',               loadComponent: () => import('./components/fundamentals/ai/fine-tuning/fine-tuning').then(m => m.AiFineTuning) },
     { path: 'rag',                       loadComponent: () => import('./components/fundamentals/ai/rag/rag').then(m => m.AiRag) },
     { path: 'prompt-engineering',        loadComponent: () => import('./components/fundamentals/ai/prompt-engineering/prompt-engineering').then(m => m.AiPromptEngineering) },
