@@ -4356,4 +4356,19 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: "fc.integer Ignores Positional min and max in v4", route: '/testing-hub/property-based-testing/fc-integer-ignores-positional-min-max' },
     { label: "Model-Based Testing with fc.commands", route: '/testing-hub/property-based-testing/model-based-testing-with-fc-commands' },
   ],
+  'jest-fundamentals': [
+    { label: "expect.assertions Checks an Exact Count", route: '/testing-hub/jest-fundamentals/expect-assertions-checks-an-exact-count' },
+    { label: "Jest 30 Removed toThrowError and Other Aliases", route: '/testing-hub/jest-fundamentals/jest-30-removed-tothrowerror-and-other-aliases' },
+    { label: "Jest Calls It coverageProvider, Not coverage.provider", route: '/testing-hub/jest-fundamentals/coverageprovider-not-coverage-provider' },
+  ],
+  'mocking-spies': [
+    { label: "mockReturnValue(Promise.reject()) Rejects Too Early", route: '/testing-hub/mocking-spies/mockreturnvalue-promise-reject-rejects-too-early' },
+    { label: "Spying on a Wrapper Does Not Touch Math.random", route: '/testing-hub/mocking-spies/spying-on-a-wrapper-does-not-touch-math-random' },
+    { label: "Checking Call Order with invocationCallOrder", route: '/testing-hub/mocking-spies/checking-call-order-with-invocationcallorder' },
+  ],
+  'vitest': [
+    { label: "vitest.workspace.ts Became test.projects", route: '/testing-hub/vitest/vitest-workspace-became-test-projects' },
+    { label: "In-Source Tests Need a define to Be Removed", route: '/testing-hub/vitest/in-source-tests-need-a-define-to-be-removed' },
+    { label: "The test Key in vite.config.ts Needs Vitest Types", route: '/testing-hub/vitest/test-key-in-vite-config-needs-vitest-types' },
+  ],
 };

@@ -32861,6 +32861,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Spies preserve real behavior while adding observability, preferable to full mocks when real logic is cheap and deterministic to run.',
     ],
   },
+  "testing-hub/mocking-spies/mockreturnvalue-promise-reject-rejects-too-early": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "Spying on a Wrapper Does Not Touch Math.random", route: '/testing-hub/mocking-spies/spying-on-a-wrapper-does-not-touch-math-random' },
+      { label: "Mocking & Spies (overview)", route: '/testing-hub/mocking-spies' },
+    ],
+    tip: "Use mockRejectedValue(err) and mockResolvedValue(v). They create the promise when the mock is called, not when the test is set up.",
+    gotchas: ["Both forms resolve to the same object reference, so mutating a resolved value leaks into later calls either way.","Node prints PromiseRejectionHandledWarning when a rejection created earlier is caught later."],
+  },
+  "testing-hub/mocking-spies/spying-on-a-wrapper-does-not-touch-math-random": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "mockReturnValue(Promise.reject()) Rejects Too Early", route: '/testing-hub/mocking-spies/mockreturnvalue-promise-reject-rejects-too-early' },
+      { label: "Checking Call Order with invocationCallOrder", route: '/testing-hub/mocking-spies/checking-call-order-with-invocationcallorder' },
+      { label: "Mocking & Spies (overview)", route: '/testing-hub/mocking-spies' },
+    ],
+    tip: "A spy replaces exactly one property on exactly one object. To control Math.random itself, spy on Math: jest.spyOn(Math, \"random\").",
+    gotchas: ["Code that calls Math.random directly is unaffected by a spy on a wrapper object.","If the module under test destructured the function at import time, a later spy on the object is not seen by that module."],
+  },
+  "testing-hub/mocking-spies/checking-call-order-with-invocationcallorder": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "Spying on a Wrapper Does Not Touch Math.random", route: '/testing-hub/mocking-spies/spying-on-a-wrapper-does-not-touch-math-random' },
+      { label: "Mocking & Spies (overview)", route: '/testing-hub/mocking-spies' },
+    ],
+    tip: "Compare mockA.mock.invocationCallOrder[0] with mockB.mock.invocationCallOrder[0] to assert A ran before B.",
+    gotchas: ["The counter is shared by all mocks in the test file, so compare values, never assert an exact number.","clearAllMocks clears invocationCallOrder along with calls."],
+  },
   'testing-hub/jest-fundamentals': {
     apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
     related: [
@@ -32873,6 +32901,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Snapshots work best for stable, rarely-changing output, not frequently-evolving UI.',
     ],
   },
+  "testing-hub/jest-fundamentals/expect-assertions-checks-an-exact-count": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "Jest 30 Removed toThrowError and Other Aliases", route: '/testing-hub/jest-fundamentals/jest-30-removed-tothrowerror-and-other-aliases' },
+      { label: "Jest Fundamentals (overview)", route: '/testing-hub/jest-fundamentals' },
+    ],
+    tip: "expect.assertions(n) means exactly n. If a loop or a later refactor adds an assertion, the count has to change too.",
+    gotchas: ["Assertions inside a helper count too, so calling a helper with two expects adds two.","expect.hasAssertions() only checks that at least one assertion ran."],
+  },
+  "testing-hub/jest-fundamentals/jest-30-removed-tothrowerror-and-other-aliases": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "expect.assertions Checks an Exact Count", route: '/testing-hub/jest-fundamentals/expect-assertions-checks-an-exact-count' },
+      { label: "Jest Calls It coverageProvider, Not coverage.provider", route: '/testing-hub/jest-fundamentals/coverageprovider-not-coverage-provider' },
+      { label: "Jest Fundamentals (overview)", route: '/testing-hub/jest-fundamentals' },
+    ],
+    tip: "Use the long names: toThrow, toHaveBeenCalled, toHaveBeenCalledWith, toHaveBeenLastCalledWith, toHaveReturned. They work in every Jest version.",
+    gotchas: ["A removed alias fails with \"is not a function\", so every test using it fails after the upgrade.","The eslint-plugin-jest rule no-alias-methods flags the old names before you upgrade."],
+  },
+  "testing-hub/jest-fundamentals/coverageprovider-not-coverage-provider": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "Jest 30 Removed toThrowError and Other Aliases", route: '/testing-hub/jest-fundamentals/jest-30-removed-tothrowerror-and-other-aliases' },
+      { label: "Jest Fundamentals (overview)", route: '/testing-hub/jest-fundamentals' },
+    ],
+    tip: "Jest: coverageProvider: \"v8\". Vitest: test.coverage.provider: \"v8\". Same idea, different shape, and a wrong key is ignored with only a warning.",
+    gotchas: ["V8 coverage counts what the engine executed, so results can differ slightly from Babel/Istanbul for the same tests.","Changing the provider can move your percentages, which matters if coverageThreshold is set close to the current value."],
+  },
   'testing-hub/vitest': {
     apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
     related: [
@@ -32883,6 +32939,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Native ESM support avoids an entire class of module-resolution edge cases Jest\'s CJS-first architecture has historically struggled with.',
       'Vitest\'s Jest-compatible API means most Jest suites port over with minimal changes.',
     ],
+  },
+  "testing-hub/vitest/vitest-workspace-became-test-projects": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "In-Source Tests Need a define to Be Removed", route: '/testing-hub/vitest/in-source-tests-need-a-define-to-be-removed' },
+      { label: "Vitest (overview)", route: '/testing-hub/vitest' },
+    ],
+    tip: "Put the project list in the root config: test: { projects: [...] }. Each entry can be a glob of package configs or an inline config with its own name and environment.",
+    gotchas: ["Running Vitest from inside one package can pick up the root projects list with globs resolved from the wrong directory; give packages their own config if you run them alone.","defineWorkspace no longer exists; use defineConfig with test.projects."],
+  },
+  "testing-hub/vitest/in-source-tests-need-a-define-to-be-removed": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "vitest.workspace.ts Became test.projects", route: '/testing-hub/vitest/vitest-workspace-became-test-projects' },
+      { label: "The test Key in vite.config.ts Needs Vitest Types", route: '/testing-hub/vitest/test-key-in-vite-config-needs-vitest-types' },
+      { label: "Vitest (overview)", route: '/testing-hub/vitest' },
+    ],
+    tip: "Add define: { \"import.meta.vitest\": \"undefined\" } to the production build config. The value is a string because define inserts it as raw code.",
+    gotchas: ["define values are code, not data: the string \"undefined\" becomes the identifier undefined in the output.","Imports used only by the in-source tests are removed too, but only if nothing else references them."],
+  },
+  "testing-hub/vitest/test-key-in-vite-config-needs-vitest-types": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "In-Source Tests Need a define to Be Removed", route: '/testing-hub/vitest/in-source-tests-need-a-define-to-be-removed' },
+      { label: "Vitest (overview)", route: '/testing-hub/vitest' },
+    ],
+    tip: "Either add /// <reference types=\"vitest/config\" /> at the top of vite.config.ts, or import defineConfig from \"vitest/config\" in a separate vitest.config.ts.",
+    gotchas: ["The config still runs without the types; only TypeScript and editor autocompletion complain.","mergeConfig lets vitest.config.ts reuse settings from vite.config.ts instead of duplicating them."],
   },
   'testing-hub/react-testing-library': {
     apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,

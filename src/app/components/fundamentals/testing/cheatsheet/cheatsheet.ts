@@ -36,7 +36,7 @@ export class TestingCheatsheet {
       'toBe(x) — strict ===; toEqual(x) — deep equality; toStrictEqual — also checks undefined props.',
       'toBeNull() / toBeUndefined() / toBeDefined() / toBeTruthy() / toBeFalsy()',
       'toContain(item) — array or string contains; toHaveLength(n) — array/string length.',
-      'toThrow() / toThrowError("message") — assert function throws.',
+      'toThrow() / toThrow("message") — assert function throws (the toThrowError alias was removed in Jest 30).',
       'toHaveBeenCalled() / toHaveBeenCalledWith(args) / toHaveBeenCalledTimes(n) — spy assertions.',
     ]},
     { heading: 'Playwright Locator Priority', points: [
@@ -79,7 +79,7 @@ expect([1, 2, 3]).toContain(2);
 
 // Exceptions
 expect(() => JSON.parse('{bad}')).toThrow();
-expect(() => fn()).toThrowError('Expected message');
+expect(() => fn()).toThrow('Expected message');
 
 // Async
 await expect(fetchUser(1)).resolves.toEqual({ id: 1 });

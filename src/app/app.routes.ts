@@ -5057,8 +5057,18 @@ export const routes: Routes = [
       { path: 'relative-tohaveurl-needs-a-baseurl', loadComponent: () => import('./components/fundamentals/testing/testing-fundamentals/subtopics/relative-tohaveurl-needs-baseurl/relative-tohaveurl-needs-baseurl').then(m => m.RelativeToHaveUrlNeedsBaseUrlSubtopic) },
       { path: 'integration-test-never-started-a-container', loadComponent: () => import('./components/fundamentals/testing/testing-fundamentals/subtopics/integration-test-testcontainers/integration-test-testcontainers').then(m => m.IntegrationTestTestcontainersSubtopic) },
     ] },
-    { path: 'jest-fundamentals',     loadComponent: () => import('./components/fundamentals/testing/jest-fundamentals/jest-fundamentals').then(m => m.JestFundamentals) },
-    { path: 'mocking-spies',         loadComponent: () => import('./components/fundamentals/testing/mocking-spies/mocking-spies').then(m => m.MockingSpies) },
+    { path: 'jest-fundamentals', children: [
+      { path: '', loadComponent: () => import('./components/fundamentals/testing/jest-fundamentals/jest-fundamentals').then(m => m.JestFundamentals) },
+      { path: 'expect-assertions-checks-an-exact-count', loadComponent: () => import('./components/fundamentals/testing/jest-fundamentals/subtopics/expect-assertions-exact/expect-assertions-exact').then(m => m.ExpectAssertionsExactSubtopic) },
+      { path: 'jest-30-removed-tothrowerror-and-other-aliases', loadComponent: () => import('./components/fundamentals/testing/jest-fundamentals/subtopics/jest30-removed-aliases/jest30-removed-aliases').then(m => m.Jest30RemovedAliasesSubtopic) },
+      { path: 'coverageprovider-not-coverage-provider', loadComponent: () => import('./components/fundamentals/testing/jest-fundamentals/subtopics/coverage-provider-option/coverage-provider-option').then(m => m.CoverageProviderOptionSubtopic) },
+    ] },
+    { path: 'mocking-spies', children: [
+      { path: '', loadComponent: () => import('./components/fundamentals/testing/mocking-spies/mocking-spies').then(m => m.MockingSpies) },
+      { path: 'mockreturnvalue-promise-reject-rejects-too-early', loadComponent: () => import('./components/fundamentals/testing/mocking-spies/subtopics/eager-promise-reject/eager-promise-reject').then(m => m.EagerPromiseRejectSubtopic) },
+      { path: 'spying-on-a-wrapper-does-not-touch-math-random', loadComponent: () => import('./components/fundamentals/testing/mocking-spies/subtopics/spyon-restores-only-its-target/spyon-restores-only-its-target').then(m => m.SpyOnRestoresOnlyItsTargetSubtopic) },
+      { path: 'checking-call-order-with-invocationcallorder', loadComponent: () => import('./components/fundamentals/testing/mocking-spies/subtopics/invocation-call-order/invocation-call-order').then(m => m.InvocationCallOrderSubtopic) },
+    ] },
     { path: 'xunit',                 loadComponent: () => import('./components/fundamentals/testing/xunit/xunit').then(m => m.XunitDotnet) },
     { path: 'tdd', children: [
       { path: '', loadComponent: () => import('./components/fundamentals/testing/tdd/tdd').then(m => m.TddTesting) },
@@ -5081,7 +5091,12 @@ export const routes: Routes = [
     { path: 'api-testing',           loadComponent: () => import('./components/fundamentals/testing/api-testing/api-testing').then(m => m.ApiTesting) },
     { path: 'contract-testing',      loadComponent: () => import('./components/fundamentals/testing/contract-testing/contract-testing').then(m => m.ContractTesting) },
     { path: 'snapshot-testing',      loadComponent: () => import('./components/fundamentals/testing/snapshot-testing/snapshot-testing').then(m => m.SnapshotTesting) },
-    { path: 'vitest',                loadComponent: () => import('./components/fundamentals/testing/vitest/vitest').then(m => m.VitestTesting) },
+    { path: 'vitest', children: [
+      { path: '', loadComponent: () => import('./components/fundamentals/testing/vitest/vitest').then(m => m.VitestTesting) },
+      { path: 'vitest-workspace-became-test-projects', loadComponent: () => import('./components/fundamentals/testing/vitest/subtopics/workspace-became-projects/workspace-became-projects').then(m => m.WorkspaceBecameProjectsSubtopic) },
+      { path: 'in-source-tests-need-a-define-to-be-removed', loadComponent: () => import('./components/fundamentals/testing/vitest/subtopics/in-source-tests-define/in-source-tests-define').then(m => m.InSourceTestsDefineSubtopic) },
+      { path: 'test-key-in-vite-config-needs-vitest-types', loadComponent: () => import('./components/fundamentals/testing/vitest/subtopics/vite-config-test-types/vite-config-test-types').then(m => m.ViteConfigTestTypesSubtopic) },
+    ] },
     { path: 'msw',                   loadComponent: () => import('./components/fundamentals/testing/msw/msw').then(m => m.MswTesting) },
     { path: 'visual-regression',     loadComponent: () => import('./components/fundamentals/testing/visual-regression/visual-regression').then(m => m.VisualRegression) },
     { path: 'property-based-testing', children: [
