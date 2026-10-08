@@ -4301,4 +4301,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Radix Sort Runs Counting Sort Digit by Digit', route: '/dsa/advanced-sorts/radix-sort-digit-by-digit' },
     { label: 'Why Timsort Exploits Natural Ascending Runs', route: '/dsa/advanced-sorts/timsort-natural-ascending-runs' },
   ],
+  'binary-search': [
+    { label: 'The Bit-Shift Midpoint Overflows at 2^31 in JavaScript', route: '/dsa/binary-search/bit-shift-midpoint-overflows-in-javascript' },
+    { label: 'Binary Search on a Linked List Never Beats a Linear Scan', route: '/dsa/binary-search/linked-list-binary-search-never-beats-a-scan' },
+    { label: 'Duplicates Make Rotated Search O(n) in the Worst Case', route: '/dsa/binary-search/rotated-search-with-duplicates-is-o-n' },
+  ],
 };

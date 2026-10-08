@@ -284,7 +284,24 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/dsa/binary-search" routerLinkActive="active"><span class="nl-text">Binary Search</span>@if(p.isDone('dsa-binary-search')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/dsa/binary-search" routerLinkActive="active">
+        <span class="nl-text">Binary Search</span>
+        @if(p.isDone('dsa-binary-search')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('binary-search'); as bsSubs) {
+          <button type="button" class="nav-subtopics-toggle" (click)="toggleSubtopics('binary-search', $event)">
+            {{ isSubtopicsExpanded('binary-search') ? '▾' : '▸' }}
+          </button>
+        }
+      </a>
+      @if (subtopicsOf('binary-search'); as bsSubs) {
+        @if (isSubtopicsExpanded('binary-search')) {
+          <div class="nav-subtopics">
+            @for (sub of bsSubs; track sub.route) {
+              <a [routerLink]="sub.route" routerLinkActive="active" class="nav-subtopic-link">{{ sub.label }}</a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

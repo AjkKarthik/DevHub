@@ -5006,7 +5006,12 @@ export const routes: Routes = [
       { path: 'radix-sort-digit-by-digit', loadComponent: () => import('./components/fundamentals/dsa/advanced-sorts/subtopics/radix-sort-digit-passes/radix-sort-digit-passes').then(m => m.RadixSortDigitPassesSubtopic) },
       { path: 'timsort-natural-ascending-runs', loadComponent: () => import('./components/fundamentals/dsa/advanced-sorts/subtopics/timsort-natural-runs/timsort-natural-runs').then(m => m.TimsortNaturalRunsSubtopic) },
     ]},
-    { path: 'binary-search',          loadComponent: () => import('./components/fundamentals/dsa/binary-search/binary-search').then(m => m.DsaBinarySearch) },
+    { path: 'binary-search', children: [
+      { path: '', loadComponent: () => import('./components/fundamentals/dsa/binary-search/binary-search').then(m => m.DsaBinarySearch) },
+      { path: 'bit-shift-midpoint-overflows-in-javascript', loadComponent: () => import('./components/fundamentals/dsa/binary-search/subtopics/shift-mid-overflow/shift-mid-overflow').then(m => m.ShiftMidOverflowSubtopic) },
+      { path: 'linked-list-binary-search-never-beats-a-scan', loadComponent: () => import('./components/fundamentals/dsa/binary-search/subtopics/linked-list-binary-search/linked-list-binary-search').then(m => m.LinkedListBinarySearchSubtopic) },
+      { path: 'rotated-search-with-duplicates-is-o-n', loadComponent: () => import('./components/fundamentals/dsa/binary-search/subtopics/rotated-duplicates-worst-case/rotated-duplicates-worst-case').then(m => m.RotatedDuplicatesWorstCaseSubtopic) },
+    ] },
     { path: 'recursion-backtracking', loadComponent: () => import('./components/fundamentals/dsa/recursion-backtracking/recursion-backtracking').then(m => m.DsaRecursionBacktracking) },
     { path: 'dynamic-programming',    loadComponent: () => import('./components/fundamentals/dsa/dynamic-programming/dynamic-programming').then(m => m.DsaDynamicProgramming) },
     { path: 'dp-patterns',            loadComponent: () => import('./components/fundamentals/dsa/dp-patterns/dp-patterns').then(m => m.DsaDpPatterns) },

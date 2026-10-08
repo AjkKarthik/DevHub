@@ -35021,6 +35021,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The detector only catches ASCENDING runs — a strictly descending array produces n runs of length 1, which real Timsort handles with a separate reverse-in-place optimization this simplified version omits.',
     ],
   },
+  'dsa/binary-search/bit-shift-midpoint-overflows-in-javascript': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Binary Search on a Linked List Never Beats a Linear Scan', route: '/dsa/binary-search/linked-list-binary-search-never-beats-a-scan' },
+      { label: 'Binary Search (topic overview)', route: '/dsa/binary-search' },
+    ],
+    tip: 'Bitwise operators convert to 32-bit integers. (2**31 + 2**31) >> 1 is 0, so an integer square root of 2^31 - 1 with a shift midpoint returned 0 instead of 46340.',
+    gotchas: [
+      'lo + ((hi - lo) >> 1) also fails once the range itself reaches 2^31. Use lo + Math.floor((hi - lo) / 2).',
+    ],
+  },
+  'dsa/binary-search/linked-list-binary-search-never-beats-a-scan': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'The Bit-Shift Midpoint Overflows at 2^31 in JavaScript', route: '/dsa/binary-search/bit-shift-midpoint-overflows-in-javascript' },
+      { label: 'Duplicates Make Rotated Search O(n) in the Worst Case', route: '/dsa/binary-search/rotated-search-with-duplicates-is-o-n' },
+      { label: 'Binary Search (topic overview)', route: '/dsa/binary-search' },
+    ],
+    tip: 'Walking from the head to every midpoint took exactly n log2 n steps; walking forward from the node at lo took n - 1, the same as a plain scan.',
+    gotchas: [
+      'The only case where it helps is when comparisons are far more expensive than following a pointer.',
+    ],
+  },
+  'dsa/binary-search/rotated-search-with-duplicates-is-o-n': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Binary Search on a Linked List Never Beats a Linear Scan', route: '/dsa/binary-search/linked-list-binary-search-never-beats-a-scan' },
+      { label: 'Binary Search (topic overview)', route: '/dsa/binary-search' },
+    ],
+    tip: 'The main page searchRotated returns -1 for 2 in [1,1,1,2,1,1,1,1,1]. Shrinking both ends on a three-way tie fixes it, at n / 2 iterations on an all-equal array.',
+    gotchas: [
+      'Find Minimum with duplicates needs hi-- when nums[mid] === nums[hi], which is also O(n) in the worst case.',
+    ],
+  },
 
   // ── MongoDB: per-page entries ────────────────────────────────────────────────
   'mongodb/fundamentals': {

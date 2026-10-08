@@ -11210,6 +11210,19 @@ check before any other new hub's first subtopic set:
    Not Actually O(1) Space" since titles are reused in `[prev]`/`[next]` labels. Bare
    `advanced-sorts` key collision-free. Build clean; bundle-verified.
    **DSA hub Phase 10: 14 of 21 topics complete.**
+21. **The `binary-search` batch found and fixed a JS-specific overflow contradiction plus two
+   overstated complexity claims, all verified by direct Node execution**: the Quick Reference gave
+   the midpoint as `(lo+hi)>>1` while mistake #1 said overflow is "unlikely" in JS — bitwise
+   operators convert to 32-bit integers, so `(2**31+2**31)>>1` is 0 and an integer square root of
+   2^31-1 (search on the answer) returned 0 instead of 46340; `lo + ((hi-lo)>>1)` fails the same
+   way once the range reaches 2^31. Both spots now point to `lo + Math.floor((hi-lo)/2)`. The
+   linked-list bullet ("degrades to O(n log n)") describes only the restart-from-head walk
+   (measured exactly n log2 n); walking forward from the lo node measured n - 1, the same as a
+   scan. The rotated-duplicates bullet now states the O(n) worst case (all-equal input: n/2
+   iterations), and the page's own `searchRotated` was shown to return -1 for 2 in
+   [1,1,1,2,1,1,1,1,1]. Also removed leftover dead code ("Hmm — wait" comment and an unused
+   `canFinish`) from the Koko codeTab. Bare `binary-search` key collision-free. Build clean;
+   bundle-verified. **DSA hub Phase 10: 15 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -11627,10 +11640,10 @@ check before any other new hub's first subtopic set:
   needs the full `.dsa-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }`
   rule (copied from the main topic page's own `.scss`, which defines it locally). No live
   playground (DSA theory/analysis content has no in-browser runtime) — plain `<app-code-block>`.
-  Phase 10: 14 of 21 topics have subtopics (`/dsa/big-o`, pilot batch; `/dsa/arrays`; `/dsa/strings`;
+  Phase 10: 15 of 21 topics have subtopics (`/dsa/big-o`, pilot batch; `/dsa/arrays`; `/dsa/strings`;
   `/dsa/hash-tables`; `/dsa/stacks-queues`; `/dsa/linked-lists`; `/dsa/doubly-linked-lists`;
   `/dsa/binary-trees`; `/dsa/bst`; `/dsa/heaps`; `/dsa/graphs-bfs-dfs`; `/dsa/graph-algorithms`;
-  `/dsa/basic-sorts`; `/dsa/advanced-sorts`,
+  `/dsa/basic-sorts`; `/dsa/advanced-sorts`; `/dsa/binary-search`,
   all 2026-10-08) — see "DSA hub
   subtopic wiring" section below for the `DsaNavComponent` accordion
   structural fix (19th `*NavComponent`-based hub in a row missing it at pilot time), the

@@ -10117,12 +10117,18 @@ off here with a date.
   counting sort (verified vs reference sort), natural-run detection (100 runs on 100 concatenated
   runs vs ~n/2 on random data). Bare `advanced-sorts` SUBTOPICS key collision-free. DSA hub
   Phase 10: 14 of 21.
-- [ ] `/dsa/heaps` — Heaps & Priority Queues
-- [ ] `/dsa/graphs-bfs-dfs` — Graphs: BFS & DFS
-- [ ] `/dsa/graph-algorithms` — Graph Algorithms
-- [ ] `/dsa/basic-sorts` — Basic Sorting Algorithms
-- [ ] `/dsa/advanced-sorts` — Advanced Sorting Algorithms
-- [ ] `/dsa/binary-search` — Binary Search
+- [x] 2026-10-08 `/dsa/binary-search` — Binary Search. 3 subtopics (routes
+  bit-shift-midpoint-overflows-in-javascript, linked-list-binary-search-never-beats-a-scan,
+  rotated-search-with-duplicates-is-o-n; short folders shift-mid-overflow,
+  linked-list-binary-search, rotated-duplicates-worst-case). Main-page fixes: the Quick Reference
+  midpoint (lo+hi)>>1 truncates to 32 bits in JS ((2**31+2**31)>>1 is 0; integer sqrt of 2^31-1
+  returned 0 instead of 46340), contradicting the mistake block's "overflow is unlikely in JS"
+  (both corrected); the linked-list bullet said O(n log n) — that is only the restart-from-head
+  version (measured exactly n log2 n), walking from the lo node costs n - 1, never better than a
+  scan; the rotated-duplicates bullet now states the O(n) worst case; removed leftover dead code
+  ("Hmm — wait" and an unused canFinish) from the Koko codeTab. Third subtopic shows the page's own
+  searchRotated returns -1 for 2 in [1,1,1,2,1,1,1,1,1] and the tie-break fix's n/2 iterations on
+  an all-equal array. Bare `binary-search` SUBTOPICS key collision-free. DSA hub Phase 10: 15 of 21.
 - [ ] `/dsa/recursion-backtracking` — Recursion & Backtracking
 - [ ] `/dsa/dynamic-programming` — Dynamic Programming
 - [ ] `/dsa/dp-patterns` — DP Patterns

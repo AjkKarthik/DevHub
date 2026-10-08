@@ -1,0 +1,26 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Binary Search" topicRoute="/dsa/binary-search"
+    subtopicLabel="Duplicates Make Rotated Search O(n) in the Worst Case" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">Duplicates Make Rotated Search O(n) in the Worst Case</h1>
+  <p class="page-subtitle">The main page's rotated search returns -1 for a value that is present once duplicates appear. The fix works, but each tie removes only two elements, so the worst case becomes linear.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This completes the duplicates note in the main page's Rotated Sorted Array theory. Together with the linked-list subtopic, it shows that O(log n) depends on being able to discard half the range at every step.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Binary Search" topicRoute="/dsa/binary-search"
+    [prev]="{ label: 'Binary Search on a Linked List Never Beats a Linear Scan', route: '/dsa/binary-search/linked-list-binary-search-never-beats-a-scan' }" />
+</div>
