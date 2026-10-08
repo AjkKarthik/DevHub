@@ -11314,6 +11314,33 @@ Confirmed via direct file inspection before the pilot (`/testing-hub/testing-fun
 21. **The `api-testing` batch fixed four main-page issues, verified by running supertest 7.3.1, express 5, jsonwebtoken and zod 4.6.5**: "in-process, no real port" — supertest wraps the app in `http.createServer` and calls `listen(0, 127.0.0.1)`, a real ephemeral loopback port (a route echoing `req.socket.localPort` returned 36113); the Auth tab signed tokens with a local `test-secret` never wired to the app — a token signed with a different secret got 401 (the tab now sets `process.env.JWT_SECRET` and explains setupFiles); the schema tab used `z.string().email()`/`.datetime()`, both `@deprecated` in Zod 4, and the datetime check rejected `+02:00` (now `z.email()` and `z.iso.datetime({ offset: true })`); quiz text said 201 "should include" Location (RFC 9110 lets the server omit it). 3 subtopics. Bare `api-testing` key collision-free. Build clean; bundle-verified.
 22. **The `contract-testing` batch (the 19th and final Testing topic) fixed four main-page issues, verified with a real `@pact-foundation/pact` 17.1.4 consumer + provider run and the `@pact-foundation/pact-cli` binary**: the strict-matchers mistake and quiz said a provider adding a field breaks a pact — the provider returned two extra fields and the matcher pact passed, while a literal-value pact failed only on `id`/`name`/`createdAt` mismatches; the QnA named a nonexistent `pactFile` verifier option (it is `pactUrls`); the CI tab published without `--consumer-app-version`, which the CLI rejects as a required argument, and its provider can-i-deploy lacked `--broker-base-url` (tab also relabelled bash). The verifier first returned 403 because the egress proxy intercepted loopback calls — unset `HTTP(S)_PROXY` and set `NO_PROXY=127.0.0.1` for local Pact runs. 3 subtopics. Bare `contract-testing` key collision-free. Build clean; bundle-verified. **This completes the Testing hub Phase 10 rollout — 19 of 19 topics, 57 subtopic pages, finished 2026-10-08.**
 
+### AI/ML hub subtopic wiring — first pilot; the 21st `*NavComponent` in a row missing the
+subtopics-accordion structural fix
+
+Confirmed via direct file inspection before the pilot (`/ai/ml-fundamentals`, 2026-10-08):
+
+1. **`AiNavComponent` (`shared/ai-nav/ai-nav.ts`) had ZERO subtopics-accordion support.** Fixed by copying
+   `TestingNavComponent`'s imports and class body (signal + `Router`/`NavigationEnd` + `filter` + `SUBTOPICS`,
+   exact-match `autoExpandForCurrentUrl()`). The nav is hand-written, one single-line `<a>` per topic, so
+   `tools/phase10/apply.js` adds each topic's toggle block.
+2. **All 19 bare AI topic slugs are collision-free** in `subtopics.ts` (checked quoted and unquoted forms and
+   `app.routes.ts`) — keys stay bare. Generic keys such as `rag` or `clustering` may collide with a future hub;
+   recheck then.
+3. **Conventions**: search keys `ai-<topic>/<slug>` (`search.ts` maps `ai-` → `/ai/`); sidebar keys
+   `ai/<topic>/<slug>` using `AI_DEFAULT`; breadcrumb `AI_LABELS` with bare composite keys. `.ai-page` is NOT
+   global; light-tint icon (`$accent: #7c3aed`, `$tint: #f5f3ff`, dark `#1e1b4b`/`#a78bfa`), icon 🤖,
+   `tech="javascript"`. No live playground. Hub config: `tools/phase10/ai-hub.js`.
+4. **Verification tooling**: Python 3 IS available in this container (CLAUDE.md's "python not installed" applies to
+   the user's Windows machine). A scratch venv with scikit-learn 1.9.1 was used to check library defaults and run
+   real experiments; numeric claims in TypeScript code tabs were run in Node.
+5. **Gotcha caught by the build**: a main-page fix inserted a nested template literal (`\`...${x}\``) inside a
+   code tab that is itself a backtick string — the inner backtick closed the outer string. Use string
+   concatenation inside code tabs.
+6. **The `ml-fundamentals` pilot fixed two code bugs, measured in Node**: `trainTestSplit` shuffled with `.sort(() => Math.random() - 0.5)`, which is biased (600,000 shuffles of 4 items: one order 1.5%, another 18.7%, fair is 4.2%; element 0 kept position 0 in 19.4% of 10-item shuffles) — now Fisher-Yates; `confusionMatrix` returned `precision: NaN, f1: NaN` for the exact always-majority model the page warns about — now guards 0/0. The learning-rate mistake now quotes the measured divergence edge for the page own example (2/λmax = 0.0845; lr 0.084 converges, 0.085 explodes). The gradient-descent "converges near m≈2" claim was checked and is correct. 3 subtopics. Build clean; bundle-verified.
+7. **The `math-for-ml` batch fixed three issues, all run in Node**: the shape mistake said a 3x2·3x2 multiply "will error" — the page own `matmul` silently returns `[[25,28],[57,64],[89,100]]` using only B first two rows (only the reverse mismatch throws); the Linear Algebra tab now asserts shapes. The calculus tab said the MSE gradient at w=1 is "near 0 (minimum)" — it is -22 (minimum at w=2). The L1 QnA attributed sparsity to a "zero-gradient region"; a proximal-gradient run (10 features, 2 real) gave L1 8 exact zeros and L2 none — the mechanism is constant pull λ plus the corner at 0 (soft-thresholding). 3 subtopics. Build clean; bundle-verified.
+8. **The `linear-logistic-regression` batch fixed four issues**: OLS cost "O(n·d²)" now O(n·d² + d³); added that unregularised logistic regression never converges on separable data (Node: weight 3.9, 7.7, 12.1, 16.7 after 1e2..1e5 epochs; L2 0.01 settles at 3.5); the coefficient mistake said exp(0.5) gives "1.6 / 60%" while the QnA said 1.65 — now 1.65/65% with baseline-dependent probabilities (0.1→0.155, 0.5→0.622, 0.9→0.937); the L1 quiz "gradient has a kink" wording fixed. MSE vs cross-entropy gradient at the logit measured (z=10, label 0: CE 0.99995, MSE 9.08e-5). 3 subtopics. Build clean; bundle-verified.
+9. **The `decision-trees` batch fixed four claims, checked with scikit-learn 1.9.1 in a scratch venv**: "cost-complexity pruning (sklearn default)" — `ccp_alpha` defaults to 0.0 (default tree: 421 leaves, test 0.634; CV-tuned alpha 0.0127: 3 leaves, test 0.742); "d/3 for regression" — that is R randomForest, sklearn `RandomForestRegressor().max_features` is 1.0 (classifier `sqrt`); impurity importance called "reliable" — a random unique ID column got 0.353 importance vs 0.647 for the real signal, while permutation importance on test gave -0.004 vs 0.188 (QnA updated too). OOB ~37% confirmed (0.368). 3 subtopics. Build clean; bundle-verified.
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
@@ -11751,6 +11778,7 @@ Confirmed via direct file inspection before the pilot (`/testing-hub/testing-fun
   All 22 cards `available: true` in `fundamentals/ai/home/home.ts`. Progress: `aiTotal=19` in progress.service.ts.
   AI pages use `app-common-mistakes` AND `app-revision-card`. Reference pages (interview-prep, responsible-ai, ai-dotnet) have no PageComplete.
   Challenge.language: `'typescript'`. AiNavComponent at `shared/ai-nav/ai-nav.ts`.
+  Phase 10: 4 of 19 topics have subtopics (`/ai/ml-fundamentals`, pilot batch; `math-for-ml`; `linear-logistic-regression`; `decision-trees`, 2026-10-08) — see "AI/ML hub subtopic wiring" above.
 - **Containers/K8s hub**: 22 trackable topic pages + 1 reference (23 cards total). Feature-complete.
   Blue theme `$accent: #326ce5`, `$tint: #eff6ff`, dark `#93c5fd`. Search prefix `k8s-`. Route: `/containers`.
   CSS classes: `.k8s-page`, `.k8s-icon`, `.k8s-section`. Icon content: `⎈` at `font-size: 1.8rem`. `tech="javascript"`.

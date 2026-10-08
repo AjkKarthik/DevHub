@@ -114,7 +114,12 @@ export class AiMlFundamentals {
 function trainTestSplit<T>(data: T[], labels: number[], testRatio = 0.2) {
   const n = data.length;
   const testN = Math.floor(n * testRatio);
-  const indices = Array.from({length: n}, (_, i) => i).sort(() => Math.random() - 0.5);
+  // Fisher-Yates shuffle. Do NOT use .sort(() => Math.random() - 0.5): it is biased.
+  const indices = Array.from({length: n}, (_, i) => i);
+  for (let i = n - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [indices[i], indices[j]] = [indices[j], indices[i]];
+  }
   const testIdx  = new Set(indices.slice(0, testN));
   const trainData  = data.filter((_, i) => !testIdx.has(i));
   const testData   = data.filter((_, i) =>  testIdx.has(i));
@@ -169,9 +174,10 @@ function confusionMatrix(actual: number[], predicted: number[]) {
     else if (actual[i] === 1 && predicted[i] === 0) fn++;
     else tn++;
   }
-  const precision = tp / (tp + fp);
-  const recall    = tp / (tp + fn);   // sensitivity
-  const f1        = 2 * (precision * recall) / (precision + recall);
+  // Guard against 0/0: a model that never predicts 1 would otherwise give NaN
+  const precision = tp + fp === 0 ? 0 : tp / (tp + fp);
+  const recall    = tp + fn === 0 ? 0 : tp / (tp + fn);   // sensitivity
+  const f1        = precision + recall === 0 ? 0 : 2 * (precision * recall) / (precision + recall);
   const accuracy  = (tp + tn) / actual.length;
   return { precision, recall, f1, accuracy };
 }
@@ -229,7 +235,7 @@ print(model.score(X_test, y_test))    # held-out test accuracy`,
       wrong: `optimizer = SGD(learning_rate=1.0)  # loss oscillates, diverges`,
       right: `optimizer = Adam(learning_rate=0.001)  # adaptive, sensible default
 # Or use a learning rate schedule that decays over time`,
-      explanation: 'A learning rate that is too large causes the optimiser to overshoot the minimum and diverge. Start with Adam at 1e-3 and tune if needed.',
+      explanation: 'A learning rate that is too large causes the optimiser to overshoot the minimum and diverge. For plain gradient descent on MSE the limit is 2 divided by the largest eigenvalue of the loss curvature: on this page\'s own Gradient Descent example (x = 1..5) that is about 0.0845, so lr = 0.084 converges and lr = 0.085 blows up. Scaling the features raises the safe limit. Start with Adam at 1e-3 and tune if needed.',
     },
   ];
 

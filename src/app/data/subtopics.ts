@@ -4431,4 +4431,24 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: "Publishing a Pact Requires a Version", route: '/testing-hub/contract-testing/publishing-a-pact-requires-a-version' },
     { label: "Verifying Local Pact Files and Provider States", route: '/testing-hub/contract-testing/verifying-local-pact-files-and-provider-states' },
   ],
+  'ml-fundamentals': [
+    { label: "A Sort-Based Shuffle Is Biased", route: '/ai/ml-fundamentals/sort-based-shuffle-is-biased' },
+    { label: "Precision Is NaN When Nothing Is Predicted Positive", route: '/ai/ml-fundamentals/precision-is-nan-when-nothing-is-predicted-positive' },
+    { label: "Where Gradient Descent Starts to Diverge", route: '/ai/ml-fundamentals/where-gradient-descent-starts-to-diverge' },
+  ],
+  'math-for-ml': [
+    { label: "A Hand-Written Matmul Can Hide Shape Errors", route: '/ai/math-for-ml/a-hand-written-matmul-can-hide-shape-errors' },
+    { label: "The Gradient at w = 1 Is -22, Not 0", route: '/ai/math-for-ml/the-gradient-at-w-1-is-minus-22' },
+    { label: "Why L1 Gives Exact Zeros", route: '/ai/math-for-ml/why-l1-gives-exact-zeros' },
+  ],
+  'linear-logistic-regression': [
+    { label: "Separable Data Makes Weights Grow Forever", route: '/ai/linear-logistic-regression/separable-data-makes-weights-grow-forever' },
+    { label: "MSE Gradient Vanishes on Confident Mistakes", route: '/ai/linear-logistic-regression/mse-gradient-vanishes-on-confident-mistakes' },
+    { label: "An Odds Ratio Is Not a Probability Change", route: '/ai/linear-logistic-regression/an-odds-ratio-is-not-a-probability-change' },
+  ],
+  'decision-trees': [
+    { label: "scikit-learn Does Not Prune by Default", route: '/ai/decision-trees/scikit-learn-does-not-prune-by-default' },
+    { label: "RandomForestRegressor Uses All Features by Default", route: '/ai/decision-trees/random-forest-regressor-uses-all-features-by-default' },
+    { label: "Impurity Importance Favours High-Cardinality Features", route: '/ai/decision-trees/impurity-importance-favours-high-cardinality-features' },
+  ],
 };

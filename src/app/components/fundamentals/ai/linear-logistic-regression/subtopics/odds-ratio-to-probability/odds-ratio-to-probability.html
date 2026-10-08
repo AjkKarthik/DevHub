@@ -1,0 +1,26 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Linear & Logistic Regression" topicRoute="/ai/linear-logistic-regression"
+    subtopicLabel="An Odds Ratio Is Not a Probability Change" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">An Odds Ratio Is Not a Probability Change</h1>
+  <p class="page-subtitle">The page mixed 1.6 and 1.65 for exp(0.5). It is 1.65: odds go up 65%. How much the probability moves depends on where you start.</p>
+  <app-page-meta [readingTime]="4" difficulty="beginner" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This completes the linear models. Decision Trees and Random Forests handle non-linear boundaries without feature scaling.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Linear & Logistic Regression" topicRoute="/ai/linear-logistic-regression"
+    [prev]="{ label: 'MSE Gradient Vanishes on Confident Mistakes', route: '/ai/linear-logistic-regression/mse-gradient-vanishes-on-confident-mistakes' }" />
+</div>

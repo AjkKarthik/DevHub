@@ -10219,10 +10219,10 @@ off here with a date.
 
 #### AI/ML — 19 topic pages
 
-- [ ] `/ai/ml-fundamentals` — AI & ML Fundamentals
-- [ ] `/ai/math-for-ml` — Mathematics for ML
-- [ ] `/ai/linear-logistic-regression` — Linear & Logistic Regression
-- [ ] `/ai/decision-trees` — Decision Trees & Random Forests
+- [x] 2026-10-08 `/ai/ml-fundamentals` — AI & ML Fundamentals (pilot; 3 subtopics: biased sort shuffle, NaN precision, learning-rate limit)
+- [x] 2026-10-08 `/ai/math-for-ml` — Mathematics for ML (3 subtopics: silent matmul shape bug, gradient at w=1, L1 soft-threshold)
+- [x] 2026-10-08 `/ai/linear-logistic-regression` — Linear & Logistic Regression (3 subtopics: separable data diverges, MSE vs CE gradient, odds ratios)
+- [x] 2026-10-08 `/ai/decision-trees` — Decision Trees & Random Forests (3 subtopics: ccp_alpha default 0, max_features defaults, impurity importance bias)
 - [ ] `/ai/gradient-boosting` — Gradient Boosting (XGBoost)
 - [ ] `/ai/clustering` — Clustering & Dimensionality Reduction
 - [ ] `/ai/neural-networks` — Neural Networks

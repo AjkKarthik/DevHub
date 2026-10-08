@@ -89,6 +89,7 @@ export class AiMathForMl {
       code: `// Matrix multiply (m×k) · (k×n) = (m×n)
 function matmul(A: number[][], B: number[][]): number[][] {
   const m = A.length, k = A[0].length, n = B[0].length;
+  if (B.length !== k) throw new Error('shape mismatch: (' + m + 'x' + k + ') · (' + B.length + 'x' + n + ')');
   const C = Array.from({length: m}, () => new Array(n).fill(0));
   for (let i = 0; i < m; i++)
     for (let j = 0; j < n; j++)
@@ -138,7 +139,8 @@ const mse = (params: number[]) => {
   return X.reduce((s, x, i) => s + (w*x - y[i])**2, 0) / X.length;
 };
 const grad = numericalGradient(mse, [1.0]);
-console.log('Gradient at w=1:', grad);  // Should be near 0 (minimum)
+console.log('Gradient at w=1:', grad);  // ≈ -22: negative, so increase w
+console.log(numericalGradient(mse, [2.0]));  // ≈ 0 at the minimum w = 2
 
 // Chain rule visualisation
 // L = (y_pred - y)^2; y_pred = w*x
@@ -183,14 +185,15 @@ function gaussianPDF(x: number, mu: number, sigma: number): number {
   mistakes: CommonMistake[] = [
     {
       title: 'Confusing matrix multiplication order',
-      wrong: `// (3×2) · (3×2) — inner dims don't match, will error
+      wrong: `// (3×2) · (3×2) — inner dims don't match. Without a shape check,
+// the matmul above does NOT error: it silently uses only B's first 2 rows.
 const A = [[1,2],[3,4],[5,6]];  // 3×2
 const B = [[7,8],[9,10],[11,12]];  // 3×2
-const C = matmul(A, B);  // WRONG — need B to be 2×n`,
+const C = matmul(A, B);  // [[25,28],[57,64],[89,100]] — row [11,12] ignored`,
       right: `const A = [[1,2],[3,4],[5,6]];   // 3×2
 const B = [[7,8,9],[10,11,12]];  // 2×3
 const C = matmul(A, B);  // (3×2)·(2×3) = (3×3) ✓`,
-      explanation: 'Matrix multiply requires inner dimensions to match: (m×k)·(k×n). Always check shapes before multiplying. The result has shape (m×n).',
+      explanation: 'Matrix multiply requires inner dimensions to match: (m×k)·(k×n), giving (m×n). A hand-written loop only errors when B has FEWER rows than A has columns; with more rows it quietly ignores the extra ones and returns a plausible-looking wrong answer. Assert the shapes (the Linear Algebra tab now does) — NumPy and PyTorch raise on a mismatch for you.',
     },
     {
       title: 'Not subtracting max in softmax (numerical instability)',
@@ -301,7 +304,7 @@ const loss = -(y * Math.log(prob + eps) + (1-y) * Math.log(1-prob + eps));`,
     },
     {
       q: 'What is the difference between L1 and L2 regularisation?',
-      a: 'L2 (Ridge) adds λ·||w||² to the loss — it penalises large weights, pushing them toward zero but rarely exactly to zero. L1 (Lasso) adds λ·||w||₁ — it produces sparse weights (many exactly zero) because the L1 penalty has a sharp corner at zero that creates a zero-gradient region. Use L1 for feature selection, L2 when you want all features but smaller coefficients.',
+      a: 'L2 (Ridge) adds λ·||w||² to the loss — it penalises large weights, pushing them toward zero but rarely exactly to zero. L1 (Lasso) adds λ·||w||₁ — it produces sparse weights (many exactly zero) because the L1 penalty pulls every weight toward zero with the same force (λ) no matter how small it is, and its corner at zero lets the optimum sit exactly there: a weight whose data gradient is weaker than λ is clipped to 0 (soft-thresholding). L2\'s pull shrinks as the weight shrinks, so weights get small but almost never exactly 0. Use L1 for feature selection, L2 when you want all features but smaller coefficients.',
     },
   { q: 'How does the softmax function work and what is its numerical stability issue?', a: 'Softmax: converts logits to probabilities: softmax(z_i) = exp(z_i) / sum(exp(z_j)). Numerical issue: exp of large logits can overflow. Fix: subtract the maximum logit first (softmax(z - max(z))) — the result is mathematically identical but numerically stable (all exp values <= 1). This is implemented in all major frameworks. Derivative: softmax Jacobian is a matrix, but cross-entropy + softmax simplifies to p - y_true in backprop.' },
   { q: 'What is singular value decomposition (SVD) and how is it used in ML?', a: 'SVD: A = U * S * V^T where U, V are orthogonal matrices and S is diagonal. Generalizes eigendecomposition to any matrix. ML applications: (1) PCA: covariance matrix SVD gives principal components; (2) Latent Semantic Analysis: document-term matrix compression; (3) Recommender systems: matrix factorization for user-item matrices; (4) Dimensionality reduction for visualization; (5) LoRA (fine-tuning): decomposes weight update into low-rank matrices.' },

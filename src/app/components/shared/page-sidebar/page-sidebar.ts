@@ -32480,6 +32480,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A mutable default argument bug is a classic Python trap that also silently corrupts ML pipeline code reusing config objects across calls.',
     ],
   },
+  "ai/ml-fundamentals/sort-based-shuffle-is-biased": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "Precision Is NaN When Nothing Is Predicted Positive", route: '/ai/ml-fundamentals/precision-is-nan-when-nothing-is-predicted-positive' },
+      { label: "AI & ML Fundamentals (overview)", route: '/ai/ml-fundamentals' },
+    ],
+    tip: "Use Fisher-Yates (or a seeded library shuffle) for any split, sample or batch order; never a random comparator.",
+    gotchas: ["A comparator that returns random answers breaks the sort contract, so the result depends on the engine algorithm and array length.","For reproducible experiments, use a seeded random number generator so a split can be repeated."],
+  },
+  "ai/ml-fundamentals/precision-is-nan-when-nothing-is-predicted-positive": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "A Sort-Based Shuffle Is Biased", route: '/ai/ml-fundamentals/sort-based-shuffle-is-biased' },
+      { label: "Where Gradient Descent Starts to Diverge", route: '/ai/ml-fundamentals/where-gradient-descent-starts-to-diverge' },
+      { label: "AI & ML Fundamentals (overview)", route: '/ai/ml-fundamentals' },
+    ],
+    tip: "Guard every ratio against a zero denominator and decide what the value should be (usually 0), as scikit-learn does with zero_division.",
+    gotchas: ["NaN compares false with everything, so a check like f1 < 0.5 never fires on a NaN score.","Averages over folds become NaN if a single fold has no positive predictions."],
+  },
+  "ai/ml-fundamentals/where-gradient-descent-starts-to-diverge": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "Precision Is NaN When Nothing Is Predicted Positive", route: '/ai/ml-fundamentals/precision-is-nan-when-nothing-is-predicted-positive' },
+      { label: "AI & ML Fundamentals (overview)", route: '/ai/ml-fundamentals' },
+    ],
+    tip: "Standardise features first; it shrinks the largest curvature and lets you use a much larger learning rate safely.",
+    gotchas: ["The safe limit depends on the data, so a learning rate that works on one dataset can diverge on another with larger feature values.","Adam and other adaptive optimisers change the picture but do not remove the need to tune the rate."],
+  },
   'ai/math-for-ml': {
     apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
     related: [
@@ -32491,6 +32519,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Gradients (partial derivatives) are the mathematical foundation of how neural networks learn via backpropagation and the chain rule.',
       'Eigenvalues/eigenvectors underlie PCA, revealing directions of greatest variance for dimensionality reduction.',
     ],
+  },
+  "ai/math-for-ml/a-hand-written-matmul-can-hide-shape-errors": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "The Gradient at w = 1 Is -22, Not 0", route: '/ai/math-for-ml/the-gradient-at-w-1-is-minus-22' },
+      { label: "Mathematics for ML (overview)", route: '/ai/math-for-ml' },
+    ],
+    tip: "Check B.length === A[0].length at the top of any hand-written matmul; it costs nothing and turns a silent wrong answer into an error.",
+    gotchas: ["Only the opposite mismatch (B has fewer rows than A has columns) throws, and then with an unhelpful message about reading index 0 of undefined.","Library code raises for you; the risk is in hand-rolled loops and ports to other languages."],
+  },
+  "ai/math-for-ml/the-gradient-at-w-1-is-minus-22": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "A Hand-Written Matmul Can Hide Shape Errors", route: '/ai/math-for-ml/a-hand-written-matmul-can-hide-shape-errors' },
+      { label: "Why L1 Gives Exact Zeros", route: '/ai/math-for-ml/why-l1-gives-exact-zeros' },
+      { label: "Mathematics for ML (overview)", route: '/ai/math-for-ml' },
+    ],
+    tip: "Use a gradient check like this one to test hand-written backprop: compare the analytical and numerical values at a few points, not just at the minimum.",
+    gotchas: ["Checking the gradient only at the minimum hides sign errors, because both values are 0 there.","Too small an eps causes rounding error; around 1e-5 is a common choice for float64."],
+  },
+  "ai/math-for-ml/why-l1-gives-exact-zeros": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "The Gradient at w = 1 Is -22, Not 0", route: '/ai/math-for-ml/the-gradient-at-w-1-is-minus-22' },
+      { label: "Mathematics for ML (overview)", route: '/ai/math-for-ml' },
+    ],
+    tip: "Use L1 (or elastic net) when you expect only a few features to matter; use L2 when many small effects are real.",
+    gotchas: ["L1 is not differentiable at 0, so plain gradient descent jitters around zero; use proximal updates or coordinate descent.","With correlated features, L1 tends to keep one and drop the others somewhat arbitrarily."],
   },
   'ai/linear-logistic-regression': {
     apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
@@ -32504,6 +32560,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Regularization strength requires tuning via cross-validation — too much underfits, too little fails to prevent overfitting.',
     ],
   },
+  "ai/linear-logistic-regression/separable-data-makes-weights-grow-forever": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "MSE Gradient Vanishes on Confident Mistakes", route: '/ai/linear-logistic-regression/mse-gradient-vanishes-on-confident-mistakes' },
+      { label: "Linear & Logistic Regression (overview)", route: '/ai/linear-logistic-regression' },
+    ],
+    tip: "If a logistic model reports huge coefficients and near-zero training loss, check for perfect separation and add L2 (scikit-learn LogisticRegression uses L2 by default).",
+    gotchas: ["A single feature that leaks the label (for example a status column set after the event) causes perfect separation.","Huge weights make predicted probabilities extremely close to 0 or 1, so the model looks overconfident on new data."],
+  },
+  "ai/linear-logistic-regression/mse-gradient-vanishes-on-confident-mistakes": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "Separable Data Makes Weights Grow Forever", route: '/ai/linear-logistic-regression/separable-data-makes-weights-grow-forever' },
+      { label: "An Odds Ratio Is Not a Probability Change", route: '/ai/linear-logistic-regression/an-odds-ratio-is-not-a-probability-change' },
+      { label: "Linear & Logistic Regression (overview)", route: '/ai/linear-logistic-regression' },
+    ],
+    tip: "Pair a sigmoid output with binary cross-entropy (or use a combined logits loss such as BCEWithLogitsLoss for numerical stability).",
+    gotchas: ["The worst case for MSE is exactly the one you most want to fix: a confident wrong prediction.","Frameworks fuse sigmoid and cross-entropy into one function to avoid log(0); do not apply a sigmoid twice."],
+  },
+  "ai/linear-logistic-regression/an-odds-ratio-is-not-a-probability-change": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "MSE Gradient Vanishes on Confident Mistakes", route: '/ai/linear-logistic-regression/mse-gradient-vanishes-on-confident-mistakes' },
+      { label: "Linear & Logistic Regression (overview)", route: '/ai/linear-logistic-regression' },
+    ],
+    tip: "Report exp(coefficient) as an odds ratio, and show the probability change at one or two realistic baseline values.",
+    gotchas: ["Standardised and unstandardised features give different coefficients for the same model fit.","Coefficients describe the effect with other features held constant, which may not be realistic for correlated features."],
+  },
   'ai/decision-trees': {
     apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
     related: [
@@ -32515,6 +32599,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Ensembles (random forests, gradient boosting) largely superseded single trees precisely because they address overfitting more robustly.',
       'Post-pruning can find a better bias-variance tradeoff than pre-pruning since it evaluates actual branch usefulness rather than guessing limits upfront.',
     ],
+  },
+  "ai/decision-trees/scikit-learn-does-not-prune-by-default": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "RandomForestRegressor Uses All Features by Default", route: '/ai/decision-trees/random-forest-regressor-uses-all-features-by-default' },
+      { label: "Decision Trees & Random Forests (overview)", route: '/ai/decision-trees' },
+    ],
+    tip: "Get candidate alphas from cost_complexity_pruning_path on the training data and pick one with cross-validation, never with the test set.",
+    gotchas: ["max_depth, min_samples_leaf and ccp_alpha all default to \"no limit\", so every growth control is opt-in.","Random forests usually do not need pruning: averaging many deep trees reduces the variance instead."],
+  },
+  "ai/decision-trees/random-forest-regressor-uses-all-features-by-default": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "scikit-learn Does Not Prune by Default", route: '/ai/decision-trees/scikit-learn-does-not-prune-by-default' },
+      { label: "Impurity Importance Favours High-Cardinality Features", route: '/ai/decision-trees/impurity-importance-favours-high-cardinality-features' },
+      { label: "Decision Trees & Random Forests (overview)", route: '/ai/decision-trees' },
+    ],
+    tip: "Treat max_features as a hyperparameter; for regression try sqrt, 0.33 and 1.0 and compare out-of-bag or cross-validated scores.",
+    gotchas: ["With max_features=1.0 a regressor is essentially bagged trees, so its trees are more correlated than the textbook random forest.","Library defaults change between versions; older scikit-learn used \"auto\", which meant different things for the two classes."],
+  },
+  "ai/decision-trees/impurity-importance-favours-high-cardinality-features": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "RandomForestRegressor Uses All Features by Default", route: '/ai/decision-trees/random-forest-regressor-uses-all-features-by-default' },
+      { label: "Decision Trees & Random Forests (overview)", route: '/ai/decision-trees' },
+    ],
+    tip: "Report permutation importance (sklearn.inspection.permutation_importance) on a validation or test set alongside, or instead of, feature_importances_.",
+    gotchas: ["Impurity importance is computed on the training data, so it rewards features the trees used to memorise noise.","Permutation importance spreads credit oddly between strongly correlated features; drop or group them first."],
   },
   'ai/gradient-boosting': {
     apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
