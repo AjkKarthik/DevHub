@@ -10416,6 +10416,498 @@ History after each page, same as always.
 
 ---
 
+## Phase 12 — Site-Wide Content Accuracy Audit
+
+**Status: NOT STARTED (planned 2026-10-08).** This is a correction pass over EXISTING main topic
+pages, not a content-expansion phase — no new subtopics, no new hubs, no restructuring. Its only
+job is to re-verify factual claims on pages that were written before this project's verification
+discipline existed, and fix what turns out to be wrong.
+
+### Why this phase exists
+
+Every Phase 10 subtopic batch (documented at exhausting length in `CLAUDE.md`'s per-hub subtopic
+sections) independently converged on the same practice: before publishing a claim — a version
+number, a default value, an API's exact behavior, a "this was introduced in X" statement, a
+performance figure — verify it against official docs (WebFetch/WebSearch) or, where no live
+runtime exists, against the library's own source. That discipline caught a large number of real,
+previously-published inaccuracies across dozens of hubs: stale version claims (Redis eviction
+defaults, Kafka throughput figures, MongoDB connection limits, Istio GA dates), backwards
+semantics (DENY/ALLOW precedence, HTTPRoute conflict resolution, ACL log field meanings),
+fabricated citations (an RFC number attributed to the wrong spec), and internal
+self-contradictions where one section of a page quietly disagreed with another.
+
+That discipline did not exist from day one. Hubs and pages built in the earlier phases of this
+project (**Phase 1–8** — Angular, C#, ASP.NET Core, SQL, TypeScript, React, JavaScript, CSS, HTML,
+Web Performance, and the first wave of Phase 2 "Enhanced Content Standard" topic pages generally)
+were written without this systematic fact-checking step. Their content is not assumed wrong — most
+of it is almost certainly fine — but it has never been checked the way every later hub's Phase 10
+subtopic content has been, and version-sensitive ecosystems (fast-moving frameworks, cloud
+services, package defaults) drift over time regardless of whether anyone touches the page again.
+
+### What this phase is and is not
+
+- **Is**: re-reading an existing main topic page end to end, identifying every checkable factual
+  claim, verifying each one, and fixing what is demonstrably wrong (plus tightening anything
+  that's accurate but dangerously imprecise, per the "precision is not correctness" lesson learned
+  repeatedly in Phase 10 — see e.g. the Redis/Kafka/Observability hub notes in `CLAUDE.md`).
+- **Is not**: adding new subtopic pages, adding new sections, restructuring the page's anatomy,
+  changing theming/wiring, or re-litigating stylistic choices. Surgical fixes only — the
+  "Karpathy guidelines" discipline (touch only what you must) applies directly here.
+- **Is not** re-auditing anything already covered by a completed Phase 10 subtopic batch for that
+  specific topic — those pages already went through exactly this verification discipline as part
+  of their own subtopic authoring (confirmed via the hub's own Phase 10 log in `CLAUDE.md`). Check
+  the hub's "Current state" entry before starting a page to avoid duplicate work.
+- **Is not** blocked on, or blocking, Phase 11 (Rust/QA Engineering) — this phase can run whenever
+  a session has nothing more specific queued, independently of Phase 11's progress.
+
+### Per-page audit checklist
+
+1. Read the full page (`.ts` + rendered content) — do not skim; every theory bullet, mistake,
+   quiz question, QnA answer and revision bullet is a candidate.
+2. Extract every checkable factual claim: version numbers, "introduced in"/"deprecated since"
+   statements, specific default values, specific performance/capacity figures, specific API
+   behavior, named tool/library status claims.
+3. Verify each claim:
+   - Prefer the official docs (WebFetch a specific page, not a general WebSearch summary where
+     avoidable — several Phase 10 batches found that a plausible-sounding secondary-source summary
+     was itself wrong; the primary source is what settles it).
+   - Where no live runtime exists to test against (C#/.NET, Blazor, Node.js-adjacent-but-still-
+     research-only claims), research discipline substitutes for direct execution — do not assume a
+     plausible-sounding claim is correct without a citation.
+   - Where a runtime IS available in this browser (JS/TS/CSS/HTML, and increasingly anything with
+     an installable npm package), prefer directly executing the claim over trusting documentation
+     prose, per the precedent set throughout Phase 10.
+4. Cross-check internal consistency: does this page's own theory contradict its own QnA, mistakes
+   block, or quiz explanation? Self-contained contradictions (findable with zero external research)
+   were some of the highest-value catches in Phase 10 and cost nothing to check first.
+5. Cross-check against sibling pages in the same hub that have ALREADY been through Phase 10
+   verification — an already-verified fact from one page is a cheap, authoritative check against a
+   related claim on another, used repeatedly and explicitly in `CLAUDE.md`'s own Phase 10 notes.
+6. Fix only what's wrong or dangerously imprecise. Leave correct-but-differently-styled content
+   alone. Do not add scope beyond the correction itself.
+7. Run the production build (`npx ng build --configuration=production`) — must stay green.
+8. Browser-verify the specific fix renders correctly (expand whatever accordion/tab/toggle the
+   fixed content lives behind — collapsed-by-default sections have repeatedly hidden fixes from a
+   shallow text-search check elsewhere in this project).
+9. Log the finding the same way every Phase 10 batch has been logged: what was wrong, how it was
+   verified, what changed. If a page comes back completely clean, say so plainly — a clean result
+   is itself useful information for future audits of that hub.
+
+### Suggested prioritization (a starting shape, not a locked order)
+
+Audit hubs in roughly this order — oldest-built and most version-sensitive first, since that's
+where drift is most likely to have accumulated:
+
+1. **Angular** — the very first hub built, and a framework that ships frequent breaking changes.
+2. **React** — equally fast-moving (hooks ecosystem, Next.js, server components landscape).
+3. **TypeScript** — frequent releases, each adding real type-system features.
+4. **ASP.NET Core / C#** — .NET's yearly release cadence means version-gated claims age quickly.
+5. **JavaScript / CSS / HTML** — slower-moving at the language level, but tooling claims
+   (bundlers, browser support tables, "Baseline" status) can still drift.
+6. **SQL, Web Performance** — lowest churn of the Phase 1–8 cohort; lowest priority, but not skip.
+
+Within a hub, prioritize pages whose own content names a specific version, a specific tool's
+current status, or a specific numeric figure — those are exactly the claims Phase 10 found most
+often to be stale. A page with no such claims (pure, timeless conceptual content) may come back
+clean quickly, which is a fine outcome.
+
+### Sequencing
+
+One page (or a small, related cluster of pages) per session, same "no batching, update the log
+after each one" discipline as every other phase in this file. There is no fixed page count target
+— this phase ends when a pass through the prioritized hub list above comes back clean, at which
+point a fresh prioritization can be drawn up if the project is still growing.
+
+### Phase 10 subtopic-count floor: a related correction (added 2026-10-08)
+
+A second, distinct gap surfaced while planning this phase, worth fixing alongside the factual
+audit above since it's the same spirit of correction — checking existing work against a standard
+it was always supposed to meet, not adding new scope.
+
+**The gap:** `CLAUDE.md`'s own Phase 10 rules never state a maximum subtopic count per topic — "3
+entries typical" appears once, describing `Misconception[]` array length, not a subtopic quota.
+Yet across the ENTIRE project, "3 subtopics" (or "all 3 subtopic") appears 304 times in
+`CLAUDE.md`'s batch logs, versus essentially a single batch that shipped more. The very first
+pilot that locked in the whole subtopic format — `/angular/counter`, Signals & Reactive State —
+actually shipped **6** subtopics. Somewhere after that pilot, "3" calcified from a floor into a
+fixed quota that nearly every subsequent batch across 30+ hubs followed by habit, even in batches
+whose own write-up names more distinct, genuinely separate findings (an independent main-page fix,
+a second unrelated fix, a gap-closing addition) than subtopics were actually created to cover.
+
+**Two tasks, both in scope for this phase:**
+
+1. **Rule-text fix (do this first, it's small and low-risk):** amend the Phase 10 rules section of
+   `CLAUDE.md` to state explicitly that 3 is a FLOOR, not a cap — a topic batch should ship as many
+   subtopics as it has genuinely distinct, worthwhile findings, and stopping at exactly 3 when a
+    4th or 5th finding exists and deserves its own page is under-covering the topic, not following
+   the convention correctly. This is a pure documentation fix — no page content changes.
+2. **Retroactive check (the larger piece, do per-hub alongside the Phase 12 factual audit rather
+   than as one giant pass):** while auditing a hub's main topic pages for factual accuracy (per the
+   checklist above), also re-read that hub's OWN Phase 10 batch notes in `CLAUDE.md` for any batch
+   whose write-up names more distinct findings than subtopics shipped — language like "found and
+   fixed three issues" immediately followed by "2 subtopics" is the exact pattern to look for. Where
+   a genuine, already-identified-but-uncovered finding exists, write the missing subtopic using the
+   same wiring checklist as any other Phase 10 page (route, nav accordion entry, breadcrumb,
+   sidebar, search index — the full per-subtopic checklist already documented in `CLAUDE.md`'s
+   "WIRING CHECKLIST — adding a subtopic page" section). Do not go looking for NEW findings on
+   already-audited pages here — that's what the factual-accuracy pass is for. This task only
+   closes gaps between findings ALREADY written down in a batch's own notes and what was actually
+   published.
+
+This check rides along with the per-page factual audit (same hub, same session) rather than being
+a separate pass over the whole site twice — when a hub's main pages are being re-verified anyway,
+its Phase 10 batch notes are worth a quick re-read for this specific pattern at the same time.
+
+---
+
+## Phase 13 — Reference-Page Parity, a New Hub, and a Cross-Hub Engagement Feature
+
+**Status: NOT STARTED (planned 2026-10-08, brainstormed with the user before writing).** Three
+independent tracks bundled under one phase number because they were scoped together, not because
+they depend on each other — any one can be picked up on its own, in any order, whenever Phase 11
+and Phase 12 aren't the priority for a given session. Each sub-phase below is a starting shape,
+same as every other phase in this file — refine during that sub-phase's own pre-work research
+before committing to specifics.
+
+### 13A — Reference-page parity across newer hubs
+
+**Why:** `CLAUDE.md`'s own "Practice & Reference pages (exist in BOTH hubs — keep parity)" table
+defines nine reference/practice page types: Cheat Sheet, Common Errors, Quiz Practice, Interview
+Prep, Design Patterns, Decision Guides, Glossary, Mini Projects, Learning Paths (plus a tenth,
+What's New, for Angular specifically). Only the four EARLIEST hubs — Angular (10), C# (9), ASP.NET
+Core (9), SQL (9) — have anything close to the full set. Every one of the 28+ hubs built since
+(Go, Python, Redis, GraphQL, MongoDB, Security, Terraform, Service Mesh, Architecture Patterns,
+Design Patterns, and the rest — see `CLAUDE.md`'s "Current state" section for the exact
+per-hub count) has only 1–3 reference pages, almost always just a cheatsheet and an
+interview-prep page. That is a real, large, well-documented asymmetry, not a guess.
+
+**Scope:** for each newer hub, decide which of the remaining reference-page types would genuinely
+add value for that technology (not every type fits every hub equally — a Glossary earns its
+keep for a terminology-dense hub like Security or Design Patterns more than for, say, Redis, which
+already has a dense Cheat Sheet) and build the ones that do, following the SAME page anatomy and
+wiring checklist already established for Angular/C#'s own reference pages (do not invent a new
+reference-page shape — reuse the existing one). Treat each hub's own missing-reference-page set as
+its own small checklist, same granularity as a Phase 10 subtopic batch.
+
+**Explicitly out of scope:** do not touch the four hubs that already have full parity (Angular, C#,
+ASP.NET Core, SQL) — this phase is about closing the gap for everyone else, not revisiting hubs
+that are already done. Do not invent an 11th reference-page type without a clear, hub-specific
+reason — the existing nine are themselves a studied, intentional list.
+
+**Suggested priority:** hubs with the most topic pages (and therefore the most quiz/QnA content
+already available to mine for a Quiz Practice or Interview Prep page) first — Design Patterns (36
+topics), System Design (24), Architecture Patterns (22), Containers/K8s (22), Security (23) — since
+those have the richest existing content to build a reference page FROM, making the page itself
+cheaper to write well.
+
+### 13B — A new hub beyond Rust/QA Engineering
+
+**Why:** the site's breadth has grown mostly by filling adjacent gaps next to what already
+exists (Go next to Python/Node.js, MongoDB/Redis next to SQL, Service Mesh next to
+Containers/Terraform). A genuinely new area is worth considering once Phase 11 (Rust, QA
+Engineering) lands, so the hub-scaffolding muscle stays warm rather than going stale between uses.
+
+**Candidate list (pick ONE during this sub-phase's own pre-hub research — do not start two new
+hubs in parallel):**
+- **Mobile Development** — React Native and/or Flutter, native iOS (Swift/SwiftUI) and Android
+  (Kotlin/Jetpack Compose) fundamentals. A clear, large gap: nothing on the site currently covers
+  mobile-specific concerns (app lifecycle, platform-specific UI, app store release process).
+- **Data Engineering** — Spark, Airflow, dbt, data warehousing concepts, batch vs streaming
+  pipelines. Distinct from the existing AI/ML hub (which is model-and-training focused) and from
+  Messaging/Kafka (which is message-broker focused, not pipeline-orchestration focused).
+- **Functional Programming** — a language-and-paradigm hub (Haskell, Elixir, or a paradigm-first
+  treatment using F#/Scala) teaching functional concepts most other hubs only touch in passing
+  (immutability, pure functions, monads/Result-as-monad, pattern matching as a first-class idea).
+  Thematically close to Rust's own ownership/pattern-matching content, which could make it a
+  natural next hub once Rust ships.
+- **Game Development** — Unity/C# or Godot fundamentals, game loops, physics basics. A genuinely
+  different audience from the rest of the site, which is a reason both for and against it — worth
+  explicitly weighing during pre-hub research rather than defaulting to it.
+
+Follow the full "Adding a whole NEW technology hub" checklist in `CLAUDE.md` once a candidate is
+chosen, same as Phase 11A/11B.
+
+### 13C — A cross-hub engagement feature
+
+**Why:** every prior phase has added either more content (new hubs, new subtopics) or corrected
+existing content (Phase 12). This sub-phase is different in kind: it reuses content the site
+already has — hundreds of quiz questions and QnA pairs across 30+ hubs — rather than adding more
+of it, trading content-volume growth for a better experience on what already exists.
+
+**Candidate features (pick one, or sequence both — this is lower-risk to attempt both than 13B,
+since neither touches hub content):**
+- **Cross-hub mock interview mode** — a page (or small flow) that pulls from every hub's existing
+  `quiz`/`qna` data to assemble a randomized or role-targeted interview session (e.g. "Frontend
+  interview: 10 questions from Angular, TypeScript, React, CSS"), distinct from each hub's own
+  single-hub Quiz Practice / Interview Prep reference pages. Needs a data-aggregation layer over
+  the existing per-hub `SEARCH_INDEX`-style data, not new per-hub content.
+- **Spaced-repetition review queue** — surface topics the user marked complete (via the existing
+  `ProgressService`) on a recurring schedule for review, using existing quiz questions as the
+  review mechanism. Needs browser-storage-backed scheduling state, no new hub content.
+
+Research both against the existing `ProgressService`/`search.service.ts` data shapes before
+committing to one — the right choice depends on how reusable the current per-hub quiz/QnA data
+structures turn out to be for a cross-hub aggregation, which is worth confirming before designing
+either feature's UI.
+
+### Sequencing
+
+No fixed order between 13A/13B/13C — each is independent. Within 13A, one hub's reference-page set
+per session; within 13B, the usual "one hub, one page at a time" discipline once a candidate is
+picked; within 13C, research first, then build whichever feature research points to. Update the
+Current State table and this file's Done History after each unit of work, same as always.
+
+---
+
+## Phase 14 — Each Topic Becomes a Full Learning Portal (vision stage, not yet scoped)
+
+**Status: NOT STARTED — VISION/DESIGN STAGE (planned 2026-10-08).** The user's own framing: "a
+full-fledged learning portal" for each topic, inside its hub — not the single flat content page
+every topic is today. This is explicitly the biggest phase on this list. It reshapes the SHARED
+topic-page template every hub depends on, so it needs real design work before any building starts,
+and should not be attempted as a direct, site-wide edit.
+
+### Why this is different in kind from Phases 10–13
+
+Every prior phase (new hubs, subtopic rollout, content audit, reference parity, engagement
+features) adds or corrects content within the EXISTING topic-page shape: one page, one scroll,
+fixed component order (quick-ref → theory → code → mistakes → challenge → quiz → qna → revision →
+complete), with Phase 10 subtopics as separate, optional deep-dive pages nested one level under it.
+Phase 14 is about the SHAPE itself — turning a topic from "one page with sections" into something
+that reads and behaves like a self-contained course: a structured, trackable, multi-stage learning
+experience, not a long article.
+
+### Entry point (clarified by the user with a screenshot, 2026-10-08)
+
+Each HUB's own home page (e.g. `/html`, `/rust`, `/redis` — the page with that hub's hero, stat
+row, and "All Topics" card grid; NOT the top-level DevHub home at `/`) gets a link near its hero
+section pointing to a NEW, separate "full learning portal" version of that same hub. This answers
+design question 1 below directly: **this is additive, not a rewrite** — the existing hub home and
+existing flat topic pages stay exactly as they are, and the portal is a parallel experience reached
+through this link, at least for however long both versions need to coexist. This also shapes the
+rollout: per-hub, opt-in via the link, which fits naturally with piloting on one hub before any
+wider rollout (see "Recommended approach" below) — build the link and the portal for ONE hub
+first, confirm it's right, then decide whether to add the link to every other hub's home page.
+
+### Once inside: its own dedicated portal shell, not the regular site chrome
+
+Clarified further by the user: crossing through the entry-point link should feel like ARRIVING
+somewhere new, not like a reshaped page sitting inside the same frame. Today, every page on the
+site (every hub, every topic) shares one global shell — the same top header, the same collapsible
+left nav sidebar, the same breadcrumb style, the same page-sidebar panel — defined once in `app.ts`
+/`app.html` and reused everywhere. The portal should NOT just be the existing topic-page template
+redecorated while still living inside that shared shell. It needs its own distinct navigation and
+presentation once you're inside it — its own dedicated layout for that hub's portal specifically,
+distinguishable at a glance from "a DevHub page" in general. Concretely, this likely means the
+portal's route tree renders its OWN top-level layout component (its own header/nav treatment)
+rather than nesting inside the existing `app.html` shell the rest of the site shares — confirm this
+architecturally (can Angular's router swap out the root layout for one route subtree without
+disturbing every other route) before assuming it's a simple template swap within the current shell.
+
+### Content discipline: extensive research per topic, current information only
+
+The user was explicit that this is not a reshuffling of existing prose into a new layout — each
+topic's full portal content needs its own round of extensive research before writing, using the
+most CURRENT information available for that topic, not whatever the existing flat page already
+says. In practice this means applying Phase 12's own verification discipline (WebFetch/WebSearch
+against primary sources, direct execution where a runtime exists, checking version-sensitive
+claims against current releases) proactively, DURING Phase 14 content creation — rather than
+reusing existing page text and auditing it for staleness afterward. A topic's portal content
+should read as freshly researched, not as the existing page restyled.
+
+### A draft shape (starting point only — needs real design decisions before anything is built)
+
+One reasonable way to read "full-fledged learning portal" using pieces this site already has:
+
+- A **topic syllabus/overview** — replacing today's flat page header, framing the topic like a
+  course landing page: learning objectives, prerequisites (the existing `app-prerequisites`
+  component already does part of this), estimated total time, and a visible roadmap of stages.
+- **Discrete stages** instead of one continuous scroll, each a step in a structured path — largely
+  the SAME content the site already has, reframed as sequential lessons rather than page sections:
+  theory/concepts, guided code walkthrough, common pitfalls, a hands-on challenge, deep-dive
+  subtopics (Phase 10 content, strengthened by Phase 12's subtopic-floor fix), a knowledge check,
+  interview-style Q&A, and a completion/review stage.
+- A **per-topic progress indicator** ("Stage 3 of 8"), distinct from today's site-wide
+  completed/not-completed flag (`ProgressService`), so a learner can see how far through a
+  specific topic's own portal they are, not just whether they've marked it done.
+- Possibly a **completion artifact** once every stage is finished (a badge or certificate),
+  which would connect naturally with Phase 13C's engagement-feature brainstorm rather than
+  duplicate it.
+
+### Open design questions to resolve BEFORE touching any code
+
+These are genuinely undecided and should not be guessed at mid-implementation:
+
+1. ~~Is this a new visual/navigational skin over existing content, or a content rewrite?~~
+   **Resolved:** additive and freshly researched — see "Entry point" and "Content discipline"
+   above. The existing hub home and flat topic pages are untouched; the portal is a new, parallel
+   experience per hub, reached via a link, with its own per-topic content written from fresh
+   research rather than reused from the existing page.
+2. **Separate routes per stage, or one page with a stepper UI?** Separate routes mirror how Phase
+   10 subtopics already work (their own URLs, breadcrumb depth, nav entries) but multiply the
+   routing/wiring surface area by roughly the number of stages, across every topic, in every hub.
+   A single-page stepper avoids that multiplication but is a different UI pattern than anything
+   currently on the site. Still open.
+3. **Which hub(s), and in what order, get the entry-point link?** The link/portal pair is built and
+   proven on ONE pilot hub first (see "Recommended approach" below). After that pilot, decide
+   hub-by-hub whether to add the link — there is no requirement that every hub gets one in the same
+   sweep; existing hubs without the link keep working exactly as they do today in the meantime.
+4. **Relationship to Phase 10 subtopics:** do existing subtopic pages become one of the stages
+   as-is, or do they need their own reshaping to fit a "lesson" format?
+5. **Relationship to Phase 13A (reference-page parity):** reference/practice pages are explicitly
+   NOT topics (no `app-page-complete`, different anatomy per `CLAUDE.md`) — confirm this phase is
+   scoped to trackable topic pages only, not reference pages, before starting.
+
+### A concrete architecture starting point (for the "dedicated shell" requirement)
+
+To make the "own dedicated portal shell" requirement from above actionable rather than aspirational:
+
+- Give the portal its OWN top-level route per hub, e.g. `/html/portal` (or a distinct segment
+  name — `/learn`, `/academy`, exact naming is a detail to settle during the pilot), registered in
+  `app.routes.ts` as its own subtree with a DIFFERENT root component than the one every other route
+  renders inside of today.
+- That root component owns its own header/nav treatment entirely — it does not import or reuse
+  `AppComponent`'s left-nav/breadcrumb/page-sidebar components, even if it visually borrows the
+  hub's accent color for continuity. Confirm during the pilot whether Angular's router can swap the
+  rendered root for one route subtree without affecting every other route (this is a real
+  architectural question, not a styling one — resolve it with a throwaway spike before committing
+  to the approach for the real pilot topic).
+- Stage content underneath that portal root can still read from the SAME underlying topic data
+  shape (`quickRef`/`theory`/`codeTabs`/etc.) if the "reuse pieces, re-research the prose" framing
+  holds, or from entirely new portal-specific data files if the pilot shows the existing shape
+  doesn't fit a staged/lesson format well — this is explicitly one of the things the pilot should
+  settle, not something to assume up front.
+
+### Candidate pilot hub (pick one, confirm during pre-work)
+
+- **HTML hub** — the hub actually shown in the user's own screenshot when this idea was raised,
+  which makes it a natural first candidate; also a moderate size (25 topics) that's big enough to
+  be representative but not so large that a pilot drags on.
+- **Rust hub** — currently mid-build (11 of ~21 topics shipped as of 2026-10-08, Phase 11A), so a
+  portal-first approach could be tried on a handful of its REMAINING un-written topics, building
+  them portal-native from the start rather than retrofitting already-shipped flat pages. Lower risk
+  in one sense (nothing existing to disturb) but means the pilot can't test retrofitting old
+  content, which the eventual wider rollout will mostly consist of.
+
+Either is reasonable; the two differ mainly in whether the pilot tests "retrofit an existing hub"
+(HTML) or "build portal-native from scratch" (Rust) — and the wider rollout will eventually need to
+handle both cases regardless of which one is piloted first.
+
+### Success criteria for pilot sign-off
+
+Before declaring the pilot shape locked in (the same bar Phase 10's own pilot had to clear before
+being rolled out to 30+ hubs), confirm ALL of:
+
+- The entry-point link is visible and reachable from the pilot hub's own home page.
+- The portal renders with its own dedicated shell (confirmed by inspection, not assumption — does
+  it actually look and navigate differently from a regular DevHub page, per the user's own stated
+  bar: "look like a new portal dedicated to that hub").
+- The pilot topic's content is demonstrably freshly researched (cite what was checked and against
+  what source, same logging discipline as every Phase 10 batch) rather than copy-pasted from the
+  existing flat page.
+- Dark mode, mobile/responsive layout, and basic navigation (forward/back through stages, a way
+  back out to the regular hub) all work with no console errors.
+- The existing flat topic page and hub home for that same topic/hub are completely unaffected —
+  confirmed by loading them after the portal work, not assumed safe because the portal is "new
+  routes."
+- Explicit user sign-off that the shape matches what they pictured, before any second topic or hub
+  is attempted.
+
+### Sequencing
+
+Not yet sequenced — this phase does not start until the open design questions above are answered
+and a pilot topic is chosen. Treat any work here before that point as design exploration, not
+implementation.
+
+---
+
+## Phase 15 — Full Site Re-Verification: Content, Design & UI, with Independent Review
+
+**Status: NOT STARTED — VISION STAGE (planned 2026-10-08).** Broader than Phase 12. Phase 12 only
+re-verifies CONTENT accuracy on the earliest hubs (Phase 1–8). Phase 15 is a full pass across the
+ENTIRE site — every hub, not just the early ones — across three dimensions (content, design, UI),
+and explicitly requires an INDEPENDENT reviewer, not just the same agent/session grading its own
+work.
+
+### Why this is distinct from Phase 12
+
+Phase 12 exists because early hubs predate the fact-verification discipline Phase 10 established.
+Phase 15 exists for a different reason: even hubs built WITH that discipline can still carry bugs
+the author never catches, precisely because the same mind that wrote something is bad at spotting
+its own mistakes in it. This project's own history already proves the point — the breadcrumb-label
+bug fixed in this very session (six Rust topics' labels silently landing in the JavaScript hub's
+labels map, from a non-unique anchor string in a wiring helper script) survived an entire session
+of content-writing, multiple production builds, and browser spot-checks, and was only caught
+because the rendered breadcrumb was LOOKED AT directly and found to say the wrong thing. A
+same-agent self-review process has a structural blind spot; this phase is built around closing it
+with a genuinely separate reviewer.
+
+### Three verification dimensions
+
+1. **Content** — same substance as Phase 12 (factual accuracy, internal consistency, current vs.
+   stale version claims), but in scope for EVERY hub eventually, including ones built after the
+   verification discipline existed — not because they're assumed wrong, but because "built with
+   the discipline" and "never independently checked" are different things.
+2. **Design consistency** — audit every hub against `CLAUDE.md`'s own documented rules, since those
+   rules exist specifically because violations have happened before and are easy to reintroduce:
+   - The theming table (exact `$accent`/`$tint`/dark-accent values per hub).
+   - The hub CSS naming table (page wrapper class, section class, icon class, icon content,
+     `tech=` value) — using the wrong hub's class is called out in `CLAUDE.md` as "a design bug,"
+     not a cosmetic nitpick.
+   - The icon pattern rules (solid-fill vs. light-tint generation, inline-code-in-subtitle always
+     light-tint regardless of hub fill pattern).
+   - Dark mode implemented via `:host-context(body.dark)`, never `@media
+     (prefers-color-scheme: dark)` — `CLAUDE.md` notes this exact mistake "caused a major rendering
+     bug once already," meaning it's a realistic regression to check for, not a hypothetical one.
+   - Consistent padding within a hub's own topic pages.
+   - The nav home-link pattern (standalone, not nested inside a `nav-group`).
+3. **UI/UX** — actually driving the site in the browser, not just reading source: dark mode
+   rendering on a sample of pages per hub, mobile/responsive behavior, breadcrumb depth on nested
+   routes, sidebar tailored content vs. silent `DEFAULT` fallback (a gap this project has found and
+   fixed for real, more than once, on more than one hub), search index completeness, nav accordion
+   expand/collapse (including auto-expand on direct navigation), and a basic console-error sweep.
+
+### The independent-review requirement
+
+This is the piece that makes Phase 15 different from "just do Phase 12 again, but bigger." Content,
+design, and UI findings from this phase should be checked by someone OTHER than whoever produced
+the page being reviewed, through one or more of:
+
+- This session's own `/code-review` skill (and its `ultra` mode, which runs a multi-agent cloud
+  review) for an independent pass over a batch of changes or a whole hub's diff history.
+- A separate agent/subagent explicitly briefed to review rather than to build — spawned fresh, with
+  no memory of why the original content was written the way it was, so it isn't anchored to the
+  original author's own assumptions. (This mirrors the project's own stated principle: "trust but
+  verify — an agent's summary describes what it intended to do, not necessarily what it did.")
+- Real human spot-checks on a sample, where available — an AI reviewing AI-written content shares
+  blind spots with the AI that wrote it in a way a human reviewer may not.
+
+Whichever mechanism is used, the review must be done by something that did NOT write the content
+being checked, on at least a meaningful sample of what's being verified — not 100% self-certified.
+
+### Scale and sequencing
+
+This is a very large phase — 30+ hubs × 3 dimensions, on top of Phase 12's own already-large scope.
+Make it tractable the same way every other phase in this file already is: one hub (or a clearly
+bounded sample of pages within a hub) per session, logged the same way every Phase 10/12 batch has
+been logged. Because the independent-review requirement means this phase can meaningfully RECUR
+(a hub re-verified once isn't permanently immune to future regressions), treat it as an ongoing
+practice once started, not a single pass with a defined end state — similar in spirit to how Phase
+12 itself has no fixed page-count target, just a standard every hub should periodically meet.
+
+### Relationship to Phase 12 and Phase 14
+
+Run Phase 15's CONTENT dimension as a superset of Phase 12 rather than a duplicate effort — a hub
+audited under Phase 12 does not need its content re-audited again immediately under Phase 15,
+though it still needs the DESIGN and UI dimensions checked, and still benefits from an independent
+second pair of eyes rather than the same session's own self-certification. Any hub or topic built
+under Phase 14 (the new learning-portal experience) should go through Phase 15's full three-
+dimension check before being considered done, given how new and unproven that whole UI pattern will
+be — do not let "it's new" become a reason to skip review just because Phase 12's prioritization
+list doesn't mention it yet.
+
+---
+
 ## Session Guidelines
 
 **One page per session. Follow this order every time:**
