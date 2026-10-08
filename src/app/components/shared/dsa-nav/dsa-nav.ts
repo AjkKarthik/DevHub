@@ -341,7 +341,24 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/dsa/dp-patterns" routerLinkActive="active"><span class="nl-text">DP Patterns</span>@if(p.isDone('dsa-dp-patterns')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/dsa/dp-patterns" routerLinkActive="active">
+        <span class="nl-text">DP Patterns</span>
+        @if(p.isDone('dsa-dp-patterns')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('dp-patterns'); as dppSubs) {
+          <button type="button" class="nav-subtopics-toggle" (click)="toggleSubtopics('dp-patterns', $event)">
+            {{ isSubtopicsExpanded('dp-patterns') ? '▾' : '▸' }}
+          </button>
+        }
+      </a>
+      @if (subtopicsOf('dp-patterns'); as dppSubs) {
+        @if (isSubtopicsExpanded('dp-patterns')) {
+          <div class="nav-subtopics">
+            @for (sub of dppSubs; track sub.route) {
+              <a [routerLink]="sub.route" routerLinkActive="active" class="nav-subtopic-link">{{ sub.label }}</a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

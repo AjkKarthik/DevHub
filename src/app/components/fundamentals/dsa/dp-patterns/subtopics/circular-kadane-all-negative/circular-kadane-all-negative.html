@@ -1,0 +1,26 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="DP Patterns" topicRoute="/dsa/dp-patterns"
+    subtopicLabel="Circular Max Subarray Fails When Every Value Is Negative" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">Circular Max Subarray Fails When Every Value Is Negative</h1>
+  <p class="page-subtitle">The main page's circular Kadane formula returns 0 for an all-negative array, because the wrap-around term becomes an empty subarray. One guard fixes it.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This completes the circular variant in the main page's Kadane theory. The next subtopic corrects the page's example of palindromic substring versus subsequence.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="DP Patterns" topicRoute="/dsa/dp-patterns"
+    [next]="{ label: 'The Longest Palindromic Substring of character Is ara', route: '/dsa/dp-patterns/longest-palindromic-substring-of-character' }" />
+</div>

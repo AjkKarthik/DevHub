@@ -11244,6 +11244,15 @@ check before any other new hub's first subtopic set:
    poisoning that returns NaN; and quiz Q4 duplicated Q1 (replaced with a loop-order question).
    3 subtopics. Bare `dynamic-programming` key collision-free. Build clean; bundle-verified.
    **DSA hub Phase 10: 17 of 21 topics complete.**
+24. **The `dp-patterns` batch found and fixed THREE main-page issues, all Node-verified**: the circular
+   Kadane formula max(Kadane, total - minSubarray) returns 0 for an all-negative array because the
+   wrap-around term becomes an empty subarray (2,311 of 20,000 random arrays wrong vs brute force,
+   every one all-negative; guard: return plain Kadane when it is negative); the substring-vs-
+   subsequence QnA claimed "character" has no palindromic substring longer than 1, but the page's own
+   longestPalindrome returns "ara"; Word Break was labelled O(n²) but s.slice copies up to n chars
+   per check (characters copied grew 8x per doubling, ~86M at n = 800; bounding j by the longest
+   word copied 2,403). 3 subtopics. Bare `dp-patterns` key collision-free. Build clean;
+   bundle-verified. **DSA hub Phase 10: 18 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -11661,10 +11670,10 @@ check before any other new hub's first subtopic set:
   needs the full `.dsa-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }`
   rule (copied from the main topic page's own `.scss`, which defines it locally). No live
   playground (DSA theory/analysis content has no in-browser runtime) — plain `<app-code-block>`.
-  Phase 10: 17 of 21 topics have subtopics (`/dsa/big-o`, pilot batch; `/dsa/arrays`; `/dsa/strings`;
+  Phase 10: 18 of 21 topics have subtopics (`/dsa/big-o`, pilot batch; `/dsa/arrays`; `/dsa/strings`;
   `/dsa/hash-tables`; `/dsa/stacks-queues`; `/dsa/linked-lists`; `/dsa/doubly-linked-lists`;
   `/dsa/binary-trees`; `/dsa/bst`; `/dsa/heaps`; `/dsa/graphs-bfs-dfs`; `/dsa/graph-algorithms`;
-  `/dsa/basic-sorts`; `/dsa/advanced-sorts`; `/dsa/binary-search`; `/dsa/recursion-backtracking`; `/dsa/dynamic-programming`,
+  `/dsa/basic-sorts`; `/dsa/advanced-sorts`; `/dsa/binary-search`; `/dsa/recursion-backtracking`; `/dsa/dynamic-programming`; `/dsa/dp-patterns`,
   all 2026-10-08) — see "DSA hub
   subtopic wiring" section below for the `DsaNavComponent` accordion
   structural fix (19th `*NavComponent`-based hub in a row missing it at pilot time), the

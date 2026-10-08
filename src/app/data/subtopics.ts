@@ -4316,4 +4316,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'One-Row LCS Needs a Saved Diagonal, Not Right-to-Left', route: '/dsa/dynamic-programming/lcs-one-row-needs-a-diagonal-variable' },
     { label: 'Top-Down vs Bottom-Up, Measured on Sparse and Dense Inputs', route: '/dsa/dynamic-programming/top-down-vs-bottom-up-measured' },
   ],
+  'dp-patterns': [
+    { label: 'Circular Max Subarray Fails When Every Value Is Negative', route: '/dsa/dp-patterns/circular-kadane-fails-on-all-negative-input' },
+    { label: 'The Longest Palindromic Substring of character Is ara', route: '/dsa/dp-patterns/longest-palindromic-substring-of-character' },
+    { label: 'Word Break With slice Is O(n³), Not O(n²)', route: '/dsa/dp-patterns/word-break-with-slice-is-cubic' },
+  ],
 };

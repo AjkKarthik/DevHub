@@ -10153,7 +10153,16 @@ off here with a date.
   question. Third subtopic: memo visited 5 states vs 10,000 on a sparse case, overflowed the stack
   at amount 20,000 on a dense one. Bare `dynamic-programming` SUBTOPICS key collision-free. DSA hub
   Phase 10: 17 of 21.
-- [ ] `/dsa/dp-patterns` — DP Patterns
+- [x] 2026-10-08 `/dsa/dp-patterns` — DP Patterns. 3 subtopics (routes
+  circular-kadane-fails-on-all-negative-input, longest-palindromic-substring-of-character,
+  word-break-with-slice-is-cubic; short folders circular-kadane-all-negative,
+  palindrome-substring-vs-subsequence, word-break-cubic-slice). Main-page fixes: the circular Kadane
+  formula returns 0 for all-negative input (empty wrap-around; wrong on 2,311 of 20,000 random arrays
+  vs brute force, all of them all-negative) — added the guard; the substring-vs-subsequence QnA said
+  "character" has no palindromic substring longer than 1 — the page's own expand-around-center
+  returns "ara"; the Word Break comment said O(n²) — s.slice makes it O(n³) (characters copied grew
+  8x per doubling of n, ~86M at n = 800), bounding j by the longest word copied 2,403. Bare
+  `dp-patterns` SUBTOPICS key collision-free. DSA hub Phase 10: 18 of 21.
 - [ ] `/dsa/trie` — Tries
 - [ ] `/dsa/bit-manipulation` — Bit Manipulation
 - [ ] `/dsa/greedy` — Greedy Algorithms

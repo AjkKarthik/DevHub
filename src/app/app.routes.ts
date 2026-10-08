@@ -5024,7 +5024,12 @@ export const routes: Routes = [
       { path: 'lcs-one-row-needs-a-diagonal-variable', loadComponent: () => import('./components/fundamentals/dsa/dynamic-programming/subtopics/lcs-diagonal-variable/lcs-diagonal-variable').then(m => m.LcsDiagonalVariableSubtopic) },
       { path: 'top-down-vs-bottom-up-measured', loadComponent: () => import('./components/fundamentals/dsa/dynamic-programming/subtopics/memo-vs-table-measured/memo-vs-table-measured').then(m => m.MemoVsTableMeasuredSubtopic) },
     ] },
-    { path: 'dp-patterns',            loadComponent: () => import('./components/fundamentals/dsa/dp-patterns/dp-patterns').then(m => m.DsaDpPatterns) },
+    { path: 'dp-patterns', children: [
+      { path: '', loadComponent: () => import('./components/fundamentals/dsa/dp-patterns/dp-patterns').then(m => m.DsaDpPatterns) },
+      { path: 'circular-kadane-fails-on-all-negative-input', loadComponent: () => import('./components/fundamentals/dsa/dp-patterns/subtopics/circular-kadane-all-negative/circular-kadane-all-negative').then(m => m.CircularKadaneAllNegativeSubtopic) },
+      { path: 'longest-palindromic-substring-of-character', loadComponent: () => import('./components/fundamentals/dsa/dp-patterns/subtopics/palindrome-substring-vs-subsequence/palindrome-substring-vs-subsequence').then(m => m.PalindromeSubstringVsSubsequenceSubtopic) },
+      { path: 'word-break-with-slice-is-cubic', loadComponent: () => import('./components/fundamentals/dsa/dp-patterns/subtopics/word-break-cubic-slice/word-break-cubic-slice').then(m => m.WordBreakCubicSliceSubtopic) },
+    ] },
     { path: 'trie',                   loadComponent: () => import('./components/fundamentals/dsa/trie/trie').then(m => m.DsaTrie) },
     { path: 'bit-manipulation',       loadComponent: () => import('./components/fundamentals/dsa/bit-manipulation/bit-manipulation').then(m => m.DsaBitManipulation) },
     { path: 'greedy',                 loadComponent: () => import('./components/fundamentals/dsa/greedy/greedy').then(m => m.DsaGreedy) },

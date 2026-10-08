@@ -35123,6 +35123,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Memoization removes repeated work, not recursion depth.',
     ],
   },
+  'dsa/dp-patterns/circular-kadane-fails-on-all-negative-input': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'The Longest Palindromic Substring of character Is ara', route: '/dsa/dp-patterns/longest-palindromic-substring-of-character' },
+      { label: 'DP Patterns (topic overview)', route: '/dsa/dp-patterns' },
+    ],
+    tip: 'max(Kadane, total - minSubarray) returned 0 for [-3, -2, -3]; the answer is -2. Against brute force, every failure was an all-negative array.',
+    gotchas: [
+      'Fix: if plain Kadane is negative, return it before trying the wrap-around term.',
+    ],
+  },
+  'dsa/dp-patterns/longest-palindromic-substring-of-character': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Circular Max Subarray Fails When Every Value Is Negative', route: '/dsa/dp-patterns/circular-kadane-fails-on-all-negative-input' },
+      { label: 'Word Break With slice Is O(n³), Not O(n²)', route: '/dsa/dp-patterns/word-break-with-slice-is-cubic' },
+      { label: 'DP Patterns (topic overview)', route: '/dsa/dp-patterns' },
+    ],
+    tip: 'The page’s own expand-around-center returns "ara" for "character" (length 3); the subsequence answer is 5 ("carac").',
+    gotchas: [
+      '"alphabet" is a word where the substring answer really is 1 and the subsequence answer is 3.',
+    ],
+  },
+  'dsa/dp-patterns/word-break-with-slice-is-cubic': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'The Longest Palindromic Substring of character Is ara', route: '/dsa/dp-patterns/longest-palindromic-substring-of-character' },
+      { label: 'DP Patterns (topic overview)', route: '/dsa/dp-patterns' },
+    ],
+    tip: 'At n = 800 the page’s Word Break copied about 86 million characters; limiting j to the longest word length copied 2,403.',
+    gotchas: [
+      'One very long dictionary word makes the bound useless; try only the word lengths that occur.',
+    ],
+  },
 
   // ── MongoDB: per-page entries ────────────────────────────────────────────────
   'mongodb/fundamentals': {

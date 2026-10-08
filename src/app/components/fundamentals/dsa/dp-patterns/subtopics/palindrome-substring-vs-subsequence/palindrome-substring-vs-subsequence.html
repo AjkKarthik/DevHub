@@ -1,0 +1,27 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="DP Patterns" topicRoute="/dsa/dp-patterns"
+    subtopicLabel="The Longest Palindromic Substring of character Is ara" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">The Longest Palindromic Substring of character Is ara</h1>
+  <p class="page-subtitle">The main page's QnA said "character" has no palindromic substring longer than one letter. The page's own expand-around-center function returns "ara", length 3.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the substring-versus-subsequence QnA using the page's own two functions. The next subtopic measures another string DP on the page: Word Break.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="DP Patterns" topicRoute="/dsa/dp-patterns"
+    [prev]="{ label: 'Circular Max Subarray Fails When Every Value Is Negative', route: '/dsa/dp-patterns/circular-kadane-fails-on-all-negative-input' }"
+    [next]="{ label: 'Word Break With slice Is O(n³), Not O(n²)', route: '/dsa/dp-patterns/word-break-with-slice-is-cubic' }" />
+</div>
