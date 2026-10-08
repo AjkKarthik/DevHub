@@ -2078,6 +2078,9 @@ export const SEARCH_INDEX: SearchEntry[] = [
 
   // ── DSA ────────────────────────────────────────────────────────────────────
   { route: 'dsa-big-o',                  title: 'Big-O Notation',             section: 'DSA',     difficulty: 'beginner',     keywords: 'big o notation time complexity space complexity O(1) O(n) O(log n) O(n^2) amortized analysis asymptotic' },
+  { route: 'dsa-big-o/arithmetic-vs-harmonic-shrinking-loops', title: 'Arithmetic vs. Harmonic Shrinking Loops', section: 'DSA', difficulty: 'intermediate', keywords: 'nested loops shrinking inner loop harmonic series arithmetic selection sort triangular sum geometric series o n log n o n squared' },
+  { route: 'dsa-big-o/master-theorem-epsilon-and-regularity', title: 'Master Theorem’s Precise Conditions', section: 'DSA', difficulty: 'advanced', keywords: 'master theorem epsilon regularity condition recurrence relation CLRS case 1 case 2 case 3 divide and conquer' },
+  { route: 'dsa-big-o/dynamic-array-amortized-proof', title: 'Proving Amortized O(1), the Aggregate Method', section: 'DSA', difficulty: 'intermediate', keywords: 'amortized analysis aggregate method dynamic array doubling resize geometric series proof' },
   { route: 'dsa-arrays',                 title: 'Arrays',                     section: 'DSA',     difficulty: 'beginner',     keywords: 'arrays dynamic array two pointer sliding window prefix sum index access contiguous memory ArrayList' },
   { route: 'dsa-strings',                title: 'Strings',                    section: 'DSA',     difficulty: 'beginner',     keywords: 'strings anagram palindrome KMP pattern matching rolling hash Rabin-Karp substring manipulation immutable' },
   { route: 'dsa-hash-tables',            title: 'Hash Tables',                section: 'DSA',     difficulty: 'beginner',     keywords: 'hash table HashMap HashSet hash function collision chaining open addressing load factor O(1) lookup dictionary' },

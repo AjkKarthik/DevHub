@@ -9976,7 +9976,14 @@ off here with a date.
 
 #### DSA — 21 topic pages
 
-- [ ] `/dsa/big-o` — Big-O Notation
+- [x] 2026-10-08 `/dsa/big-o` — Big-O Notation (DSA hub Phase 10 pilot). 3 subtopics
+  (arithmetic-vs-harmonic-shrinking-loops, master-theorem-epsilon-and-regularity,
+  dynamic-array-amortized-proof). Main-page fix verified via direct Node execution: the "Common
+  Pitfalls" bullet pointed at the wrong example ("checking only unprocessed elements") for landing
+  on O(n log n) -- that pattern is the arithmetic shrink already covered by mistake #4 and stays
+  O(n²); the real O(n log n) pattern is the Challenge's own harmonic shrink. Fixed
+  `DsaNavComponent`'s missing subtopics-accordion structural gap (19th `*NavComponent` hub in a
+  row). Bare `big-o` SUBTOPICS key collision-free. DSA hub Phase 10: 1 of 21.
 - [ ] `/dsa/arrays` — Arrays
 - [ ] `/dsa/strings` — Strings
 - [ ] `/dsa/hash-tables` — Hash Tables

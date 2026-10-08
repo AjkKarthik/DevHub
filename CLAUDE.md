@@ -10425,6 +10425,107 @@ Confirmed via direct file inspection before the pilot (`/messaging/messaging-fun
    **This completes the Messaging/Kafka hub's entire Phase 10 rollout — all 20 topics now have deep-dive
    subtopic pages, 60 subtopic pages total across the hub, finished 2026-09-22.**
 
+### DSA hub subtopic wiring — first pilot; the 19th `*NavComponent` in a row missing the
+subtopics-accordion structural fix
+
+Confirmed via direct file inspection before the pilot (`/dsa/big-o`, 2026-10-08) — do this same
+check before any other new hub's first subtopic set:
+
+1. **`DsaNavComponent` (`shared/dsa-nav/dsa-nav.ts`) had ZERO subtopics-accordion support** — the
+   same structural gap already hit and fixed on every `*NavComponent`-based hub's own pilot before
+   it (Go, DevOps, Containers, AWS, Azure, Linux, Terraform, Service Mesh, System Design,
+   Architecture Patterns, Design Patterns, Security, API Design, Observability, MongoDB, Redis,
+   GraphQL, Messaging — this is the 19th in a row). Fixed identically: added `signal` to the
+   `@angular/core` import, `Router`/`NavigationEnd` from `@angular/router`, `filter` from `rxjs`,
+   and `SUBTOPICS` from `../../../data/subtopics`, then the same three methods
+   (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`) reading a private
+   `expandedTopics = signal<Set<string>>(new Set())`, plus a constructor router subscription
+   calling an exact-match `autoExpandForCurrentUrl()` — copied directly from `RedisNavComponent`'s
+   own implementation (read directly, not reconstructed from memory, per the established
+   copy-fidelity discipline). The toggle markup was added only to the `big-o` nav link (this
+   hub's own nav is hand-written per topic, one `<a>` per link, not a `@for` loop).
+2. **No `SUBTOPICS` map bare-key collision for `big-o`** (checked both quoted and unquoted forms
+   in `subtopics.ts`, and grepped `app.routes.ts` directly, confirmed collision-free) — left as a
+   bare key.
+3. **`DSA_LABELS` breadcrumb map uses bare keys** (`'big-o'`), matching the generic pattern every
+   hub's own dedicated labels map shares — composite subtopic keys there are bare too
+   (`'big-o/<slug>'`).
+4. **`SIDEBAR_MAP` keys are FULL-PATH PREFIXED** (`'dsa/big-o'`, confirmed the base entry already
+   existed) — subtopic composite keys follow suit: `'dsa/big-o/<slug>'`. The base entry's own
+   `tip` field repeated the same imprecise claim the main-page fix below corrects (a shrinking
+   inner loop "may be lower, such as O(n log n)") — tightened alongside the main-page fix, per
+   the established precedent of syncing a sidebar tip when it restates a claim being corrected.
+5. **Progress/search keys are `dsa-` PREFIXED** (`dsa-big-o`), confirmed via the pre-existing
+   `p.isDone('dsa-big-o')` nav markup — `search.ts`'s own dedicated `dsa-` → `/dsa/` prefix-strip
+   rule already handles composite subtopic routes (`dsa-big-o/<slug>` → `/dsa/big-o/<slug>`)
+   correctly with no special-casing needed.
+6. **`.dsa-page` wrapper rule is NOT global** (confirmed absent from `src/styles.scss` — it is
+   defined locally inside the main topic page's own `.scss`) — every subtopic `.scss` needs the
+   full `.dsa-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }` rule, copied
+   verbatim from `big-o.scss`. No live playground — DSA theory/complexity-analysis content has no
+   in-browser runtime — every code tab uses plain TypeScript illustrative snippets inside
+   `<app-code-block>`, matching the main page's own `codeTabs` style exactly.
+7. **The `big-o` pilot batch found and fixed a genuine, self-contained inaccuracy, caught by
+   cross-referencing the page's own "Common Pitfalls" theory bullet against its own mistake #4,
+   and confirmed via direct Node.js execution rather than assumed**: the Common Pitfalls bullet
+   claimed a shrinking inner loop that checks only "unprocessed elements" could land on O(n log n)
+   — but that exact pattern (selection sort's `for j = i+1 to n`) is what the SAME page's mistake
+   #4 already calls "still quadratic." Measured directly: an arithmetic shrink (range decreases by
+   a constant amount each pass) held a flat 0.5 ratio to n² from n=100 to n=10,000 — confirmed
+   O(n²), not O(n log n) — while its ratio to n·log₂n grew unboundedly (7.45 → 50.1 → 376.3) across
+   the same range, directly disproving the claim. The main page's own Challenge function (inner
+   loop step size grows each pass, `j += i + 1`) is the pattern that genuinely IS O(n log n) — a
+   harmonic shrink, verified separately (ratio to n·log₂n converged toward ln(2) ≈ 0.693 as n grew).
+   A third pattern — inner range halving while the outer loop runs only log n times — was also
+   checked and found to be neither: a geometric series bounded by ~2n, i.e. O(n), not O(n log n).
+   Fixed the theory bullet to state which shrink SHAPE gives which complexity, rather than
+   pointing at the wrong example. Three subtopics, each independently verified via direct Node.js
+   execution before publishing: (1) **fix-adjacent** — reproduces all three shrink patterns side
+   by side with their measured op-count ratios, plus a Try It on why "log n outer passes × max
+   inner range" overcounts the geometric-shrink case (the range only hits that max on the first
+   pass, so the real total is a geometric series, not a product); (2) **gap-closing** — the main
+   page's own QnA states the Master Theorem as a plain size comparison with no epsilon separation
+   or regularity condition; verified via WebSearch against the standard textbook (CLRS-style)
+   statement that case 1/3 require polynomial separation by some epsilon > 0, and case 3
+   additionally requires regularity (`a·f(n/b) ≤ c·f(n)` for a constant `c < 1`) — built and
+   verified the classic counterexample `f(n) = n(2 − cos n)` (a=1, b=2), confirming via direct
+   execution that the regularity ratio `f(n/2)/f(n)` holds at EXACTLY 1.5 for n = 2πk at k = 1,
+   3, 5, 101, 1001, and 100001 — proof no constant `c < 1` can ever bound it, so the Master
+   Theorem simply does not apply to that recurrence despite its growth rate checking out; a Try
+   It applies the generalised case 2 (any `k ≥ 0` log-power multiplier) to `T(n) = 4T(n/2) +
+   n²log(n)`, verified by hand to land on `Θ(n²log²(n))`; (3) **gap-closing** — the main page's
+   own "Amortised Analysis" codeTab asserts dynamic-array push is amortized O(1) without proving
+   it; built and verified the aggregate-method proof via direct execution — for a doubling array,
+   total work divided by n (the amortized cost per push) stayed bounded between ~2.0 and ~2.7
+   across six orders of magnitude of n (10 to 1,000,000), confirming it does NOT grow with n; a
+   contrasting codeTab with linear (+1) growth instead of doubling was also verified, showing its
+   amortized cost grows linearly with n (≈ n/2) instead — proving the growth FACTOR, not merely
+   "growth happens," is what makes doubling's O(1) guarantee work; a Try It extends the aggregate
+   method to tripling growth (1, 3, 9, 27, ...), reasoning through why any multiplicative growth
+   factor keeps the resize costs a bounded geometric series. All three subtopic titles used the
+   typographic curly quote (`'`/`’`) for the one possessive apostrophe ("Theorem's") rather
+   than a straight quote, avoiding the established `[prev]`/`[next]`-label delimiter-collision risk
+   from the start; a planned raw-angle-bracket subtopic title ("Not Just &lt;, =, &gt;") was
+   reworded entirely before being used in any cross-page reference, since even though bare `<`/`>`
+   followed by a non-letter character is safe as static `.html` text (the browser's tokenizer only
+   starts a tag on `<` + a letter), avoiding the ambiguity outright was simpler than relying on that
+   distinction. All three `exercise.solution`/`theory.points`/`misconceptions` fields swept clean
+   via the standing bracket-balance/backtick-parity/apostrophe scripts (every flagged apostrophe
+   match confirmed safe — inside backtick-delimited `code:` fields, which tolerate them fine).
+   Build passed clean (foreground execution, explicit `EXITCODE:$?` capture, zero real `ERROR`
+   lines) — note this session's sandboxed Node.js (v22.22.2) initially failed the Angular CLI's own
+   minimum-version check (requires ≥22.22.3); resolved by installing Node 22.23.2 via the
+   pre-existing `/opt/nvm` installation and rebuilding under it, with zero project-file changes
+   needed. **No interactive browser/preview tool was available in this session** (no
+   `preview_start`/Playwright/computer-use access) — verification fell back to directly inspecting
+   the compiled production bundle: grepped the built `main-*.js`/`chunk-*.js` files to confirm the
+   old wrong theory text was absent, the new corrected text was present verbatim, all three
+   subtopic titles compiled into their own separate lazy chunks (confirming the route-level code
+   splitting worked), and the `SUBTOPICS`/`SIDEBAR_MAP`/breadcrumb-label/search-index entries for
+   `big-o` and all three subtopic composite keys were present with matching content — the
+   authoritative correctness check per this project's own established precedent when interactive
+   browser verification isn't available. **DSA hub Phase 10: 1 of 21 topics complete.**
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
@@ -10831,10 +10932,20 @@ Confirmed via direct file inspection before the pilot (`/messaging/messaging-fun
 - **DSA hub**: 21 trackable topic pages + 1 home (22 cards total). Feature-complete.
   Amber theme `$accent: #92400e`, `$tint: #fffbeb`, dark `#fcd34d`, dark bg `#1c1007`. Search prefix `dsa-`. Route: `/dsa`.
   CSS classes: `.dsa-page`, `.dsa-icon`, `.dsa-section`. Icon content: `DSA` text. `tech="javascript"`.
-  Nav groups: Foundations, Linear DS, Trees, Graphs, Algorithms, Advanced, Dynamic Programming.
-  All 22 cards `available: true` in `fundamentals/dsa/home/home.ts`. Progress: `dsaTotal=21` in progress.service.ts.
-  DSA pages use `app-common-mistakes` AND `app-revision-card`. Challenge.language: `'typescript'`.
-  DsaNavComponent at `shared/dsa-nav/dsa-nav.ts`.
+  Nav groups (corrected 2026-10-08 — previously misdocumented as "Foundations, Linear DS, Trees,
+  Graphs, Algorithms, Advanced, Dynamic Programming"; confirmed against the real `dsa-nav.ts`):
+  Foundations, Arrays & Strings, Linked Lists, Trees & Graphs, Sorting, Dynamic Programming,
+  Advanced. All 22 cards `available: true` in `fundamentals/dsa/home/home.ts`. Progress:
+  `dsaTotal=21` in progress.service.ts. DSA pages use `app-common-mistakes` AND
+  `app-revision-card`. Challenge.language: `'typescript'`. DsaNavComponent at
+  `shared/dsa-nav/dsa-nav.ts`. `.dsa-page` wrapper rule is NOT global — every subtopic `.scss`
+  needs the full `.dsa-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }`
+  rule (copied from the main topic page's own `.scss`, which defines it locally). No live
+  playground (DSA theory/analysis content has no in-browser runtime) — plain `<app-code-block>`.
+  Phase 10: 1 of 21 topics have subtopics (`/dsa/big-o`, pilot batch, 2026-10-08) — see "DSA hub
+  subtopic wiring" section below for the `DsaNavComponent` accordion structural fix (19th
+  `*NavComponent`-based hub in a row missing it at pilot time) and the genuine main-page fix
+  found and verified by direct Node execution.
 - **AI/ML hub**: 19 trackable topic pages + 3 reference pages (22 cards total). Feature-complete.
   Violet theme `$accent: #7c3aed`, `$tint: #f5f3ff`, dark `#a78bfa`, dark bg `#1e1b4b`. Search prefix `ai-`. Route: `/ai`.
   CSS classes: `.ai-page`, `.ai-icon`, `.ai-section`. Icon content: `🤖` at `font-size: 1.8rem`. `tech="javascript"`.

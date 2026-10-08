@@ -3218,6 +3218,9 @@ const MESSAGING_LABELS: Record<string, string> = {
 
 const DSA_LABELS: Record<string, string> = {
   'big-o':                  'Big-O Notation',
+  'big-o/arithmetic-vs-harmonic-shrinking-loops': 'Arithmetic vs. Harmonic Shrinking Loops',
+  'big-o/master-theorem-epsilon-and-regularity':  'Master Theorem’s Precise Conditions',
+  'big-o/dynamic-array-amortized-proof':          'Proving Amortized O(1), the Aggregate Method',
   'arrays':                 'Arrays',
   'strings':                'Strings',
   'hash-tables':            'Hash Tables',

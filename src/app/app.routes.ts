@@ -4922,7 +4922,12 @@ export const routes: Routes = [
   // ── Fundamentals & AI Hubs ────────────────────────────────────────────────
   { path: 'dsa', children: [
     { path: '', loadComponent: () => import('./components/fundamentals/dsa/home/home').then(m => m.DsaHome) },
-    { path: 'big-o',                  loadComponent: () => import('./components/fundamentals/dsa/big-o/big-o').then(m => m.DsaBigO) },
+    { path: 'big-o', children: [
+      { path: '', loadComponent: () => import('./components/fundamentals/dsa/big-o/big-o').then(m => m.DsaBigO) },
+      { path: 'arithmetic-vs-harmonic-shrinking-loops', loadComponent: () => import('./components/fundamentals/dsa/big-o/subtopics/arithmetic-vs-harmonic-shrinking-loops/arithmetic-vs-harmonic-shrinking-loops').then(m => m.ArithmeticVsHarmonicShrinkingLoopsSubtopic) },
+      { path: 'master-theorem-epsilon-and-regularity', loadComponent: () => import('./components/fundamentals/dsa/big-o/subtopics/master-theorem-epsilon-and-regularity/master-theorem-epsilon-and-regularity').then(m => m.MasterTheoremEpsilonAndRegularitySubtopic) },
+      { path: 'dynamic-array-amortized-proof', loadComponent: () => import('./components/fundamentals/dsa/big-o/subtopics/dynamic-array-amortized-proof/dynamic-array-amortized-proof').then(m => m.DynamicArrayAmortizedProofSubtopic) },
+    ] },
     { path: 'arrays',                 loadComponent: () => import('./components/fundamentals/dsa/arrays/arrays').then(m => m.DsaArrays) },
     { path: 'strings',                loadComponent: () => import('./components/fundamentals/dsa/strings/strings').then(m => m.DsaStrings) },
     { path: 'hash-tables',            loadComponent: () => import('./components/fundamentals/dsa/hash-tables/hash-tables').then(m => m.DsaHashTables) },

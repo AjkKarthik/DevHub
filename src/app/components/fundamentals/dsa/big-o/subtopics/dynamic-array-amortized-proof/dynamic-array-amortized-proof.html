@@ -1,0 +1,26 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Big-O Notation" topicRoute="/dsa/big-o"
+    subtopicLabel="Proving Amortized O(1), the Aggregate Method" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">Proving Amortized O(1) With the Aggregate Method</h1>
+  <p class="page-subtitle">The main page's own Amortised Analysis codeTab asserts dynamic-array push is amortized O(1) without proving it -- the aggregate method proves it directly, with measured totals across six orders of magnitude of n.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This turns the main page's asserted "amortised O(1)" claim into a measured proof via the aggregate method, and shows exactly why the growth FACTOR (doubling, tripling, any multiplicative ratio) is what makes it work, contrasted against a linear (+1) growth pattern that does not.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Big-O Notation" topicRoute="/dsa/big-o"
+    [prev]="{ label: 'Master Theorem’s Precise Conditions: Epsilon and Regularity', route: '/dsa/big-o/master-theorem-epsilon-and-regularity' }" />
+</div>

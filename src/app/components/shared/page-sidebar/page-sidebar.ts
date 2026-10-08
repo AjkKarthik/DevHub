@@ -34320,10 +34320,43 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       { label: 'Arrays',        route: '/dsa/arrays' },
       { label: 'Binary Search', route: '/dsa/binary-search' },
     ],
-    tip: 'Nested loops don\'t always mean O(n²) — if the inner loop\'s range shrinks with progress, actual complexity may be lower and must be derived carefully, not assumed from loop structure alone.',
+    tip: 'A shrinking inner loop\'s complexity depends on HOW it shrinks: a constant decrease each pass (selection sort\'s "unprocessed elements") is still O(n²); only a harmonic decrease (step grows, like the Challenge\'s own function) gives O(n log n).',
     gotchas: [
       'A method call like .includes() inside a loop silently adds hidden O(n) work per iteration, turning an apparent O(n) algorithm into O(n²).',
       'Recursive functions need analyzing both call count AND work per call — naive Fibonacci looks O(1)-per-call but is actually O(2ⁿ) due to branching.',
+    ],
+  },
+  'dsa/big-o/arithmetic-vs-harmonic-shrinking-loops': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Master Theorem’s Precise Conditions', route: '/dsa/big-o/master-theorem-epsilon-and-regularity' },
+      { label: 'Big-O Notation (topic overview)', route: '/dsa/big-o' },
+    ],
+    tip: 'Don\'t classify a nested loop from its shape — write the inner loop\'s exact trip count as a function of the outer index, then sum it. Arithmetic, harmonic, and geometric shrinks all look similar but sum to O(n²), O(n log n), and O(n) respectively.',
+    gotchas: [
+      'A geometric shrink (inner range halves, outer loop runs log n times) is O(n), not O(n log n) — multiplying "log n passes" by "max inner range" overcounts, since the range only hits that max on the first pass.',
+    ],
+  },
+  'dsa/big-o/master-theorem-epsilon-and-regularity': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Arithmetic vs. Harmonic Shrinking Loops', route: '/dsa/big-o/arithmetic-vs-harmonic-shrinking-loops' },
+      { label: 'Proving Amortized O(1), the Aggregate Method', route: '/dsa/big-o/dynamic-array-amortized-proof' },
+    ],
+    tip: 'Case 3 needs more than "f(n) grows faster" — it also needs the regularity condition a·f(n/b) ≤ c·f(n) for some c < 1. The classic f(n) = n(2 − cos n) counterexample grows at the right rate but fails regularity with a ratio stuck at exactly 1.5.',
+    gotchas: [
+      'The generalised case 2 covers f(n) = Θ(n^log_b(a) · log^k(n)) for ANY k ≥ 0, not just the bare k=0 "exactly equal" case most informal statements show.',
+    ],
+  },
+  'dsa/big-o/dynamic-array-amortized-proof': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Master Theorem’s Precise Conditions', route: '/dsa/big-o/master-theorem-epsilon-and-regularity' },
+      { label: 'Big-O Notation (topic overview)', route: '/dsa/big-o' },
+    ],
+    tip: 'It\'s the growth FACTOR that keeps dynamic-array push amortized O(1), not just that resizing "happens rarely" — any multiplicative growth (doubling, tripling) gives a bounded geometric series; +1 linear growth does not, and degrades to O(n) amortized.',
+    gotchas: [
+      'Amortized O(1) is an average over many operations, not a per-call guarantee — the one push that triggers a resize really is O(n) for that single call.',
     ],
   },
   'dsa/arrays': {

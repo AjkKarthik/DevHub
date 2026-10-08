@@ -1,6 +1,8 @@
-import { Component, inject } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Component, inject, signal } from '@angular/core';
+import { RouterLink, RouterLinkActive, Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs';
 import { ProgressService } from '../../../services/progress.service';
+import { SUBTOPICS } from '../../../data/subtopics';
 
 @Component({
   selector: 'app-dsa-nav',
@@ -13,7 +15,24 @@ import { ProgressService } from '../../../services/progress.service';
 
     <div class="nav-group">
       <p class="nav-group-label">Foundations</p>
-      <a routerLink="/dsa/big-o" routerLinkActive="active"><span class="nl-text">Big-O Notation</span>@if(p.isDone('dsa-big-o')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/dsa/big-o" routerLinkActive="active">
+        <span class="nl-text">Big-O Notation</span>
+        @if(p.isDone('dsa-big-o')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('big-o'); as bigOSubs) {
+          <button type="button" class="nav-subtopics-toggle" (click)="toggleSubtopics('big-o', $event)">
+            {{ isSubtopicsExpanded('big-o') ? '▾' : '▸' }}
+          </button>
+        }
+      </a>
+      @if (subtopicsOf('big-o'); as bigOSubs) {
+        @if (isSubtopicsExpanded('big-o')) {
+          <div class="nav-subtopics">
+            @for (sub of bigOSubs; track sub.route) {
+              <a [routerLink]="sub.route" routerLinkActive="active" class="nav-subtopic-link">{{ sub.label }}</a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/dsa/recursion-backtracking" routerLinkActive="active"><span class="nl-text">Recursion &amp; Backtracking</span>@if(p.isDone('dsa-recursion-backtracking')){<span class="nl-done">✓</span>}</a>
     </div>
 
@@ -63,4 +82,38 @@ import { ProgressService } from '../../../services/progress.service';
 })
 export class DsaNavComponent {
   p = inject(ProgressService);
+  private router = inject(Router);
+  private expandedTopics = signal<Set<string>>(new Set());
+
+  constructor() {
+    this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe(() => this.autoExpandForCurrentUrl());
+    this.autoExpandForCurrentUrl();
+  }
+
+  private autoExpandForCurrentUrl(): void {
+    const url = this.router.url.split('?')[0];
+    for (const [slug, subs] of Object.entries(SUBTOPICS)) {
+      if (subs.some(s => s.route === url)) {
+        this.expandedTopics.update(set => new Set(set).add(slug));
+      }
+    }
+  }
+
+  subtopicsOf(slug: string) {
+    return SUBTOPICS[slug] ?? null;
+  }
+
+  isSubtopicsExpanded(slug: string): boolean {
+    return this.expandedTopics().has(slug);
+  }
+
+  toggleSubtopics(slug: string, event: Event): void {
+    event.stopPropagation();
+    event.preventDefault();
+    this.expandedTopics.update(set => {
+      const next = new Set(set);
+      if (next.has(slug)) next.delete(slug); else next.add(slug);
+      return next;
+    });
+  }
 }

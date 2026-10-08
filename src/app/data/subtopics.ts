@@ -4227,4 +4227,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'kafkajs Has No buffer.memory or max.block.ms -- Those Are the Java Client\'s', route: '/messaging/backpressure/kafkajs-has-no-buffer-memory-or-max-block-ms' },
     { label: 'Node.js Stream Backpressure, Actually Running', route: '/messaging/backpressure/nodejs-stream-backpressure-actually-running' },
   ],
+  'big-o': [
+    { label: 'Arithmetic vs. Harmonic Shrinking Loops', route: '/dsa/big-o/arithmetic-vs-harmonic-shrinking-loops' },
+    { label: 'Master Theorem’s Precise Conditions: Epsilon and Regularity', route: '/dsa/big-o/master-theorem-epsilon-and-regularity' },
+    { label: 'Proving Amortized O(1) With the Aggregate Method', route: '/dsa/big-o/dynamic-array-amortized-proof' },
+  ],
 };
