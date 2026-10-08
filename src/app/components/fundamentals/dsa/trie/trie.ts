@@ -71,7 +71,7 @@ export class DsaTrie {
       heading: 'When a Trie Outperforms a Hash Set for String Problems',
       points: [
         'A trie supports prefix-based queries (find all words starting with a given prefix, or check if any word has a given prefix) in time proportional to the prefix length — a hash set cannot answer these prefix queries efficiently at all, requiring a full scan of all stored strings.',
-        'Autocomplete and typeahead search features are natural applications of tries, since they fundamentally require "find all entries matching this prefix" — the exact query pattern a trie is structurally optimized for, unlike hash-based or sorted-array alternatives.',
+        'Autocomplete and typeahead search features are natural applications of tries, since they fundamentally require "find all entries matching this prefix" — the exact query pattern a trie is structurally optimized for. A hash set cannot do this, but a sorted array can: binary search finds the first word not less than the prefix, and the matches are the consecutive words after it that start with the prefix — O(L log n) to locate them.',
         'A trie\'s memory usage can exceed that of a hash set when stored strings share few common prefixes, since each unique character path requires its own node — the space efficiency of a trie depends heavily on how much prefix-sharing exists in the actual dataset.',
         'Compressed tries (radix trees / Patricia tries), which merge chains of single-child nodes into a single edge labeled with a substring, address the memory overhead of a naive trie while preserving the same prefix-query performance characteristics.',
       ],
@@ -153,10 +153,12 @@ function findWords(board: string[][], words: string[]): string[] {
     if (!node.children.has(ch)) return; // prune — no word continues this way
     const nextNode = node.children.get(ch)!;
     const nextPath = path + ch;
-    if (nextNode.isEnd) found.add(nextPath);
+    if (nextNode.isEnd) { found.add(nextPath); nextNode.isEnd = false; } // report each word once
     board[r][c] = '#'; // mark visited
     for (const [dr, dc] of DIRS) dfs(r+dr, c+dc, nextNode, nextPath);
     board[r][c] = ch; // restore
+    // Prune: a branch with no words left in it can never match again
+    if (nextNode.children.size === 0 && !nextNode.isEnd) node.children.delete(ch);
   }
 
   for (let r = 0; r < rows; r++)
@@ -279,14 +281,14 @@ class TrieNode { children = new Map<string, TrieNode>(); isEnd = false; }`,
   qna: QnaItem[] = [
     {
       q: 'How does a Trie compare to a HashMap for word storage?',
-      a: 'HashMap: O(1) insert/lookup per word, but O(L×n) space and no prefix support. Trie: O(L) per operation, O(total_chars) space with shared prefixes, and O(L) prefix queries. Use HashMap when you only need exact lookup. Use Trie when you need prefix queries, autocomplete, or simultaneous multi-pattern matching.',
+      a: 'HashMap: O(L) insert/lookup per word (hashing reads every character, so "O(1)" only counts the table step), O(L×n) space and no prefix support. Trie: O(L) per operation, O(total_chars) space with shared prefixes, and O(L) prefix queries. Use HashMap when you only need exact lookup. Use Trie when you need prefix queries, autocomplete, or simultaneous multi-pattern matching.',
     },
     {
       q: 'What is a binary trie and when is it used?',
       a: 'A binary trie stores integers bit-by-bit (from MSB to LSB), with only 2 children per node (0 and 1). Used for XOR maximization problems: insert numbers into the trie, then for each number greedily choose the opposite bit at each level to maximize XOR. Maximum XOR of two numbers in an array can be solved in O(n × 32) this way.',
     },
   { q: 'How do you implement autocomplete using a Trie?', a: 'Build a Trie from the dictionary. To autocomplete prefix: (1) Traverse the Trie following each character of the prefix — if any character is missing, no completions; (2) From the terminal node of the prefix, collect all words by DFS (follow all children, collect strings where isEnd=true). Time: O(m + k) where m is prefix length and k is total characters in all matching words. Rank by frequency: store frequency at each word end node.' },
-  { q: 'What is a compressed Trie (Patricia Trie or Radix Tree) and when is it used?', a: 'A compressed Trie merges single-child chains into one edge with a multi-character label. Reduces space from O(total_chars) to O(n) where n is number of strings. Used in: IP routing (longest prefix match in routers), compressed string indexing. Tradeoff: more complex to implement (edge splitting on insert), but much better memory for sparse tries with long common paths.' },
+  { q: 'What is a compressed Trie (Patricia Trie or Radix Tree) and when is it used?', a: 'A compressed Trie merges single-child chains into one edge with a multi-character label. Reduces the node count from O(total_chars) to O(n) where n is number of strings (at most 2n nodes); the edge labels still hold the characters unless they are stored as index ranges into the original strings. Used in: IP routing (longest prefix match in routers), compressed string indexing. Tradeoff: more complex to implement (edge splitting on insert), but much better memory for sparse tries with long common paths.' },
   { q: 'How do you delete a word from a Trie?', a: 'Recursive deletion: (1) Traverse to the end of the word; (2) Mark isEnd = false; (3) On the way back up, delete nodes that are no longer needed (no children and not marked as word end). A node can be deleted only if: it has no children and is not the end of another word. Alternatively, just set isEnd=false without cleanup (lazy deletion) — simpler but leaves unused nodes in memory.' },
   { q: 'How is a Trie used in the Word Search II problem?', a: 'Build a Trie from the word list. Run DFS from each cell in the 2D board, traversing the Trie simultaneously. When a Trie node has isEnd=true, a word is found. Marking the node as found (isEnd=false) after finding it prevents duplicates. Pruning: if the current DFS path leads to a Trie node with no children, abort early. O(m * n * 4^L) where L is max word length, significantly pruned by the Trie.' },
   ];

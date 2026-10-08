@@ -1,0 +1,26 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CNNs & Computer Vision" topicRoute="/ai/computer-vision"
+    subtopicLabel="pretrained=True Loads the Old Weights" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">pretrained=True Loads the Old Weights</h1>
+  <p class="page-subtitle">The page used models.resnet50(pretrained=True). In torchvision 0.29.1 that still runs, with a deprecation warning, but it loads IMAGENET1K_V1 (76.1% top-1), not the current DEFAULT IMAGENET1K_V2 (80.9%).</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This updates the transfer-learning code. Next, what the page's conv2d function actually computes.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CNNs & Computer Vision" topicRoute="/ai/computer-vision"
+    [next]="{ label: 'CNN Convolution Is Cross-Correlation', route: '/ai/computer-vision/cnn-convolution-is-cross-correlation' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Dynamic Programming" topicRoute="/dsa/dynamic-programming"
+    subtopicLabel="Top-Down vs Bottom-Up, Measured on Sparse and Dense Inputs" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">Top-Down vs Bottom-Up, Measured on Sparse and Dense Inputs</h1>
+  <p class="page-subtitle">Memoization visited 5 states where the table filled 10,000, but on dense inputs it visited every state anyway and overflowed the stack at amount 20,000.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This backs the corrected quiz answer on the main page. The same state-counting approach helps when choosing an implementation for the DP Patterns topic.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Dynamic Programming" topicRoute="/dsa/dynamic-programming"
+    [prev]="{ label: 'One-Row LCS Needs a Saved Diagonal, Not Right-to-Left', route: '/dsa/dynamic-programming/lcs-one-row-needs-a-diagonal-variable' }" />
+</div>

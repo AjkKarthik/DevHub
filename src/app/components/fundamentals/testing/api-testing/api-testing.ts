@@ -38,7 +38,7 @@ export class ApiTesting {
       'Authentication: protected routes return 401 without a valid token.',
     ]},
     { heading: 'Supertest', points: [
-      'Supertest wraps an Express/Fastify/Koa app and makes HTTP requests in-process — no real port needed.',
+      'Supertest wraps an Express/Fastify/Koa app and starts it for you: if the app is not already listening, it calls listen(0, \'127.0.0.1\') to get a free ephemeral port, sends real HTTP over loopback, and closes the server afterwards. You never pick or manage a port, so parallel test files do not clash.',
       'Chain .get/post/put/delete, .send(body), .set(header), .expect(status), .expect(body).',
       'Returns a promise — use async/await or return the chain.',
       'Works with Jest, Vitest, Mocha — any test runner.',
@@ -102,7 +102,10 @@ describe('POST /users', () => {
 import jwt from 'jsonwebtoken';
 import { app } from '../src/app';
 
-const TEST_SECRET = 'test-secret';
+// The app must verify tokens with this SAME secret (e.g. it reads process.env.JWT_SECRET).
+// Otherwise every token below gets 401. Imports run before this line, so if the app
+// reads the secret at import time, set JWT_SECRET in a Jest setupFiles script instead.
+const TEST_SECRET = process.env.JWT_SECRET = 'test-secret';
 
 function makeToken(payload: object) {
   return jwt.sign(payload, TEST_SECRET, { expiresIn: '1h' });
@@ -138,8 +141,8 @@ import { app } from '../src/app';
 const UserSchema = z.object({
   id:    z.number(),
   name:  z.string(),
-  email: z.string().email(),
-  createdAt: z.string().datetime(),
+  email: z.email(),                          // Zod 4: z.string().email() is deprecated
+  createdAt: z.iso.datetime({ offset: true }), // default rejects +02:00 offsets
 });
 
 const UsersListSchema = z.array(UserSchema);
@@ -163,7 +166,7 @@ test('GET /users/:id returns single valid user', async () => {
   ];
 
   mistakes: CommonMistake[] = [
-    { title: 'Testing against production API', wrong: 'const BASE = "https://api.myapp.com"', right: 'request(app) // in-process, no real server', explanation: 'API tests must run against a controlled test environment. Hitting production risks dirty data and makes tests unreliable.' },
+    { title: 'Testing against production API', wrong: 'const BASE = "https://api.myapp.com"', right: 'request(app) // Supertest starts the app on a random local port', explanation: 'API tests must run against a controlled test environment. Hitting production risks dirty data and makes tests unreliable.' },
     { title: 'Only checking status code', wrong: 'expect(res.status).toBe(200); // done', right: 'expect(res.body).toMatchObject({ id: 1, name: "Alice" })', explanation: 'A 200 with an empty body or wrong shape is still a bug. Always assert on the response body shape and key values.' },
     { title: 'Not testing the unhappy path', wrong: 'only test the success case', right: 'test 400 (missing fields), 401 (no token), 404 (not found)', explanation: 'Most bugs live in error handling. Test every distinct failure path — they\'re often the most important contracts.' },
     { title: 'Hardcoding tokens in tests', wrong: 'const TOKEN = "eyJhbGci..." // real token pasted in test', right: 'generate tokens with makeToken({ id: 1, role: "user" }) using the test secret', explanation: 'Real tokens expire and encode production secrets. Generate minimal test tokens programmatically using the test environment secret.' },
@@ -222,10 +225,10 @@ app.post('/products', (req, res) => {
   };
 
   quiz: QuizQuestion[] = [
-    { q: 'What does Supertest allow you to test without?', options: ['A test runner', 'A real running server on a port', 'An HTTP client', 'A database'], answer: 1, explanation: 'Supertest wraps the Express (or similar) app directly and makes in-process HTTP requests — no need to start a server on a port, avoiding port conflicts in CI.' },
+    { q: 'What does Supertest allow you to test without?', options: ['A test runner', 'Starting and managing a server on a fixed port yourself', 'An HTTP client', 'A database'], answer: 1, explanation: 'Supertest takes the app (or an http.Server) and, if it is not listening yet, binds it to an ephemeral port on 127.0.0.1 itself, sends real HTTP requests, and closes it when done. You never choose a port, so there are no port conflicts in CI.' },
     { q: 'Why should you validate the response body schema and not just the status code?', options: ['Status codes are unreliable', 'A 200 with a wrong body shape is still a contract violation — schema validation catches silent breakages', 'Response bodies are always correct if the status is 200', 'Supertest cannot check status codes'], answer: 1, explanation: 'A status 200 only means "no server error." The body could be missing fields, have wrong types, or be empty. Schema tests catch these regressions.' },
     { q: 'How should you generate auth tokens for API tests?', options: ['Copy a token from the browser DevTools', 'Use the production secret and a real user\'s credentials', 'Generate minimal test JWTs programmatically using the test environment secret', 'Skip auth testing — it is too complex'], answer: 2, explanation: 'Real tokens expire and leak production credentials into test files. Generate test tokens with a test-only secret and minimal payload directly in the test setup.' },
-  { q: 'What HTTP status code should a POST that creates a resource return?', options: ['200 OK', '201 Created', '204 No Content', '202 Accepted'], answer: 1, explanation: '201 Created indicates successful resource creation. The response should include the Location header pointing to the new resource URI. 200 is for successful reads/updates; 204 for operations with no response body.' },
+  { q: 'What HTTP status code should a POST that creates a resource return?', options: ['200 OK', '201 Created', '204 No Content', '202 Accepted'], answer: 1, explanation: '201 Created indicates successful resource creation. It usually includes a Location header pointing to the new resource (RFC 9110 lets the server omit it, in which case the target URI identifies it). 200 is for successful reads/updates; 204 for operations with no response body.' },
   { q: 'What is the purpose of API contract testing?', options: ['Testing API performance', 'Verifying the API response matches the agreed schema/contract between consumer and provider', 'Testing API authentication', 'Load testing endpoints'], answer: 1, explanation: 'Contract testing ensures the API response structure, types, and fields match what consumers expect. Prevents breaking changes from reaching consumers — separate from functional testing.' },
   { q: 'What tool is commonly used for API testing in Node.js environments?', options: ['Selenium', 'Supertest', 'Cypress component testing', 'Playwright page objects'], answer: 1, explanation: 'Supertest wraps an Express/Fastify app and provides HTTP assertion methods: request(app).get(\'/api/users\').expect(200).expect(\'Content-Type\', /json/).then(response => ...).' },
   ];
@@ -242,7 +245,7 @@ app.post('/products', (req, res) => {
   revision: RevisionSummary = {
     oneLiner: 'API tests verify status codes, response body shape, headers, and auth — Supertest enables in-process testing without a real server.',
     mustKnow: [
-      'Supertest: request(app).get/post.send.set.expect — no real port',
+      'Supertest: request(app).get/post.send.set.expect — it binds a random local port for you',
       'Always test status code AND response body shape',
       'Test the unhappy paths: 400, 401, 403, 404',
       'Generate test JWTs programmatically — never use real tokens',

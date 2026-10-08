@@ -134,9 +134,11 @@ function lengthOfLongestSubstring(s: string): number {
   return maxLen;
 }
 
-// Prefix sum
+// Prefix sum — build in O(n) with a single pass, not a nested
+// slice()+reduce() per element (that version is actually O(n^2)).
 function rangeSum(arr: number[], l: number, r: number): number {
-  const prefix = [0, ...arr.map((_, i) => arr.slice(0, i + 1).reduce((a, b) => a + b, 0))];
+  const prefix = new Array(arr.length + 1).fill(0);
+  for (let i = 0; i < arr.length; i++) prefix[i + 1] = prefix[i] + arr[i];
   return prefix[r + 1] - prefix[l];
 }`,
     },

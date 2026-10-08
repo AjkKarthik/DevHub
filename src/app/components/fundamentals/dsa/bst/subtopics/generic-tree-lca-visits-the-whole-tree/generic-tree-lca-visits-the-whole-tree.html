@@ -1,0 +1,26 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Binary Search Trees" topicRoute="/dsa/bst"
+    subtopicLabel="Generic-Tree LCA Visits the Whole Tree" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">Generic-Tree LCA Visits the Whole Tree</h1>
+  <p class="page-subtitle">The main page's QnA describes generic (non-BST) tree LCA in prose with no code. Built it, instrumented it alongside BST-LCA, and measured a 340x visit-count gap on the identical query.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This builds the generic binary-tree LCA algorithm the main page's own QnA describes in prose, measuring the real performance gap against the page's own BST-exploiting Challenge solution.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Binary Search Trees" topicRoute="/dsa/bst"
+    [prev]="{ label: 'One Rotation Rebalances an Ascending Insert', route: '/dsa/bst/one-rotation-rebalances-an-ascending-insert' }" />
+</div>

@@ -4227,4 +4227,303 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'kafkajs Has No buffer.memory or max.block.ms -- Those Are the Java Client\'s', route: '/messaging/backpressure/kafkajs-has-no-buffer-memory-or-max-block-ms' },
     { label: 'Node.js Stream Backpressure, Actually Running', route: '/messaging/backpressure/nodejs-stream-backpressure-actually-running' },
   ],
+  'big-o': [
+    { label: 'Arithmetic vs. Harmonic Shrinking Loops', route: '/dsa/big-o/arithmetic-vs-harmonic-shrinking-loops' },
+    { label: 'Master Theorem’s Precise Conditions: Epsilon and Regularity', route: '/dsa/big-o/master-theorem-epsilon-and-regularity' },
+    { label: 'Proving Amortized O(1) With the Aggregate Method', route: '/dsa/big-o/dynamic-array-amortized-proof' },
+  ],
+  // NOTE: keyed 'dsa-arrays', NOT bare 'arrays' — the C# hub's own
+  // /csharp/arrays topic already owns the bare 'arrays' key (and the
+  // JavaScript hub's /javascript/arrays uses 'js-arrays' for the same
+  // reason) — DsaNavComponent's accordion calls use 'dsa-arrays' too.
+  'dsa-arrays': [
+    { label: 'The Prefix Sum CodeTab Was Actually O(n²)', route: '/dsa/arrays/prefix-sum-codetab-was-actually-on2' },
+    { label: '2D Prefix Sums for Submatrix Range Queries', route: '/dsa/arrays/2d-prefix-sums-submatrix-queries' },
+    { label: 'Counting Subarrays With Sum = K via Prefix Sum + Hash Map', route: '/dsa/arrays/subarray-sum-equals-k-prefix-hashmap' },
+  ],
+  'strings': [
+    { label: 'Longest Substring Without Repeating Characters', route: '/dsa/strings/longest-substring-without-repeating-sliding-window' },
+    { label: 'The Z-Algorithm for Pattern Matching', route: '/dsa/strings/z-algorithm-pattern-matching' },
+    { label: 'Rabin-Karp’s Rolling Hash, Verified', route: '/dsa/strings/rabin-karp-rolling-hash' },
+  ],
+  'hash-tables': [
+    { label: 'A Naive Salt Does Not Defeat a HashDoS Attack', route: '/dsa/hash-tables/naive-salt-does-not-defeat-hashdos' },
+    { label: 'Consistent Hashing: Verified Remap Counts', route: '/dsa/hash-tables/consistent-hashing-verified-remap-counts' },
+    { label: 'Finding the First Non-Repeating Character, Two Ways', route: '/dsa/hash-tables/first-non-repeating-character-two-ways' },
+  ],
+  'stacks-queues': [
+    { label: 'The Two-Stack Queue Moves Each Element Once', route: '/dsa/stacks-queues/two-stack-queue-moves-each-element-once' },
+    { label: 'Evaluating RPN Expressions With a Stack', route: '/dsa/stacks-queues/rpn-expression-evaluation-with-a-stack' },
+    { label: 'Min-Stack: Pairs vs. Two Aux Stacks', route: '/dsa/stacks-queues/min-stack-pairs-vs-two-aux-stacks' },
+  ],
+  'linked-lists': [
+    { label: 'Palindrome Check Mutates the List Without Restoring', route: '/dsa/linked-lists/palindrome-check-mutates-the-list-without-restoring' },
+    { label: 'Recursive Reversal: Call Stack Depth, Measured', route: '/dsa/linked-lists/recursive-reversal-call-stack-depth-measured' },
+    { label: 'Deleting a Middle Node Without the Predecessor', route: '/dsa/linked-lists/deleting-a-middle-node-without-the-predecessor' },
+  ],
+  'doubly-linked-lists': [
+    { label: 'JavaScript’s Map Is Not a Doubly Linked List', route: '/dsa/doubly-linked-lists/javascript-map-is-not-a-doubly-linked-list' },
+    { label: 'What Happens Without the Empty-List Guard', route: '/dsa/doubly-linked-lists/what-happens-without-the-empty-list-guard' },
+    { label: 'Building a Blocked Deque Like Python’s collections.deque', route: '/dsa/doubly-linked-lists/building-a-blocked-deque-like-pythons' },
+  ],
+  'binary-trees': [
+    { label: 'Morris Traversal Restores the Tree — Unless You Forget', route: '/dsa/binary-trees/morris-traversal-restores-the-tree-unless-you-forget' },
+    { label: 'BFS Can Use Less Memory Than DFS on a Skewed Tree', route: '/dsa/binary-trees/bfs-can-use-less-memory-than-dfs-on-a-skewed-tree' },
+    { label: 'Inorder Alone Cannot Reconstruct a Binary Tree', route: '/dsa/binary-trees/inorder-alone-cannot-reconstruct-a-binary-tree' },
+  ],
+  'bst': [
+    { label: 'Sorted Array to BST Is Actually O(n log n)', route: '/dsa/bst/sorted-array-to-bst-is-actually-on-log-n' },
+    { label: 'One Rotation Rebalances an Ascending Insert', route: '/dsa/bst/one-rotation-rebalances-an-ascending-insert' },
+    { label: 'Generic-Tree LCA Visits the Whole Tree', route: '/dsa/bst/generic-tree-lca-visits-the-whole-tree' },
+  ],
+  'heaps': [
+    { label: 'mergeKLists Never Actually Used Its Own Heap', route: '/dsa/heaps/mergeklists-never-actually-used-its-own-heap' },
+    { label: 'Popping a Heap n Times Is Heap Sort', route: '/dsa/heaps/popping-a-heap-n-times-is-heap-sort' },
+    { label: 'The Real O(n log k) K Closest Points Solution', route: '/dsa/heaps/the-real-on-log-k-k-closest-points-solution' },
+  ],
+  'graphs-bfs-dfs': [
+    { label: 'shift()’s O(V²) Risk Depends on Graph Width', route: '/dsa/graphs-bfs-dfs/shifts-on-v-squared-risk-depends-on-graph-width' },
+    { label: 'Detecting a Directed Cycle with Three-State DFS', route: '/dsa/graphs-bfs-dfs/detecting-a-directed-cycle-with-three-state-dfs' },
+    { label: 'Checking Bipartiteness with Two-Coloring BFS', route: '/dsa/graphs-bfs-dfs/checking-bipartiteness-with-two-coloring-bfs' },
+  ],
+  'graph-algorithms': [
+    { label: 'Dijkstra’s Fake Heap Was Sort Plus Shift', route: '/dsa/graph-algorithms/dijkstras-fake-heap-was-sort-plus-shift' },
+    { label: 'Kruskal’s MST with the Page’s Own Union-Find', route: '/dsa/graph-algorithms/kruskals-mst-with-the-pages-own-union-find' },
+    { label: 'A* Visits Far Fewer Nodes Than Dijkstra', route: '/dsa/graph-algorithms/a-star-visits-far-fewer-nodes-than-dijkstra' },
+  ],
+  'basic-sorts': [
+    { label: 'Selection Sort’s Swap Count Is At Most n-1, Not Exactly', route: '/dsa/basic-sorts/selection-sorts-swap-count-is-at-most-n-1-not-exactly' },
+    { label: 'Measuring Insertion Sort’s Real Adaptive Cost', route: '/dsa/basic-sorts/measuring-insertion-sorts-real-adaptive-cost' },
+    { label: 'Sorting By Multiple Keys: the Order Matters', route: '/dsa/basic-sorts/sorting-by-multiple-keys-the-order-matters' },
+  ],
+  'advanced-sorts': [
+    { label: 'Quicksort Is Not Actually O(1) Space', route: '/dsa/advanced-sorts/quicksort-recursion-stack-overflow' },
+    { label: 'Radix Sort Runs Counting Sort Digit by Digit', route: '/dsa/advanced-sorts/radix-sort-digit-by-digit' },
+    { label: 'Why Timsort Exploits Natural Ascending Runs', route: '/dsa/advanced-sorts/timsort-natural-ascending-runs' },
+  ],
+  'binary-search': [
+    { label: 'The Bit-Shift Midpoint Overflows at 2^31 in JavaScript', route: '/dsa/binary-search/bit-shift-midpoint-overflows-in-javascript' },
+    { label: 'Binary Search on a Linked List Never Beats a Linear Scan', route: '/dsa/binary-search/linked-list-binary-search-never-beats-a-scan' },
+    { label: 'Duplicates Make Rotated Search O(n) in the Worst Case', route: '/dsa/binary-search/rotated-search-with-duplicates-is-o-n' },
+  ],
+  'recursion-backtracking': [
+    { label: 'JavaScript Has Proper Tail Calls, but Only Safari Runs Them', route: '/dsa/recursion-backtracking/tail-calls-spec-mandated-but-only-safari' },
+    { label: 'Sort and Break Prunes Earlier Than a Negative Check', route: '/dsa/recursion-backtracking/sort-and-break-prunes-earlier' },
+    { label: 'Why the Duplicate Skip Compares i With start, Not 0', route: '/dsa/recursion-backtracking/skip-duplicates-at-the-same-tree-level' },
+  ],
+  'dynamic-programming': [
+    { label: 'Loop Order Decides Combinations or Permutations in Coin Change', route: '/dsa/dynamic-programming/coin-ways-loop-order-combinations-vs-permutations' },
+    { label: 'One-Row LCS Needs a Saved Diagonal, Not Right-to-Left', route: '/dsa/dynamic-programming/lcs-one-row-needs-a-diagonal-variable' },
+    { label: 'Top-Down vs Bottom-Up, Measured on Sparse and Dense Inputs', route: '/dsa/dynamic-programming/top-down-vs-bottom-up-measured' },
+  ],
+  'dp-patterns': [
+    { label: 'Circular Max Subarray Fails When Every Value Is Negative', route: '/dsa/dp-patterns/circular-kadane-fails-on-all-negative-input' },
+    { label: 'The Longest Palindromic Substring of character Is ara', route: '/dsa/dp-patterns/longest-palindromic-substring-of-character' },
+    { label: 'Word Break With slice Is O(n³), Not O(n²)', route: '/dsa/dp-patterns/word-break-with-slice-is-cubic' },
+  ],
+  'trie': [
+    { label: 'A Sorted Array Answers Prefix Queries Too', route: '/dsa/trie/sorted-array-answers-prefix-queries' },
+    { label: 'A Compressed Trie Saves Nodes, Not Characters', route: '/dsa/trie/compressed-trie-saves-nodes-not-characters' },
+    { label: 'Word Search II Speeds Up Only When Found Branches Are Deleted', route: '/dsa/trie/word-search-ii-prune-found-branches' },
+  ],
+  'bit-manipulation': [
+    { label: 'Right Shift Floors Negatives, So It Is Not Plain Division', route: '/dsa/bit-manipulation/right-shift-is-floor-not-division' },
+    { label: 'isPowerOfTwo and Bit Counting Go Wrong Above 2^32', route: '/dsa/bit-manipulation/bit-tricks-wrong-above-2-to-32' },
+    { label: 'The Bitmask Subset Loop Runs Zero Times at 31 Elements', route: '/dsa/bit-manipulation/bitmask-loop-breaks-at-31-elements' },
+  ],
+  'greedy': [
+    { label: 'US Coins Are Greedy-Safe Without Dividing Evenly', route: '/dsa/greedy/canonical-coins-are-not-divisibility' },
+    { label: 'The Page’s merge Rewrote the Caller’s Intervals', route: '/dsa/greedy/merge-intervals-mutates-the-input' },
+    { label: 'Job Sequencing Is Greedy by Profit, Not by Deadline', route: '/dsa/greedy/job-sequencing-greedy-by-profit' },
+  ],
+  'testing-fundamentals': [
+    { label: "toHaveText Belongs to Playwright, Not jest-dom", route: '/testing-hub/testing-fundamentals/tohavetext-is-a-playwright-matcher' },
+    { label: "A Relative toHaveURL Needs a baseURL", route: '/testing-hub/testing-fundamentals/relative-tohaveurl-needs-a-baseurl' },
+    { label: "The Integration Test Never Started a Container", route: '/testing-hub/testing-fundamentals/integration-test-never-started-a-container' },
+  ],
+  'tdd': [
+    { label: "The Outside-In Test Asked for a Name It Never Sent", route: '/testing-hub/tdd/outside-in-test-asked-for-a-name-it-never-sent' },
+    { label: "One Behaviour per Test, Not One Assertion", route: '/testing-hub/tdd/one-behaviour-per-test-not-one-assertion' },
+    { label: "A Refactor That Drops the Empty-String Guard", route: '/testing-hub/tdd/refactor-that-drops-the-empty-string-guard' },
+  ],
+  'test-doubles': [
+    { label: "jest.fn() Checked Afterwards Is a Spy, Not a Mock", route: '/testing-hub/test-doubles/jest-fn-verified-afterwards-is-a-spy' },
+    { label: "spyOn Calls the Real Method by Default", route: '/testing-hub/test-doubles/spyon-calls-through-by-default' },
+    { label: "clearAllMocks Keeps Return Values, resetAllMocks Removes Them", route: '/testing-hub/test-doubles/clearallmocks-keeps-return-values' },
+  ],
+  'property-based-testing': [
+    { label: "A Symmetric Bug Cannot Break Commutativity", route: '/testing-hub/property-based-testing/a-symmetric-bug-cannot-break-commutativity' },
+    { label: "fc.integer Ignores Positional min and max in v4", route: '/testing-hub/property-based-testing/fc-integer-ignores-positional-min-max' },
+    { label: "Model-Based Testing with fc.commands", route: '/testing-hub/property-based-testing/model-based-testing-with-fc-commands' },
+  ],
+  'jest-fundamentals': [
+    { label: "expect.assertions Checks an Exact Count", route: '/testing-hub/jest-fundamentals/expect-assertions-checks-an-exact-count' },
+    { label: "Jest 30 Removed toThrowError and Other Aliases", route: '/testing-hub/jest-fundamentals/jest-30-removed-tothrowerror-and-other-aliases' },
+    { label: "Jest Calls It coverageProvider, Not coverage.provider", route: '/testing-hub/jest-fundamentals/coverageprovider-not-coverage-provider' },
+  ],
+  'mocking-spies': [
+    { label: "mockReturnValue(Promise.reject()) Rejects Too Early", route: '/testing-hub/mocking-spies/mockreturnvalue-promise-reject-rejects-too-early' },
+    { label: "Spying on a Wrapper Does Not Touch Math.random", route: '/testing-hub/mocking-spies/spying-on-a-wrapper-does-not-touch-math-random' },
+    { label: "Checking Call Order with invocationCallOrder", route: '/testing-hub/mocking-spies/checking-call-order-with-invocationcallorder' },
+  ],
+  'vitest': [
+    { label: "vitest.workspace.ts Became test.projects", route: '/testing-hub/vitest/vitest-workspace-became-test-projects' },
+    { label: "In-Source Tests Need a define to Be Removed", route: '/testing-hub/vitest/in-source-tests-need-a-define-to-be-removed' },
+    { label: "The test Key in vite.config.ts Needs Vitest Types", route: '/testing-hub/vitest/test-key-in-vite-config-needs-vitest-types' },
+  ],
+  'xunit': [
+    { label: "Assert.Throws Matches the Exact Exception Type", route: '/testing-hub/xunit/assert-throws-matches-the-exact-type' },
+    { label: "An Async Lambda in Assert.Throws Does Not Compile", route: '/testing-hub/xunit/async-lambda-in-assert-throws-does-not-compile' },
+    { label: "IAsyncLifetime on a Test Class Runs per Test", route: '/testing-hub/xunit/iasynclifetime-on-a-test-class-runs-per-test' },
+  ],
+  'snapshot-testing': [
+    { label: "Jest on CI Refuses to Write New Snapshots", route: '/testing-hub/snapshot-testing/jest-on-ci-refuses-to-write-new-snapshots' },
+    { label: "The Challenge Regex Lost Its Backslash", route: '/testing-hub/snapshot-testing/the-challenge-regex-lost-its-backslash' },
+    { label: "Snapshots Sort Object Keys Alphabetically", route: '/testing-hub/snapshot-testing/snapshots-sort-object-keys' },
+  ],
+  'integration-testing': [
+    { label: "Jest 30 Renamed --testPathPattern to --testPathPatterns", route: '/testing-hub/integration-testing/jest-30-renamed-testpathpattern' },
+    { label: "PostgreSqlContainer Needs an Image and a stop()", route: '/testing-hub/integration-testing/postgresqlcontainer-needs-an-image-and-a-stop' },
+    { label: "In-Memory SQLite Dies with Its Connection", route: '/testing-hub/integration-testing/in-memory-sqlite-dies-with-its-connection' },
+  ],
+  'testing-databases': [
+    { label: "Rollback Only Isolates Its Own Connection", route: '/testing-hub/testing-databases/rollback-only-isolates-its-own-connection' },
+    { label: "Seeding Explicit IDs Leaves the Sequence Behind", route: '/testing-hub/testing-databases/seeding-explicit-ids-leaves-the-sequence-behind' },
+    { label: "TRUNCATE and ROLLBACK Do Not Reset IDs", route: '/testing-hub/testing-databases/truncate-and-rollback-do-not-reset-ids' },
+  ],
+  'test-msw': [
+    { label: "The Override Test Never Imported server", route: '/testing-hub/msw/the-override-test-never-imported-server' },
+    { label: "warn Lets Unhandled Requests Hit the Network", route: '/testing-hub/msw/warn-lets-unhandled-requests-hit-the-network' },
+    { label: "Relative Handler URLs Need a DOM Environment", route: '/testing-hub/msw/relative-handler-urls-need-a-dom-environment' },
+  ],
+  'react-testing-library': [
+    { label: "role=status Has No Name from Its Text", route: '/testing-hub/react-testing-library/role-status-has-no-name-from-its-text' },
+    { label: "Testing Library Has No getByClassName", route: '/testing-hub/react-testing-library/testing-library-has-no-getbyclassname' },
+    { label: "findBy Gives Up After One Second", route: '/testing-hub/react-testing-library/findby-gives-up-after-one-second' },
+  ],
+  'angular-testing': [
+    { label: "HttpClientTestingModule Is Deprecated", route: '/testing-hub/angular-testing/httpclienttestingmodule-is-deprecated' },
+    { label: "TestBed.flushEffects Was Replaced by TestBed.tick", route: '/testing-hub/angular-testing/flusheffects-replaced-by-testbed-tick' },
+    { label: "Router Testing Without RouterTestingModule", route: '/testing-hub/angular-testing/router-testing-without-routertestingmodule' },
+  ],
+  'visual-regression': [
+    { label: "threshold Is Colour Sensitivity, Not a Percentage", route: '/testing-hub/visual-regression/threshold-is-colour-sensitivity-not-percent' },
+    { label: "A Missing Baseline Fails the First Run", route: '/testing-hub/visual-regression/a-missing-baseline-fails-the-first-run' },
+    { label: "Animations Are Already Off, and networkidle Is Discouraged", route: '/testing-hub/visual-regression/animations-are-already-off-and-networkidle-is-discouraged' },
+  ],
+  'playwright': [
+    { label: "Actions Have No Timeout of Their Own by Default", route: '/testing-hub/playwright/actions-have-no-timeout-by-default' },
+    { label: "networkidle Means Zero Connections and Is Discouraged", route: '/testing-hub/playwright/networkidle-means-zero-connections-and-is-discouraged' },
+    { label: "Locators Are Strict About Multiple Matches", route: '/testing-hub/playwright/locators-are-strict-about-multiple-matches' },
+  ],
+  'cypress': [
+    { label: "The cypress/react18 Mount Import Is Gone", route: '/testing-hub/cypress/cypress-react18-mount-import-is-gone' },
+    { label: "cy.session Is Cached Per Spec Unless You Opt In", route: '/testing-hub/cypress/cy-session-is-per-spec-unless-cache-across-specs' },
+    { label: "Spec and App Run in Separate Iframes", route: '/testing-hub/cypress/spec-and-app-run-in-separate-iframes' },
+  ],
+  'api-testing': [
+    { label: "Supertest Binds an Ephemeral Port for You", route: '/testing-hub/api-testing/supertest-binds-an-ephemeral-port' },
+    { label: "Test Tokens Need the Same Secret as the App", route: '/testing-hub/api-testing/test-tokens-need-the-same-secret-as-the-app' },
+    { label: "Zod datetime Rejects Timezone Offsets by Default", route: '/testing-hub/api-testing/zod-datetime-rejects-timezone-offsets' },
+  ],
+  'contract-testing': [
+    { label: "Extra Provider Fields Do Not Break a Pact", route: '/testing-hub/contract-testing/extra-provider-fields-do-not-break-a-pact' },
+    { label: "Publishing a Pact Requires a Version", route: '/testing-hub/contract-testing/publishing-a-pact-requires-a-version' },
+    { label: "Verifying Local Pact Files and Provider States", route: '/testing-hub/contract-testing/verifying-local-pact-files-and-provider-states' },
+  ],
+  'ml-fundamentals': [
+    { label: "A Sort-Based Shuffle Is Biased", route: '/ai/ml-fundamentals/sort-based-shuffle-is-biased' },
+    { label: "Precision Is NaN When Nothing Is Predicted Positive", route: '/ai/ml-fundamentals/precision-is-nan-when-nothing-is-predicted-positive' },
+    { label: "Where Gradient Descent Starts to Diverge", route: '/ai/ml-fundamentals/where-gradient-descent-starts-to-diverge' },
+  ],
+  'math-for-ml': [
+    { label: "A Hand-Written Matmul Can Hide Shape Errors", route: '/ai/math-for-ml/a-hand-written-matmul-can-hide-shape-errors' },
+    { label: "The Gradient at w = 1 Is -22, Not 0", route: '/ai/math-for-ml/the-gradient-at-w-1-is-minus-22' },
+    { label: "Why L1 Gives Exact Zeros", route: '/ai/math-for-ml/why-l1-gives-exact-zeros' },
+  ],
+  'linear-logistic-regression': [
+    { label: "Separable Data Makes Weights Grow Forever", route: '/ai/linear-logistic-regression/separable-data-makes-weights-grow-forever' },
+    { label: "MSE Gradient Vanishes on Confident Mistakes", route: '/ai/linear-logistic-regression/mse-gradient-vanishes-on-confident-mistakes' },
+    { label: "An Odds Ratio Is Not a Probability Change", route: '/ai/linear-logistic-regression/an-odds-ratio-is-not-a-probability-change' },
+  ],
+  'decision-trees': [
+    { label: "scikit-learn Does Not Prune by Default", route: '/ai/decision-trees/scikit-learn-does-not-prune-by-default' },
+    { label: "RandomForestRegressor Uses All Features by Default", route: '/ai/decision-trees/random-forest-regressor-uses-all-features-by-default' },
+    { label: "Impurity Importance Favours High-Cardinality Features", route: '/ai/decision-trees/impurity-importance-favours-high-cardinality-features' },
+  ],
+  'gradient-boosting': [
+    { label: "LightGBM Callbacks Belong in fit()", route: '/ai/gradient-boosting/lightgbm-callbacks-belong-in-fit' },
+    { label: "LightGBM subsample Needs subsample_freq", route: '/ai/gradient-boosting/lightgbm-subsample-needs-subsample-freq' },
+    { label: "Scaling the Target Does Not Help Tree Boosters", route: '/ai/gradient-boosting/scaling-the-target-does-not-help-tree-boosters' },
+  ],
+  'clustering': [
+    { label: "The K-Means Assign Step Put Every Point in One Cluster", route: '/ai/clustering/the-kmeans-assign-step-put-every-point-in-one-cluster' },
+    { label: "PCA by Power Iteration Matches scikit-learn", route: '/ai/clustering/pca-by-power-iteration-matches-scikit-learn' },
+    { label: "One k-means++ Run Is Not Enough", route: '/ai/clustering/one-kmeans-plus-plus-run-is-not-enough' },
+  ],
+  'neural-networks': [
+    { label: "Dropout Before BatchNorm Shifts the Variance", route: '/ai/neural-networks/dropout-before-batchnorm-shifts-the-variance' },
+    { label: "Measuring Vanishing Gradients Through 20 Layers", route: '/ai/neural-networks/measuring-vanishing-gradients-through-20-layers' },
+    { label: "Xavier Init Shrinks ReLU Activations", route: '/ai/neural-networks/xavier-init-shrinks-relu-activations' },
+  ],
+  'computer-vision': [
+    { label: "pretrained=True Loads the Old Weights", route: '/ai/computer-vision/pretrained-true-loads-the-old-weights' },
+    { label: "CNN Convolution Is Cross-Correlation", route: '/ai/computer-vision/cnn-convolution-is-cross-correlation' },
+    { label: "A One-Pixel Shift Changes Pooled Output", route: '/ai/computer-vision/a-one-pixel-shift-changes-pooled-output' },
+  ],
+  'transformers': [
+    { label: "Self-Attention Is Permutation-Equivariant", route: '/ai/transformers/self-attention-is-permutation-equivariant' },
+    { label: "Measuring Why Scores Are Divided by sqrt(d_k)", route: '/ai/transformers/measuring-why-scores-are-divided-by-sqrt-dk' },
+    { label: "A Fully Masked Row Makes Softmax NaN", route: '/ai/transformers/a-fully-masked-row-makes-softmax-nan' },
+  ],
+  'llm-fundamentals': [
+    { label: "Temperature Zero Broke the Sampler", route: '/ai/llm-fundamentals/temperature-zero-broke-the-sampler' },
+    { label: "js-tiktoken Uses encodingForModel", route: '/ai/llm-fundamentals/js-tiktoken-uses-encodingformodel' },
+    { label: "Measuring Tokens per Word", route: '/ai/llm-fundamentals/measuring-tokens-per-word' },
+  ],
+  'fine-tuning': [
+    { label: "Counting LoRA Parameters with Grouped-Query Attention", route: '/ai/fine-tuning/lora-parameter-count-with-gqa' },
+    { label: "TRL Trainer Arguments Moved to the Config", route: '/ai/fine-tuning/trl-trainer-arguments-moved' },
+    { label: "Training Only on the Output Field Drops the Instruction", route: '/ai/fine-tuning/training-only-on-the-output-field' },
+  ],
+  'rag': [
+    { label: "chunkSize Counts Characters, Not Tokens", route: '/ai/rag/chunk-size-counts-characters' },
+    { label: "LangChain 1.x Moved the Chain Imports", route: '/ai/rag/langchain-1x-import-paths' },
+    { label: "Reciprocal Rank Fusion, Worked Through", route: '/ai/rag/reciprocal-rank-fusion-worked-example' },
+  ],
+  'prompt-engineering': [
+    { label: "The Fence-Stripping Regex Missed Two Cases", route: '/ai/prompt-engineering/fence-stripping-regex-misses-cases' },
+    { label: "The CoT Prompt Ended at the Answer", route: '/ai/prompt-engineering/cot-prompt-ended-at-the-answer' },
+    { label: "JSON Mode Is Not Schema Enforcement", route: '/ai/prompt-engineering/json-mode-vs-structured-outputs' },
+  ],
+  'ai-agents': [
+    { label: "The Calculator Tool Must Not eval Model Input", route: '/ai/ai-agents/calculator-tool-must-not-eval' },
+    { label: "The Loop Resent the Same Request on Other Stop Reasons", route: '/ai/ai-agents/loop-resent-on-other-stop-reasons' },
+    { label: "The ReAct Parser Split on Every Parenthesis", route: '/ai/ai-agents/react-parser-split-on-every-parenthesis' },
+  ],
+  'vector-databases': [
+    { label: "FAISS L2 Distances Are Squared", route: '/ai/vector-databases/faiss-l2-distances-are-squared' },
+    { label: "HNSW Memory Is Not N·M·d", route: '/ai/vector-databases/hnsw-memory-is-not-n-m-d' },
+    { label: "Pinecone v9 upsert Takes { records }", route: '/ai/vector-databases/pinecone-v9-upsert-takes-records' },
+  ],
+  'mlops': [
+    { label: "The vLLM Command Broke at a Comment", route: '/ai/mlops/vllm-command-and-throughput-claims' },
+    { label: "pd.cut Codes Out-of-Range Ages as -1", route: '/ai/mlops/pd-cut-codes-out-of-range-as-minus-one' },
+    { label: "MLflow Registry Stages Are Deprecated", route: '/ai/mlops/mlflow-registry-uses-aliases' },
+  ],
+  'hugging-face': [
+    { label: "apply_chat_template Returns a Dict in Transformers 5", route: '/ai/hugging-face/apply-chat-template-returns-a-dict' },
+    { label: "HfInference Is Now InferenceClient", route: '/ai/hugging-face/hfinference-is-now-inferenceclient' },
+    { label: "32GB of fp32 Weights Does Fit a 40GB A100", route: '/ai/hugging-face/fp32-llama-memory-math' },
+  ],
+  'evaluating-llms': [
+    { label: "Recomputing the ROUGE Examples", route: '/ai/evaluating-llms/rouge-example-recomputed' },
+    { label: "ROUGE-1 Gives a Wrong Fact a Perfect Score", route: '/ai/evaluating-llms/rouge-1-ignores-word-order' },
+    { label: "The 65% Figure Is Swap Consistency", route: '/ai/evaluating-llms/judge-position-bias-figure' },
+  ],
+  'ai-engineering': [
+    { label: "req close Fires Before the Stream Starts", route: '/ai/ai-engineering/req-close-fires-before-the-stream' },
+    { label: "An Aborted Stream Can End Without Throwing", route: '/ai/ai-engineering/aborted-stream-loop-ends-quietly' },
+    { label: "Getting Exact Token Usage from a Stream", route: '/ai/ai-engineering/exact-token-usage-from-a-stream' },
+  ],
 };

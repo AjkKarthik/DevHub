@@ -1,0 +1,26 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Dynamic Programming" topicRoute="/dsa/dynamic-programming"
+    subtopicLabel="Loop Order Decides Combinations or Permutations in Coin Change" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">Loop Order Decides Combinations or Permutations in Coin Change</h1>
+  <p class="page-subtitle">Counting ways with the page's own coin-change loops returns 9 for coins [1,2,5] and amount 5. There are 4 combinations. Swapping the two loops fixes it.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the main page's QnA on counting ways versus minimum coins. The next subtopic looks at another 1D rewrite that is easy to get wrong: LCS in a single row.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Dynamic Programming" topicRoute="/dsa/dynamic-programming"
+    [next]="{ label: 'One-Row LCS Needs a Saved Diagonal, Not Right-to-Left', route: '/dsa/dynamic-programming/lcs-one-row-needs-a-diagonal-variable' }" />
+</div>

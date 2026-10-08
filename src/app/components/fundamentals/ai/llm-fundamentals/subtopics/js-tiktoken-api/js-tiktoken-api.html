@@ -1,0 +1,27 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="LLM Fundamentals" topicRoute="/ai/llm-fundamentals"
+    subtopicLabel="js-tiktoken Uses encodingForModel" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">js-tiktoken Uses encodingForModel</h1>
+  <p class="page-subtitle">The tokenisation tab imported encoding_for_model from js-tiktoken and called enc.free(). Those belong to the WASM tiktoken package; js-tiktoken exports encodingForModel and has no free().</p>
+  <app-page-meta [readingTime]="4" difficulty="beginner" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This fixes the tokenisation tab. The last subtopic measures the tokens-per-word rule of thumb.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="LLM Fundamentals" topicRoute="/ai/llm-fundamentals"
+    [prev]="{ label: 'Temperature Zero Broke the Sampler', route: '/ai/llm-fundamentals/temperature-zero-broke-the-sampler' }"
+    [next]="{ label: 'Measuring Tokens per Word', route: '/ai/llm-fundamentals/measuring-tokens-per-word' }" />
+</div>

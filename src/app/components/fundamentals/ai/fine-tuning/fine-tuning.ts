@@ -48,7 +48,7 @@ export class AiFineTuning {
         'Key insight: weight updates during fine-tuning have low intrinsic dimensionality — a small matrix captures most of the update.',
         'For each target weight matrix W (d×k), inject: W\' = W + α/r · A·B where A is d×r, B is r×k, rank r << min(d,k).',
         'Freeze W entirely. Train only A (initialised random) and B (initialised zero). At inference: merge A·B into W (no latency overhead).',
-        'Typical r=8–64. With r=16, a 7B model has ~10M trainable params instead of 7B — 700× reduction.',
+        'Typical r=8–64. With r=16 on q_proj and v_proj, Llama 2 7B has about 8.4M trainable params (about 800× fewer than 6.7B), and Llama 3 8B has 6.8M because grouped-query attention makes v_proj only 4096×1024.',
         'QLoRA: load W in 4-bit NF4 quantisation, train LoRA in bf16. Enables 70B fine-tuning on 2× A100 40GB.',
       ],
     },
@@ -90,9 +90,10 @@ export class AiFineTuning {
       code: `// LoRA fine-tuning with HuggingFace PEFT (Python pseudocode)
 // pip install transformers peft accelerate datasets bitsandbytes
 
-// from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments
+// from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
+// from datasets import load_dataset
 // from peft import LoraConfig, get_peft_model, TaskType
-// from trl import SFTTrainer
+// from trl import SFTTrainer, SFTConfig
 
 // # Load base model (4-bit quantised for QLoRA)
 // model = AutoModelForCausalLM.from_pretrained(
@@ -112,19 +113,20 @@ export class AiFineTuning {
 // )
 // model = get_peft_model(model, lora_config)
 // model.print_trainable_parameters()
-// # trainable params: 10,485,760 || all params: 8,030,261,248 || trainable%: 0.13%
+// # trainable params: 6,815,744 || all params: 8,037,076,992 || trainable%: 0.0848
+// # (Llama 3 uses grouped-query attention, so v_proj is 4096x1024, not 4096x4096)
 
-// # Dataset in Alpaca format
+// # Dataset in prompt-completion format, so the model sees the instruction
+// # and the loss is computed on the completion only
 // dataset = load_dataset("json", data_files="train.jsonl")
-// # {"instruction": "...", "input": "...", "output": "..."}
+// # {"prompt": "<instruction + input>", "completion": "<output>"}
 
 // trainer = SFTTrainer(
 //   model=model,
 //   train_dataset=dataset["train"],
-//   args=TrainingArguments(output_dir="./output", num_train_epochs=3,
+//   args=SFTConfig(output_dir="./output", num_train_epochs=3,
 //     per_device_train_batch_size=4, gradient_accumulation_steps=4,
 //     learning_rate=2e-4, lr_scheduler_type="cosine", warmup_ratio=0.03),
-//   dataset_text_field="output",
 // )
 // trainer.train()
 // model.save_pretrained("./lora-adapter")  # only saves the LoRA weights!`,
@@ -133,6 +135,7 @@ export class AiFineTuning {
       label: 'DPO Training',
       language: 'typescript',
       code: `// DPO training with TRL (Python pseudocode)
+// from transformers import AutoModelForCausalLM, AutoTokenizer
 // from trl import DPOTrainer, DPOConfig
 // from datasets import Dataset
 
@@ -163,13 +166,14 @@ export class AiFineTuning {
 // # Load reference model (SFT checkpoint) and policy model
 // ref_model = AutoModelForCausalLM.from_pretrained("./sft-checkpoint")
 // model     = AutoModelForCausalLM.from_pretrained("./sft-checkpoint")
+// tokenizer = AutoTokenizer.from_pretrained("./sft-checkpoint")
 
 // trainer = DPOTrainer(
 //   model=model,
 //   ref_model=ref_model,  # frozen reference policy
 //   args=dpo_config,
 //   train_dataset=dataset,
-//   tokenizer=tokenizer,
+//   processing_class=tokenizer,  # current TRL name (no tokenizer= argument)
 // )
 // trainer.train()`,
     },
@@ -181,7 +185,7 @@ export class AiFineTuning {
       wrong: `# Fine-tuning all 7B parameters on 1000 examples
 trainer = Trainer(model=model, ...)  # needs 6× A100 80GB, days of training
 # Also risks catastrophic forgetting of general capabilities`,
-      right: `# LoRA: train only ~10M params (0.13% of 7B)
+      right: `# LoRA r=16 on q_proj+v_proj: ~8.4M params on Llama 2 7B (~0.12%)
 lora_config = LoraConfig(r=16, lora_alpha=32, ...)
 model = get_peft_model(model, lora_config)
 # Runs on 1× A100 40GB in hours, preserves general capabilities`,
@@ -306,7 +310,7 @@ function paramReduction(dIn: number, dOut: number, rank: number): string {
     oneLiner: 'SFT teaches instruction-following; LoRA/QLoRA trains tiny adapter matrices instead of all weights; RLHF aligns to human preferences; DPO does it without a reward model.',
     mustKnow: [
       'SFT: fine-tune on (instruction, response) pairs with cross-entropy loss',
-      'LoRA: ΔW = A·B with rank r, freeze base weights, 100–700× fewer trainable params',
+      'LoRA: ΔW = A·B with rank r, freeze base weights, hundreds of times fewer trainable params (~800× for r=16 q+v on a 7B model)',
       'QLoRA: 4-bit quantised base + LoRA adapters in bf16 — 70B on 2×A100',
       'RLHF: rank completions → reward model → PPO with KL penalty',
       'DPO: (chosen, rejected) pairs, no reward model, simpler than PPO',

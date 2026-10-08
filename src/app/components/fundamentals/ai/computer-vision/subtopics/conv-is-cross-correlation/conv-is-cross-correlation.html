@@ -1,0 +1,27 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CNNs & Computer Vision" topicRoute="/ai/computer-vision"
+    subtopicLabel="CNN Convolution Is Cross-Correlation" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">CNN Convolution Is Cross-Correlation</h1>
+  <p class="page-subtitle">Feeding a single bright pixel through the page's conv2d returns the kernel upside down and mirrored. That is cross-correlation; a mathematical convolution would return the kernel unchanged.</p>
+  <app-page-meta [readingTime]="4" difficulty="intermediate" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This clarifies the conv bullet. The last subtopic tests how shift-invariant pooling really is.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CNNs & Computer Vision" topicRoute="/ai/computer-vision"
+    [prev]="{ label: 'pretrained=True Loads the Old Weights', route: '/ai/computer-vision/pretrained-true-loads-the-old-weights' }"
+    [next]="{ label: 'A One-Pixel Shift Changes Pooled Output', route: '/ai/computer-vision/a-one-pixel-shift-changes-pooled-output' }" />
+</div>

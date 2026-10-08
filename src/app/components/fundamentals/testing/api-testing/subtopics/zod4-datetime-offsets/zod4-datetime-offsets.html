@@ -1,0 +1,26 @@
+<div class="test-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="API Testing" topicRoute="/testing-hub/api-testing"
+    subtopicLabel="Zod datetime Rejects Timezone Offsets by Default" />
+  <div class="page-header-icon test-icon">✓</div>
+  <h1 class="page-title">Zod datetime Rejects Timezone Offsets by Default</h1>
+  <p class="page-subtitle">The schema tab used z.string().email() and z.string().datetime(). In Zod 4.6 both are deprecated, and the datetime check only accepts UTC strings ending in Z unless you allow offsets.</p>
+  <app-page-meta [readingTime]="4" difficulty="intermediate" since="Testing" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="test-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="test-section">
+    <h2>Where this fits</h2>
+    <p>This updates the Schema Validation tab. Contract Testing takes schema checks further by letting consumers define the contract.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="API Testing" topicRoute="/testing-hub/api-testing"
+    [prev]="{ label: 'Test Tokens Need the Same Secret as the App', route: '/testing-hub/api-testing/test-tokens-need-the-same-secret-as-the-app' }" />
+</div>

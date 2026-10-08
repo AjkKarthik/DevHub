@@ -1,0 +1,26 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Mathematics for ML" topicRoute="/ai/math-for-ml"
+    subtopicLabel="A Hand-Written Matmul Can Hide Shape Errors" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">A Hand-Written Matmul Can Hide Shape Errors</h1>
+  <p class="page-subtitle">The page said multiplying a 3x2 matrix by another 3x2 matrix will error. With its own matmul it does not: the loop reads only the first two rows of B and returns a wrong 3x2 result.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This fixes the shape mistake. Next, the gradient comment in the calculus tab.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Mathematics for ML" topicRoute="/ai/math-for-ml"
+    [next]="{ label: 'The Gradient at w = 1 Is -22, Not 0', route: '/ai/math-for-ml/the-gradient-at-w-1-is-minus-22' }" />
+</div>

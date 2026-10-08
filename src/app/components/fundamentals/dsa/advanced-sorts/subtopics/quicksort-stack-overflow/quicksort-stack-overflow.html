@@ -1,0 +1,26 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Advanced Sorts" topicRoute="/dsa/advanced-sorts"
+    subtopicLabel="Quicksort Is Not Actually O(1) Space" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">Quicksort Is Not Actually O(1) Space</h1>
+  <p class="page-subtitle">The main page's revision summary and a mistake block called quicksort O(1) space, directly contradicting its own theory section. Measured the real recursion depth and reproduced an actual stack overflow.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This fixes the main page's own self-contradiction between its theory section (correctly stating O(log n) average / O(n) worst-case stack space) and its revision summary / mistake block (incorrectly calling quicksort O(1) space overall) — and reproduces the real crash that oversimplification hides.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Advanced Sorts" topicRoute="/dsa/advanced-sorts"
+    [next]="{ label: 'Radix Sort Runs Counting Sort Digit by Digit', route: '/dsa/advanced-sorts/radix-sort-digit-by-digit' }" />
+</div>

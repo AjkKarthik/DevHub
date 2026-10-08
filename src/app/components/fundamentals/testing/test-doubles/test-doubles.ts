@@ -91,7 +91,10 @@ test('process calculates total (stub for price, dummy for logger)', () => {
 
 test('process logs order details (mock for logger)', () => {
   const priceStub: PriceService = { getPrice: () => 10 };
-  // Mock: pre-programmed expectation
+  // jest.fn() records calls; we verify them AFTER the act step.
+  // In Meszaros/Fowler terms that is a test SPY. A classic mock has its
+  // expectations set up BEFORE the act and verifies itself. Jest calls
+  // both "mock functions", which is where the naming gets blurred.
   const loggerMock = { log: jest.fn() };
 
   new OrderProcessor(priceStub, loggerMock).process('WIDGET', 3);
@@ -144,7 +147,7 @@ emailSpy.mockRestore();` },
     { title: 'Fake out of sync with production interface', wrong: 'InMemoryRepo implements an old version of IRepository', right: 'update the fake whenever the production interface changes', explanation: 'A stale fake makes tests pass while real code breaks. Keep fakes in the same repository and update them with the interface.' },
     { title: 'Chaining too many doubles', wrong: 'mock A which returns a stub B which has a spy C which calls a fake D', right: 'mock only the direct dependency of the SUT', explanation: 'Deep double chains are a sign the SUT has too many dependencies. Refactor toward smaller units first.' },
     { title: 'Not resetting mocks between tests', wrong: 'const mock = jest.fn(); // shared across tests without reset', right: 'beforeEach(() => { jest.clearAllMocks(); })', explanation: 'Call counts accumulate. A test expecting toHaveBeenCalledTimes(1) fails because a previous test already called it.' },
-    { title: 'Confusing a spy with a mock', wrong: 'using jest.spyOn() and then checking mock.calls to verify "pre-programmed expectations"', right: 'spyOn for recording real calls; jest.fn() with expectation for mock behaviour', explanation: 'Spies are observation tools; mocks are verification tools. The terminology matters when explaining test design to a team.' },
+    { title: 'Confusing a spy with a mock', wrong: 'using jest.spyOn() and then checking mock.calls to verify "pre-programmed expectations"', right: 'jest.spyOn() wraps an existing method (and calls it through by default); jest.fn() is a standalone function. Either becomes a spy when you assert on its calls afterwards', explanation: 'In Meszaros/Fowler terms a spy records calls for checking after the act, while a mock is given its expectations before the act and verifies itself. Jest calls both jest.fn() and jest.spyOn() \'mock functions\', and most Jest tests that assert toHaveBeenCalledWith afterwards are using spies. The terminology matters when explaining test design to a team.' },
   ];
 
   challenge: Challenge = {

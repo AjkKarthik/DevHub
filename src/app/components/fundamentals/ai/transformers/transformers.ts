@@ -54,7 +54,7 @@ export class AiTransformers {
     {
       heading: 'Positional Encoding and Architecture',
       points: [
-        'Attention is permutation-invariant — reordering tokens gives the same output. Positional encoding injects order.',
+        'Attention is permutation-equivariant — reordering the input tokens only reorders the outputs, so each token\'s vector ignores where it sits. Positional encoding injects order.',
         'Sinusoidal encoding (original Transformer): PE[pos,2i] = sin(pos/10000^{2i/d}); PE[pos,2i+1] = cos(...).',
         'Learned positional embeddings (BERT, GPT): train a separate embedding table for positions — simpler and often better.',
         'Rotary Position Embedding (RoPE): encodes relative position in the QK dot product — used in LLaMA, GPT-NeoX.',
@@ -67,7 +67,7 @@ export class AiTransformers {
         'Encoder (BERT-style): each token attends to all tokens bidirectionally. Good for understanding — classification, NER, Q&A.',
         'Decoder (GPT-style): causal masking — token i can only attend to tokens 1..i. Good for generation (next-token prediction).',
         'Encoder-decoder (T5, BART): encoder processes the input, decoder generates output cross-attending to encoder outputs. Good for seq2seq: translation, summarisation.',
-        'Modern LLMs (GPT-4, Claude, Llama) are decoder-only — simpler, scales better with more data and compute.',
+        'Most modern LLMs are decoder-only (GPT-2/3, Llama, Mistral; GPT-4 and Claude architectures are not published but are widely assumed to be) — simpler, scales well with more data and compute.',
       ],
     },
     {
@@ -114,7 +114,8 @@ function scaledDotProductAttention(
   const dk = Q[0].length;
   // Score: Q · K^T / sqrt(d_k)
   let scores = matmul(Q, transpose(K)).map(row => row.map(v => v / Math.sqrt(dk)));
-  // Optional causal mask: set future positions to -infinity
+  // Optional mask: set masked positions to -infinity.
+  // A row with EVERY position masked (e.g. a padding query) gives softmax NaN.
   if (mask) {
     for (let i = 0; i < scores.length; i++)
       for (let j = 0; j < scores[0].length; j++)
@@ -180,10 +181,11 @@ function positionalEncoding(seqLen: number, dModel: number): number[][] {
     {
       title: 'Not using positional encoding',
       wrong: `// Input: just token embeddings
-// Transformer is permutation-invariant — "dog bites man" = "man bites dog"!`,
+// Attention is permutation-equivariant: "dog bites man" and "man bites dog"
+// give each word the same vector, only in a different order`,
       right: `// Add positional encoding to token embeddings
 // input = token_embedding + positional_embedding`,
-      explanation: 'Self-attention has no inherent sense of token order. Without positional encoding, "cat sat on the mat" and "mat the on sat cat" would produce identical representations.',
+      explanation: 'Self-attention has no inherent sense of token order. Without positional encoding, "cat sat on the mat" and "mat the on sat cat" give every word exactly the same output vector — just listed in a different order — so a pooled sentence representation is identical.',
     },
     {
       title: 'Confusing pre-norm and post-norm Transformers',

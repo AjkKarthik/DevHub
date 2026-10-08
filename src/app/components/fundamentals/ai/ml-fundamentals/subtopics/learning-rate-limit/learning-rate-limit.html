@@ -1,0 +1,26 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="AI & ML Fundamentals" topicRoute="/ai/ml-fundamentals"
+    subtopicLabel="Where Gradient Descent Starts to Diverge" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">Where Gradient Descent Starts to Diverge</h1>
+  <p class="page-subtitle">The page says a learning rate that is too large diverges. For its own example the limit can be computed: about 0.0845. Runs at 0.084 converge and at 0.085 explode.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This extends the learning-rate mistake. Mathematics for ML covers gradients and eigenvalues in more depth.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="AI & ML Fundamentals" topicRoute="/ai/ml-fundamentals"
+    [prev]="{ label: 'Precision Is NaN When Nothing Is Predicted Positive', route: '/ai/ml-fundamentals/precision-is-nan-when-nothing-is-predicted-positive' }" />
+</div>

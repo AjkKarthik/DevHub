@@ -1,0 +1,27 @@
+<div class="test-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Testing with Databases" topicRoute="/testing-hub/testing-databases"
+    subtopicLabel="Seeding Explicit IDs Leaves the Sequence Behind" />
+  <div class="page-header-icon test-icon">✓</div>
+  <h1 class="page-title">Seeding Explicit IDs Leaves the Sequence Behind</h1>
+  <p class="page-subtitle">The seeding pattern inserts users with id 1 and 2, as the page's own mistake recommends. On PostgreSQL that does not move the id sequence, so the next normal insert fails with a duplicate key.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Testing" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="test-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="test-section">
+    <h2>Where this fits</h2>
+    <p>This adds a missing step to the Seeding Pattern on Testing with Databases. The last subtopic shows how resets interact with sequences.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Testing with Databases" topicRoute="/testing-hub/testing-databases"
+    [prev]="{ label: 'Rollback Only Isolates Its Own Connection', route: '/testing-hub/testing-databases/rollback-only-isolates-its-own-connection' }"
+    [next]="{ label: 'TRUNCATE and ROLLBACK Do Not Reset IDs', route: '/testing-hub/testing-databases/truncate-and-rollback-do-not-reset-ids' }" />
+</div>

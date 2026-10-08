@@ -68,12 +68,12 @@ export class DsaHeaps {
       ],
     },
     {
-      heading: 'Heaps for Top-K and Streaming Problems',
+      heading: 'Heap Order vs. Sorted Order — and Heap Sort',
       points: [
-        'A min-heap of size K is the standard technique for finding the K largest elements in a stream — maintaining a heap of only K elements (popping the smallest whenever the heap exceeds size K) achieves O(n log K) time, meaningfully better than sorting the entire stream at O(n log n).',
-        'Two heaps (a max-heap for the lower half and a min-heap for the upper half of seen values) is the classic pattern for finding the running median of a data stream, allowing O(log n) insertion and O(1) median retrieval at any point.',
         'A heap only guarantees the root is the min (or max) — it does NOT provide a fully sorted order for the remaining elements, meaning heap-based priority queues cannot be used to look up arbitrary ranks efficiently, unlike a balanced BST.',
-        'Building a heap from an unsorted array via heapify runs in O(n) (not O(n log n) as a naive analysis might suggest), because most nodes in a heap are near the bottom and require very little sift-down work — a classic and frequently misunderstood complexity result.',
+        'Despite that, repeatedly popping a heap n times DOES produce a fully sorted array — this is literally Heap Sort: heapify once (O(n)), then pop n times (O(n log n) total). Each individual pop only reveals the current min; the heap array itself stays unsorted until every element has been popped.',
+        'Heap Sort is in-place (O(1) extra space beyond the array itself, unlike mergesort\'s O(n) auxiliary array) and has no O(n²) worst case (unlike quicksort\'s pathological pivot case) — but it is NOT stable (equal elements can be reordered) and has worse cache locality than quicksort in practice, since sift-down jumps between array positions rather than scanning sequentially.',
+        'This is why a heap and a sorted structure solve different problems: a heap is optimized for "give me the min/max fast, repeatedly, while things keep changing"; a sorted array or balanced BST is optimized for "let me look up or range-query anything, any time."',
       ],
     },
   ];
@@ -137,13 +137,53 @@ function findKthLargest(nums: number[], k: number): number {
   return heap.peek()!; // root = kth largest
 }
 
-// Merge k sorted lists — min-heap of [value, listIndex, nodeIndex]
+// Merge k sorted lists — min-heap of {value, listIdx, elemIdx} tuples.
+// The heap never holds more than k items (one per list), so each of the
+// n total elements costs one O(log k) push + one O(log k) pop: O(n log k).
 function mergeKLists(lists: (number[] | null)[]): number[] {
-  // heap stores [value, listIdx, elemIdx]
-  const heap = new MinHeap(); // simplified — real impl needs tuple heap
+  type Entry = { val: number; li: number; ei: number };
+  const heap: Entry[] = [];
+  const cmp = (a: Entry, b: Entry) => a.val - b.val;
+  const siftUp = (i: number) => {
+    while (i > 0) {
+      const p = Math.floor((i - 1) / 2);
+      if (cmp(heap[p], heap[i]) <= 0) break;
+      [heap[p], heap[i]] = [heap[i], heap[p]];
+      i = p;
+    }
+  };
+  const siftDown = (i: number) => {
+    const n = heap.length;
+    while (true) {
+      let smallest = i;
+      const l = 2 * i + 1, r = 2 * i + 2;
+      if (l < n && cmp(heap[l], heap[smallest]) < 0) smallest = l;
+      if (r < n && cmp(heap[r], heap[smallest]) < 0) smallest = r;
+      if (smallest === i) break;
+      [heap[smallest], heap[i]] = [heap[i], heap[smallest]];
+      i = smallest;
+    }
+  };
+  const push = (e: Entry) => { heap.push(e); siftUp(heap.length - 1); };
+  const pop = (): Entry => {
+    const top = heap[0];
+    const last = heap.pop()!;
+    if (heap.length > 0) { heap[0] = last; siftDown(0); }
+    return top;
+  };
+
+  for (let li = 0; li < lists.length; li++) {
+    const list = lists[li];
+    if (list && list.length > 0) push({ val: list[0], li, ei: 0 });
+  }
   const result: number[] = [];
-  // In a real interview, use a priority queue library or sort approach
-  return lists.flat().sort((a, b) => a - b).filter(x => x !== null) as number[];
+  while (heap.length > 0) {
+    const { val, li, ei } = pop();
+    result.push(val);
+    const list = lists[li]!;
+    if (ei + 1 < list.length) push({ val: list[ei + 1], li, ei: ei + 1 });
+  }
+  return result;
 }
 
 // Running median — two heaps

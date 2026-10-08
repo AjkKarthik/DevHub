@@ -58,21 +58,21 @@ export class DsaDoublyLinkedLists {
       ],
     },
     {
-      heading: 'When Doubly Linked Lists Outperform Singly Linked Lists',
+      heading: 'Deques in Practice: Why Standard Libraries Avoid a Literal Node-Per-Element DLL',
       points: [
-        'The extra "previous" pointer in a doubly linked list enables O(1) removal of a node given only a reference to that node (no traversal from the head required), whereas a singly linked list needs O(n) traversal to find the preceding node before it can be unlinked.',
-        'Doubly linked lists support O(1) traversal in both directions, making them the natural backing structure for an LRU cache (moving a recently-accessed node to the front requires both forward and backward pointer updates) and for browser back/forward history navigation.',
-        'The memory overhead of the extra pointer per node (typically doubling the pointer storage compared to a singly linked list) is the tradeoff for this bidirectional and O(1)-removal capability — a real cost that matters in memory-constrained environments.',
-        'Deque (double-ended queue) implementations in most standard libraries use a doubly linked list (or a related structure) specifically because it provides O(1) insertion and removal from both ends, a guarantee a singly linked list cannot offer for the tail end.',
+        'A plain, node-per-element doubly linked list CAN support O(1) push/pop at both ends, which is why it is the textbook answer for implementing a deque — but production standard libraries rarely build their deque this way.',
+        'Pointer-chasing through individually heap-allocated nodes is cache-unfriendly: each .next or .prev dereference can land on a different, unrelated page of memory, unlike a contiguous array where neighboring elements are already loaded together.',
+        'Python\'s own <code>collections.deque</code> is implemented as a doubly linked list of fixed-size BLOCKS (arrays of ~64 elements each), not a doubly linked list of individual elements — getting the O(1) both-ends guarantee of a DLL while keeping most accesses inside a cache-friendly contiguous block.',
+        'This is a recurring theme worth remembering generally: a data structure\'s TEXTBOOK definition (what operations are possible, and in what big-O) and its real-world ENGINEERED implementation (which concrete layout actually gets used in practice) are often two different things, chosen for different reasons.',
       ],
     },
     {
       heading: 'Sentinel Nodes Simplify Doubly Linked List Edge Cases',
       points: [
-        'Using dummy/sentinel head and tail nodes (permanent nodes that are never removed, holding no real data) eliminates the need for special-case null checks when inserting or removing at the boundaries of the list, since every real node always has a valid previous and next neighbor.',
         'Without sentinels, insertion and removal code must branch on "is this the head" or "is this the tail" as special cases — sentinel nodes unify these into the same code path as any interior node, meaningfully reducing bugs from forgotten edge cases.',
-        'The LRU cache pattern almost universally uses sentinel head/tail nodes in its doubly linked list implementation specifically because it simplifies the "move to front" and "evict from back" operations into uniform, edge-case-free logic.',
         'The tradeoff for sentinel nodes is a small constant amount of extra memory (two always-allocated dummy nodes) in exchange for meaningfully simpler and less error-prone insertion/removal code — a favorable tradeoff in almost all practical implementations.',
+        'A subtle but important detail: the sentinel nodes themselves must NEVER be returned from get()/put() or inserted into the HashMap in an LRU cache — they exist purely as internal list-boundary markers, and accidentally treating one as a real cached entry is a real, easy-to-make bug.',
+        'Sentinels only eliminate null checks for operations that stay strictly BETWEEN head and tail — a bug that tries to access head.prev or tail.next (stepping outside the sentinel boundary itself) is still a real null-dereference risk, just one layer further out than most code ever reaches.',
       ],
     },
   ];
@@ -260,7 +260,7 @@ class LRUCache {
     },
     {
       q: 'Where are doubly linked lists used in real systems?',
-      a: 'Browser history (forward/back navigation), OS process scheduling, text editor undo/redo, LRU/LFU caches, JavaScript\'s Map internally (for insertion-order iteration), and database buffer pool management.',
+      a: 'Browser history (forward/back navigation), OS process scheduling, text editor undo/redo, LRU/LFU caches, and database buffer pool management. (Verified against V8\'s own source: JavaScript\'s Map/Set do NOT use a doubly linked list internally — V8 implements them as an OrderedHashTable, an array-backed hash table where entries are appended to a contiguous backing array in insertion order, with forward-only "next entry" indices used only to walk a hash bucket\'s collision chain. There is no prev pointer anywhere in the design — see the dedicated subtopic for the full verified breakdown.)',
     },
   { q: 'How do you reverse a doubly linked list?', a: 'Swap next and prev pointers for every node, then swap head and tail. For each node: temp = node.next; node.next = node.prev; node.prev = temp; advance to temp. After the loop, what was tail is now head. O(n) time O(1) space. Contrast with singly linked list reversal where you only reassign next pointers.' },
   { q: 'What is a sentinel (dummy) node in a doubly linked list and why use it?', a: 'Sentinel nodes are dummy head and tail nodes that always exist (never removed). They eliminate edge cases: no need to check if head/tail is null during insert/delete. With sentinels: insert between sentinel_head and first real node is always valid; delete any node just requires updating its neighbors. Used in LRU Cache and many production DLL implementations.' },

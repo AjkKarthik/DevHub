@@ -1,0 +1,27 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Dynamic Programming" topicRoute="/dsa/dynamic-programming"
+    subtopicLabel="One-Row LCS Needs a Saved Diagonal, Not Right-to-Left" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">One-Row LCS Needs a Saved Diagonal, Not Right-to-Left</h1>
+  <p class="page-subtitle">The main page's QnA suggested iterating right-to-left to fit LCS in one array. Checked against the full table on 2,000 random inputs, that was wrong 579 times. A saved diagonal variable was never wrong.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the space-optimization QnA on the main page. The next subtopic measures the other choice the page discusses: top-down memoization against bottom-up tables.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Dynamic Programming" topicRoute="/dsa/dynamic-programming"
+    [prev]="{ label: 'Loop Order Decides Combinations or Permutations in Coin Change', route: '/dsa/dynamic-programming/coin-ways-loop-order-combinations-vs-permutations' }"
+    [next]="{ label: 'Top-Down vs Bottom-Up, Measured on Sparse and Dense Inputs', route: '/dsa/dynamic-programming/top-down-vs-bottom-up-measured' }" />
+</div>

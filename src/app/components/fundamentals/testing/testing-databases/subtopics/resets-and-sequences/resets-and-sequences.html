@@ -1,0 +1,26 @@
+<div class="test-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Testing with Databases" topicRoute="/testing-hub/testing-databases"
+    subtopicLabel="TRUNCATE and ROLLBACK Do Not Reset IDs" />
+  <div class="page-header-icon test-icon">✓</div>
+  <h1 class="page-title">TRUNCATE and ROLLBACK Do Not Reset IDs</h1>
+  <p class="page-subtitle">Both reset strategies on the page clear rows, but neither, by default, resets the id sequence. Tests that expect the first row to get id 1 pass alone and fail after other tests.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Testing" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="test-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="test-section">
+    <h2>Where this fits</h2>
+    <p>This connects the reset strategies on Testing with Databases with its fixed-id advice. MSW, next in the Integration group, covers isolating HTTP dependencies instead of database ones.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Testing with Databases" topicRoute="/testing-hub/testing-databases"
+    [prev]="{ label: 'Seeding Explicit IDs Leaves the Sequence Behind', route: '/testing-hub/testing-databases/seeding-explicit-ids-leaves-the-sequence-behind' }" />
+</div>

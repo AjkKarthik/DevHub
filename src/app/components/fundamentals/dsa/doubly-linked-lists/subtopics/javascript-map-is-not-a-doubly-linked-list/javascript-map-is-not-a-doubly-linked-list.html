@@ -1,0 +1,26 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Doubly Linked Lists" topicRoute="/dsa/doubly-linked-lists"
+    subtopicLabel="JavaScript's Map Is Not a Doubly Linked List" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">JavaScript's Map Is Not a Doubly Linked List</h1>
+  <p class="page-subtitle">The main page's own QnA listed JavaScript's Map as a real-world DLL example. Checked against V8's own source: Map/Set use an array-backed OrderedHashTable instead, with no prev pointer anywhere.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This is the fix directly behind the main page's own corrected QnA on real-world doubly linked list usage, which previously listed JavaScript's Map as an example.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Doubly Linked Lists" topicRoute="/dsa/doubly-linked-lists"
+    [next]="{ label: 'What Happens Without the Empty-List Guard', route: '/dsa/doubly-linked-lists/what-happens-without-the-empty-list-guard' }" />
+</div>

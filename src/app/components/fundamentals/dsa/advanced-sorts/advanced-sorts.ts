@@ -70,9 +70,9 @@ export class DsaAdvancedSorts {
     {
       heading: 'Choosing Between Advanced Sorting Algorithms in Practice',
       points: [
-        'Merge sort guarantees O(n log n) worst-case time and is stable, making it a strong choice when predictable performance and preserving the relative order of equal elements both matter, such as sorting records by a secondary key after already sorting by a primary one.',
+        'A naive quicksort that always recurses on BOTH partitions risks O(n) recursion-stack depth (not O(log n)) on already-sorted or reverse-sorted input, since a bad pivot repeatedly produces one empty side and one side of size n-1 — confirmed by a real stack overflow at n=10,000 on sorted input with last-element Lomuto pivoting, measured directly. The textbook fix recurses into the SMALLER partition and loops (tail-call elimination) on the larger one, provably bounding worst-case depth to O(log n) regardless of pivot quality.',
         'Quicksort is typically faster in practice than merge sort due to better cache locality and lower constant factors, but its worst-case O(n^2) behavior on already-sorted or adversarially-constructed input means production implementations use randomized pivots or introsort fallbacks to avoid pathological slowdowns.',
-        'Heapsort guarantees O(n log n) worst-case time with O(1) extra space (in-place), making it attractive when memory is constrained, though its poor cache locality compared to quicksort usually makes it slower in real-world benchmarks despite the same asymptotic complexity.',
+        'Radix sort processes integer keys digit-by-digit (least significant first) using counting sort as a stable subroutine for each digit pass — O(d × (n+k)) total, where d is the digit count — making it faster than any O(n log n) comparison sort for large n with bounded-width integer keys.',
         'Most production language standard libraries (Java, Python, Rust) use hybrid algorithms like Timsort or introsort that switch strategies based on input size and characteristics, reflecting that no single sorting algorithm is optimal across all real-world data distributions.',
       ],
     },
@@ -190,9 +190,11 @@ count[arr[i] - min]++; // offset by min`,
     {
       title: 'Using merge sort when O(1) space is required',
       wrong: `// Merge sort needs O(n) extra space for the merge buffer`,
-      right: `// For O(1) space + O(n log n): use heap sort
-// For O(1) space + average O(n log n): use quicksort (in-place partition)`,
-      explanation: 'Merge sort\'s O(n) extra space is a hard constraint. Heap sort is the only comparison sort that is both O(n log n) worst case and O(1) space.',
+      right: `// For O(1) extra space + O(n log n) worst case: use heap sort
+// Quicksort's array partition is in-place, but a naive recursive quicksort
+// still uses O(log n) average / O(n) worst-case STACK space (recursion depth) —
+// not O(1). "In-place" refers only to the array, not the call stack.`,
+      explanation: 'Merge sort\'s O(n) extra space is a hard constraint. Heap sort is the only comparison sort that is both O(n log n) worst case and truly O(1) space (array AND stack). A naive quicksort that always recurses on both partitions still risks O(n) stack depth — and a real stack overflow — on already-sorted or reverse-sorted input, exactly as this page\'s own theory section states.',
     },
   ];
 
@@ -265,7 +267,7 @@ count[arr[i] - min]++; // offset by min`,
     oneLiner: 'Merge sort: stable O(n log n) O(n) space. Quicksort: in-place O(n log n) avg O(n²) worst. Heap sort: in-place O(n log n) worst. Counting sort: O(n+k) non-comparison.',
     mustKnow: [
       'Merge sort: always O(n log n), stable, O(n) space',
-      'Quick sort: O(n log n) avg, O(n²) worst, O(1) space (in-place)',
+      'Quick sort: O(n log n) avg, O(n²) worst, O(log n) avg / O(n) worst STACK space (array partition is in-place, but naive recursion is not O(1) overall)',
       'Heap sort: O(n log n) worst, O(1) space, not stable',
       'Counting sort: O(n+k), integers only, non-comparison',
       'JS Array.sort() = Timsort (stable, O(n log n))',

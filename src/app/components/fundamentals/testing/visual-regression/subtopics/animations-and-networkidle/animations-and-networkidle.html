@@ -1,0 +1,26 @@
+<div class="test-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Visual Regression Testing" topicRoute="/testing-hub/visual-regression"
+    subtopicLabel="Animations Are Already Off, and networkidle Is Discouraged" />
+  <div class="page-header-icon test-icon">✓</div>
+  <h1 class="page-title">Animations Are Already Off, and networkidle Is Discouraged</h1>
+  <p class="page-subtitle">The page injected CSS to stop animations and waited for networkidle before every screenshot. toHaveScreenshot already disables animations by default, and Playwright's own docs mark networkidle as discouraged.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Testing" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="test-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="test-section">
+    <h2>Where this fits</h2>
+    <p>This updates the waiting and animation advice on Visual Regression. The Playwright topic covers web-first assertions in general.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Visual Regression Testing" topicRoute="/testing-hub/visual-regression"
+    [prev]="{ label: 'A Missing Baseline Fails the First Run', route: '/testing-hub/visual-regression/a-missing-baseline-fails-the-first-run' }" />
+</div>

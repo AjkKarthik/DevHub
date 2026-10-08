@@ -86,19 +86,25 @@ describe('GET /users/:id', () => {
   });
 });` },
     { label: 'Testcontainers (Node)', language: 'typescript', code:
-`import { PostgreSqlContainer } from '@testcontainers/postgresql';
+`import { PostgreSqlContainer, StartedPostgreSqlContainer } from '@testcontainers/postgresql';
+import { execSync } from 'node:child_process';
 import { PrismaClient } from '@prisma/client';
 
+let container: StartedPostgreSqlContainer;
 let prisma: PrismaClient;
 
 beforeAll(async () => {
-  const container = await new PostgreSqlContainer().start();
+  // The image is a required argument in current @testcontainers/postgresql
+  container = await new PostgreSqlContainer('postgres:16').start();
   process.env.DATABASE_URL = container.getConnectionUri();
+  execSync('npx prisma migrate deploy');   // create the real schema
   prisma = new PrismaClient();
-  await prisma.\$executeRawUnsafe('-- run migrations here');
-});
+}, 60_000);
 
-afterAll(async () => { await prisma.\$disconnect(); });
+afterAll(async () => {
+  await prisma.\$disconnect();
+  await container.stop();                   // otherwise the container outlives the run
+});
 
 test('creates a user and finds it', async () => {
   const user = await prisma.user.create({
@@ -118,12 +124,21 @@ test('creates a user and finds it', async () => {
             .WithWebHostBuilder(builder =>
                 builder.ConfigureTestServices(services =>
                 {
-                    // Replace real DB with SQLite in-memory for speed
+                    // Replace real DB with SQLite in-memory for speed.
+                    // An in-memory SQLite DB lives only as long as its connection,
+                    // so open ONE connection and keep it open for the whole run.
                     services.RemoveAll<DbContextOptions<AppDbContext>>();
-                    services.AddDbContext<AppDbContext>(opt =>
-                        opt.UseSqlite("Data Source=:memory:"));
+                    var connection = new SqliteConnection("Data Source=:memory:");
+                    connection.Open();
+                    services.AddSingleton(connection);
+                    services.AddDbContext<AppDbContext>(opt => opt.UseSqlite(connection));
                 }))
             .CreateClient();
+
+        // Create the schema (and seed user 1) on that open connection
+        using var scope = factory.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        db.Database.EnsureCreated();
     }
 
     [Fact]
@@ -138,7 +153,7 @@ test('creates a user and finds it', async () => {
   ];
 
   mistakes: CommonMistake[] = [
-    { title: 'Running integration tests in the unit test suite', wrong: 'mix DB tests with pure unit tests in one Jest run', right: 'separate suites: "jest --testPathPattern=unit" and "jest --testPathPattern=integration"', explanation: 'Integration tests are 10–100x slower. Mixing them makes every CI check painfully slow.' },
+    { title: 'Running integration tests in the unit test suite', wrong: 'mix DB tests with pure unit tests in one Jest run', right: 'separate suites: "jest --testPathPatterns=unit" and "jest --testPathPatterns=integration" (Jest 30 renamed --testPathPattern; the old flag now exits with an error)', explanation: 'Integration tests are 10–100x slower. Mixing them makes every CI check painfully slow.' },
     { title: 'Shared mutable DB state', wrong: 'seed once in beforeAll and never reset — tests pass alone but fail in order', right: 'reset state in beforeEach or use transaction rollback per test', explanation: 'Test A creates a record that test B then finds unexpectedly. Tests must be order-independent.' },
     { title: 'Testing through the real DB without rollback', wrong: 'INSERT in test, commit, never clean up', right: 'wrap each test in a transaction and rollback, or delete inserted rows in afterEach', explanation: 'Leftover data causes intermittent failures and makes debugging extremely painful.' },
     { title: 'Hardcoding localhost ports in tests', wrong: 'const BASE = "http://localhost:3000"', right: 'use supertest(app) or WebApplicationFactory — no real port needed', explanation: 'Real ports conflict in parallel CI runs and require the server to be running separately.' },

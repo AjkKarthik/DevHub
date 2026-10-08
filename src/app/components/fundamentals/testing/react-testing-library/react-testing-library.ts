@@ -130,14 +130,21 @@ test('displays user name after fetch', async () => {
   expect(heading).toBeInTheDocument();
 });
 
-test('shows loading state initially', () => {
+test('shows loading state initially', async () => {
   mockGetUser.mockResolvedValue({ id: 1, name: 'Alice' });
   render(<UserProfile userId={1} />);
 
-  expect(screen.getByRole('status', { name: /loading/i })).toBeInTheDocument();
+  // role=status takes its accessible name from aria-label only, not from its
+  // text, so { name: /loading/i } would not match <div role="status">Loading…</div>
+  expect(screen.getByRole('status')).toHaveTextContent(/loading/i);
+
+  // let the mocked fetch finish inside the test, so its state update
+  // does not land after the test has ended
+  await screen.findByRole('heading', { name: /alice/i });
 });` },
     { label: 'Asserting Absence', language: 'typescript', code:
 `import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Modal } from './Modal';
 
 test('modal is not shown by default', () => {
@@ -157,7 +164,7 @@ test('modal appears on open', async () => {
   ];
 
   mistakes: CommonMistake[] = [
-    { title: 'Querying by className or test-id first', wrong: 'screen.getByClassName("submit-btn")', right: 'screen.getByRole("button", { name: /submit/i })', explanation: 'Class names change during refactoring without breaking user behaviour. Role-based queries match what the accessibility tree exposes — more stable and more meaningful.' },
+    { title: 'Querying by className or test-id first', wrong: 'container.querySelector(".submit-btn") // RTL has no getByClassName query', right: 'screen.getByRole("button", { name: /submit/i })', explanation: 'Class names change during refactoring without breaking user behaviour. Role-based queries match what the accessibility tree exposes — more stable and more meaningful.' },
     { title: 'Using getBy* for async elements', wrong: 'render(<Async />); screen.getByText("Loaded")', right: 'render(<Async />); await screen.findByText("Loaded")', explanation: 'getBy throws immediately. For elements that appear after a fetch or timer, use findBy which polls until the element appears.' },
     { title: 'Using fireEvent instead of userEvent', wrong: 'fireEvent.click(button)', right: 'const user = userEvent.setup(); await user.click(button)', explanation: 'fireEvent dispatches one event. userEvent simulates the full interaction chain (focus, pointer, click, blur) — tests are more realistic.' },
     { title: 'Testing implementation (props / state) not behaviour', wrong: 'expect(wrapper.state().isOpen).toBe(true)', right: 'expect(screen.getByRole("dialog")).toBeInTheDocument()', explanation: 'Internal state changes without breaking user experience. Test the visible outcome, not how the component stores it.' },

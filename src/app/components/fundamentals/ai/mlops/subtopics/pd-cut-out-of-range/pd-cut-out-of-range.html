@@ -1,0 +1,27 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="MLOps" topicRoute="/ai/mlops"
+    subtopicLabel="pd.cut Codes Out-of-Range Ages as -1" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">pd.cut Codes Out-of-Range Ages as -1</h1>
+  <p class="page-subtitle">The skew mistake block's fix shares one pd.cut feature function between training and serving. That removes skew, but bins of [0, 18, 35, 65, 100] silently give age 0 and age 101 the code -1, which the model treats as a real bucket.</p>
+  <app-page-meta [readingTime]="4" difficulty="intermediate" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This fixes the feature example. The last subtopic updates the model registry advice for current MLflow.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="MLOps" topicRoute="/ai/mlops"
+    [prev]="{ label: 'The vLLM Command Broke at a Comment', route: '/ai/mlops/vllm-command-and-throughput-claims' }"
+    [next]="{ label: 'MLflow Registry Stages Are Deprecated', route: '/ai/mlops/mlflow-registry-uses-aliases' }" />
+</div>

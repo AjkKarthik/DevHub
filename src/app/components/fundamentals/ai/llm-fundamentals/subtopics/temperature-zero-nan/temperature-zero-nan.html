@@ -1,0 +1,26 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="LLM Fundamentals" topicRoute="/ai/llm-fundamentals"
+    subtopicLabel="Temperature Zero Broke the Sampler" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">Temperature Zero Broke the Sampler</h1>
+  <p class="page-subtitle">The quick reference says temperature 0 is greedy. The page's sampler divided the logits by the temperature, so 0 gave NaN probabilities and top-p then returned the LEAST likely token.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This fixes the Sampling tab. Next, the tokeniser example and its API names.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="LLM Fundamentals" topicRoute="/ai/llm-fundamentals"
+    [next]="{ label: 'js-tiktoken Uses encodingForModel', route: '/ai/llm-fundamentals/js-tiktoken-uses-encodingformodel' }" />
+</div>

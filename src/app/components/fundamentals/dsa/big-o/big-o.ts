@@ -70,7 +70,7 @@ export class DsaBigO {
     {
       heading: 'Common Pitfalls When Estimating Big-O in Interviews',
       points: [
-        'Nested loops do not always mean O(n^2) — if the inner loop\'s range depends on shrinking work (like checking only unprocessed elements), the actual complexity may be lower, such as O(n log n), and must be derived carefully rather than assumed from loop structure alone.',
+        'Nested loops do not always mean O(n^2) — it depends on HOW the inner loop shrinks, not just THAT it shrinks. If the inner range decreases by a constant amount each time (like checking only unprocessed elements, as in selection sort), the total is still a triangular sum n+(n-1)+...+1 = O(n^2). Only when the inner loop\'s range shrinks proportionally — e.g. its step grows each pass so it runs n/(i+1) times — does the total become the harmonic series n*H(n) = O(n log n).',
         'Built-in method calls inside a loop can silently add hidden complexity — calling .includes() or .indexOf() on an array inside a loop turns an apparent O(n) algorithm into O(n^2), since each call itself is O(n).',
         'Recursive functions require analyzing both the number of calls and the work done per call — a recursive function that looks like it does O(1) work per call but branches into two recursive calls per invocation, like naive Fibonacci, is actually O(2^n), not O(n).',
         'Interviewers specifically watch for candidates who state a complexity without justifying it — being able to explain WHY an algorithm is O(n log n) (not just stating it) demonstrates the deeper understanding that separates a memorized answer from genuine comprehension.',

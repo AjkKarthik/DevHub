@@ -1,0 +1,26 @@
+<div class="test-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Playwright" topicRoute="/testing-hub/playwright"
+    subtopicLabel="Actions Have No Timeout of Their Own by Default" />
+  <div class="page-header-icon test-icon">✓</div>
+  <h1 class="page-title">Actions Have No Timeout of Their Own by Default</h1>
+  <p class="page-subtitle">The page said actions time out after 30 seconds. In Playwright 1.64 the 30 seconds belongs to the whole test; actionTimeout defaults to 0, meaning no per-action limit.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Testing" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="test-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="test-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the timeout bullet on the Playwright page. The next subtopic looks at the networkidle wait.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Playwright" topicRoute="/testing-hub/playwright"
+    [next]="{ label: 'networkidle Means Zero Connections and Is Discouraged', route: '/testing-hub/playwright/networkidle-means-zero-connections-and-is-discouraged' }" />
+</div>

@@ -71,9 +71,9 @@ export class DsaStacksQueues {
       heading: 'Implementing a Queue Efficiently Using Two Stacks',
       points: [
         'A queue can be implemented using two stacks (an "in" stack for enqueue and an "out" stack for dequeue) by transferring all elements from "in" to "out" (reversing their order) only when "out" is empty and a dequeue is requested.',
-        'This two-stack approach achieves amortized O(1) time per operation — although a single dequeue might trigger an O(n) transfer, each element is moved between stacks at most twice total across its lifetime in the queue, keeping the amortized cost constant.',
+        'This two-stack approach achieves amortized O(1) time per operation — although a single dequeue might trigger an O(n) transfer, each element is moved from the "in" stack to the "out" stack at most ONCE total across its entire lifetime in the queue, keeping the amortized cost constant.',
         'This exact pattern (simulating one data structure\'s interface using another) is a common interview question specifically because it tests whether a candidate understands amortized analysis, not just whether they can implement a basic queue from scratch.',
-        'The monotonic stack pattern (maintaining a stack where elements are kept in strictly increasing or decreasing order, popping violators before pushing) solves an entire family of "next greater element" and "largest rectangle in histogram" style problems in O(n) time.',
+        'This is the same amortized-cost family as dynamic array resizing (see the Big-O topic\'s own amortized-doubling proof) — most operations are cheap, one occasional operation is expensive, but the EXPENSIVE work is bounded by a one-time-per-element cost that never repeats.',
       ],
     },
   ];

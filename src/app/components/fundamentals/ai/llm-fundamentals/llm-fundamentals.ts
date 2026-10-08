@@ -22,7 +22,7 @@ import { PageCompleteComponent } from '../../../shared/page-complete/page-comple
 export class AiLlmFundamentals {
   quickRef: QuickRefItem[] = [
     { name: 'Token',           type: 'keyword', desc: 'Atomic unit of text (word piece, punctuation). LLMs process and generate tokens, not characters.' },
-    { name: 'Context window',  type: 'keyword', desc: 'Maximum tokens the model can process at once. GPT-4: 128K; Claude 3: 200K; Gemini 1.5: 1M.' },
+    { name: 'Context window',  type: 'keyword', desc: 'Maximum tokens the model can process at once. GPT-4 Turbo / GPT-4o: 128K (original GPT-4: 8K or 32K); Claude 3: 200K; Gemini 1.5: 1M.' },
     { name: 'Next-token prediction', type: 'keyword', desc: 'Core LLM training task: predict the next token given all previous tokens. Loss = cross-entropy.' },
     { name: 'Temperature',     type: 'keyword', desc: 'Sampling randomness. 0 = greedy (deterministic); 1 = standard; >1 = more random/creative.' },
     { name: 'Top-p (nucleus)', type: 'keyword', desc: 'Keep tokens whose cumulative probability ≥ p. Filters low-probability tail. Typical: 0.9–0.95.' },
@@ -38,7 +38,7 @@ export class AiLlmFundamentals {
         'A Large Language Model (LLM) is a decoder-only Transformer trained on vast text corpora using next-token prediction.',
         'The model learns a distribution P(token_n | token_1, ..., token_{n-1}) — the probability of the next token given all prior context.',
         'Training: self-supervised — no labels needed. Loss = cross-entropy between predicted and actual next tokens across billions of tokens.',
-        'Scale matters: GPT-3 (175B params), GPT-4 (~1T), LLaMA 3 (8B–70B), Claude 3 Opus (~unknown). More params + more data = better capabilities.',
+        'Scale matters: GPT-3 (175B params), Llama 3.1 (8B, 70B, 405B); GPT-4 and Claude parameter counts are not published (figures like "~1T" are unconfirmed estimates). More params + more data = better capabilities.',
         'Emergent abilities: complex reasoning, code generation, and instruction following appear at sufficient scale — not predictable from smaller models.',
       ],
     },
@@ -47,9 +47,9 @@ export class AiLlmFundamentals {
       points: [
         'Byte Pair Encoding (BPE): start with character vocabulary, iteratively merge the most frequent adjacent pair. Used by GPT-2/3/4.',
         'WordPiece (BERT): similar to BPE but merges based on maximising training likelihood rather than frequency.',
-        'SentencePiece: language-agnostic, treats text as a sequence of Unicode characters — good for multilingual models (LLaMA, T5).',
+        'SentencePiece: language-agnostic, treats text as a sequence of Unicode characters — good for multilingual models (Llama 1/2, T5; Llama 3 switched to a tiktoken-style BPE).',
         'Token count: English ~1.3 tokens/word. Code is denser. Chinese/Japanese characters can map 1:1 with tokens.',
-        'Vocabulary size: GPT-2: 50K, GPT-4: ~100K, LLaMA: 32K (BPE + SentencePiece). Larger vocab = fewer tokens per text but larger embedding table.',
+        'Vocabulary size: GPT-2: 50K, GPT-4: ~100K (cl100k), Llama 1/2: 32K (SentencePiece BPE), Llama 3: 128,256 (tiktoken-based). Larger vocab = fewer tokens per text but larger embedding table.',
       ],
     },
     {
@@ -90,12 +90,12 @@ export class AiLlmFundamentals {
       code: `// Using tiktoken (OpenAI's tokeniser) via JavaScript port
 // npm install js-tiktoken
 
-// import { encoding_for_model } from 'js-tiktoken';
-// const enc = encoding_for_model('gpt-4');
+// import { encodingForModel } from 'js-tiktoken';   // camelCase in js-tiktoken
+// const enc = encodingForModel('gpt-4');
 // const tokens = enc.encode("Hello, how are you?");
-// console.log(tokens);       // Uint32Array [9906, 11, 1268, 527, 499, 30]
+// console.log(tokens);       // [9906, 11, 1268, 527, 499, 30]  (plain array)
 // console.log(tokens.length); // 6 tokens for 4 words
-// enc.free();
+// // No enc.free() in js-tiktoken - that belongs to the WASM 'tiktoken' package
 
 // Simple BPE merge illustration (conceptual)
 function simpleBpeStep(vocab: Map<string, number>): [string, string] | null {
@@ -120,6 +120,11 @@ function estimateTokens(text: string): number {
       code: `// Temperature sampling and top-p nucleus sampling
 
 function softmax(logits: number[], temperature: number): number[] {
+  // temperature 0 means greedy: dividing by 0 would give NaN probabilities
+  if (temperature <= 0) {
+    const best = logits.indexOf(Math.max(...logits));
+    return logits.map((_, i) => (i === best ? 1 : 0));
+  }
   const scaled = logits.map(l => l / temperature);
   const max = Math.max(...scaled);
   const exps = scaled.map(v => Math.exp(v - max));

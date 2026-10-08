@@ -1,0 +1,26 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Greedy Algorithms" topicRoute="/dsa/greedy"
+    subtopicLabel="US Coins Are Greedy-Safe Without Dividing Evenly" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">US Coins Are Greedy-Safe Without Dividing Evenly</h1>
+  <p class="page-subtitle">The main page said greedy coin change needs each coin to divide the next. US and euro coins break that rule and greedy still never loses; drop the nickel and it fails at 30 cents.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the coin-change mistake on the main page and links it to the DP coin-change code in the Dynamic Programming topic.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Greedy Algorithms" topicRoute="/dsa/greedy"
+    [next]="{ label: 'The Page’s merge Rewrote the Caller’s Intervals', route: '/dsa/greedy/merge-intervals-mutates-the-input' }" />
+</div>

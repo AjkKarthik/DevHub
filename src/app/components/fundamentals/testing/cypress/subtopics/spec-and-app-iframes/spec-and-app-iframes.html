@@ -1,0 +1,26 @@
+<div class="test-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Cypress" topicRoute="/testing-hub/cypress"
+    subtopicLabel="Spec and App Run in Separate Iframes" />
+  <div class="page-header-icon test-icon">✓</div>
+  <h1 class="page-title">Spec and App Run in Separate Iframes</h1>
+  <p class="page-subtitle">The page said tests and the app share the same JavaScript context. They share a browser tab, but the spec runs in its own iframe; window in a spec is not the app window.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Testing" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="test-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="test-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the architecture bullet. API Testing moves below the browser to test HTTP endpoints directly.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Cypress" topicRoute="/testing-hub/cypress"
+    [prev]="{ label: 'cy.session Is Cached Per Spec Unless You Opt In', route: '/testing-hub/cypress/cy-session-is-per-spec-unless-cache-across-specs' }" />
+</div>

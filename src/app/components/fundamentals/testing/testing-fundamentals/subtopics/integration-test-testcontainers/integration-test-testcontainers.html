@@ -1,0 +1,26 @@
+<div class="test-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Testing Fundamentals" topicRoute="/testing-hub/testing-fundamentals"
+    subtopicLabel="The Integration Test Never Started a Container" />
+  <div class="page-header-icon test-icon">✓</div>
+  <h1 class="page-title">The Integration Test Never Started a Container</h1>
+  <p class="page-subtitle">The example was labelled "real database via Testcontainers" but only called new PrismaClient(). It also shared one database across tests, the exact mistake listed lower on the same page.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Testing" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="test-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="test-section">
+    <h2>Where this fits</h2>
+    <p>This fixes the integration example on the Testing Fundamentals page. The Integration Testing and Testing with Databases topics go further into containers, transactions and seeding.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Testing Fundamentals" topicRoute="/testing-hub/testing-fundamentals"
+    [prev]="{ label: 'A Relative toHaveURL Needs a baseURL', route: '/testing-hub/testing-fundamentals/relative-tohaveurl-needs-a-baseurl' }" />
+</div>

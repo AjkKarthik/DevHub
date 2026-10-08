@@ -1,0 +1,26 @@
+<div class="test-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Mocking & Spies" topicRoute="/testing-hub/mocking-spies"
+    subtopicLabel="mockReturnValue(Promise.reject()) Rejects Too Early" />
+  <div class="page-header-icon test-icon">✓</div>
+  <h1 class="page-title">mockReturnValue(Promise.reject()) Rejects Too Early</h1>
+  <p class="page-subtitle">The quiz called mockResolvedValue a shorthand for mockReturnValue(Promise.resolve(v)). That is close for resolved values, but for rejections the two behave differently, and the difference shows up as an unhandled rejection.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Testing" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="test-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="test-section">
+    <h2>Where this fits</h2>
+    <p>This corrects a quiz explanation on Mocking and Spies. The next subtopic covers a smaller comment fix in the spyOn example.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Mocking & Spies" topicRoute="/testing-hub/mocking-spies"
+    [next]="{ label: 'Spying on a Wrapper Does Not Touch Math.random', route: '/testing-hub/mocking-spies/spying-on-a-wrapper-does-not-touch-math-random' }" />
+</div>

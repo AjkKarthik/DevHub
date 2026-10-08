@@ -25,8 +25,8 @@ export class DsaBitManipulation {
     { name: 'OR   n | m',    type: 'operator', desc: 'Either bit is 1 — set a bit' },
     { name: 'XOR  n ^ m',    type: 'operator', desc: 'Exactly one bit is 1 — toggle, find unique element' },
     { name: 'NOT  ~n',       type: 'operator', desc: 'Flip all bits — ~n = -(n+1) in two\'s complement' },
-    { name: 'Left shift  n<<k',  type: 'operator', desc: 'Multiply by 2^k' },
-    { name: 'Right shift n>>k',  type: 'operator', desc: 'Divide by 2^k (arithmetic, preserves sign)' },
+    { name: 'Left shift  n<<k',  type: 'operator', desc: 'Multiply by 2^k — only while the result fits in a 32-bit signed int (2**30 << 1 is negative)' },
+    { name: 'Right shift n>>k',  type: 'operator', desc: 'Floor-divide by 2^k on 32-bit ints, keeping the sign: -5 >> 1 is -3, not -2' },
     { name: 'n & (n-1)',     type: 'syntax',   desc: 'Remove lowest set bit — power of 2 check, count set bits' },
   ];
 
@@ -190,7 +190,7 @@ for (let i = 0; i < nums.length; i++) xor ^= i ^ nums[i];`,
       wrong: `1 << 32; // JavaScript: 1 << 32 === 1 (wraps around — shift is mod 32)`,
       right: `// For large bit positions, use BigInt or separate your logic
 // Bitwise ops in JS operate on 32-bit signed integers`,
-      explanation: 'JavaScript bitwise operators convert numbers to 32-bit signed integers. Shifts >= 32 wrap around. Use BigInt for wider bit manipulation.',
+      explanation: 'JavaScript bitwise operators convert numbers to 32-bit signed integers. Shifts >= 32 wrap around. This also breaks the other tricks on this page without any error: isPowerOfTwo(2**32 + 2**31) returns true and hammingWeight(2**33 + 1) returns 1. Use BigInt for wider bit manipulation.',
     },
   ];
 
@@ -241,7 +241,7 @@ function countBits(n: number): number[] {
     },
   { q: 'What does x & (x - 1) compute?', options: ['x with all bits flipped', 'x with the lowest set bit cleared', 'x - 1', 'x rounded down to power of 2'], answer: 1, explanation: 'x & (x - 1) clears the lowest set bit of x. Used to: count set bits (Brian Kernighan: loop until x=0, count iterations), check if x is a power of 2 (x & (x-1) == 0 for x > 0).' },
   { q: 'How do you find the only non-duplicate element in an array where every other element appears twice?', options: ['Sort and scan', 'Hash map count', 'XOR all elements together', 'Prefix XOR'], answer: 2, explanation: 'XOR all elements: duplicates cancel (a XOR a = 0) and 0 XOR x = x. The result is the unique element. O(n) time O(1) space. Extension: find two unique elements using XOR and a rightmost-set-bit mask.' },
-  { q: 'What is the result of left-shifting an integer by 1 (x << 1)?', options: ['Divides by 2', 'Multiplies by 2', 'Rounds to nearest even', 'Clears the highest bit'], answer: 1, explanation: 'x << k multiplies x by 2^k (for non-negative x). x >> k divides by 2^k (arithmetic shift for signed, logical for unsigned). Bit shifts are faster than multiplication/division on most hardware.' },
+  { q: 'What is the result of left-shifting an integer by 1 (x << 1)?', options: ['Divides by 2', 'Multiplies by 2', 'Rounds to nearest even', 'Clears the highest bit'], answer: 1, explanation: 'x << k multiplies x by 2^k as long as the result fits in a 32-bit signed integer — in JavaScript, 2**30 << 1 is -2147483648. x >> k floor-divides by 2^k, so negative odd numbers round down (-5 >> 1 is -3). Use them for bit work; for ordinary arithmetic, plain * and Math.floor(x / 2) have no 32-bit limit.' },
   ];
 
   qna: QnaItem[] = [

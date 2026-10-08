@@ -48,17 +48,17 @@ export class AiDecisionTrees {
         'Deep trees memorise training data perfectly — zero training error but poor generalisation.',
         'Key hyperparameters to limit growth: max_depth, min_samples_split, min_samples_leaf, max_leaf_nodes.',
         'Pre-pruning: stop growing when improvement < threshold. Post-pruning: grow full tree then remove low-gain leaves.',
-        'Cost-complexity pruning (sklearn default): adds a penalty α·|T| for the number of leaves — tune α with cross-validation.',
+        'Cost-complexity pruning: adds a penalty α·|T| for the number of leaves. scikit-learn supports it through ccp_alpha, but the default is 0.0 — no pruning — so a default tree grows until its leaves are pure. Tune α with cross-validation.',
       ],
     },
     {
       heading: 'Random Forests',
       points: [
         'Bagging: train N trees on bootstrap samples (sampling with replacement). Average predictions (regression) or majority vote (classification).',
-        'Random subspace: at each split, only consider a random subset of features (√d for classification, d/3 for regression). Makes trees uncorrelated.',
+        'Random subspace: at each split, only consider a random subset of features. The textbook rule is √d for classification and d/3 for regression (R\'s randomForest); scikit-learn uses √d for RandomForestClassifier but 1.0 (all features) for RandomForestRegressor by default. Makes trees less correlated.',
         'Why uncorrelated trees matter: if all trees make the same error, averaging doesn\'t help. Randomness diversifies errors.',
         'Out-of-bag (OOB) error: samples not in a bootstrap sample (~37%) can be used for validation — no need for a separate val set.',
-        'Feature importance: sum of weighted Gini reduction across all trees. Reliable for understanding which features drive predictions.',
+        'Feature importance: sum of weighted Gini reduction across all trees. It is computed on training data and is biased towards features with many distinct values — a random ID column can look important. Check with permutation importance on held-out data.',
       ],
     },
     {
@@ -293,7 +293,7 @@ function bestThreshold(features: number[], labels: number[]): number {
     },
   { q: 'How do decision trees handle categorical variables?', a: 'Ordinal categories: encode as numbers and treat as continuous. Nominal categories: CART considers all binary splits of the category set (expensive for high-cardinality). Practical: use one-hot encoding for low-cardinality, or use libraries (LightGBM, CatBoost) that handle categoricals natively with count-based encodings. High-cardinality features (e.g., zip codes) can cause overfitting — consider target encoding or limiting max_categories.' },
   { q: 'How does pruning prevent overfitting in decision trees?', a: 'Pre-pruning: stop splitting when depth, min_samples_split, or min_samples_leaf thresholds are reached. Post-pruning (cost-complexity pruning): grow the full tree, then prune back by replacing subtrees with leaves when the improvement in validation performance is minimal. Alpha parameter in scikit-learn controls the pruning strength. Tune with cross-validation.' },
-  { q: 'What are the feature importances from a decision tree and how are they calculated?', a: 'Feature importance = total impurity reduction attributable to each feature across all splits, normalized to sum to 1. Calculation: for each split on feature f, compute impurity_before - weighted_impurity_after; accumulate over all nodes where f is used. Scikit-learn: tree.feature_importances_. Limitation: correlated features share importance; if two features are equally predictive, the tree picks one arbitrarily.' },
+  { q: 'What are the feature importances from a decision tree and how are they calculated?', a: 'Feature importance = total impurity reduction attributable to each feature across all splits, normalized to sum to 1. Calculation: for each split on feature f, compute impurity_before - weighted_impurity_after; accumulate over all nodes where f is used. Scikit-learn: tree.feature_importances_. Limitations: correlated features share importance; if two features are equally predictive, the tree picks one arbitrarily. Impurity importance is also inflated for high-cardinality features (a random unique ID got 35% of the importance in a test), so confirm with permutation_importance on a test set.' },
   ];
 
   revision: RevisionSummary = {

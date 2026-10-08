@@ -1,0 +1,26 @@
+<div class="test-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="React Testing Library" topicRoute="/testing-hub/react-testing-library"
+    subtopicLabel="findBy Gives Up After One Second" />
+  <div class="page-header-icon test-icon">✓</div>
+  <h1 class="page-title">findBy Gives Up After One Second</h1>
+  <p class="page-subtitle">The page says findBy retries until the element appears. It retries for 1000 ms by default; content that arrives later fails the query even though it does eventually render.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Testing" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="test-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="test-section">
+    <h2>Where this fits</h2>
+    <p>This adds the timeout detail to the async guidance on React Testing Library. Angular Testing covers the equivalent waiting helpers in TestBed.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="React Testing Library" topicRoute="/testing-hub/react-testing-library"
+    [prev]="{ label: 'Testing Library Has No getByClassName', route: '/testing-hub/react-testing-library/testing-library-has-no-getbyclassname' }" />
+</div>

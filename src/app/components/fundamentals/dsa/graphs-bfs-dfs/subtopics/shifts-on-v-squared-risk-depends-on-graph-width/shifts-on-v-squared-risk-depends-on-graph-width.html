@@ -1,0 +1,26 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Graphs — BFS &amp; DFS" topicRoute="/dsa/graphs-bfs-dfs"
+    subtopicLabel="shift()'s O(V²) Risk Depends on Graph Width" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">shift()'s O(V²) Risk Depends on Graph Width</h1>
+  <p class="page-subtitle">The main page's own canonical BFS used queue.shift() -- the exact pattern its own mistake block warns against. Measured the real blowup, and why it only shows up on wide graphs, not narrow ones.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This fixes the main page's own canonical BFS, which used the exact queue.shift() pattern its own "Common Mistakes" section warns against, and measures exactly when that mistake actually costs you.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Graphs — BFS &amp; DFS" topicRoute="/dsa/graphs-bfs-dfs"
+    [next]="{ label: 'Detecting a Directed Cycle with Three-State DFS', route: '/dsa/graphs-bfs-dfs/detecting-a-directed-cycle-with-three-state-dfs' }" />
+</div>

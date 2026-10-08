@@ -1,0 +1,26 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Prompt Engineering" topicRoute="/ai/prompt-engineering"
+    subtopicLabel="JSON Mode Is Not Schema Enforcement" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">JSON Mode Is Not Schema Enforcement</h1>
+  <p class="page-subtitle">The page used response_format json_object and then validated with Zod. JSON mode only guarantees valid JSON; Structured Outputs with a JSON schema constrains the reply to the schema itself.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This completes structured output. AI agents build on these prompts with tool calls and loops.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Prompt Engineering" topicRoute="/ai/prompt-engineering"
+    [prev]="{ label: 'The CoT Prompt Ended at the Answer', route: '/ai/prompt-engineering/cot-prompt-ended-at-the-answer' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Recursion &amp; Backtracking" topicRoute="/dsa/recursion-backtracking"
+    subtopicLabel="Why the Duplicate Skip Compares i With start, Not 0" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">Why the Duplicate Skip Compares i With start, Not 0</h1>
+  <p class="page-subtitle">The main page's QnA describes the sort-and-skip rule for inputs with duplicates but never builds it. Run with both conditions, i &gt; 0 silently drops valid subsets.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This builds the duplicate-handling rule from the main page's QnA. The same same-level skip applies to permutations and to combination sum when the input contains repeated values.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Recursion &amp; Backtracking" topicRoute="/dsa/recursion-backtracking"
+    [prev]="{ label: 'Sort and Break Prunes Earlier Than a Negative Check', route: '/dsa/recursion-backtracking/sort-and-break-prunes-earlier' }" />
+</div>

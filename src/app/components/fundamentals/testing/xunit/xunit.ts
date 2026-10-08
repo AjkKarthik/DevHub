@@ -153,9 +153,9 @@ public async Task FetchUser_ShouldThrow_WhenNotFound()
   ];
 
   mistakes: CommonMistake[] = [
-    { title: 'Wrong parameter order in Assert.Equal', wrong: 'Assert.Equal(actual, expected)', right: 'Assert.Equal(expected, actual)', explanation: 'xUnit convention is (expected, actual). Getting them backwards gives confusing failure messages like "Expected: 5 but was: 5" when values are swapped.' },
+    { title: 'Wrong parameter order in Assert.Equal', wrong: 'Assert.Equal(actual, expected)', right: 'Assert.Equal(expected, actual)', explanation: 'xUnit convention is (expected, actual). Swapping them does not change pass/fail, but the failure message labels your actual value as Expected and the expected value as Actual, which sends whoever reads it the wrong way.' },
     { title: 'Using IClassFixture for mutable state', wrong: 'IClassFixture<DbFixture> and modifying the DB in tests', right: 'Reset state in constructor or use transactions that roll back', explanation: 'IClassFixture shares ONE instance across all tests. If test A modifies the DB, test B sees dirty data. Either rollback per test or seed read-only data.' },
-    { title: 'Ignoring async in Assert.Throws', wrong: 'Assert.Throws<Exception>(async () => await svc.GetAsync())', right: 'await Assert.ThrowsAsync<Exception>(async () => await svc.GetAsync())', explanation: 'Assert.Throws does not await the async delegate — the exception is never observed. Use Assert.ThrowsAsync and await it.' },
+    { title: 'Ignoring async in Assert.Throws', wrong: 'Assert.Throws<Exception>(async () => await svc.GetAsync())', right: 'await Assert.ThrowsAsync<Exception>(async () => await svc.GetAsync())', explanation: 'xUnit marks the Assert.Throws overloads that take Func<Task> with [Obsolete(..., true)], so passing an async lambda does not compile: \'You must call Assert.ThrowsAsync<T> (and await the result) when testing async code.\' Use Assert.ThrowsAsync and await it.' },
     { title: 'Testing private methods directly', wrong: 'var method = typeof(MyClass).GetMethod("privateHelper", ...)', right: 'test via the public API that exercises the private method', explanation: 'Private methods are implementation details. Test them through the public interface — if you cannot, the class may need to be refactored.' },
     { title: 'One [Fact] per class', wrong: 'public class WhenAdding_TwoPositiveNumbers : IDisposable { ... }', right: 'group related facts in one class, one method per scenario', explanation: 'One class per test makes navigation and fixture sharing awkward. Group by the system-under-test class, not by individual scenario.' },
   ];
@@ -166,7 +166,7 @@ public async Task FetchUser_ShouldThrow_WhenNotFound()
     description: 'Write xUnit [Fact] and [Theory] tests for a BankAccount class with Deposit(amount) and Withdraw(amount) methods. Test: normal deposit, insufficient funds exception, and parameterised deposit amounts.',
     hints: [
       'Use [Theory][InlineData] for multiple deposit amounts.',
-      'Assert.Throws<InsufficientFundsException>(() => account.Withdraw(1000)) when balance is 0.',
+      'Assert.Throws<InvalidOperationException>(() => account.Withdraw(1000)) when balance is 0 — use the exact type the code throws: Assert.Throws does not match subclasses (Assert.ThrowsAny does).',
     ],
     starterCode:
 `// C# — implement the tests
@@ -237,7 +237,7 @@ public class BankAccountTests
   qna: QnaItem[] = [
     { q: 'How do I run xUnit tests in CI with dotnet CLI?', a: '`dotnet test` discovers and runs all xUnit projects in the solution. Add `--no-build` after a prior `dotnet build` step, and `--logger trx` for test result XML. Use `--filter "Category=Unit"` to run a subset.' },
     { q: 'Should I use xUnit, NUnit, or MSTest?', a: 'xUnit is the most widely adopted in modern .NET — it ships with ASP.NET Core templates and has first-class async support. NUnit is solid and has more built-in assertions. MSTest ships with Visual Studio. Choose xUnit for new projects; stick with what you have for existing ones.' },
-    { q: 'How does IAsyncLifetime work?', a: 'Implement IAsyncLifetime on your fixture or test class to get InitializeAsync() (called before the first test) and DisposeAsync() (called after the last test). Essential for async setup like starting Testcontainers or seeding a database.' },
+    { q: 'How does IAsyncLifetime work?', a: 'Implement IAsyncLifetime to get InitializeAsync() and DisposeAsync(). On a class fixture they run once: before the first test in the class and after the last. On the test class itself they run for every test, because xUnit creates a new test class instance per test. Essential for async setup like starting Testcontainers or seeding a database.' },
   { q: 'How do you test async code in xUnit?', a: 'Mark test methods as async and return Task: [Fact] public async Task ShouldReturnUser() { var result = await service.GetUserAsync(1); Assert.NotNull(result); Assert.Equal(1, result.Id); }. xUnit awaits the Task and reports failures correctly. Never use .Result or .Wait() — they can deadlock. Use await Assert.ThrowsAsync<Exception>(() => badMethod()) for async exceptions.' },
   { q: 'How do you use [MemberData] or [ClassData] in xUnit theories?', a: '[MemberData]: reference a static IEnumerable<object[]> property: [Theory] [MemberData(nameof(TestCases))] public void Test(int a, int b, int expected). [ClassData]: implement IEnumerable<object[]> in a class: public class TestCases : IEnumerable<object[]> { public IEnumerator<object[]> GetEnumerator() {...} }. Useful for complex test data that cannot fit in [InlineData].' },
   { q: 'How do you skip a test conditionally in xUnit?', a: 'Skip always: [Fact(Skip = "Not implemented yet")]. For environment-specific: [SkippableFact] from the Xunit.SkippableFact package — call Skip.If(condition, reason) inside the test. Tests marked skip show as skipped (not failed) in the runner output.' },

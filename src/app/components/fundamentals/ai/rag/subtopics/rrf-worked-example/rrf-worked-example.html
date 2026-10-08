@@ -1,0 +1,26 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="RAG" topicRoute="/ai/rag"
+    subtopicLabel="Reciprocal Rank Fusion, Worked Through" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">Reciprocal Rank Fusion, Worked Through</h1>
+  <p class="page-subtitle">The page gives the RRF formula and a one-line rrfScore function but never fuses two real result lists. Here is the full merge of a BM25 list and a vector list.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This completes the retrieval math. Prompt engineering covers how the retrieved context is presented to the model.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="RAG" topicRoute="/ai/rag"
+    [prev]="{ label: 'LangChain 1.x Moved the Chain Imports', route: '/ai/rag/langchain-1x-import-paths' }" />
+</div>

@@ -118,7 +118,10 @@ const tools: Anthropic.Tool[] = [
 function executeTool(name: string, input: Record<string, string>): string {
   if (name === 'web_search') return \`Search results for "\${input['query']}": [result 1, result 2]\`;
   if (name === 'calculate') {
-    try { return String(eval(input['expression'])); }
+    // Never eval model-supplied text: allow digits, operators and parentheses only
+    const expr = input['expression'];
+    if (!/^[\\d\\s+\\-*/().]+$/.test(expr)) return 'Error: only arithmetic is allowed';
+    try { return String(Function('"use strict"; return (' + expr + ');')()); }
     catch { return 'Error: invalid expression'; }
   }
   return 'Unknown tool';
@@ -136,8 +139,12 @@ async function runAgent(userMessage: string, maxSteps = 10): Promise<string> {
       messages,
     });
 
-    // Model is done
-    if (response.stop_reason === 'end_turn') {
+    // Any stop other than tool_use ends the loop. Resending the same messages
+    // after max_tokens, refusal, etc. would just repeat the same request.
+    if (response.stop_reason !== 'tool_use') {
+      if (response.stop_reason !== 'end_turn') {
+        throw new Error(\`Agent stopped early: \${response.stop_reason}\`);
+      }
       const textBlock = response.content.find(b => b.type === 'text');
       return textBlock?.type === 'text' ? textBlock.text : '';
     }
@@ -195,8 +202,10 @@ async function reactLoop(question: string): Promise<string> {
     // const parsed = parseReActResponse(response);
     // if (parsed.finalAnswer) return parsed.finalAnswer;
     // if (parsed.action) {
-    //   const [toolName, paramsStr] = parsed.action.split('(');
-    //   const params = JSON.parse(paramsStr.slice(0, -1));
+    //   // split on the FIRST "(" and LAST ")" — arguments can contain parentheses
+    //   const open = parsed.action.indexOf('(');
+    //   const toolName = parsed.action.slice(0, open);
+    //   const params = JSON.parse(parsed.action.slice(open + 1, parsed.action.lastIndexOf(')')));
     //   const observation = executeTool(toolName, params);
     //   history.push({ thought: parsed.thought, action: parsed.action, observation });
     //   context += \`Thought: \${parsed.thought}\\nAction: \${parsed.action}\\nObservation: \${observation}\\n\`;

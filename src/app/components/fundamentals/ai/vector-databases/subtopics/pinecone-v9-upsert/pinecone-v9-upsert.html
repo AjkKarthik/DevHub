@@ -1,0 +1,26 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Vector Databases" topicRoute="/ai/vector-databases"
+    subtopicLabel="Pinecone v9 upsert Takes { records }" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">Pinecone v9 upsert Takes &#123; records &#125;</h1>
+  <p class="page-subtitle">The Pinecone tab passed an array to index.upsert. In &#64;pinecone-database/pinecone 9.0.0, upsert takes an options object with records, and a bare array fails with a misleading error.</p>
+  <app-page-meta [readingTime]="4" difficulty="beginner" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This updates the SDK example. MLOps covers how retrieval and model components are deployed and monitored.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Vector Databases" topicRoute="/ai/vector-databases"
+    [prev]="{ label: 'HNSW Memory Is Not N·M·d', route: '/ai/vector-databases/hnsw-memory-is-not-n-m-d' }" />
+</div>

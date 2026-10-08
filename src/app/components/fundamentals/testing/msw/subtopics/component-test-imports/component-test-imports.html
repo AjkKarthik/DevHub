@@ -1,0 +1,26 @@
+<div class="test-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="MSW — Mock Service Worker" topicRoute="/testing-hub/msw"
+    subtopicLabel="The Override Test Never Imported server" />
+  <div class="page-header-icon test-icon">✓</div>
+  <h1 class="page-title">The Override Test Never Imported server</h1>
+  <p class="page-subtitle">The Component Test tab called server.use(http.get(..., () =&gt; HttpResponse.json(...))) but imported only render, screen and UserList. As written, the error test throws a ReferenceError before rendering anything.</p>
+  <app-page-meta [readingTime]="4" difficulty="beginner" since="Testing" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="test-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="test-section">
+    <h2>Where this fits</h2>
+    <p>This fixes the Component Test tab on the MSW page. The next subtopic looks at onUnhandledRequest.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="MSW — Mock Service Worker" topicRoute="/testing-hub/msw"
+    [next]="{ label: 'warn Lets Unhandled Requests Hit the Network', route: '/testing-hub/msw/warn-lets-unhandled-requests-hit-the-network' }" />
+</div>

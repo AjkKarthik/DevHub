@@ -1,0 +1,26 @@
+<div class="test-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Angular Testing" topicRoute="/testing-hub/angular-testing"
+    subtopicLabel="HttpClientTestingModule Is Deprecated" />
+  <div class="page-header-icon test-icon">✓</div>
+  <h1 class="page-title">HttpClientTestingModule Is Deprecated</h1>
+  <p class="page-subtitle">The page built its HTTP tests on HttpClientTestingModule. In the Angular 22 typings this repository uses, that module is marked deprecated in favour of provideHttpClient() plus provideHttpClientTesting().</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Testing" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="test-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="test-section">
+    <h2>Where this fits</h2>
+    <p>This updates the HTTP testing guidance on the Angular Testing page. The next subtopic covers the effect-flushing API.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Angular Testing" topicRoute="/testing-hub/angular-testing"
+    [next]="{ label: 'TestBed.flushEffects Was Replaced by TestBed.tick', route: '/testing-hub/angular-testing/flusheffects-replaced-by-testbed-tick' }" />
+</div>

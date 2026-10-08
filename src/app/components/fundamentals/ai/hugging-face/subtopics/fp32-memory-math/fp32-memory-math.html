@@ -1,0 +1,26 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Hugging Face" topicRoute="/ai/hugging-face"
+    subtopicLabel="32GB of fp32 Weights Does Fit a 40GB A100" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">32GB of fp32 Weights Does Fit a 40GB A100</h1>
+  <p class="page-subtitle">The precision mistake said an 8B model in float32 needs 32GB and so will not fit on a 40GB A100. 32 is less than 40; the real problem is how little is left for the KV cache and activations.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the memory example. Evaluating LLMs covers how to tell whether the model you load is good enough.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Hugging Face" topicRoute="/ai/hugging-face"
+    [prev]="{ label: 'HfInference Is Now InferenceClient', route: '/ai/hugging-face/hfinference-is-now-inferenceclient' }" />
+</div>

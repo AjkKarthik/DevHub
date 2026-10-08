@@ -1,0 +1,16 @@
+$accent: #92400e;
+$tint:   #fffbeb;
+
+.dsa-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+.dsa-section h2 { font-size: 1.4rem; font-weight: 700; color: $accent; margin: 2rem 0 1rem; }
+.page-title { font-size: 2rem; font-weight: 800; color: #1a1a1a; margin: 1rem 0 .5rem; }
+.page-subtitle { color: #6b7280; margin-bottom: 1.5rem; line-height: 1.6; }
+.page-subtitle code { background: $tint; color: $accent; padding: .1rem .4rem; border-radius: 4px; font-size: .9em; }
+
+:host-context(body.dark) {
+  .dsa-page { color: #e5e7eb; }
+  .page-title { color: #f9fafb; }
+  .page-subtitle { color: #9ca3af; }
+  .dsa-section h2 { color: #fcd34d; }
+  .page-subtitle code { background: #1c1007; color: #fcd34d; }
+}

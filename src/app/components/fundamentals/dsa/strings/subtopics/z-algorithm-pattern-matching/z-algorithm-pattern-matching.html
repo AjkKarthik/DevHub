@@ -1,0 +1,27 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Strings" topicRoute="/dsa/strings"
+    subtopicLabel="The Z-Algorithm for Pattern Matching" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">The Z-Algorithm for Pattern Matching</h1>
+  <p class="page-subtitle">The main page's own QnA describes the Z-algorithm precisely but never builds one -- built here and verified against a brute-force reference across three test cases.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This builds the Z-algorithm the main page's own QnA names and describes in prose but never demonstrates in code, contrasted directly against KMP (also on this page) to clarify what each array actually measures.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Strings" topicRoute="/dsa/strings"
+    [prev]="{ label: 'Longest Substring Without Repeating Characters', route: '/dsa/strings/longest-substring-without-repeating-sliding-window' }"
+    [next]="{ label: 'Rabin-Karp’s Rolling Hash, Verified', route: '/dsa/strings/rabin-karp-rolling-hash' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Linked Lists" topicRoute="/dsa/linked-lists"
+    subtopicLabel="Deleting a Middle Node Without the Predecessor" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">Deleting a Middle Node Without the Predecessor</h1>
+  <p class="page-subtitle">The main page's own QnA describes the copy-forward deletion trick in prose with no code. Built and verified it directly, including the exact way it breaks on the list's last node.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This builds the exact copy-forward deletion trick the main page's own QnA on O(1) middle-node deletion describes in prose, including a direct demonstration of why it cannot work on the list's last node.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Linked Lists" topicRoute="/dsa/linked-lists"
+    [prev]="{ label: 'Recursive Reversal: Call Stack Depth, Measured', route: '/dsa/linked-lists/recursive-reversal-call-stack-depth-measured' }" />
+</div>

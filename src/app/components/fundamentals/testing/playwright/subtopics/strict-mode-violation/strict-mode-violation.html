@@ -1,0 +1,26 @@
+<div class="test-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Playwright" topicRoute="/testing-hub/playwright"
+    subtopicLabel="Locators Are Strict About Multiple Matches" />
+  <div class="page-header-icon test-icon">✓</div>
+  <h1 class="page-title">Locators Are Strict About Multiple Matches</h1>
+  <p class="page-subtitle">The page recommends getByRole but never says what happens when it matches two elements. Playwright refuses to guess: an action on an ambiguous locator fails with a strict mode violation.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="Testing" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="test-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="test-section">
+    <h2>Where this fits</h2>
+    <p>This finishes the Playwright subtopics. Cypress takes a different approach to element queries and retries.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Playwright" topicRoute="/testing-hub/playwright"
+    [prev]="{ label: 'networkidle Means Zero Connections and Is Discouraged', route: '/testing-hub/playwright/networkidle-means-zero-connections-and-is-discouraged' }" />
+</div>

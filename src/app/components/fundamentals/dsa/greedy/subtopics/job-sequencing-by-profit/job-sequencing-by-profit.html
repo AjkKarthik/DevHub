@@ -1,0 +1,26 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Greedy Algorithms" topicRoute="/dsa/greedy"
+    subtopicLabel="Job Sequencing Is Greedy by Profit, Not by Deadline" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">Job Sequencing Is Greedy by Profit, Not by Deadline</h1>
+  <p class="page-subtitle">For unit-time jobs with deadlines, sorting by profit and filling the latest free slot matched brute force on 3,000 random tests. Sorting by deadline was wrong on half of them.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the main page's QnA on scheduling with deadlines and separates it from weighted interval scheduling, which does need DP.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Greedy Algorithms" topicRoute="/dsa/greedy"
+    [prev]="{ label: 'The Page’s merge Rewrote the Caller’s Intervals', route: '/dsa/greedy/merge-intervals-mutates-the-input' }" />
+</div>

@@ -56,7 +56,7 @@ export class AiPromptEngineering {
       heading: 'Structured Output',
       points: [
         'Ask for JSON explicitly and show the schema in the prompt. Without a schema, models invent their own structure.',
-        'Use OpenAI function calling / response_format: {type: "json_object"} to enforce JSON output at the API level.',
+        'OpenAI response_format {type: "json_object"} guarantees syntactically valid JSON but not your schema; {type: "json_schema", strict: true} (Structured Outputs, e.g. via zodResponseFormat) constrains the output to the schema.',
         'For complex schemas, use Zod + Instructor library (TypeScript) or Pydantic (Python) to validate and retry on schema mismatch.',
         'XML is often more reliable than JSON for models trained on web data — most web content uses HTML/XML, not JSON.',
         'Always wrap output parsing in try/catch + retry logic — even with structured output APIs, models occasionally deviate.',
@@ -208,7 +208,10 @@ const data = JSON.parse(response);  // crashes 20% of the time
   for (let i = 0; i < maxRetries; i++) {
     try {
       const raw = await llm.complete(prompt);
-      const json = raw.replace(/\`\`\`json?\\n?|\\n?\`\`\`/g, '').trim();
+      // Take the fenced block if there is one (any case), then the outermost {...}
+      const fence = raw.match(/\`\`\`(?:json)?\\s*([\\s\\S]*?)\`\`\`/i);
+      const body = (fence ? fence[1] : raw).trim();
+      const json = body.slice(body.indexOf('{'), body.lastIndexOf('}') + 1);
       return schema.parse(JSON.parse(json));
     } catch { /* retry */ }
   }
@@ -256,11 +259,14 @@ Input: ..."`,
 
 Problem: \${problem}
 
-Let's solve this step by step.
+Work through it step by step, showing each calculation.
+On the last line, write only: Final answer: <number>\`;
+}
 
-[Work through the reasoning here]
-
-Final answer (number only):\`;
+// Read the answer from the model's reply
+function extractFinalAnswer(reply: string): number | null {
+  const m = reply.match(/Final answer:\\s*(-?[\\d.,]+)\\s*$/i);
+  return m ? Number(m[1].replace(/,/g, '')) : null;
 }`,
   };
 

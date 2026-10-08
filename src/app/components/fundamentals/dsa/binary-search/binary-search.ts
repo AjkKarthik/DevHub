@@ -21,7 +21,7 @@ import { PageCompleteComponent } from '../../../shared/page-complete/page-comple
 })
 export class DsaBinarySearch {
   quickRef: QuickRefItem[] = [
-    { name: 'Standard BS',     type: 'syntax',  desc: 'lo=0, hi=n-1; while lo<=hi; mid=(lo+hi)>>1' },
+    { name: 'Standard BS',     type: 'syntax',  desc: 'lo=0, hi=n-1; while lo<=hi; mid=lo+Math.floor((hi-lo)/2) — not (lo+hi)>>1, the JS shift truncates to 32 bits' },
     { name: 'Left bound',      type: 'syntax',  desc: 'Find first occurrence: when match, hi=mid-1; return lo' },
     { name: 'Right bound',     type: 'syntax',  desc: 'Find last occurrence: when match, lo=mid+1; return hi' },
     { name: 'Search space',    type: 'keyword', desc: 'Binary search on answer — minimize/maximize monotone condition' },
@@ -64,7 +64,7 @@ export class DsaBinarySearch {
         'One half of a rotated sorted array is always normally sorted — use this to decide which half to search.',
         'If left half is sorted (arr[lo] <= arr[mid]): target in [arr[lo], arr[mid]) → search left, else search right.',
         'If right half is sorted (arr[mid] <= arr[hi]): target in (arr[mid], arr[hi]] → search right, else search left.',
-        'With duplicates: arr[lo] === arr[mid] is ambiguous — increment lo to break the tie.',
+        'With duplicates: arr[lo] === arr[mid] is ambiguous — increment lo to break the tie. This fallback makes the worst case O(n), not O(log n): on an array of all 1s, searching for 2 shrinks the range by one element per step.',
       ],
     },
     {
@@ -73,7 +73,7 @@ export class DsaBinarySearch {
         'Binary search generalizes beyond finding an exact value in a sorted array — it applies to any monotonic predicate (a function whose answer flips from false to true exactly once across the search space), enabling "binary search on the answer" patterns for optimization problems.',
         'Binary search on the answer works by searching over a range of possible answers (not array indices) and using a feasibility check at each midpoint to decide which half to discard — commonly used for problems like "minimum capacity to ship packages within D days."',
         'Off-by-one errors are the most common bug in binary search implementations — deciding whether the search range should be [low, high] or [low, high) and correctly updating low/high on each iteration requires careful, deliberate reasoning rather than pattern-matching from memory.',
-        'Binary search requires random access to elements in O(1) time to achieve its O(log n) complexity — applying it to a linked list (which lacks O(1) random access) degrades to O(n log n) overall, since each "jump to the middle" step itself costs O(n).',
+        'Binary search requires random access to elements in O(1) time to achieve its O(log n) complexity — applying it to a linked list (which lacks O(1) random access) costs O(n log n) if every "jump to the middle" restarts from the head, and O(n) at best if you walk forward from the current low node — either way never faster than a plain linear scan.',
       ],
     },
   ];
@@ -128,8 +128,7 @@ function countOccurrences(arr: number[], target: number): number {
       language: 'typescript',
       code: `// Binary search on answer — minimum eating speed (Koko)
 function minEatingSpeed(piles: number[], h: number): number {
-  const canFinish = (speed: number) => piles.every(p => Math.ceil(p / speed) <= h);
-  // Hmm — wait: total hours, not per pile
+  // Total hours across ALL piles at a given speed (not a per-pile check)
   const totalHours = (speed: number) => piles.reduce((s, p) => s + Math.ceil(p / speed), 0);
   let lo = 1, hi = Math.max(...piles);
   while (lo < hi) { // lo < hi pattern for "find minimum valid"
@@ -164,7 +163,7 @@ function searchRotated(nums: number[], target: number): number {
       title: 'Integer overflow in mid calculation',
       wrong: `const mid = Math.floor((lo + hi) / 2); // lo+hi can overflow in other languages`,
       right: `const mid = lo + Math.floor((hi - lo) / 2); // safe in all languages`,
-      explanation: 'In JavaScript numbers are 64-bit floats so overflow is unlikely, but the safe formula is a good habit — especially for C++/Java interviews.',
+      explanation: 'In JavaScript, lo + hi stays exact up to 2^53, so the plain sum is safe — but the common (lo + hi) >> 1 shortcut is not: bitwise operators convert to 32-bit integers, so once lo + hi reaches 2^31 the midpoint goes negative. The safe formula with Math.floor avoids both problems.',
     },
     {
       title: 'Off-by-one: using lo < hi vs lo <= hi',

@@ -1,0 +1,26 @@
+<div class="test-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Vitest" topicRoute="/testing-hub/vitest"
+    subtopicLabel="The test Key in vite.config.ts Needs Vitest Types" />
+  <div class="page-header-icon test-icon">✓</div>
+  <h1 class="page-title">The test Key in vite.config.ts Needs Vitest Types</h1>
+  <p class="page-subtitle">The config example used defineConfig from vite with a test block. Vite's own types have no test key; Vitest adds it, so the file needs a vitest/config type reference or defineConfig from vitest/config.</p>
+  <app-page-meta [readingTime]="4" difficulty="beginner" since="Testing" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="test-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="test-section">
+    <h2>Where this fits</h2>
+    <p>This fixes the vitest.config.ts example on the Vitest page. Jest Fundamentals compares the equivalent Jest coverage settings.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Vitest" topicRoute="/testing-hub/vitest"
+    [prev]="{ label: 'In-Source Tests Need a define to Be Removed', route: '/testing-hub/vitest/in-source-tests-need-a-define-to-be-removed' }" />
+</div>

@@ -1,0 +1,27 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Binary Search Trees" topicRoute="/dsa/bst"
+    subtopicLabel="One Rotation Rebalances an Ascending Insert" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">One Rotation Rebalances an Ascending Insert</h1>
+  <p class="page-subtitle">The main page names AVL/red-black rotations with no code. Built rotateLeft/rotateRight, verified a single rotation fixes the degenerate 1-2-3 ascending-insert case, with the BST property intact.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This is the measured verification behind the main page's own corrected theory section on self-balancing BSTs, building the actual rotation mechanism the page names but never codes.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Binary Search Trees" topicRoute="/dsa/bst"
+    [prev]="{ label: 'Sorted Array to BST Is Actually O(n log n)', route: '/dsa/bst/sorted-array-to-bst-is-actually-on-log-n' }"
+    [next]="{ label: 'Generic-Tree LCA Visits the Whole Tree', route: '/dsa/bst/generic-tree-lca-visits-the-whole-tree' }" />
+</div>

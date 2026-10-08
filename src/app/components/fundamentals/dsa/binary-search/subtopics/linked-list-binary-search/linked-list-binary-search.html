@@ -1,0 +1,27 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Binary Search" topicRoute="/dsa/binary-search"
+    subtopicLabel="Binary Search on a Linked List Never Beats a Linear Scan" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">Binary Search on a Linked List Never Beats a Linear Scan</h1>
+  <p class="page-subtitle">Without O(1) random access, reaching each midpoint means walking pointers. Measured with a step counter: O(n log n) for the naive version and O(n) at best, never fewer steps than a scan.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This sharpens the main page's random-access requirement. The next subtopic covers a case where binary search on an array also loses its O(log n) guarantee: rotated arrays with duplicates.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Binary Search" topicRoute="/dsa/binary-search"
+    [prev]="{ label: 'The Bit-Shift Midpoint Overflows at 2^31 in JavaScript', route: '/dsa/binary-search/bit-shift-midpoint-overflows-in-javascript' }"
+    [next]="{ label: 'Duplicates Make Rotated Search O(n) in the Worst Case', route: '/dsa/binary-search/rotated-search-with-duplicates-is-o-n' }" />
+</div>

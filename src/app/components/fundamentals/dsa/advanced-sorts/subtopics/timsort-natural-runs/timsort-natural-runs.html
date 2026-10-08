@@ -1,0 +1,26 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Advanced Sorts" topicRoute="/dsa/advanced-sorts"
+    subtopicLabel="Why Timsort Exploits Natural Ascending Runs" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">Why Timsort Exploits Natural Ascending Runs</h1>
+  <p class="page-subtitle">A quiz explanation says Timsort finds and merges natural ascending runs, with no measurement anywhere on the page. Built a run detector and measured the real gap between ordered and random input.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This turns the main page's own quiz explanation about Timsort exploiting natural runs into a real, directly measured demonstration, contrasted against the sibling Basic Sorts page's own displacement-based adaptive-cost finding for insertion sort.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Advanced Sorts" topicRoute="/dsa/advanced-sorts"
+    [prev]="{ label: 'Radix Sort Runs Counting Sort Digit by Digit', route: '/dsa/advanced-sorts/radix-sort-digit-by-digit' }" />
+</div>

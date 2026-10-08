@@ -197,7 +197,7 @@ dp[0] = 0; // 0 coins needed for amount 0`,
       wrong: `for (const c of coins) dp[i] = Math.min(dp[i], dp[i - c] + 1); // dp[i-c] may be negative index`,
       right: `for (const c of coins)
   if (c <= i) dp[i] = Math.min(dp[i], dp[i - c] + 1); // guard i >= c`,
-      explanation: 'Only use a coin if it doesn\'t exceed the current amount. Accessing dp[i-c] with c > i gives dp[negative] — undefined behavior.',
+      explanation: 'Only use a coin if it doesn\'t exceed the current amount. Accessing dp[i-c] with c > i reads dp[negative], which is undefined in JavaScript; undefined + 1 is NaN, and Math.min with NaN returns NaN, so the whole table is poisoned and the function returns NaN instead of an answer or -1.',
     },
   ];
 
@@ -237,9 +237,9 @@ dp[0] = 0; // 0 coins needed for amount 0`,
       answer: 2,
       explanation: 'Two nested loops over strings of lengths m and n, each computing dp[i][j] in O(1) → O(m × n) total.',
     },
-  { q: 'What are the two necessary conditions for a problem to be solvable with dynamic programming?', options: ['Sorted input and recursive structure', 'Optimal substructure and overlapping subproblems', 'Monotonic function and binary search', 'Greedy choice and backtracking'], answer: 1, explanation: 'DP requires: (1) Optimal substructure — optimal solution to the whole problem contains optimal solutions to subproblems; (2) Overlapping subproblems — same subproblems are solved multiple times, so caching is beneficial.' },
+  { q: 'In coin change "number of ways", which loop order counts combinations (where 1+2 and 2+1 are the same way)?', options: ['Amount in the outer loop, coins in the inner loop', 'Coins in the outer loop, amount in the inner loop', 'Either order gives the same count', 'Neither — counting combinations needs 2D DP'], answer: 1, explanation: 'With coins outer, each coin is added in a fixed order, so every combination is counted once. With amount outer, every ordering is counted separately: for coins [1,2,5] and amount 5, coins-outer gives 4 and amount-outer gives 9. For the minimum-coins problem the order does not matter.' },
   { q: 'What is the space optimization technique for 1D DP problems?', options: ['Use a 2D array', 'Only keep the previous row or a rolling variable', 'Sort the array first', 'Use memoization instead'], answer: 1, explanation: 'Many 1D DP problems only need dp[i-1] to compute dp[i] — store just one variable or two variables instead of the full array. Fibonacci: only prev and curr needed. Staircase problem: only two variables.' },
-  { q: 'Which is generally faster: top-down memoization or bottom-up tabulation?', options: ['Top-down memoization is always faster', 'Bottom-up tabulation is usually faster due to no recursion overhead', 'They are always identical in speed', 'Top-down is faster for sparse subproblems'], answer: 3, explanation: 'Top-down (memoization) only computes needed subproblems — faster when most subproblems are not reached (sparse). Bottom-up (tabulation) computes all subproblems in order — better cache performance, no recursion overhead. For dense problems, bottom-up usually wins.' },
+  { q: 'Which is generally faster: top-down memoization or bottom-up tabulation?', options: ['Top-down memoization is always faster', 'Bottom-up tabulation is usually faster due to no recursion overhead', 'They are always identical in speed', 'Top-down is faster for sparse subproblems'], answer: 1, explanation: 'Bottom-up computes every subproblem in order with no recursion overhead and no stack-depth limit, so it usually wins — which is why the theory section calls it "usually faster in practice". The exception is a sparse problem where top-down reaches only a few states: it then skips the rest of the table entirely.' },
   ];
 
   qna: QnaItem[] = [
@@ -249,11 +249,11 @@ dp[0] = 0; // 0 coins needed for amount 0`,
     },
     {
       q: 'How do you optimize DP space from O(n²) to O(n)?',
-      a: 'Analyze which previous states dp[i][j] depends on. If it only depends on dp[i-1][j] (previous row) and dp[i][j-1] (same row, previous column), you can use a single 1D array, updating it in the right order. For LCS, iterate right-to-left or save one extra variable.',
+      a: 'Analyze which previous states dp[i][j] depends on. If it only depends on dp[i-1][j] (previous row) and dp[i][j-1] (same row, previous column), you can use a single 1D array, updating it in the right order. For LCS, iterating right-to-left does not work, because dp[i][j-1] must come from the current row; keep one extra variable holding the old dp[j-1] (the diagonal) instead.',
     },
     {
       q: 'What\'s the difference between the coin change problem (count of ways) and (minimum coins)?',
-      a: 'Minimum coins: dp[i] = min coins, initialize to Infinity, transition dp[i] = min(dp[i], dp[i-c]+1). Count of ways: dp[i] = number of combinations, initialize dp[0]=1, transition dp[i] += dp[i-c]. Same structure, different operation (min vs sum) and initialization.',
+      a: 'Minimum coins: dp[i] = min coins, initialize to Infinity, transition dp[i] = min(dp[i], dp[i-c]+1). Count of ways: dp[i] = number of combinations, initialize dp[0]=1, transition dp[i] += dp[i-c]. Different operation (min vs sum) and initialization — and, unlike the minimum, the loop order matters: coins in the outer loop counts combinations, amount in the outer loop counts ordered sequences (for coins [1,2,5] and amount 5 that is 4 versus 9).',
     },
   { q: 'How do you decide between greedy and DP for an optimization problem?', a: 'Try greedy first: if a locally optimal choice is always globally optimal (greedy choice property), use greedy O(n log n) or O(n). If optimal choices depend on future decisions, use DP. Example: Coin Change with canonical coins (US coins) -> greedy works. With arbitrary coin denominations, greedy fails (coins=[1,3,4], amount=6: greedy gives 4+1+1=3 coins; DP gives 3+3=2 coins).' },
   { q: 'What is memoization and how does it differ from caching?', a: 'Memoization is caching specifically for recursive function calls — store results of pure function calls keyed by their arguments. If called again with same args, return cached result. Implemented with a dictionary/map. Transforms naive exponential recursion (e.g., Fibonacci O(2^n)) to O(n). General caching applies to any computation; memoization is the DP-specific term for top-down DP.' },

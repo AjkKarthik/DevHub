@@ -1,0 +1,27 @@
+<div class="test-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Test-Driven Development" topicRoute="/testing-hub/tdd"
+    subtopicLabel="One Behaviour per Test, Not One Assertion" />
+  <div class="page-header-icon test-icon">✓</div>
+  <h1 class="page-title">One Behaviour per Test, Not One Assertion</h1>
+  <p class="page-subtitle">The TDD page told readers to write one assertion per test, while the Testing Fundamentals page says several related assertions are fine. The rule that matters is one behaviour per test.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="Testing" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="test-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="test-section">
+    <h2>Where this fits</h2>
+    <p>This lines up the TDD page with the Arrange-Act-Assert guidance on Testing Fundamentals. The last subtopic shows the refactor step catching a real regression.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Test-Driven Development" topicRoute="/testing-hub/tdd"
+    [prev]="{ label: 'The Outside-In Test Asked for a Name It Never Sent', route: '/testing-hub/tdd/outside-in-test-asked-for-a-name-it-never-sent' }"
+    [next]="{ label: 'A Refactor That Drops the Empty-String Guard', route: '/testing-hub/tdd/refactor-that-drops-the-empty-string-guard' }" />
+</div>

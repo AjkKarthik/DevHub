@@ -1,0 +1,26 @@
+<div class="test-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Mocking & Spies" topicRoute="/testing-hub/mocking-spies"
+    subtopicLabel="Checking Call Order with invocationCallOrder" />
+  <div class="page-header-icon test-icon">✓</div>
+  <h1 class="page-title">Checking Call Order with invocationCallOrder</h1>
+  <p class="page-subtitle">The page's call-order mistake routes both mocks through a shared order mock. Jest already numbers every mock call globally in mock.invocationCallOrder, which needs no extra wiring.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Testing" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="test-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="test-section">
+    <h2>Where this fits</h2>
+    <p>This offers a simpler fix for the call-order mistake on Mocking and Spies. Vitest supports the same property on its vi.fn() mocks.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Mocking & Spies" topicRoute="/testing-hub/mocking-spies"
+    [prev]="{ label: 'Spying on a Wrapper Does Not Touch Math.random', route: '/testing-hub/mocking-spies/spying-on-a-wrapper-does-not-touch-math-random' }" />
+</div>

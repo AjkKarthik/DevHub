@@ -1,0 +1,27 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Stacks &amp; Queues" topicRoute="/dsa/stacks-queues"
+    subtopicLabel="Evaluating RPN Expressions With a Stack" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">Evaluating RPN Expressions With a Stack</h1>
+  <p class="page-subtitle">The main page's own QnA describes postfix evaluation in one paragraph of prose with no code. Built and verified a working evaluator, including why operand pop order matters for non-commutative operators.</p>
+  <app-page-meta [readingTime]="6" difficulty="beginner" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This builds the exact postfix-evaluation mechanism the main page's own QnA on expression evaluation describes in prose, as a concrete, Node-verified implementation.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Stacks &amp; Queues" topicRoute="/dsa/stacks-queues"
+    [prev]="{ label: 'The Two-Stack Queue Moves Each Element Once', route: '/dsa/stacks-queues/two-stack-queue-moves-each-element-once' }"
+    [next]="{ label: 'Min-Stack: Pairs vs. Two Aux Stacks', route: '/dsa/stacks-queues/min-stack-pairs-vs-two-aux-stacks' }" />
+</div>

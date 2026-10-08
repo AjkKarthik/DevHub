@@ -1136,12 +1136,9 @@ When a hub's audit is complete, note it in Done History.
 
 ## Phase 10 — Deep-Dive Subtopic Pages ("Learn Mode")
 
-**Status: IN PROGRESS (rollout approved 2026-07-02 — user said "continue todo and implement
-for all topics", skipping a separate manual review pause). 2 of ~34 Angular topics done
-(counter, todo) — 836 topics total across all hubs, most with 3-6 subtopics each, so this is
-a multi-session effort worked one topic at a time per the Rollout plan below. Read this whole
-section before touching any code — it defines a new content tier and a new routing/nav/progress
-layer, not just more pages.**
+**Status: COMPLETE (2026-10-08). Every topic in every hub listed in the checklist below now has
+its deep-dive subtopic pages; the AI/ML hub (19/19, 57 subtopic pages) was the last to finish. No
+unchecked items remain. The history below is kept as the record of how the rollout was done.**
 
 ### Why this phase exists
 
@@ -9937,80 +9934,307 @@ off here with a date.
   default 1 minute; duplicate detection, sessions and expiry dead-lettering are creation-time settings; DLQ does
   not receive filter non-matches; Premium 100MB is AMQP only. Bare `azure-service-bus` SUBTOPICS key
   collision-free. Messaging hub Phase 10: 14 of 20.
-- [ ] `/messaging/azure-event-grid` — Event Grid & Event Hubs
-- [ ] `/messaging/aws-sqs` — AWS SQS
-- [ ] `/messaging/aws-sns-eventbridge` — AWS SNS & EventBridge
-- [ ] `/messaging/idempotency` — Idempotency & Exactly-Once
-- [ ] `/messaging/message-ordering` — Message Ordering
-- [ ] `/messaging/backpressure` — Backpressure & Flow Control
+- [x] 2026-09-20 `/messaging/azure-event-grid` — Event Grid & Event Hubs. 3 subtopics. Messaging
+  hub Phase 10: 15 of 20.
+- [x] 2026-09-22 `/messaging/aws-sqs` — AWS SQS. 3 subtopics (fifo-high-throughput-mode,
+  dlq-is-queue-not-lambda-destination, report-batch-item-failures). Main-page fixes: FIFO default
+  throughput is 3,000 msg/s with batching (raised from 300 in 2020), not a flat 300 msg/s ceiling;
+  SQS-triggered Lambda has no on-failure destination of its own, DLQ routing is configured on the
+  queue's RedrivePolicy only. Bare `aws-sqs` SUBTOPICS key collision-free. Messaging hub Phase 10:
+  16 of 20.
+- [x] 2026-09-22 `/messaging/aws-sns-eventbridge` — AWS SNS & EventBridge. 3 subtopics
+  (sns-fifo-throughput-was-raised-10x, retry-duration-depends-on-endpoint-type,
+  eventbridge-pipes-sqs-to-target). Main-page fixes: SNS FIFO throughput raised 10x to 3,000 msg/s
+  (Nov 2023, no migration needed); the "23 days" DLQ redelivery window only applies to AWS-managed
+  SNS endpoints, HTTP/S subscriptions default to ~60s with a 3,600s max. Bare
+  `aws-sns-eventbridge` SUBTOPICS key collision-free. Messaging hub Phase 10: 17 of 20.
+- [x] 2026-09-22 `/messaging/idempotency` — Idempotency & Exactly-Once. 3 subtopics
+  (kafkajs-does-not-enforce-max-in-flight, redis-set-nx-needs-two-phases,
+  sqs-standard-has-no-native-dedup). Main-page fix verified against a real installed kafkajs
+  source: `maxInFlightRequests: 5` is never checked against `idempotent` by the library itself —
+  the "why 5" reason is a broker-side sequence-number dedup window (KIP-98), not a kafkajs-enforced
+  rule. Bare `idempotency` SUBTOPICS key collision-free. Messaging hub Phase 10: 18 of 20.
+- [x] 2026-09-22 `/messaging/message-ordering` — Message Ordering. 3 subtopics
+  (random-dedup-id-defeats-sqs-fifo-retry-safety, how-idempotent-producer-prevents-retry-reordering,
+  fifo-group-blocking-is-per-group-not-queue-wide). Main-page fix: the SQS FIFO codeTab generated a
+  fresh `MessageDeduplicationId` (`randomUUID()`) on every send, defeating retry-safety dedup —
+  fixed to a stable, business-derived key. Bare `message-ordering` SUBTOPICS key collision-free.
+  Messaging hub Phase 10: 19 of 20.
+- [x] 2026-09-22 `/messaging/backpressure` — Backpressure & Flow Control (FINAL topic). 3 subtopics
+  (kafka-pause-discards-its-own-resume-function, kafkajs-has-no-buffer-memory-or-max-block-ms,
+  nodejs-stream-backpressure-actually-running — the last one using real executed Node.js stream
+  code, not a model). Main-page fixes: the Kafka Pause/Resume codeTab discarded `pause()`'s own
+  returned resume closure while claiming an automatic-resume mechanism that doesn't exist in
+  kafkajs; a QnA described Java-client-only `max.block.ms`/`buffer.memory` producer configs as if
+  kafkajs supported them, verified against the real installed `ProducerConfig` type to have no
+  such fields. Bare `backpressure` SUBTOPICS key collision-free. **Messaging/Kafka hub Phase 10
+  rollout complete — all 20/20 topics done, 60 subtopic pages total, confirmed via a hub-wide
+  check showing exactly 20 nav toggle elements.**
 
 #### DSA — 21 topic pages
 
-- [ ] `/dsa/big-o` — Big-O Notation
-- [ ] `/dsa/arrays` — Arrays
-- [ ] `/dsa/strings` — Strings
-- [ ] `/dsa/hash-tables` — Hash Tables
-- [ ] `/dsa/stacks-queues` — Stacks & Queues
-- [ ] `/dsa/linked-lists` — Singly Linked Lists
-- [ ] `/dsa/doubly-linked-lists` — Doubly Linked Lists
-- [ ] `/dsa/binary-trees` — Binary Trees
-- [ ] `/dsa/bst` — Binary Search Trees
-- [ ] `/dsa/heaps` — Heaps & Priority Queues
-- [ ] `/dsa/graphs-bfs-dfs` — Graphs: BFS & DFS
-- [ ] `/dsa/graph-algorithms` — Graph Algorithms
-- [ ] `/dsa/basic-sorts` — Basic Sorting Algorithms
-- [ ] `/dsa/advanced-sorts` — Advanced Sorting Algorithms
-- [ ] `/dsa/binary-search` — Binary Search
-- [ ] `/dsa/recursion-backtracking` — Recursion & Backtracking
-- [ ] `/dsa/dynamic-programming` — Dynamic Programming
-- [ ] `/dsa/dp-patterns` — DP Patterns
-- [ ] `/dsa/trie` — Tries
-- [ ] `/dsa/bit-manipulation` — Bit Manipulation
-- [ ] `/dsa/greedy` — Greedy Algorithms
+- [x] 2026-10-08 `/dsa/big-o` — Big-O Notation (DSA hub Phase 10 pilot). 3 subtopics
+  (arithmetic-vs-harmonic-shrinking-loops, master-theorem-epsilon-and-regularity,
+  dynamic-array-amortized-proof). Main-page fix verified via direct Node execution: the "Common
+  Pitfalls" bullet pointed at the wrong example ("checking only unprocessed elements") for landing
+  on O(n log n) -- that pattern is the arithmetic shrink already covered by mistake #4 and stays
+  O(n²); the real O(n log n) pattern is the Challenge's own harmonic shrink. Fixed
+  `DsaNavComponent`'s missing subtopics-accordion structural gap (19th `*NavComponent` hub in a
+  row). Bare `big-o` SUBTOPICS key collision-free. DSA hub Phase 10: 1 of 21.
+- [x] 2026-10-08 `/dsa/arrays` — Arrays. 3 subtopics (prefix-sum-codetab-was-actually-on2,
+  2d-prefix-sums-submatrix-queries, subarray-sum-equals-k-prefix-hashmap). Main-page fix verified
+  via exact op-counting: the "Prefix sum" code sample built the array with a slice+reduce per
+  index (confirmed O(n²), ratio to n² converges to exactly 1.0), contradicting the theory's own
+  "Build in O(n)" claim -- fixed to match the correct single-forward-loop pattern already used in
+  the page's own mistake block. Bare `arrays` SUBTOPICS key collides with the C# hub's own topic
+  -- hub-prefixed to `dsa-arrays`. DSA hub Phase 10: 2 of 21.
+- [x] 2026-10-08 `/dsa/strings` — Strings. 3 subtopics
+  (longest-substring-without-repeating-sliding-window, z-algorithm-pattern-matching,
+  rabin-karp-rolling-hash). Main-page fix: a duplicate "String Immutability" theory section
+  restated the first section's own facts under a mismatched heading, with one genuinely new
+  sliding-window bullet buried inside -- fixed by removing the duplicates and retitling into a
+  proper "Sliding Window for Substring Problems" section, closing a real gap (the revision list
+  names "longest substring without repeating characters" but no codeTab ever showed it). Bare
+  `strings` SUBTOPICS key collision-free. DSA hub Phase 10: 3 of 21.
+- [x] 2026-10-08 `/dsa/hash-tables` — Hash Tables. 3 subtopics (naive-salt-does-not-defeat-hashdos,
+  consistent-hashing-verified-remap-counts, first-non-repeating-character-two-ways). Main-page fix
+  verified via WebSearch: "cryptographically-inspired hash functions... preferred even for
+  non-cryptographic hash tables" has the real story backwards -- ordinary hash tables use FAST
+  non-cryptographic functions precisely because crypto hashes are slow by design; only HashDoS
+  needs a keyed function (SipHash), whose security comes from a secret key, not "crypto
+  inspiration". Also removed a genuinely duplicate load-factor bullet. Bare `hash-tables`
+  SUBTOPICS key collision-free. DSA hub Phase 10: 4 of 21.
+- [x] 2026-10-08 `/dsa/stacks-queues` — Stacks & Queues. 3 subtopics
+  (two-stack-queue-moves-each-element-once, rpn-expression-evaluation-with-a-stack,
+  min-stack-pairs-vs-two-aux-stacks). Main-page fix verified via direct Node instrumentation: "each
+  element is moved between stacks at most twice total across its lifetime" was wrong -- a real
+  move-counted TwoStackQueue over 20,000 ops found the true max is exactly 1, never 2. Also
+  replaced a duplicate theory bullet (restating the already-covered Monotonic Stack section) with a
+  cross-reference to the Big-O topic's own amortized-doubling proof. Bare `stacks-queues` SUBTOPICS
+  key collision-free. DSA hub Phase 10: 5 of 21.
+- [x] 2026-10-08 `/dsa/linked-lists` — Singly Linked Lists. 3 subtopics
+  (palindrome-check-mutates-the-list-without-restoring, recursive-reversal-call-stack-depth-measured,
+  deleting-a-middle-node-without-the-predecessor). Main-page fix verified via direct Node execution:
+  the Palindrome Challenge solution permanently shortens the caller's list (traversing from head
+  after the call returns one node fewer) -- traced the exact mechanism and built the restore fix.
+  Also replaced a wholesale duplicate theory section (restating the already-covered Floyd's
+  algorithm section) with the new palindrome-mutation finding. Bare `linked-lists` SUBTOPICS key
+  collision-free. DSA hub Phase 10: 6 of 21.
+- [x] 2026-10-08 `/dsa/doubly-linked-lists` — Doubly Linked Lists. 3 subtopics
+  (javascript-map-is-not-a-doubly-linked-list, what-happens-without-the-empty-list-guard,
+  building-a-blocked-deque-like-pythons). Main-page fix verified via WebSearch against V8's own
+  source (ordered-hash-table.h): "JavaScript's Map internally" was wrongly listed as a real-world
+  DLL example -- V8 actually implements Map/Set as an array-backed OrderedHashTable with no prev
+  pointer anywhere. Also replaced two partial-duplicate theory sections (restating earlier
+  bullets) with new, verified content: real deques use blocked (not node-per-element) DLLs for
+  cache locality, and the sentinel-boundary null-dereference risk if a guard clause is forgotten.
+  Bare `doubly-linked-lists` SUBTOPICS key collision-free. DSA hub Phase 10: 7 of 21.
+- [x] 2026-10-08 `/dsa/binary-trees` — Binary Trees. 3 subtopics
+  (morris-traversal-restores-the-tree-unless-you-forget, bfs-can-use-less-memory-than-dfs-on-a-skewed-tree,
+  inorder-alone-cannot-reconstruct-a-binary-tree). Main-page fix: replaced a duplicate theory
+  bullet (restating the BFS-uses-a-queue fact already stated two sections up) with a Node-verified
+  counterintuitive finding -- measured DFS recursion depth vs BFS peak queue size on a skewed tree
+  (BFS 1000x cheaper) and a balanced tree (DFS 46x cheaper), proving the memory winner depends
+  entirely on tree shape. Bare `binary-trees` SUBTOPICS key collision-free. DSA hub Phase 10: 8 of 21.
+- [x] 2026-10-08 `/dsa/bst` — Binary Search Trees. 3 subtopics
+  (sorted-array-to-bst-is-actually-on-log-n, one-rotation-rebalances-an-ascending-insert,
+  generic-tree-lca-visits-the-whole-tree). Main-page fix: `sortedArrayToBST`'s own comment claimed
+  "O(n)" but `slice()` makes it O(n log n) -- verified via a measured copy-ratio that climbs with n
+  (1.90 to 14.69) rather than staying constant; fixed the comment and built the real O(n) index-based
+  version. Also retitled a theory section that duplicated section 1's own self-balancing content,
+  replacing it with a Node-verified single-rotation rebalancing demonstration (ascending 1,2,3 insert:
+  height 3/balance -2 -> one rotateLeft -> height 2/balance 0, inorder unchanged). Third subtopic
+  measured the real complexity gap between BST-LCA and generic-tree LCA via instrumented node-visit
+  counting on a 1023-node balanced tree (6 vs 2043 visits, 340x). Bare `bst` SUBTOPICS key
+  collision-free. DSA hub Phase 10: 9 of 21.
+- [x] 2026-10-08 `/dsa/heaps` — Heaps / Priority Queues. 3 subtopics
+  (mergeklists-never-actually-used-its-own-heap, popping-a-heap-n-times-is-heap-sort,
+  the-real-on-log-k-k-closest-points-solution). Main-page fix: `mergeKLists` declared a
+  `MinHeap` and never pushed or popped from it -- its real work came entirely from
+  `.flat().sort().filter()`, dead-code heap. Built the real tuple-heap merge, verified
+  output-equivalent to the sort version across 200+ randomized trials, each element costing
+  one O(log k) push + pop (8 pushes/8 pops for 8 elements across 3 lists). Also retitled a
+  theory section that duplicated the Top-K and Two-Heap sections, replacing it with a
+  Node-verified heap-sort demonstration (heapify builds a valid but unsorted heap; popping
+  n times matches Array.sort() exactly across 50 trials). Third subtopic built the real
+  max-heap-of-size-k K Closest Points solution the Challenge's own hints asked for but its
+  sort-based solution never implemented, verified by distance multiset across 200 trials
+  (individual tied points can validly differ between heap and sort approaches). Bare `heaps`
+  SUBTOPICS key collision-free. DSA hub Phase 10: 10 of 21.
+- [x] 2026-10-08 `/dsa/graphs-bfs-dfs` — Graphs - BFS & DFS. 3 subtopics
+  (shifts-on-v-squared-risk-depends-on-graph-width, detecting-a-directed-cycle-with-three-state-dfs,
+  checking-bipartiteness-with-two-coloring-bfs). Main-page fix: the canonical `bfs` function used
+  `queue.shift()!` -- the EXACT anti-pattern the page's own "Common Mistakes" section warns against
+  ("For large graphs, BFS with shift() is O(V^2)"). Fixed to an index-pointer dequeue. Verified the
+  real blowup is width-dependent, not vertex-count-dependent: a 400K-node chain graph showed no
+  difference between shift() and pointer BFS, but a 160K-node wide tree showed shift() running 33x
+  slower. Also retitled 2 of 4 duplicate bullets in the "When to Choose BFS/DFS" section with the
+  width-dependent finding and a three-state-DFS verification. Subtopics build the directed-cycle
+  detection (white/gray/black) and bipartiteness check (2-coloring) the page's own QnA describes in
+  prose but never shows in code, both verified via direct execution against DAG/cyclic/diamond and
+  even-cycle/odd-cycle/tree test cases. Bare `graphs-bfs-dfs` SUBTOPICS key collision-free. Self-caught
+  and fixed a `\'`-in-bound-attribute mistake before the build (needed the typographic curly quote).
+  DSA hub Phase 10: 11 of 21.
+- [x] 2026-10-08 `/dsa/graph-algorithms` — Graph Algorithms. 3 subtopics
+  (dijkstras-fake-heap-was-sort-plus-shift, kruskals-mst-with-the-pages-own-union-find,
+  a-star-visits-far-fewer-nodes-than-dijkstra). Main-page fix: Dijkstra's own codeTab simulated
+  a "min-heap" via `heap.sort()` + `heap.shift()!` on every iteration (comment admitted "In real
+  code: use proper min-heap") while the page's own Quick Reference claims O((V+E) log V). Fixed
+  to a real binary min-heap. Verified a widening performance gap on dense random graphs (9x at
+  2K nodes, 37x at 8K, 114x at 20K) confirming an asymptotically wrong complexity (~O(V^2 log V)),
+  not just a constant-factor cost -- both versions always produced identical correct distances.
+  Also retitled a duplicate theory bullet with this finding. Subtopics build Kruskal's MST
+  (named in a quiz, zero code, reuses the page's own UnionFind class, verified weight 16 on the
+  classic 5-node textbook graph) and A* (named in theory, zero code, measured 87.1% fewer nodes
+  visited than Dijkstra for the identical optimal distance on a 30x30 grid). Bare
+  `graph-algorithms` SUBTOPICS key collision-free. DSA hub Phase 10: 12 of 21.
+- [x] 2026-10-08 `/dsa/basic-sorts` — Basic Sorts. 3 subtopics
+  (selection-sorts-swap-count-is-at-most-n-1-not-exactly, measuring-insertion-sorts-real-adaptive-cost,
+  sorting-by-multiple-keys-the-order-matters). Main-page fix: theory and a quiz explanation both
+  claimed selection sort "always does exactly n-1 swaps" -- but the page's own codeTab has an
+  `if (minIdx !== i)` guard specifically written to skip the swap when the minimum is already in
+  place. Instrumented it directly: 0 swaps on an already-sorted array, 5 on reverse-sorted (n=10),
+  7 on a random trial -- never reliably exactly n-1. Comparison count, by contrast, is a true
+  invariant: always exactly n(n-1)/2 regardless of input order. Fixed to "at most n-1" in both the
+  theory bullet and the quiz explanation, and retitled a duplicate theory bullet with this finding.
+  Subtopics measure the real O(nk) adaptive cost claim (near-linear growth on bounded-displacement
+  input vs near-quadratic on random input, both directly instrumented) and demonstrate why the
+  QnA's "least important key first" multi-key-sort ordering rule actually matters (reversing it
+  strands an employee outside their own department group). Bare `basic-sorts` SUBTOPICS key
+  collision-free. DSA hub Phase 10: 13 of 21.
+- [x] 2026-10-08 `/dsa/advanced-sorts` — Merge & Quick Sort. 3 subtopics (routes
+  quicksort-recursion-stack-overflow, radix-sort-digit-by-digit, timsort-natural-ascending-runs;
+  short physical folders quicksort-stack-overflow, radix-sort-digit-passes, timsort-natural-runs).
+  Main-page fix: the revision summary and the "merge sort when O(1) space is required" mistake
+  called quicksort O(1) space, contradicting the page's own theory (O(log n) avg / O(n) worst
+  stack). Instrumented active recursion depth: n on a sorted array (99 at n=100, 999 at n=1000),
+  real RangeError at n=10,000; recursing into the smaller partition and looping on the larger kept
+  depth at 2 up to n=100,000. Replaced two duplicate bullets in the "Choosing" theory section
+  (stack-depth finding; radix sort). Subtopics: the stack-depth fix, radix sort built on per-digit
+  counting sort (verified vs reference sort), natural-run detection (100 runs on 100 concatenated
+  runs vs ~n/2 on random data). Bare `advanced-sorts` SUBTOPICS key collision-free. DSA hub
+  Phase 10: 14 of 21.
+- [x] 2026-10-08 `/dsa/binary-search` — Binary Search. 3 subtopics (routes
+  bit-shift-midpoint-overflows-in-javascript, linked-list-binary-search-never-beats-a-scan,
+  rotated-search-with-duplicates-is-o-n; short folders shift-mid-overflow,
+  linked-list-binary-search, rotated-duplicates-worst-case). Main-page fixes: the Quick Reference
+  midpoint (lo+hi)>>1 truncates to 32 bits in JS ((2**31+2**31)>>1 is 0; integer sqrt of 2^31-1
+  returned 0 instead of 46340), contradicting the mistake block's "overflow is unlikely in JS"
+  (both corrected); the linked-list bullet said O(n log n) — that is only the restart-from-head
+  version (measured exactly n log2 n), walking from the lo node costs n - 1, never better than a
+  scan; the rotated-duplicates bullet now states the O(n) worst case; removed leftover dead code
+  ("Hmm — wait" and an unused canFinish) from the Koko codeTab. Third subtopic shows the page's own
+  searchRotated returns -1 for 2 in [1,1,1,2,1,1,1,1,1] and the tie-break fix's n/2 iterations on
+  an all-equal array. Bare `binary-search` SUBTOPICS key collision-free. DSA hub Phase 10: 15 of 21.
+- [x] 2026-10-08 `/dsa/recursion-backtracking` — Recursion & Backtracking. 3 subtopics (routes
+  tail-calls-spec-mandated-but-only-safari, sort-and-break-prunes-earlier,
+  skip-duplicates-at-the-same-tree-level; short folders tail-calls-safari-only,
+  combination-sum-sort-break, subsets-skip-duplicates). Main-page fixes: the tail-recursion bullet
+  said JavaScript does not optimize tail calls — ES2015 requires proper tail calls in strict mode,
+  only Safari/JavaScriptCore ships them, V8 removed its implementation (in Node 22 a correct
+  tail-recursive sum overflowed at 10,000 calls); the duplicate "Pruning: brute force vs
+  backtracking" theory section was retitled and rewritten with measured findings (sort+break: 28 ->
+  10 calls on [2,3,6,7]/7 but only ~12% with 608 answers; duplicate skip: 1,048,576 -> 121 subsets
+  for ten 1s and ten 2s). Third subtopic shows i > 0 instead of i > start drops [1,2,2] and [2,2].
+  Bare `recursion-backtracking` SUBTOPICS key collision-free. DSA hub Phase 10: 16 of 21.
+- [x] 2026-10-08 `/dsa/dynamic-programming` — Dynamic Programming. 3 subtopics (routes
+  coin-ways-loop-order-combinations-vs-permutations, lcs-one-row-needs-a-diagonal-variable,
+  top-down-vs-bottom-up-measured; short folders coin-ways-loop-order, lcs-diagonal-variable,
+  memo-vs-table-measured). Main-page fixes: the count-of-ways QnA said "same structure" as min
+  coins — with the page's amount-outer loops it counts ordered sequences (9 vs 4 combinations for
+  [1,2,5]/5); the space-optimization QnA said one-row LCS can "iterate right-to-left" — wrong on 579
+  of 2,000 random pairs vs the 2D table, a saved diagonal variable fixes it; quiz "generally faster"
+  answered "top-down for sparse", contradicting the theory's "bottom-up usually faster" (answer
+  corrected, sparse kept as the exception); the coin-guard mistake said "undefined behavior" — in JS
+  it is NaN poisoning that returns NaN; replaced a quiz question duplicating Q1 with a loop-order
+  question. Third subtopic: memo visited 5 states vs 10,000 on a sparse case, overflowed the stack
+  at amount 20,000 on a dense one. Bare `dynamic-programming` SUBTOPICS key collision-free. DSA hub
+  Phase 10: 17 of 21.
+- [x] 2026-10-08 `/dsa/dp-patterns` — DP Patterns. 3 subtopics (routes
+  circular-kadane-fails-on-all-negative-input, longest-palindromic-substring-of-character,
+  word-break-with-slice-is-cubic; short folders circular-kadane-all-negative,
+  palindrome-substring-vs-subsequence, word-break-cubic-slice). Main-page fixes: the circular Kadane
+  formula returns 0 for all-negative input (empty wrap-around; wrong on 2,311 of 20,000 random arrays
+  vs brute force, all of them all-negative) — added the guard; the substring-vs-subsequence QnA said
+  "character" has no palindromic substring longer than 1 — the page's own expand-around-center
+  returns "ara"; the Word Break comment said O(n²) — s.slice makes it O(n³) (characters copied grew
+  8x per doubling of n, ~86M at n = 800), bounding j by the longest word copied 2,403. Bare
+  `dp-patterns` SUBTOPICS key collision-free. DSA hub Phase 10: 18 of 21.
+- [x] 2026-10-08 `/dsa/trie` — Trie. 3 subtopics (routes sorted-array-answers-prefix-queries,
+  compressed-trie-saves-nodes-not-characters, word-search-ii-prune-found-branches; short folders
+  sorted-array-prefix-search, compressed-trie-node-count, word-search-ii-pruning). Main-page fixes:
+  theory grouped sorted arrays with hash sets as unable to do prefix queries — a lower-bound
+  search finds the contiguous block (10 comparisons on 1,000 words, same results as the trie); the
+  HashMap QnA said O(1) lookup — hashing a string is O(L); the compressed-trie QnA said space drops
+  to O(n) — node count does (12,577 -> 1,411 on 1,000 random words, under 2n), label characters do
+  not; the Word Search II code never pruned — measured isEnd = false alone changes nothing (7,985
+  calls both ways), deleting empty branches cut it to 36, so the code now does both. Bare `trie`
+  SUBTOPICS key collision-free. DSA hub Phase 10: 19 of 21.
+- [x] 2026-10-08 `/dsa/bit-manipulation` — Bit Manipulation. 3 subtopics (routes
+  right-shift-is-floor-not-division, bit-tricks-wrong-above-2-to-32,
+  bitmask-loop-breaks-at-31-elements; short folders right-shift-floors-negatives,
+  bit-tricks-beyond-32-bits, bitmask-subset-limit). Main-page fixes: Quick Reference called >> "divide
+  by 2^k" and << "multiply by 2^k" — >> floors negatives (-5 >> 1 is -3) and both convert to int32
+  (2**30 << 1 negative, 3e9 >> 1 negative); the quiz claimed shifts are faster than multiplication
+  (removed, replaced with the 32-bit caveat); the 32-bit mistake now notes the page's own
+  isPowerOfTwo(3 * 2**32) returns true and hammingWeight(2**53 - 1) returns 32. Third subtopic: the
+  page's allSubsets loop runs zero times for 31 elements because 1 << 31 is negative. Bare
+  `bit-manipulation` SUBTOPICS key collision-free. DSA hub Phase 10: 20 of 21.
+- [x] 2026-10-08 `/dsa/greedy` — Greedy Algorithms. 3 subtopics (routes
+  canonical-coins-are-not-divisibility, merge-intervals-mutates-the-input,
+  job-sequencing-greedy-by-profit; short folders canonical-coin-systems, merge-intervals-mutation,
+  job-sequencing-by-profit). Main-page fixes: the coin mistake said greedy needs each coin to divide
+  the next — US and euro coins fail that and are canonical, [1,10,25] fails at 30 (Kozen-Zaks bound
+  cited); the merge codeTab sorted and edited the caller's intervals ([1,3] became [1,6]) and returned
+  [undefined] for [] — now copies first; the deadlines QnA said "greedy by deadline" — unit-time job
+  sequencing is greedy by profit with latest free slot (0 wrong vs 1,502 wrong by deadline on 3,000
+  random sets); the gas-station start is one past the lowest running total, not "where the tank last
+  hit 0". Bare `greedy` SUBTOPICS key collision-free. **DSA hub Phase 10 COMPLETE: 21 of 21 topics,
+  63 subtopic pages.**
 
 #### Testing — 19 topic pages
 
-- [ ] `/testing-hub/testing-fundamentals` — Testing Fundamentals
-- [ ] `/testing-hub/jest-fundamentals` — Jest Fundamentals
-- [ ] `/testing-hub/mocking-spies` — Mocking & Spies
-- [ ] `/testing-hub/xunit` — xUnit (.NET Testing)
-- [ ] `/testing-hub/tdd` — Test-Driven Development
-- [ ] `/testing-hub/test-doubles` — Test Doubles
-- [ ] `/testing-hub/integration-testing` — Integration Testing
-- [ ] `/testing-hub/testing-databases` — Testing with Databases
-- [ ] `/testing-hub/angular-testing` — Angular Testing
-- [ ] `/testing-hub/react-testing-library` — React Testing Library
-- [ ] `/testing-hub/playwright` — Playwright
-- [ ] `/testing-hub/cypress` — Cypress
-- [ ] `/testing-hub/api-testing` — API Testing
-- [ ] `/testing-hub/contract-testing` — Contract Testing (Pact)
-- [ ] `/testing-hub/snapshot-testing` — Snapshot Testing
-- [ ] `/testing-hub/vitest` — Vitest
-- [ ] `/testing-hub/msw` — MSW — Mock Service Worker
-- [ ] `/testing-hub/visual-regression` — Visual Regression Testing
-- [ ] `/testing-hub/property-based-testing` — Property-Based Testing
+- [x] 2026-10-08 `/testing-hub/testing-fundamentals` — Testing Fundamentals — fixed three main-page bugs, each verified against installed packages: the mistake block's "right" RTL assertion used toHaveText (Playwright-only; jest-dom ships toHaveTextContent); the E2E example asserted toHaveURL('/dashboard') after goto() to an absolute URL with no baseURL (Playwright's own urlMatches() returns false for that, true with a baseURL); the integration example claimed Testcontainers but never started one and shared DB state between tests (now PostgreSqlContainer + migrate + beforeEach reset + teardown). 3 subtopics, one per fix. TestingNavComponent accordion fix (20th *NavComponent).
+- [x] 2026-10-08 `/testing-hub/jest-fundamentals` — Jest Fundamentals — fixed the expect.assertions quiz (exact count, not 'at least': three assertions under assertions(2) fail too, checked with Jest 30's expect), the toThrowError recommendation (alias removed in Jest 30, also fixed in the Testing cheat sheet), and coverage.provider (Jest's option is coverageProvider, default babel). 3 subtopics, one per fix.
+- [x] 2026-10-08 `/testing-hub/mocking-spies` — Mocking & Spies — fixed the quiz claim that mockResolvedValue is shorthand for mockReturnValue(Promise.resolve(v)) (it is mockImplementation(() => Promise.resolve(v)); with rejections the eager form causes an unhandled rejection, measured with jest-mock 30.5), a spyOn comment naming Math.random instead of mathUtils.random, and a misleading test name. Subtopics: eager Promise.reject, spy targets, mock.invocationCallOrder.
+- [x] 2026-10-08 `/testing-hub/xunit` — xUnit — fixed the Challenge hint (asserted InsufficientFundsException while the code throws InvalidOperationException; Assert.Throws is exact-type), the async mistake (Assert.Throws with an async lambda is a compile error via [Obsolete(..., true)], not a silent pass), a nonsense Assert.Equal failure-message example, and the IAsyncLifetime QnA (on a test class it runs per test). 3 subtopics.
+- [x] 2026-10-08 `/testing-hub/tdd` — Test-Driven Development — fixed the Outside-in tab (asserted the welcome email contains 'Alice' but only sent alice@example.com; stringContaining is case-sensitive, checked with Jest's expect package) and the 'one assertion per test' advice (contradicted Testing Fundamentals; now one behaviour per test). Subtopics: outside-in test missing input, one behaviour not one assertion, a refactor that drops the empty-string guard (''.split(',') is [''] -> NaN, Node-verified).
+- [x] 2026-10-08 `/testing-hub/test-doubles` — Test Doubles — fixed the Stub & Mock tab (a jest.fn() checked after the act was labelled a pre-programmed mock; in Meszaros/Fowler terms it is a spy) and the spy/mock mistake. Subtopics: jest.fn checked afterwards is a spy, spyOn calls through by default (the Challenge relies on it), clearAllMocks vs resetAllMocks vs restoreAllMocks — all measured with jest-mock 30.5.
+- [x] 2026-10-08 `/testing-hub/integration-testing` — Integration Testing — fixed --testPathPattern (Jest 30 exits 1 with a replacement notice; now --testPathPatterns, run against jest-cli 30), the Testcontainers tab (missing required image, no container.stop(), placeholder migration SQL), and the .NET UseSqlite('Data Source=:memory:') example (each connection gets an empty DB and no schema was created; now a kept-open SqliteConnection + EnsureCreated). 3 subtopics.
+- [x] 2026-10-08 `/testing-hub/testing-databases` — Testing with Databases — verified on a local PostgreSQL 16 with node-postgres: per-test BEGIN/ROLLBACK only isolates its own client (pool writes from app code survive), explicit-id seeding leaves the serial sequence behind (next insert fails on id 1 until setval), and TRUNCATE without RESTART IDENTITY / ROLLBACK never reset sequences. Fixed the rollback tab (unused Prisma import, same-connection note), the seeding tab (setval note), and a QnA PostgreSqlContainer() without the required image.
+- [x] 2026-10-08 `/testing-hub/angular-testing` — Angular Testing (3 subtopics: provideHttpClientTesting, TestBed.tick, RouterTestingHarness)
+- [x] 2026-10-08 `/testing-hub/react-testing-library` — React Testing Library — checked with @testing-library/dom 10.4 + jsdom: getByRole('status', { name: /loading/i }) fails on a plain Loading… div (status/alert take names from aria-label only), getByClassName does not exist, and findBy gives up after asyncUtilTimeout 1000 ms. Fixed the loading test (now toHaveTextContent and awaits the fetch), the className mistake's 'wrong' example, and a missing userEvent import.
+- [x] 2026-10-08 `/testing-hub/playwright` — Playwright (3 subtopics: actionTimeout defaults to 0, networkidle discouraged, strict mode violations)
+- [x] 2026-10-08 `/testing-hub/cypress` — Cypress (3 subtopics: cypress/react mount import, cy.session scope, spec vs app iframes)
+- [x] 2026-10-08 `/testing-hub/api-testing` — API Testing (3 subtopics: Supertest ephemeral port, shared JWT secret, Zod 4 datetime offsets)
+- [x] 2026-10-08 `/testing-hub/contract-testing` — Contract Testing (3 subtopics: extra fields pass, publish needs a version, local verification and provider states)
+- [x] 2026-10-08 `/testing-hub/snapshot-testing` — Snapshot Testing — fixed the gitignored-snapshots mistake and --ci QnA (Jest 30 source: ci defaults from ci-info, updateSnapshot becomes 'none' on CI, missing snapshots fail with 'New snapshot was not written'), and a Challenge regex /\s+/g stored in a template literal that rendered as /s+/g (slug 'widget pro' instead of 'widget-pro'). Third subtopic: pretty-format sorts object keys. 
+- [x] 2026-10-08 `/testing-hub/vitest` — Vitest — fixed the vitest.workspace.ts quiz (renamed to test.projects in 3.2, file removed in 4; Vitest 5.0.3 dist has no reference to it), the in-source-tests mistake (import.meta.vitest is undefined, not truthy, in production; define must be the string 'undefined' to strip the code), and the config example missing /// <reference types='vitest/config' /> (Vite's UserConfig has no test key otherwise). 3 subtopics, one per fix.
+- [x] 2026-10-08 `/testing-hub/msw` — MSW — fixed the Component Test tab (used server, http and HttpResponse without importing them), the onUnhandledRequest mistake (measured with msw 2.15: 'warn' sends unhandled requests to the real network, 'error' rejects only that fetch — no suite crash; setup now uses 'error'). Third subtopic: relative handler URLs fail in a plain Node environment (fetch('/api/users') throws ERR_INVALID_URL before MSW). SUBTOPICS key hub-prefixed to test-msw (Angular owns bare msw).
+- [x] 2026-10-08 `/testing-hub/visual-regression` — Visual Regression Testing (3 subtopics: threshold vs maxDiffPixelRatio, missing baseline fails, animations and networkidle)
+- [x] 2026-10-08 `/testing-hub/property-based-testing` — Property-Based Testing — fixed the Shrinking Example (its bug was symmetric in a and b, so commutativity never failed in 100,000 fast-check runs; now asymmetric, seed 42 shrinks to [101,-1]) and the Challenge's fc.integer(-1000, 1000) (v4 ignores positional bounds: sampled 1743045805). Subtopics: symmetric bug, positional args, model-based testing with fc.commands (buggy bounded stack shrinks to four pushes).
 
 #### AI/ML — 19 topic pages
 
-- [ ] `/ai/ml-fundamentals` — AI & ML Fundamentals
-- [ ] `/ai/math-for-ml` — Mathematics for ML
-- [ ] `/ai/linear-logistic-regression` — Linear & Logistic Regression
-- [ ] `/ai/decision-trees` — Decision Trees & Random Forests
-- [ ] `/ai/gradient-boosting` — Gradient Boosting (XGBoost)
-- [ ] `/ai/clustering` — Clustering & Dimensionality Reduction
-- [ ] `/ai/neural-networks` — Neural Networks
-- [ ] `/ai/computer-vision` — CNNs & Computer Vision
-- [ ] `/ai/transformers` — Transformers & Attention
-- [ ] `/ai/llm-fundamentals` — LLM Fundamentals
-- [ ] `/ai/fine-tuning` — Fine-tuning & RLHF
-- [ ] `/ai/rag` — RAG
-- [ ] `/ai/prompt-engineering` — Prompt Engineering
-- [ ] `/ai/ai-agents` — AI Agents & Tool Use
-- [ ] `/ai/vector-databases` — Vector Databases
-- [ ] `/ai/mlops` — MLOps & Model Deployment
-- [ ] `/ai/hugging-face` — Hugging Face & Model Hub
-- [ ] `/ai/evaluating-llms` — Evaluating LLM Outputs
-- [ ] `/ai/ai-engineering` — AI Engineering Patterns
+- [x] 2026-10-08 `/ai/ml-fundamentals` — AI & ML Fundamentals (pilot; 3 subtopics: biased sort shuffle, NaN precision, learning-rate limit)
+- [x] 2026-10-08 `/ai/math-for-ml` — Mathematics for ML (3 subtopics: silent matmul shape bug, gradient at w=1, L1 soft-threshold)
+- [x] 2026-10-08 `/ai/linear-logistic-regression` — Linear & Logistic Regression (3 subtopics: separable data diverges, MSE vs CE gradient, odds ratios)
+- [x] 2026-10-08 `/ai/decision-trees` — Decision Trees & Random Forests (3 subtopics: ccp_alpha default 0, max_features defaults, impurity importance bias)
+- [x] 2026-10-08 `/ai/gradient-boosting` — Gradient Boosting (3 subtopics: LightGBM callbacks in fit, subsample_freq, target scaling)
+- [x] 2026-10-08 `/ai/clustering` — Clustering & Dimensionality Reduction (3 subtopics: k-means assign bug, PCA power iteration, n_init)
+- [x] 2026-10-08 `/ai/neural-networks` — Neural Networks (3 subtopics: Dropout before BatchNorm, measured vanishing gradients, Xavier vs He)
+- [x] 2026-10-08 `/ai/computer-vision` — CNNs & Computer Vision (3 subtopics: weights API, cross-correlation, pooling shift)
+- [x] 2026-10-08 `/ai/transformers` — Transformers & Attention (3 subtopics: equivariance, sqrt(d_k) measured, fully masked row NaN)
+- [x] 2026-10-08 `/ai/llm-fundamentals` — LLM Fundamentals (3 subtopics; fixed temperature-0 NaN sampler, js-tiktoken API, model scale/vocab/context claims)
+- [x] 2026-10-08 `/ai/fine-tuning` — Fine-tuning & RLHF (3 subtopics; fixed LoRA param count, TRL trainer arguments, SFT on output-only text)
+- [x] 2026-10-08 `/ai/rag` — RAG (3 subtopics; fixed character-based chunkSize, LangChain 1.x imports, quiz chunk size)
+- [x] 2026-10-08 `/ai/prompt-engineering` — Prompt Engineering (3 subtopics; fixed fence-stripping regex, CoT challenge prompt, JSON mode claim)
+- [x] 2026-10-08 `/ai/ai-agents` — AI Agents (3 subtopics; fixed eval in calculator tool, unhandled stop reasons, ReAct parser)
+- [x] 2026-10-08 `/ai/vector-databases` — Vector Databases (3 subtopics; fixed FAISS cosine conversion, HNSW/PQ memory, Pinecone v9 upsert)
+- [x] 2026-10-08 `/ai/mlops` — MLOps (3 subtopics; fixed vLLM command, throughput claims, pd.cut bins, MLflow stages)
+- [x] 2026-10-08 `/ai/hugging-face` — Hugging Face (3 subtopics; fixed apply_chat_template flow, InferenceClient, fp32 memory claim)
+- [x] 2026-10-08 `/ai/evaluating-llms` — Evaluating LLMs (3 subtopics; fixed ROUGE example outputs, judge position-bias figure)
+- [x] 2026-10-08 `/ai/ai-engineering` — AI Engineering (3 subtopics; fixed stream cancellation, abort handling, exact usage)
 
 ---
 

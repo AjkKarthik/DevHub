@@ -1,0 +1,26 @@
+<div class="test-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Integration Testing" topicRoute="/testing-hub/integration-testing"
+    subtopicLabel="In-Memory SQLite Dies with Its Connection" />
+  <div class="page-header-icon test-icon">✓</div>
+  <h1 class="page-title">In-Memory SQLite Dies with Its Connection</h1>
+  <p class="page-subtitle">The WebApplicationFactory example passed the connection string Data Source=:memory: to UseSqlite. Every new DbContext then opens its own empty database, and nothing created the schema.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Testing" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="test-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="test-section">
+    <h2>Where this fits</h2>
+    <p>This fixes the WebApplicationFactory tab on Integration Testing. Testing with Databases covers transaction rollback and seeding strategies in more depth.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Integration Testing" topicRoute="/testing-hub/integration-testing"
+    [prev]="{ label: 'PostgreSqlContainer Needs an Image and a stop()', route: '/testing-hub/integration-testing/postgresqlcontainer-needs-an-image-and-a-stop' }" />
+</div>

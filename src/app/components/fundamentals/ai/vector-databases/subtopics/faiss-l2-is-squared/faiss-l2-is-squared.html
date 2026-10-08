@@ -1,0 +1,26 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Vector Databases" topicRoute="/ai/vector-databases"
+    subtopicLabel="FAISS L2 Distances Are Squared" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">FAISS L2 Distances Are Squared</h1>
+  <p class="page-subtitle">The FAISS tab normalised the vectors, searched an IndexHNSWFlat and printed 1 - distances as the cosine similarity. That index returns squared L2 distances, so the correct conversion is 1 - d / 2.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This fixes the FAISS tab. Next, how much memory HNSW really uses.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Vector Databases" topicRoute="/ai/vector-databases"
+    [next]="{ label: 'HNSW Memory Is Not N·M·d', route: '/ai/vector-databases/hnsw-memory-is-not-n-m-d' }" />
+</div>
