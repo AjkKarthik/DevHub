@@ -1566,6 +1566,17 @@ const PYTHON_LABELS: Record<string, string> = {
 
 const RUST_LABELS: Record<string, string> = {
   'fundamentals': 'Rust Fundamentals',
+  'ownership-borrowing': 'Ownership & Borrowing',
+  'lifetimes': 'Lifetimes',
+  'structs-enums': 'Structs & Enums',
+  'pattern-matching': 'Pattern Matching',
+  'error-handling': 'Error Handling',
+  'traits-generics': 'Traits & Generics',
+  'collections': 'Collections',
+  'modules-cargo': 'Modules & Cargo',
+  'smart-pointers': 'Smart Pointers',
+  'concurrency-threads': 'Concurrency & Threads',
+  'async-await': 'Async/Await',
 };
 
 const GO_LABELS: Record<string, string> = {

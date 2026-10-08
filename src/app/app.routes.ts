@@ -2595,6 +2595,17 @@ export const routes: Routes = [
   { path: 'rust', children: [
     { path: '',              loadComponent: () => import('./components/backend/rust/home/home').then(m => m.RustHome) },
     { path: 'fundamentals',  loadComponent: () => import('./components/backend/rust/fundamentals/fundamentals').then(m => m.RustFundamentals) },
+    { path: 'ownership-borrowing', loadComponent: () => import('./components/backend/rust/ownership-borrowing/ownership-borrowing').then(m => m.RustOwnershipBorrowing) },
+    { path: 'lifetimes', loadComponent: () => import('./components/backend/rust/lifetimes/lifetimes').then(m => m.RustLifetimes) },
+    { path: 'structs-enums', loadComponent: () => import('./components/backend/rust/structs-enums/structs-enums').then(m => m.RustStructsEnums) },
+    { path: 'pattern-matching', loadComponent: () => import('./components/backend/rust/pattern-matching/pattern-matching').then(m => m.RustPatternMatching) },
+    { path: 'error-handling', loadComponent: () => import('./components/backend/rust/error-handling/error-handling').then(m => m.RustErrorHandling) },
+    { path: 'traits-generics', loadComponent: () => import('./components/backend/rust/traits-generics/traits-generics').then(m => m.RustTraitsGenerics) },
+    { path: 'collections', loadComponent: () => import('./components/backend/rust/collections/collections').then(m => m.RustCollections) },
+    { path: 'modules-cargo', loadComponent: () => import('./components/backend/rust/modules-cargo/modules-cargo').then(m => m.RustModulesCargo) },
+    { path: 'smart-pointers', loadComponent: () => import('./components/backend/rust/smart-pointers/smart-pointers').then(m => m.RustSmartPointers) },
+    { path: 'concurrency-threads', loadComponent: () => import('./components/backend/rust/concurrency-threads/concurrency-threads').then(m => m.RustConcurrencyThreads) },
+    { path: 'async-await', loadComponent: () => import('./components/backend/rust/async-await/async-await').then(m => m.RustAsyncAwait) },
   ] },
   // ── Data Hubs ─────────────────────────────────────────────────────────────
   { path: 'mongodb', children: [

@@ -79,7 +79,7 @@ export class ProgressService {
 
   // ── Rust (keys prefixed 'rust-') ─────────────────────────────────────────
   // NOTE: hub is brand new — bump this total as more topic pages ship.
-  readonly rustTotal  = 1;
+  readonly rustTotal  = 12;
   readonly rustCount  = computed(() => [...this._done()].filter(r => r.startsWith('rust-')).length);
   readonly rustPct    = computed(() => Math.round((this.rustCount() / this.rustTotal) * 100));
 

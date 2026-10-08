@@ -808,6 +808,158 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     tip: RUST_DEFAULT.tip,
     gotchas: RUST_DEFAULT.gotchas,
   },
+  'rust/lifetimes': {
+    apis: ['&\'a T', '\'static', 'impl<\'a>', 'T: \'a', '\'_'],
+    docs: RUST_DEFAULT.docs, resources: RUST_DEFAULT.resources,
+    related: [
+      { label: 'Rust Home',            route: '/rust' },
+      { label: 'Ownership & Borrowing', route: '/rust/ownership-borrowing' },
+    ],
+    tip: 'A lifetime annotation never makes data live longer — it only tells the compiler how the lifetimes of your references relate so it can verify none of them dangles.',
+    gotchas: [
+      'Adding \'static to silence a lifetime error usually just moves the error to every caller — first ask whether the value should be owned instead.',
+      'A function with two reference inputs, no self, and a reference output always needs an explicit lifetime annotation (E0106).',
+    ],
+  },
+  'rust/structs-enums': {
+    apis: ['struct', 'enum', 'impl', 'Self', 'Option', '#[derive]'],
+    docs: RUST_DEFAULT.docs, resources: RUST_DEFAULT.resources,
+    related: [
+      { label: 'Rust Home', route: '/rust' },
+      { label: 'Ownership & Borrowing', route: '/rust/ownership-borrowing' },
+      { label: 'Lifetimes', route: '/rust/lifetimes' },
+    ],
+    tip: 'An enum value is exactly one variant at a time and each variant can carry different data — use an enum instead of several optional fields so invalid combinations cannot even be constructed.',
+    gotchas: [
+      'Struct update syntax (..base) moves any non-Copy field it takes from the base instance, leaving that instance only partially usable.',
+      'A method taking plain self consumes the value — use &self for read-only getters and &mut self for modifying methods.',
+    ],
+  },
+  'rust/pattern-matching': {
+    apis: ['match', 'if let', 'while let', 'let else', 'matches!', '@ binding'],
+    docs: RUST_DEFAULT.docs, resources: RUST_DEFAULT.resources,
+    related: [
+      { label: 'Rust Home', route: '/rust' },
+      { label: 'Structs & Enums', route: '/rust/structs-enums' },
+      { label: 'Ownership & Borrowing', route: '/rust/ownership-borrowing' },
+    ],
+    tip: 'A match must cover every possibility, so listing each variant of your own enums explicitly (instead of a wildcard) turns adding a new variant into a compile error at every match that needs updating.',
+    gotchas: [
+      'A lowercase name in a pattern is a NEW binding that matches anything — it does not compare against an outer variable of the same name.',
+      'Match guards are ignored for exhaustiveness checking, so you always need a final unguarded arm.',
+    ],
+  },
+  'rust/error-handling': {
+    apis: ['Result', 'Option', '?', 'unwrap / expect', 'From', 'Box<dyn Error>'],
+    docs: RUST_DEFAULT.docs, resources: RUST_DEFAULT.resources,
+    related: [
+      { label: 'Rust Home', route: '/rust' },
+      { label: 'Pattern Matching', route: '/rust/pattern-matching' },
+      { label: 'Structs & Enums', route: '/rust/structs-enums' },
+    ],
+    tip: 'Return a Result for any failure a caller could reasonably recover from, and reserve panic! for bugs — the ? operator makes propagating errors nearly as short as ignoring them.',
+    gotchas: [
+      'The ? operator only works in a function whose return type can carry the error — using it in a fn returning () is error E0277.',
+      'unwrap() turns a recoverable failure into a crash; prefer expect with a reason, or propagate with ?.',
+    ],
+  },
+  'rust/traits-generics': {
+    apis: ['trait', 'impl Trait', 'dyn Trait', 'T: Bound', 'where', 'Box<dyn Trait>'],
+    docs: RUST_DEFAULT.docs, resources: RUST_DEFAULT.resources,
+    related: [
+      { label: 'Rust Home', route: '/rust' },
+      { label: 'Error Handling', route: '/rust/error-handling' },
+      { label: 'Structs & Enums', route: '/rust/structs-enums' },
+    ],
+    tip: 'Default to generics with trait bounds for speed (static dispatch, inlining) and reach for Box<dyn Trait> only when you truly need different concrete types together at runtime.',
+    gotchas: [
+      'Trait methods are only callable when the trait is in scope — a missing use statement produces error E0599 even though the method exists.',
+      'A function returning impl Trait must return ONE concrete type on every path; use Box<dyn Trait> to choose between types at runtime.',
+    ],
+  },
+  'rust/collections': {
+    apis: ['Vec<T>', 'String / &str', 'HashMap<K, V>', 'HashSet<T>', 'Iterator', 'collect()'],
+    docs: RUST_DEFAULT.docs, resources: RUST_DEFAULT.resources,
+    related: [
+      { label: 'Rust Home', route: '/rust' },
+      { label: 'Traits & Generics', route: '/rust/traits-generics' },
+      { label: 'Ownership & Borrowing', route: '/rust/ownership-borrowing' },
+    ],
+    tip: 'Iterator adapters like map and filter are lazy — nothing runs until a consumer such as collect, sum or a for loop pulls items through, and the compiled result is as fast as a hand-written loop.',
+    gotchas: [
+      'Text is UTF-8, so a String cannot be indexed by integer, and byte-range slices that split a multi-byte character panic at runtime.',
+      'HashMap iteration order is unspecified and can change between runs — sort the keys or use a BTreeMap when order matters.',
+    ],
+  },
+  'rust/modules-cargo': {
+    apis: ['mod', 'pub / pub(crate)', 'use', 'Cargo.toml', 'Cargo.lock', '[workspace]'],
+    docs: RUST_DEFAULT.docs, resources: RUST_DEFAULT.resources,
+    related: [
+      { label: 'Rust Home', route: '/rust' },
+      { label: 'Collections', route: '/rust/collections' },
+      { label: 'Rust Fundamentals', route: '/rust/fundamentals' },
+    ],
+    tip: 'Everything is private by default, and a source file only becomes part of your crate when a mod declaration names it — creating the file alone does nothing.',
+    gotchas: [
+      'Making a module pub does not make its contents pub — every item needs its own pub keyword.',
+      'Always measure performance with cargo build --release; a default debug build is often many times slower.',
+    ],
+  },
+  'rust/smart-pointers': {
+    apis: ['Box<T>', 'Rc<T> / Arc<T>', 'RefCell<T>', 'Weak<T>', 'Deref', 'Drop'],
+    docs: RUST_DEFAULT.docs, resources: RUST_DEFAULT.resources,
+    related: [
+      { label: 'Rust Home', route: '/rust' },
+      { label: 'Traits & Generics', route: '/rust/traits-generics' },
+      { label: 'Ownership & Borrowing', route: '/rust/ownership-borrowing' },
+    ],
+    tip: 'Pick a smart pointer by asking who owns the data and when the borrow rules are checked: Box for one owner, Rc or Arc for many owners, RefCell to move the checks from compile time to runtime.',
+    gotchas: [
+      'Rc is not Send — sharing it with another thread is a compile error; use Arc across threads.',
+      'RefCell turns a borrow-rule violation into a runtime panic, and two Rc values pointing at each other leak memory unless one side is a Weak pointer.',
+    ],
+  },
+  'rust/concurrency-threads': {
+    apis: ['thread::spawn', 'mpsc::channel', 'Mutex<T>', 'Arc<Mutex<T>>', 'Send / Sync', 'thread::scope'],
+    docs: RUST_DEFAULT.docs, resources: RUST_DEFAULT.resources,
+    related: [
+      { label: 'Rust Home', route: '/rust' },
+      { label: 'Smart Pointers', route: '/rust/smart-pointers' },
+      { label: 'Ownership & Borrowing', route: '/rust/ownership-borrowing' },
+    ],
+    tip: 'Send and Sync are what make Rust\'s concurrency safe: the compiler rejects any code that would share unsynchronised mutable data between threads, so data races cannot happen in safe code.',
+    gotchas: [
+      'Rust prevents data races but not deadlocks — locking the same Mutex twice in one thread, or two Mutexes in inconsistent order, can still hang your program.',
+      'A spawned thread may outlive its caller, so it needs a move closure; use thread::scope when threads only need to borrow local data.',
+    ],
+  },
+  'rust/async-await': {
+    apis: ['async fn', 'Future', 'tokio::spawn', 'join! / select!', 'spawn_blocking', 'tokio::sync'],
+    docs: RUST_DEFAULT.docs, resources: RUST_DEFAULT.resources,
+    related: [
+      { label: 'Rust Home', route: '/rust' },
+      { label: 'Concurrency & Threads', route: '/rust/concurrency-threads' },
+      { label: 'Traits & Generics', route: '/rust/traits-generics' },
+    ],
+    tip: 'An async fn does nothing until it is awaited or spawned — futures are lazy, and Rust ships no runtime, so you add one (usually Tokio) to actually drive them.',
+    gotchas: [
+      'Never block inside async code (std::thread::sleep, heavy CPU work, sync file I/O) — it stalls every task on that worker thread; use async equivalents or spawn_blocking.',
+      'Holding a std MutexGuard across an .await makes the future not Send, so tokio::spawn rejects it.',
+    ],
+  },
+  'rust/ownership-borrowing': {
+    apis: ['String', '&T', '&mut T', 'Copy', 'Clone', 'Drop'],
+    docs: RUST_DEFAULT.docs, resources: RUST_DEFAULT.resources,
+    related: [
+      { label: 'Rust Home',         route: '/rust' },
+      { label: 'Rust Fundamentals', route: '/rust/fundamentals' },
+    ],
+    tip: 'Non-Lexical Lifetimes mean a borrow ends at its LAST use, not at the end of the enclosing block — this is why two "conflicting" borrows on adjacent lines often compile fine once the first one is never touched again.',
+    gotchas: [
+      'A moved value is a compile-time error to use again (E0382) — the compiler does not silently leave a stale copy behind the way a shallow-copy language might.',
+      'A function returning a reference to a value it created locally is rejected at compile time (E0106) — there is no such thing as a dangling reference in safe Rust.',
+    ],
+  },
 
   // ── Signals & State ────────────────────────────────────────────────────────
   counter: {
