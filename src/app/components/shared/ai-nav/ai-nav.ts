@@ -137,13 +137,31 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/ai/rag" routerLinkActive="active"><span class="nl-text">RAG</span>@if(p.isDone('ai-rag')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/ai/rag" routerLinkActive="active"><span class="nl-text">RAG</span>@if(p.isDone('ai-rag')){<span class="nl-done">✓</span>}@if (subtopicsOf('rag'); as ragSubs) {<button type="button" class="nav-subtopics-toggle" (click)="toggleSubtopics('rag', $event)">{{ isSubtopicsExpanded('rag') ? '▾' : '▸' }}</button>}</a>
+      @if (subtopicsOf('rag'); as ragSubs) {
+        @if (isSubtopicsExpanded('rag')) {
+          <div class="nav-subtopics">
+            @for (sub of ragSubs; track sub.route) {
+              <a [routerLink]="sub.route" routerLinkActive="active" class="nav-subtopic-link">{{ sub.label }}</a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/ai/evaluating-llms" routerLinkActive="active"><span class="nl-text">Evaluating LLM Outputs</span>@if(p.isDone('ai-evaluating-llms')){<span class="nl-done">✓</span>}</a>
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Prompt Eng. &amp; Agents</p>
-      <a routerLink="/ai/prompt-engineering" routerLinkActive="active"><span class="nl-text">Prompt Engineering</span>@if(p.isDone('ai-prompt-engineering')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/ai/prompt-engineering" routerLinkActive="active"><span class="nl-text">Prompt Engineering</span>@if(p.isDone('ai-prompt-engineering')){<span class="nl-done">✓</span>}@if (subtopicsOf('prompt-engineering'); as promptEngineeringSubs) {<button type="button" class="nav-subtopics-toggle" (click)="toggleSubtopics('prompt-engineering', $event)">{{ isSubtopicsExpanded('prompt-engineering') ? '▾' : '▸' }}</button>}</a>
+      @if (subtopicsOf('prompt-engineering'); as promptEngineeringSubs) {
+        @if (isSubtopicsExpanded('prompt-engineering')) {
+          <div class="nav-subtopics">
+            @for (sub of promptEngineeringSubs; track sub.route) {
+              <a [routerLink]="sub.route" routerLinkActive="active" class="nav-subtopic-link">{{ sub.label }}</a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/ai/ai-agents" routerLinkActive="active"><span class="nl-text">AI Agents &amp; Tool Use</span>@if(p.isDone('ai-ai-agents')){<span class="nl-done">✓</span>}</a>
       <a routerLink="/ai/vector-databases" routerLinkActive="active"><span class="nl-text">Vector Databases</span>@if(p.isDone('ai-vector-databases')){<span class="nl-done">✓</span>}</a>
       <a routerLink="/ai/ai-engineering" routerLinkActive="active"><span class="nl-text">AI Engineering Patterns</span>@if(p.isDone('ai-ai-engineering')){<span class="nl-done">✓</span>}</a>

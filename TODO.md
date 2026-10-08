@@ -10230,8 +10230,8 @@ off here with a date.
 - [x] 2026-10-08 `/ai/transformers` — Transformers & Attention (3 subtopics: equivariance, sqrt(d_k) measured, fully masked row NaN)
 - [x] 2026-10-08 `/ai/llm-fundamentals` — LLM Fundamentals (3 subtopics; fixed temperature-0 NaN sampler, js-tiktoken API, model scale/vocab/context claims)
 - [x] 2026-10-08 `/ai/fine-tuning` — Fine-tuning & RLHF (3 subtopics; fixed LoRA param count, TRL trainer arguments, SFT on output-only text)
-- [ ] `/ai/rag` — RAG
-- [ ] `/ai/prompt-engineering` — Prompt Engineering
+- [x] 2026-10-08 `/ai/rag` — RAG (3 subtopics; fixed character-based chunkSize, LangChain 1.x imports, quiz chunk size)
+- [x] 2026-10-08 `/ai/prompt-engineering` — Prompt Engineering (3 subtopics; fixed fence-stripping regex, CoT challenge prompt, JSON mode claim)
 - [ ] `/ai/ai-agents` — AI Agents & Tool Use
 - [ ] `/ai/vector-databases` — Vector Databases
 - [ ] `/ai/mlops` — MLOps & Model Deployment

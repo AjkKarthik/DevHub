@@ -1,0 +1,27 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Prompt Engineering" topicRoute="/ai/prompt-engineering"
+    subtopicLabel="The CoT Prompt Ended at the Answer" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">The CoT Prompt Ended at the Answer</h1>
+  <p class="page-subtitle">The challenge solution asked for step-by-step reasoning but ended the prompt with a bracketed placeholder and then Final answer (number only):, which invites the model to write the number straight away.</p>
+  <app-page-meta [readingTime]="4" difficulty="beginner" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This fixes the challenge. The last subtopic compares JSON mode with schema-constrained Structured Outputs.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Prompt Engineering" topicRoute="/ai/prompt-engineering"
+    [prev]="{ label: 'The Fence-Stripping Regex Missed Two Cases', route: '/ai/prompt-engineering/fence-stripping-regex-misses-cases' }"
+    [next]="{ label: 'JSON Mode Is Not Schema Enforcement', route: '/ai/prompt-engineering/json-mode-vs-structured-outputs' }" />
+</div>

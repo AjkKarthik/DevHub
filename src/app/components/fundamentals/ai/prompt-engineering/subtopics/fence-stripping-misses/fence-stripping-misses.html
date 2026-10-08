@@ -1,0 +1,26 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Prompt Engineering" topicRoute="/ai/prompt-engineering"
+    subtopicLabel="The Fence-Stripping Regex Missed Two Cases" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">The Fence-Stripping Regex Missed Two Cases</h1>
+  <p class="page-subtitle">The JSON mistake block said models add fences and explanatory text, then stripped only lowercase fences. Run on real-looking replies, it failed on a sentence before the JSON and on an uppercase JSON fence.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This fixes the JSON mistake block. Next, why the CoT challenge prompt skipped its own reasoning.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Prompt Engineering" topicRoute="/ai/prompt-engineering"
+    [next]="{ label: 'The CoT Prompt Ended at the Answer', route: '/ai/prompt-engineering/cot-prompt-ended-at-the-answer' }" />
+</div>

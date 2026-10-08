@@ -4486,4 +4486,14 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: "TRL Trainer Arguments Moved to the Config", route: '/ai/fine-tuning/trl-trainer-arguments-moved' },
     { label: "Training Only on the Output Field Drops the Instruction", route: '/ai/fine-tuning/training-only-on-the-output-field' },
   ],
+  'rag': [
+    { label: "chunkSize Counts Characters, Not Tokens", route: '/ai/rag/chunk-size-counts-characters' },
+    { label: "LangChain 1.x Moved the Chain Imports", route: '/ai/rag/langchain-1x-import-paths' },
+    { label: "Reciprocal Rank Fusion, Worked Through", route: '/ai/rag/reciprocal-rank-fusion-worked-example' },
+  ],
+  'prompt-engineering': [
+    { label: "The Fence-Stripping Regex Missed Two Cases", route: '/ai/prompt-engineering/fence-stripping-regex-misses-cases' },
+    { label: "The CoT Prompt Ended at the Answer", route: '/ai/prompt-engineering/cot-prompt-ended-at-the-answer' },
+    { label: "JSON Mode Is Not Schema Enforcement", route: '/ai/prompt-engineering/json-mode-vs-structured-outputs' },
+  ],
 };

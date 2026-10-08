@@ -32838,6 +32838,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Few-shot examples often improve consistency far more than lengthy prose instructions alone.',
     ],
   },
+  "ai/prompt-engineering/fence-stripping-regex-misses-cases": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "The CoT Prompt Ended at the Answer", route: '/ai/prompt-engineering/cot-prompt-ended-at-the-answer' },
+      { label: "Prompt Engineering (overview)", route: '/ai/prompt-engineering' },
+    ],
+    tip: "Extract the JSON instead of deleting the noise: take the fenced block if there is one, then slice from the first { to the last }.",
+    gotchas: ["A reply can contain more than one JSON-looking object; slicing first { to last } then fails to parse, which the retry loop handles.","Structured Outputs at the API level avoids most of this parsing."],
+  },
+  "ai/prompt-engineering/cot-prompt-ended-at-the-answer": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "The Fence-Stripping Regex Missed Two Cases", route: '/ai/prompt-engineering/fence-stripping-regex-misses-cases' },
+      { label: "JSON Mode Is Not Schema Enforcement", route: '/ai/prompt-engineering/json-mode-vs-structured-outputs' },
+      { label: "Prompt Engineering (overview)", route: '/ai/prompt-engineering' },
+    ],
+    tip: "Ask for the reasoning first and describe the final line's format; then parse that line in code.",
+    gotchas: ["Text in square brackets is sent to the model as-is; it is not a template slot.","A prompt that ends with an answer label reads as a cue to answer immediately."],
+  },
+  "ai/prompt-engineering/json-mode-vs-structured-outputs": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "The CoT Prompt Ended at the Answer", route: '/ai/prompt-engineering/cot-prompt-ended-at-the-answer' },
+      { label: "Prompt Engineering (overview)", route: '/ai/prompt-engineering' },
+    ],
+    tip: "Use zodResponseFormat with chat.completions.parse when the model supports Structured Outputs, and keep Zod validation for models that do not.",
+    gotchas: ["JSON mode requires the word JSON to appear in the messages.","Strict schemas require every property to be listed as required; optional fields are written as nullable instead."],
+  },
   'ai/rag': {
     apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
     related: [
@@ -32849,6 +32877,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Naive fixed-length chunking can split a sentence mid-thought — semantic/structure-aware chunking retrieves more coherent context.',
       'Chunking strategy is genuinely dataset-specific — what works for short FAQ entries may perform poorly on long technical documents.',
     ],
+  },
+  "ai/rag/chunk-size-counts-characters": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "LangChain 1.x Moved the Chain Imports", route: '/ai/rag/langchain-1x-import-paths' },
+      { label: "RAG (overview)", route: '/ai/rag' },
+    ],
+    tip: "Pass a token-counting lengthFunction (JS) or use from_tiktoken_encoder (Python) so chunkSize and chunkOverlap are measured in the same unit as your context budget.",
+    gotchas: ["chunkOverlap uses the same unit as chunkSize, so 50 means 50 characters by default.","English text is roughly 4 to 5 characters per token, so a character-based 512 is about 100 to 130 tokens."],
+  },
+  "ai/rag/langchain-1x-import-paths": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "chunkSize Counts Characters, Not Tokens", route: '/ai/rag/chunk-size-counts-characters' },
+      { label: "Reciprocal Rank Fusion, Worked Through", route: '/ai/rag/reciprocal-rank-fusion-worked-example' },
+      { label: "RAG (overview)", route: '/ai/rag' },
+    ],
+    tip: "When a LangChain import fails after upgrading, check the package.json exports of langchain and @langchain/classic for the subpath.",
+    gotchas: ["The legacy chain helpers still work from @langchain/classic; new code is usually written with LCEL runnables or the agents API.","Subpath imports fail at build time when the subpath is not listed in the package exports."],
+  },
+  "ai/rag/reciprocal-rank-fusion-worked-example": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "LangChain 1.x Moved the Chain Imports", route: '/ai/rag/langchain-1x-import-paths' },
+      { label: "RAG (overview)", route: '/ai/rag' },
+    ],
+    tip: "RRF uses only ranks, not raw scores, so you can merge BM25 scores and cosine similarities without normalising them first.",
+    gotchas: ["Be consistent about 0-based or 1-based ranks; the page's rrfScore adds 1 because its ranks start at 0.","A document missing from one list simply gets no contribution from that list."],
   },
   'ai/vector-databases': {
     apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
