@@ -10675,6 +10675,64 @@ check before any other new hub's first subtopic set:
    separate lazy chunks; confirmed the `SUBTOPICS`/`SIDEBAR_MAP`/breadcrumb/search-index entries for
    `hash-tables` (bare) and all three composite subtopic keys were present with matching content.
    **DSA hub Phase 10: 4 of 21 topics complete.**
+11. **The `stacks-queues` batch found and fixed a genuine, Node-verified counting error plus a
+   partial theory-section duplicate in the page's own fifth theory section ("Implementing a Queue
+   Efficiently Using Two Stacks")**: the claim that "each element is moved between stacks at most
+   twice total across its lifetime in the queue" was verified wrong by instrumenting a real
+   two-stack queue with a per-element move counter across 1,000 rounds of 10 enqueues + 10
+   dequeues (20,000 operations) — the measured maximum was exactly `1`, never `2`, since an
+   element is pushed onto "in" once, optionally transferred from "in" to "out" exactly once (if
+   "out" is ever empty when a dequeue needs it), and finally popped off "out" for good — that is
+   one transfer EVENT, not two. The section's fourth bullet also restated the Monotonic Stack
+   pattern already fully covered by the page's own dedicated third theory section ("Monotonic
+   Stack") — the same partial-duplicate pattern already found once on this hub's own Hash Tables
+   batch. Fixed the "twice" → "once" count and replaced the duplicate bullet with a genuinely new
+   cross-reference to the Big-O topic's own dynamic-array amortized-doubling proof, which shares
+   the identical "most operations cheap, one occasional expensive, but bounded one-time-per-element
+   cost" structure. No `SUBTOPICS` collision for `stacks-queues` (checked both quoted and unquoted
+   forms in `subtopics.ts`, and grepped `app.routes.ts` directly, confirmed collision-free, left
+   bare). Every codeTab and the Challenge's own `largestRectangleArea` solution were independently
+   verified via direct Node.js execution against their own stated test cases before trusting them
+   clean (`isValid`, `MinStack`, `dailyTemperatures`, `maxSlidingWindow`, and
+   `largestRectangleArea([2,1,5,6,2,3]) → 10` / `largestRectangleArea([2,4]) → 4`, all matched).
+   Three subtopics, each independently Node-verified: (1) **fix-adjacent** — reproduces the exact
+   move-count finding via the same instrumented `TwoStackQueue` class, confirming the measured
+   maximum of 1 move per element and the constant 0.5 amortized-transfer-cost-per-operation ratio
+   across the full 20,000-operation run; (2) **gap-closing** — the page's own QnA describes postfix
+   (RPN) evaluation in one dense paragraph of prose with zero code anywhere on the page; built a
+   real `evalRPN` function, verified against three worked cases including the LeetCode-style
+   `["10","6","9","3","+","-11","*","/","*","17","+","5","+"] → 22`, with a Try It on why swapping
+   the pop order only breaks the non-commutative operators (`-`, `/`) and leaves `+`/`*` silently
+   unaffected; (3) **gap-closing** — the page's own codeTab implements `MinStack` with one stack of
+   `(value, currentMin)` pairs while its own separate QnA describes a different, equally valid
+   two-aux-stack design; cross-checked both directly against 5,000 random push/pop operations with
+   zero `getMin()` mismatches, then measured the real memory tradeoff: the pairs design always
+   costs exactly 2x (898 tuples for 898 elements after the random run), while the aux-stack
+   design's aux size is input-dependent — 7 entries after the same random run, but growing to the
+   full 1,000 (matching the pairs design's cost) for a strictly decreasing push sequence, and
+   shrinking to just 1 for a strictly increasing one. All three `exercise.solution`/
+   `theory.points`/`misconceptions` fields swept clean via the standing bracket-balance/backtick-
+   parity/apostrophe scripts; the pre-existing brace-count imbalance in the main page's own file
+   (72 open / 70 close) was checked against `git diff` and confirmed pre-existing — caused by the
+   file's own `pairs: Record<string, string> = { ... '}': '{' }` object literal containing lone
+   brace CHARACTERS as string values, the same established false-positive category this file has
+   documented before for raw brace-count sweeps, not introduced by this batch's edit (which added
+   zero braces). Build passed clean (foreground execution under Node 22.23.2, explicit
+   `EXITCODE:$?` capture, zero real `ERROR` lines). **No interactive browser/preview tool was
+   available in this session** — verified via the same compiled-bundle-inspection fallback as the
+   prior four batches: confirmed the exact OLD "moved between stacks at most twice total across
+   its lifetime in the queue, keeping the amortized cost constant" sentence was absent from every
+   compiled chunk, confirmed the NEW "at most ONCE total across its entire lifetime in the queue"
+   sentence and the dynamic-array-doubling cross-reference were present in the main page's own
+   chunk; confirmed all three subtopic classes
+   (`TwoStackQueueMovesEachElementOnceSubtopic`/`RpnExpressionEvaluationWithAStackSubtopic`/
+   `MinStackPairsVsTwoAuxStacksSubtopic`) each compiled into their own separate lazy chunk;
+   confirmed the `SUBTOPICS`/`SIDEBAR_MAP`/breadcrumb/search-index entries for `stacks-queues`
+   (bare) and all three composite subtopic keys were present with matching content (a grep
+   substring match for the OLD "moved between stacks at most twice" phrase inside one subtopic's
+   own chunk was investigated and confirmed to be the subtopic's own text QUOTING the original,
+   now-corrected main-page claim verbatim as part of explaining the fix — not a leftover bug).
+   **DSA hub Phase 10: 5 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -11092,12 +11150,13 @@ check before any other new hub's first subtopic set:
   needs the full `.dsa-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }`
   rule (copied from the main topic page's own `.scss`, which defines it locally). No live
   playground (DSA theory/analysis content has no in-browser runtime) — plain `<app-code-block>`.
-  Phase 10: 4 of 21 topics have subtopics (`/dsa/big-o`, pilot batch; `/dsa/arrays`; `/dsa/strings`;
-  `/dsa/hash-tables`, all 2026-10-08) — see "DSA hub subtopic wiring" section below for the
-  `DsaNavComponent` accordion
+  Phase 10: 5 of 21 topics have subtopics (`/dsa/big-o`, pilot batch; `/dsa/arrays`; `/dsa/strings`;
+  `/dsa/hash-tables`; `/dsa/stacks-queues`, all 2026-10-08) — see "DSA hub subtopic wiring" section
+  below for the `DsaNavComponent` accordion
   structural fix (19th `*NavComponent`-based hub in a row missing it at pilot time), the
   `dsa-arrays` SUBTOPICS-map collision resolution (bare `arrays` collides with the C# hub's own
-  topic), and the genuine main-page fixes found and verified by direct Node execution.
+  topic; `stacks-queues` confirmed collision-free, left bare), and the genuine main-page fixes
+  found and verified by direct Node execution.
 - **AI/ML hub**: 19 trackable topic pages + 3 reference pages (22 cards total). Feature-complete.
   Violet theme `$accent: #7c3aed`, `$tint: #f5f3ff`, dark `#a78bfa`, dark bg `#1e1b4b`. Search prefix `ai-`. Route: `/ai`.
   CSS classes: `.ai-page`, `.ai-icon`, `.ai-section`. Icon content: `🤖` at `font-size: 1.8rem`. `tech="javascript"`.

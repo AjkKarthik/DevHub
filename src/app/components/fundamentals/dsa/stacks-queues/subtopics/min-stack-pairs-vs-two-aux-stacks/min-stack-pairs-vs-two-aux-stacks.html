@@ -1,0 +1,26 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Stacks &amp; Queues" topicRoute="/dsa/stacks-queues"
+    subtopicLabel="Min-Stack: Pairs vs. Two Aux Stacks" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">Min-Stack: Pairs vs. Two Aux Stacks</h1>
+  <p class="page-subtitle">The main page's codeTab stores (value, currentMin) pairs; its QnA describes a separate two-aux-stack design. Cross-checked both against 5,000 random operations, plus the real memory tradeoff between them.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This reconciles the main page's own codeTab (pairs) against its own QnA (two aux stacks) for MinStack, confirming both are correct and quantifying the real memory tradeoff between them with measured, input-dependent numbers.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Stacks &amp; Queues" topicRoute="/dsa/stacks-queues"
+    [prev]="{ label: 'Evaluating RPN Expressions With a Stack', route: '/dsa/stacks-queues/rpn-expression-evaluation-with-a-stack' }" />
+</div>

@@ -34478,10 +34478,43 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       { label: 'Linked Lists', route: '/dsa/linked-lists' },
       { label: 'Heaps',        route: '/dsa/heaps' },
     ],
-    tip: 'A queue can be implemented with two stacks (amortized O(1) per operation) — each element moves between stacks at most twice total across its lifetime, keeping amortized cost constant despite an occasional O(n) transfer.',
+    tip: 'A queue can be implemented with two stacks (amortized O(1) per operation) — each element moves from the "in" stack to the "out" stack at most ONCE total across its entire lifetime, keeping amortized cost constant despite an occasional O(n) transfer.',
     gotchas: [
-      'The monotonic stack pattern (keeping elements in strictly increasing/decreasing order) solves an entire family of "next greater element" problems in O(n).',
       'This two-stack simulation is a classic interview question specifically testing understanding of amortized analysis.',
+      'Array.shift() is O(n) in JavaScript — use a head-pointer index or a real deque for an O(1) queue dequeue.',
+    ],
+  },
+  'dsa/stacks-queues/two-stack-queue-moves-each-element-once': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Evaluating RPN Expressions With a Stack', route: '/dsa/stacks-queues/rpn-expression-evaluation-with-a-stack' },
+      { label: 'Stacks & Queues (topic overview)', route: '/dsa/stacks-queues' },
+    ],
+    tip: 'Instrumenting a real two-stack queue with a per-element move counter over 20,000 operations found the true maximum moves per element is exactly 1, not 2 — each element transfers from "in" to "out" once, never twice.',
+    gotchas: [
+      'Amortized O(1) is a claim about the total cost across a whole sequence of operations, not a promise that every individual dequeue() call is cheap — a transfer-triggering call is genuinely O(n) in that moment.',
+    ],
+  },
+  'dsa/stacks-queues/rpn-expression-evaluation-with-a-stack': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'The Two-Stack Queue Moves Each Element Once', route: '/dsa/stacks-queues/two-stack-queue-moves-each-element-once' },
+      { label: 'Min-Stack: Pairs vs. Two Aux Stacks', route: '/dsa/stacks-queues/min-stack-pairs-vs-two-aux-stacks' },
+    ],
+    tip: 'RPN evaluation needs only a plain stack of numbers, never a stack of operators — the moment an operator token is read, it is applied immediately to the two most recently pushed numbers.',
+    gotchas: [
+      'Pop order matters for non-commutative operators: the operand popped FIRST (pushed last) is the right-hand side, so a b - computes a - b, not b - a.',
+    ],
+  },
+  'dsa/stacks-queues/min-stack-pairs-vs-two-aux-stacks': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Evaluating RPN Expressions With a Stack', route: '/dsa/stacks-queues/rpn-expression-evaluation-with-a-stack' },
+      { label: 'Stacks & Queues (topic overview)', route: '/dsa/stacks-queues' },
+    ],
+    tip: 'The (value, currentMin) pairs design and the two-aux-stack design were cross-checked against 5,000 random operations with zero mismatches — both are correct, just different space tradeoffs: pairs always costs 2x, aux ranges from O(1) extra (increasing input) to O(n) extra (decreasing input).',
+    gotchas: [
+      'The aux-stack design is not unconditionally cheaper than the pairs design — for a strictly decreasing push sequence, aux grows 1-for-1 with the main stack, using roughly the same total memory as pairs.',
     ],
   },
   'dsa/hash-tables': {

@@ -4946,7 +4946,12 @@ export const routes: Routes = [
       { path: 'consistent-hashing-verified-remap-counts', loadComponent: () => import('./components/fundamentals/dsa/hash-tables/subtopics/consistent-hashing-verified-remap-counts/consistent-hashing-verified-remap-counts').then(m => m.ConsistentHashingVerifiedRemapCountsSubtopic) },
       { path: 'first-non-repeating-character-two-ways', loadComponent: () => import('./components/fundamentals/dsa/hash-tables/subtopics/first-non-repeating-character-two-ways/first-non-repeating-character-two-ways').then(m => m.FirstNonRepeatingCharacterTwoWaysSubtopic) },
     ] },
-    { path: 'stacks-queues',          loadComponent: () => import('./components/fundamentals/dsa/stacks-queues/stacks-queues').then(m => m.DsaStacksQueues) },
+    { path: 'stacks-queues', children: [
+      { path: '', loadComponent: () => import('./components/fundamentals/dsa/stacks-queues/stacks-queues').then(m => m.DsaStacksQueues) },
+      { path: 'two-stack-queue-moves-each-element-once', loadComponent: () => import('./components/fundamentals/dsa/stacks-queues/subtopics/two-stack-queue-moves-each-element-once/two-stack-queue-moves-each-element-once').then(m => m.TwoStackQueueMovesEachElementOnceSubtopic) },
+      { path: 'rpn-expression-evaluation-with-a-stack', loadComponent: () => import('./components/fundamentals/dsa/stacks-queues/subtopics/rpn-expression-evaluation-with-a-stack/rpn-expression-evaluation-with-a-stack').then(m => m.RpnExpressionEvaluationWithAStackSubtopic) },
+      { path: 'min-stack-pairs-vs-two-aux-stacks', loadComponent: () => import('./components/fundamentals/dsa/stacks-queues/subtopics/min-stack-pairs-vs-two-aux-stacks/min-stack-pairs-vs-two-aux-stacks').then(m => m.MinStackPairsVsTwoAuxStacksSubtopic) },
+    ]},
     { path: 'linked-lists',           loadComponent: () => import('./components/fundamentals/dsa/linked-lists/linked-lists').then(m => m.DsaLinkedLists) },
     { path: 'doubly-linked-lists',    loadComponent: () => import('./components/fundamentals/dsa/doubly-linked-lists/doubly-linked-lists').then(m => m.DsaDoublyLinkedLists) },
     { path: 'binary-trees',           loadComponent: () => import('./components/fundamentals/dsa/binary-trees/binary-trees').then(m => m.DsaBinaryTrees) },

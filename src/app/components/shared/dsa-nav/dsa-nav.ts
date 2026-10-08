@@ -92,7 +92,24 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/dsa/stacks-queues" routerLinkActive="active"><span class="nl-text">Stacks &amp; Queues</span>@if(p.isDone('dsa-stacks-queues')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/dsa/stacks-queues" routerLinkActive="active">
+        <span class="nl-text">Stacks &amp; Queues</span>
+        @if(p.isDone('dsa-stacks-queues')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('stacks-queues'); as sqSubs) {
+          <button type="button" class="nav-subtopics-toggle" (click)="toggleSubtopics('stacks-queues', $event)">
+            {{ isSubtopicsExpanded('stacks-queues') ? '▾' : '▸' }}
+          </button>
+        }
+      </a>
+      @if (subtopicsOf('stacks-queues'); as sqSubs) {
+        @if (isSubtopicsExpanded('stacks-queues')) {
+          <div class="nav-subtopics">
+            @for (sub of sqSubs; track sub.route) {
+              <a [routerLink]="sub.route" routerLinkActive="active" class="nav-subtopic-link">{{ sub.label }}</a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

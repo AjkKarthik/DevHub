@@ -10007,7 +10007,14 @@ off here with a date.
   needs a keyed function (SipHash), whose security comes from a secret key, not "crypto
   inspiration". Also removed a genuinely duplicate load-factor bullet. Bare `hash-tables`
   SUBTOPICS key collision-free. DSA hub Phase 10: 4 of 21.
-- [ ] `/dsa/stacks-queues` — Stacks & Queues
+- [x] 2026-10-08 `/dsa/stacks-queues` — Stacks & Queues. 3 subtopics
+  (two-stack-queue-moves-each-element-once, rpn-expression-evaluation-with-a-stack,
+  min-stack-pairs-vs-two-aux-stacks). Main-page fix verified via direct Node instrumentation: "each
+  element is moved between stacks at most twice total across its lifetime" was wrong -- a real
+  move-counted TwoStackQueue over 20,000 ops found the true max is exactly 1, never 2. Also
+  replaced a duplicate theory bullet (restating the already-covered Monotonic Stack section) with a
+  cross-reference to the Big-O topic's own amortized-doubling proof. Bare `stacks-queues` SUBTOPICS
+  key collision-free. DSA hub Phase 10: 5 of 21.
 - [ ] `/dsa/linked-lists` — Singly Linked Lists
 - [ ] `/dsa/doubly-linked-lists` — Doubly Linked Lists
 - [ ] `/dsa/binary-trees` — Binary Trees
