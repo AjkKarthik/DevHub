@@ -33049,6 +33049,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'External third-party services are usually still stubbed even in integration tests, since real calls introduce flakiness, cost, and rate limits.',
     ],
   },
+  "testing-hub/integration-testing/jest-30-renamed-testpathpattern": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "PostgreSqlContainer Needs an Image and a stop()", route: '/testing-hub/integration-testing/postgresqlcontainer-needs-an-image-and-a-stop' },
+      { label: "Integration Testing (overview)", route: '/testing-hub/integration-testing' },
+    ],
+    tip: "Use jest --testPathPatterns=unit (plural). Better still, split suites with the projects config so each one has its own settings.",
+    gotchas: ["testPathPatterns is CLI-only; putting it in jest.config is rejected too.","Several patterns can be passed: --testPathPatterns=unit --testPathPatterns=shared."],
+  },
+  "testing-hub/integration-testing/postgresqlcontainer-needs-an-image-and-a-stop": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "Jest 30 Renamed --testPathPattern to --testPathPatterns", route: '/testing-hub/integration-testing/jest-30-renamed-testpathpattern' },
+      { label: "In-Memory SQLite Dies with Its Connection", route: '/testing-hub/integration-testing/in-memory-sqlite-dies-with-its-connection' },
+      { label: "Integration Testing (overview)", route: '/testing-hub/integration-testing' },
+    ],
+    tip: "Always pin the image (postgres:16), keep the started container in a variable, run real migrations, and stop it in afterAll.",
+    gotchas: ["Ryuk, Testcontainers' cleanup sidecar, removes leftover containers when the process exits, but disabling it (as some CI setups do) leaves them running.","An unpinned image tag means the database version changes under your tests without a code change."],
+  },
+  "testing-hub/integration-testing/in-memory-sqlite-dies-with-its-connection": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "PostgreSqlContainer Needs an Image and a stop()", route: '/testing-hub/integration-testing/postgresqlcontainer-needs-an-image-and-a-stop' },
+      { label: "Integration Testing (overview)", route: '/testing-hub/integration-testing' },
+    ],
+    tip: "Create one SqliteConnection, call Open(), pass the connection object to UseSqlite, and call EnsureCreated() once.",
+    gotchas: ["Closing or disposing the connection deletes the database.","SQLite is not your production database: some PostgreSQL or SQL Server behaviour (types, JSON operators, collations) differs."],
+  },
   'testing-hub/testing-databases': {
     apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
     related: [
@@ -33156,6 +33184,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Best suited to stable, structurally complex output — poorly suited to frequently-evolving UI where snapshots become rubber-stamped noise.',
     ],
   },
+  "testing-hub/snapshot-testing/jest-on-ci-refuses-to-write-new-snapshots": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "The Challenge Regex Lost Its Backslash", route: '/testing-hub/snapshot-testing/the-challenge-regex-lost-its-backslash' },
+      { label: "Snapshot Testing (overview)", route: '/testing-hub/snapshot-testing' },
+    ],
+    tip: "Commit __snapshots__. On CI Jest will not create them for you, and that is the behaviour you want: a new snapshot should be reviewed in a pull request, not invented by the build.",
+    gotchas: ["Jest sets ci automatically when the CI environment variable is set, which GitHub Actions, GitLab CI and most others do.","jest -u (updateSnapshot all) on CI overrides this and will happily write whatever the code produces."],
+  },
+  "testing-hub/snapshot-testing/the-challenge-regex-lost-its-backslash": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "Jest on CI Refuses to Write New Snapshots", route: '/testing-hub/snapshot-testing/jest-on-ci-refuses-to-write-new-snapshots' },
+      { label: "Snapshots Sort Object Keys Alphabetically", route: '/testing-hub/snapshot-testing/snapshots-sort-object-keys' },
+      { label: "Snapshot Testing (overview)", route: '/testing-hub/snapshot-testing' },
+    ],
+    tip: "Inside a template literal, write \\\\s, \\\\d and \\\\w (double backslash) when the displayed code should contain a single backslash.",
+    gotchas: ["Unknown escapes like \\s are silently dropped in template literals instead of causing an error.","The same applies to regular string literals: '\\s' is just 's'."],
+  },
+  "testing-hub/snapshot-testing/snapshots-sort-object-keys": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "The Challenge Regex Lost Its Backslash", route: '/testing-hub/snapshot-testing/the-challenge-regex-lost-its-backslash' },
+      { label: "Snapshot Testing (overview)", route: '/testing-hub/snapshot-testing' },
+    ],
+    tip: "Do not read key order in a snapshot as the order your code produced. Object keys are sorted; arrays and Maps keep their order.",
+    gotchas: ["Because keys are sorted, reordering properties in your code never breaks a snapshot.","If insertion order matters to consumers (for example JSON sent to an API), assert it explicitly with Object.keys()."],
+  },
   'testing-hub/xunit': {
     apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
     related: [
@@ -33166,6 +33222,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'IClassFixture/ICollectionFixture provide explicit, opt-in mechanisms for sharing expensive setup, making shared state a deliberate choice rather than an accident.',
       'Theory-based tests with InlineData/MemberData reduce duplication versus writing a near-identical Fact test per input.',
     ],
+  },
+  "testing-hub/xunit/assert-throws-matches-the-exact-type": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "An Async Lambda in Assert.Throws Does Not Compile", route: '/testing-hub/xunit/async-lambda-in-assert-throws-does-not-compile' },
+      { label: "xUnit (.NET Testing) (overview)", route: '/testing-hub/xunit' },
+    ],
+    tip: "Assert.Throws<T> needs exactly T. Use Assert.ThrowsAny<T> when any subclass of T is acceptable.",
+    gotchas: ["ArgumentNullException is a subclass of ArgumentException, so Assert.Throws<ArgumentException> fails when the code throws ArgumentNullException.","Both methods return the exception, so you can still assert on its message or properties."],
+  },
+  "testing-hub/xunit/async-lambda-in-assert-throws-does-not-compile": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "Assert.Throws Matches the Exact Exception Type", route: '/testing-hub/xunit/assert-throws-matches-the-exact-type' },
+      { label: "IAsyncLifetime on a Test Class Runs per Test", route: '/testing-hub/xunit/iasynclifetime-on-a-test-class-runs-per-test' },
+      { label: "xUnit (.NET Testing) (overview)", route: '/testing-hub/xunit' },
+    ],
+    tip: "For async code: await Assert.ThrowsAsync<T>(() => svc.GetAsync()). The test method itself must be async Task.",
+    gotchas: ["Forgetting the await on Assert.ThrowsAsync makes the test finish before the assertion completes; analyzer rule xUnit2021 flags it.","NUnit and MSTest have their own async variants; the names differ between frameworks."],
+  },
+  "testing-hub/xunit/iasynclifetime-on-a-test-class-runs-per-test": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "An Async Lambda in Assert.Throws Does Not Compile", route: '/testing-hub/xunit/async-lambda-in-assert-throws-does-not-compile' },
+      { label: "xUnit (.NET Testing) (overview)", route: '/testing-hub/xunit' },
+    ],
+    tip: "Put once-per-class async setup on an IClassFixture<T> that implements IAsyncLifetime. Put per-test async setup on the test class.",
+    gotchas: ["Starting a container in the test class's InitializeAsync starts one container per test, which is usually far too slow.","xUnit v3 changed IAsyncLifetime to return ValueTask; check the signature for your version."],
   },
   'testing-hub/cheatsheet': {
     apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,

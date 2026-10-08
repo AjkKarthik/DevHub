@@ -4371,4 +4371,19 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: "In-Source Tests Need a define to Be Removed", route: '/testing-hub/vitest/in-source-tests-need-a-define-to-be-removed' },
     { label: "The test Key in vite.config.ts Needs Vitest Types", route: '/testing-hub/vitest/test-key-in-vite-config-needs-vitest-types' },
   ],
+  'xunit': [
+    { label: "Assert.Throws Matches the Exact Exception Type", route: '/testing-hub/xunit/assert-throws-matches-the-exact-type' },
+    { label: "An Async Lambda in Assert.Throws Does Not Compile", route: '/testing-hub/xunit/async-lambda-in-assert-throws-does-not-compile' },
+    { label: "IAsyncLifetime on a Test Class Runs per Test", route: '/testing-hub/xunit/iasynclifetime-on-a-test-class-runs-per-test' },
+  ],
+  'snapshot-testing': [
+    { label: "Jest on CI Refuses to Write New Snapshots", route: '/testing-hub/snapshot-testing/jest-on-ci-refuses-to-write-new-snapshots' },
+    { label: "The Challenge Regex Lost Its Backslash", route: '/testing-hub/snapshot-testing/the-challenge-regex-lost-its-backslash' },
+    { label: "Snapshots Sort Object Keys Alphabetically", route: '/testing-hub/snapshot-testing/snapshots-sort-object-keys' },
+  ],
+  'integration-testing': [
+    { label: "Jest 30 Renamed --testPathPattern to --testPathPatterns", route: '/testing-hub/integration-testing/jest-30-renamed-testpathpattern' },
+    { label: "PostgreSqlContainer Needs an Image and a stop()", route: '/testing-hub/integration-testing/postgresqlcontainer-needs-an-image-and-a-stop' },
+    { label: "In-Memory SQLite Dies with Its Connection", route: '/testing-hub/integration-testing/in-memory-sqlite-dies-with-its-connection' },
+  ],
 };

@@ -1,0 +1,26 @@
+<div class="test-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="xUnit (.NET Testing)" topicRoute="/testing-hub/xunit"
+    subtopicLabel="IAsyncLifetime on a Test Class Runs per Test" />
+  <div class="page-header-icon test-icon">✓</div>
+  <h1 class="page-title">IAsyncLifetime on a Test Class Runs per Test</h1>
+  <p class="page-subtitle">A QnA said InitializeAsync runs before the first test and DisposeAsync after the last, whether on a fixture or the test class. On the test class itself they run around every test.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Testing" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="test-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="test-section">
+    <h2>Where this fits</h2>
+    <p>This fixes a QnA on the xUnit page. Testing with Databases covers per-test isolation inside a shared database.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="xUnit (.NET Testing)" topicRoute="/testing-hub/xunit"
+    [prev]="{ label: 'An Async Lambda in Assert.Throws Does Not Compile', route: '/testing-hub/xunit/async-lambda-in-assert-throws-does-not-compile' }" />
+</div>

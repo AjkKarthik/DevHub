@@ -89,13 +89,40 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/testing-hub/xunit" routerLinkActive="active"><span class="nl-text">xUnit (.NET)</span>@if(p.isDone('test-xunit')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/testing-hub/snapshot-testing" routerLinkActive="active"><span class="nl-text">Snapshot Testing</span>@if(p.isDone('test-snapshot-testing')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/testing-hub/xunit" routerLinkActive="active"><span class="nl-text">xUnit (.NET)</span>@if(p.isDone('test-xunit')){<span class="nl-done">✓</span>}@if (subtopicsOf('xunit'); as xunitSubs) {<button type="button" class="nav-subtopics-toggle" (click)="toggleSubtopics('xunit', $event)">{{ isSubtopicsExpanded('xunit') ? '▾' : '▸' }}</button>}</a>
+      @if (subtopicsOf('xunit'); as xunitSubs) {
+        @if (isSubtopicsExpanded('xunit')) {
+          <div class="nav-subtopics">
+            @for (sub of xunitSubs; track sub.route) {
+              <a [routerLink]="sub.route" routerLinkActive="active" class="nav-subtopic-link">{{ sub.label }}</a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/testing-hub/snapshot-testing" routerLinkActive="active"><span class="nl-text">Snapshot Testing</span>@if(p.isDone('test-snapshot-testing')){<span class="nl-done">✓</span>}@if (subtopicsOf('snapshot-testing'); as snapshotTestingSubs) {<button type="button" class="nav-subtopics-toggle" (click)="toggleSubtopics('snapshot-testing', $event)">{{ isSubtopicsExpanded('snapshot-testing') ? '▾' : '▸' }}</button>}</a>
+      @if (subtopicsOf('snapshot-testing'); as snapshotTestingSubs) {
+        @if (isSubtopicsExpanded('snapshot-testing')) {
+          <div class="nav-subtopics">
+            @for (sub of snapshotTestingSubs; track sub.route) {
+              <a [routerLink]="sub.route" routerLinkActive="active" class="nav-subtopic-link">{{ sub.label }}</a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Integration</p>
-      <a routerLink="/testing-hub/integration-testing" routerLinkActive="active"><span class="nl-text">Integration Testing</span>@if(p.isDone('test-integration-testing')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/testing-hub/integration-testing" routerLinkActive="active"><span class="nl-text">Integration Testing</span>@if(p.isDone('test-integration-testing')){<span class="nl-done">✓</span>}@if (subtopicsOf('integration-testing'); as integrationTestingSubs) {<button type="button" class="nav-subtopics-toggle" (click)="toggleSubtopics('integration-testing', $event)">{{ isSubtopicsExpanded('integration-testing') ? '▾' : '▸' }}</button>}</a>
+      @if (subtopicsOf('integration-testing'); as integrationTestingSubs) {
+        @if (isSubtopicsExpanded('integration-testing')) {
+          <div class="nav-subtopics">
+            @for (sub of integrationTestingSubs; track sub.route) {
+              <a [routerLink]="sub.route" routerLinkActive="active" class="nav-subtopic-link">{{ sub.label }}</a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/testing-hub/testing-databases" routerLinkActive="active"><span class="nl-text">Testing with Databases</span>@if(p.isDone('test-testing-databases')){<span class="nl-done">✓</span>}</a>
       <a routerLink="/testing-hub/msw" routerLinkActive="active"><span class="nl-text">MSW — Mock Service Worker</span>@if(p.isDone('test-msw')){<span class="nl-done">✓</span>}</a>
     </div>

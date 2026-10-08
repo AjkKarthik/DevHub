@@ -5069,7 +5069,12 @@ export const routes: Routes = [
       { path: 'spying-on-a-wrapper-does-not-touch-math-random', loadComponent: () => import('./components/fundamentals/testing/mocking-spies/subtopics/spyon-restores-only-its-target/spyon-restores-only-its-target').then(m => m.SpyOnRestoresOnlyItsTargetSubtopic) },
       { path: 'checking-call-order-with-invocationcallorder', loadComponent: () => import('./components/fundamentals/testing/mocking-spies/subtopics/invocation-call-order/invocation-call-order').then(m => m.InvocationCallOrderSubtopic) },
     ] },
-    { path: 'xunit',                 loadComponent: () => import('./components/fundamentals/testing/xunit/xunit').then(m => m.XunitDotnet) },
+    { path: 'xunit', children: [
+      { path: '', loadComponent: () => import('./components/fundamentals/testing/xunit/xunit').then(m => m.XunitDotnet) },
+      { path: 'assert-throws-matches-the-exact-type', loadComponent: () => import('./components/fundamentals/testing/xunit/subtopics/assert-throws-exact-type/assert-throws-exact-type').then(m => m.AssertThrowsExactTypeSubtopic) },
+      { path: 'async-lambda-in-assert-throws-does-not-compile', loadComponent: () => import('./components/fundamentals/testing/xunit/subtopics/async-assert-throws-compile-error/async-assert-throws-compile-error').then(m => m.AsyncAssertThrowsCompileErrorSubtopic) },
+      { path: 'iasynclifetime-on-a-test-class-runs-per-test', loadComponent: () => import('./components/fundamentals/testing/xunit/subtopics/iasynclifetime-per-test/iasynclifetime-per-test').then(m => m.IAsyncLifetimePerTestSubtopic) },
+    ] },
     { path: 'tdd', children: [
       { path: '', loadComponent: () => import('./components/fundamentals/testing/tdd/tdd').then(m => m.TddTesting) },
       { path: 'outside-in-test-asked-for-a-name-it-never-sent', loadComponent: () => import('./components/fundamentals/testing/tdd/subtopics/outside-in-test-missing-name/outside-in-test-missing-name').then(m => m.OutsideInTestMissingNameSubtopic) },
@@ -5082,7 +5087,12 @@ export const routes: Routes = [
       { path: 'spyon-calls-through-by-default', loadComponent: () => import('./components/fundamentals/testing/test-doubles/subtopics/spyon-calls-through/spyon-calls-through').then(m => m.SpyOnCallsThroughSubtopic) },
       { path: 'clearallmocks-keeps-return-values', loadComponent: () => import('./components/fundamentals/testing/test-doubles/subtopics/clear-vs-reset-mocks/clear-vs-reset-mocks').then(m => m.ClearVsResetMocksSubtopic) },
     ] },
-    { path: 'integration-testing',   loadComponent: () => import('./components/fundamentals/testing/integration-testing/integration-testing').then(m => m.IntegrationTesting) },
+    { path: 'integration-testing', children: [
+      { path: '', loadComponent: () => import('./components/fundamentals/testing/integration-testing/integration-testing').then(m => m.IntegrationTesting) },
+      { path: 'jest-30-renamed-testpathpattern', loadComponent: () => import('./components/fundamentals/testing/integration-testing/subtopics/test-path-patterns/test-path-patterns').then(m => m.TestPathPatternsSubtopic) },
+      { path: 'postgresqlcontainer-needs-an-image-and-a-stop', loadComponent: () => import('./components/fundamentals/testing/integration-testing/subtopics/testcontainers-image-and-stop/testcontainers-image-and-stop').then(m => m.TestcontainersImageAndStopSubtopic) },
+      { path: 'in-memory-sqlite-dies-with-its-connection', loadComponent: () => import('./components/fundamentals/testing/integration-testing/subtopics/sqlite-in-memory-connection/sqlite-in-memory-connection').then(m => m.SqliteInMemoryConnectionSubtopic) },
+    ] },
     { path: 'testing-databases',     loadComponent: () => import('./components/fundamentals/testing/testing-databases/testing-databases').then(m => m.TestingDatabases) },
     { path: 'angular-testing',       loadComponent: () => import('./components/fundamentals/testing/angular-testing/angular-testing').then(m => m.AngularTesting) },
     { path: 'react-testing-library', loadComponent: () => import('./components/fundamentals/testing/react-testing-library/react-testing-library').then(m => m.ReactTestingLibrary) },
@@ -5090,7 +5100,12 @@ export const routes: Routes = [
     { path: 'cypress',               loadComponent: () => import('./components/fundamentals/testing/cypress/cypress').then(m => m.CypressTesting) },
     { path: 'api-testing',           loadComponent: () => import('./components/fundamentals/testing/api-testing/api-testing').then(m => m.ApiTesting) },
     { path: 'contract-testing',      loadComponent: () => import('./components/fundamentals/testing/contract-testing/contract-testing').then(m => m.ContractTesting) },
-    { path: 'snapshot-testing',      loadComponent: () => import('./components/fundamentals/testing/snapshot-testing/snapshot-testing').then(m => m.SnapshotTesting) },
+    { path: 'snapshot-testing', children: [
+      { path: '', loadComponent: () => import('./components/fundamentals/testing/snapshot-testing/snapshot-testing').then(m => m.SnapshotTesting) },
+      { path: 'jest-on-ci-refuses-to-write-new-snapshots', loadComponent: () => import('./components/fundamentals/testing/snapshot-testing/subtopics/ci-refuses-new-snapshots/ci-refuses-new-snapshots').then(m => m.CiRefusesNewSnapshotsSubtopic) },
+      { path: 'the-challenge-regex-lost-its-backslash', loadComponent: () => import('./components/fundamentals/testing/snapshot-testing/subtopics/backslash-s-in-template/backslash-s-in-template').then(m => m.BackslashSInTemplateSubtopic) },
+      { path: 'snapshots-sort-object-keys', loadComponent: () => import('./components/fundamentals/testing/snapshot-testing/subtopics/snapshot-keys-sorted/snapshot-keys-sorted').then(m => m.SnapshotKeysSortedSubtopic) },
+    ] },
     { path: 'vitest', children: [
       { path: '', loadComponent: () => import('./components/fundamentals/testing/vitest/vitest').then(m => m.VitestTesting) },
       { path: 'vitest-workspace-became-test-projects', loadComponent: () => import('./components/fundamentals/testing/vitest/subtopics/workspace-became-projects/workspace-became-projects').then(m => m.WorkspaceBecameProjectsSubtopic) },
