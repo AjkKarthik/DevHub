@@ -10229,7 +10229,7 @@ off here with a date.
 - [x] 2026-10-08 `/ai/computer-vision` — CNNs & Computer Vision (3 subtopics: weights API, cross-correlation, pooling shift)
 - [x] 2026-10-08 `/ai/transformers` — Transformers & Attention (3 subtopics: equivariance, sqrt(d_k) measured, fully masked row NaN)
 - [x] 2026-10-08 `/ai/llm-fundamentals` — LLM Fundamentals (3 subtopics; fixed temperature-0 NaN sampler, js-tiktoken API, model scale/vocab/context claims)
-- [ ] `/ai/fine-tuning` — Fine-tuning & RLHF
+- [x] 2026-10-08 `/ai/fine-tuning` — Fine-tuning & RLHF (3 subtopics; fixed LoRA param count, TRL trainer arguments, SFT on output-only text)
 - [ ] `/ai/rag` — RAG
 - [ ] `/ai/prompt-engineering` — Prompt Engineering
 - [ ] `/ai/ai-agents` — AI Agents & Tool Use

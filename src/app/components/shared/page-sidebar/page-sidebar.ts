@@ -32873,6 +32873,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A fine-tuned model must be re-evaluated whenever the underlying base model is upgraded — a maintenance cost easy to underestimate.',
     ],
   },
+  "ai/fine-tuning/lora-parameter-count-with-gqa": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "TRL Trainer Arguments Moved to the Config", route: '/ai/fine-tuning/trl-trainer-arguments-moved' },
+      { label: "Fine-tuning & RLHF (overview)", route: '/ai/fine-tuning' },
+    ],
+    tip: "Multiply per layer: for each target module add d_in x r + r x d_out, then multiply by the number of layers. Check d_out for k_proj and v_proj in the model config.",
+    gotchas: ["Under grouped-query attention, k_proj and v_proj output num_key_value_heads x head_dim, which is smaller than the hidden size.","print_trainable_parameters counts the adapter in all params too, so the total grows slightly after get_peft_model."],
+  },
+  "ai/fine-tuning/trl-trainer-arguments-moved": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "Counting LoRA Parameters with Grouped-Query Attention", route: '/ai/fine-tuning/lora-parameter-count-with-gqa' },
+      { label: "Training Only on the Output Field Drops the Instruction", route: '/ai/fine-tuning/training-only-on-the-output-field' },
+      { label: "Fine-tuning & RLHF (overview)", route: '/ai/fine-tuning' },
+    ],
+    tip: "Read the trainer signature for the TRL version you have installed; arguments have moved from the trainer to its Config class over several releases.",
+    gotchas: ["SFTConfig is a subclass of TrainingArguments, so the usual training settings still go there.","An unknown keyword argument to a trainer fails immediately with a TypeError."],
+  },
+  "ai/fine-tuning/training-only-on-the-output-field": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "TRL Trainer Arguments Moved to the Config", route: '/ai/fine-tuning/trl-trainer-arguments-moved' },
+      { label: "Fine-tuning & RLHF (overview)", route: '/ai/fine-tuning' },
+    ],
+    tip: "Store rows as prompt and completion. TRL then trains on the completion while still conditioning on the prompt.",
+    gotchas: ["dataset_text_field names one column that becomes the entire training text.","Packing many short examples into one sequence is a separate setting (packing=True) with its own trade-offs."],
+  },
   'ai/evaluating-llms': {
     apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
     related: [

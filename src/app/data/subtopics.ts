@@ -4481,4 +4481,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: "js-tiktoken Uses encodingForModel", route: '/ai/llm-fundamentals/js-tiktoken-uses-encodingformodel' },
     { label: "Measuring Tokens per Word", route: '/ai/llm-fundamentals/measuring-tokens-per-word' },
   ],
+  'fine-tuning': [
+    { label: "Counting LoRA Parameters with Grouped-Query Attention", route: '/ai/fine-tuning/lora-parameter-count-with-gqa' },
+    { label: "TRL Trainer Arguments Moved to the Config", route: '/ai/fine-tuning/trl-trainer-arguments-moved' },
+    { label: "Training Only on the Output Field Drops the Instruction", route: '/ai/fine-tuning/training-only-on-the-output-field' },
+  ],
 };

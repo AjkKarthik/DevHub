@@ -5231,7 +5231,12 @@ export const routes: Routes = [
       { path: 'js-tiktoken-uses-encodingformodel', loadComponent: () => import('./components/fundamentals/ai/llm-fundamentals/subtopics/js-tiktoken-api/js-tiktoken-api').then(m => m.JsTiktokenApiSubtopic) },
       { path: 'measuring-tokens-per-word', loadComponent: () => import('./components/fundamentals/ai/llm-fundamentals/subtopics/tokens-per-word-measured/tokens-per-word-measured').then(m => m.TokensPerWordMeasuredSubtopic) },
     ] },
-    { path: 'fine-tuning',               loadComponent: () => import('./components/fundamentals/ai/fine-tuning/fine-tuning').then(m => m.AiFineTuning) },
+    { path: 'fine-tuning', children: [
+      { path: '', loadComponent: () => import('./components/fundamentals/ai/fine-tuning/fine-tuning').then(m => m.AiFineTuning) },
+      { path: 'lora-parameter-count-with-gqa', loadComponent: () => import('./components/fundamentals/ai/fine-tuning/subtopics/lora-count-with-gqa/lora-count-with-gqa').then(m => m.LoraCountWithGqaSubtopic) },
+      { path: 'trl-trainer-arguments-moved', loadComponent: () => import('./components/fundamentals/ai/fine-tuning/subtopics/trl-arguments-moved/trl-arguments-moved').then(m => m.TrlArgumentsMovedSubtopic) },
+      { path: 'training-only-on-the-output-field', loadComponent: () => import('./components/fundamentals/ai/fine-tuning/subtopics/train-on-prompt-and-completion/train-on-prompt-and-completion').then(m => m.TrainOnPromptAndCompletionSubtopic) },
+    ] },
     { path: 'rag',                       loadComponent: () => import('./components/fundamentals/ai/rag/rag').then(m => m.AiRag) },
     { path: 'prompt-engineering',        loadComponent: () => import('./components/fundamentals/ai/prompt-engineering/prompt-engineering').then(m => m.AiPromptEngineering) },
     { path: 'ai-agents',                 loadComponent: () => import('./components/fundamentals/ai/ai-agents/ai-agents').then(m => m.AiAgents) },
