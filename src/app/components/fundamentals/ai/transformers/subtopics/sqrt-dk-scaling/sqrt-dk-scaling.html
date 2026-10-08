@@ -1,0 +1,27 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Transformers & Attention" topicRoute="/ai/transformers"
+    subtopicLabel="Measuring Why Scores Are Divided by sqrt(d_k)" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">Measuring Why Scores Are Divided by sqrt(d_k)</h1>
+  <p class="page-subtitle">The page says unscaled dot products have std about 8 for d_k = 64. Simulated: 8.03. Without scaling, softmax over 10 keys put on average 86% of the weight on one key; with scaling, 32%.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This quantifies the scaling mistake. The last subtopic covers a masking edge case in the page's function.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Transformers & Attention" topicRoute="/ai/transformers"
+    [prev]="{ label: 'Self-Attention Is Permutation-Equivariant', route: '/ai/transformers/self-attention-is-permutation-equivariant' }"
+    [next]="{ label: 'A Fully Masked Row Makes Softmax NaN', route: '/ai/transformers/a-fully-masked-row-makes-softmax-nan' }" />
+</div>

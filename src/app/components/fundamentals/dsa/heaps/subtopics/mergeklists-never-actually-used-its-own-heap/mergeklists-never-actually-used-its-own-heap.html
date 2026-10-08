@@ -1,0 +1,26 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Heaps / Priority Queues" topicRoute="/dsa/heaps"
+    subtopicLabel="mergeKLists Never Actually Used Its Own Heap" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">mergeKLists Never Actually Used Its Own Heap</h1>
+  <p class="page-subtitle">The main page's own mergeKLists function declared a min-heap and never pushed or popped from it -- the real work was a plain sort. Built the real tuple-heap version and verified it's output-equivalent but O(n log k) instead of O(n log n).</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This fixes the main page's own dead-code heap in mergeKLists, building the real tuple-based min-heap merge the function's own name and comment claimed to demonstrate.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Heaps / Priority Queues" topicRoute="/dsa/heaps"
+    [next]="{ label: 'Popping a Heap n Times Is Heap Sort', route: '/dsa/heaps/popping-a-heap-n-times-is-heap-sort' }" />
+</div>

@@ -1,0 +1,27 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Vector Databases" topicRoute="/ai/vector-databases"
+    subtopicLabel="HNSW Memory Is Not N·M·d" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">HNSW Memory Is Not N·M·d</h1>
+  <p class="page-subtitle">The page gave HNSW memory as O(N·M·d) floats. HNSW stores each vector once and adds a list of neighbour IDs; measured with FAISS, M=32 costs about 6.4 KB per 1536-dim vector, not 196 KB.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This fixes the memory figures. The last subtopic updates the Pinecone example for SDK v9.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Vector Databases" topicRoute="/ai/vector-databases"
+    [prev]="{ label: 'FAISS L2 Distances Are Squared', route: '/ai/vector-databases/faiss-l2-distances-are-squared' }"
+    [next]="{ label: 'Pinecone v9 upsert Takes { records }', route: '/ai/vector-databases/pinecone-v9-upsert-takes-records' }" />
+</div>

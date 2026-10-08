@@ -1,0 +1,27 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Graphs — BFS &amp; DFS" topicRoute="/dsa/graphs-bfs-dfs"
+    subtopicLabel="Detecting a Directed Cycle with Three-State DFS" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">Detecting a Directed Cycle with Three-State DFS</h1>
+  <p class="page-subtitle">The main page's QnA describes white/gray/black cycle detection in prose, with zero code. Built it, and verified it correctly distinguishes a real cycle from two paths that just happen to converge.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This builds the three-state DFS cycle-detection technique the main page's own QnA describes in prose but never demonstrates in code.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Graphs — BFS &amp; DFS" topicRoute="/dsa/graphs-bfs-dfs"
+    [prev]="{ label: 'shift()’s O(V²) Risk Depends on Graph Width', route: '/dsa/graphs-bfs-dfs/shifts-on-v-squared-risk-depends-on-graph-width' }"
+    [next]="{ label: 'Checking Bipartiteness with Two-Coloring BFS', route: '/dsa/graphs-bfs-dfs/checking-bipartiteness-with-two-coloring-bfs' }" />
+</div>

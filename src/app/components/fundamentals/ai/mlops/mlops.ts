@@ -48,7 +48,7 @@ export class AiMlops {
         'Experiment tracker: log every training run — hyperparameters, metrics (loss, accuracy, F1), training time, hardware, dataset version.',
         'MLflow: open-source, can self-host. mlflow.log_param(), mlflow.log_metric(), mlflow.sklearn.log_model(). UI shows comparison across runs.',
         'Weights & Biases (W&B): cloud-based, richer UI, automatic system metrics, sweep for hyperparameter optimisation. Industry standard.',
-        'Model registry: semantic versioning for models (stage: Staging, Production, Archived). Track who promoted what, when, and why.',
+        'Model registry: versioned models with aliases (e.g. champion, challenger) that serving code loads by name. MLflow deprecated the old Staging/Production/Archived stages in 2.9. Track who promoted what, when, and why.',
         'Never train a model you can\'t reproduce: log the git commit hash, dataset version, and random seed alongside every run.',
       ],
     },
@@ -57,7 +57,7 @@ export class AiMlops {
       points: [
         'REST API serving: wrap model in a FastAPI/Flask endpoint. Simple, language-agnostic. Not optimal for batch or streaming.',
         'BentoML: Python-native serving framework. Handles batching, versioning, multi-model pipelines, Docker packaging.',
-        'vLLM: high-throughput LLM serving. PagedAttention for efficient KV cache management. 20–100× higher throughput than naive HuggingFace serving.',
+        'vLLM: high-throughput LLM serving. PagedAttention for efficient KV cache management. vLLM\'s own benchmark reported 14–24× the throughput of Hugging Face Transformers (LLaMA-7B/13B, ShareGPT request lengths).',
         'Triton Inference Server (NVIDIA): multi-framework (PyTorch, TensorFlow, ONNX), dynamic batching, GPU scheduling. Enterprise standard.',
         'Batch inference: run model on large datasets offline (Spark + MLlib, Ray). Cost-efficient, no latency requirement.',
       ],
@@ -68,7 +68,7 @@ export class AiMlops {
         'Data drift: input feature distributions shift (e.g. customers\' purchase patterns change post-holiday). Detect via PSI, KL divergence, or Kolmogorov-Smirnov test.',
         'Concept drift: the relationship between inputs and targets changes (e.g. fraud patterns evolve). Harder to detect — requires labelled production data.',
         'Model performance monitoring: track predictions + actual outcomes. For LLMs: latency, token usage, error rate, user feedback.',
-        'Retraining triggers: scheduled (weekly), performance threshold (accuracy < 90%), or data drift threshold (PSI > 0.2).',
+        'Retraining triggers: scheduled (weekly), performance threshold (accuracy < 90%), or data drift threshold (PSI > 0.25, the same cut-off the challenge uses).',
         'Canary deployment: route 5% of traffic to new model, monitor for regressions, gradually increase to 100% — or roll back.',
       ],
     },
@@ -137,8 +137,10 @@ export class AiMlops {
 // python -m vllm.entrypoints.openai.api_server \\
 //   --model meta-llama/Meta-Llama-3-8B-Instruct \\
 //   --max-model-len 8192 \\
-//   --tensor-parallel-size 2  \\  # use 2 GPUs
+//   --tensor-parallel-size 2 \\
 //   --port 8000
+// (--tensor-parallel-size 2 splits the model over 2 GPUs. Do not put a comment
+//  after a trailing backslash: it ends the command there.)
 
 // Then use it like OpenAI API (TypeScript):
 import OpenAI from 'openai';
@@ -199,8 +201,8 @@ age_bucket = age // 25  # different bucketing logic!
 model.predict([[age_bucket, ...]])  # inputs differ from training`,
       right: `# Single feature pipeline used at both train and serve time
 def compute_features(df: pd.DataFrame) -> pd.DataFrame:
-    df["age_bucket"] = pd.cut(df["age"], bins=[0,18,35,65,100]).cat.codes
-    return df
+    df["age_bucket"] = pd.cut(df["age"], bins=[-np.inf,18,35,65,np.inf]).cat.codes
+    return df  # open-ended edges: no age falls outside a bucket (code -1)
 
 # Training: compute_features(train_df) → model.fit(...)
 # Serving:  compute_features(serving_df) → model.predict(...)`,
@@ -215,13 +217,13 @@ pipe = pipeline("text-generation", model="meta-llama/Meta-Llama-3-8B-Instruct")
 @app.post("/generate")
 def generate(prompt: str):
     return pipe(prompt, max_new_tokens=512)[0]["generated_text"]
-    # Throughput: ~5 req/s, no batching, no KV cache management`,
+    # One request at a time: no batching, no KV cache sharing`,
       right: `# Use vLLM for production LLM serving
 # vllm.entrypoints.openai.api_server
-# PagedAttention: 20–100× higher throughput via efficient KV cache
+# PagedAttention: efficient KV cache, so far more requests fit on the GPU
 # Continuous batching: multiple requests share GPU time
-# Typical: 50–500 req/s depending on model and GPU`,
-      explanation: 'HuggingFace pipeline processes one request at a time and has poor KV cache management. vLLM\'s PagedAttention and continuous batching deliver 20–100× higher throughput for production LLM workloads.',
+# vLLM's launch benchmark: 14–24x the throughput of HF Transformers`,
+      explanation: 'HuggingFace pipeline processes one request at a time and has poor KV cache management. vLLM\'s PagedAttention and continuous batching delivered 14–24× the throughput of Hugging Face Transformers in vLLM\'s own benchmark.',
     },
     {
       title: 'Deploying a new model without a canary or shadow test',
@@ -283,7 +285,7 @@ deploy(new_model, traffic_percent=5, rollback_if=lambda m: m.error_rate > 0.01)`
         'vLLM runs on CPU instead of GPU',
       ],
       answer: 1,
-      explanation: 'LLM serving bottleneck is GPU memory for KV caches. vLLM\'s PagedAttention allocates KV cache in non-contiguous pages (like OS virtual memory), enabling much higher batch sizes and 20–100× throughput vs sequential request processing.',
+      explanation: 'LLM serving bottleneck is GPU memory for KV caches. vLLM\'s PagedAttention allocates KV cache in non-contiguous pages (like OS virtual memory), enabling much higher batch sizes — vLLM reported 14–24× the throughput of Hugging Face Transformers.',
     },
     {
       q: 'What triggers a model retraining in a well-designed MLOps system?',
@@ -322,7 +324,7 @@ deploy(new_model, traffic_percent=5, rollback_if=lambda m: m.error_rate > 0.01)`
       'Version all three: code (git), data (hash/DVC), model (registry)',
       'Training-serving skew: use one feature pipeline for both train and serve',
       'Experiment tracking: log params, metrics, artifacts, data version per run',
-      'vLLM: PagedAttention + continuous batching = 20–100× throughput vs naive serving',
+      'vLLM: PagedAttention + continuous batching: up to 24× HF Transformers throughput in vLLM\'s benchmark',
       'Monitoring: data drift (PSI > 0.25 = retrain), concept drift needs labels',
       'Canary: 5% → 20% → 100% with automated rollback on error rate',
     ],

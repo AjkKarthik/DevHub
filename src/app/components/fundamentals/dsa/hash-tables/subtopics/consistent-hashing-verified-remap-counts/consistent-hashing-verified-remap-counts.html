@@ -1,0 +1,27 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Hash Tables" topicRoute="/dsa/hash-tables"
+    subtopicLabel="Consistent Hashing: Verified Remap Counts" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">Consistent Hashing: Verified Remap Counts</h1>
+  <p class="page-subtitle">The main page's own QnA describes consistent hashing in prose with no code or numbers -- built and measured here, with a direct side-by-side comparison against simple modulo hashing on the same 1,000 keys.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This builds the consistent-hashing ring the main page's own QnA describes but never shows in code, verifying its "only adjacent servers remap" claim with real measured counts against simple modulo hashing on the same test data.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Hash Tables" topicRoute="/dsa/hash-tables"
+    [prev]="{ label: 'A Naive Salt Does Not Defeat a HashDoS Attack', route: '/dsa/hash-tables/naive-salt-does-not-defeat-hashdos' }"
+    [next]="{ label: 'Finding the First Non-Repeating Character, Two Ways', route: '/dsa/hash-tables/first-non-repeating-character-two-ways' }" />
+</div>

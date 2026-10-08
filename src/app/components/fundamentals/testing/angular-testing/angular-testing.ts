@@ -25,7 +25,7 @@ export class AngularTesting {
     { name: 'ComponentFixture<T>',       type: 'class',    desc: 'Wraps the component instance, provides access to DOM and change detection.' },
     { name: 'fixture.detectChanges()',   type: 'method',   desc: 'Triggers Angular\'s change detection cycle — required after state changes.' },
     { name: 'fakeAsync / tick()',        type: 'function', desc: 'Simulates async passage of time in tests — useful for setTimeout, Observables.' },
-    { name: 'HttpClientTestingModule',   type: 'class',    desc: 'Replaces HttpClient with a test version that lets you expect and flush requests.' },
+    { name: 'provideHttpClientTesting()', type: 'function', desc: 'With provideHttpClient(), replaces the HTTP backend so you can expect and flush requests (replaces the deprecated HttpClientTestingModule).' },
     { name: 'By.css()',                  type: 'method',   desc: 'Query the fixture DOM by CSS selector — returns a DebugElement.' },
   ];
 
@@ -46,10 +46,10 @@ export class AngularTesting {
       'Read a signal directly: expect(component.count()).toBe(0).',
       'Set a signal: component.name.set("Alice"); fixture.detectChanges();',
       'computed() values update synchronously after signal changes — no async needed.',
-      'For effect() — use TestBed.flushEffects() (Angular 18+) to run pending effects.',
+      'For effect() — call TestBed.tick() (Angular 20+) to run pending effects and sync the UI. TestBed.flushEffects() still exists but is deprecated in favour of tick().',
     ]},
-    { heading: 'Testing HTTP with HttpClientTestingModule', points: [
-      'Import HttpClientTestingModule; inject HttpTestingController.',
+    { heading: 'Testing HTTP with provideHttpClientTesting', points: [
+      'Add providers: [provideHttpClient(), provideHttpClientTesting()] (HttpClientTestingModule is deprecated); inject HttpTestingController.',
       'Call the service method, then controller.expectOne(url) to get the pending request.',
       'Call req.flush(data) to respond with test data.',
       'Call controller.verify() in afterEach to ensure no unexpected HTTP calls were made.',
@@ -96,8 +96,9 @@ describe('CounterComponent', () => {
 });` },
     { label: 'Service Test', language: 'typescript', code:
 `import { TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
 import {
-  HttpClientTestingModule,
+  provideHttpClientTesting,
   HttpTestingController,
 } from '@angular/common/http/testing';
 import { UserService } from './user.service';
@@ -108,8 +109,7 @@ describe('UserService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [UserService],
+      providers: [UserService, provideHttpClient(), provideHttpClientTesting()],
     });
     svc        = TestBed.inject(UserService);
     controller = TestBed.inject(HttpTestingController);
@@ -246,17 +246,17 @@ it('auto-saves after 1 second debounce', fakeAsync(() => {
     { q: 'What does HttpTestingController.verify() check?', options: ['That all HTTP calls returned 200', 'That no unexpected HTTP requests were made and all expected ones were flushed', 'That the service is correctly injected', 'That the component compiled without errors'], answer: 1, explanation: 'verify() asserts that no unmatched or unresolved HTTP requests remain. It catches extra HTTP calls and un-flushed expected calls.' },
     { q: 'How do you read a signal value in an Angular test?', options: ['component.signal // direct property access', 'component.signal() // call it as a function', 'fixture.getSignal("name")', 'await firstValueFrom(component.signal)'], answer: 1, explanation: 'Signals are getter functions — call them with () to read the current value. This works directly in tests without any special utilities.' },
   { q: 'Which Angular testing utility configures the testing module?', options: ['TestModule', 'TestBed', 'ComponentFixture', 'TestRunner'], answer: 1, explanation: 'TestBed is the Angular testing harness. TestBed.configureTestingModule() sets up declarations, imports, and providers. fixture = TestBed.createComponent(MyComponent) creates the component for testing.' },
-  { q: 'How do you test an HTTP service in Angular?', options: ['Use a real HttpClient in tests', 'Import HttpClientTestingModule and use HttpTestingController', 'Mock fetch globally', 'Use jasmine.createSpy on HttpClient'], answer: 1, explanation: 'HttpClientTestingModule replaces HttpClient with a test double. HttpTestingController.expectOne(url) verifies requests were made and flushes mock responses.' },
+  { q: 'How do you test an HTTP service in Angular?', options: ['Use a real HttpClient in tests', 'Provide provideHttpClient() + provideHttpClientTesting() and use HttpTestingController', 'Mock fetch globally', 'Use jasmine.createSpy on HttpClient'], answer: 1, explanation: 'provideHttpClientTesting() (after provideHttpClient()) swaps the HTTP backend for a test double; the older HttpClientTestingModule is deprecated. HttpTestingController.expectOne(url) verifies requests were made and flushes mock responses.' },
   { q: 'What does fixture.detectChanges() do in Angular component tests?', options: ['Destroys the component', 'Triggers change detection to update the DOM', 'Resets component state', 'Clears all inputs'], answer: 1, explanation: 'Angular does not run change detection automatically in tests. fixture.detectChanges() must be called after setting component inputs or state to update the rendered DOM.' },
   ];
 
   qna: QnaItem[] = [
     { q: 'Should I use SpectatorModule or plain TestBed?', a: 'Plain TestBed is the baseline — no extra dependencies and always current with Angular. Spectator and Angular Testing Library reduce boilerplate and encourage testing user behaviour rather than internals. For a team, any of these work — consistency matters more than the choice.' },
-    { q: 'How do I test a component that uses Router?', a: 'Import RouterTestingModule or provideRouter([]) in TestBed. For components that only read the URL, you can provide a spy for ActivatedRoute. For components that navigate, import RouterTestingModule and spy on Router.navigate.' },
-    { q: 'How do I test Angular effects (effect())?', a: 'In Angular 18+, call TestBed.flushEffects() to synchronously run all pending effects. In earlier versions, wrap the test in a fakeAsync zone and call tick() after setting a signal, then detectChanges().' },
+    { q: 'How do I test a component that uses Router?', a: 'Add provideRouter([]) (or your routes) to TestBed providers — RouterTestingModule is deprecated. For components that only read the URL, you can provide a stub for ActivatedRoute. For components that navigate, spy on Router.navigate, or use RouterTestingHarness to navigate and render routed components.' },
+    { q: 'How do I test Angular effects (effect())?', a: 'Call TestBed.tick() (Angular 20+) after setting a signal: it runs pending effects and synchronises the UI. TestBed.flushEffects() still works but is deprecated in favour of tick(). In earlier versions, use fakeAsync and tick() after setting a signal, then detectChanges().' },
   { q: 'How do you test a component with @Input() bindings?', a: 'Set the input on the component instance before detectChanges: component.title = \'Test Title\'; fixture.detectChanges(); const el = fixture.nativeElement.querySelector(\'h1\'); expect(el.textContent).toContain(\'Test Title\'). The compiled selector of the parent component can also test input passing with a wrapper host component.' },
   { q: 'How do you test Angular reactive forms?', a: 'Access the form via the component: const form = component.loginForm; form.setValue({ email: \'test@test.com\', password: \'pass\' }); fixture.detectChanges(); expect(form.valid).toBe(true). Test validation: form.get(\'email\').setValue(\'\'); expect(form.get(\'email\').hasError(\'required\')).toBe(true). Trigger submit by calling the submit handler directly.' },
-  { q: 'How do you test Angular router navigation?', a: 'Use RouterTestingModule.withRoutes(routes) in TestBed. Inject Router: const router = TestBed.inject(Router); const spy = spyOn(router, \'navigate\'). After triggering navigation action: expect(spy).toHaveBeenCalledWith([\'/dashboard\']). For testing routed components: use fakeAsync + tick() with router.navigateByUrl() and ComponentFixture.' },
+  { q: 'How do you test Angular router navigation?', a: 'Use provideRouter(routes) in TestBed providers (RouterTestingModule.withRoutes is deprecated). Inject Router: const router = TestBed.inject(Router); const spy = spyOn(router, \'navigate\'). After triggering navigation action: expect(spy).toHaveBeenCalledWith([\'/dashboard\']). For testing routed components: use fakeAsync + tick() with router.navigateByUrl() and ComponentFixture.' },
   ];
 
   revision: RevisionSummary = {
@@ -266,7 +266,7 @@ it('auto-saves after 1 second debounce', fakeAsync(() => {
       'fixture.detectChanges() after every state change',
       'fixture.nativeElement / debugElement.query(By.css()) for DOM access',
       'Signals: read with signal(), set with signal.set(); detectChanges() to update DOM',
-      'HttpClientTestingModule + controller.expectOne() + req.flush() + controller.verify()',
+      'provideHttpClient() + provideHttpClientTesting() + controller.expectOne() + req.flush() + controller.verify()',
       'fakeAsync + tick() for timer/debounce testing',
     ],
     interviewFocus: [

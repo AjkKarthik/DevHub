@@ -1,0 +1,27 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Heaps / Priority Queues" topicRoute="/dsa/heaps"
+    subtopicLabel="Popping a Heap n Times Is Heap Sort" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">Popping a Heap n Times Is Heap Sort</h1>
+  <p class="page-subtitle">A heap doesn't give you a sorted array -- but draining it with n pops does. Verified heapify builds a valid, unsorted heap, and that repeated popping matches Array.sort() exactly.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This is the direct complement to the main page's own "heap order is not sorted order" point -- demonstrating exactly how draining a heap by repeated popping produces heap sort.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Heaps / Priority Queues" topicRoute="/dsa/heaps"
+    [prev]="{ label: 'mergeKLists Never Actually Used Its Own Heap', route: '/dsa/heaps/mergeklists-never-actually-used-its-own-heap' }"
+    [next]="{ label: 'The Real O(n log k) K Closest Points Solution', route: '/dsa/heaps/the-real-on-log-k-k-closest-points-solution' }" />
+</div>

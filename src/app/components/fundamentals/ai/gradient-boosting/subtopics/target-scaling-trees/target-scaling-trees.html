@@ -1,0 +1,26 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Gradient Boosting (XGBoost)" topicRoute="/ai/gradient-boosting"
+    subtopicLabel="Scaling the Target Does Not Help Tree Boosters" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">Scaling the Target Does Not Help Tree Boosters</h1>
+  <p class="page-subtitle">The page advised standardising large regression targets for XGBoost. In a test with targets up to a million, raw and standardised fits had the same RMSE. A log transform is a different thing: it changes the loss.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the target-scaling mistake. Clustering moves from labelled targets to finding structure without them.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Gradient Boosting (XGBoost)" topicRoute="/ai/gradient-boosting"
+    [prev]="{ label: 'LightGBM subsample Needs subsample_freq', route: '/ai/gradient-boosting/lightgbm-subsample-needs-subsample-freq' }" />
+</div>

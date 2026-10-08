@@ -106,7 +106,7 @@ describe('Provider verification', () => {
   let server: http.Server;
 
   beforeAll(() => {
-    server = app.listen(3001);
+    server = app.listen(3001);   // db below is the provider\'s own data layer
   });
 
   afterAll(() => server.close());
@@ -130,12 +130,17 @@ describe('Provider verification', () => {
     return verifier.verifyProvider();
   });
 });` },
-    { label: 'Can-I-Deploy', language: 'typescript', code:
+    { label: 'Can-I-Deploy', language: 'bash', code:
 `# In CI pipeline (GitHub Actions / Azure DevOps)
+# The pact-broker command comes from the @pact-foundation/pact-cli package.
 
 # After consumer publishes its pact:
 - name: Publish pact
-  run: npx pact-broker publish ./pacts --broker-base-url=$PACT_BROKER_URL
+  run: |
+    npx pact-broker publish ./pacts \\
+      --consumer-app-version \${GIT_SHA} \\
+      --branch \${GIT_BRANCH} \\
+      --broker-base-url \${PACT_BROKER_URL}   # --consumer-app-version is required
 
 # Before deploying the consumer to production:
 - name: Can I deploy consumer?
@@ -152,12 +157,13 @@ describe('Provider verification', () => {
     npx pact-broker can-i-deploy \\
       --pacticipant UserService \\
       --version \${GIT_SHA} \\
-      --to-environment production` },
+      --to-environment production \\
+      --broker-base-url \${PACT_BROKER_URL}` },
   ];
 
   mistakes: CommonMistake[] = [
     { title: 'Testing business logic in contract tests', wrong: 'pact test asserts that discounts are applied correctly', right: 'pact test only asserts the response shape and HTTP status', explanation: 'Contract tests verify the API contract (shape, status codes, fields). Business logic belongs in unit and integration tests.' },
-    { title: 'Consumer writing overly strict matchers', wrong: "body: { name: 'Alice', id: 1, createdAt: '2024-01-01T00:00:00Z' }", right: "body: { name: string('Alice'), id: integer(1) } // only fields the consumer uses", explanation: 'Strict matchers make pacts brittle — provider adds a new field and pact fails. Only match fields the consumer actually uses.' },
+    { title: 'Consumer writing overly strict matchers', wrong: "body: { name: 'Alice', id: 1, createdAt: '2024-01-01T00:00:00Z' }", right: "body: { name: string('Alice'), id: integer(1) } // only fields the consumer uses", explanation: 'Literal values are compared exactly, so the pact fails as soon as the provider returns different data (another name, a later timestamp). Extra fields the provider adds do NOT fail a pact — Pact ignores unexpected response keys. Use type matchers and list only the fields the consumer reads.' },
     { title: 'Not using state handlers in provider verification', wrong: 'provider test runs against empty database — user not found → 404', right: 'stateHandlers: { "user with ID 1 exists": () => db.seed({...}) }', explanation: 'Each "given" state in a pact must be set up by the provider before that interaction is verified. Missing state handlers cause false failures.' },
     { title: 'Skipping can-i-deploy check', wrong: 'deploy consumer directly after publishing pact', right: 'npx pact-broker can-i-deploy before every deployment', explanation: 'Publishing a pact does not mean the provider has verified it. can-i-deploy checks the actual compatibility matrix before you deploy.' },
     { title: 'Using contract tests instead of integration tests', wrong: 'replace all integration tests with pact tests for performance', right: 'contract tests complement integration tests — they do not replace them', explanation: 'Pact verifies the contract shape. Integration tests verify that the business logic is correct end-to-end. Both are needed.' },
@@ -207,14 +213,14 @@ const interaction = {
   quiz: QuizQuestion[] = [
     { q: 'In consumer-driven contract testing, who defines the pact?', options: ['The provider team', 'The QA team', 'The consumer — it records its expectations of the provider', 'The Pact Broker automatically'], answer: 2, explanation: 'The consumer writes tests that express what it needs from the provider. These expectations are recorded as a pact file that the provider must verify.' },
     { q: 'What does can-i-deploy check?', options: ['Whether the code compiles', 'Whether a specific version of a service is compatible with what is in a given environment', 'Whether Docker is running', 'Whether pact tests passed locally'], answer: 1, explanation: 'can-i-deploy queries the Pact Broker\'s compatibility matrix: "Is version X of ServiceA compatible with all versions of its consumers/providers currently in production?"' },
-    { q: 'Why should consumer matchers only assert on fields the consumer actually uses?', options: ['To make tests run faster', 'Overly strict matchers break when the provider adds new fields or changes unused data', 'Pact Broker requires minimal matchers', 'The provider cannot handle strict matching'], answer: 1, explanation: 'If the consumer matcher checks a timestamp field it never reads, a format change on the provider breaks the pact for no real reason. Match only what you consume.' },
+    { q: 'Why should consumer matchers only assert on fields the consumer actually uses?', options: ['To make tests run faster', 'Every listed field and literal value must match, so asserting on unused data breaks the pact when that data changes', 'Pact Broker requires minimal matchers', 'The provider cannot handle strict matching'], answer: 1, explanation: 'If the consumer pins a timestamp field it never reads, a change to that field on the provider breaks the pact for no real reason. New fields are fine (Pact ignores extra keys); listed fields and literal values are what make a pact brittle. Match only what you consume, by type.' },
   { q: 'What problem does Pact contract testing solve?', options: ['Performance regressions', 'Breaking changes when a provider API changes in ways consumers do not expect', 'Test data management', 'UI regression detection'], answer: 1, explanation: 'Pact prevents integration failures caused by provider changes. Consumers define their expectations as pacts; providers verify they still fulfill them — without needing a running consumer.' },
   { q: 'What is the Pact Broker used for?', options: ['Running Pact tests', 'Storing and sharing pact contracts between teams; enables can-i-deploy checks', 'Generating API stubs', 'Schema registry for events'], answer: 1, explanation: 'Pact Broker stores consumer pacts and provider verification results. Enables can-i-deploy: check if a provider version is safe to deploy given all consumer pacts are verified.' },
   { q: 'Who publishes pact files to the Pact Broker?', options: ['The provider team', 'The consumer team after consumer-side tests run', 'Both teams simultaneously', 'The CI/CD pipeline independently'], answer: 1, explanation: 'Consumers generate pact files from their consumer-side tests and publish them to the broker. Providers pull pacts from the broker and verify them during their CI pipeline.' },
   ];
 
   qna: QnaItem[] = [
-    { q: 'Do I need a Pact Broker to use Pact?', a: 'No — you can use pactFile: "./pacts/consumer-provider.json" in the provider verifier to read local pact files. A Broker is needed for multi-team workflows, CI compatibility checks, and can-i-deploy. PactFlow offers a hosted Broker with a free tier.' },
+    { q: 'Do I need a Pact Broker to use Pact?', a: 'No — you can pass pactUrls: ["./pacts/consumer-provider.json"] to the provider Verifier (there is no pactFile option) to read local pact files. A Broker is needed for multi-team workflows, CI compatibility checks, and can-i-deploy. PactFlow offers a hosted Broker with a free tier.' },
     { q: 'How is contract testing different from API schema testing (OpenAPI)?', a: 'OpenAPI schema testing validates that the provider\'s API matches its documentation. Contract testing validates that the consumer\'s specific usage of the provider is satisfied. Contract testing is consumer-driven and checks what each consumer actually calls — OpenAPI tests check the full schema regardless of who uses it.' },
     { q: 'Can I use Pact for event-driven (Kafka/RabbitMQ) contracts?', a: 'Yes — Pact supports message contracts. The consumer defines the message structure it expects; the producer verifies it can produce a matching message. This is separate from HTTP pacts and is configured with MessageProviderPact.' },
   { q: 'How does Pact consumer-side testing work?', a: 'Consumer tests define the expected interactions: provider.addInteraction({ state: \'user exists\', uponReceiving: \'a request for user 1\', withRequest: { method: \'GET\', path: \'/users/1\' }, willRespondWith: { status: 200, body: { id: 1, name: like(\'Alice\') } } }). Pact runs a mock server; the consumer test hits it. On success, a pact file is generated.' },

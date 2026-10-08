@@ -37,7 +37,7 @@ export class DsaDpPatterns {
         'dp[i] = max subarray sum ending at index i. Transition: dp[i] = max(nums[i], dp[i-1] + nums[i]).',
         'Restart if dp[i-1] is negative — a negative prefix only hurts. Otherwise extend.',
         'Space-optimized: just track currentMax and globalMax without an array.',
-        'Variant: max circular subarray = max(Kadane, total_sum - min_subarray_sum).',
+        'Variant: max circular subarray = max(Kadane, total_sum - min_subarray_sum) — except when every value is negative: then total_sum - min_subarray_sum is 0 (the empty subarray), so return the plain Kadane result instead.',
       ],
     },
     {
@@ -142,7 +142,9 @@ function longestPalindrome(s: string): string {
   return s.slice(start, start + maxLen);
 }
 
-// Word Break — can string be segmented into dict words? O(n²)
+// Word Break — can string be segmented into dict words?
+// O(n²) split checks, but each s.slice(j, i) copies up to n chars -> O(n³) overall.
+// Limiting j to the longest dictionary word length L makes it O(n * L²).
 function wordBreak(s: string, wordDict: string[]): boolean {
   const dict = new Set(wordDict);
   const dp = new Array(s.length + 1).fill(false);
@@ -247,7 +249,7 @@ dp[i][0] = i; dp[0][j] = j; // first row and column are 0,1,2,...,n/m`,
     },
     {
       q: 'What is the difference between palindromic substring and palindromic subsequence?',
-      a: 'Substring: characters must be contiguous. Subsequence: characters can be non-contiguous (just must maintain order). "abcba" has both its longest palindromic substring and longest palindromic subsequence equal to "abcba" (the whole string). For "character": the longest palindromic substring is "c" or "a" (length 1, since no contiguous palindrome longer than 1 exists), but the longest palindromic subsequence is "carac" (length 5, picking non-contiguous characters) — this is where the two measures genuinely diverge, since the subsequence relaxation allows skipping characters that break contiguity.',
+      a: 'Substring: characters must be contiguous. Subsequence: characters can be non-contiguous (just must maintain order). "abcba" has both its longest palindromic substring and longest palindromic subsequence equal to "abcba" (the whole string). For "character": the longest palindromic substring is "ara" (length 3, the contiguous run in c-h-a-r-a-c), but the longest palindromic subsequence is "carac" (length 5, picking non-contiguous characters) — this is where the two measures genuinely diverge, since the subsequence relaxation allows skipping characters that break contiguity.',
     },
     {
       q: 'When is interval DP the right approach?',

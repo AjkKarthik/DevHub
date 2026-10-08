@@ -1,0 +1,27 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Greedy Algorithms" topicRoute="/dsa/greedy"
+    subtopicLabel="The Page’s merge Rewrote the Caller’s Intervals" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">The Page’s merge Rewrote the Caller’s Intervals</h1>
+  <p class="page-subtitle">The original merge returned the right answer but sorted the caller's array and wrote merged ends into the caller's own intervals. It now copies first.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This explains the change to the main page's merge code. The next subtopic corrects the page's description of scheduling jobs with deadlines.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Greedy Algorithms" topicRoute="/dsa/greedy"
+    [prev]="{ label: 'US Coins Are Greedy-Safe Without Dividing Evenly', route: '/dsa/greedy/canonical-coins-are-not-divisibility' }"
+    [next]="{ label: 'Job Sequencing Is Greedy by Profit, Not by Deadline', route: '/dsa/greedy/job-sequencing-greedy-by-profit' }" />
+</div>

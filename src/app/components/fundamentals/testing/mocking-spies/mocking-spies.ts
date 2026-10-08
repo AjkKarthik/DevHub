@@ -85,7 +85,7 @@ test('place calls notify with the item name', () => {
 `// Controlling what a mock returns
 const mockFetch = jest.fn();
 
-test('returns cached user on second call', () => {
+test('returns queued values in order', () => {
   mockFetch
     .mockReturnValueOnce({ id: 1, name: 'Alice' })  // first call
     .mockReturnValueOnce({ id: 1, name: 'Alice' }); // second call
@@ -113,7 +113,7 @@ test('uses spied random value', () => {
   expect(mathUtils.random()).toBe(0.5);
   expect(spy).toHaveBeenCalledTimes(1);
 
-  spy.mockRestore(); // put original Math.random back
+  spy.mockRestore(); // put the original mathUtils.random back (Math.random itself was never touched)
 });
 
 // Spy on console to suppress noise in tests
@@ -213,7 +213,7 @@ describe('NotificationService', () => {
 
   quiz: QuizQuestion[] = [
     { q: 'What is the difference between jest.fn() and jest.spyOn()?', options: ['jest.fn() is for classes; spyOn is for functions', 'jest.fn() creates a new standalone mock; spyOn wraps an existing method on an object', 'spyOn is deprecated', 'They are identical'], answer: 1, explanation: 'jest.fn() creates a fresh mock function. jest.spyOn(obj, method) replaces obj.method with a spy that can optionally delegate to the real implementation.' },
-    { q: 'How do you make a mock function return a Promise that resolves with { id: 1 }?', options: ['mockReturnValue(Promise.resolve({ id: 1 }))', 'mockResolvedValue({ id: 1 })', 'mockAsync({ id: 1 })', 'Both A and B are correct'], answer: 3, explanation: 'Both work. mockResolvedValue is shorthand for mockReturnValue(Promise.resolve(v)) — prefer it for clarity.' },
+    { q: 'How do you make a mock function return a Promise that resolves with { id: 1 }?', options: ['mockReturnValue(Promise.resolve({ id: 1 }))', 'mockResolvedValue({ id: 1 })', 'mockAsync({ id: 1 })', 'Both A and B are correct'], answer: 3, explanation: 'Both resolve to { id: 1 }. They are not identical: mockResolvedValue(v) is shorthand for mockImplementation(() => Promise.resolve(v)), so it builds a new promise on each call, while mockReturnValue(Promise.resolve(v)) returns one promise created up front. The difference bites with rejections: mockReturnValue(Promise.reject(err)) rejects before any test awaits it, while mockRejectedValue(err) rejects only when called.' },
     { q: 'What does jest.clearAllMocks() reset?', options: ['Call history only — implementations stay', 'Call history AND implementations', 'It removes all mock functions from memory', 'Nothing — it is a no-op'], answer: 0, explanation: 'clearAllMocks() resets call counts and call arguments but leaves mockReturnValue implementations in place. Use resetAllMocks() to also clear implementations.' },
   { q: 'What is the difference between a stub and a mock?', options: ['They are identical', 'Stubs provide canned responses; mocks also verify interactions occurred', 'Mocks are for async, stubs for sync', 'Stubs are only for databases'], answer: 1, explanation: 'Stubs replace a dependency with a fixed response — no verification. Mocks also verify that specific calls happened (call count, arguments). In Jest: jest.fn() can serve as both.' },
   { q: 'How do you spy on an object method without replacing it?', options: ['jest.fn()', 'jest.spyOn(obj, \'methodName\')', 'jest.mock()', 'jest.stub()'], answer: 1, explanation: 'jest.spyOn(obj, \'method\') wraps the real method to track calls. The original implementation runs unless you chain .mockImplementation(). Restore with jest.restoreAllMocks() in afterEach.' },

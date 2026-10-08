@@ -1,0 +1,27 @@
+<div class="test-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Angular Testing" topicRoute="/testing-hub/angular-testing"
+    subtopicLabel="TestBed.flushEffects Was Replaced by TestBed.tick" />
+  <div class="page-header-icon test-icon">✓</div>
+  <h1 class="page-title">TestBed.flushEffects Was Replaced by TestBed.tick</h1>
+  <p class="page-subtitle">The page recommended TestBed.flushEffects() for effect() tests. Angular 20 added TestBed.tick(), and the Angular 22 typings mark flushEffects as deprecated with "use TestBed.tick() instead".</p>
+  <app-page-meta [readingTime]="4" difficulty="intermediate" since="Testing" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="test-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="test-section">
+    <h2>Where this fits</h2>
+    <p>This updates the Testing Signals guidance on Angular Testing. The last subtopic covers router testing.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Angular Testing" topicRoute="/testing-hub/angular-testing"
+    [prev]="{ label: 'HttpClientTestingModule Is Deprecated', route: '/testing-hub/angular-testing/httpclienttestingmodule-is-deprecated' }"
+    [next]="{ label: 'Router Testing Without RouterTestingModule', route: '/testing-hub/angular-testing/router-testing-without-routertestingmodule' }" />
+</div>

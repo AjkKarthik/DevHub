@@ -1,0 +1,26 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Graph Algorithms" topicRoute="/dsa/graph-algorithms"
+    subtopicLabel="Dijkstra's Fake Heap Was Sort Plus Shift" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">Dijkstra's Fake Heap Was Sort Plus Shift</h1>
+  <p class="page-subtitle">The main page claimed O((V+E) log V) for Dijkstra, but the original codeTab simulated its "min-heap" with Array.sort() + shift() on every pop. Fixed to a real binary heap, measured a widening gap (9x to 114x).</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This fixes the main page's own Dijkstra codeTab, which simulated a min-heap via Array.sort() + shift() despite claiming O((V+E) log V) complexity, and measures exactly how the gap widens with n.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Graph Algorithms" topicRoute="/dsa/graph-algorithms"
+    [next]="{ label: 'Kruskal’s MST with the Page’s Own Union-Find', route: '/dsa/graph-algorithms/kruskals-mst-with-the-pages-own-union-find' }" />
+</div>

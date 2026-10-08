@@ -1,0 +1,27 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Gradient Boosting (XGBoost)" topicRoute="/ai/gradient-boosting"
+    subtopicLabel="LightGBM subsample Needs subsample_freq" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">LightGBM subsample Needs subsample_freq</h1>
+  <p class="page-subtitle">The page set subsample=0.8 for LightGBM. Unless subsample_freq (bagging_freq) is above 0, LightGBM ignores it: models with 0.5 and 1.0 produced identical predictions.</p>
+  <app-page-meta [readingTime]="4" difficulty="intermediate" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the hyperparameter list. The last subtopic tests the target-scaling advice.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Gradient Boosting (XGBoost)" topicRoute="/ai/gradient-boosting"
+    [prev]="{ label: 'LightGBM Callbacks Belong in fit()', route: '/ai/gradient-boosting/lightgbm-callbacks-belong-in-fit' }"
+    [next]="{ label: 'Scaling the Target Does Not Help Tree Boosters', route: '/ai/gradient-boosting/scaling-the-target-does-not-help-tree-boosters' }" />
+</div>

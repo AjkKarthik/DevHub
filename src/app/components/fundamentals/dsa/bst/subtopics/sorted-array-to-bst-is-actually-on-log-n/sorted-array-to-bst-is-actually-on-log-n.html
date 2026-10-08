@@ -1,0 +1,26 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Binary Search Trees" topicRoute="/dsa/bst"
+    subtopicLabel="Sorted Array to BST Is Actually O(n log n)" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">Sorted Array to BST Is Actually O(n log n)</h1>
+  <p class="page-subtitle">The main page's own codeTab comments "Convert sorted array to balanced BST — O(n)". Measured it directly: slicing at every recursion level makes it O(n log n), with the real O(n) fix verified too.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This is the fix directly behind the main page's own corrected codeTab comment, measuring exactly why the original slice-based version is O(n log n) and verifying the real O(n) index-based fix.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Binary Search Trees" topicRoute="/dsa/bst"
+    [next]="{ label: 'One Rotation Rebalances an Ascending Insert', route: '/dsa/bst/one-rotation-rebalances-an-ascending-insert' }" />
+</div>

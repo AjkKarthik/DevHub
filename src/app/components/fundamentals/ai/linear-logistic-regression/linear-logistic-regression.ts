@@ -37,7 +37,7 @@ export class AiLinearLogisticRegression {
       points: [
         'Model: ŷ = w₁x₁ + w₂x₂ + … + b = Xw + b. Learns weights w and bias b to predict a continuous output.',
         'Loss: Mean Squared Error (MSE) = (1/n) Σ(yᵢ − ŷᵢ)². Differentiable — ideal for gradient descent.',
-        'OLS closed form: w = (X^T X)^{-1} X^T y. Exact solution in O(n·d²); impractical for millions of features.',
+        'OLS closed form: w = (X^T X)^{-1} X^T y. Exact solution in O(n·d² + d³) — building X^T X costs n·d², solving it d³; impractical for millions of features.',
         'Multiple regression: one output, multiple inputs. Polynomial regression adds x², x³ as new features — still a linear model in the parameters.',
         'Assumptions: linearity, independence, homoscedasticity (constant variance), normality of residuals. Violated assumptions lead to unreliable p-values (for inference), though predictions may still be useful.',
       ],
@@ -50,6 +50,7 @@ export class AiLinearLogisticRegression {
         'Loss: Binary Cross-Entropy = −(1/n) Σ[yᵢ log(pᵢ) + (1−yᵢ) log(1−pᵢ)]. No closed form — must use gradient descent.',
         'Multi-class: Softmax regression replaces sigmoid with softmax; one weight vector per class.',
         'Despite the name, logistic regression is a classification algorithm, not a regression algorithm.',
+        'On perfectly separable data the unregularised log loss has no minimum: it keeps falling as the weights grow, so gradient descent never converges (weights increase without bound). Add L2 regularisation or stop early.',
       ],
     },
     {
@@ -202,7 +203,8 @@ const loss = binaryCrossEntropy(yTrue, yPred);  // −[y·log(p)+(1−y)·log(1�
 // WRONG: coefficients are log-odds, not probabilities`,
       right: `// Coefficient = change in log-odds per unit increase in feature
 // To convert: odds_ratio = exp(coefficient)
-// odds_ratio 1.6 means 60% higher odds, not 60% higher probability`,
+// exp(0.5) = 1.65: 65% higher odds, not 65% higher probability
+// (from p = 0.5 the probability only rises to 0.62; from p = 0.1, to 0.155)`,
       explanation: 'Logistic regression coefficients are in log-odds space. The effect on probability is non-linear and depends on the current value. Use exp(coef) for the odds ratio.',
     },
     {
@@ -283,7 +285,7 @@ function gradientStep(
         'Has no effect on weights',
       ],
       answer: 1,
-      explanation: 'L1 regularisation adds λ·||w||₁ to the loss. Its gradient has a kink at zero that creates a sparsity-inducing effect — many weights go to exactly 0, effectively doing feature selection.',
+      explanation: 'L1 regularisation adds λ·||w||₁ to the loss. The penalty pulls every weight towards zero with the same force λ and has a corner at zero, so any weight whose data gradient is weaker than λ ends exactly at 0 — effectively doing feature selection.',
     },
   { q: 'What does ElasticNet regularization combine, and why would you use it over pure L1 or L2?', options: ['It combines decision trees with linear regression', 'It combines L1 and L2 penalties with a mixing ratio, getting sparsity (feature selection) from L1 while keeping L2\'s stability when features are highly correlated', 'It applies regularization only to the intercept term', 'It is identical to L2 but with a different name'], answer: 1, explanation: 'Pure L1 (Lasso) can behave erratically when features are highly correlated — it tends to arbitrarily pick one correlated feature and zero out the others. Pure L2 (Ridge) shrinks correlated features together but never eliminates any. ElasticNet\'s loss adds both penalties with a mixing parameter (l1_ratio), giving sparse solutions like Lasso while handling correlated feature groups more stably like Ridge — a common default choice when you are not sure which penalty fits the data better.' },
   { q: 'What is the relationship between logistic regression and a neural network?', options: ['They are unrelated', 'A logistic regression is a single-layer neural network with sigmoid activation and binary cross-entropy loss', 'Neural networks use linear regression internally', 'Logistic regression is deeper than a neural network'], answer: 1, explanation: 'Logistic regression = one neuron: z = w^T x + b, output = sigmoid(z), loss = binary cross-entropy. Extending to multiple classes: softmax regression = one layer with K outputs. Neural networks add multiple hidden layers with nonlinear activations — logistic regression is the simplest case.' },

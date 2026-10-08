@@ -1,0 +1,26 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Clustering & Dimensionality Reduction" topicRoute="/ai/clustering"
+    subtopicLabel="One k-means++ Run Is Not Enough" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">One k-means++ Run Is Not Enough</h1>
+  <p class="page-subtitle">The page said k-means++ avoids bad initialisations. It reduces them: on 10 blobs a single k-means++ run still missed the best solution a third of the time. scikit-learn's default runs it only once.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the k-means++ bullet. Neural Networks move from these classic methods to learned representations.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Clustering & Dimensionality Reduction" topicRoute="/ai/clustering"
+    [prev]="{ label: 'PCA by Power Iteration Matches scikit-learn', route: '/ai/clustering/pca-by-power-iteration-matches-scikit-learn' }" />
+</div>

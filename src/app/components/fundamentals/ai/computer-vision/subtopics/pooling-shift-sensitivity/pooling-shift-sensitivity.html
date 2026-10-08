@@ -1,0 +1,26 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CNNs & Computer Vision" topicRoute="/ai/computer-vision"
+    subtopicLabel="A One-Pixel Shift Changes Pooled Output" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">A One-Pixel Shift Changes Pooled Output</h1>
+  <p class="page-subtitle">The page said pooling adds translation invariance. Running its maxPool on an input and the same input shifted by one pixel gives different outputs — not even a shifted copy.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the equivariance bullet. Transformers and Attention replace convolution with learned, content-based mixing.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CNNs & Computer Vision" topicRoute="/ai/computer-vision"
+    [prev]="{ label: 'CNN Convolution Is Cross-Correlation', route: '/ai/computer-vision/cnn-convolution-is-cross-correlation' }" />
+</div>

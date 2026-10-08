@@ -1,0 +1,27 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Evaluating LLMs" topicRoute="/ai/evaluating-llms"
+    subtopicLabel="ROUGE-1 Gives a Wrong Fact a Perfect Score" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">ROUGE-1 Gives a Wrong Fact a Perfect Score</h1>
+  <p class="page-subtitle">ROUGE-1 counts shared single words, so word order is invisible to it. "France is the capital of Paris" scores 1.0 against "Paris is the capital of France".</p>
+  <app-page-meta [readingTime]="4" difficulty="intermediate" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This shows the limits of overlap metrics. The last subtopic corrects the LLM-as-judge bias figure.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Evaluating LLMs" topicRoute="/ai/evaluating-llms"
+    [prev]="{ label: 'Recomputing the ROUGE Examples', route: '/ai/evaluating-llms/rouge-example-recomputed' }"
+    [next]="{ label: 'The 65% Figure Is Swap Consistency', route: '/ai/evaluating-llms/judge-position-bias-figure' }" />
+</div>

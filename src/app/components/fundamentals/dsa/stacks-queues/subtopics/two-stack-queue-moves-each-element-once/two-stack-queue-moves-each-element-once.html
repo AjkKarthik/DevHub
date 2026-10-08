@@ -1,0 +1,26 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Stacks &amp; Queues" topicRoute="/dsa/stacks-queues"
+    subtopicLabel="The Two-Stack Queue Moves Each Element Once" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">The Two-Stack Queue Moves Each Element Once, Not Twice</h1>
+  <p class="page-subtitle">The main page's theory said each element moves between the two stacks "at most twice" over its lifetime. Instrumenting a real two-stack queue and counting transfers directly found the true maximum is one.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This is the fix directly behind the main page's own corrected theory bullet on the two-stack queue pattern -- the same amortized-analysis family as the dynamic array doubling proof covered on the Big-O topic, just applied to a different data structure.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Stacks &amp; Queues" topicRoute="/dsa/stacks-queues"
+    [next]="{ label: 'Evaluating RPN Expressions With a Stack', route: '/dsa/stacks-queues/rpn-expression-evaluation-with-a-stack' }" />
+</div>

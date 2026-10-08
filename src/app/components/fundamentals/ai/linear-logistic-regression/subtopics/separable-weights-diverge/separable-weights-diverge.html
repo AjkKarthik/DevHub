@@ -1,0 +1,26 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Linear & Logistic Regression" topicRoute="/ai/linear-logistic-regression"
+    subtopicLabel="Separable Data Makes Weights Grow Forever" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">Separable Data Makes Weights Grow Forever</h1>
+  <p class="page-subtitle">The page trains logistic regression for a fixed number of epochs. On perfectly separable data there is no best weight: the loss keeps falling as the weight grows, so training never settles.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This adds the separation caveat to the theory. Next: why MSE is a poor loss for a sigmoid output.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Linear & Logistic Regression" topicRoute="/ai/linear-logistic-regression"
+    [next]="{ label: 'MSE Gradient Vanishes on Confident Mistakes', route: '/ai/linear-logistic-regression/mse-gradient-vanishes-on-confident-mistakes' }" />
+</div>

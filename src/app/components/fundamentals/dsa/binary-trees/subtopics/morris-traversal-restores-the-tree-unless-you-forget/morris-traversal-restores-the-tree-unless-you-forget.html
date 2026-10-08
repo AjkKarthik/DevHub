@@ -1,0 +1,26 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Binary Trees" topicRoute="/dsa/binary-trees"
+    subtopicLabel="Morris Traversal Restores the Tree — Unless You Forget" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">Morris Traversal Restores the Tree — Unless You Forget</h1>
+  <p class="page-subtitle">The main page names Morris traversal's O(1)-space "temporary" threading with no code. Built it, verified it fully restores the tree, then deliberately broke it to show the exact corruption one missing line causes.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This builds the exact Morris traversal technique the main page's own theory names, including a verified demonstration of what happens when its "temporary" modification step is implemented incorrectly.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Binary Trees" topicRoute="/dsa/binary-trees"
+    [next]="{ label: 'BFS Can Use Less Memory Than DFS on a Skewed Tree', route: '/dsa/binary-trees/bfs-can-use-less-memory-than-dfs-on-a-skewed-tree' }" />
+</div>

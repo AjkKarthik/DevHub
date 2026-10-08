@@ -1,0 +1,27 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Mathematics for ML" topicRoute="/ai/math-for-ml"
+    subtopicLabel="The Gradient at w = 1 Is -22, Not 0" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">The Gradient at w = 1 Is -22, Not 0</h1>
+  <p class="page-subtitle">The calculus tab printed the gradient of the MSE at w = 1 and said it should be near 0. The data is y = 2x, so the minimum is at w = 2; at w = 1 the gradient is -22.</p>
+  <app-page-meta [readingTime]="4" difficulty="beginner" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This fixes the calculus tab. The last subtopic explains why L1 produces exact zeros.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Mathematics for ML" topicRoute="/ai/math-for-ml"
+    [prev]="{ label: 'A Hand-Written Matmul Can Hide Shape Errors', route: '/ai/math-for-ml/a-hand-written-matmul-can-hide-shape-errors' }"
+    [next]="{ label: 'Why L1 Gives Exact Zeros', route: '/ai/math-for-ml/why-l1-gives-exact-zeros' }" />
+</div>

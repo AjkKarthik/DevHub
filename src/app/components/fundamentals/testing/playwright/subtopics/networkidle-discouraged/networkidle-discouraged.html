@@ -1,0 +1,27 @@
+<div class="test-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Playwright" topicRoute="/testing-hub/playwright"
+    subtopicLabel="networkidle Means Zero Connections and Is Discouraged" />
+  <div class="page-header-icon test-icon">✓</div>
+  <h1 class="page-title">networkidle Means Zero Connections and Is Discouraged</h1>
+  <p class="page-subtitle">The page described networkidle as no more than 2 connections for 500 ms. That is Puppeteer networkidle2. Playwright waits for no connections at all, and its own docs discourage using it in tests.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Testing" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="test-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="test-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the networkidle QnA. The next subtopic covers what happens when a locator matches more than one element.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Playwright" topicRoute="/testing-hub/playwright"
+    [prev]="{ label: 'Actions Have No Timeout of Their Own by Default', route: '/testing-hub/playwright/actions-have-no-timeout-by-default' }"
+    [next]="{ label: 'Locators Are Strict About Multiple Matches', route: '/testing-hub/playwright/locators-are-strict-about-multiple-matches' }" />
+</div>

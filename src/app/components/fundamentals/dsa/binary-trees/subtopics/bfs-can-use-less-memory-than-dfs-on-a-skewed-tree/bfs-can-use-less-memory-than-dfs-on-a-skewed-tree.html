@@ -1,0 +1,27 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Binary Trees" topicRoute="/dsa/binary-trees"
+    subtopicLabel="BFS Can Use Less Memory Than DFS on a Skewed Tree" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">BFS Can Use Less Memory Than DFS on a Skewed Tree</h1>
+  <p class="page-subtitle">Measured DFS recursion depth and BFS peak queue size on both a skewed and a balanced tree — confirming the memory winner depends entirely on tree shape, not a fixed rule.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This is the measured finding directly behind the main page's own corrected theory bullet comparing DFS and BFS memory usage across different tree shapes.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Binary Trees" topicRoute="/dsa/binary-trees"
+    [prev]="{ label: 'Morris Traversal Restores the Tree — Unless You Forget', route: '/dsa/binary-trees/morris-traversal-restores-the-tree-unless-you-forget' }"
+    [next]="{ label: 'Inorder Alone Cannot Reconstruct a Binary Tree', route: '/dsa/binary-trees/inorder-alone-cannot-reconstruct-a-binary-tree' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Arrays" topicRoute="/dsa/arrays"
+    subtopicLabel="Counting Subarrays With Sum = K" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">Counting Subarrays With Sum = K via Prefix Sum + Hash Map</h1>
+  <p class="page-subtitle">The main page's own QnA names this technique in one clause -- built here, verified against brute force, and contrasted with why the earlier sliding-window approach cannot handle negative numbers at all.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This builds the technique the main page's own prefix-sum QnA names in one clause ("counting subarrays with target sum, hash map on prefix sums") and contrasts it directly with the page's own sliding-window approach, whose non-negative-only constraint this technique does not share.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Arrays" topicRoute="/dsa/arrays"
+    [prev]="{ label: '2D Prefix Sums for Submatrix Range Queries', route: '/dsa/arrays/2d-prefix-sums-submatrix-queries' }" />
+</div>

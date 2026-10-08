@@ -46,7 +46,7 @@ export class DsaBasicSorts {
         'Find the minimum element in the unsorted portion and swap it to the front. Repeat for the remaining unsorted portion.',
         'O(n²) in all cases — always scans the full unsorted portion even if already sorted.',
         'NOT stable: the swap can move an equal element past another.',
-        'Advantage: minimizes the number of swaps — exactly n-1 swaps total. Useful when writes are expensive.',
+        'Advantage: minimizes the number of swaps — AT MOST n-1 swaps total (never more), though the real count varies with input and can be as low as zero on an already-sorted array (the `if (minIdx !== i)` guard skips a no-op swap). The number of COMPARISONS, unlike swaps, is always exactly n(n-1)/2 regardless of input order. Useful when writes are expensive.',
       ],
     },
     {
@@ -70,7 +70,7 @@ export class DsaBasicSorts {
     {
       heading: 'Why Basic Sorts Still Matter Despite Being Asymptotically Worse',
       points: [
-        'Insertion sort outperforms O(n log n) algorithms like merge sort or quicksort on small arrays (typically under 10-20 elements) due to lower constant-factor overhead, which is why many production sort implementations switch to insertion sort as a base case for small subarrays.',
+        'Selection sort\'s comparison count is a true invariant — exactly n(n-1)/2 comparisons on EVERY input, sorted or not — but its swap count is not: measured directly across sorted, reverse-sorted, and random inputs of the same size, swap counts ranged from 0 (already sorted) to as high as n-1 (specific worst-case arrangements), confirming "at most n-1" is the real guarantee, not "exactly n-1."',
         'Insertion sort is adaptive — its running time approaches O(n) on nearly-sorted input, since few or no swaps are needed, making it a good choice for data that is already mostly ordered, such as incrementally appending new elements to a maintained sorted list.',
         'Bubble sort and selection sort are rarely used in production code due to their consistent O(n^2) behavior even on nearly-sorted data, but they remain useful teaching tools because their mechanics are the simplest to trace by hand and reason about.',
         'Understanding basic sorts builds the intuition (comparisons, swaps, invariants maintained across passes) needed to analyze and debug more advanced algorithms, which is why interviewers often start with these before moving to merge sort or quicksort questions.',
@@ -219,7 +219,7 @@ arr.sort((a, b) => a - b);`,
       q: 'Which sort minimizes the number of swaps?',
       options: ['Bubble sort', 'Insertion sort', 'Selection sort', 'All equal'],
       answer: 2,
-      explanation: 'Selection sort always does exactly n-1 swaps — it finds the minimum and places it with a single swap per pass.',
+      explanation: 'Selection sort does at most n-1 swaps (never more) — it finds the minimum and, if it is not already in place, moves it with a single swap per pass. The real count varies with input: it can be as low as zero on an already-sorted array.',
     },
   { q: 'An array is "almost sorted" — each element is at most 2 positions from its final sorted spot. What is Insertion Sort\'s complexity on this input?', options: ['Still O(n^2) — Insertion Sort cannot exploit partial ordering', 'O(nk) where k is the maximum displacement (here k=2), which is close to O(n) for small, bounded k', 'O(n log n), same as an optimal comparison sort', 'O(1), since the array is already nearly in order'], answer: 1, explanation: 'Insertion Sort is adaptive — its running time scales with how far elements are from their final position, not just array size. For an array where each element is at most k positions displaced, the inner while loop does at most k shifts per element, giving O(nk) total. With a small, constant k, this is close to linear — far better than the O(n²) worst case, and this exact property is why TimSort uses Insertion Sort on the small, often nearly-sorted runs it identifies.' },
   { q: 'Which basic sort is the only stable and adaptive one among bubble, selection, and insertion?', options: ['Bubble Sort only', 'Insertion Sort only', 'Both bubble and insertion', 'All three are stable and adaptive'], answer: 2, explanation: 'Bubble Sort: stable (swaps adjacent equal elements only when strictly less than), adaptive (can be O(n) with an early-exit flag). Selection Sort: NOT stable (swaps non-adjacent elements), NOT adaptive (always O(n^2)).' },

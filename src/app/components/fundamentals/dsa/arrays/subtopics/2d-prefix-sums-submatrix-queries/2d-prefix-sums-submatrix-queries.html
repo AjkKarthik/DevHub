@@ -1,0 +1,27 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Arrays" topicRoute="/dsa/arrays"
+    subtopicLabel="2D Prefix Sums for Submatrix Range Queries" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">2D Prefix Sums for Submatrix Range Queries</h1>
+  <p class="page-subtitle">The main page names "extend to 2D for submatrix sum queries" in one sentence with no code -- built here, with every result cross-checked against a brute-force sum over the actual rectangle.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This builds the 2D extension the main page's own Prefix Sum Array theory names but never demonstrates, using the exact same inclusion-exclusion idea verified separately for both the build step and the query itself.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Arrays" topicRoute="/dsa/arrays"
+    [prev]="{ label: 'The Prefix Sum CodeTab Was Actually O(n²)', route: '/dsa/arrays/prefix-sum-codetab-was-actually-on2' }"
+    [next]="{ label: 'Counting Subarrays With Sum = K via Prefix Sum + Hash Map', route: '/dsa/arrays/subarray-sum-equals-k-prefix-hashmap' }" />
+</div>

@@ -1,0 +1,27 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Advanced Sorts" topicRoute="/dsa/advanced-sorts"
+    subtopicLabel="Radix Sort Runs Counting Sort Digit by Digit" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">Radix Sort Runs Counting Sort Digit by Digit</h1>
+  <p class="page-subtitle">The QnA describes radix sort precisely but no codeTab builds it. Built it directly on top of the page's own counting sort, scoped to one digit per pass instead of the full value.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This builds the radix sort the main page's own QnA describes in prose, directly reusing the stability technique from the page's own countingSort function, scoped per digit.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Advanced Sorts" topicRoute="/dsa/advanced-sorts"
+    [prev]="{ label: 'Quicksort Is Not Actually O(1) Space', route: '/dsa/advanced-sorts/quicksort-recursion-stack-overflow' }"
+    [next]="{ label: 'Why Timsort Exploits Natural Ascending Runs', route: '/dsa/advanced-sorts/timsort-natural-ascending-runs' }" />
+</div>

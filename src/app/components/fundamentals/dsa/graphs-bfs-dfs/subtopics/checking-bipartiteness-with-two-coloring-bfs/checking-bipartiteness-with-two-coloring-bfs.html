@@ -1,0 +1,26 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Graphs — BFS &amp; DFS" topicRoute="/dsa/graphs-bfs-dfs"
+    subtopicLabel="Checking Bipartiteness with Two-Coloring BFS" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">Checking Bipartiteness with Two-Coloring BFS</h1>
+  <p class="page-subtitle">The main page's QnA describes 2-coloring bipartiteness detection in prose with zero code. Built it, verified against even cycles, odd cycles, and a tree -- confirming the "no odd cycle" claim directly.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This builds the 2-coloring bipartiteness check the main page's own QnA describes in prose but never demonstrates in code, verifying the odd-cycle claim directly.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Graphs — BFS &amp; DFS" topicRoute="/dsa/graphs-bfs-dfs"
+    [prev]="{ label: 'Detecting a Directed Cycle with Three-State DFS', route: '/dsa/graphs-bfs-dfs/detecting-a-directed-cycle-with-three-state-dfs' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Trie" topicRoute="/dsa/trie"
+    subtopicLabel="A Sorted Array Answers Prefix Queries Too" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">A Sorted Array Answers Prefix Queries Too</h1>
+  <p class="page-subtitle">The main page said sorted arrays, like hash sets, cannot serve autocomplete. In sorted order, every word with a given prefix sits in one block that binary search can find.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the comparison in the main page's trie-versus-hash-set theory. The next subtopic measures the memory side: what a compressed trie actually saves.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Trie" topicRoute="/dsa/trie"
+    [next]="{ label: 'A Compressed Trie Saves Nodes, Not Characters', route: '/dsa/trie/compressed-trie-saves-nodes-not-characters' }" />
+</div>

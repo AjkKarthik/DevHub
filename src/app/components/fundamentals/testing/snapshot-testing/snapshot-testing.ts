@@ -144,7 +144,7 @@ test('parses config file correctly', () => {
     { title: 'Snapshotting dynamic values', wrong: 'expect({ id: uuid(), at: Date.now() }).toMatchSnapshot()', right: 'expect({ id: uuid(), at: Date.now() }).toMatchSnapshot({ id: expect.any(String), at: expect.any(Number) })', explanation: 'Dynamic values diff on every run, making the snapshot meaningless and causing false failures.' },
     { title: 'Snapshotting too much', wrong: 'expect(document.body).toMatchSnapshot() // entire page', right: 'snapshot a small, stable, meaningful component or value', explanation: 'Large snapshots contain hundreds of irrelevant lines. Any minor change causes a wall of red diff — impossible to review meaningfully.' },
     { title: 'Using snapshots for behaviour testing', wrong: 'snapshot the button DOM to verify it calls onClick', right: 'userEvent.click(button); expect(mockFn).toHaveBeenCalled()', explanation: 'Snapshots test structure, not behaviour. Use interaction tests for verifying what happens when the user acts.' },
-    { title: 'Not committing snapshot files', wrong: '.gitignore: __snapshots__/', right: 'commit __snapshots__/ alongside the test files', explanation: 'Snapshot files are part of the test. They must be committed so CI can compare against them. Gitignoring them means every CI run "passes" by creating new snapshots.' },
+    { title: 'Not committing snapshot files', wrong: '.gitignore: __snapshots__/', right: 'commit __snapshots__/ alongside the test files', explanation: 'Snapshot files are part of the test. They must be committed so CI can compare against them. Gitignoring them breaks CI: Jest detects CI environments (ci defaults to true when CI=true) and then refuses to write missing snapshots, so every snapshot test fails with "New snapshot was not written". Locally the same tests silently re-create snapshots and always pass.' },
   ];
 
   challenge: Challenge = {
@@ -158,7 +158,7 @@ test('parses config file correctly', () => {
     starterCode:
 `function formatProduct(p: { name: string; price: number }) {
   return {
-    slug: p.name.toLowerCase().replace(/\s+/g, '-'),
+    slug: p.name.toLowerCase().replace(/\\s+/g, '-'),
     displayPrice: \`$\${p.price.toFixed(2)}\`,
     label: \`\${p.name} — $\${p.price.toFixed(2)}\`,
   };
@@ -168,7 +168,7 @@ test('parses config file correctly', () => {
     solution:
 `function formatProduct(p: { name: string; price: number }) {
   return {
-    slug: p.name.toLowerCase().replace(/\s+/g, '-'),
+    slug: p.name.toLowerCase().replace(/\\s+/g, '-'),
     displayPrice: \`$\${p.price.toFixed(2)}\`,
     label: \`\${p.name} — $\${p.price.toFixed(2)}\`,
   };
@@ -198,7 +198,7 @@ test('formatProduct returns correct shape', () => {
   qna: QnaItem[] = [
     { q: 'Should I use file snapshots or inline snapshots?', a: 'Inline snapshots (toMatchInlineSnapshot) are better for small, focused outputs — the reviewer can see the expected value without opening a separate .snap file. File snapshots are appropriate for large HTML trees or objects where the inline string would be too long. When in doubt, prefer inline.' },
     { q: 'When should I NOT use snapshot tests?', a: 'Avoid snapshots for: rapidly-evolving UI (the snapshot changes too often), dynamic data without property matchers, large entire-page renders (too much noise), and behaviour verification. Use interaction tests for behaviour and visual regression tools (Chromatic, Percy) for pixel-level UI verification.' },
-    { q: 'How do I handle snapshot drift in a large codebase?', a: 'Run jest --ci (fails on outdated snapshots rather than updating) in CI. Review all snapshot diffs in PRs. Periodically audit stale snapshots with jest --verbose and delete ones that are no longer meaningful. Consider converting large file snapshots to inline snapshots for better reviewability.' },
+    { q: 'How do I handle snapshot drift in a large codebase?', a: 'Run jest --ci in CI: it refuses to write NEW snapshots, so a test whose snapshot was never committed fails instead of quietly creating one. (Mismatched snapshots fail with or without --ci; only -u updates them.) Review all snapshot diffs in PRs. Periodically audit stale snapshots with jest --verbose and delete ones that are no longer meaningful. Consider converting large file snapshots to inline snapshots for better reviewability.' },
   { q: 'What are the drawbacks of over-relying on snapshot tests?', a: 'Drawbacks: (1) <strong>Noisy diffs</strong>: any UI change (even cosmetic) breaks snapshots, requiring frequent updates; (2) <strong>Low signal</strong>: developers auto-accept snapshots without reviewing; (3) <strong>Large files</strong>: snapshot files bloat over time; (4) <strong>Test rot</strong>: snapshots become stale and are no longer meaningful. Best used sparingly for stable, complex serialised output (e.g. GraphQL responses, API contracts).' },
   { q: 'How do you use custom serializers in Jest snapshots?', a: 'Add custom serializers in jest.config.js: snapshotSerializers: [\'enzyme-to-json/serializer\'] for Enzyme. For custom: expect.addSnapshotSerializer({ test: val => val && val.type === \'custom\', print: val => JSON.stringify(val, null, 2) }). Serializers control how values are converted to snapshot strings — useful for hiding volatile fields like timestamps.' },
   { q: 'How do you exclude volatile data from snapshots?', a: 'Use expect.any(Date) or expect.any(String) in snapshot matchers: expect(obj).toMatchSnapshot({ createdAt: expect.any(String), id: expect.any(Number) }). Or replace volatile fields before snapshotting: const snapshot = { ...response, timestamp: \'[DATE]\', id: \'[ID]\' }; expect(snapshot).toMatchSnapshot(). This prevents flaky snapshot failures from timestamps.' },

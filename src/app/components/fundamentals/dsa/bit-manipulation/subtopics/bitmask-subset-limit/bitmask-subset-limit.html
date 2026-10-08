@@ -1,0 +1,26 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Bit Manipulation" topicRoute="/dsa/bit-manipulation"
+    subtopicLabel="The Bitmask Subset Loop Runs Zero Times at 31 Elements" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">The Bitmask Subset Loop Runs Zero Times at 31 Elements</h1>
+  <p class="page-subtitle">The loop bound 1 &lt;&lt; n is negative for n = 31 and 1 for n = 32, so the page's allSubsets returns an empty result instead of failing loudly.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This puts a hard number on the main page's guidance that bitmask DP suits small sets, using the page's own subset code.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Bit Manipulation" topicRoute="/dsa/bit-manipulation"
+    [prev]="{ label: 'isPowerOfTwo and Bit Counting Go Wrong Above 2^32', route: '/dsa/bit-manipulation/bit-tricks-wrong-above-2-to-32' }" />
+</div>

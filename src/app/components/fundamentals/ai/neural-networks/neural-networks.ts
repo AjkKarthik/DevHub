@@ -66,7 +66,7 @@ export class AiNeuralNetworks {
       heading: 'Regularisation and Training Tricks',
       points: [
         'Dropout: randomly set fraction p of neurons to 0 during each forward pass. At inference, multiply by (1−p) or use inverted dropout. Forces neurons to not co-adapt.',
-        'Batch Normalisation: normalise activations to zero mean, unit variance per mini-batch, then apply learnable scale and shift. Stabilises training, allows high learning rates, acts as regularisation.',
+        'Batch Normalisation: normalise activations to zero mean, unit variance per mini-batch, then apply learnable scale and shift. Stabilises training, allows high learning rates, acts as regularisation. Put it before Dropout, not after: BatchNorm placed after Dropout stores a running variance measured with dropout on, so at eval time its outputs no longer have unit variance.',
         'Weight initialisation: Xavier (sigmoid/tanh) or He (ReLU) initialisation avoids vanishing/exploding gradients at the start.',
         'Learning rate schedules: warm-up then cosine decay is standard for deep learning. Cyclical LR can escape local minima.',
         'Gradient clipping: cap gradient norm to a threshold (e.g. 1.0) — prevents exploding gradients in RNNs and Transformers.',
@@ -132,9 +132,9 @@ function crossEntropy(probs: number[], label: number): number {
 //     super().__init__()
 //     self.net = nn.Sequential(
 //       nn.Linear(input_dim, hidden_dim),
-//       nn.ReLU(),
-//       nn.Dropout(0.3),
-//       nn.BatchNorm1d(hidden_dim),
+//       nn.BatchNorm1d(hidden_dim),   # BN before Dropout: Dropout -> BN
+//       nn.ReLU(),                    # gives BN a train-time variance that
+//       nn.Dropout(0.3),              # does not match eval (variance shift)
 //       nn.Linear(hidden_dim, hidden_dim),
 //       nn.ReLU(),
 //       nn.Linear(hidden_dim, output_dim)

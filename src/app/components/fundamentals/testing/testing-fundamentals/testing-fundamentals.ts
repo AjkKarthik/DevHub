@@ -75,16 +75,31 @@ test('add returns sum of two numbers', () => {
   expect(add(-1, 1)).toBe(0);
 });` },
     { label: 'Integration Test', language: 'typescript', code:
-`// Integration test: service + real database via Testcontainers
+`// Integration test: service + a real, throwaway PostgreSQL via Testcontainers
+import { PostgreSqlContainer, StartedPostgreSqlContainer } from '@testcontainers/postgresql';
+import { execSync } from 'node:child_process';
 import { UserService } from './user.service';
 import { PrismaClient } from '@prisma/client';
 
+let container: StartedPostgreSqlContainer;
 let prisma: PrismaClient;
 let service: UserService;
 
 beforeAll(async () => {
-  prisma = new PrismaClient(); // connected to test DB
+  container = await new PostgreSqlContainer('postgres:16').start();
+  process.env.DATABASE_URL = container.getConnectionUri();
+  execSync('npx prisma migrate deploy');   // apply the real schema
+  prisma = new PrismaClient();
   service = new UserService(prisma);
+}, 60_000);
+
+beforeEach(async () => {
+  await prisma.user.deleteMany();          // each test starts from an empty table
+});
+
+afterAll(async () => {
+  await prisma.$disconnect();
+  await container.stop();
 });
 
 test('creates and retrieves a user', async () => {
@@ -97,7 +112,9 @@ test('creates and retrieves a user', async () => {
 import { test, expect } from '@playwright/test';
 
 test('user can log in and see dashboard', async ({ page }) => {
-  await page.goto('https://myapp.com/login');
+  // baseURL: 'https://myapp.com' is set in playwright.config.ts —
+  // without it, the relative '/dashboard' below would never match.
+  await page.goto('/login');
   await page.getByLabel('Email').fill('alice@example.com');
   await page.getByLabel('Password').fill('secret');
   await page.getByRole('button', { name: 'Sign in' }).click();
@@ -108,7 +125,7 @@ test('user can log in and see dashboard', async ({ page }) => {
 
   mistakes: CommonMistake[] = [
     { title: 'Testing too much through E2E', wrong: 'every feature has a Cypress E2E test', right: 'unit test the logic; E2E only the critical user flow', explanation: 'E2E tests are 100x slower than unit tests. Testing everything through the browser makes the suite painful to run.' },
-    { title: 'Asserting implementation details', wrong: 'expect(component.state).toBe("loading")', right: 'expect(screen.getByRole("status")).toHaveText("Loading…")', explanation: 'Internal state changes break tests without real bugs. Test what the user sees.' },
+    { title: 'Asserting implementation details', wrong: 'expect(component.state).toBe("loading")', right: 'expect(screen.getByRole("status")).toHaveTextContent("Loading…")', explanation: 'Internal state changes break tests without real bugs. Test what the user sees. (In React Testing Library the jest-dom matcher is toHaveTextContent — toHaveText is a Playwright matcher and does not exist in jest-dom.)' },
     { title: 'Shared mutable state between tests', wrong: 'let db: Database; // initialised once', right: 'beforeEach(() => { db = createFreshDb(); })', explanation: 'Tests that rely on order or shared state pass alone but fail in parallel or shuffled runs.' },
     { title: 'Targeting 100% coverage', wrong: 'cover every getter and constructor', right: 'cover critical paths; use mutation score to find weak tests', explanation: '100% line coverage is trivially achievable without meaningful assertions. Mutation score is the real quality signal.' },
     { title: 'No test isolation', wrong: 'test reads from a file created by a previous test', right: 'each test creates and cleans up its own fixtures', explanation: 'Tests must be independent so they can run in any order or in parallel.' },

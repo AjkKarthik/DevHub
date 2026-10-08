@@ -1,0 +1,26 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Evaluating LLMs" topicRoute="/ai/evaluating-llms"
+    subtopicLabel="The 65% Figure Is Swap Consistency" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">The 65% Figure Is Swap Consistency</h1>
+  <p class="page-subtitle">The page said LLM judges prefer the first answer about 65% of the time. In the MT-Bench study, 65% was how often GPT-4 gave the same verdict after the answers were swapped; it favoured the first answer in 30% of cases.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the judge section. AI engineering covers putting evaluation into a production workflow.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Evaluating LLMs" topicRoute="/ai/evaluating-llms"
+    [prev]="{ label: 'ROUGE-1 Gives a Wrong Fact a Perfect Score', route: '/ai/evaluating-llms/rouge-1-ignores-word-order' }" />
+</div>

@@ -72,7 +72,7 @@ export class DsaBinaryTrees {
       points: [
         'Recursive traversals (inorder, preorder, postorder) map directly to the tree\'s natural recursive structure and are easier to write and reason about, but each recursive call consumes stack frame space, risking a stack overflow on very deep or unbalanced trees.',
         'Iterative traversals using an explicit stack avoid the call-stack depth limit entirely, trading code simplicity for control over memory usage — a meaningful consideration when processing trees with unknown or potentially unbounded depth in production systems.',
-        'Level-order traversal (breadth-first) fundamentally requires a queue rather than a stack, since it must process all nodes at one depth before moving to the next, unlike depth-first traversals that dive to a leaf before backtracking.',
+        'A counterintuitive result: which traversal uses LESS memory depends entirely on the tree\'s shape. For a completely skewed (linked-list-shaped) 1,000-node tree, DFS recursion depth reaches roughly 1,000 stack frames while BFS\'s queue never holds more than 1 node at a time (the tree\'s width stays 1 throughout) — BFS wins decisively. For a balanced 1,023-node tree, DFS recursion depth is only about 11, while BFS\'s queue peaks at 512 nodes (the entire last level) — DFS wins decisively instead.',
         'Morris traversal achieves inorder traversal in O(1) extra space by temporarily modifying the tree\'s structure (creating and removing threaded links) rather than using a stack or recursion, an advanced technique worth knowing for space-constrained interview follow-up questions.',
       ],
     },

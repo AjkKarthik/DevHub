@@ -57,7 +57,7 @@ export class AiGradientBoosting {
         'learning_rate (η): 0.01–0.3. Smaller is better but requires more trees. Use η=0.1 as a starting point.',
         'n_estimators: 100–10000. Set large and use early_stopping_rounds on a validation set to stop when val loss stops improving.',
         'max_depth: 3–6 for XGBoost/LGBM. Deeper trees = more complex interactions but higher overfitting risk.',
-        'subsample: fraction of training samples per tree. 0.6–0.8 adds randomness and reduces overfitting.',
+        'subsample: fraction of training samples per tree. 0.6–0.8 adds randomness and reduces overfitting. In LightGBM it only takes effect when subsample_freq (bagging_freq) is above 0 — the default 0 ignores it.',
         'colsample_bytree: fraction of features per tree. 0.6–1.0. Like Random Forest\'s feature randomness.',
         'min_child_weight / min_data_in_leaf: minimum samples to create a leaf — key regularisation.',
       ],
@@ -68,7 +68,7 @@ export class AiGradientBoosting {
         'SHAP (SHapley Additive exPlanations) assigns each feature a contribution to each individual prediction.',
         'Based on game theory: SHAP value = average marginal contribution of a feature across all possible feature orderings.',
         'SHAP values sum to: prediction − base_value. Fully additive and consistent.',
-        'TreeSHAP computes exact SHAP values for tree models in O(TLD) — much faster than sampling-based approaches.',
+        'TreeSHAP computes exact SHAP values for tree models in O(TLD²) (T trees, L leaves, D depth) instead of exponential time — much faster than sampling-based approaches.',
         'Visualisations: SHAP summary plot (global), waterfall plot (per prediction), dependence plot (interaction effects).',
       ],
     },
@@ -141,10 +141,11 @@ function gradientBoostingPredict(
 // import lightgbm as lgb
 // model = lgb.LGBMClassifier(
 //   n_estimators=1000, learning_rate=0.05,
-//   num_leaves=31, subsample=0.8,
-//   callbacks=[lgb.early_stopping(50), lgb.log_evaluation(100)]
+//   num_leaves=31, subsample=0.8, subsample_freq=1,  # subsample needs freq > 0
 // )
-// model.fit(X_train, y_train, eval_set=[(X_val, y_val)])
+// # callbacks belong to fit(); in the constructor they are silently ignored
+// model.fit(X_train, y_train, eval_set=[(X_val, y_val)],
+//           callbacks=[lgb.early_stopping(50), lgb.log_evaluation(100)])
 
 // SHAP for interpretability (Python)
 // import shap
@@ -183,15 +184,14 @@ model.fit(X_train, y_train, eval_set=[(X_val, y_val)])
       explanation: 'Encoding categoricals as arbitrary integers imposes a false ordinal relationship. Trees can still learn this but need more splits and data. Native categorical support (CatBoost/LGBM) is more efficient.',
     },
     {
-      title: 'Not scaling target for regression',
-      wrong: `model.fit(X, y)  # y has values 0 – 1,000,000
-# XGBoost initialises with mean(y) = 500k — large residuals, slow convergence`,
-      right: `# Scale y to ~[0,1] or standardise, then inverse-transform predictions
-scaler = StandardScaler()
+      title: 'Standardising the regression target and expecting it to help',
+      wrong: `# y has values 0 – 1,000,000 — standardise it "for stability"
 y_scaled = scaler.fit_transform(y.reshape(-1,1)).ravel()
-model.fit(X, y_scaled)
-preds = scaler.inverse_transform(model.predict(X_test).reshape(-1,1))`,
-      explanation: 'Very large target values lead to large residuals and can cause numerical instability or slow convergence. Standardising y (or log-transforming for skewed distributions) often helps.',
+model.fit(X, y_scaled)  # same trees, extra inverse-transform step`,
+      right: `model.fit(X, y)  # XGBoost 2+ estimates base_score from the data (≈ mean)
+# For a skewed target, change the LOSS instead, e.g. fit log1p(y)
+# or use objective='reg:tweedie' / 'reg:squaredlogerror'`,
+      explanation: 'Linear rescaling of y does not change what a tree booster learns: in a test with y up to 1,000,000, raw and standardised targets gave the same RMSE (39,422), and XGBoost set base_score to the mean of y. A log transform is different — it changes the loss to relative error, which helps for skewed targets.',
     },
   ];
 

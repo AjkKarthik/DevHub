@@ -1,0 +1,26 @@
+<div class="ai-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="AI Agents" topicRoute="/ai/ai-agents"
+    subtopicLabel="The Calculator Tool Must Not eval Model Input" />
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">The Calculator Tool Must Not eval Model Input</h1>
+  <p class="page-subtitle">The agent loop's calculate tool passed the model's expression straight to eval. Tool arguments are model output, and model output can be steered by anything in the context, including web search results.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="AI/ML" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ai-section">
+    <h2>Where this fits</h2>
+    <p>This fixes the tool. Next, how the loop handles stop reasons other than end_turn and tool_use.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="AI Agents" topicRoute="/ai/ai-agents"
+    [next]="{ label: 'The Loop Resent the Same Request on Other Stop Reasons', route: '/ai/ai-agents/loop-resent-on-other-stop-reasons' }" />
+</div>

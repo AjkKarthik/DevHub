@@ -1,0 +1,26 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Big-O Notation" topicRoute="/dsa/big-o"
+    subtopicLabel="Arithmetic vs. Harmonic Shrinking Loops" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">Arithmetic vs. Harmonic Shrinking Loops: Why Only One Is O(n log n)</h1>
+  <p class="page-subtitle">The main page's own "Common Pitfalls" bullet and its own mistake #4 disagree on what a shrinking inner loop gives you -- settled here with direct op-count measurements of all three shrink patterns.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This directly fixes the main page's own "Common Pitfalls" bullet, which pointed at the wrong example (checking unprocessed elements) for landing on O(n log n) -- that pattern is the arithmetic shrink already covered by mistake #4, and stays O(n²). The real O(n log n) pattern is the Challenge's own harmonic shrink.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Big-O Notation" topicRoute="/dsa/big-o"
+    [next]="{ label: 'Master Theorem’s Precise Conditions: Epsilon and Regularity', route: '/dsa/big-o/master-theorem-epsilon-and-regularity' }" />
+</div>

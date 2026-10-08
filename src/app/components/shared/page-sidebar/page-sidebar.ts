@@ -32480,6 +32480,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A mutable default argument bug is a classic Python trap that also silently corrupts ML pipeline code reusing config objects across calls.',
     ],
   },
+  "ai/ml-fundamentals/sort-based-shuffle-is-biased": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "Precision Is NaN When Nothing Is Predicted Positive", route: '/ai/ml-fundamentals/precision-is-nan-when-nothing-is-predicted-positive' },
+      { label: "AI & ML Fundamentals (overview)", route: '/ai/ml-fundamentals' },
+    ],
+    tip: "Use Fisher-Yates (or a seeded library shuffle) for any split, sample or batch order; never a random comparator.",
+    gotchas: ["A comparator that returns random answers breaks the sort contract, so the result depends on the engine algorithm and array length.","For reproducible experiments, use a seeded random number generator so a split can be repeated."],
+  },
+  "ai/ml-fundamentals/precision-is-nan-when-nothing-is-predicted-positive": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "A Sort-Based Shuffle Is Biased", route: '/ai/ml-fundamentals/sort-based-shuffle-is-biased' },
+      { label: "Where Gradient Descent Starts to Diverge", route: '/ai/ml-fundamentals/where-gradient-descent-starts-to-diverge' },
+      { label: "AI & ML Fundamentals (overview)", route: '/ai/ml-fundamentals' },
+    ],
+    tip: "Guard every ratio against a zero denominator and decide what the value should be (usually 0), as scikit-learn does with zero_division.",
+    gotchas: ["NaN compares false with everything, so a check like f1 < 0.5 never fires on a NaN score.","Averages over folds become NaN if a single fold has no positive predictions."],
+  },
+  "ai/ml-fundamentals/where-gradient-descent-starts-to-diverge": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "Precision Is NaN When Nothing Is Predicted Positive", route: '/ai/ml-fundamentals/precision-is-nan-when-nothing-is-predicted-positive' },
+      { label: "AI & ML Fundamentals (overview)", route: '/ai/ml-fundamentals' },
+    ],
+    tip: "Standardise features first; it shrinks the largest curvature and lets you use a much larger learning rate safely.",
+    gotchas: ["The safe limit depends on the data, so a learning rate that works on one dataset can diverge on another with larger feature values.","Adam and other adaptive optimisers change the picture but do not remove the need to tune the rate."],
+  },
   'ai/math-for-ml': {
     apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
     related: [
@@ -32491,6 +32519,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Gradients (partial derivatives) are the mathematical foundation of how neural networks learn via backpropagation and the chain rule.',
       'Eigenvalues/eigenvectors underlie PCA, revealing directions of greatest variance for dimensionality reduction.',
     ],
+  },
+  "ai/math-for-ml/a-hand-written-matmul-can-hide-shape-errors": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "The Gradient at w = 1 Is -22, Not 0", route: '/ai/math-for-ml/the-gradient-at-w-1-is-minus-22' },
+      { label: "Mathematics for ML (overview)", route: '/ai/math-for-ml' },
+    ],
+    tip: "Check B.length === A[0].length at the top of any hand-written matmul; it costs nothing and turns a silent wrong answer into an error.",
+    gotchas: ["Only the opposite mismatch (B has fewer rows than A has columns) throws, and then with an unhelpful message about reading index 0 of undefined.","Library code raises for you; the risk is in hand-rolled loops and ports to other languages."],
+  },
+  "ai/math-for-ml/the-gradient-at-w-1-is-minus-22": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "A Hand-Written Matmul Can Hide Shape Errors", route: '/ai/math-for-ml/a-hand-written-matmul-can-hide-shape-errors' },
+      { label: "Why L1 Gives Exact Zeros", route: '/ai/math-for-ml/why-l1-gives-exact-zeros' },
+      { label: "Mathematics for ML (overview)", route: '/ai/math-for-ml' },
+    ],
+    tip: "Use a gradient check like this one to test hand-written backprop: compare the analytical and numerical values at a few points, not just at the minimum.",
+    gotchas: ["Checking the gradient only at the minimum hides sign errors, because both values are 0 there.","Too small an eps causes rounding error; around 1e-5 is a common choice for float64."],
+  },
+  "ai/math-for-ml/why-l1-gives-exact-zeros": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "The Gradient at w = 1 Is -22, Not 0", route: '/ai/math-for-ml/the-gradient-at-w-1-is-minus-22' },
+      { label: "Mathematics for ML (overview)", route: '/ai/math-for-ml' },
+    ],
+    tip: "Use L1 (or elastic net) when you expect only a few features to matter; use L2 when many small effects are real.",
+    gotchas: ["L1 is not differentiable at 0, so plain gradient descent jitters around zero; use proximal updates or coordinate descent.","With correlated features, L1 tends to keep one and drop the others somewhat arbitrarily."],
   },
   'ai/linear-logistic-regression': {
     apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
@@ -32504,6 +32560,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Regularization strength requires tuning via cross-validation — too much underfits, too little fails to prevent overfitting.',
     ],
   },
+  "ai/linear-logistic-regression/separable-data-makes-weights-grow-forever": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "MSE Gradient Vanishes on Confident Mistakes", route: '/ai/linear-logistic-regression/mse-gradient-vanishes-on-confident-mistakes' },
+      { label: "Linear & Logistic Regression (overview)", route: '/ai/linear-logistic-regression' },
+    ],
+    tip: "If a logistic model reports huge coefficients and near-zero training loss, check for perfect separation and add L2 (scikit-learn LogisticRegression uses L2 by default).",
+    gotchas: ["A single feature that leaks the label (for example a status column set after the event) causes perfect separation.","Huge weights make predicted probabilities extremely close to 0 or 1, so the model looks overconfident on new data."],
+  },
+  "ai/linear-logistic-regression/mse-gradient-vanishes-on-confident-mistakes": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "Separable Data Makes Weights Grow Forever", route: '/ai/linear-logistic-regression/separable-data-makes-weights-grow-forever' },
+      { label: "An Odds Ratio Is Not a Probability Change", route: '/ai/linear-logistic-regression/an-odds-ratio-is-not-a-probability-change' },
+      { label: "Linear & Logistic Regression (overview)", route: '/ai/linear-logistic-regression' },
+    ],
+    tip: "Pair a sigmoid output with binary cross-entropy (or use a combined logits loss such as BCEWithLogitsLoss for numerical stability).",
+    gotchas: ["The worst case for MSE is exactly the one you most want to fix: a confident wrong prediction.","Frameworks fuse sigmoid and cross-entropy into one function to avoid log(0); do not apply a sigmoid twice."],
+  },
+  "ai/linear-logistic-regression/an-odds-ratio-is-not-a-probability-change": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "MSE Gradient Vanishes on Confident Mistakes", route: '/ai/linear-logistic-regression/mse-gradient-vanishes-on-confident-mistakes' },
+      { label: "Linear & Logistic Regression (overview)", route: '/ai/linear-logistic-regression' },
+    ],
+    tip: "Report exp(coefficient) as an odds ratio, and show the probability change at one or two realistic baseline values.",
+    gotchas: ["Standardised and unstandardised features give different coefficients for the same model fit.","Coefficients describe the effect with other features held constant, which may not be realistic for correlated features."],
+  },
   'ai/decision-trees': {
     apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
     related: [
@@ -32516,6 +32600,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Post-pruning can find a better bias-variance tradeoff than pre-pruning since it evaluates actual branch usefulness rather than guessing limits upfront.',
     ],
   },
+  "ai/decision-trees/scikit-learn-does-not-prune-by-default": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "RandomForestRegressor Uses All Features by Default", route: '/ai/decision-trees/random-forest-regressor-uses-all-features-by-default' },
+      { label: "Decision Trees & Random Forests (overview)", route: '/ai/decision-trees' },
+    ],
+    tip: "Get candidate alphas from cost_complexity_pruning_path on the training data and pick one with cross-validation, never with the test set.",
+    gotchas: ["max_depth, min_samples_leaf and ccp_alpha all default to \"no limit\", so every growth control is opt-in.","Random forests usually do not need pruning: averaging many deep trees reduces the variance instead."],
+  },
+  "ai/decision-trees/random-forest-regressor-uses-all-features-by-default": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "scikit-learn Does Not Prune by Default", route: '/ai/decision-trees/scikit-learn-does-not-prune-by-default' },
+      { label: "Impurity Importance Favours High-Cardinality Features", route: '/ai/decision-trees/impurity-importance-favours-high-cardinality-features' },
+      { label: "Decision Trees & Random Forests (overview)", route: '/ai/decision-trees' },
+    ],
+    tip: "Treat max_features as a hyperparameter; for regression try sqrt, 0.33 and 1.0 and compare out-of-bag or cross-validated scores.",
+    gotchas: ["With max_features=1.0 a regressor is essentially bagged trees, so its trees are more correlated than the textbook random forest.","Library defaults change between versions; older scikit-learn used \"auto\", which meant different things for the two classes."],
+  },
+  "ai/decision-trees/impurity-importance-favours-high-cardinality-features": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "RandomForestRegressor Uses All Features by Default", route: '/ai/decision-trees/random-forest-regressor-uses-all-features-by-default' },
+      { label: "Decision Trees & Random Forests (overview)", route: '/ai/decision-trees' },
+    ],
+    tip: "Report permutation importance (sklearn.inspection.permutation_importance) on a validation or test set alongside, or instead of, feature_importances_.",
+    gotchas: ["Impurity importance is computed on the training data, so it rewards features the trees used to memorise noise.","Permutation importance spreads credit oddly between strongly correlated features; drop or group them first."],
+  },
   'ai/gradient-boosting': {
     apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
     related: [
@@ -32527,6 +32639,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Sequential training cannot be parallelized across trees the way random forest trees can, meaning generally longer training time.',
     ],
   },
+  "ai/gradient-boosting/lightgbm-callbacks-belong-in-fit": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "LightGBM subsample Needs subsample_freq", route: '/ai/gradient-boosting/lightgbm-subsample-needs-subsample-freq' },
+      { label: "Gradient Boosting (XGBoost) (overview)", route: '/ai/gradient-boosting' },
+    ],
+    tip: "Check model.best_iteration_ after fitting; 0 (or the full n_estimators) means early stopping never ran.",
+    gotchas: ["Unknown constructor arguments end up in **kwargs and are passed to the booster as parameters, so a typo does not raise.","LightGBM 4.7 also deprecates eval_set in favour of eval_X and eval_y, though eval_set still works."],
+  },
+  "ai/gradient-boosting/lightgbm-subsample-needs-subsample-freq": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "LightGBM Callbacks Belong in fit()", route: '/ai/gradient-boosting/lightgbm-callbacks-belong-in-fit' },
+      { label: "Scaling the Target Does Not Help Tree Boosters", route: '/ai/gradient-boosting/scaling-the-target-does-not-help-tree-boosters' },
+      { label: "Gradient Boosting (XGBoost) (overview)", route: '/ai/gradient-boosting' },
+    ],
+    tip: "In LightGBM set subsample_freq=1 together with subsample to sample rows for every tree; in XGBoost subsample alone is enough.",
+    gotchas: ["The same name means different things in XGBoost and LightGBM, so copying a parameter grid between them is risky.","Row sampling with a fixed random_state is reproducible; changing the seed changes the model."],
+  },
+  "ai/gradient-boosting/scaling-the-target-does-not-help-tree-boosters": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "LightGBM subsample Needs subsample_freq", route: '/ai/gradient-boosting/lightgbm-subsample-needs-subsample-freq' },
+      { label: "Gradient Boosting (XGBoost) (overview)", route: '/ai/gradient-boosting' },
+    ],
+    tip: "Leave y as is for squared-error boosting; reach for log1p(y) or a different objective only when relative error is what matters.",
+    gotchas: ["Regularisation (lambda, min_child_weight) is measured in gradient units, so heavy rescaling of y can shift how strong it is; usually negligible.","After a log transform, remember to invert predictions with expm1 and that the model then predicts a geometric rather than arithmetic mean."],
+  },
   'ai/clustering': {
     apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
     related: [
@@ -32537,6 +32677,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'DBSCAN and hierarchical clustering don\'t require specifying K, but introduce their own hyperparameters (epsilon, linkage) requiring similar tuning judgment.',
       'The real test of a clustering result is whether the discovered groups are meaningful for the actual business question, not just the metric score.',
     ],
+  },
+  "ai/clustering/the-kmeans-assign-step-put-every-point-in-one-cluster": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "PCA by Power Iteration Matches scikit-learn", route: '/ai/clustering/pca-by-power-iteration-matches-scikit-learn' },
+      { label: "Clustering & Dimensionality Reduction (overview)", route: '/ai/clustering' },
+    ],
+    tip: "Write argmin as a plain loop that tracks both the best index and the best distance; it is easier to check than a nested reduce.",
+    gotchas: ["The page's own Challenge solution for the assign step was correct; only the full kmeans function had the bug.","A clustering that converges in one iteration with every label equal is a red flag, not a fast success."],
+  },
+  "ai/clustering/pca-by-power-iteration-matches-scikit-learn": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "The K-Means Assign Step Put Every Point in One Cluster", route: '/ai/clustering/the-kmeans-assign-step-put-every-point-in-one-cluster' },
+      { label: "One k-means++ Run Is Not Enough", route: '/ai/clustering/one-kmeans-plus-plus-run-is-not-enough' },
+      { label: "Clustering & Dimensionality Reduction (overview)", route: '/ai/clustering' },
+    ],
+    tip: "Power iteration is fine for a few components of a small matrix; for real work use an SVD-based library (scikit-learn PCA or numpy.linalg.svd).",
+    gotchas: ["Eigenvectors are only defined up to sign, so a component may come out flipped compared with another library; projections flip with it.","Power iteration converges slowly when two eigenvalues are close; check the result or use more iterations."],
+  },
+  "ai/clustering/one-kmeans-plus-plus-run-is-not-enough": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "PCA by Power Iteration Matches scikit-learn", route: '/ai/clustering/pca-by-power-iteration-matches-scikit-learn' },
+      { label: "Clustering & Dimensionality Reduction (overview)", route: '/ai/clustering' },
+    ],
+    tip: "Set n_init=10 (or more) explicitly when you care about the clustering, and compare the inertia of the runs.",
+    gotchas: ["n_init=\"auto\" means 10 runs for init=\"random\" but only 1 for \"k-means++\".","More runs cost proportionally more time; on large data use MiniBatchKMeans with several inits instead."],
   },
   'ai/neural-networks': {
     apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
@@ -32550,6 +32718,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Residual (skip) connections enable training much deeper networks than were previously practical.',
     ],
   },
+  "ai/neural-networks/dropout-before-batchnorm-shifts-the-variance": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "Measuring Vanishing Gradients Through 20 Layers", route: '/ai/neural-networks/measuring-vanishing-gradients-through-20-layers' },
+      { label: "Neural Networks (overview)", route: '/ai/neural-networks' },
+    ],
+    tip: "Use Linear, BatchNorm, activation, Dropout — or drop Dropout entirely in heavily batch-normalised conv nets.",
+    gotchas: ["The effect only shows at eval time, so training curves look normal.","Inverted dropout keeps the mean the same but not the variance; that variance gap is what BatchNorm records."],
+  },
+  "ai/neural-networks/measuring-vanishing-gradients-through-20-layers": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "Dropout Before BatchNorm Shifts the Variance", route: '/ai/neural-networks/dropout-before-batchnorm-shifts-the-variance' },
+      { label: "Xavier Init Shrinks ReLU Activations", route: '/ai/neural-networks/xavier-init-shrinks-relu-activations' },
+      { label: "Neural Networks (overview)", route: '/ai/neural-networks' },
+    ],
+    tip: "Log per-layer gradient norms early in training; a gap of many orders of magnitude between the first and last layers means early layers are not learning.",
+    gotchas: ["Exploding gradients come from the same product of factors, just with factors above 1.","Gradient clipping fixes explosions, not vanishing."],
+  },
+  "ai/neural-networks/xavier-init-shrinks-relu-activations": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "Measuring Vanishing Gradients Through 20 Layers", route: '/ai/neural-networks/measuring-vanishing-gradients-through-20-layers' },
+      { label: "Neural Networks (overview)", route: '/ai/neural-networks' },
+    ],
+    tip: "Use He (Kaiming) initialisation with ReLU-family activations; PyTorch nn.Linear defaults to a different, smaller scheme, so set it explicitly for deep ReLU stacks.",
+    gotchas: ["Batch normalisation hides a bad initialisation, but only if every layer has it.","GELU and SiLU behave close to ReLU here; He is the usual choice for them too."],
+  },
   'ai/transformers': {
     apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
     related: [
@@ -32561,6 +32757,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The tradeoff for parallelism and long-range modeling is quadratic computational cost in sequence length — a driver of ongoing research into efficient long-context transformers.',
       'RNNs struggle to retain far-earlier information in long sequences; self-attention directly connects every position to every other regardless of distance.',
     ],
+  },
+  "ai/transformers/self-attention-is-permutation-equivariant": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "Measuring Why Scores Are Divided by sqrt(d_k)", route: '/ai/transformers/measuring-why-scores-are-divided-by-sqrt-dk' },
+      { label: "Transformers & Attention (overview)", route: '/ai/transformers' },
+    ],
+    tip: "Remember the distinction: equivariant means outputs move with inputs; invariant means outputs do not change. A pooled (summed or averaged) attention output is invariant.",
+    gotchas: ["Causal masking breaks the symmetry partly: each token only sees earlier positions, so decoders get some order information even without positional encoding.","Mean-pooling a sentence after attention throws the order away completely if there is no positional signal."],
+  },
+  "ai/transformers/measuring-why-scores-are-divided-by-sqrt-dk": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "Self-Attention Is Permutation-Equivariant", route: '/ai/transformers/self-attention-is-permutation-equivariant' },
+      { label: "A Fully Masked Row Makes Softmax NaN", route: '/ai/transformers/a-fully-masked-row-makes-softmax-nan' },
+      { label: "Transformers & Attention (overview)", route: '/ai/transformers' },
+    ],
+    tip: "Think of 1 / sqrt(d_k) as a temperature that keeps scores near unit variance, whatever the head size.",
+    gotchas: ["The std ≈ sqrt(d_k) argument assumes components with unit variance; after LayerNorm and projections this is roughly true at initialisation, not exactly during training.","A peaked softmax has tiny gradients for the non-max keys, which slows learning."],
+  },
+  "ai/transformers/a-fully-masked-row-makes-softmax-nan": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "Measuring Why Scores Are Divided by sqrt(d_k)", route: '/ai/transformers/measuring-why-scores-are-divided-by-sqrt-dk' },
+      { label: "Transformers & Attention (overview)", route: '/ai/transformers' },
+    ],
+    tip: "Use a large negative number (such as -1e9) instead of -Infinity, or skip and zero the output for rows that are fully masked.",
+    gotchas: ["One NaN in a batch spreads through the loss and makes every gradient NaN.","Padding queries usually do not contribute to the loss, which is why the NaN can appear only in some batches."],
   },
   'ai/llm-fundamentals': {
     apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
@@ -32574,6 +32798,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Rare words or non-English text often tokenize into MORE tokens than common English, a real cost consideration for non-English applications.',
     ],
   },
+  "ai/llm-fundamentals/temperature-zero-broke-the-sampler": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "js-tiktoken Uses encodingForModel", route: '/ai/llm-fundamentals/js-tiktoken-uses-encodingformodel' },
+      { label: "LLM Fundamentals (overview)", route: '/ai/llm-fundamentals' },
+    ],
+    tip: "Special-case temperature 0 as argmax before any division, and validate that 0 < p <= 1 for top-p.",
+    gotchas: ["API providers handle temperature 0 for you; the bug only appears in hand-written samplers.","Even at temperature 0, hosted APIs are not guaranteed to be bit-for-bit deterministic."],
+  },
+  "ai/llm-fundamentals/js-tiktoken-uses-encodingformodel": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "Temperature Zero Broke the Sampler", route: '/ai/llm-fundamentals/temperature-zero-broke-the-sampler' },
+      { label: "Measuring Tokens per Word", route: '/ai/llm-fundamentals/measuring-tokens-per-word' },
+      { label: "LLM Fundamentals (overview)", route: '/ai/llm-fundamentals' },
+    ],
+    tip: "Use the encoding for the exact model you call: gpt-4 uses cl100k_base, gpt-4o uses o200k_base, and the same text gets different IDs.",
+    gotchas: ["Token IDs are not comparable across encodings.","Chat requests add a few tokens per message for roles and separators on top of the content."],
+  },
+  "ai/llm-fundamentals/measuring-tokens-per-word": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "js-tiktoken Uses encodingForModel", route: '/ai/llm-fundamentals/js-tiktoken-uses-encodingformodel' },
+      { label: "LLM Fundamentals (overview)", route: '/ai/llm-fundamentals' },
+    ],
+    tip: "Use 1.3 only for rough budgeting of English prose; count with the real tokeniser before checking a limit or a bill.",
+    gotchas: ["Long compound words (common in German) split into many tokens.","Whitespace-heavy formats such as indented code or JSON tables use more tokens than they look."],
+  },
   'ai/prompt-engineering': {
     apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
     related: [
@@ -32585,6 +32837,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Prompt engineering is empirical, not purely theoretical — the same prompt can behave differently across model versions and providers.',
       'Few-shot examples often improve consistency far more than lengthy prose instructions alone.',
     ],
+  },
+  "ai/prompt-engineering/fence-stripping-regex-misses-cases": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "The CoT Prompt Ended at the Answer", route: '/ai/prompt-engineering/cot-prompt-ended-at-the-answer' },
+      { label: "Prompt Engineering (overview)", route: '/ai/prompt-engineering' },
+    ],
+    tip: "Extract the JSON instead of deleting the noise: take the fenced block if there is one, then slice from the first { to the last }.",
+    gotchas: ["A reply can contain more than one JSON-looking object; slicing first { to last } then fails to parse, which the retry loop handles.","Structured Outputs at the API level avoids most of this parsing."],
+  },
+  "ai/prompt-engineering/cot-prompt-ended-at-the-answer": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "The Fence-Stripping Regex Missed Two Cases", route: '/ai/prompt-engineering/fence-stripping-regex-misses-cases' },
+      { label: "JSON Mode Is Not Schema Enforcement", route: '/ai/prompt-engineering/json-mode-vs-structured-outputs' },
+      { label: "Prompt Engineering (overview)", route: '/ai/prompt-engineering' },
+    ],
+    tip: "Ask for the reasoning first and describe the final line's format; then parse that line in code.",
+    gotchas: ["Text in square brackets is sent to the model as-is; it is not a template slot.","A prompt that ends with an answer label reads as a cue to answer immediately."],
+  },
+  "ai/prompt-engineering/json-mode-vs-structured-outputs": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "The CoT Prompt Ended at the Answer", route: '/ai/prompt-engineering/cot-prompt-ended-at-the-answer' },
+      { label: "Prompt Engineering (overview)", route: '/ai/prompt-engineering' },
+    ],
+    tip: "Use zodResponseFormat with chat.completions.parse when the model supports Structured Outputs, and keep Zod validation for models that do not.",
+    gotchas: ["JSON mode requires the word JSON to appear in the messages.","Strict schemas require every property to be listed as required; optional fields are written as nullable instead."],
   },
   'ai/rag': {
     apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
@@ -32598,6 +32878,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Chunking strategy is genuinely dataset-specific — what works for short FAQ entries may perform poorly on long technical documents.',
     ],
   },
+  "ai/rag/chunk-size-counts-characters": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "LangChain 1.x Moved the Chain Imports", route: '/ai/rag/langchain-1x-import-paths' },
+      { label: "RAG (overview)", route: '/ai/rag' },
+    ],
+    tip: "Pass a token-counting lengthFunction (JS) or use from_tiktoken_encoder (Python) so chunkSize and chunkOverlap are measured in the same unit as your context budget.",
+    gotchas: ["chunkOverlap uses the same unit as chunkSize, so 50 means 50 characters by default.","English text is roughly 4 to 5 characters per token, so a character-based 512 is about 100 to 130 tokens."],
+  },
+  "ai/rag/langchain-1x-import-paths": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "chunkSize Counts Characters, Not Tokens", route: '/ai/rag/chunk-size-counts-characters' },
+      { label: "Reciprocal Rank Fusion, Worked Through", route: '/ai/rag/reciprocal-rank-fusion-worked-example' },
+      { label: "RAG (overview)", route: '/ai/rag' },
+    ],
+    tip: "When a LangChain import fails after upgrading, check the package.json exports of langchain and @langchain/classic for the subpath.",
+    gotchas: ["The legacy chain helpers still work from @langchain/classic; new code is usually written with LCEL runnables or the agents API.","Subpath imports fail at build time when the subpath is not listed in the package exports."],
+  },
+  "ai/rag/reciprocal-rank-fusion-worked-example": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "LangChain 1.x Moved the Chain Imports", route: '/ai/rag/langchain-1x-import-paths' },
+      { label: "RAG (overview)", route: '/ai/rag' },
+    ],
+    tip: "RRF uses only ranks, not raw scores, so you can merge BM25 scores and cosine similarities without normalising them first.",
+    gotchas: ["Be consistent about 0-based or 1-based ranks; the page's rrfScore adds 1 because its ranks start at 0.","A document missing from one list simply gets no contribution from that list."],
+  },
   'ai/vector-databases': {
     apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
     related: [
@@ -32608,6 +32916,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'HNSW\'s ef_construction and M parameters directly control the speed-accuracy-memory tradeoff — tune to the application\'s actual recall requirements.',
       'HNSW has become a popular default across many vector database implementations due to its favorable speed-accuracy balance.',
     ],
+  },
+  "ai/vector-databases/faiss-l2-distances-are-squared": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "HNSW Memory Is Not N·M·d", route: '/ai/vector-databases/hnsw-memory-is-not-n-m-d' },
+      { label: "Vector Databases (overview)", route: '/ai/vector-databases' },
+    ],
+    tip: "For cosine similarity either convert with 1 - d/2 on normalised vectors, or build the index with METRIC_INNER_PRODUCT and read the scores directly.",
+    gotchas: ["Ranking is the same under squared L2 and cosine for unit vectors; only the printed scores were wrong.","Inner product only equals cosine when both the stored vectors and the query are normalised."],
+  },
+  "ai/vector-databases/hnsw-memory-is-not-n-m-d": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "FAISS L2 Distances Are Squared", route: '/ai/vector-databases/faiss-l2-distances-are-squared' },
+      { label: "Pinecone v9 upsert Takes { records }", route: '/ai/vector-databases/pinecone-v9-upsert-takes-records' },
+      { label: "Vector Databases (overview)", route: '/ai/vector-databases' },
+    ],
+    tip: "Estimate HNSW memory as N × (d × 4 bytes + about 2 × M × 4 bytes); the vectors dominate unless M is very large.",
+    gotchas: ["Layer 0 keeps 2·M neighbours and upper layers M, so the link overhead is roughly 2·M IDs per vector.","To shrink memory meaningfully you must compress the vectors (PQ, scalar quantisation), not lower M."],
+  },
+  "ai/vector-databases/pinecone-v9-upsert-takes-records": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "HNSW Memory Is Not N·M·d", route: '/ai/vector-databases/hnsw-memory-is-not-n-m-d' },
+      { label: "Vector Databases (overview)", route: '/ai/vector-databases' },
+    ],
+    tip: "Check the SDK version in package.json before copying Pinecone examples; the data-plane call shapes changed between majors.",
+    gotchas: ["pc.index('name') still works but is deprecated in favour of pc.index({ name }).","createIndex is deprecated in v9 in favour of pc.indexes.create."],
   },
   'ai/fine-tuning': {
     apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
@@ -32621,6 +32957,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A fine-tuned model must be re-evaluated whenever the underlying base model is upgraded — a maintenance cost easy to underestimate.',
     ],
   },
+  "ai/fine-tuning/lora-parameter-count-with-gqa": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "TRL Trainer Arguments Moved to the Config", route: '/ai/fine-tuning/trl-trainer-arguments-moved' },
+      { label: "Fine-tuning & RLHF (overview)", route: '/ai/fine-tuning' },
+    ],
+    tip: "Multiply per layer: for each target module add d_in x r + r x d_out, then multiply by the number of layers. Check d_out for k_proj and v_proj in the model config.",
+    gotchas: ["Under grouped-query attention, k_proj and v_proj output num_key_value_heads x head_dim, which is smaller than the hidden size.","print_trainable_parameters counts the adapter in all params too, so the total grows slightly after get_peft_model."],
+  },
+  "ai/fine-tuning/trl-trainer-arguments-moved": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "Counting LoRA Parameters with Grouped-Query Attention", route: '/ai/fine-tuning/lora-parameter-count-with-gqa' },
+      { label: "Training Only on the Output Field Drops the Instruction", route: '/ai/fine-tuning/training-only-on-the-output-field' },
+      { label: "Fine-tuning & RLHF (overview)", route: '/ai/fine-tuning' },
+    ],
+    tip: "Read the trainer signature for the TRL version you have installed; arguments have moved from the trainer to its Config class over several releases.",
+    gotchas: ["SFTConfig is a subclass of TrainingArguments, so the usual training settings still go there.","An unknown keyword argument to a trainer fails immediately with a TypeError."],
+  },
+  "ai/fine-tuning/training-only-on-the-output-field": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "TRL Trainer Arguments Moved to the Config", route: '/ai/fine-tuning/trl-trainer-arguments-moved' },
+      { label: "Fine-tuning & RLHF (overview)", route: '/ai/fine-tuning' },
+    ],
+    tip: "Store rows as prompt and completion. TRL then trains on the completion while still conditioning on the prompt.",
+    gotchas: ["dataset_text_field names one column that becomes the entire training text.","Packing many short examples into one sequence is a separate setting (packing=True) with its own trade-offs."],
+  },
   'ai/evaluating-llms': {
     apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
     related: [
@@ -32633,6 +32997,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Evaluation must be re-run whenever the model, prompt, or retrieval pipeline changes, not treated as a one-time check.',
     ],
   },
+  "ai/evaluating-llms/rouge-example-recomputed": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "ROUGE-1 Gives a Wrong Fact a Perfect Score", route: '/ai/evaluating-llms/rouge-1-ignores-word-order' },
+      { label: "Evaluating LLMs (overview)", route: '/ai/evaluating-llms' },
+    ],
+    tip: "Run a metric example before quoting its output; small tokeniser choices change the numbers.",
+    gotchas: ["The tokeniser strips punctuation, so France's becomes frances and no longer matches france.","Recall and precision use different denominators: reference length and hypothesis length."],
+  },
+  "ai/evaluating-llms/rouge-1-ignores-word-order": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "Recomputing the ROUGE Examples", route: '/ai/evaluating-llms/rouge-example-recomputed' },
+      { label: "The 65% Figure Is Swap Consistency", route: '/ai/evaluating-llms/judge-position-bias-figure' },
+      { label: "Evaluating LLMs (overview)", route: '/ai/evaluating-llms' },
+    ],
+    tip: "Report ROUGE-2 or ROUGE-L alongside ROUGE-1, and never use n-gram overlap alone to judge correctness.",
+    gotchas: ["Adding not changes the meaning completely but costs only a little overlap.","ROUGE-L (longest common subsequence) is order-aware but still blind to meaning."],
+  },
+  "ai/evaluating-llms/judge-position-bias-figure": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "ROUGE-1 Gives a Wrong Fact a Perfect Score", route: '/ai/evaluating-llms/rouge-1-ignores-word-order' },
+      { label: "Evaluating LLMs (overview)", route: '/ai/evaluating-llms' },
+    ],
+    tip: "Measure your own judge's swap consistency on a sample before trusting its pairwise verdicts.",
+    gotchas: ["Bias figures depend on judge model, prompt and task; later studies report much lower bias for newer judges.","Ties from inconsistent verdicts reduce how many comparisons count, so you need more samples."],
+  },
   'ai/mlops': {
     apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
     related: [
@@ -32644,6 +33036,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A model serving predictions doesn\'t fail loudly like a crashing service — without monitoring prediction distributions, degradation can go unnoticed for weeks.',
       'Automated retraining triggered by detected drift addresses the reality that models require ongoing maintenance, unlike "finished" traditional software.',
     ],
+  },
+  "ai/mlops/vllm-command-and-throughput-claims": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "pd.cut Codes Out-of-Range Ages as -1", route: '/ai/mlops/pd-cut-codes-out-of-range-as-minus-one' },
+      { label: "MLOps (overview)", route: '/ai/mlops' },
+    ],
+    tip: "Never put anything after a trailing backslash; move comments onto their own line above the command.",
+    gotchas: ["A backslash followed by a space escapes the space; it is not a line continuation.","Benchmark multipliers depend on model, GPU and request lengths; quote the conditions with the number."],
+  },
+  "ai/mlops/pd-cut-codes-out-of-range-as-minus-one": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "The vLLM Command Broke at a Comment", route: '/ai/mlops/vllm-command-and-throughput-claims' },
+      { label: "MLflow Registry Stages Are Deprecated", route: '/ai/mlops/mlflow-registry-uses-aliases' },
+      { label: "MLOps (overview)", route: '/ai/mlops' },
+    ],
+    tip: "Make the outer bins open-ended with -inf and inf, and assert there are no -1 codes before calling the model.",
+    gotchas: ["pd.cut bins are right-closed by default, so the lowest edge itself is excluded unless include_lowest=True.","A shared feature function keeps train and serve consistent, including consistently wrong."],
+  },
+  "ai/mlops/mlflow-registry-uses-aliases": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "pd.cut Codes Out-of-Range Ages as -1", route: '/ai/mlops/pd-cut-codes-out-of-range-as-minus-one' },
+      { label: "MLOps (overview)", route: '/ai/mlops' },
+    ],
+    tip: "Point serving code at models:/Name@champion and move the alias to promote or roll back a version.",
+    gotchas: ["Stage APIs still exist and emit deprecation warnings.","An alias points at exactly one version; promoting a new version moves it off the old one."],
   },
   'ai/responsible-ai': {
     apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
@@ -32668,6 +33088,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Choosing an appropriate pre-trained backbone balances accuracy against inference latency and model size — the largest model isn\'t always right for constrained deployment.',
     ],
   },
+  "ai/computer-vision/pretrained-true-loads-the-old-weights": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "CNN Convolution Is Cross-Correlation", route: '/ai/computer-vision/cnn-convolution-is-cross-correlation' },
+      { label: "CNNs & Computer Vision (overview)", route: '/ai/computer-vision' },
+    ],
+    tip: "Use weights=ResNet50_Weights.DEFAULT and preprocess with weights.transforms(), so the resize and crop match how those weights were trained.",
+    gotchas: ["V1 and V2 weights were trained with different recipes; reuse each one's own transforms().","pretrained=False now maps to weights=None, which is still the default."],
+  },
+  "ai/computer-vision/cnn-convolution-is-cross-correlation": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "pretrained=True Loads the Old Weights", route: '/ai/computer-vision/pretrained-true-loads-the-old-weights' },
+      { label: "A One-Pixel Shift Changes Pooled Output", route: '/ai/computer-vision/a-one-pixel-shift-changes-pooled-output' },
+      { label: "CNNs & Computer Vision (overview)", route: '/ai/computer-vision' },
+    ],
+    tip: "When porting a hand-designed filter from signal processing (such as a Sobel kernel), flip it or check the sign of the response.",
+    gotchas: ["For learned kernels the flip does not matter: the network simply learns the flipped weights.","Symmetric kernels (blur, Laplacian) give the same result either way, which hides the difference."],
+  },
+  "ai/computer-vision/a-one-pixel-shift-changes-pooled-output": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "CNN Convolution Is Cross-Correlation", route: '/ai/computer-vision/cnn-convolution-is-cross-correlation' },
+      { label: "CNNs & Computer Vision (overview)", route: '/ai/computer-vision' },
+    ],
+    tip: "Do not rely on pooling for shift robustness; use augmentation with random crops and translations, or anti-aliased (blur-then-subsample) pooling.",
+    gotchas: ["Stride-1 convolution is shift-equivariant; stride 2 (in conv or pool) is where the property breaks.","Global average pooling at the end is invariant to shifts of the final feature map, but the strided layers before it are not."],
+  },
   'ai/hugging-face': {
     apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
     related: [
@@ -32679,6 +33127,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Model cards document training data and known limitations — critical for responsibly choosing a model, not optional metadata.',
       'The Hub\'s standardized conventions turned "find and load a pre-trained model" from research-paper-code-hunting into a few lines of standard code.',
     ],
+  },
+  "ai/hugging-face/apply-chat-template-returns-a-dict": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "HfInference Is Now InferenceClient", route: '/ai/hugging-face/hfinference-is-now-inferenceclient' },
+      { label: "Hugging Face (overview)", route: '/ai/hugging-face' },
+    ],
+    tip: "Ask for return_dict=True explicitly, pass the result with **inputs, and read the prompt length from inputs[\"input_ids\"]. That works on both transformers 4 and 5.",
+    gotchas: ["Without add_generation_prompt=True the template does not add the assistant header, so the model may continue the user turn.",".to(model.device) works on a BatchEncoding and moves every tensor in it."],
+  },
+  "ai/hugging-face/hfinference-is-now-inferenceclient": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "apply_chat_template Returns a Dict in Transformers 5", route: '/ai/hugging-face/apply-chat-template-returns-a-dict' },
+      { label: "32GB of fp32 Weights Does Fit a 40GB A100", route: '/ai/hugging-face/fp32-llama-memory-math' },
+      { label: "Hugging Face (overview)", route: '/ai/hugging-face' },
+    ],
+    tip: "Use new InferenceClient(token); the task methods (textGeneration, featureExtraction, chatCompletion) keep the same names.",
+    gotchas: ["Which provider serves a model depends on what providers support it; not every Hub model is available serverlessly.","Deprecated aliases are marked \"for backward compatibility only, will remove soon\"."],
+  },
+  "ai/hugging-face/fp32-llama-memory-math": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "HfInference Is Now InferenceClient", route: '/ai/hugging-face/hfinference-is-now-inferenceclient' },
+      { label: "Hugging Face (overview)", route: '/ai/hugging-face' },
+    ],
+    tip: "Budget weights plus KV cache: KV bytes per token = 2 x layers x kv_heads x head_dim x bytes per value.",
+    gotchas: ["GPU memory is also used by the CUDA context and activations, so the usable remainder is smaller than the arithmetic suggests.","Grouped-query attention (8 KV heads in Llama 3 8B) makes the KV cache 4 times smaller than with 32 heads."],
   },
   'ai/ai-engineering': {
     apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
@@ -32692,6 +33168,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Design for model-swappability — hardcoding assumptions about a specific model\'s quirks creates technical debt as newer models become available.',
     ],
   },
+  "ai/ai-engineering/req-close-fires-before-the-stream": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "An Aborted Stream Can End Without Throwing", route: '/ai/ai-engineering/aborted-stream-loop-ends-quietly' },
+      { label: "AI Engineering (overview)", route: '/ai/ai-engineering' },
+    ],
+    tip: "Detect disconnects on the response: res.on(close) with a check that res.writableFinished is false.",
+    gotchas: ["res also emits close after a normal finish; the writableFinished check separates that from a disconnect.","Without cancellation, every abandoned request is still billed for its full output."],
+  },
+  "ai/ai-engineering/aborted-stream-loop-ends-quietly": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "req close Fires Before the Stream Starts", route: '/ai/ai-engineering/req-close-fires-before-the-stream' },
+      { label: "Getting Exact Token Usage from a Stream", route: '/ai/ai-engineering/exact-token-usage-from-a-stream' },
+      { label: "AI Engineering (overview)", route: '/ai/ai-engineering' },
+    ],
+    tip: "After the stream loop, check signal.aborted before doing any finishing work such as writing [DONE] or recording usage.",
+    gotchas: ["An abort before the response headers arrive can still reject the request call itself, so keep the try/catch.","Writing to a response whose client has gone is wasted work, not an error you will see."],
+  },
+  "ai/ai-engineering/exact-token-usage-from-a-stream": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "An Aborted Stream Can End Without Throwing", route: '/ai/ai-engineering/aborted-stream-loop-ends-quietly' },
+      { label: "AI Engineering (overview)", route: '/ai/ai-engineering' },
+    ],
+    tip: "Turn on include_usage for every streamed call you bill or monitor; it costs nothing extra.",
+    gotchas: ["The usage chunk has an empty choices array, so code that reads choices[0] must use optional chaining.","If the stream is aborted the usage chunk never arrives."],
+  },
   'ai/ai-agents': {
     apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
     related: [
@@ -32703,6 +33207,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Scoped, least-privilege tool access limits the blast radius of a bad agent decision, following the same principle as least-privilege in traditional security.',
       'Agent loops without a clear termination condition (max steps, max cost) can run indefinitely on a stuck plan, silently consuming cost.',
     ],
+  },
+  "ai/ai-agents/calculator-tool-must-not-eval": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "The Loop Resent the Same Request on Other Stop Reasons", route: '/ai/ai-agents/loop-resent-on-other-stop-reasons' },
+      { label: "AI Agents (overview)", route: '/ai/ai-agents' },
+    ],
+    tip: "Treat every tool argument as untrusted input: validate it against what the tool genuinely needs before doing anything with it.",
+    gotchas: ["Prompt injection can arrive through a tool result (a web page, a file) rather than the user.","An allowlist of characters is enough for plain arithmetic; anything richer needs a real expression parser."],
+  },
+  "ai/ai-agents/loop-resent-on-other-stop-reasons": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "The Calculator Tool Must Not eval Model Input", route: '/ai/ai-agents/calculator-tool-must-not-eval' },
+      { label: "The ReAct Parser Split on Every Parenthesis", route: '/ai/ai-agents/react-parser-split-on-every-parenthesis' },
+      { label: "AI Agents (overview)", route: '/ai/ai-agents' },
+    ],
+    tip: "Branch on tool_use explicitly and treat every other stop reason as the end of the loop, raising an error for anything except end_turn.",
+    gotchas: ["max_tokens means the reply was cut off; increase max_tokens or ask the model to continue rather than resending.","pause_turn is used with server-side tools; continuing it means sending the assistant content back, which a generic handler does not do."],
+  },
+  "ai/ai-agents/react-parser-split-on-every-parenthesis": {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: "The Loop Resent the Same Request on Other Stop Reasons", route: '/ai/ai-agents/loop-resent-on-other-stop-reasons' },
+      { label: "AI Agents (overview)", route: '/ai/ai-agents' },
+    ],
+    tip: "Split the action at the first ( and the last ), or better, use the provider's native tool calling so arguments arrive as structured JSON.",
+    gotchas: ["Text-based ReAct parsing is fragile; native function calling avoids parsing entirely.","Destructuring the result of split keeps only the first two pieces and silently drops the rest."],
   },
   'ai/ai-dotnet': {
     apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
@@ -32741,6 +33273,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Independent tests (no shared mutable state) can run in parallel and be safely reordered without hidden coupling.',
     ],
   },
+  "testing-hub/testing-fundamentals/tohavetext-is-a-playwright-matcher": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "A Relative toHaveURL Needs a baseURL", route: '/testing-hub/testing-fundamentals/relative-tohaveurl-needs-a-baseurl' },
+      { label: "Testing Fundamentals (overview)", route: '/testing-hub/testing-fundamentals' },
+    ],
+    tip: "jest-dom (React/Angular/Vue Testing Library) uses toHaveTextContent; Playwright uses toHaveText. The names look interchangeable but each only exists in its own library.",
+    gotchas: ["Calling toHaveText inside a Jest + Testing Library test throws \"expect(...).toHaveText is not a function\" — it is not a silent pass.","toHaveTextContent matches a substring by default; pass a RegExp or use toHaveTextContent with { normalizeWhitespace } options for exact checks."],
+  },
+  "testing-hub/testing-fundamentals/relative-tohaveurl-needs-a-baseurl": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "toHaveText Belongs to Playwright, Not jest-dom", route: '/testing-hub/testing-fundamentals/tohavetext-is-a-playwright-matcher' },
+      { label: "The Integration Test Never Started a Container", route: '/testing-hub/testing-fundamentals/integration-test-never-started-a-container' },
+      { label: "Testing Fundamentals (overview)", route: '/testing-hub/testing-fundamentals' },
+    ],
+    tip: "Set baseURL in playwright.config.ts and use relative paths everywhere (page.goto and toHaveURL), or use a RegExp such as /\\/dashboard$/ when no baseURL is configured.",
+    gotchas: ["toHaveURL with a string compares the whole URL, so query strings and trailing slashes matter.","A failing toHaveURL waits for the full assertion timeout before failing, so a wrong expected URL also makes the test slow."],
+  },
+  "testing-hub/testing-fundamentals/integration-test-never-started-a-container": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "A Relative toHaveURL Needs a baseURL", route: '/testing-hub/testing-fundamentals/relative-tohaveurl-needs-a-baseurl' },
+      { label: "Testing Fundamentals (overview)", route: '/testing-hub/testing-fundamentals' },
+    ],
+    tip: "Start the container in beforeAll, point DATABASE_URL at container.getConnectionUri(), run migrations, reset tables in beforeEach, and stop the container in afterAll.",
+    gotchas: ["Starting a container per test file is common; starting one per test is usually far too slow.","Raise the beforeAll timeout: pulling and starting the image can take longer than Jest's default 5 seconds."],
+  },
   'testing-hub/tdd': {
     apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
     related: [
@@ -32752,6 +33312,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The refactor step is not optional — skipping it accumulates technical debt as surely as skipping tests entirely.',
       'TDD\'s tight feedback loop catches mistakes immediately; writing tests after the fact often just confirms existing behavior rather than driving design.',
     ],
+  },
+  "testing-hub/tdd/outside-in-test-asked-for-a-name-it-never-sent": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "One Behaviour per Test, Not One Assertion", route: '/testing-hub/tdd/one-behaviour-per-test-not-one-assertion' },
+      { label: "Test-Driven Development (overview)", route: '/testing-hub/tdd' },
+    ],
+    tip: "Every value an assertion expects must come from the arrange step (or a documented rule). If the test cannot say where Alice comes from, the implementation cannot either.",
+    gotchas: ["expect.stringContaining is case-sensitive: \"alice\" does not contain \"Alice\".","Deriving a display name from an email address is a hidden product rule; if you want it, write a separate test that states it."],
+  },
+  "testing-hub/tdd/one-behaviour-per-test-not-one-assertion": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "The Outside-In Test Asked for a Name It Never Sent", route: '/testing-hub/tdd/outside-in-test-asked-for-a-name-it-never-sent' },
+      { label: "A Refactor That Drops the Empty-String Guard", route: '/testing-hub/tdd/refactor-that-drops-the-empty-string-guard' },
+      { label: "Test-Driven Development (overview)", route: '/testing-hub/tdd' },
+    ],
+    tip: "Split tests by behaviour, not by expect() count. Several assertions that all describe one outcome belong together.",
+    gotchas: ["Jest stops at the first failing expect in a test, so later assertions in the same test are not reported until the first is fixed.","Splitting one outcome across many tests repeats the arrange and act steps and makes the suite slower without adding information."],
+  },
+  "testing-hub/tdd/refactor-that-drops-the-empty-string-guard": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "One Behaviour per Test, Not One Assertion", route: '/testing-hub/tdd/one-behaviour-per-test-not-one-assertion' },
+      { label: "Test-Driven Development (overview)", route: '/testing-hub/tdd' },
+    ],
+    tip: "Run the whole suite after every refactor step. The oldest, simplest tests often catch the regressions a refactor introduces.",
+    gotchas: ["\"\".split(\",\") returns [\"\"] (one empty string), not an empty array.","parseInt(\"\", 10) is NaN, and NaN poisons any sum it touches."],
   },
   'testing-hub/test-doubles': {
     apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
@@ -32765,6 +33353,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Matching the double\'s complexity to what the test actually needs to verify keeps suites maintainable.',
     ],
   },
+  "testing-hub/test-doubles/jest-fn-verified-afterwards-is-a-spy": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "spyOn Calls the Real Method by Default", route: '/testing-hub/test-doubles/spyon-calls-through-by-default' },
+      { label: "Test Doubles (overview)", route: '/testing-hub/test-doubles' },
+    ],
+    tip: "Ask when the expectation is stated. Before the act and self-verifying: mock. Recorded during the act and asserted afterwards: spy.",
+    gotchas: ["Jest names every recording function a mock function, so \"mock\" in Jest docs does not mean the Meszaros mock.","Classic mocks with up-front expectations still exist in other libraries (for example Moq strict mocks in .NET, or Sinon mock().expects())."],
+  },
+  "testing-hub/test-doubles/spyon-calls-through-by-default": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "jest.fn() Checked Afterwards Is a Spy, Not a Mock", route: '/testing-hub/test-doubles/jest-fn-verified-afterwards-is-a-spy' },
+      { label: "clearAllMocks Keeps Return Values, resetAllMocks Removes Them", route: '/testing-hub/test-doubles/clearallmocks-keeps-return-values' },
+      { label: "Test Doubles (overview)", route: '/testing-hub/test-doubles' },
+    ],
+    tip: "jest.spyOn keeps the original behaviour unless you add mockImplementation or mockReturnValue. Choose deliberately: observe only, or observe and replace.",
+    gotchas: ["Adding mockImplementation(() => {}) to silence a side effect also stops the real method from running.","Restore spies after the test (mockRestore or restoreMocks: true in config), or the wrapper leaks into later tests."],
+  },
+  "testing-hub/test-doubles/clearallmocks-keeps-return-values": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "spyOn Calls the Real Method by Default", route: '/testing-hub/test-doubles/spyon-calls-through-by-default' },
+      { label: "Test Doubles (overview)", route: '/testing-hub/test-doubles' },
+    ],
+    tip: "clear = forget calls; reset = forget calls and canned behaviour; restore = put the original method back (for spyOn). Pick the weakest one that isolates your tests.",
+    gotchas: ["If a stub is configured once at module scope, resetAllMocks in beforeEach wipes its return value and every test sees undefined.","The config options clearMocks, resetMocks and restoreMocks run the matching call before every test automatically."],
+  },
   'testing-hub/mocking-spies': {
     apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
     related: [
@@ -32776,6 +33392,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A test suite with excessive mocking often needs rewriting whenever internal implementation details change, even if externally observable behavior stayed the same.',
       'Spies preserve real behavior while adding observability, preferable to full mocks when real logic is cheap and deterministic to run.',
     ],
+  },
+  "testing-hub/mocking-spies/mockreturnvalue-promise-reject-rejects-too-early": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "Spying on a Wrapper Does Not Touch Math.random", route: '/testing-hub/mocking-spies/spying-on-a-wrapper-does-not-touch-math-random' },
+      { label: "Mocking & Spies (overview)", route: '/testing-hub/mocking-spies' },
+    ],
+    tip: "Use mockRejectedValue(err) and mockResolvedValue(v). They create the promise when the mock is called, not when the test is set up.",
+    gotchas: ["Both forms resolve to the same object reference, so mutating a resolved value leaks into later calls either way.","Node prints PromiseRejectionHandledWarning when a rejection created earlier is caught later."],
+  },
+  "testing-hub/mocking-spies/spying-on-a-wrapper-does-not-touch-math-random": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "mockReturnValue(Promise.reject()) Rejects Too Early", route: '/testing-hub/mocking-spies/mockreturnvalue-promise-reject-rejects-too-early' },
+      { label: "Checking Call Order with invocationCallOrder", route: '/testing-hub/mocking-spies/checking-call-order-with-invocationcallorder' },
+      { label: "Mocking & Spies (overview)", route: '/testing-hub/mocking-spies' },
+    ],
+    tip: "A spy replaces exactly one property on exactly one object. To control Math.random itself, spy on Math: jest.spyOn(Math, \"random\").",
+    gotchas: ["Code that calls Math.random directly is unaffected by a spy on a wrapper object.","If the module under test destructured the function at import time, a later spy on the object is not seen by that module."],
+  },
+  "testing-hub/mocking-spies/checking-call-order-with-invocationcallorder": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "Spying on a Wrapper Does Not Touch Math.random", route: '/testing-hub/mocking-spies/spying-on-a-wrapper-does-not-touch-math-random' },
+      { label: "Mocking & Spies (overview)", route: '/testing-hub/mocking-spies' },
+    ],
+    tip: "Compare mockA.mock.invocationCallOrder[0] with mockB.mock.invocationCallOrder[0] to assert A ran before B.",
+    gotchas: ["The counter is shared by all mocks in the test file, so compare values, never assert an exact number.","clearAllMocks clears invocationCallOrder along with calls."],
   },
   'testing-hub/jest-fundamentals': {
     apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
@@ -32789,6 +33433,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Snapshots work best for stable, rarely-changing output, not frequently-evolving UI.',
     ],
   },
+  "testing-hub/jest-fundamentals/expect-assertions-checks-an-exact-count": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "Jest 30 Removed toThrowError and Other Aliases", route: '/testing-hub/jest-fundamentals/jest-30-removed-tothrowerror-and-other-aliases' },
+      { label: "Jest Fundamentals (overview)", route: '/testing-hub/jest-fundamentals' },
+    ],
+    tip: "expect.assertions(n) means exactly n. If a loop or a later refactor adds an assertion, the count has to change too.",
+    gotchas: ["Assertions inside a helper count too, so calling a helper with two expects adds two.","expect.hasAssertions() only checks that at least one assertion ran."],
+  },
+  "testing-hub/jest-fundamentals/jest-30-removed-tothrowerror-and-other-aliases": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "expect.assertions Checks an Exact Count", route: '/testing-hub/jest-fundamentals/expect-assertions-checks-an-exact-count' },
+      { label: "Jest Calls It coverageProvider, Not coverage.provider", route: '/testing-hub/jest-fundamentals/coverageprovider-not-coverage-provider' },
+      { label: "Jest Fundamentals (overview)", route: '/testing-hub/jest-fundamentals' },
+    ],
+    tip: "Use the long names: toThrow, toHaveBeenCalled, toHaveBeenCalledWith, toHaveBeenLastCalledWith, toHaveReturned. They work in every Jest version.",
+    gotchas: ["A removed alias fails with \"is not a function\", so every test using it fails after the upgrade.","The eslint-plugin-jest rule no-alias-methods flags the old names before you upgrade."],
+  },
+  "testing-hub/jest-fundamentals/coverageprovider-not-coverage-provider": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "Jest 30 Removed toThrowError and Other Aliases", route: '/testing-hub/jest-fundamentals/jest-30-removed-tothrowerror-and-other-aliases' },
+      { label: "Jest Fundamentals (overview)", route: '/testing-hub/jest-fundamentals' },
+    ],
+    tip: "Jest: coverageProvider: \"v8\". Vitest: test.coverage.provider: \"v8\". Same idea, different shape, and a wrong key is ignored with only a warning.",
+    gotchas: ["V8 coverage counts what the engine executed, so results can differ slightly from Babel/Istanbul for the same tests.","Changing the provider can move your percentages, which matters if coverageThreshold is set close to the current value."],
+  },
   'testing-hub/vitest': {
     apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
     related: [
@@ -32799,6 +33471,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Native ESM support avoids an entire class of module-resolution edge cases Jest\'s CJS-first architecture has historically struggled with.',
       'Vitest\'s Jest-compatible API means most Jest suites port over with minimal changes.',
     ],
+  },
+  "testing-hub/vitest/vitest-workspace-became-test-projects": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "In-Source Tests Need a define to Be Removed", route: '/testing-hub/vitest/in-source-tests-need-a-define-to-be-removed' },
+      { label: "Vitest (overview)", route: '/testing-hub/vitest' },
+    ],
+    tip: "Put the project list in the root config: test: { projects: [...] }. Each entry can be a glob of package configs or an inline config with its own name and environment.",
+    gotchas: ["Running Vitest from inside one package can pick up the root projects list with globs resolved from the wrong directory; give packages their own config if you run them alone.","defineWorkspace no longer exists; use defineConfig with test.projects."],
+  },
+  "testing-hub/vitest/in-source-tests-need-a-define-to-be-removed": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "vitest.workspace.ts Became test.projects", route: '/testing-hub/vitest/vitest-workspace-became-test-projects' },
+      { label: "The test Key in vite.config.ts Needs Vitest Types", route: '/testing-hub/vitest/test-key-in-vite-config-needs-vitest-types' },
+      { label: "Vitest (overview)", route: '/testing-hub/vitest' },
+    ],
+    tip: "Add define: { \"import.meta.vitest\": \"undefined\" } to the production build config. The value is a string because define inserts it as raw code.",
+    gotchas: ["define values are code, not data: the string \"undefined\" becomes the identifier undefined in the output.","Imports used only by the in-source tests are removed too, but only if nothing else references them."],
+  },
+  "testing-hub/vitest/test-key-in-vite-config-needs-vitest-types": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "In-Source Tests Need a define to Be Removed", route: '/testing-hub/vitest/in-source-tests-need-a-define-to-be-removed' },
+      { label: "Vitest (overview)", route: '/testing-hub/vitest' },
+    ],
+    tip: "Either add /// <reference types=\"vitest/config\" /> at the top of vite.config.ts, or import defineConfig from \"vitest/config\" in a separate vitest.config.ts.",
+    gotchas: ["The config still runs without the types; only TypeScript and editor autocompletion complain.","mergeConfig lets vitest.config.ts reuse settings from vite.config.ts instead of duplicating them."],
   },
   'testing-hub/react-testing-library': {
     apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
@@ -32811,6 +33511,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'userEvent more accurately simulates real user interaction sequences than fireEvent, which dispatches a single synthetic event.',
     ],
   },
+  "testing-hub/react-testing-library/role-status-has-no-name-from-its-text": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "Testing Library Has No getByClassName", route: '/testing-hub/react-testing-library/testing-library-has-no-getbyclassname' },
+      { label: "React Testing Library (overview)", route: '/testing-hub/react-testing-library' },
+    ],
+    tip: "For live regions (status, alert, log), query by role and check the text with toHaveTextContent, or give the element an aria-label if it needs a name.",
+    gotchas: ["Buttons, links and headings do take their name from their text, which is why { name } works for them.","The error message lists the accessible roles and names it found; read it to see that the status has an empty name."],
+  },
+  "testing-hub/react-testing-library/testing-library-has-no-getbyclassname": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "role=status Has No Name from Its Text", route: '/testing-hub/react-testing-library/role-status-has-no-name-from-its-text' },
+      { label: "findBy Gives Up After One Second", route: '/testing-hub/react-testing-library/findby-gives-up-after-one-second' },
+      { label: "React Testing Library (overview)", route: '/testing-hub/react-testing-library' },
+    ],
+    tip: "The real anti-pattern is container.querySelector(\".submit-btn\"). Testing Library deliberately offers no class-name query.",
+    gotchas: ["container.querySelector returns null instead of throwing, so a missing element surfaces later as a confusing null error.","getByTestId is the documented escape hatch when no accessible query fits."],
+  },
+  "testing-hub/react-testing-library/findby-gives-up-after-one-second": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "Testing Library Has No getByClassName", route: '/testing-hub/react-testing-library/testing-library-has-no-getbyclassname' },
+      { label: "React Testing Library (overview)", route: '/testing-hub/react-testing-library' },
+    ],
+    tip: "Pass a timeout for slow cases, findByText(\"Done\", {}, { timeout: 3000 }), or raise asyncUtilTimeout with configure() for the whole suite.",
+    gotchas: ["The timeout is the third argument to findBy (after the matcher and query options).","Fake timers change the picture: advance them instead of waiting on real time."],
+  },
   'testing-hub/angular-testing': {
     apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
     related: [
@@ -32822,6 +33550,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Standalone components simplify TestBed setup since there is no NgModule to declare.',
     ],
   },
+  "testing-hub/angular-testing/httpclienttestingmodule-is-deprecated": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "TestBed.flushEffects Was Replaced by TestBed.tick", route: '/testing-hub/angular-testing/flusheffects-replaced-by-testbed-tick' },
+      { label: "Angular Testing (overview)", route: '/testing-hub/angular-testing' },
+    ],
+    tip: "providers: [provideHttpClient(), provideHttpClientTesting()] — keep that order, so the testing backend replaces the real one.",
+    gotchas: ["Interceptors added with withInterceptors() go on provideHttpClient(...) in the test too, otherwise the test skips them.","HttpTestingController and expectOne/flush/verify work exactly as before."],
+  },
+  "testing-hub/angular-testing/flusheffects-replaced-by-testbed-tick": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "HttpClientTestingModule Is Deprecated", route: '/testing-hub/angular-testing/httpclienttestingmodule-is-deprecated' },
+      { label: "Router Testing Without RouterTestingModule", route: '/testing-hub/angular-testing/router-testing-without-routertestingmodule' },
+      { label: "Angular Testing (overview)", route: '/testing-hub/angular-testing' },
+    ],
+    tip: "After changing a signal that drives an effect, call TestBed.tick(). It runs pending effects and synchronises the UI in one step.",
+    gotchas: ["fixture.detectChanges() is still the right call when you want to refresh one component fixture.","Effects created outside an injection context are not tracked by TestBed."],
+  },
+  "testing-hub/angular-testing/router-testing-without-routertestingmodule": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "TestBed.flushEffects Was Replaced by TestBed.tick", route: '/testing-hub/angular-testing/flusheffects-replaced-by-testbed-tick' },
+      { label: "Angular Testing (overview)", route: '/testing-hub/angular-testing' },
+    ],
+    tip: "Use providers: [provideRouter(routes)] and RouterTestingHarness.create() to navigate and get the activated component.",
+    gotchas: ["RouterTestingHarness.create() throws if a harness already exists in the test.","The harness needs the default TestBed teardown (destroyAfterEach: true)."],
+  },
   'testing-hub/cypress': {
     apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
     related: [
@@ -32832,6 +33588,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'This retry-ability only applies to Cypress-native commands — wrapping arbitrary async logic bypasses it and can reintroduce flakiness.',
       'cy.intercept() decouples frontend test reliability from real backend availability and response times.',
     ],
+  },
+  "testing-hub/cypress/cypress-react18-mount-import-is-gone": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "cy.session Is Cached Per Spec Unless You Opt In", route: '/testing-hub/cypress/cy-session-is-per-spec-unless-cache-across-specs' },
+      { label: "Cypress (overview)", route: '/testing-hub/cypress' },
+    ],
+    tip: "Use import { mount } from \"cypress/react\" and register it once as cy.mount in cypress/support/component.ts.",
+    gotchas: ["The old path fails at bundling time with a module-not-found style error, before any test runs.","Older blog posts and some docs pages still show cypress/react18."],
+  },
+  "testing-hub/cypress/cy-session-is-per-spec-unless-cache-across-specs": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "The cypress/react18 Mount Import Is Gone", route: '/testing-hub/cypress/cypress-react18-mount-import-is-gone' },
+      { label: "Spec and App Run in Separate Iframes", route: '/testing-hub/cypress/spec-and-app-run-in-separate-iframes' },
+      { label: "Cypress (overview)", route: '/testing-hub/cypress' },
+    ],
+    tip: "Give every cy.session a validate() function, for example a request to /api/me that must return 200, so an expired session is rebuilt automatically.",
+    gotchas: ["The session id must change when the login data changes (for example include the role), otherwise a cached session for another user is restored.","Cypress 12 also turned test isolation on by default, which clears the page, cookies and storage between tests; cy.session is how you keep a login across that."],
+  },
+  "testing-hub/cypress/spec-and-app-run-in-separate-iframes": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "cy.session Is Cached Per Spec Unless You Opt In", route: '/testing-hub/cypress/cy-session-is-per-spec-unless-cache-across-specs' },
+      { label: "Cypress (overview)", route: '/testing-hub/cypress' },
+    ],
+    tip: "Read or stub app globals through cy.window(), or before the app starts with cy.visit(url, { onBeforeLoad(win) { ... } }).",
+    gotchas: ["window.localStorage in a spec happens to work for same-origin apps, but window.myStore set by the app is undefined in the spec.","Stubbing must target the app window object yielded by cy.window(), or the app never sees the stub."],
   },
   'testing-hub/playwright': {
     apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
@@ -32845,6 +33629,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The same actionability checks apply across all three engines, but rendering differences between them can still surface real bugs.',
     ],
   },
+  "testing-hub/playwright/actions-have-no-timeout-by-default": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "networkidle Means Zero Connections and Is Discouraged", route: '/testing-hub/playwright/networkidle-means-zero-connections-and-is-discouraged' },
+      { label: "Playwright (overview)", route: '/testing-hub/playwright' },
+    ],
+    tip: "Set use.actionTimeout (for example 10_000) so a click on a disabled or hidden element fails with a clear action error instead of eating the whole test budget.",
+    gotchas: ["The 5-second default applies to expect() web-first assertions, not to click() or fill().","navigationTimeout also defaults to 0 and is likewise bounded only by the test timeout."],
+  },
+  "testing-hub/playwright/networkidle-means-zero-connections-and-is-discouraged": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "Actions Have No Timeout of Their Own by Default", route: '/testing-hub/playwright/actions-have-no-timeout-by-default' },
+      { label: "Locators Are Strict About Multiple Matches", route: '/testing-hub/playwright/locators-are-strict-about-multiple-matches' },
+      { label: "Playwright (overview)", route: '/testing-hub/playwright' },
+    ],
+    tip: "Wait for what the user sees, such as a heading or a row, with expect(...).toBeVisible(), or wait for one specific response with page.waitForResponse().",
+    gotchas: ["A page that polls or holds a long-poll request may never go quiet, so networkidle waits until the timeout.","page.waitForSelector() is also discouraged in favour of web-first assertions or locator.waitFor()."],
+  },
+  "testing-hub/playwright/locators-are-strict-about-multiple-matches": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "networkidle Means Zero Connections and Is Discouraged", route: '/testing-hub/playwright/networkidle-means-zero-connections-and-is-discouraged' },
+      { label: "Playwright (overview)", route: '/testing-hub/playwright' },
+    ],
+    tip: "Make the locator unique with a better name, filter({ hasText }), or by scoping to a parent such as a row or dialog. Use first() or nth() only when order is really what you mean.",
+    gotchas: ["count() and all() do not need a single match, so they never raise a strict mode violation.","first() hides the ambiguity; if the page later adds another match, the test silently clicks a different element."],
+  },
   'testing-hub/api-testing': {
     apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
     related: [
@@ -32856,6 +33668,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Testing error responses (4xx/5xx shape) is as important as the happy path, since consumers build error handling that depends on a stable error contract.',
       'Schema validation libraries can be layered onto existing API tests to add contract verification without a full rewrite.',
     ],
+  },
+  "testing-hub/api-testing/supertest-binds-an-ephemeral-port": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "Test Tokens Need the Same Secret as the App", route: '/testing-hub/api-testing/test-tokens-need-the-same-secret-as-the-app' },
+      { label: "API Testing (overview)", route: '/testing-hub/api-testing' },
+    ],
+    tip: "Pass the app (not a listening server) so Supertest owns the lifecycle; if you pass a server you started yourself, close it in afterAll.",
+    gotchas: ["Because the request goes over loopback, middleware sees a real socket: req.socket.localPort is a real port number.","An app that calls app.listen(3000) when imported will still bind 3000; export the app and call listen in a separate entry file."],
+  },
+  "testing-hub/api-testing/test-tokens-need-the-same-secret-as-the-app": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "Supertest Binds an Ephemeral Port for You", route: '/testing-hub/api-testing/supertest-binds-an-ephemeral-port' },
+      { label: "Zod datetime Rejects Timezone Offsets by Default", route: '/testing-hub/api-testing/zod-datetime-rejects-timezone-offsets' },
+      { label: "API Testing (overview)", route: '/testing-hub/api-testing' },
+    ],
+    tip: "Read the secret from one place (process.env.JWT_SECRET) in both the app and the tests, and set it in a Jest setupFiles script so it exists before any module loads.",
+    gotchas: ["A test that only checks 401 for a missing token still passes, which hides the problem.","If the app caches the secret at import time, setting the env var inside the test file is too late because imports run first."],
+  },
+  "testing-hub/api-testing/zod-datetime-rejects-timezone-offsets": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "Test Tokens Need the Same Secret as the App", route: '/testing-hub/api-testing/test-tokens-need-the-same-secret-as-the-app' },
+      { label: "API Testing (overview)", route: '/testing-hub/api-testing' },
+    ],
+    tip: "Match the schema to what the API promises: z.iso.datetime() for UTC-only, z.iso.datetime({ offset: true }) if the API may send +02:00.",
+    gotchas: ["A too-strict schema fails tests for valid data; a too-loose one (plain z.string()) misses real regressions.","Deprecated methods still work in Zod 4, so nothing breaks until they are removed."],
   },
   'testing-hub/contract-testing': {
     apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
@@ -32869,6 +33709,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Contract testing scales better than full integration testing across many microservices, since each pairwise relationship is verified independently.',
     ],
   },
+  "testing-hub/contract-testing/extra-provider-fields-do-not-break-a-pact": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "Publishing a Pact Requires a Version", route: '/testing-hub/contract-testing/publishing-a-pact-requires-a-version' },
+      { label: "Contract Testing (overview)", route: '/testing-hub/contract-testing' },
+    ],
+    tip: "Use type matchers (integer, string, like) for every field and list only the fields the consumer reads; never paste a full real response into a pact.",
+    gotchas: ["Removing or renaming a field the consumer listed does fail verification, which is exactly the breaking change you want caught.","Arrays need eachLike() or a fixed length is expected."],
+  },
+  "testing-hub/contract-testing/publishing-a-pact-requires-a-version": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "Extra Provider Fields Do Not Break a Pact", route: '/testing-hub/contract-testing/extra-provider-fields-do-not-break-a-pact' },
+      { label: "Verifying Local Pact Files and Provider States", route: '/testing-hub/contract-testing/verifying-local-pact-files-and-provider-states' },
+      { label: "Contract Testing (overview)", route: '/testing-hub/contract-testing' },
+    ],
+    tip: "Use the git SHA as the version and pass --branch; in CI you can let --auto-detect-version-properties read them from the environment.",
+    gotchas: ["can-i-deploy asks about a specific version, so a pact published without the same version can never answer yes.","The pact-broker command is installed by @pact-foundation/pact-cli, not by @pact-foundation/pact."],
+  },
+  "testing-hub/contract-testing/verifying-local-pact-files-and-provider-states": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "Publishing a Pact Requires a Version", route: '/testing-hub/contract-testing/publishing-a-pact-requires-a-version' },
+      { label: "Contract Testing (overview)", route: '/testing-hub/contract-testing' },
+    ],
+    tip: "Make each state handler create exactly the data its given text describes, and reset it, so a pass never depends on leftover data.",
+    gotchas: ["A test that passes only because the database happened to contain user 1 will fail on a fresh CI database.","Local pactUrls verification does not publish results unless you set publishVerificationResult and a provider version."],
+  },
   'testing-hub/integration-testing': {
     apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
     related: [
@@ -32881,6 +33749,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'External third-party services are usually still stubbed even in integration tests, since real calls introduce flakiness, cost, and rate limits.',
     ],
   },
+  "testing-hub/integration-testing/jest-30-renamed-testpathpattern": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "PostgreSqlContainer Needs an Image and a stop()", route: '/testing-hub/integration-testing/postgresqlcontainer-needs-an-image-and-a-stop' },
+      { label: "Integration Testing (overview)", route: '/testing-hub/integration-testing' },
+    ],
+    tip: "Use jest --testPathPatterns=unit (plural). Better still, split suites with the projects config so each one has its own settings.",
+    gotchas: ["testPathPatterns is CLI-only; putting it in jest.config is rejected too.","Several patterns can be passed: --testPathPatterns=unit --testPathPatterns=shared."],
+  },
+  "testing-hub/integration-testing/postgresqlcontainer-needs-an-image-and-a-stop": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "Jest 30 Renamed --testPathPattern to --testPathPatterns", route: '/testing-hub/integration-testing/jest-30-renamed-testpathpattern' },
+      { label: "In-Memory SQLite Dies with Its Connection", route: '/testing-hub/integration-testing/in-memory-sqlite-dies-with-its-connection' },
+      { label: "Integration Testing (overview)", route: '/testing-hub/integration-testing' },
+    ],
+    tip: "Always pin the image (postgres:16), keep the started container in a variable, run real migrations, and stop it in afterAll.",
+    gotchas: ["Ryuk, Testcontainers' cleanup sidecar, removes leftover containers when the process exits, but disabling it (as some CI setups do) leaves them running.","An unpinned image tag means the database version changes under your tests without a code change."],
+  },
+  "testing-hub/integration-testing/in-memory-sqlite-dies-with-its-connection": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "PostgreSqlContainer Needs an Image and a stop()", route: '/testing-hub/integration-testing/postgresqlcontainer-needs-an-image-and-a-stop' },
+      { label: "Integration Testing (overview)", route: '/testing-hub/integration-testing' },
+    ],
+    tip: "Create one SqliteConnection, call Open(), pass the connection object to UseSqlite, and call EnsureCreated() once.",
+    gotchas: ["Closing or disposing the connection deletes the database.","SQLite is not your production database: some PostgreSQL or SQL Server behaviour (types, JSON operators, collations) differs."],
+  },
   'testing-hub/testing-databases': {
     apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
     related: [
@@ -32891,6 +33787,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A shared test database accessed by parallel test runs risks tests interfering with each other\'s data — a unique schema/database per worker avoids this class of flaky failure.',
       'Seeding minimal, purpose-built test data makes each test\'s assumptions explicit, reducing the chance an unrelated data change breaks a seemingly unrelated test.',
     ],
+  },
+  "testing-hub/testing-databases/rollback-only-isolates-its-own-connection": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "Seeding Explicit IDs Leaves the Sequence Behind", route: '/testing-hub/testing-databases/seeding-explicit-ids-leaves-the-sequence-behind' },
+      { label: "Testing with Databases (overview)", route: '/testing-hub/testing-databases' },
+    ],
+    tip: "Per-test rollback works only when the code under test runs its queries on the same client or transaction object the test opened. Inject it.",
+    gotchas: ["Code that opens its own transaction inside the test transaction needs savepoints, or its COMMIT ends the outer test transaction.","Rows written on another connection are invisible to the test client until committed, so assertions can fail in confusing ways."],
+  },
+  "testing-hub/testing-databases/seeding-explicit-ids-leaves-the-sequence-behind": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "Rollback Only Isolates Its Own Connection", route: '/testing-hub/testing-databases/rollback-only-isolates-its-own-connection' },
+      { label: "TRUNCATE and ROLLBACK Do Not Reset IDs", route: '/testing-hub/testing-databases/truncate-and-rollback-do-not-reset-ids' },
+      { label: "Testing with Databases (overview)", route: '/testing-hub/testing-databases' },
+    ],
+    tip: "After seeding rows with explicit ids, call setval(pg_get_serial_sequence(table, column), max(id)), or seed without ids and read back the generated ones.",
+    gotchas: ["skipDuplicates: true in createMany hides duplicate-key errors on the seed itself, but not on later inserts.","Quoted table names (Prisma uses \"User\") must be quoted inside the pg_get_serial_sequence argument too."],
+  },
+  "testing-hub/testing-databases/truncate-and-rollback-do-not-reset-ids": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "Seeding Explicit IDs Leaves the Sequence Behind", route: '/testing-hub/testing-databases/seeding-explicit-ids-leaves-the-sequence-behind' },
+      { label: "Testing with Databases (overview)", route: '/testing-hub/testing-databases' },
+    ],
+    tip: "Use TRUNCATE ... RESTART IDENTITY when tests depend on ids starting at 1, or better, never assert on generated ids.",
+    gotchas: ["Sequences are non-transactional by design, so a rolled-back insert still uses up its id.","TRUNCATE takes an exclusive lock and ignores triggers; DELETE is slower but behaves like ordinary writes."],
   },
   'testing-hub/msw': {
     apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
@@ -32904,6 +33828,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'MSW handlers simulate error responses and edge-case payloads just as easily as happy-path responses.',
     ],
   },
+  "testing-hub/msw/the-override-test-never-imported-server": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "warn Lets Unhandled Requests Hit the Network", route: '/testing-hub/msw/warn-lets-unhandled-requests-hit-the-network' },
+      { label: "MSW — Mock Service Worker (overview)", route: '/testing-hub/msw' },
+    ],
+    tip: "Export the server from the setup file and import it, together with http and HttpResponse from msw, in any test that overrides a handler.",
+    gotchas: ["If the setup file is registered in setupFiles and also imported by tests, make sure it creates only one server.","With globals off in Vitest, test helpers like expect also need importing."],
+  },
+  "testing-hub/msw/warn-lets-unhandled-requests-hit-the-network": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "The Override Test Never Imported server", route: '/testing-hub/msw/the-override-test-never-imported-server' },
+      { label: "Relative Handler URLs Need a DOM Environment", route: '/testing-hub/msw/relative-handler-urls-need-a-dom-environment' },
+      { label: "MSW — Mock Service Worker (overview)", route: '/testing-hub/msw' },
+    ],
+    tip: "Use onUnhandledRequest: \"error\" in tests. A missing handler then fails the test that needed it, instead of letting that test talk to a real server.",
+    gotchas: ["\"error\" applies to every request, including ones to localhost dev servers; add explicit handlers or passthrough() for those.","A custom function lets you allow some hosts (for example static assets) and error on the rest."],
+  },
+  "testing-hub/msw/relative-handler-urls-need-a-dom-environment": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "warn Lets Unhandled Requests Hit the Network", route: '/testing-hub/msw/warn-lets-unhandled-requests-hit-the-network' },
+      { label: "MSW — Mock Service Worker (overview)", route: '/testing-hub/msw' },
+    ],
+    tip: "In node-environment tests, use absolute URLs in both the app code and the handlers, for example http.get(`${API_BASE}/users`).",
+    gotchas: ["A relative handler never matches http://localhost/api/users in Node, because there is no location to resolve it against.","Read the API base URL from one config value so app code and handlers stay in sync."],
+  },
   'testing-hub/property-based-testing': {
     apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
     related: [
@@ -32914,6 +33866,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Most frameworks automatically "shrink" a failing case to the smallest input that still reproduces it, turning an obscure random failure into a minimal reproduction.',
       'Property-based testing complements rather than replaces example-based tests for specific known edge cases.',
     ],
+  },
+  "testing-hub/property-based-testing/a-symmetric-bug-cannot-break-commutativity": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "fc.integer Ignores Positional min and max in v4", route: '/testing-hub/property-based-testing/fc-integer-ignores-positional-min-max' },
+      { label: "Property-Based Testing (overview)", route: '/testing-hub/property-based-testing' },
+    ],
+    tip: "Before trusting a demo property, ask whether the bug can actually violate it. A property only catches bugs that break that specific invariant.",
+    gotchas: ["A passing property is not evidence the code is correct; it only shows that invariant held for the inputs tried.","Pair a weak algebraic property with an oracle (compare to a + b) when one is available."],
+  },
+  "testing-hub/property-based-testing/fc-integer-ignores-positional-min-max": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "A Symmetric Bug Cannot Break Commutativity", route: '/testing-hub/property-based-testing/a-symmetric-bug-cannot-break-commutativity' },
+      { label: "Model-Based Testing with fc.commands", route: '/testing-hub/property-based-testing/model-based-testing-with-fc-commands' },
+      { label: "Property-Based Testing (overview)", route: '/testing-hub/property-based-testing' },
+    ],
+    tip: "Use the constraints object: fc.integer({ min: -1000, max: 1000 }). TypeScript reports the positional form as an error, but plain JavaScript silently ignores it.",
+    gotchas: ["The same change applies to other arbitraries that used to take positional bounds, such as fc.nat and fc.float.","A silently ignored range can still pass the tests, which is how this kind of mistake survives."],
+  },
+  "testing-hub/property-based-testing/model-based-testing-with-fc-commands": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "fc.integer Ignores Positional min and max in v4", route: '/testing-hub/property-based-testing/fc-integer-ignores-positional-min-max' },
+      { label: "Property-Based Testing (overview)", route: '/testing-hub/property-based-testing' },
+    ],
+    tip: "Keep the model as simple as possible (an array, a Map) and compare the real system to it after every command.",
+    gotchas: ["check(model) decides whether a command is allowed at that point, for example pop only when the model is non-empty.","Commands should implement toString so the shrunk sequence is readable in the failure output."],
   },
   'testing-hub/mutation-testing': {
     apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
@@ -32949,6 +33929,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A pixel-perfect match says nothing about whether a button actually works when clicked — visual regression complements, not replaces, functional testing.',
     ],
   },
+  "testing-hub/visual-regression/threshold-is-colour-sensitivity-not-percent": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "A Missing Baseline Fails the First Run", route: '/testing-hub/visual-regression/a-missing-baseline-fails-the-first-run' },
+      { label: "Visual Regression Testing (overview)", route: '/testing-hub/visual-regression' },
+    ],
+    tip: "Leave threshold near its default 0.2 for anti-aliasing noise and use maxDiffPixels or maxDiffPixelRatio to decide how much of the image may change.",
+    gotchas: ["A high threshold hides real colour regressions everywhere, not just in a small area.","maxDiffPixels and maxDiffPixelRatio can be set per call or globally under expect.toHaveScreenshot in the config."],
+  },
+  "testing-hub/visual-regression/a-missing-baseline-fails-the-first-run": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "threshold Is Colour Sensitivity, Not a Percentage", route: '/testing-hub/visual-regression/threshold-is-colour-sensitivity-not-percent' },
+      { label: "Animations Are Already Off, and networkidle Is Discouraged", route: '/testing-hub/visual-regression/animations-are-already-off-and-networkidle-is-discouraged' },
+      { label: "Visual Regression Testing (overview)", route: '/testing-hub/visual-regression' },
+    ],
+    tip: "Generate baselines locally (or in the same Docker image as CI), review them, and commit the -snapshots folders. Use --update-snapshots=missing when you only want to add new ones.",
+    gotchas: ["Baselines are per browser and per platform (homepage-chromium-linux.png), so ones made on macOS do not match Linux CI.","--update-snapshots with no value updates every changed snapshot, not only missing ones."],
+  },
+  "testing-hub/visual-regression/animations-are-already-off-and-networkidle-is-discouraged": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "A Missing Baseline Fails the First Run", route: '/testing-hub/visual-regression/a-missing-baseline-fails-the-first-run' },
+      { label: "Visual Regression Testing (overview)", route: '/testing-hub/visual-regression' },
+    ],
+    tip: "Wait for the element you are about to compare (await expect(locator).toBeVisible()) and let toHaveScreenshot handle animations and stability.",
+    gotchas: ["animations: \"disabled\" finishes finite animations and cancels infinite ones; it does not wait for data to load.","A page with polling or a websocket may never reach networkidle at all."],
+  },
   'testing-hub/snapshot-testing': {
     apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
     related: [
@@ -32960,6 +33968,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Best suited to stable, structurally complex output — poorly suited to frequently-evolving UI where snapshots become rubber-stamped noise.',
     ],
   },
+  "testing-hub/snapshot-testing/jest-on-ci-refuses-to-write-new-snapshots": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "The Challenge Regex Lost Its Backslash", route: '/testing-hub/snapshot-testing/the-challenge-regex-lost-its-backslash' },
+      { label: "Snapshot Testing (overview)", route: '/testing-hub/snapshot-testing' },
+    ],
+    tip: "Commit __snapshots__. On CI Jest will not create them for you, and that is the behaviour you want: a new snapshot should be reviewed in a pull request, not invented by the build.",
+    gotchas: ["Jest sets ci automatically when the CI environment variable is set, which GitHub Actions, GitLab CI and most others do.","jest -u (updateSnapshot all) on CI overrides this and will happily write whatever the code produces."],
+  },
+  "testing-hub/snapshot-testing/the-challenge-regex-lost-its-backslash": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "Jest on CI Refuses to Write New Snapshots", route: '/testing-hub/snapshot-testing/jest-on-ci-refuses-to-write-new-snapshots' },
+      { label: "Snapshots Sort Object Keys Alphabetically", route: '/testing-hub/snapshot-testing/snapshots-sort-object-keys' },
+      { label: "Snapshot Testing (overview)", route: '/testing-hub/snapshot-testing' },
+    ],
+    tip: "Inside a template literal, write \\\\s, \\\\d and \\\\w (double backslash) when the displayed code should contain a single backslash.",
+    gotchas: ["Unknown escapes like \\s are silently dropped in template literals instead of causing an error.","The same applies to regular string literals: '\\s' is just 's'."],
+  },
+  "testing-hub/snapshot-testing/snapshots-sort-object-keys": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "The Challenge Regex Lost Its Backslash", route: '/testing-hub/snapshot-testing/the-challenge-regex-lost-its-backslash' },
+      { label: "Snapshot Testing (overview)", route: '/testing-hub/snapshot-testing' },
+    ],
+    tip: "Do not read key order in a snapshot as the order your code produced. Object keys are sorted; arrays and Maps keep their order.",
+    gotchas: ["Because keys are sorted, reordering properties in your code never breaks a snapshot.","If insertion order matters to consumers (for example JSON sent to an API), assert it explicitly with Object.keys()."],
+  },
   'testing-hub/xunit': {
     apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
     related: [
@@ -32970,6 +34006,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'IClassFixture/ICollectionFixture provide explicit, opt-in mechanisms for sharing expensive setup, making shared state a deliberate choice rather than an accident.',
       'Theory-based tests with InlineData/MemberData reduce duplication versus writing a near-identical Fact test per input.',
     ],
+  },
+  "testing-hub/xunit/assert-throws-matches-the-exact-type": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "An Async Lambda in Assert.Throws Does Not Compile", route: '/testing-hub/xunit/async-lambda-in-assert-throws-does-not-compile' },
+      { label: "xUnit (.NET Testing) (overview)", route: '/testing-hub/xunit' },
+    ],
+    tip: "Assert.Throws<T> needs exactly T. Use Assert.ThrowsAny<T> when any subclass of T is acceptable.",
+    gotchas: ["ArgumentNullException is a subclass of ArgumentException, so Assert.Throws<ArgumentException> fails when the code throws ArgumentNullException.","Both methods return the exception, so you can still assert on its message or properties."],
+  },
+  "testing-hub/xunit/async-lambda-in-assert-throws-does-not-compile": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "Assert.Throws Matches the Exact Exception Type", route: '/testing-hub/xunit/assert-throws-matches-the-exact-type' },
+      { label: "IAsyncLifetime on a Test Class Runs per Test", route: '/testing-hub/xunit/iasynclifetime-on-a-test-class-runs-per-test' },
+      { label: "xUnit (.NET Testing) (overview)", route: '/testing-hub/xunit' },
+    ],
+    tip: "For async code: await Assert.ThrowsAsync<T>(() => svc.GetAsync()). The test method itself must be async Task.",
+    gotchas: ["Forgetting the await on Assert.ThrowsAsync makes the test finish before the assertion completes; analyzer rule xUnit2021 flags it.","NUnit and MSTest have their own async variants; the names differ between frameworks."],
+  },
+  "testing-hub/xunit/iasynclifetime-on-a-test-class-runs-per-test": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "An Async Lambda in Assert.Throws Does Not Compile", route: '/testing-hub/xunit/async-lambda-in-assert-throws-does-not-compile' },
+      { label: "xUnit (.NET Testing) (overview)", route: '/testing-hub/xunit' },
+    ],
+    tip: "Put once-per-class async setup on an IClassFixture<T> that implements IAsyncLifetime. Put per-test async setup on the test class.",
+    gotchas: ["Starting a container in the test class's InitializeAsync starts one container per test, which is usually far too slow.","xUnit v3 changed IAsyncLifetime to return ValueTask; check the signature for your version."],
   },
   'testing-hub/cheatsheet': {
     apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
@@ -34320,10 +35384,43 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       { label: 'Arrays',        route: '/dsa/arrays' },
       { label: 'Binary Search', route: '/dsa/binary-search' },
     ],
-    tip: 'Nested loops don\'t always mean O(n²) — if the inner loop\'s range shrinks with progress, actual complexity may be lower and must be derived carefully, not assumed from loop structure alone.',
+    tip: 'A shrinking inner loop\'s complexity depends on HOW it shrinks: a constant decrease each pass (selection sort\'s "unprocessed elements") is still O(n²); only a harmonic decrease (step grows, like the Challenge\'s own function) gives O(n log n).',
     gotchas: [
       'A method call like .includes() inside a loop silently adds hidden O(n) work per iteration, turning an apparent O(n) algorithm into O(n²).',
       'Recursive functions need analyzing both call count AND work per call — naive Fibonacci looks O(1)-per-call but is actually O(2ⁿ) due to branching.',
+    ],
+  },
+  'dsa/big-o/arithmetic-vs-harmonic-shrinking-loops': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Master Theorem’s Precise Conditions', route: '/dsa/big-o/master-theorem-epsilon-and-regularity' },
+      { label: 'Big-O Notation (topic overview)', route: '/dsa/big-o' },
+    ],
+    tip: 'Don\'t classify a nested loop from its shape — write the inner loop\'s exact trip count as a function of the outer index, then sum it. Arithmetic, harmonic, and geometric shrinks all look similar but sum to O(n²), O(n log n), and O(n) respectively.',
+    gotchas: [
+      'A geometric shrink (inner range halves, outer loop runs log n times) is O(n), not O(n log n) — multiplying "log n passes" by "max inner range" overcounts, since the range only hits that max on the first pass.',
+    ],
+  },
+  'dsa/big-o/master-theorem-epsilon-and-regularity': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Arithmetic vs. Harmonic Shrinking Loops', route: '/dsa/big-o/arithmetic-vs-harmonic-shrinking-loops' },
+      { label: 'Proving Amortized O(1), the Aggregate Method', route: '/dsa/big-o/dynamic-array-amortized-proof' },
+    ],
+    tip: 'Case 3 needs more than "f(n) grows faster" — it also needs the regularity condition a·f(n/b) ≤ c·f(n) for some c < 1. The classic f(n) = n(2 − cos n) counterexample grows at the right rate but fails regularity with a ratio stuck at exactly 1.5.',
+    gotchas: [
+      'The generalised case 2 covers f(n) = Θ(n^log_b(a) · log^k(n)) for ANY k ≥ 0, not just the bare k=0 "exactly equal" case most informal statements show.',
+    ],
+  },
+  'dsa/big-o/dynamic-array-amortized-proof': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Master Theorem’s Precise Conditions', route: '/dsa/big-o/master-theorem-epsilon-and-regularity' },
+      { label: 'Big-O Notation (topic overview)', route: '/dsa/big-o' },
+    ],
+    tip: 'It\'s the growth FACTOR that keeps dynamic-array push amortized O(1), not just that resizing "happens rarely" — any multiplicative growth (doubling, tripling) gives a bounded geometric series; +1 linear growth does not, and degrades to O(n) amortized.',
+    gotchas: [
+      'Amortized O(1) is an average over many operations, not a per-call guarantee — the one push that triggers a resize really is O(n) for that single call.',
     ],
   },
   'dsa/arrays': {
@@ -34338,6 +35435,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Pre-allocating to the expected final size avoids repeated resize overhead when the size is known in advance.',
     ],
   },
+  'dsa/arrays/prefix-sum-codetab-was-actually-on2': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: '2D Prefix Sums for Submatrix Range Queries', route: '/dsa/arrays/2d-prefix-sums-submatrix-queries' },
+      { label: 'Arrays (topic overview)', route: '/dsa/arrays' },
+    ],
+    tip: 'Correctness and complexity are independent — a function can return the exact right answer while doing far more work than necessary. A slice()+reduce() per index LOOKS like a one-liner but is O(n²), not O(n).',
+    gotchas: [
+      'Calling an O(k) built-in method inside a loop that itself runs n times, with k growing alongside the loop index, is a common way to accidentally write O(n²) code that reads like O(n).',
+    ],
+  },
+  'dsa/arrays/2d-prefix-sums-submatrix-queries': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'The Prefix Sum CodeTab Was Actually O(n²)', route: '/dsa/arrays/prefix-sum-codetab-was-actually-on2' },
+      { label: 'Counting Subarrays With Sum = K', route: '/dsa/arrays/subarray-sum-equals-k-prefix-hashmap' },
+    ],
+    tip: 'The inclusion-exclusion correction term (subtracting the double-counted top-left overlap) is required for correctness in a 2D prefix sum, not an optional optimization — leaving it out silently breaks every query touching more than the first row.',
+    gotchas: [
+      'A 2D prefix sum allocates a second full (rows+1)×(cols+1) grid — for a huge matrix queried only a few times, brute-force per query can use less total memory than precomputing.',
+    ],
+  },
+  'dsa/arrays/subarray-sum-equals-k-prefix-hashmap': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: '2D Prefix Sums for Submatrix Range Queries', route: '/dsa/arrays/2d-prefix-sums-submatrix-queries' },
+      { label: 'Arrays (topic overview)', route: '/dsa/arrays' },
+    ],
+    tip: 'Unlike sliding window, the prefix-sum + hash map technique works with negative numbers — it never relies on the running sum moving monotonically in one direction as the window expands or contracts.',
+    gotchas: [
+      'Seeding the prefix-count map with {0: 1} before scanning is what correctly counts subarrays starting at index 0 — skip it and those subarrays are silently undercounted.',
+    ],
+  },
   'dsa/strings': {
     apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
     related: [
@@ -34348,6 +35478,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'String equality comparison is O(n) in length, not O(1) — easy to overlook when reasoning about algorithms that repeatedly compare or hash strings.',
       'Building up a large string one small piece at a time should use a mutable buffer (StringBuilder-equivalent), not repeated concatenation.',
+    ],
+  },
+  'dsa/strings/longest-substring-without-repeating-sliding-window': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'The Z-Algorithm for Pattern Matching', route: '/dsa/strings/z-algorithm-pattern-matching' },
+      { label: 'Strings (topic overview)', route: '/dsa/strings' },
+    ],
+    tip: 'The guard "only jump left if the last-seen index is still inside the window" is what makes this correct on inputs like "abba" — a naive version that ignores whether the earlier sighting is stale will shrink the window incorrectly.',
+    gotchas: [
+      'This needs only ONE map (last-seen index), unlike Minimum Window Substring’s two frequency maps — a different condition (no repeats vs. covering a target set) needs a different amount of state.',
+    ],
+  },
+  'dsa/strings/z-algorithm-pattern-matching': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Longest Substring Without Repeating Characters', route: '/dsa/strings/longest-substring-without-repeating-sliding-window' },
+      { label: 'Rabin-Karp’s Rolling Hash, Verified', route: '/dsa/strings/rabin-karp-rolling-hash' },
+    ],
+    tip: 'The pattern + separator + text trick only works if the separator cannot appear in either string — a reused ordinary character can produce a false Z-match across the boundary.',
+    gotchas: [
+      'The Z-array and KMP’s failure function answer different questions — Z measures a prefix-match length starting at EACH position in a string; KMP’s LPS measures a prefix-is-also-suffix property WITHIN the pattern itself.',
+    ],
+  },
+  'dsa/strings/rabin-karp-rolling-hash': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'The Z-Algorithm for Pattern Matching', route: '/dsa/strings/z-algorithm-pattern-matching' },
+      { label: 'Strings (topic overview)', route: '/dsa/strings' },
+    ],
+    tip: 'A rolling-hash match is only a CANDIDATE — always verify with a direct string comparison before reporting a real match, since a hash collision can otherwise produce a false positive.',
+    gotchas: [
+      'JavaScript’s BigInt % can return a negative remainder for a negative left operand — a rolling hash update needs to correct this back into the non-negative range or it will silently stop matching.',
     ],
   },
   'dsa/linked-lists': {
@@ -34362,15 +35525,81 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The same technique finds the middle of a list in one pass, showing how one pattern solves multiple seemingly-different problems.',
     ],
   },
+  'dsa/linked-lists/palindrome-check-mutates-the-list-without-restoring': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Recursive Reversal: Call Stack Depth, Measured', route: '/dsa/linked-lists/recursive-reversal-call-stack-depth-measured' },
+      { label: 'Linked Lists (topic overview)', route: '/dsa/linked-lists' },
+    ],
+    tip: 'Verified directly: the main page\'s own O(1)-space palindrome solution permanently shortens the caller\'s list — traversing from the original head after the call returns one node fewer than were passed in. The fix costs one extra O(n) pass to reverse the second half back and reconnect it.',
+    gotchas: [
+      'A function that only ever reads its "head" parameter can still mutate the caller\'s list — nodes are mutable objects reached by pointer, and rewriting .next pointers reachable from head is enough.',
+    ],
+  },
+  'dsa/linked-lists/recursive-reversal-call-stack-depth-measured': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Palindrome Check Mutates the List Without Restoring', route: '/dsa/linked-lists/palindrome-check-mutates-the-list-without-restoring' },
+      { label: 'Deleting a Middle Node Without the Predecessor', route: '/dsa/linked-lists/deleting-a-middle-node-without-the-predecessor' },
+    ],
+    tip: 'Instrumenting a real recursive reversal with a depth counter measured exactly 1,000 stack frames alive at once for a 1,000-node list, and exactly 2,000 for a 2,000-node list — a precise 1:1 relationship confirming the O(n) stack-space claim rather than just naming it.',
+    gotchas: [
+      'A stack frame stays alive until its OWN call returns, not until it makes its next call — reverseRecursive still has work left to do after its inner call returns, so the whole chain of frames must stay on the stack simultaneously.',
+    ],
+  },
+  'dsa/linked-lists/deleting-a-middle-node-without-the-predecessor': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Recursive Reversal: Call Stack Depth, Measured', route: '/dsa/linked-lists/recursive-reversal-call-stack-depth-measured' },
+      { label: 'Linked Lists (topic overview)', route: '/dsa/linked-lists' },
+    ],
+    tip: 'The copy-forward deletion trick does not actually delete the node the caller was given a reference to — it overwrites that node\'s value and unlinks the NEXT node instead. Verified it throws when attempted on the list\'s true last node, since there is no node after it to copy a value from.',
+    gotchas: [
+      'This only works when nothing else holds a separate reference to the specific node objects involved — the "deleted" value survives in a relabeled node, not a removed one.',
+    ],
+  },
   'dsa/doubly-linked-lists': {
     apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
     related: [
       { label: 'Linked Lists', route: '/dsa/linked-lists' },
     ],
-    tip: 'The extra "previous" pointer enables O(1) removal given only a node reference, and O(1) insertion/removal from BOTH ends — this is why deque implementations and LRU caches are built on doubly linked lists.',
+    tip: 'The extra "previous" pointer enables O(1) removal given only a node reference, and O(1) insertion/removal from BOTH ends — this is the LRU cache\'s core building block. Real-world deques (Python\'s collections.deque) actually use a doubly linked list of fixed-size BLOCKS, not a naive node-per-element DLL, for cache locality.',
     gotchas: [
-      'Sentinel head/tail nodes eliminate special-case null checks for boundary insertion/removal, unifying every case into the same code path.',
+      'Sentinel head/tail nodes eliminate special-case null checks ONLY for the region strictly between head and tail — head.prev and tail.next are themselves still null, a real risk if a guard clause (like removeLast()\'s empty-list check) is ever forgotten.',
       'The extra pointer per node roughly doubles pointer storage overhead versus a singly linked list — a real cost in memory-constrained environments.',
+    ],
+  },
+  'dsa/doubly-linked-lists/javascript-map-is-not-a-doubly-linked-list': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'What Happens Without the Empty-List Guard', route: '/dsa/doubly-linked-lists/what-happens-without-the-empty-list-guard' },
+      { label: 'Doubly Linked Lists (topic overview)', route: '/dsa/doubly-linked-lists' },
+    ],
+    tip: 'Verified against V8\'s own source: JavaScript\'s Map/Set are implemented as an array-backed OrderedHashTable, with insertion order coming from appending to a contiguous array — there is no prev pointer, and no doubly linked list, anywhere in the real design.',
+    gotchas: [
+      'Observable JS behavior (like re-insertion appending at the end) is only ever CONSISTENT with an internal design, never proof of it — confirming the real architecture requires reading the engine\'s own source.',
+    ],
+  },
+  'dsa/doubly-linked-lists/what-happens-without-the-empty-list-guard': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'JavaScript’s Map Is Not a Doubly Linked List', route: '/dsa/doubly-linked-lists/javascript-map-is-not-a-doubly-linked-list' },
+      { label: 'Building a Blocked Deque Like Python’s collections.deque', route: '/dsa/doubly-linked-lists/building-a-blocked-deque-like-pythons' },
+    ],
+    tip: 'Removing the main page\'s own "if (this.tail.prev === this.head) return null" guard and calling removeLast() on an empty list throws a real TypeError immediately — head.prev was never set, since the sentinel head has nothing before it.',
+    gotchas: [
+      'A crash here is actually the SAFER failure mode compared to silently returning the sentinel node itself as a fake "evicted" entry, which would corrupt the list for every future operation.',
+    ],
+  },
+  'dsa/doubly-linked-lists/building-a-blocked-deque-like-pythons': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'What Happens Without the Empty-List Guard', route: '/dsa/doubly-linked-lists/what-happens-without-the-empty-list-guard' },
+      { label: 'Doubly Linked Lists (topic overview)', route: '/dsa/doubly-linked-lists' },
+    ],
+    tip: 'A blocked deque links BLOCKS (small contiguous arrays) together, not individual elements — pushing/popping only touches the edge block directly, only allocating a new block once the current one is completely full or empty.',
+    gotchas: [
+      'For 1 million elements, CPython\'s real block size (62) needs roughly 16,130 block allocations versus 1,000,000 individual node allocations for a naive node-per-element DLL — a real, measurable difference in allocation frequency and memory locality.',
     ],
   },
   'dsa/stacks-queues': {
@@ -34379,10 +35608,43 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       { label: 'Linked Lists', route: '/dsa/linked-lists' },
       { label: 'Heaps',        route: '/dsa/heaps' },
     ],
-    tip: 'A queue can be implemented with two stacks (amortized O(1) per operation) — each element moves between stacks at most twice total across its lifetime, keeping amortized cost constant despite an occasional O(n) transfer.',
+    tip: 'A queue can be implemented with two stacks (amortized O(1) per operation) — each element moves from the "in" stack to the "out" stack at most ONCE total across its entire lifetime, keeping amortized cost constant despite an occasional O(n) transfer.',
     gotchas: [
-      'The monotonic stack pattern (keeping elements in strictly increasing/decreasing order) solves an entire family of "next greater element" problems in O(n).',
       'This two-stack simulation is a classic interview question specifically testing understanding of amortized analysis.',
+      'Array.shift() is O(n) in JavaScript — use a head-pointer index or a real deque for an O(1) queue dequeue.',
+    ],
+  },
+  'dsa/stacks-queues/two-stack-queue-moves-each-element-once': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Evaluating RPN Expressions With a Stack', route: '/dsa/stacks-queues/rpn-expression-evaluation-with-a-stack' },
+      { label: 'Stacks & Queues (topic overview)', route: '/dsa/stacks-queues' },
+    ],
+    tip: 'Instrumenting a real two-stack queue with a per-element move counter over 20,000 operations found the true maximum moves per element is exactly 1, not 2 — each element transfers from "in" to "out" once, never twice.',
+    gotchas: [
+      'Amortized O(1) is a claim about the total cost across a whole sequence of operations, not a promise that every individual dequeue() call is cheap — a transfer-triggering call is genuinely O(n) in that moment.',
+    ],
+  },
+  'dsa/stacks-queues/rpn-expression-evaluation-with-a-stack': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'The Two-Stack Queue Moves Each Element Once', route: '/dsa/stacks-queues/two-stack-queue-moves-each-element-once' },
+      { label: 'Min-Stack: Pairs vs. Two Aux Stacks', route: '/dsa/stacks-queues/min-stack-pairs-vs-two-aux-stacks' },
+    ],
+    tip: 'RPN evaluation needs only a plain stack of numbers, never a stack of operators — the moment an operator token is read, it is applied immediately to the two most recently pushed numbers.',
+    gotchas: [
+      'Pop order matters for non-commutative operators: the operand popped FIRST (pushed last) is the right-hand side, so a b - computes a - b, not b - a.',
+    ],
+  },
+  'dsa/stacks-queues/min-stack-pairs-vs-two-aux-stacks': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Evaluating RPN Expressions With a Stack', route: '/dsa/stacks-queues/rpn-expression-evaluation-with-a-stack' },
+      { label: 'Stacks & Queues (topic overview)', route: '/dsa/stacks-queues' },
+    ],
+    tip: 'The (value, currentMin) pairs design and the two-aux-stack design were cross-checked against 5,000 random operations with zero mismatches — both are correct, just different space tradeoffs: pairs always costs 2x, aux ranges from O(1) extra (increasing input) to O(n) extra (decreasing input).',
+    gotchas: [
+      'The aux-stack design is not unconditionally cheaper than the pairs design — for a strictly decreasing push sequence, aux grows 1-for-1 with the main stack, using roughly the same total memory as pairs.',
     ],
   },
   'dsa/hash-tables': {
@@ -34394,6 +35656,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Load factor crossing a threshold (commonly 0.75) triggers automatic rehashing to maintain amortized O(1) operations.',
       'Open addressing requires careful tombstone handling on deletion to avoid breaking probe sequences.',
+    ],
+  },
+  'dsa/hash-tables/naive-salt-does-not-defeat-hashdos': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Consistent Hashing: Verified Remap Counts', route: '/dsa/hash-tables/consistent-hashing-verified-remap-counts' },
+      { label: 'Hash Tables (topic overview)', route: '/dsa/hash-tables' },
+    ],
+    tip: 'Prepending a secret salt to a vulnerable polynomial hash does not defeat a crafted-collision attack — verified across 200 random salts, the same keys stayed collided every single time. The fix needs the key mixed in non-linearly, at every step, which is how SipHash is actually built.',
+    gotchas: [
+      'A salt that shifts every attacker-crafted key’s bucket by the same amount does nothing — the attack only needs the keys to share a bucket with EACH OTHER, not to land in any particular numbered bucket.',
+    ],
+  },
+  'dsa/hash-tables/consistent-hashing-verified-remap-counts': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'A Naive Salt Does Not Defeat a HashDoS Attack', route: '/dsa/hash-tables/naive-salt-does-not-defeat-hashdos' },
+      { label: 'Finding the First Non-Repeating Character, Two Ways', route: '/dsa/hash-tables/first-non-repeating-character-two-ways' },
+    ],
+    tip: 'Measured directly: going from 4 to 5 servers remapped 80.4% of keys under simple modulo hashing, but only 20.9% under a consistent-hashing ring — and every single remapped key moved specifically to the new server, never between two existing ones.',
+    gotchas: [
+      'Virtual nodes (100+ per server) are what makes the SHARE of keys each server owns reasonably fair — with only 1 position per server, a new server could claim a tiny or enormous slice depending purely on chance.',
+    ],
+  },
+  'dsa/hash-tables/first-non-repeating-character-two-ways': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Consistent Hashing: Verified Remap Counts', route: '/dsa/hash-tables/consistent-hashing-verified-remap-counts' },
+      { label: 'Hash Tables (topic overview)', route: '/dsa/hash-tables' },
+    ],
+    tip: 'Both the two-pass and single-pass approaches build the identical frequency map in their first loop — the only difference is whether the SECOND loop re-scans the original string, or iterates the map’s own (much smaller) set of distinct keys.',
+    gotchas: [
+      'The single-pass version genuinely needs Map’s insertion-order guarantee — the two-pass version does not, since it only uses the frequency structure as a lookup table while re-scanning the original string.',
     ],
   },
   'dsa/trie': {
@@ -34432,6 +35727,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       '"What happens if you insert 1,2,3,4,5 in order" is the classic follow-up testing whether a candidate knows plain BSTs can degenerate.',
     ],
   },
+  'dsa/bst/sorted-array-to-bst-is-actually-on-log-n': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'One Rotation Rebalances an Ascending Insert', route: '/dsa/bst/one-rotation-rebalances-an-ascending-insert' },
+      { label: 'Binary Search Trees (topic overview)', route: '/dsa/bst' },
+    ],
+    tip: 'Measured directly: the main page\'s own "O(n)" sorted-array-to-BST codeTab is actually O(n log n) — the copy ratio climbs from 1.90 at n=10 to 14.69 at n=100,000, the exact signature of hidden slice() copying cost at every recursion level.',
+    gotchas: [
+      'Replacing array slicing with (lo, hi) index bounds drops the cost to a verified, exact n units of work — no extra copying at all.',
+    ],
+  },
+  'dsa/bst/one-rotation-rebalances-an-ascending-insert': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Sorted Array to BST Is Actually O(n log n)', route: '/dsa/bst/sorted-array-to-bst-is-actually-on-log-n' },
+      { label: 'Generic-Tree LCA Visits the Whole Tree', route: '/dsa/bst/generic-tree-lca-visits-the-whole-tree' },
+    ],
+    tip: 'Verified directly: inserting 1, 2, 3 produces a right-skewed tree (height 3, balance factor -2); applying exactly ONE rotateLeft fixes it to height 2, balance factor 0 — with the inorder sequence staying [1, 2, 3] throughout.',
+    gotchas: [
+      'A rotation moves NODES via pointer reassignment, not values — the node objects keep their own val fields unchanged the whole time.',
+    ],
+  },
+  'dsa/bst/generic-tree-lca-visits-the-whole-tree': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'One Rotation Rebalances an Ascending Insert', route: '/dsa/bst/one-rotation-rebalances-an-ascending-insert' },
+      { label: 'Binary Search Trees (topic overview)', route: '/dsa/bst' },
+    ],
+    tip: 'Measured directly on an identical 1,023-node tree: BST-LCA needed only 6 node visits while generic-tree LCA (no ordering to exploit) needed 2,043 — a 340x gap for the exact same correct answer.',
+    gotchas: [
+      'BST-LCA only works correctly when the tree genuinely IS a valid BST — running it on an unordered tree would silently return a wrong answer.',
+    ],
+  },
   'dsa/binary-trees': {
     apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
     related: [
@@ -34440,8 +35768,41 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
     tip: 'Recursive traversals map naturally to a tree\'s recursive structure but risk stack overflow on very deep/unbalanced trees — iterative traversals with an explicit stack avoid this at the cost of code complexity.',
     gotchas: [
-      'Level-order traversal fundamentally requires a QUEUE, not a stack, since it must process each depth level before moving to the next.',
+      'Which traversal uses less memory, DFS or BFS, depends entirely on the tree\'s shape — measured 1,000x less peak memory for BFS on a skewed tree, but 46x less for DFS on a balanced one.',
       'Morris traversal achieves O(1)-space inorder traversal by temporarily modifying tree structure — an advanced space-optimization technique.',
+    ],
+  },
+  'dsa/binary-trees/morris-traversal-restores-the-tree-unless-you-forget': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'BFS Can Use Less Memory Than DFS on a Skewed Tree', route: '/dsa/binary-trees/bfs-can-use-less-memory-than-dfs-on-a-skewed-tree' },
+      { label: 'Binary Trees (topic overview)', route: '/dsa/binary-trees' },
+    ],
+    tip: 'A correct Morris traversal was verified to fully restore the tree\'s structure afterward. Deleting the single "remove the thread" line still returns the right traversal VALUES on that first call, but leaves a real, permanent cycle in the tree.',
+    gotchas: [
+      'A function can be "correct" by its own return value and still permanently corrupt a mutable structure it was given — confirmed by a later, unrelated traversal returning garbage on the now-cyclic tree.',
+    ],
+  },
+  'dsa/binary-trees/bfs-can-use-less-memory-than-dfs-on-a-skewed-tree': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Morris Traversal Restores the Tree — Unless You Forget', route: '/dsa/binary-trees/morris-traversal-restores-the-tree-unless-you-forget' },
+      { label: 'Inorder Alone Cannot Reconstruct a Binary Tree', route: '/dsa/binary-trees/inorder-alone-cannot-reconstruct-a-binary-tree' },
+    ],
+    tip: 'Measured directly: on a 1,000-node skewed tree, BFS\'s peak queue size was 1 while DFS\'s stack depth reached 1,001. On a 1,023-node balanced tree, the result flips -- DFS peaked at 11 while BFS peaked at 512.',
+    gotchas: [
+      'BFS\'s memory cost tracks the tree\'s WIDTH at its widest level; DFS\'s tracks the tree\'s total DEPTH — neither is a universally safer choice.',
+    ],
+  },
+  'dsa/binary-trees/inorder-alone-cannot-reconstruct-a-binary-tree': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'BFS Can Use Less Memory Than DFS on a Skewed Tree', route: '/dsa/binary-trees/bfs-can-use-less-memory-than-dfs-on-a-skewed-tree' },
+      { label: 'Binary Trees (topic overview)', route: '/dsa/binary-trees' },
+    ],
+    tip: 'A small balanced tree and a completely skewed chain were built and confirmed to produce the IDENTICAL inorder sequence [1, 2, 3] — proving traversal output alone cannot determine tree shape, let alone reconstruct it.',
+    gotchas: [
+      'Preorder alone has the same ambiguity problem as inorder — null markers, not traversal order, are what actually remove it.',
     ],
   },
   'dsa/heaps': {
@@ -34453,6 +35814,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Building a heap from an unsorted array via heapify runs in O(n), not O(n log n) — most nodes sit near the bottom and require little sift-down work.',
       'A heap only guarantees the root is min/max — it does NOT provide fully sorted order for the rest, unlike a balanced BST.',
+    ],
+  },
+  'dsa/heaps/mergeklists-never-actually-used-its-own-heap': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Popping a Heap n Times Is Heap Sort', route: '/dsa/heaps/popping-a-heap-n-times-is-heap-sort' },
+      { label: 'Heaps / Priority Queues (topic overview)', route: '/dsa/heaps' },
+    ],
+    tip: 'The main page\'s own mergeKLists declared a min-heap and never pushed or popped from it — its real work came entirely from a plain sort. Built the real tuple-heap merge and verified it\'s output-equivalent but O(n log k) instead of O(n log n).',
+    gotchas: [
+      'A function can "work correctly" while its declared data structure does nothing at all — unused variables can hide a dead-code technique, not just a lint warning.',
+    ],
+  },
+  'dsa/heaps/popping-a-heap-n-times-is-heap-sort': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'mergeKLists Never Actually Used Its Own Heap', route: '/dsa/heaps/mergeklists-never-actually-used-its-own-heap' },
+      { label: 'The Real O(n log k) K Closest Points Solution', route: '/dsa/heaps/the-real-on-log-k-k-closest-points-solution' },
+    ],
+    tip: 'Verified directly: heapify builds a valid heap that is nowhere close to sorted as an array, but popping that same heap n times in sequence produces output byte-identical to Array.sort() across 50 randomized trials — that sequence IS heap sort.',
+    gotchas: [
+      'Heap sort has no O(n²) worst case (unlike quicksort) but worse cache locality in practice — the shared O(n log n) class hides a real constant-factor difference.',
+    ],
+  },
+  'dsa/heaps/the-real-on-log-k-k-closest-points-solution': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Popping a Heap n Times Is Heap Sort', route: '/dsa/heaps/popping-a-heap-n-times-is-heap-sort' },
+      { label: 'Heaps / Priority Queues (topic overview)', route: '/dsa/heaps' },
+    ],
+    tip: 'The Challenge\'s own hints asked for a max-heap of size k; the solution sorted instead. Built the real heap version — verified against 200 randomized trials by distance multiset, since tied points at the k-th boundary can validly differ between the two approaches.',
+    gotchas: [
+      'A max-heap keeps the CURRENT FARTHEST of the k closest points at its root — that is exactly what needs evicting the moment a closer point arrives.',
     ],
   },
   'dsa/graphs-bfs-dfs': {
@@ -34467,6 +35861,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'BFS is the natural choice for "minimum number of steps" problems; DFS for exhaustive path exploration or cycle detection.',
     ],
   },
+  'dsa/graphs-bfs-dfs/shifts-on-v-squared-risk-depends-on-graph-width': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Detecting a Directed Cycle with Three-State DFS', route: '/dsa/graphs-bfs-dfs/detecting-a-directed-cycle-with-three-state-dfs' },
+      { label: 'Graphs — BFS & DFS (topic overview)', route: '/dsa/graphs-bfs-dfs' },
+    ],
+    tip: 'Measured directly: a 400,000-node chain graph showed no meaningful difference between queue.shift() and index-pointer BFS — but a 160,401-node wide tree showed shift()-based BFS running 33x slower. The O(V²) risk tracks queue WIDTH, not vertex count alone.',
+    gotchas: [
+      'The main page\'s own canonical BFS used queue.shift() — the exact pattern its own "Common Mistakes" section warns against. Now fixed to the index-pointer technique.',
+    ],
+  },
+  'dsa/graphs-bfs-dfs/detecting-a-directed-cycle-with-three-state-dfs': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'shift()’s O(V²) Risk Depends on Graph Width', route: '/dsa/graphs-bfs-dfs/shifts-on-v-squared-risk-depends-on-graph-width' },
+      { label: 'Checking Bipartiteness with Two-Coloring BFS', route: '/dsa/graphs-bfs-dfs/checking-bipartiteness-with-two-coloring-bfs' },
+    ],
+    tip: 'Verified directly: a diamond-shaped DAG (two paths converging on the same node) correctly reports no cycle, while a 3-node ring correctly reports one — a plain visited-set check (no gray/black distinction) would incorrectly flag the diamond as a cycle.',
+    gotchas: [
+      'A node going BLACK (fully explored) and being visited again via a different path is normal in a DAG — only re-visiting a GRAY (still-active) node is a genuine cycle.',
+    ],
+  },
+  'dsa/graphs-bfs-dfs/checking-bipartiteness-with-two-coloring-bfs': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Detecting a Directed Cycle with Three-State DFS', route: '/dsa/graphs-bfs-dfs/detecting-a-directed-cycle-with-three-state-dfs' },
+      { label: 'Graphs — BFS & DFS (topic overview)', route: '/dsa/graphs-bfs-dfs' },
+    ],
+    tip: 'Verified directly against the main page\'s own QnA claim: a 4-node even cycle reports bipartite, a 3-node triangle and a 5-node pentagon (both odd cycles) correctly report NOT bipartite, and a tree with zero cycles reports bipartite.',
+    gotchas: [
+      'A tree always reports bipartite — not because it is a trivial/skipped case, but because having no cycles at all means it structurally cannot have an odd-length one.',
+    ],
+  },
   'dsa/graph-algorithms': {
     apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
     related: [
@@ -34477,6 +35904,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Dijkstra produces incorrect results with any negative edge, since it greedily finalizes distances without revisiting them.',
       'Floyd-Warshall computes all-pairs shortest paths in O(V³), more efficient than running Dijkstra from every vertex when all-pairs distances are actually needed.',
+    ],
+  },
+  'dsa/graph-algorithms/dijkstras-fake-heap-was-sort-plus-shift': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Kruskal’s MST with the Page’s Own Union-Find', route: '/dsa/graph-algorithms/kruskals-mst-with-the-pages-own-union-find' },
+      { label: 'Graph Algorithms (topic overview)', route: '/dsa/graph-algorithms' },
+    ],
+    tip: 'The original Dijkstra codeTab simulated a min-heap via Array.sort() + shift() every iteration — measured a widening 9x/37x/114x slowdown at 2,000/8,000/20,000 nodes versus a real binary heap, confirming an asymptotically wrong complexity, not just a constant-factor cost.',
+    gotchas: [
+      'Both versions always find the identical correct shortest distances — the bug was purely about cost, never correctness.',
+    ],
+  },
+  'dsa/graph-algorithms/kruskals-mst-with-the-pages-own-union-find': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Dijkstra’s Fake Heap Was Sort Plus Shift', route: '/dsa/graph-algorithms/dijkstras-fake-heap-was-sort-plus-shift' },
+      { label: 'A* Visits Far Fewer Nodes Than Dijkstra', route: '/dsa/graph-algorithms/a-star-visits-far-fewer-nodes-than-dijkstra' },
+    ],
+    tip: 'A quiz question names Kruskal\'s MST with zero code on the page. Built it reusing the page\'s own UnionFind class unmodified — verified against the classic 5-node textbook example (minimum weight 16, 4 edges).',
+    gotchas: [
+      'Sorting edges by weight isn\'t an optimization — it IS the correctness guarantee. Processing in a different order still gives a valid spanning tree, just not the minimum-weight one.',
+    ],
+  },
+  'dsa/graph-algorithms/a-star-visits-far-fewer-nodes-than-dijkstra': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Kruskal’s MST with the Page’s Own Union-Find', route: '/dsa/graph-algorithms/kruskals-mst-with-the-pages-own-union-find' },
+      { label: 'Graph Algorithms (topic overview)', route: '/dsa/graph-algorithms' },
+    ],
+    tip: 'Measured directly on a 30x30 grid: Dijkstra and A* found the identical optimal distance (58), but A* visited only 116 nodes versus Dijkstra\'s 900 — an 87.1% reduction, confirming the theory\'s "far fewer nodes, still optimal" claim concretely.',
+    gotchas: [
+      'A* is Dijkstra with exactly one change — a heuristic added to the heap priority. Setting the heuristic to always return 0 makes it behave identically to plain Dijkstra.',
     ],
   },
   'dsa/bit-manipulation': {
@@ -34557,6 +36017,310 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Bubble sort and selection sort are rarely used in production due to consistent O(n²) even on nearly-sorted data, but remain useful for building intuition.',
       'Understanding basic sorts builds the invariant-reasoning skill needed to analyze and debug more advanced algorithms.',
+    ],
+  },
+  'dsa/basic-sorts/selection-sorts-swap-count-is-at-most-n-1-not-exactly': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Measuring Insertion Sort’s Real Adaptive Cost', route: '/dsa/basic-sorts/measuring-insertion-sorts-real-adaptive-cost' },
+      { label: 'Basic Sorts (topic overview)', route: '/dsa/basic-sorts' },
+    ],
+    tip: 'The page\'s own theory and a quiz both said selection sort does "exactly n-1 swaps" — but the page\'s own codeTab skips the swap when the minimum is already in place. Measured zero swaps on an already-sorted array; comparisons stayed a fixed n(n-1)/2 regardless.',
+    gotchas: [
+      'Comparison count is a true invariant for selection sort; swap count is not — "at most n-1," never "exactly."',
+    ],
+  },
+  'dsa/basic-sorts/measuring-insertion-sorts-real-adaptive-cost': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Selection Sort’s Swap Count Is At Most n-1, Not Exactly', route: '/dsa/basic-sorts/selection-sorts-swap-count-is-at-most-n-1-not-exactly' },
+      { label: 'Sorting By Multiple Keys: the Order Matters', route: '/dsa/basic-sorts/sorting-by-multiple-keys-the-order-matters' },
+    ],
+    tip: 'A quiz explanation claims O(nk) for insertion sort on almost-sorted input with zero code measuring it. Instrumented the page\'s own sort: bounded-displacement arrays scaled near-linearly (8 to 258 shifts, n=20 to 500) versus random arrays scaling near-quadratically (111 to 62,669).',
+    gotchas: [
+      'Shift count and comparison count happen to be equal only because of THIS specific code\'s structure — a binary-search-based insertion sort would decouple them.',
+    ],
+  },
+  'dsa/basic-sorts/sorting-by-multiple-keys-the-order-matters': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Measuring Insertion Sort’s Real Adaptive Cost', route: '/dsa/basic-sorts/measuring-insertion-sorts-real-adaptive-cost' },
+      { label: 'Basic Sorts (topic overview)', route: '/dsa/basic-sorts' },
+    ],
+    tip: 'The page\'s own QnA names "least important key first, most important last" with zero code. Built both orders — reversing them strands an Engineering employee outside their own department group, verified directly.',
+    gotchas: [
+      'The technique specifically needs Array.sort()\'s ES2019-guaranteed stability — an unstable sort would not preserve the earlier pass\'s grouping through the final pass.',
+    ],
+  },
+  'dsa/advanced-sorts/quicksort-recursion-stack-overflow': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Radix Sort Runs Counting Sort Digit by Digit', route: '/dsa/advanced-sorts/radix-sort-digit-by-digit' },
+      { label: 'Advanced Sorts (topic overview)', route: '/dsa/advanced-sorts' },
+    ],
+    tip: 'A mistake block and the revision summary called quicksort O(1) space, contradicting the page\'s own theory section. Instrumented the real recursion depth: it grew to n on a sorted array and genuinely crashed with a RangeError at n=10,000.',
+    gotchas: [
+      'The array partition being in-place says nothing about the call stack — recursing into the smaller side first (not the larger one) is what actually bounds depth to O(log n).',
+    ],
+  },
+  'dsa/advanced-sorts/radix-sort-digit-by-digit': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Quicksort Is Not Actually O(1) Space', route: '/dsa/advanced-sorts/quicksort-recursion-stack-overflow' },
+      { label: 'Why Timsort Exploits Natural Ascending Runs', route: '/dsa/advanced-sorts/timsort-natural-ascending-runs' },
+    ],
+    tip: 'The QnA describes radix sort precisely with zero code. Built it on the page\'s own countingSort idea, scoped to one digit (10 buckets) per pass instead of the full value range — verified the pass count tracks digit count, not element count.',
+    gotchas: [
+      'Each digit pass must be stable relative to the PREVIOUS pass, which is why radix sort processes least-significant-digit first, not most-significant-digit first.',
+    ],
+  },
+  'dsa/advanced-sorts/timsort-natural-ascending-runs': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Radix Sort Runs Counting Sort Digit by Digit', route: '/dsa/advanced-sorts/radix-sort-digit-by-digit' },
+      { label: 'Advanced Sorts (topic overview)', route: '/dsa/advanced-sorts' },
+    ],
+    tip: 'A quiz explanation claims Timsort finds and merges natural runs with zero measurement. Built a run detector: found exactly 100 runs on data built from 100 concatenated ascending runs, vs. close to n/2 runs on fully random data of the same size.',
+    gotchas: [
+      'The detector only catches ASCENDING runs — a strictly descending array produces n runs of length 1, which real Timsort handles with a separate reverse-in-place optimization this simplified version omits.',
+    ],
+  },
+  'dsa/binary-search/bit-shift-midpoint-overflows-in-javascript': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Binary Search on a Linked List Never Beats a Linear Scan', route: '/dsa/binary-search/linked-list-binary-search-never-beats-a-scan' },
+      { label: 'Binary Search (topic overview)', route: '/dsa/binary-search' },
+    ],
+    tip: 'Bitwise operators convert to 32-bit integers. (2**31 + 2**31) >> 1 is 0, so an integer square root of 2^31 - 1 with a shift midpoint returned 0 instead of 46340.',
+    gotchas: [
+      'lo + ((hi - lo) >> 1) also fails once the range itself reaches 2^31. Use lo + Math.floor((hi - lo) / 2).',
+    ],
+  },
+  'dsa/binary-search/linked-list-binary-search-never-beats-a-scan': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'The Bit-Shift Midpoint Overflows at 2^31 in JavaScript', route: '/dsa/binary-search/bit-shift-midpoint-overflows-in-javascript' },
+      { label: 'Duplicates Make Rotated Search O(n) in the Worst Case', route: '/dsa/binary-search/rotated-search-with-duplicates-is-o-n' },
+      { label: 'Binary Search (topic overview)', route: '/dsa/binary-search' },
+    ],
+    tip: 'Walking from the head to every midpoint took exactly n log2 n steps; walking forward from the node at lo took n - 1, the same as a plain scan.',
+    gotchas: [
+      'The only case where it helps is when comparisons are far more expensive than following a pointer.',
+    ],
+  },
+  'dsa/binary-search/rotated-search-with-duplicates-is-o-n': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Binary Search on a Linked List Never Beats a Linear Scan', route: '/dsa/binary-search/linked-list-binary-search-never-beats-a-scan' },
+      { label: 'Binary Search (topic overview)', route: '/dsa/binary-search' },
+    ],
+    tip: 'The main page searchRotated returns -1 for 2 in [1,1,1,2,1,1,1,1,1]. Shrinking both ends on a three-way tie fixes it, at n / 2 iterations on an all-equal array.',
+    gotchas: [
+      'Find Minimum with duplicates needs hi-- when nums[mid] === nums[hi], which is also O(n) in the worst case.',
+    ],
+  },
+  'dsa/recursion-backtracking/tail-calls-spec-mandated-but-only-safari': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Sort and Break Prunes Earlier Than a Negative Check', route: '/dsa/recursion-backtracking/sort-and-break-prunes-earlier' },
+      { label: 'Recursion & Backtracking (topic overview)', route: '/dsa/recursion-backtracking' },
+    ],
+    tip: 'ES2015 requires proper tail calls in strict mode, but only Safari implements them. In Node 22 a correct tail-recursive sum threw RangeError at 10,000 calls.',
+    gotchas: [
+      'return n * f(n - 1) is not a tail call: the multiplication still runs after the call returns.',
+    ],
+  },
+  'dsa/recursion-backtracking/sort-and-break-prunes-earlier': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'JavaScript Has Proper Tail Calls, but Only Safari Runs Them', route: '/dsa/recursion-backtracking/tail-calls-spec-mandated-but-only-safari' },
+      { label: 'Why the Duplicate Skip Compares i With start, Not 0', route: '/dsa/recursion-backtracking/skip-duplicates-at-the-same-tree-level' },
+      { label: 'Recursion & Backtracking (topic overview)', route: '/dsa/recursion-backtracking' },
+    ],
+    tip: 'Sorting candidates and breaking once one exceeds the remaining sum cut calls from 28 to 10 on [2,3,6,7] with target 7, but only about 12% when there were 608 valid answers.',
+    gotchas: [
+      'break is only safe after sorting; on unsorted input a smaller candidate may still come later.',
+    ],
+  },
+  'dsa/recursion-backtracking/skip-duplicates-at-the-same-tree-level': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Sort and Break Prunes Earlier Than a Negative Check', route: '/dsa/recursion-backtracking/sort-and-break-prunes-earlier' },
+      { label: 'Recursion & Backtracking (topic overview)', route: '/dsa/recursion-backtracking' },
+    ],
+    tip: 'With i > start, [1,2,2] gives all 6 distinct subsets; with i > 0 it returns only 4 and loses [1,2,2] and [2,2].',
+    gotchas: [
+      'The skip compares neighbours, so the input must be sorted first.',
+    ],
+  },
+  'dsa/dynamic-programming/coin-ways-loop-order-combinations-vs-permutations': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'One-Row LCS Needs a Saved Diagonal, Not Right-to-Left', route: '/dsa/dynamic-programming/lcs-one-row-needs-a-diagonal-variable' },
+      { label: 'Dynamic Programming (topic overview)', route: '/dsa/dynamic-programming' },
+    ],
+    tip: 'For coins [1,2,5] and amount 5, amount-outer counting returns 9 (ordered sequences) and coins-outer returns 4 (combinations).',
+    gotchas: [
+      'For minimum coins either order works; for counting ways it does not.',
+    ],
+  },
+  'dsa/dynamic-programming/lcs-one-row-needs-a-diagonal-variable': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Loop Order Decides Combinations or Permutations in Coin Change', route: '/dsa/dynamic-programming/coin-ways-loop-order-combinations-vs-permutations' },
+      { label: 'Top-Down vs Bottom-Up, Measured on Sparse and Dense Inputs', route: '/dsa/dynamic-programming/top-down-vs-bottom-up-measured' },
+      { label: 'Dynamic Programming (topic overview)', route: '/dsa/dynamic-programming' },
+    ],
+    tip: 'On 2,000 random string pairs, one-row LCS iterated right-to-left was wrong 579 times; left-to-right with a saved diagonal was never wrong.',
+    gotchas: [
+      'Knapsack can use right-to-left alone because both of its reads come from the previous row.',
+    ],
+  },
+  'dsa/dynamic-programming/top-down-vs-bottom-up-measured': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'One-Row LCS Needs a Saved Diagonal, Not Right-to-Left', route: '/dsa/dynamic-programming/lcs-one-row-needs-a-diagonal-variable' },
+      { label: 'Dynamic Programming (topic overview)', route: '/dsa/dynamic-programming' },
+    ],
+    tip: 'Coins [3000, 7000], amount 10000: memoization computed 5 states, the table 10,000. Coins [1, 2, 5], amount 20000: memoization overflowed the stack.',
+    gotchas: [
+      'Memoization removes repeated work, not recursion depth.',
+    ],
+  },
+  'dsa/dp-patterns/circular-kadane-fails-on-all-negative-input': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'The Longest Palindromic Substring of character Is ara', route: '/dsa/dp-patterns/longest-palindromic-substring-of-character' },
+      { label: 'DP Patterns (topic overview)', route: '/dsa/dp-patterns' },
+    ],
+    tip: 'max(Kadane, total - minSubarray) returned 0 for [-3, -2, -3]; the answer is -2. Against brute force, every failure was an all-negative array.',
+    gotchas: [
+      'Fix: if plain Kadane is negative, return it before trying the wrap-around term.',
+    ],
+  },
+  'dsa/dp-patterns/longest-palindromic-substring-of-character': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Circular Max Subarray Fails When Every Value Is Negative', route: '/dsa/dp-patterns/circular-kadane-fails-on-all-negative-input' },
+      { label: 'Word Break With slice Is O(n³), Not O(n²)', route: '/dsa/dp-patterns/word-break-with-slice-is-cubic' },
+      { label: 'DP Patterns (topic overview)', route: '/dsa/dp-patterns' },
+    ],
+    tip: 'The page’s own expand-around-center returns "ara" for "character" (length 3); the subsequence answer is 5 ("carac").',
+    gotchas: [
+      '"alphabet" is a word where the substring answer really is 1 and the subsequence answer is 3.',
+    ],
+  },
+  'dsa/dp-patterns/word-break-with-slice-is-cubic': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'The Longest Palindromic Substring of character Is ara', route: '/dsa/dp-patterns/longest-palindromic-substring-of-character' },
+      { label: 'DP Patterns (topic overview)', route: '/dsa/dp-patterns' },
+    ],
+    tip: 'At n = 800 the page’s Word Break copied about 86 million characters; limiting j to the longest word length copied 2,403.',
+    gotchas: [
+      'One very long dictionary word makes the bound useless; try only the word lengths that occur.',
+    ],
+  },
+  'dsa/trie/sorted-array-answers-prefix-queries': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'A Compressed Trie Saves Nodes, Not Characters', route: '/dsa/trie/compressed-trie-saves-nodes-not-characters' },
+      { label: 'Trie (topic overview)', route: '/dsa/trie' },
+    ],
+    tip: 'Words sharing a prefix are adjacent in sorted order. On 1,000 words, a lower-bound search took 10 comparisons and returned the same matches as the trie.',
+    gotchas: [
+      'Inserting into a sorted array is O(n); prefer a trie when the dictionary changes often.',
+    ],
+  },
+  'dsa/trie/compressed-trie-saves-nodes-not-characters': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'A Sorted Array Answers Prefix Queries Too', route: '/dsa/trie/sorted-array-answers-prefix-queries' },
+      { label: 'Word Search II Speeds Up Only When Found Branches Are Deleted', route: '/dsa/trie/word-search-ii-prune-found-branches' },
+      { label: 'Trie (topic overview)', route: '/dsa/trie' },
+    ],
+    tip: '1,000 random words: 12,577 plain-trie nodes, 1,411 radix-tree nodes. A radix tree always has fewer than 2n nodes.',
+    gotchas: [
+      'Edge labels still hold the characters unless stored as index ranges into the original words.',
+    ],
+  },
+  'dsa/trie/word-search-ii-prune-found-branches': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'A Compressed Trie Saves Nodes, Not Characters', route: '/dsa/trie/compressed-trie-saves-nodes-not-characters' },
+      { label: 'Trie (topic overview)', route: '/dsa/trie' },
+    ],
+    tip: 'Setting isEnd = false alone left 7,985 DFS calls unchanged; also deleting empty branches cut them to 36.',
+    gotchas: [
+      'Delete a child only after its subtree is explored and nothing ends there.',
+    ],
+  },
+  'dsa/bit-manipulation/right-shift-is-floor-not-division': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'isPowerOfTwo and Bit Counting Go Wrong Above 2^32', route: '/dsa/bit-manipulation/bit-tricks-wrong-above-2-to-32' },
+      { label: 'Bit Manipulation (topic overview)', route: '/dsa/bit-manipulation' },
+    ],
+    tip: '-5 >> 1 is -3 (floor), not -2, and 3e9 >> 1 is negative. Use >>> or Math.floor for large non-negative values.',
+    gotchas: [
+      'A loop that halves with >>= 1 until 0 never ends for a negative start: -1 >> 1 is -1.',
+    ],
+  },
+  'dsa/bit-manipulation/bit-tricks-wrong-above-2-to-32': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Right Shift Floors Negatives, So It Is Not Plain Division', route: '/dsa/bit-manipulation/right-shift-is-floor-not-division' },
+      { label: 'The Bitmask Subset Loop Runs Zero Times at 31 Elements', route: '/dsa/bit-manipulation/bitmask-loop-breaks-at-31-elements' },
+      { label: 'Bit Manipulation (topic overview)', route: '/dsa/bit-manipulation' },
+    ],
+    tip: 'isPowerOfTwo(3 * 2**32) returns true and hammingWeight(2**53 - 1) returns 32. BigInt versions return false and 53.',
+    gotchas: [
+      'Values between 2^31 and 2^32 are still fine: they become negative int32s but keep all their bits.',
+    ],
+  },
+  'dsa/bit-manipulation/bitmask-loop-breaks-at-31-elements': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'isPowerOfTwo and Bit Counting Go Wrong Above 2^32', route: '/dsa/bit-manipulation/bit-tricks-wrong-above-2-to-32' },
+      { label: 'Bit Manipulation (topic overview)', route: '/dsa/bit-manipulation' },
+    ],
+    tip: '1 << 31 is -2147483648, so mask < (1 << 31) is false at once and allSubsets returns [] for 31 elements.',
+    gotchas: [
+      'Use 2 ** n for the loop bound if n can reach 31.',
+    ],
+  },
+  'dsa/greedy/canonical-coins-are-not-divisibility': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'The Page’s merge Rewrote the Caller’s Intervals', route: '/dsa/greedy/merge-intervals-mutates-the-input' },
+      { label: 'Greedy Algorithms (topic overview)', route: '/dsa/greedy' },
+    ],
+    tip: 'US and euro coins are canonical without dividing evenly; [1, 10, 25] is not (greedy pays 30 with six coins).',
+    gotchas: [
+      'Kozen and Zaks: if greedy fails, it fails below the sum of the two largest coins.',
+    ],
+  },
+  'dsa/greedy/merge-intervals-mutates-the-input': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'US Coins Are Greedy-Safe Without Dividing Evenly', route: '/dsa/greedy/canonical-coins-are-not-divisibility' },
+      { label: 'Job Sequencing Is Greedy by Profit, Not by Deadline', route: '/dsa/greedy/job-sequencing-greedy-by-profit' },
+      { label: 'Greedy Algorithms (topic overview)', route: '/dsa/greedy' },
+    ],
+    tip: 'The original merge turned the caller’s [1,3] into [1,6] and reordered their array. Copy each interval before sorting.',
+    gotchas: [
+      '[...intervals] copies only the outer array; the inner [start, end] arrays are still shared.',
+    ],
+  },
+  'dsa/greedy/job-sequencing-greedy-by-profit': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'The Page’s merge Rewrote the Caller’s Intervals', route: '/dsa/greedy/merge-intervals-mutates-the-input' },
+      { label: 'Greedy Algorithms (topic overview)', route: '/dsa/greedy' },
+    ],
+    tip: 'Profit order with latest-free-slot placement matched brute force on 3,000 random tests; deadline order was wrong on 1,502.',
+    gotchas: [
+      'Weighted interval scheduling (fixed start and end times) is a different problem and needs DP.',
     ],
   },
 

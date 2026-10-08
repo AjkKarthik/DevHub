@@ -1,0 +1,26 @@
+<div class="dsa-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Hash Tables" topicRoute="/dsa/hash-tables"
+    subtopicLabel="First Non-Repeating Character, Two Ways" />
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">Finding the First Non-Repeating Character, Two Ways</h1>
+  <p class="page-subtitle">The main page's own QnA names a two-pass approach and a single-pass alternative, with no code for either -- built here and verified byte-identical across six test strings.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dsa-section">
+    <h2>Where this fits</h2>
+    <p>This builds both approaches the main page's own QnA names but never demonstrates, verified identical across six test cases, and connects the single-pass version to the page's own earlier (correct) claim that JavaScript's Map preserves insertion order.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Hash Tables" topicRoute="/dsa/hash-tables"
+    [prev]="{ label: 'Consistent Hashing: Verified Remap Counts', route: '/dsa/hash-tables/consistent-hashing-verified-remap-counts' }" />
+</div>
