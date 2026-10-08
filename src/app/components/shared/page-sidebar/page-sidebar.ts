@@ -34752,6 +34752,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A heap only guarantees the root is min/max — it does NOT provide fully sorted order for the rest, unlike a balanced BST.',
     ],
   },
+  'dsa/heaps/mergeklists-never-actually-used-its-own-heap': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Popping a Heap n Times Is Heap Sort', route: '/dsa/heaps/popping-a-heap-n-times-is-heap-sort' },
+      { label: 'Heaps / Priority Queues (topic overview)', route: '/dsa/heaps' },
+    ],
+    tip: 'The main page\'s own mergeKLists declared a min-heap and never pushed or popped from it — its real work came entirely from a plain sort. Built the real tuple-heap merge and verified it\'s output-equivalent but O(n log k) instead of O(n log n).',
+    gotchas: [
+      'A function can "work correctly" while its declared data structure does nothing at all — unused variables can hide a dead-code technique, not just a lint warning.',
+    ],
+  },
+  'dsa/heaps/popping-a-heap-n-times-is-heap-sort': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'mergeKLists Never Actually Used Its Own Heap', route: '/dsa/heaps/mergeklists-never-actually-used-its-own-heap' },
+      { label: 'The Real O(n log k) K Closest Points Solution', route: '/dsa/heaps/the-real-on-log-k-k-closest-points-solution' },
+    ],
+    tip: 'Verified directly: heapify builds a valid heap that is nowhere close to sorted as an array, but popping that same heap n times in sequence produces output byte-identical to Array.sort() across 50 randomized trials — that sequence IS heap sort.',
+    gotchas: [
+      'Heap sort has no O(n²) worst case (unlike quicksort) but worse cache locality in practice — the shared O(n log n) class hides a real constant-factor difference.',
+    ],
+  },
+  'dsa/heaps/the-real-on-log-k-k-closest-points-solution': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Popping a Heap n Times Is Heap Sort', route: '/dsa/heaps/popping-a-heap-n-times-is-heap-sort' },
+      { label: 'Heaps / Priority Queues (topic overview)', route: '/dsa/heaps' },
+    ],
+    tip: 'The Challenge\'s own hints asked for a max-heap of size k; the solution sorted instead. Built the real heap version — verified against 200 randomized trials by distance multiset, since tied points at the k-th boundary can validly differ between the two approaches.',
+    gotchas: [
+      'A max-heap keeps the CURRENT FARTHEST of the k closest points at its root — that is exactly what needs evicting the moment a closer point arrives.',
+    ],
+  },
   'dsa/graphs-bfs-dfs': {
     apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
     related: [

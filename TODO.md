@@ -10050,6 +10050,20 @@ off here with a date.
   measured the real complexity gap between BST-LCA and generic-tree LCA via instrumented node-visit
   counting on a 1023-node balanced tree (6 vs 2043 visits, 340x). Bare `bst` SUBTOPICS key
   collision-free. DSA hub Phase 10: 9 of 21.
+- [x] 2026-10-08 `/dsa/heaps` — Heaps / Priority Queues. 3 subtopics
+  (mergeklists-never-actually-used-its-own-heap, popping-a-heap-n-times-is-heap-sort,
+  the-real-on-log-k-k-closest-points-solution). Main-page fix: `mergeKLists` declared a
+  `MinHeap` and never pushed or popped from it -- its real work came entirely from
+  `.flat().sort().filter()`, dead-code heap. Built the real tuple-heap merge, verified
+  output-equivalent to the sort version across 200+ randomized trials, each element costing
+  one O(log k) push + pop (8 pushes/8 pops for 8 elements across 3 lists). Also retitled a
+  theory section that duplicated the Top-K and Two-Heap sections, replacing it with a
+  Node-verified heap-sort demonstration (heapify builds a valid but unsorted heap; popping
+  n times matches Array.sort() exactly across 50 trials). Third subtopic built the real
+  max-heap-of-size-k K Closest Points solution the Challenge's own hints asked for but its
+  sort-based solution never implemented, verified by distance multiset across 200 trials
+  (individual tied points can validly differ between heap and sort approaches). Bare `heaps`
+  SUBTOPICS key collision-free. DSA hub Phase 10: 10 of 21.
 - [ ] `/dsa/heaps` — Heaps & Priority Queues
 - [ ] `/dsa/graphs-bfs-dfs` — Graphs: BFS & DFS
 - [ ] `/dsa/graph-algorithms` — Graph Algorithms

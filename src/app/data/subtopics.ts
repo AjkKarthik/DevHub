@@ -4276,4 +4276,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'One Rotation Rebalances an Ascending Insert', route: '/dsa/bst/one-rotation-rebalances-an-ascending-insert' },
     { label: 'Generic-Tree LCA Visits the Whole Tree', route: '/dsa/bst/generic-tree-lca-visits-the-whole-tree' },
   ],
+  'heaps': [
+    { label: 'mergeKLists Never Actually Used Its Own Heap', route: '/dsa/heaps/mergeklists-never-actually-used-its-own-heap' },
+    { label: 'Popping a Heap n Times Is Heap Sort', route: '/dsa/heaps/popping-a-heap-n-times-is-heap-sort' },
+    { label: 'The Real O(n log k) K Closest Points Solution', route: '/dsa/heaps/the-real-on-log-k-k-closest-points-solution' },
+  ],
 };

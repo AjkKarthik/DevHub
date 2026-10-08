@@ -4976,7 +4976,12 @@ export const routes: Routes = [
       { path: 'one-rotation-rebalances-an-ascending-insert', loadComponent: () => import('./components/fundamentals/dsa/bst/subtopics/one-rotation-rebalances-an-ascending-insert/one-rotation-rebalances-an-ascending-insert').then(m => m.OneRotationRebalancesAnAscendingInsertSubtopic) },
       { path: 'generic-tree-lca-visits-the-whole-tree', loadComponent: () => import('./components/fundamentals/dsa/bst/subtopics/generic-tree-lca-visits-the-whole-tree/generic-tree-lca-visits-the-whole-tree').then(m => m.GenericTreeLcaVisitsTheWholeTreeSubtopic) },
     ]},
-    { path: 'heaps',                  loadComponent: () => import('./components/fundamentals/dsa/heaps/heaps').then(m => m.DsaHeaps) },
+    { path: 'heaps', children: [
+      { path: '', loadComponent: () => import('./components/fundamentals/dsa/heaps/heaps').then(m => m.DsaHeaps) },
+      { path: 'mergeklists-never-actually-used-its-own-heap', loadComponent: () => import('./components/fundamentals/dsa/heaps/subtopics/mergeklists-never-actually-used-its-own-heap/mergeklists-never-actually-used-its-own-heap').then(m => m.MergeklistsNeverActuallyUsedItsOwnHeapSubtopic) },
+      { path: 'popping-a-heap-n-times-is-heap-sort', loadComponent: () => import('./components/fundamentals/dsa/heaps/subtopics/popping-a-heap-n-times-is-heap-sort/popping-a-heap-n-times-is-heap-sort').then(m => m.PoppingAHeapNTimesIsHeapSortSubtopic) },
+      { path: 'the-real-on-log-k-k-closest-points-solution', loadComponent: () => import('./components/fundamentals/dsa/heaps/subtopics/the-real-on-log-k-k-closest-points-solution/the-real-on-log-k-k-closest-points-solution').then(m => m.TheRealOnLogKKClosestPointsSolutionSubtopic) },
+    ]},
     { path: 'graphs-bfs-dfs',         loadComponent: () => import('./components/fundamentals/dsa/graphs-bfs-dfs/graphs-bfs-dfs').then(m => m.DsaGraphsBfsDfs) },
     { path: 'graph-algorithms',       loadComponent: () => import('./components/fundamentals/dsa/graph-algorithms/graph-algorithms').then(m => m.DsaGraphAlgorithms) },
     { path: 'basic-sorts',            loadComponent: () => import('./components/fundamentals/dsa/basic-sorts/basic-sorts').then(m => m.DsaBasicSorts) },

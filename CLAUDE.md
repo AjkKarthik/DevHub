@@ -10952,6 +10952,57 @@ check before any other new hub's first subtopic set:
    confirmed the `SUBTOPICS`/`SIDEBAR_MAP`/breadcrumb/search-index entries for `bst` (bare) and all
    three composite subtopic keys were present with matching content in `main-UPV3FSEJ.js`.
    **DSA hub Phase 10: 9 of 21 topics complete.**
+16. **The `heaps` batch found and fixed a genuine dead-code bug in the main page's own
+   `mergeKLists` codeTab, verified via direct Node.js execution**: the function declared
+   `const heap = new MinHeap();` — a comment above it even reads "heap stores [value, listIdx,
+   elemIdx]" — but never calls `.push()`/`.pop()` on it anywhere; the function's real output
+   comes entirely from `lists.flat().sort((a, b) => a - b).filter(x => x !== null)`, a plain
+   O(n log n) sort. The declared heap does nothing. Fixed by building the real tuple-heap merge
+   (a min-heap of `{ value, listIndex, elemIndex }` entries, bounded at size k — one entry per
+   list), verified via 200+ randomized trials that it is output-equivalent to the sort version,
+   and via an instrumented push/pop counter that each of the 8 elements across 3 lists costs
+   exactly one O(log k) push and one O(log k) pop (8 pushes, 8 pops) — confirming the real
+   O(n log k) scaling the dead heap never delivered. Separately, theory section 5 ("Heaps for
+   Top-K and Streaming Problems") largely duplicated sections 3 ("Top-K Pattern"), 4 ("Two-Heap
+   Pattern"), and the Core Operations section's own heapify-O(n) fact — only its third bullet
+   (heap order ≠ sorted order) was genuinely new. Retitled it to "Heap Order vs. Sorted Order —
+   and Heap Sort," kept the one new bullet, and replaced the rest with a Node-verified
+   demonstration that heapify produces a valid-but-unsorted heap (confirmed via a direct
+   heap-validity check) while popping that same heap n times in sequence matches
+   `Array.prototype.sort()` byte-for-byte across 50 randomized trials — i.e. heap sort. Three
+   subtopics: (1) **fix-adjacent** — reproduces the exact dead-code bug and the real tuple-heap
+   fix, verified via direct execution matching the measured push/pop counts exactly, with a Try
+   It on why the two versions are output-equivalent but never cost-equivalent; (2) **gap-closing**
+   — builds the heapify-then-pop-n-times demonstration directly, verified against `Array.sort()`
+   across 50 trials, with a Try It distinguishing heap sort's cost class (shared with quicksort)
+   from its practical cache-locality disadvantage (the retitled theory section's own new claim);
+   (3) **gap-closing** — the Challenge's own hints ask for "a max-heap of size k" but its
+   solution sorts and slices instead; built the real max-heap-of-size-k version, verified over
+   200 randomized trials that it matches the sort-based version by DISTANCE MULTISET exactly
+   (not by raw point identity — the two approaches can legitimately return different individual
+   points when ties exist at the k-th boundary, confirmed by the same stress test's first
+   several naive point-identity comparisons failing while every distance-multiset comparison
+   passed). No `SUBTOPICS` collision for `heaps` (checked both `subtopics.ts` forms and grepped
+   `app.routes.ts` directly, confirmed collision-free, left bare). All three
+   `exercise.solution`/`theory.points`/`misconceptions` fields swept clean via the standing
+   bracket-balance/backtick-parity/apostrophe scripts (all three files balanced at 81/81 braces
+   on the main page after the fix, backtick counts even, zero unescaped possessive apostrophes
+   found in any of the three new subtopic files). Build passed clean (background execution under
+   Node 22.23.2, explicit `EXITCODE:$?` capture, zero real `ERROR` lines — only the standing
+   harmless `NG8113`/budget warnings, unrelated to this batch). **No interactive browser/preview
+   tool was available in this session** — verified via the same compiled-bundle-inspection
+   fallback as the prior nine batches: confirmed the OLD dead-code comment ("simplified — real
+   impl needs tuple heap") was absent from every compiled chunk, confirmed the NEW fixed
+   function's own distinguishing text ("The heap never holds more than k") was present in the
+   main page's own chunk; confirmed the OLD duplicate theory heading ("Heaps for Top-K and
+   Streaming Problems") was absent, confirmed the NEW retitled heading ("Heap Order vs. Sorted
+   Order") was present in the same chunk; confirmed all three subtopic classes
+   (`MergeklistsNeverActuallyUsedItsOwnHeapSubtopic`/`PoppingAHeapNTimesIsHeapSortSubtopic`/
+   `TheRealOnLogKKClosestPointsSolutionSubtopic`) each compiled into their own separate lazy
+   chunk; confirmed the `SUBTOPICS`/`SIDEBAR_MAP`/breadcrumb/search-index entries for `heaps`
+   (bare) and all three composite subtopic keys were present with matching content in the
+   compiled `main-*.js`.
+   **DSA hub Phase 10: 10 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -11369,9 +11420,9 @@ check before any other new hub's first subtopic set:
   needs the full `.dsa-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }`
   rule (copied from the main topic page's own `.scss`, which defines it locally). No live
   playground (DSA theory/analysis content has no in-browser runtime) — plain `<app-code-block>`.
-  Phase 10: 9 of 21 topics have subtopics (`/dsa/big-o`, pilot batch; `/dsa/arrays`; `/dsa/strings`;
+  Phase 10: 10 of 21 topics have subtopics (`/dsa/big-o`, pilot batch; `/dsa/arrays`; `/dsa/strings`;
   `/dsa/hash-tables`; `/dsa/stacks-queues`; `/dsa/linked-lists`; `/dsa/doubly-linked-lists`;
-  `/dsa/binary-trees`; `/dsa/bst`, all 2026-10-08) — see "DSA hub
+  `/dsa/binary-trees`; `/dsa/bst`; `/dsa/heaps`, all 2026-10-08) — see "DSA hub
   subtopic wiring" section below for the `DsaNavComponent` accordion
   structural fix (19th `*NavComponent`-based hub in a row missing it at pilot time), the
   `dsa-arrays` SUBTOPICS-map collision resolution (bare `arrays` collides with the C# hub's own
