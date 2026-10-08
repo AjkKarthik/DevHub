@@ -9937,12 +9937,42 @@ off here with a date.
   default 1 minute; duplicate detection, sessions and expiry dead-lettering are creation-time settings; DLQ does
   not receive filter non-matches; Premium 100MB is AMQP only. Bare `azure-service-bus` SUBTOPICS key
   collision-free. Messaging hub Phase 10: 14 of 20.
-- [ ] `/messaging/azure-event-grid` — Event Grid & Event Hubs
-- [ ] `/messaging/aws-sqs` — AWS SQS
-- [ ] `/messaging/aws-sns-eventbridge` — AWS SNS & EventBridge
-- [ ] `/messaging/idempotency` — Idempotency & Exactly-Once
-- [ ] `/messaging/message-ordering` — Message Ordering
-- [ ] `/messaging/backpressure` — Backpressure & Flow Control
+- [x] 2026-09-20 `/messaging/azure-event-grid` — Event Grid & Event Hubs. 3 subtopics. Messaging
+  hub Phase 10: 15 of 20.
+- [x] 2026-09-22 `/messaging/aws-sqs` — AWS SQS. 3 subtopics (fifo-high-throughput-mode,
+  dlq-is-queue-not-lambda-destination, report-batch-item-failures). Main-page fixes: FIFO default
+  throughput is 3,000 msg/s with batching (raised from 300 in 2020), not a flat 300 msg/s ceiling;
+  SQS-triggered Lambda has no on-failure destination of its own, DLQ routing is configured on the
+  queue's RedrivePolicy only. Bare `aws-sqs` SUBTOPICS key collision-free. Messaging hub Phase 10:
+  16 of 20.
+- [x] 2026-09-22 `/messaging/aws-sns-eventbridge` — AWS SNS & EventBridge. 3 subtopics
+  (sns-fifo-throughput-was-raised-10x, retry-duration-depends-on-endpoint-type,
+  eventbridge-pipes-sqs-to-target). Main-page fixes: SNS FIFO throughput raised 10x to 3,000 msg/s
+  (Nov 2023, no migration needed); the "23 days" DLQ redelivery window only applies to AWS-managed
+  SNS endpoints, HTTP/S subscriptions default to ~60s with a 3,600s max. Bare
+  `aws-sns-eventbridge` SUBTOPICS key collision-free. Messaging hub Phase 10: 17 of 20.
+- [x] 2026-09-22 `/messaging/idempotency` — Idempotency & Exactly-Once. 3 subtopics
+  (kafkajs-does-not-enforce-max-in-flight, redis-set-nx-needs-two-phases,
+  sqs-standard-has-no-native-dedup). Main-page fix verified against a real installed kafkajs
+  source: `maxInFlightRequests: 5` is never checked against `idempotent` by the library itself —
+  the "why 5" reason is a broker-side sequence-number dedup window (KIP-98), not a kafkajs-enforced
+  rule. Bare `idempotency` SUBTOPICS key collision-free. Messaging hub Phase 10: 18 of 20.
+- [x] 2026-09-22 `/messaging/message-ordering` — Message Ordering. 3 subtopics
+  (random-dedup-id-defeats-sqs-fifo-retry-safety, how-idempotent-producer-prevents-retry-reordering,
+  fifo-group-blocking-is-per-group-not-queue-wide). Main-page fix: the SQS FIFO codeTab generated a
+  fresh `MessageDeduplicationId` (`randomUUID()`) on every send, defeating retry-safety dedup —
+  fixed to a stable, business-derived key. Bare `message-ordering` SUBTOPICS key collision-free.
+  Messaging hub Phase 10: 19 of 20.
+- [x] 2026-09-22 `/messaging/backpressure` — Backpressure & Flow Control (FINAL topic). 3 subtopics
+  (kafka-pause-discards-its-own-resume-function, kafkajs-has-no-buffer-memory-or-max-block-ms,
+  nodejs-stream-backpressure-actually-running — the last one using real executed Node.js stream
+  code, not a model). Main-page fixes: the Kafka Pause/Resume codeTab discarded `pause()`'s own
+  returned resume closure while claiming an automatic-resume mechanism that doesn't exist in
+  kafkajs; a QnA described Java-client-only `max.block.ms`/`buffer.memory` producer configs as if
+  kafkajs supported them, verified against the real installed `ProducerConfig` type to have no
+  such fields. Bare `backpressure` SUBTOPICS key collision-free. **Messaging/Kafka hub Phase 10
+  rollout complete — all 20/20 topics done, 60 subtopic pages total, confirmed via a hub-wide
+  check showing exactly 20 nav toggle elements.**
 
 #### DSA — 21 topic pages
 
