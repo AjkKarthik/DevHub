@@ -10183,7 +10183,17 @@ off here with a date.
   isPowerOfTwo(3 * 2**32) returns true and hammingWeight(2**53 - 1) returns 32. Third subtopic: the
   page's allSubsets loop runs zero times for 31 elements because 1 << 31 is negative. Bare
   `bit-manipulation` SUBTOPICS key collision-free. DSA hub Phase 10: 20 of 21.
-- [ ] `/dsa/greedy` — Greedy Algorithms
+- [x] 2026-10-08 `/dsa/greedy` — Greedy Algorithms. 3 subtopics (routes
+  canonical-coins-are-not-divisibility, merge-intervals-mutates-the-input,
+  job-sequencing-greedy-by-profit; short folders canonical-coin-systems, merge-intervals-mutation,
+  job-sequencing-by-profit). Main-page fixes: the coin mistake said greedy needs each coin to divide
+  the next — US and euro coins fail that and are canonical, [1,10,25] fails at 30 (Kozen-Zaks bound
+  cited); the merge codeTab sorted and edited the caller's intervals ([1,3] became [1,6]) and returned
+  [undefined] for [] — now copies first; the deadlines QnA said "greedy by deadline" — unit-time job
+  sequencing is greedy by profit with latest free slot (0 wrong vs 1,502 wrong by deadline on 3,000
+  random sets); the gas-station start is one past the lowest running total, not "where the tank last
+  hit 0". Bare `greedy` SUBTOPICS key collision-free. **DSA hub Phase 10 COMPLETE: 21 of 21 topics,
+  63 subtopic pages.**
 
 #### Testing — 19 topic pages
 

@@ -4331,4 +4331,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'isPowerOfTwo and Bit Counting Go Wrong Above 2^32', route: '/dsa/bit-manipulation/bit-tricks-wrong-above-2-to-32' },
     { label: 'The Bitmask Subset Loop Runs Zero Times at 31 Elements', route: '/dsa/bit-manipulation/bitmask-loop-breaks-at-31-elements' },
   ],
+  'greedy': [
+    { label: 'US Coins Are Greedy-Safe Without Dividing Evenly', route: '/dsa/greedy/canonical-coins-are-not-divisibility' },
+    { label: 'The Page’s merge Rewrote the Caller’s Intervals', route: '/dsa/greedy/merge-intervals-mutates-the-input' },
+    { label: 'Job Sequencing Is Greedy by Profit, Not by Deadline', route: '/dsa/greedy/job-sequencing-greedy-by-profit' },
+  ],
 };

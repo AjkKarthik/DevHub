@@ -399,7 +399,24 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/dsa/greedy" routerLinkActive="active"><span class="nl-text">Greedy Algorithms</span>@if(p.isDone('dsa-greedy')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/dsa/greedy" routerLinkActive="active">
+        <span class="nl-text">Greedy Algorithms</span>
+        @if(p.isDone('dsa-greedy')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('greedy'); as greedySubs) {
+          <button type="button" class="nav-subtopics-toggle" (click)="toggleSubtopics('greedy', $event)">
+            {{ isSubtopicsExpanded('greedy') ? '▾' : '▸' }}
+          </button>
+        }
+      </a>
+      @if (subtopicsOf('greedy'); as greedySubs) {
+        @if (isSubtopicsExpanded('greedy')) {
+          <div class="nav-subtopics">
+            @for (sub of greedySubs; track sub.route) {
+              <a [routerLink]="sub.route" routerLinkActive="active" class="nav-subtopic-link">{{ sub.label }}</a>
+            }
+          </div>
+        }
+      }
     </div>
   `,
 })

@@ -35225,6 +35225,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Use 2 ** n for the loop bound if n can reach 31.',
     ],
   },
+  'dsa/greedy/canonical-coins-are-not-divisibility': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'The Page’s merge Rewrote the Caller’s Intervals', route: '/dsa/greedy/merge-intervals-mutates-the-input' },
+      { label: 'Greedy Algorithms (topic overview)', route: '/dsa/greedy' },
+    ],
+    tip: 'US and euro coins are canonical without dividing evenly; [1, 10, 25] is not (greedy pays 30 with six coins).',
+    gotchas: [
+      'Kozen and Zaks: if greedy fails, it fails below the sum of the two largest coins.',
+    ],
+  },
+  'dsa/greedy/merge-intervals-mutates-the-input': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'US Coins Are Greedy-Safe Without Dividing Evenly', route: '/dsa/greedy/canonical-coins-are-not-divisibility' },
+      { label: 'Job Sequencing Is Greedy by Profit, Not by Deadline', route: '/dsa/greedy/job-sequencing-greedy-by-profit' },
+      { label: 'Greedy Algorithms (topic overview)', route: '/dsa/greedy' },
+    ],
+    tip: 'The original merge turned the caller’s [1,3] into [1,6] and reordered their array. Copy each interval before sorting.',
+    gotchas: [
+      '[...intervals] copies only the outer array; the inner [start, end] arrays are still shared.',
+    ],
+  },
+  'dsa/greedy/job-sequencing-greedy-by-profit': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'The Page’s merge Rewrote the Caller’s Intervals', route: '/dsa/greedy/merge-intervals-mutates-the-input' },
+      { label: 'Greedy Algorithms (topic overview)', route: '/dsa/greedy' },
+    ],
+    tip: 'Profit order with latest-free-slot placement matched brute force on 3,000 random tests; deadline order was wrong on 1,502.',
+    gotchas: [
+      'Weighted interval scheduling (fixed start and end times) is a different problem and needs DP.',
+    ],
+  },
 
   // ── MongoDB: per-page entries ────────────────────────────────────────────────
   'mongodb/fundamentals': {

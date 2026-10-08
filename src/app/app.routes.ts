@@ -5042,7 +5042,12 @@ export const routes: Routes = [
       { path: 'bit-tricks-wrong-above-2-to-32', loadComponent: () => import('./components/fundamentals/dsa/bit-manipulation/subtopics/bit-tricks-beyond-32-bits/bit-tricks-beyond-32-bits').then(m => m.BitTricksBeyond32BitsSubtopic) },
       { path: 'bitmask-loop-breaks-at-31-elements', loadComponent: () => import('./components/fundamentals/dsa/bit-manipulation/subtopics/bitmask-subset-limit/bitmask-subset-limit').then(m => m.BitmaskSubsetLimitSubtopic) },
     ] },
-    { path: 'greedy',                 loadComponent: () => import('./components/fundamentals/dsa/greedy/greedy').then(m => m.DsaGreedy) },
+    { path: 'greedy', children: [
+      { path: '', loadComponent: () => import('./components/fundamentals/dsa/greedy/greedy').then(m => m.DsaGreedy) },
+      { path: 'canonical-coins-are-not-divisibility', loadComponent: () => import('./components/fundamentals/dsa/greedy/subtopics/canonical-coin-systems/canonical-coin-systems').then(m => m.CanonicalCoinSystemsSubtopic) },
+      { path: 'merge-intervals-mutates-the-input', loadComponent: () => import('./components/fundamentals/dsa/greedy/subtopics/merge-intervals-mutation/merge-intervals-mutation').then(m => m.MergeIntervalsMutationSubtopic) },
+      { path: 'job-sequencing-greedy-by-profit', loadComponent: () => import('./components/fundamentals/dsa/greedy/subtopics/job-sequencing-by-profit/job-sequencing-by-profit').then(m => m.JobSequencingByProfitSubtopic) },
+    ] },
   ] },
   { path: 'testing-hub',   children: [
     { path: '',                      loadComponent: () => import('./components/fundamentals/testing/home/home').then(m => m.TestingHome) },

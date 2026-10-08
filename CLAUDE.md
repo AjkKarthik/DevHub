@@ -11273,6 +11273,18 @@ check before any other new hub's first subtopic set:
    bind via plain interpolation — write "<<" raw there, entities only in points/misconceptions.
    3 subtopics. Bare `bit-manipulation` key collision-free. Build clean; bundle-verified.
    **DSA hub Phase 10: 20 of 21 topics complete.**
+27. **The `greedy` batch — the 21st and FINAL DSA topic — found and fixed FOUR main-page issues**: the
+   coin-change mistake defined canonical systems by divisibility, contradicted by its own US-coins
+   example (US and euro coins are canonical without it; [1, 10, 25] fails at 30 — verified greedy vs
+   DP for every amount to 500, plus the Kozen-Zaks 1994 bound via WebSearch); the merge codeTab
+   sorted the caller's array and wrote merged ends into the caller's own intervals, and returned
+   [undefined] for [] (now copies each interval first); the deadlines QnA said "greedy by deadline"
+   — unit-time job sequencing is greedy by profit with latest-free-slot placement (0 vs 1,502 wrong
+   out of 3,000 random sets against brute force); the gas-station start was described as "where the
+   tank last hit 0" (it is one past the lowest running total). 3 subtopics. Bare `greedy` key
+   collision-free. Build clean; bundle-verified; DsaNavComponent now has 21 toggles, one per topic.
+   **This completes the DSA hub's entire Phase 10 rollout — all 21 topics now have deep-dive
+   subtopic pages, 63 subtopic pages total across the hub, finished 2026-10-08.**
 
 ## Current state (update when it changes!)
 
@@ -11690,10 +11702,10 @@ check before any other new hub's first subtopic set:
   needs the full `.dsa-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }`
   rule (copied from the main topic page's own `.scss`, which defines it locally). No live
   playground (DSA theory/analysis content has no in-browser runtime) — plain `<app-code-block>`.
-  Phase 10: 20 of 21 topics have subtopics (`/dsa/big-o`, pilot batch; `/dsa/arrays`; `/dsa/strings`;
+  Phase 10: **COMPLETE — 21 of 21 topics have subtopics** (`/dsa/big-o`, pilot batch; `/dsa/arrays`; `/dsa/strings`;
   `/dsa/hash-tables`; `/dsa/stacks-queues`; `/dsa/linked-lists`; `/dsa/doubly-linked-lists`;
   `/dsa/binary-trees`; `/dsa/bst`; `/dsa/heaps`; `/dsa/graphs-bfs-dfs`; `/dsa/graph-algorithms`;
-  `/dsa/basic-sorts`; `/dsa/advanced-sorts`; `/dsa/binary-search`; `/dsa/recursion-backtracking`; `/dsa/dynamic-programming`; `/dsa/dp-patterns`; `/dsa/trie`; `/dsa/bit-manipulation`,
+  `/dsa/basic-sorts`; `/dsa/advanced-sorts`; `/dsa/binary-search`; `/dsa/recursion-backtracking`; `/dsa/dynamic-programming`; `/dsa/dp-patterns`; `/dsa/trie`; `/dsa/bit-manipulation`; `/dsa/greedy`, 63 subtopic pages total,
   all 2026-10-08) — see "DSA hub
   subtopic wiring" section below for the `DsaNavComponent` accordion
   structural fix (19th `*NavComponent`-based hub in a row missing it at pilot time), the
