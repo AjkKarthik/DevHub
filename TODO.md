@@ -10715,6 +10715,36 @@ claims against current releases) proactively, DURING Phase 14 content creation �
 reusing existing page text and auditing it for staleness afterward. A topic's portal content
 should read as freshly researched, not as the existing page restyled.
 
+### Content depth bar: documentation-site completeness, not a curated subset
+
+Clarified further by the user, in capitals, twice: the portal's content must be as thorough as
+official documentation for that technology — "full detailed explanation, example, everything" —
+and "nothing should miss related to that hub." This is a real escalation from how every existing
+topic page on this site is scoped today. The "Session Guidelines" section of this very file
+instructs writing to "5–8 core concepts a developer must understand" per topic — a deliberately
+CURATED subset, not full coverage. The portal explicitly abandons that ceiling: for whatever
+technology a hub covers, its portal content should approach the completeness of that technology's
+own official docs (think MDN for web platform topics, doc.rust-lang.org for Rust, the React/Angular
+docs for their own frameworks) — every notable feature, every API surface worth knowing, edge
+cases, advanced usage, not just the handful of concepts judged "most important" for a quick page.
+
+**What this means in practice, and what it costs:**
+- A single portal topic is likely to require substantially MORE content, MORE examples, and MORE
+  research time than today's flat topic page for the same subject — official documentation sites
+  are, by nature, much larger than a single curated page. Size this expectation correctly before
+  estimating how long a pilot topic will take; "a few hours like a normal topic page" is very
+  likely the wrong estimate once this bar is taken seriously.
+- "Nothing should miss" needs an operational definition before writing, not just an aspiration: for
+  the pilot topic, enumerate the technology's own official doc's table of contents (or the
+  equivalent — a language reference, an API index) FIRST, then check the portal's planned content
+  against that list explicitly, rather than trusting a prose pass to have naturally covered
+  everything. This is the same "verify against a primary source, don't assume" discipline this
+  project already applies everywhere else, applied to coverage/completeness rather than to a single
+  claim's accuracy.
+- This depth bar is specific to the PORTAL. It does not retroactively apply to the existing curated
+  flat topic pages, which stay exactly as scoped today (5–8 core concepts) unless Phase 14 is
+  eventually extended to replace them — see the "additive, not a rewrite" resolution above.
+
 ### A draft shape (starting point only — needs real design decisions before anything is built)
 
 One reasonable way to read "full-fledged learning portal" using pieces this site already has:
