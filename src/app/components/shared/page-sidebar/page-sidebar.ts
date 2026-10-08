@@ -33018,6 +33018,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Standalone components simplify TestBed setup since there is no NgModule to declare.',
     ],
   },
+  "testing-hub/angular-testing/httpclienttestingmodule-is-deprecated": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "TestBed.flushEffects Was Replaced by TestBed.tick", route: '/testing-hub/angular-testing/flusheffects-replaced-by-testbed-tick' },
+      { label: "Angular Testing (overview)", route: '/testing-hub/angular-testing' },
+    ],
+    tip: "providers: [provideHttpClient(), provideHttpClientTesting()] — keep that order, so the testing backend replaces the real one.",
+    gotchas: ["Interceptors added with withInterceptors() go on provideHttpClient(...) in the test too, otherwise the test skips them.","HttpTestingController and expectOne/flush/verify work exactly as before."],
+  },
+  "testing-hub/angular-testing/flusheffects-replaced-by-testbed-tick": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "HttpClientTestingModule Is Deprecated", route: '/testing-hub/angular-testing/httpclienttestingmodule-is-deprecated' },
+      { label: "Router Testing Without RouterTestingModule", route: '/testing-hub/angular-testing/router-testing-without-routertestingmodule' },
+      { label: "Angular Testing (overview)", route: '/testing-hub/angular-testing' },
+    ],
+    tip: "After changing a signal that drives an effect, call TestBed.tick(). It runs pending effects and synchronises the UI in one step.",
+    gotchas: ["fixture.detectChanges() is still the right call when you want to refresh one component fixture.","Effects created outside an injection context are not tracked by TestBed."],
+  },
+  "testing-hub/angular-testing/router-testing-without-routertestingmodule": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "TestBed.flushEffects Was Replaced by TestBed.tick", route: '/testing-hub/angular-testing/flusheffects-replaced-by-testbed-tick' },
+      { label: "Angular Testing (overview)", route: '/testing-hub/angular-testing' },
+    ],
+    tip: "Use providers: [provideRouter(routes)] and RouterTestingHarness.create() to navigate and get the activated component.",
+    gotchas: ["RouterTestingHarness.create() throws if a harness already exists in the test.","The harness needs the default TestBed teardown (destroyAfterEach: true)."],
+  },
   'testing-hub/cypress': {
     apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
     related: [
@@ -33040,6 +33068,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Trace viewer turns debugging a flaky CI test from guesswork into replaying an exact timeline of what happened.',
       'The same actionability checks apply across all three engines, but rendering differences between them can still surface real bugs.',
     ],
+  },
+  "testing-hub/playwright/actions-have-no-timeout-by-default": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "networkidle Means Zero Connections and Is Discouraged", route: '/testing-hub/playwright/networkidle-means-zero-connections-and-is-discouraged' },
+      { label: "Playwright (overview)", route: '/testing-hub/playwright' },
+    ],
+    tip: "Set use.actionTimeout (for example 10_000) so a click on a disabled or hidden element fails with a clear action error instead of eating the whole test budget.",
+    gotchas: ["The 5-second default applies to expect() web-first assertions, not to click() or fill().","navigationTimeout also defaults to 0 and is likewise bounded only by the test timeout."],
+  },
+  "testing-hub/playwright/networkidle-means-zero-connections-and-is-discouraged": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "Actions Have No Timeout of Their Own by Default", route: '/testing-hub/playwright/actions-have-no-timeout-by-default' },
+      { label: "Locators Are Strict About Multiple Matches", route: '/testing-hub/playwright/locators-are-strict-about-multiple-matches' },
+      { label: "Playwright (overview)", route: '/testing-hub/playwright' },
+    ],
+    tip: "Wait for what the user sees, such as a heading or a row, with expect(...).toBeVisible(), or wait for one specific response with page.waitForResponse().",
+    gotchas: ["A page that polls or holds a long-poll request may never go quiet, so networkidle waits until the timeout.","page.waitForSelector() is also discouraged in favour of web-first assertions or locator.waitFor()."],
+  },
+  "testing-hub/playwright/locators-are-strict-about-multiple-matches": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "networkidle Means Zero Connections and Is Discouraged", route: '/testing-hub/playwright/networkidle-means-zero-connections-and-is-discouraged' },
+      { label: "Playwright (overview)", route: '/testing-hub/playwright' },
+    ],
+    tip: "Make the locator unique with a better name, filter({ hasText }), or by scoping to a parent such as a row or dialog. Use first() or nth() only when order is really what you mean.",
+    gotchas: ["count() and all() do not need a single match, so they never raise a strict mode violation.","first() hides the ambiguity; if the page later adds another match, the test silently clicks a different element."],
   },
   'testing-hub/api-testing': {
     apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
@@ -33256,6 +33312,34 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Dynamic content (timestamps, ads) must be masked before capturing a screenshot, since unmasked content guarantees every run "differs."',
       'A pixel-perfect match says nothing about whether a button actually works when clicked — visual regression complements, not replaces, functional testing.',
     ],
+  },
+  "testing-hub/visual-regression/threshold-is-colour-sensitivity-not-percent": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "A Missing Baseline Fails the First Run", route: '/testing-hub/visual-regression/a-missing-baseline-fails-the-first-run' },
+      { label: "Visual Regression Testing (overview)", route: '/testing-hub/visual-regression' },
+    ],
+    tip: "Leave threshold near its default 0.2 for anti-aliasing noise and use maxDiffPixels or maxDiffPixelRatio to decide how much of the image may change.",
+    gotchas: ["A high threshold hides real colour regressions everywhere, not just in a small area.","maxDiffPixels and maxDiffPixelRatio can be set per call or globally under expect.toHaveScreenshot in the config."],
+  },
+  "testing-hub/visual-regression/a-missing-baseline-fails-the-first-run": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "threshold Is Colour Sensitivity, Not a Percentage", route: '/testing-hub/visual-regression/threshold-is-colour-sensitivity-not-percent' },
+      { label: "Animations Are Already Off, and networkidle Is Discouraged", route: '/testing-hub/visual-regression/animations-are-already-off-and-networkidle-is-discouraged' },
+      { label: "Visual Regression Testing (overview)", route: '/testing-hub/visual-regression' },
+    ],
+    tip: "Generate baselines locally (or in the same Docker image as CI), review them, and commit the -snapshots folders. Use --update-snapshots=missing when you only want to add new ones.",
+    gotchas: ["Baselines are per browser and per platform (homepage-chromium-linux.png), so ones made on macOS do not match Linux CI.","--update-snapshots with no value updates every changed snapshot, not only missing ones."],
+  },
+  "testing-hub/visual-regression/animations-are-already-off-and-networkidle-is-discouraged": {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: "A Missing Baseline Fails the First Run", route: '/testing-hub/visual-regression/a-missing-baseline-fails-the-first-run' },
+      { label: "Visual Regression Testing (overview)", route: '/testing-hub/visual-regression' },
+    ],
+    tip: "Wait for the element you are about to compare (await expect(locator).toBeVisible()) and let toHaveScreenshot handle animations and stability.",
+    gotchas: ["animations: \"disabled\" finishes finite animations and cancels infinite ones; it does not wait for data to load.","A page with polling or a websocket may never reach networkidle at all."],
   },
   'testing-hub/snapshot-testing': {
     apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,

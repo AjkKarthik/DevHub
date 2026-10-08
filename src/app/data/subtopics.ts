@@ -4401,4 +4401,19 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: "Testing Library Has No getByClassName", route: '/testing-hub/react-testing-library/testing-library-has-no-getbyclassname' },
     { label: "findBy Gives Up After One Second", route: '/testing-hub/react-testing-library/findby-gives-up-after-one-second' },
   ],
+  'angular-testing': [
+    { label: "HttpClientTestingModule Is Deprecated", route: '/testing-hub/angular-testing/httpclienttestingmodule-is-deprecated' },
+    { label: "TestBed.flushEffects Was Replaced by TestBed.tick", route: '/testing-hub/angular-testing/flusheffects-replaced-by-testbed-tick' },
+    { label: "Router Testing Without RouterTestingModule", route: '/testing-hub/angular-testing/router-testing-without-routertestingmodule' },
+  ],
+  'visual-regression': [
+    { label: "threshold Is Colour Sensitivity, Not a Percentage", route: '/testing-hub/visual-regression/threshold-is-colour-sensitivity-not-percent' },
+    { label: "A Missing Baseline Fails the First Run", route: '/testing-hub/visual-regression/a-missing-baseline-fails-the-first-run' },
+    { label: "Animations Are Already Off, and networkidle Is Discouraged", route: '/testing-hub/visual-regression/animations-are-already-off-and-networkidle-is-discouraged' },
+  ],
+  'playwright': [
+    { label: "Actions Have No Timeout of Their Own by Default", route: '/testing-hub/playwright/actions-have-no-timeout-by-default' },
+    { label: "networkidle Means Zero Connections and Is Discouraged", route: '/testing-hub/playwright/networkidle-means-zero-connections-and-is-discouraged' },
+    { label: "Locators Are Strict About Multiple Matches", route: '/testing-hub/playwright/locators-are-strict-about-multiple-matches' },
+  ],
 };
