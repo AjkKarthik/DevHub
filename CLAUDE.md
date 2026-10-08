@@ -11234,6 +11234,16 @@ check before any other new hub's first subtopic set:
    subsets). 3 subtopics, all Node-verified, including i > 0 vs i > start dropping valid subsets.
    Bare `recursion-backtracking` key collision-free. Build clean; bundle-verified.
    **DSA hub Phase 10: 16 of 21 topics complete.**
+23. **The `dynamic-programming` batch found and fixed FIVE main-page issues, all Node-verified**: the
+   count-of-ways QnA claimed the "same structure" as min coins, but the page's amount-outer loop
+   counts ordered sequences (9 for [1,2,5]/5, against 4 combinations; coins-outer gives 4); the
+   space-optimization QnA's "iterate right-to-left" for one-row LCS was wrong on 579 of 2,000 random
+   pairs checked against the 2D table (a saved diagonal variable was never wrong); quiz Q6 marked
+   "top-down for sparse" as the generally-faster answer against the theory's "bottom-up usually
+   faster"; the coin-guard mistake called dp[negative] "undefined behavior" when in JS it is NaN
+   poisoning that returns NaN; and quiz Q4 duplicated Q1 (replaced with a loop-order question).
+   3 subtopics. Bare `dynamic-programming` key collision-free. Build clean; bundle-verified.
+   **DSA hub Phase 10: 17 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -11651,10 +11661,10 @@ check before any other new hub's first subtopic set:
   needs the full `.dsa-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }`
   rule (copied from the main topic page's own `.scss`, which defines it locally). No live
   playground (DSA theory/analysis content has no in-browser runtime) — plain `<app-code-block>`.
-  Phase 10: 16 of 21 topics have subtopics (`/dsa/big-o`, pilot batch; `/dsa/arrays`; `/dsa/strings`;
+  Phase 10: 17 of 21 topics have subtopics (`/dsa/big-o`, pilot batch; `/dsa/arrays`; `/dsa/strings`;
   `/dsa/hash-tables`; `/dsa/stacks-queues`; `/dsa/linked-lists`; `/dsa/doubly-linked-lists`;
   `/dsa/binary-trees`; `/dsa/bst`; `/dsa/heaps`; `/dsa/graphs-bfs-dfs`; `/dsa/graph-algorithms`;
-  `/dsa/basic-sorts`; `/dsa/advanced-sorts`; `/dsa/binary-search`; `/dsa/recursion-backtracking`,
+  `/dsa/basic-sorts`; `/dsa/advanced-sorts`; `/dsa/binary-search`; `/dsa/recursion-backtracking`; `/dsa/dynamic-programming`,
   all 2026-10-08) — see "DSA hub
   subtopic wiring" section below for the `DsaNavComponent` accordion
   structural fix (19th `*NavComponent`-based hub in a row missing it at pilot time), the

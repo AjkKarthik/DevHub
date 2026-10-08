@@ -323,7 +323,24 @@ import { SUBTOPICS } from '../../../data/subtopics';
 
     <div class="nav-group">
       <p class="nav-group-label">Dynamic Programming</p>
-      <a routerLink="/dsa/dynamic-programming" routerLinkActive="active"><span class="nl-text">Dynamic Programming</span>@if(p.isDone('dsa-dynamic-programming')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/dsa/dynamic-programming" routerLinkActive="active">
+        <span class="nl-text">Dynamic Programming</span>
+        @if(p.isDone('dsa-dynamic-programming')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('dynamic-programming'); as dpSubs) {
+          <button type="button" class="nav-subtopics-toggle" (click)="toggleSubtopics('dynamic-programming', $event)">
+            {{ isSubtopicsExpanded('dynamic-programming') ? '▾' : '▸' }}
+          </button>
+        }
+      </a>
+      @if (subtopicsOf('dynamic-programming'); as dpSubs) {
+        @if (isSubtopicsExpanded('dynamic-programming')) {
+          <div class="nav-subtopics">
+            @for (sub of dpSubs; track sub.route) {
+              <a [routerLink]="sub.route" routerLinkActive="active" class="nav-subtopic-link">{{ sub.label }}</a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/dsa/dp-patterns" routerLinkActive="active"><span class="nl-text">DP Patterns</span>@if(p.isDone('dsa-dp-patterns')){<span class="nl-done">✓</span>}</a>
     </div>
 

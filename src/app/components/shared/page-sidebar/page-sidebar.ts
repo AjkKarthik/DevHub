@@ -35089,6 +35089,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The skip compares neighbours, so the input must be sorted first.',
     ],
   },
+  'dsa/dynamic-programming/coin-ways-loop-order-combinations-vs-permutations': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'One-Row LCS Needs a Saved Diagonal, Not Right-to-Left', route: '/dsa/dynamic-programming/lcs-one-row-needs-a-diagonal-variable' },
+      { label: 'Dynamic Programming (topic overview)', route: '/dsa/dynamic-programming' },
+    ],
+    tip: 'For coins [1,2,5] and amount 5, amount-outer counting returns 9 (ordered sequences) and coins-outer returns 4 (combinations).',
+    gotchas: [
+      'For minimum coins either order works; for counting ways it does not.',
+    ],
+  },
+  'dsa/dynamic-programming/lcs-one-row-needs-a-diagonal-variable': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Loop Order Decides Combinations or Permutations in Coin Change', route: '/dsa/dynamic-programming/coin-ways-loop-order-combinations-vs-permutations' },
+      { label: 'Top-Down vs Bottom-Up, Measured on Sparse and Dense Inputs', route: '/dsa/dynamic-programming/top-down-vs-bottom-up-measured' },
+      { label: 'Dynamic Programming (topic overview)', route: '/dsa/dynamic-programming' },
+    ],
+    tip: 'On 2,000 random string pairs, one-row LCS iterated right-to-left was wrong 579 times; left-to-right with a saved diagonal was never wrong.',
+    gotchas: [
+      'Knapsack can use right-to-left alone because both of its reads come from the previous row.',
+    ],
+  },
+  'dsa/dynamic-programming/top-down-vs-bottom-up-measured': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'One-Row LCS Needs a Saved Diagonal, Not Right-to-Left', route: '/dsa/dynamic-programming/lcs-one-row-needs-a-diagonal-variable' },
+      { label: 'Dynamic Programming (topic overview)', route: '/dsa/dynamic-programming' },
+    ],
+    tip: 'Coins [3000, 7000], amount 10000: memoization computed 5 states, the table 10,000. Coins [1, 2, 5], amount 20000: memoization overflowed the stack.',
+    gotchas: [
+      'Memoization removes repeated work, not recursion depth.',
+    ],
+  },
 
   // ── MongoDB: per-page entries ────────────────────────────────────────────────
   'mongodb/fundamentals': {

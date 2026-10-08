@@ -4311,4 +4311,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Sort and Break Prunes Earlier Than a Negative Check', route: '/dsa/recursion-backtracking/sort-and-break-prunes-earlier' },
     { label: 'Why the Duplicate Skip Compares i With start, Not 0', route: '/dsa/recursion-backtracking/skip-duplicates-at-the-same-tree-level' },
   ],
+  'dynamic-programming': [
+    { label: 'Loop Order Decides Combinations or Permutations in Coin Change', route: '/dsa/dynamic-programming/coin-ways-loop-order-combinations-vs-permutations' },
+    { label: 'One-Row LCS Needs a Saved Diagonal, Not Right-to-Left', route: '/dsa/dynamic-programming/lcs-one-row-needs-a-diagonal-variable' },
+    { label: 'Top-Down vs Bottom-Up, Measured on Sparse and Dense Inputs', route: '/dsa/dynamic-programming/top-down-vs-bottom-up-measured' },
+  ],
 };

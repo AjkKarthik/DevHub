@@ -5018,7 +5018,12 @@ export const routes: Routes = [
       { path: 'sort-and-break-prunes-earlier', loadComponent: () => import('./components/fundamentals/dsa/recursion-backtracking/subtopics/combination-sum-sort-break/combination-sum-sort-break').then(m => m.CombinationSumSortBreakSubtopic) },
       { path: 'skip-duplicates-at-the-same-tree-level', loadComponent: () => import('./components/fundamentals/dsa/recursion-backtracking/subtopics/subsets-skip-duplicates/subsets-skip-duplicates').then(m => m.SubsetsSkipDuplicatesSubtopic) },
     ] },
-    { path: 'dynamic-programming',    loadComponent: () => import('./components/fundamentals/dsa/dynamic-programming/dynamic-programming').then(m => m.DsaDynamicProgramming) },
+    { path: 'dynamic-programming', children: [
+      { path: '', loadComponent: () => import('./components/fundamentals/dsa/dynamic-programming/dynamic-programming').then(m => m.DsaDynamicProgramming) },
+      { path: 'coin-ways-loop-order-combinations-vs-permutations', loadComponent: () => import('./components/fundamentals/dsa/dynamic-programming/subtopics/coin-ways-loop-order/coin-ways-loop-order').then(m => m.CoinWaysLoopOrderSubtopic) },
+      { path: 'lcs-one-row-needs-a-diagonal-variable', loadComponent: () => import('./components/fundamentals/dsa/dynamic-programming/subtopics/lcs-diagonal-variable/lcs-diagonal-variable').then(m => m.LcsDiagonalVariableSubtopic) },
+      { path: 'top-down-vs-bottom-up-measured', loadComponent: () => import('./components/fundamentals/dsa/dynamic-programming/subtopics/memo-vs-table-measured/memo-vs-table-measured').then(m => m.MemoVsTableMeasuredSubtopic) },
+    ] },
     { path: 'dp-patterns',            loadComponent: () => import('./components/fundamentals/dsa/dp-patterns/dp-patterns').then(m => m.DsaDpPatterns) },
     { path: 'trie',                   loadComponent: () => import('./components/fundamentals/dsa/trie/trie').then(m => m.DsaTrie) },
     { path: 'bit-manipulation',       loadComponent: () => import('./components/fundamentals/dsa/bit-manipulation/bit-manipulation').then(m => m.DsaBitManipulation) },

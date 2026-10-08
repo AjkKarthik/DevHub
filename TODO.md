@@ -10140,7 +10140,19 @@ off here with a date.
   10 calls on [2,3,6,7]/7 but only ~12% with 608 answers; duplicate skip: 1,048,576 -> 121 subsets
   for ten 1s and ten 2s). Third subtopic shows i > 0 instead of i > start drops [1,2,2] and [2,2].
   Bare `recursion-backtracking` SUBTOPICS key collision-free. DSA hub Phase 10: 16 of 21.
-- [ ] `/dsa/dynamic-programming` — Dynamic Programming
+- [x] 2026-10-08 `/dsa/dynamic-programming` — Dynamic Programming. 3 subtopics (routes
+  coin-ways-loop-order-combinations-vs-permutations, lcs-one-row-needs-a-diagonal-variable,
+  top-down-vs-bottom-up-measured; short folders coin-ways-loop-order, lcs-diagonal-variable,
+  memo-vs-table-measured). Main-page fixes: the count-of-ways QnA said "same structure" as min
+  coins — with the page's amount-outer loops it counts ordered sequences (9 vs 4 combinations for
+  [1,2,5]/5); the space-optimization QnA said one-row LCS can "iterate right-to-left" — wrong on 579
+  of 2,000 random pairs vs the 2D table, a saved diagonal variable fixes it; quiz "generally faster"
+  answered "top-down for sparse", contradicting the theory's "bottom-up usually faster" (answer
+  corrected, sparse kept as the exception); the coin-guard mistake said "undefined behavior" — in JS
+  it is NaN poisoning that returns NaN; replaced a quiz question duplicating Q1 with a loop-order
+  question. Third subtopic: memo visited 5 states vs 10,000 on a sparse case, overflowed the stack
+  at amount 20,000 on a dense one. Bare `dynamic-programming` SUBTOPICS key collision-free. DSA hub
+  Phase 10: 17 of 21.
 - [ ] `/dsa/dp-patterns` — DP Patterns
 - [ ] `/dsa/trie` — Tries
 - [ ] `/dsa/bit-manipulation` — Bit Manipulation
