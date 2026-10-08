@@ -4271,4 +4271,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'BFS Can Use Less Memory Than DFS on a Skewed Tree', route: '/dsa/binary-trees/bfs-can-use-less-memory-than-dfs-on-a-skewed-tree' },
     { label: 'Inorder Alone Cannot Reconstruct a Binary Tree', route: '/dsa/binary-trees/inorder-alone-cannot-reconstruct-a-binary-tree' },
   ],
+  'bst': [
+    { label: 'Sorted Array to BST Is Actually O(n log n)', route: '/dsa/bst/sorted-array-to-bst-is-actually-on-log-n' },
+    { label: 'One Rotation Rebalances an Ascending Insert', route: '/dsa/bst/one-rotation-rebalances-an-ascending-insert' },
+    { label: 'Generic-Tree LCA Visits the Whole Tree', route: '/dsa/bst/generic-tree-lca-visits-the-whole-tree' },
+  ],
 };

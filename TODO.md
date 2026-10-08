@@ -10039,7 +10039,17 @@ off here with a date.
   counterintuitive finding -- measured DFS recursion depth vs BFS peak queue size on a skewed tree
   (BFS 1000x cheaper) and a balanced tree (DFS 46x cheaper), proving the memory winner depends
   entirely on tree shape. Bare `binary-trees` SUBTOPICS key collision-free. DSA hub Phase 10: 8 of 21.
-- [ ] `/dsa/bst` — Binary Search Trees
+- [x] 2026-10-08 `/dsa/bst` — Binary Search Trees. 3 subtopics
+  (sorted-array-to-bst-is-actually-on-log-n, one-rotation-rebalances-an-ascending-insert,
+  generic-tree-lca-visits-the-whole-tree). Main-page fix: `sortedArrayToBST`'s own comment claimed
+  "O(n)" but `slice()` makes it O(n log n) -- verified via a measured copy-ratio that climbs with n
+  (1.90 to 14.69) rather than staying constant; fixed the comment and built the real O(n) index-based
+  version. Also retitled a theory section that duplicated section 1's own self-balancing content,
+  replacing it with a Node-verified single-rotation rebalancing demonstration (ascending 1,2,3 insert:
+  height 3/balance -2 -> one rotateLeft -> height 2/balance 0, inorder unchanged). Third subtopic
+  measured the real complexity gap between BST-LCA and generic-tree LCA via instrumented node-visit
+  counting on a 1023-node balanced tree (6 vs 2043 visits, 340x). Bare `bst` SUBTOPICS key
+  collision-free. DSA hub Phase 10: 9 of 21.
 - [ ] `/dsa/heaps` — Heaps & Priority Queues
 - [ ] `/dsa/graphs-bfs-dfs` — Graphs: BFS & DFS
 - [ ] `/dsa/graph-algorithms` — Graph Algorithms

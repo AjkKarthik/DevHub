@@ -68,10 +68,10 @@ export class DsaBst {
       ],
     },
     {
-      heading: 'Self-Balancing BSTs and Why Plain BSTs Are Not Enough',
+      heading: 'Self-Balancing BSTs: What a Rotation Actually Does',
       points: [
-        'A plain BST built from sorted or nearly-sorted input degenerates into a linked list, giving O(n) worst-case search/insert/delete instead of the expected O(log n) — this is precisely why interviewers ask "what happens if you insert 1,2,3,4,5 in order" as a follow-up.',
-        'Self-balancing BSTs (AVL trees, red-black trees) maintain a height invariant through rotations performed during insertion and deletion, guaranteeing O(log n) height regardless of insertion order — the mechanism underlying most production ordered-map implementations.',
+        'A rotation is a local, O(1) restructuring of a small number of pointers that changes which node is "above" another WITHOUT breaking the BST ordering property or needing to touch any other part of the tree — this is why rotations can rebalance a tree in O(log n) total time (one rotation per level on the path from the inserted node back to the root), not O(n).',
+        'Verified directly: inserting 1, 2, 3 (ascending) into a plain BST produces a fully right-skewed chain (height 3, a textbook "balance factor" of -2 at the root). Applying exactly ONE left rotation at the root restructures it into a perfectly balanced 3-node tree (height 2, balance factor 0) — with the BST\'s inorder sequence staying [1, 2, 3] throughout, confirming the ordering property survives the restructuring untouched.',
         'Red-black trees favor faster insertion/deletion (fewer rotations) at the cost of a slightly less strictly balanced tree compared to AVL trees, which is why most standard library ordered containers (like C++ std::map or Java TreeMap) use red-black trees rather than AVL trees.',
         'Recognizing when a plain (non-self-balancing) BST is acceptable — when insertion order is guaranteed random or when the dataset is small and static — versus when a self-balancing variant is necessary is a key practical judgment call beyond simply implementing the basic operations.',
       ],
@@ -140,7 +140,10 @@ function kthSmallest(root: TreeNode | null, k: number): number {
   return result;
 }
 
-// Convert sorted array to balanced BST — O(n)
+// Convert sorted array to balanced BST — O(n log n), NOT O(n) as it may look!
+// nums.slice() copies elements, and the total copied across all levels of
+// recursion is O(n log n), not O(n) — see the dedicated subtopic for the
+// measured proof and the real O(n) fix (pass index bounds instead of slicing).
 function sortedArrayToBST(nums: number[]): TreeNode | null {
   if (!nums.length) return null;
   const mid = Math.floor(nums.length / 2);

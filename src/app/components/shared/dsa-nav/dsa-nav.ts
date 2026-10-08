@@ -172,7 +172,24 @@ import { SUBTOPICS } from '../../../data/subtopics';
           </div>
         }
       }
-      <a routerLink="/dsa/bst" routerLinkActive="active"><span class="nl-text">Binary Search Trees</span>@if(p.isDone('dsa-bst')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/dsa/bst" routerLinkActive="active">
+        <span class="nl-text">Binary Search Trees</span>
+        @if(p.isDone('dsa-bst')){<span class="nl-done">✓</span>}
+        @if (subtopicsOf('bst'); as bstSubs) {
+          <button type="button" class="nav-subtopics-toggle" (click)="toggleSubtopics('bst', $event)">
+            {{ isSubtopicsExpanded('bst') ? '▾' : '▸' }}
+          </button>
+        }
+      </a>
+      @if (subtopicsOf('bst'); as bstSubs) {
+        @if (isSubtopicsExpanded('bst')) {
+          <div class="nav-subtopics">
+            @for (sub of bstSubs; track sub.route) {
+              <a [routerLink]="sub.route" routerLinkActive="active" class="nav-subtopic-link">{{ sub.label }}</a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/dsa/heaps" routerLinkActive="active"><span class="nl-text">Heaps &amp; Priority Queues</span>@if(p.isDone('dsa-heaps')){<span class="nl-done">✓</span>}</a>
       <a routerLink="/dsa/graphs-bfs-dfs" routerLinkActive="active"><span class="nl-text">Graphs — BFS &amp; DFS</span>@if(p.isDone('dsa-graphs-bfs-dfs')){<span class="nl-done">✓</span>}</a>
       <a routerLink="/dsa/graph-algorithms" routerLinkActive="active"><span class="nl-text">Graph Algorithms</span>@if(p.isDone('dsa-graph-algorithms')){<span class="nl-done">✓</span>}</a>

@@ -10911,6 +10911,47 @@ check before any other new hub's first subtopic set:
    map; confirmed the `SUBTOPICS`/`SIDEBAR_MAP`/breadcrumb/search-index entries for `binary-trees`
    (bare) and all three composite subtopic keys were present with matching content.
    **DSA hub Phase 10: 8 of 21 topics complete.**
+15. **The `bst` batch found and fixed a genuine complexity-labeling bug in the main page's own
+   `sortedArrayToBST` codeTab, verified via direct Node.js measurement**: the function's own
+   trailing comment claimed "O(n) time" — but its body recurses with `nums.slice(0, mid)` and
+   `nums.slice(mid + 1)`, and `Array.prototype.slice()` copies every element of its sub-array on
+   each call. Verified by instrumenting a copy counter across increasing input sizes: the ratio of
+   total-elements-copied to n climbs steadily (1.90 at n=100, 14.69 at n=10,000) rather than
+   staying flat — the signature of O(n log n) work, not O(n). Fixed the comment and built the real
+   O(n) fix (passing `lo`/`hi` index bounds instead of slicing a new array at every call), verified
+   via the same instrumentation that it does exactly n units of copy-equivalent work at every
+   tested size. Separately, theory section 5 ("Self-Balancing BSTs") duplicated section 1's own
+   self-balancing content almost verbatim — retitled it and replaced the first two bullets with a
+   Node-verified demonstration instead (kept the still-accurate red-black-vs-AVL tradeoff and
+   practical-judgment-call bullets unchanged). Three subtopics: (1) **fix-adjacent** — reproduces
+   the measured copy-ratio growth directly, with a Try It on the O(n) index-based fix; (2)
+   **gap-closing** — builds `rotateLeft`/`rotateRight` from scratch and verifies the classic
+   ascending-insert degenerate case (inserting 1, 2, 3 in order) produces a 3-node chain at height 3
+   with balance factor -2, and that exactly ONE `rotateLeft` restores height 2/balance 0 while the
+   inorder traversal stays `[1, 2, 3]` throughout — the retitled theory section's own new claim,
+   verified rather than assumed; (3) **gap-closing** — instruments both a generic-tree LCA
+   (`lcaGeneric`, visits every node via unconstrained DFS) and the main page's own BST-LCA
+   (`lcaBST`, follows exactly one root-to-target path) with visit counters on a balanced 1023-node
+   tree, verified both return the identical correct answer (value 15, for p=10/q=20) while
+   `lcaGeneric` visits 2043 nodes against `lcaBST`'s 6 — a verified 340x gap, demonstrating
+   precisely why the BST's own ordering property (not just "it's a tree") is what makes LCA fast.
+   No `SUBTOPICS` collision for `bst` (checked both `subtopics.ts` forms and grepped
+   `app.routes.ts` directly, confirmed collision-free, left bare). All three
+   `exercise.solution`/`theory.points`/`misconceptions` fields swept clean via the standing
+   bracket-balance/backtick-parity/apostrophe scripts (all three files balanced at 63/63 braces,
+   all backtick counts even, zero unescaped possessive apostrophes found) — no pre-existing false
+   positive this time, unlike the prior two batches. Build passed clean (foreground execution
+   under Node 22.23.2, explicit `EXITCODE:$?` capture, zero real `ERROR` lines). **No interactive
+   browser/preview tool was available in this session** — verified via the same compiled-bundle-
+   inspection fallback as the prior eight batches: confirmed the OLD "O(n) time" comment text was
+   replaced with "O(n log n), NOT O(n) as it may look!" in the main page's own compiled chunk
+   (`chunk-CvBJc0Ah.js`), confirmed the retitled theory section's new text ("O(n log n), not O(n)
+   — see the dedicated subtopic") was present; confirmed all three subtopic classes
+   (`SortedArrayToBstIsActuallyOnLogNSubtopic`/`OneRotationRebalancesAnAscendingInsertSubtopic`/
+   `GenericTreeLcaVisitsTheWholeTreeSubtopic`) each compiled into their own separate lazy chunk;
+   confirmed the `SUBTOPICS`/`SIDEBAR_MAP`/breadcrumb/search-index entries for `bst` (bare) and all
+   three composite subtopic keys were present with matching content in `main-UPV3FSEJ.js`.
+   **DSA hub Phase 10: 9 of 21 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -11328,9 +11369,9 @@ check before any other new hub's first subtopic set:
   needs the full `.dsa-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }`
   rule (copied from the main topic page's own `.scss`, which defines it locally). No live
   playground (DSA theory/analysis content has no in-browser runtime) — plain `<app-code-block>`.
-  Phase 10: 8 of 21 topics have subtopics (`/dsa/big-o`, pilot batch; `/dsa/arrays`; `/dsa/strings`;
+  Phase 10: 9 of 21 topics have subtopics (`/dsa/big-o`, pilot batch; `/dsa/arrays`; `/dsa/strings`;
   `/dsa/hash-tables`; `/dsa/stacks-queues`; `/dsa/linked-lists`; `/dsa/doubly-linked-lists`;
-  `/dsa/binary-trees`, all 2026-10-08) — see "DSA hub
+  `/dsa/binary-trees`; `/dsa/bst`, all 2026-10-08) — see "DSA hub
   subtopic wiring" section below for the `DsaNavComponent` accordion
   structural fix (19th `*NavComponent`-based hub in a row missing it at pilot time), the
   `dsa-arrays` SUBTOPICS-map collision resolution (bare `arrays` collides with the C# hub's own

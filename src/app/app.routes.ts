@@ -4970,7 +4970,12 @@ export const routes: Routes = [
       { path: 'bfs-can-use-less-memory-than-dfs-on-a-skewed-tree', loadComponent: () => import('./components/fundamentals/dsa/binary-trees/subtopics/bfs-can-use-less-memory-than-dfs-on-a-skewed-tree/bfs-can-use-less-memory-than-dfs-on-a-skewed-tree').then(m => m.BfsCanUseLessMemoryThanDfsOnASkewedTreeSubtopic) },
       { path: 'inorder-alone-cannot-reconstruct-a-binary-tree', loadComponent: () => import('./components/fundamentals/dsa/binary-trees/subtopics/inorder-alone-cannot-reconstruct-a-binary-tree/inorder-alone-cannot-reconstruct-a-binary-tree').then(m => m.InorderAloneCannotReconstructABinaryTreeSubtopic) },
     ]},
-    { path: 'bst',                    loadComponent: () => import('./components/fundamentals/dsa/bst/bst').then(m => m.DsaBst) },
+    { path: 'bst', children: [
+      { path: '', loadComponent: () => import('./components/fundamentals/dsa/bst/bst').then(m => m.DsaBst) },
+      { path: 'sorted-array-to-bst-is-actually-on-log-n', loadComponent: () => import('./components/fundamentals/dsa/bst/subtopics/sorted-array-to-bst-is-actually-on-log-n/sorted-array-to-bst-is-actually-on-log-n').then(m => m.SortedArrayToBstIsActuallyOnLogNSubtopic) },
+      { path: 'one-rotation-rebalances-an-ascending-insert', loadComponent: () => import('./components/fundamentals/dsa/bst/subtopics/one-rotation-rebalances-an-ascending-insert/one-rotation-rebalances-an-ascending-insert').then(m => m.OneRotationRebalancesAnAscendingInsertSubtopic) },
+      { path: 'generic-tree-lca-visits-the-whole-tree', loadComponent: () => import('./components/fundamentals/dsa/bst/subtopics/generic-tree-lca-visits-the-whole-tree/generic-tree-lca-visits-the-whole-tree').then(m => m.GenericTreeLcaVisitsTheWholeTreeSubtopic) },
+    ]},
     { path: 'heaps',                  loadComponent: () => import('./components/fundamentals/dsa/heaps/heaps').then(m => m.DsaHeaps) },
     { path: 'graphs-bfs-dfs',         loadComponent: () => import('./components/fundamentals/dsa/graphs-bfs-dfs/graphs-bfs-dfs').then(m => m.DsaGraphsBfsDfs) },
     { path: 'graph-algorithms',       loadComponent: () => import('./components/fundamentals/dsa/graph-algorithms/graph-algorithms').then(m => m.DsaGraphAlgorithms) },

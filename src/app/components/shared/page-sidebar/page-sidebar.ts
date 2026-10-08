@@ -34663,6 +34663,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       '"What happens if you insert 1,2,3,4,5 in order" is the classic follow-up testing whether a candidate knows plain BSTs can degenerate.',
     ],
   },
+  'dsa/bst/sorted-array-to-bst-is-actually-on-log-n': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'One Rotation Rebalances an Ascending Insert', route: '/dsa/bst/one-rotation-rebalances-an-ascending-insert' },
+      { label: 'Binary Search Trees (topic overview)', route: '/dsa/bst' },
+    ],
+    tip: 'Measured directly: the main page\'s own "O(n)" sorted-array-to-BST codeTab is actually O(n log n) — the copy ratio climbs from 1.90 at n=10 to 14.69 at n=100,000, the exact signature of hidden slice() copying cost at every recursion level.',
+    gotchas: [
+      'Replacing array slicing with (lo, hi) index bounds drops the cost to a verified, exact n units of work — no extra copying at all.',
+    ],
+  },
+  'dsa/bst/one-rotation-rebalances-an-ascending-insert': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Sorted Array to BST Is Actually O(n log n)', route: '/dsa/bst/sorted-array-to-bst-is-actually-on-log-n' },
+      { label: 'Generic-Tree LCA Visits the Whole Tree', route: '/dsa/bst/generic-tree-lca-visits-the-whole-tree' },
+    ],
+    tip: 'Verified directly: inserting 1, 2, 3 produces a right-skewed tree (height 3, balance factor -2); applying exactly ONE rotateLeft fixes it to height 2, balance factor 0 — with the inorder sequence staying [1, 2, 3] throughout.',
+    gotchas: [
+      'A rotation moves NODES via pointer reassignment, not values — the node objects keep their own val fields unchanged the whole time.',
+    ],
+  },
+  'dsa/bst/generic-tree-lca-visits-the-whole-tree': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'One Rotation Rebalances an Ascending Insert', route: '/dsa/bst/one-rotation-rebalances-an-ascending-insert' },
+      { label: 'Binary Search Trees (topic overview)', route: '/dsa/bst' },
+    ],
+    tip: 'Measured directly on an identical 1,023-node tree: BST-LCA needed only 6 node visits while generic-tree LCA (no ordering to exploit) needed 2,043 — a 340x gap for the exact same correct answer.',
+    gotchas: [
+      'BST-LCA only works correctly when the tree genuinely IS a valid BST — running it on an unordered tree would silently return a wrong answer.',
+    ],
+  },
   'dsa/binary-trees': {
     apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
     related: [
